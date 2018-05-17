@@ -168,25 +168,17 @@ public class BizHd implements Serializable {
         this.hdTpdz = hdTpdz;
     }
 
-    /**
-     * 获取排序
-     *
-     * @return HD_PX - 排序
-     */
-    public String getHdTj() {
-        return hdtj;
-    }
+   
 
-    /**
-     * 设置排序
-     *
-     * @param hdPx 排序
-     */
-    public void setHdPj(String hdtj) {
-        this.hdtj = hdtj;
-    }
+    public String getHdtj() {
+		return hdtj;
+	}
 
-    /**
+	public void setHdtj(String hdtj) {
+		this.hdtj = hdtj;
+	}
+
+	/**
      * 获取属性（1、驾校  2、训练场）
      *
      * @return HD_SX - 属性（1、驾校  2、训练场）
