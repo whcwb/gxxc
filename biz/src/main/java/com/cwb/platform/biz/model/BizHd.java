@@ -63,12 +63,25 @@ public class BizHd implements Serializable {
      */
     @Column(name = "HD_XGSJ")
     private String hdxgsj;
+    /**
+     * 修改人
+     */
+    @Column(name = "HD_XGR")
+    private String hdxgr;
    
 
     private static final long serialVersionUID = 1L;
 
     
-    public String getHdxgsj() {
+    public String getHdxgr() {
+		return hdxgr;
+	}
+
+	public void setHdxgr(String hdxgr) {
+		this.hdxgr = hdxgr;
+	}
+
+	public String getHdxgsj() {
 		return hdxgsj;
 	}
 
@@ -221,7 +234,8 @@ public class BizHd implements Serializable {
         hdTpdz("HD_TPDZ"),
         hdTj("HD_TJ"),
         hdSx("HD_SX"),
-        hdxgsj("HD_XGSJ");
+        hdxgsj("HD_XGSJ"),
+        hdxgr("HD_XGR");
 
         private final String column;
 
