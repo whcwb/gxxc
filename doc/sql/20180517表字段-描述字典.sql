@@ -1,5 +1,5 @@
 --已更新至 gxxc数据库
-ALTER TABLE gxxc.biz_hd MODIFY HD_SX VARCHAR(2) COMMENT '属性（字典表：c 1、驾校  2、训练场）';
+ALTER TABLE gxxc.biz_hd MODIFY HD_SX VARCHAR(2) COMMENT '属性（字典表：ZDCLK0036 1、驾校  2、训练场）';
 ALTER TABLE gxxc.biz_order MODIFY DD_ZT VARCHAR(2) COMMENT '订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)';
 ALTER TABLE gxxc.biz_order MODIFY DD_ZFTD VARCHAR(32) COMMENT '支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)';
 ALTER TABLE gxxc.biz_order MODIFY DD_ZFZT VARCHAR(2) DEFAULT '0' COMMENT '支付状态（ZDCLK0039  0,待支付 1、支付成功  2、支付失败）';
