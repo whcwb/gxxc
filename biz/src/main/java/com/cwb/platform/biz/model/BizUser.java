@@ -3,6 +3,9 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * 用户实名制表
+ */
 @Table(name = "biz_user")
 public class BizUser implements Serializable {
     /**

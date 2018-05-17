@@ -3,6 +3,10 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * 用户账户佣金变动明细表
+ * 佣金新增、提现操作流水表
+ */
 @Table(name = "biz_yjmx")
 public class BizYjmx implements Serializable {
     @Id

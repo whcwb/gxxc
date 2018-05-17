@@ -3,6 +3,10 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ *  用户提现表
+ *  当用户提现后，财务需要审核后，再能进行提现操作
+ */
 @Table(name = "biz_tx")
 public class BizTx implements Serializable {
     /**

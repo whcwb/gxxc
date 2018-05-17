@@ -3,6 +3,10 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * 文件上传表
+ * 用户身份证、驾驶证文件
+ */
 @Table(name = "biz_wj")
 public class BizWj implements Serializable {
     @Id

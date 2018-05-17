@@ -3,6 +3,10 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * 系统订单表
+ * 确定用户的缴费情况。
+ */
 @Table(name = "biz_order")
 public class BizOrder implements Serializable {
     /**

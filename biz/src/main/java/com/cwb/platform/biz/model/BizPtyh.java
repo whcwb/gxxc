@@ -3,6 +3,10 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * 平台用户表
+ * 目前仅支持学员、司机
+ */
 @Table(name = "biz_ptyh")
 public class BizPtyh implements Serializable {
     /**
