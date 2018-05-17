@@ -3,6 +3,10 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * 用户账户表
+ * 仅统计本人当前时间可用的账户情况
+ */
 @Table(name = "biz_zh")
 public class BizZh implements Serializable {
     /**

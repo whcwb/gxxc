@@ -3,10 +3,13 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * OCR身份证识别
+ */
 @Table(name = "biz_sfzocr")
 public class BizSfzocr implements Serializable {
     /**
-     * C证号
+     * 身份证号
      */
     @Id
     @Column(name = "SFZ_ID")

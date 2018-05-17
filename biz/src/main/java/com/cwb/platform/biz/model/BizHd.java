@@ -3,6 +3,10 @@ package com.cwb.platform.biz.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * 活动表
+ * 作用：首页信息列表展现。
+ */
 @Table(name = "biz_hd")
 public class BizHd implements Serializable {
     /**
