@@ -1,0 +1,16 @@
+spring:
+  #redis配置信息
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  #数据库连接配置信息
+  datasource:
+    url: jdbc:mysql://47.98.39.45:9097/gxxc?useUnicode=true&amp;characterEncoding=utf-8
+    username: 'root'
+    password: 'password'
+
+
+server:
+  port: 8091
+  
+staticPath: E:\statistics\8090

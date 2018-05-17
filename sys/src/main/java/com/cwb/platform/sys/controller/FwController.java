@@ -1,0 +1,39 @@
+package com.cwb.platform.sys.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cwb.platform.sys.base.BaseController;
+import com.cwb.platform.sys.base.BaseService;
+import com.cwb.platform.sys.model.SysFw;
+import com.cwb.platform.sys.service.FwService;
+import com.cwb.platform.util.bean.ApiResponse;
+
+/**
+ * 平台服务
+ */
+@RestController
+@RequestMapping("/api/fw")
+public class FwController extends BaseController<SysFw, String> {
+    @Autowired
+    private FwService bizService;
+
+    @Override
+    protected BaseService<SysFw, String> getBaseService() {
+        return bizService;
+    }
+
+
+    @Override
+    public ApiResponse<String> save(SysFw entity) {
+        return bizService.saveEntity(entity);
+    }
+    
+    @RequestMapping(value="/update", method={RequestMethod.POST})
+   	public ApiResponse<String> update(SysFw entity){
+    	
+   		return bizService.updateEntity(entity);
+   	}
+}
