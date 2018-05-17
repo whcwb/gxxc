@@ -43,10 +43,10 @@ public class BizHd implements Serializable {
     private String hdTpdz;
 
     /**
-     * 排序
+     * 活动热点推荐时间
      */
-    @Column(name = "HD_PX")
-    private String hdPx;
+    @Column(name = "HD_TJ")
+    private String hdtj;
 
     /**
      * 属性（1、驾校  2、训练场）
@@ -169,8 +169,8 @@ public class BizHd implements Serializable {
      *
      * @return HD_PX - 排序
      */
-    public String getHdPx() {
-        return hdPx;
+    public String getHdTj() {
+        return hdtj;
     }
 
     /**
@@ -178,8 +178,8 @@ public class BizHd implements Serializable {
      *
      * @param hdPx 排序
      */
-    public void setHdPx(String hdPx) {
-        this.hdPx = hdPx;
+    public void setHdPj(String hdtj) {
+        this.hdtj = hdtj;
     }
 
     /**
