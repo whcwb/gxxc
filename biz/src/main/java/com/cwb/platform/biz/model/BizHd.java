@@ -47,20 +47,49 @@ public class BizHd implements Serializable {
     private String hdTpdz;
 
     /**
-     * 排序
+     * 活动热点推荐时间
      */
-    @Column(name = "HD_PX")
-    private String hdPx;
+    @Column(name = "HD_TJ")
+    private String hdtj;
 
     /**
      * 属性（1、驾校  2、训练场）
      */
     @Column(name = "HD_SX")
     private String hdSx;
+    
+    /**
+     * 修改时间
+     */
+    @Column(name = "HD_XGSJ")
+    private String hdxgsj;
+    /**
+     * 修改人
+     */
+    @Column(name = "HD_XGR")
+    private String hdxgr;
+   
 
     private static final long serialVersionUID = 1L;
 
-    /**
+    
+    public String getHdxgr() {
+		return hdxgr;
+	}
+
+	public void setHdxgr(String hdxgr) {
+		this.hdxgr = hdxgr;
+	}
+
+	public String getHdxgsj() {
+		return hdxgsj;
+	}
+
+	public void setHdxgsj(String hdxgsj) {
+		this.hdxgsj = hdxgsj;
+	}
+
+	/**
      * 获取主键id
      *
      * @return ID - 主键id
@@ -168,25 +197,17 @@ public class BizHd implements Serializable {
         this.hdTpdz = hdTpdz;
     }
 
-    /**
-     * 获取排序
-     *
-     * @return HD_PX - 排序
-     */
-    public String getHdPx() {
-        return hdPx;
-    }
+   
 
-    /**
-     * 设置排序
-     *
-     * @param hdPx 排序
-     */
-    public void setHdPx(String hdPx) {
-        this.hdPx = hdPx;
-    }
+    public String getHdtj() {
+		return hdtj;
+	}
 
-    /**
+	public void setHdtj(String hdtj) {
+		this.hdtj = hdtj;
+	}
+
+	/**
      * 获取属性（1、驾校  2、训练场）
      *
      * @return HD_SX - 属性（1、驾校  2、训练场）
@@ -211,8 +232,10 @@ public class BizHd implements Serializable {
         hdZw("HD_ZW"),
         hdCjr("HD_CJR"),
         hdTpdz("HD_TPDZ"),
-        hdPx("HD_PX"),
-        hdSx("HD_SX");
+        hdTj("HD_TJ"),
+        hdSx("HD_SX"),
+        hdxgsj("HD_XGSJ"),
+        hdxgr("HD_XGR");
 
         private final String column;
 
