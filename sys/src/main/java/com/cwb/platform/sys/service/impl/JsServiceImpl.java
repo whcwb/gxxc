@@ -1,19 +1,24 @@
 package com.cwb.platform.sys.service.impl;
 
 import com.cwb.platform.sys.base.BaseServiceImpl;
-import com.cwb.platform.util.commonUtil.DateUtils;
-import com.cwb.platform.util.exception.RuntimeCheck;
-import com.cwb.platform.sys.mapper.*;
-import com.cwb.platform.sys.model.*;
+import com.cwb.platform.sys.mapper.SysClkPtjsMapper;
+import com.cwb.platform.sys.mapper.SysClkPtyhMapper;
+import com.cwb.platform.sys.mapper.SysJsGnMapper;
+import com.cwb.platform.sys.mapper.SysYhJsMapper;
+import com.cwb.platform.sys.model.SysJs;
+import com.cwb.platform.sys.model.SysJsGn;
+import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysYhJs;
 import com.cwb.platform.sys.service.JsService;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.exception.RuntimeCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

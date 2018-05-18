@@ -1,16 +1,6 @@
 package com.cwb.platform.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.cwb.platform.util.commonUtil.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.cwb.platform.sys.base.BaseServiceImpl;
-import com.cwb.platform.util.exception.RuntimeCheck;
 import com.cwb.platform.sys.mapper.SysJgsqlbMapper;
 import com.cwb.platform.sys.mapper.SysPtfwMapper;
 import com.cwb.platform.sys.mapper.SysPtjgMapper;
@@ -22,8 +12,15 @@ import com.cwb.platform.sys.service.FwService;
 import com.cwb.platform.sys.service.JgService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
-
+import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.exception.RuntimeCheck;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FwServiceImpl extends BaseServiceImpl<SysFw, String> implements FwService {
