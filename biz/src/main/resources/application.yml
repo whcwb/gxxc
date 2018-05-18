@@ -51,3 +51,5 @@ mapper:
 
 server:
   port: 81
+
+img_url: http://127.0.0.1:80

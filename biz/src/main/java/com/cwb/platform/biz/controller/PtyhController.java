@@ -1,8 +1,8 @@
 package com.cwb.platform.biz.controller;
 
+import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cwb.platform.biz.model.BizPtyh;
 import com.cwb.platform.biz.service.PtyhService;
@@ -19,4 +19,48 @@ public class PtyhController extends BaseController<BizPtyh,java.lang.String>{
     protected BaseService<BizPtyh, java.lang.String> getBaseService() {
         return service;
     }
+
+    @RequestMapping(value="/save", method={RequestMethod.POST})
+    public ApiResponse<String> save(BizPtyh entity){
+        return null;
+    }
+
+    @RequestMapping(value="/update", method={RequestMethod.POST})
+    public ApiResponse<String> update(BizPtyh entity){
+        return null;
+    }
+
+    @RequestMapping(value="/remove/{pkid}", method={RequestMethod.POST})
+    public ApiResponse<String> remove(@PathVariable("pkid")String id){
+        return null;
+    }
+
+    @RequestMapping(value="/removeIds", method={RequestMethod.POST})
+    public ApiResponse<String> remove(String[] ids){
+        return null;
+    }
+
+    /**
+     *  更新用户是否锁定状态 0 否 1 是
+     * @param bizPtyh
+     * @return
+     */
+    @PostMapping("/updateSfsd")
+    public ApiResponse<String> updateSfsd(BizPtyh bizPtyh){
+        return service.updateSfsd(bizPtyh);
+    }
+
+    /**
+     * 更新用户是否分配信息
+     * @param bizPtyh
+     * @return
+     */
+    @PostMapping("/updateSffp")
+    public ApiResponse<String> updateSffp(BizPtyh bizPtyh){
+        return service.updateSffp(bizPtyh);
+    }
+
+
+
+
 }
