@@ -1,7 +1,6 @@
 package com.cwb.platform.biz.controller;
 
 import com.cwb.platform.biz.model.BizOrder;
-import com.cwb.platform.biz.model.BizPtyh;
 import com.cwb.platform.biz.service.OrderService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
@@ -25,12 +24,12 @@ public class OrderController extends BaseController<BizOrder,String>{
 
 
     @RequestMapping(value="/save", method={RequestMethod.POST})
-    public ApiResponse<String> save(BizPtyh entity){
+    public ApiResponse<String> save(BizOrder entity){
         return null;
     }
 
     @RequestMapping(value="/update", method={RequestMethod.POST})
-    public ApiResponse<String> update(BizPtyh entity){
+    public ApiResponse<String> update(BizOrder entity){
         return null;
     }
 
