@@ -39,9 +39,10 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
         RuntimeCheck.ifBlank(entity.getHdZw(),"正文不能为空");
         RuntimeCheck.ifBlank(entity.getHdSx(), "属性不能为空");
 
+        entity.setHdtj(null);
         entity.setId(genId());
         entity.setCjsj(DateUtils.getNowTime());
-        entity.setHdCjr(sysYh.getCjr());
+        entity.setHdCjr(sysYh.getYhid());
         save(entity);
         return ApiResponse.saveSuccess();
     }
@@ -52,12 +53,27 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
         RuntimeCheck.ifBlank(entity.getHdBt(),"标题不能为空");
         RuntimeCheck.ifBlank(entity.getHdZw(),"正文不能为空");
         RuntimeCheck.ifBlank(entity.getHdSx(), "属性不能为空");
-        if(StringUtils.isNotBlank(entity.getHdtj())){
-            entity.setHdtj(DateUtils.getNowTime());
-        }
+//        if(StringUtils.isNotBlank(entity.getHdtj())){
+//            entity.setHdtj(DateUtils.getNowTime());
+//        }
+        entity.setHdtj(null);
         entity.setHdxgsj(DateUtils.getNowTime());
-        entity.setHdxgr(sysYh.getXgr());
+        entity.setHdxgr(sysYh.getYhid());
         update(entity);
         return ApiResponse.updateSuccess();
+    }
+
+    @Override
+    public ApiResponse<String> activityRecommend(BizHd entity){
+        RuntimeCheck.ifBlank(entity.getId(),"请选择推荐活动");
+        BizHd newEntity=new BizHd();
+        newEntity.setId(entity.getId());
+        if(StringUtils.isBlank(entity.getHdtj())){
+            entity.setHdtj("");
+        }else{
+            entity.setHdtj(DateUtils.getNowTime());
+        }
+        int i=update(entity);
+        return i==1?ApiResponse.success():ApiResponse.fail();
     }
 }

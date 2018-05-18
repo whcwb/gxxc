@@ -68,11 +68,11 @@ public class BizHd implements Serializable {
      */
     @Column(name = "HD_XGR")
     private String hdxgr;
-   
+
 
     private static final long serialVersionUID = 1L;
 
-    
+
     public String getHdxgr() {
 		return hdxgr;
 	}

@@ -10,4 +10,6 @@ public interface HdService extends BaseService<BizHd,java.lang.String>{
     ApiResponse<String> saveEntity(BizHd entity);
 
     ApiResponse<String> updateEntity(BizHd entity);
+
+    ApiResponse<String> activityRecommend(BizHd entity);
 }

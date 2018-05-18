@@ -10,10 +10,9 @@ import com.cwb.platform.biz.model.BizHd;
 import com.cwb.platform.biz.service.HdService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/pub/hd")
+@RequestMapping("/api/hd")
 public class HdController extends BaseController<BizHd,java.lang.String>{
     @Autowired
     private HdService service;
@@ -23,15 +22,38 @@ public class HdController extends BaseController<BizHd,java.lang.String>{
         return service;
     }
 
+    /**
+     * 新增
+     * @param entity
+     * @return
+     */
     @Override
     @RequestMapping(value="/save", method={RequestMethod.POST})
     public ApiResponse<String> save(BizHd entity){
         return service.saveEntity(entity);
     }
+
+    /**
+     * 修改
+     * @param entity
+     * @return
+     */
     @Override
     @RequestMapping(value="/update", method={RequestMethod.POST})
     public ApiResponse<String> update(BizHd entity){
         return service.updateEntity(entity);
     }
+
+    /**
+     * 活动推荐
+     * @param entity
+     * @return
+     */
+    @RequestMapping(value="/hdtj", method={RequestMethod.POST})
+    public ApiResponse<String> activityRecommend(BizHd entity){
+        return service.activityRecommend(entity);
+    }
+
+
 
 }
