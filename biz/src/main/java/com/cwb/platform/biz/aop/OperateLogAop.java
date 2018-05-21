@@ -45,7 +45,7 @@ public class OperateLogAop {
             "|| execution(public * com.cwb.platform.biz..*.*Ctrl.update*(..))" +
             "|| execution(public * com.cwb.platform.biz..*.*Ctrl.remove*(..))"
     )
-    public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object BIZlog(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         SysRz log = new SysRz();
         Object result = null;
