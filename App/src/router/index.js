@@ -12,10 +12,18 @@ const router = new Router({
         path:'/login',
         name:'login',
         component:()=>import('@/views/login')
-      },{
-        path:'/myCenter',
-        name:'myCenter',
+      },{//个人
+        path:'/myCenter', name:'myCenter',
         component:()=>import('@/views/myCenter')
+      },{//个人详细信息
+        path:'/myMess', name:'myMess',
+        component:()=>import('@/views/myMess')
+      },{//缴费支付
+        path:'/pay',name:'pay',
+        component:()=>import('@/views/pay')
+      },{//信息认证
+        path:'/rz',name:'rz',
+        component:()=>import('@/views/RZ')
       }
   ]
 })

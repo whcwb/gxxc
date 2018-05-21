@@ -5,7 +5,7 @@
       <div id="center" class="box">
         <div class="center_tit">
           <div class="box-row" style="border-bottom: solid 2px #dedede">
-            <div class="touxiang">
+            <div class="touxiang" @click="$router.push({name:'myMess'})">
               <img src="../../img/titcenter.png" alt="">
             </div>
             <div class="body-O userMess">
