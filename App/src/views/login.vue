@@ -1,16 +1,20 @@
+<style lang="less">
+  @import "./login";
+</style>
 <template>
-      <div class="box" style="background-color: #949494">
-        <div class="body">
+      <div class="login box" style="background-color: #949494">
+        <div class="body" style="background-color: red">
+
         </div>
-        <div class="body">
+        <div class="body" style="background-color: aqua">
           登录
 
         </div>
-        <div class="body">
+        <div class="body" style="background-color: red">
 
         </div>
-        <div class="body">
-
+        <div class="" style="height: 100px">
+123
         </div>
       </div>
 </template>
