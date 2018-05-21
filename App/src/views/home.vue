@@ -43,8 +43,7 @@
         titles:['热点','驾校','训练场'],
         data: [
           {
-            text: '首页',
-            onClick: this.handleClick,
+            text: '首页'
           },
           {
             text: '我',
@@ -55,7 +54,9 @@
     },
     methods: {
       handleClick() {
-        Toast.succeed('Click')
+        this.$router.push({
+          name:'myCenter'
+        })
       },
     }
   }
