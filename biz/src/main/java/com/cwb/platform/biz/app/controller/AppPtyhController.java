@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * 前台平台用户
+ * 前台 平台用户
  */
 @RestController
 @RequestMapping("/app/ptyh")

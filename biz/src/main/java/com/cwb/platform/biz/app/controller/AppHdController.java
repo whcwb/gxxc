@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 驾校、训练场地表
+ *
+ */
 @RestController
 @RequestMapping("/app/hd")
 public class AppHdController extends AppUserBaseController {
