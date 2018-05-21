@@ -1,12 +1,11 @@
 package com.cwb.platform.biz.interceptor;
 
+import com.cwb.platform.util.config.BaseWebConfigure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-
-import com.cwb.platform.util.config.BaseWebConfigure;
 
 @Configuration
 public class ExtendInterceptor extends BaseWebConfigure {
@@ -16,6 +15,11 @@ public class ExtendInterceptor extends BaseWebConfigure {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		//APP用户鉴权
+		registry.addInterceptor(new AppInterceptor(redisDao))
+		.addPathPatterns("/app/**")
+				.excludePathPatterns("/app/login","/app/ptyh/save","/app/ptyh/wxlogin");//白名单
+		//SYS系统管理鉴权
 		registry.addInterceptor(new AccessInterceptor(redisDao))
 				.addPathPatterns("/api/**")
 				.excludePathPatterns("/pub/**"

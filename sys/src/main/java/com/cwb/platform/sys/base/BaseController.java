@@ -1,12 +1,17 @@
 
 package com.cwb.platform.sys.base;
 
-import com.github.pagehelper.Page;
+import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.Page;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -29,6 +34,23 @@ public abstract class BaseController<T, PK extends Serializable> {
 	//@Autowird通过Spring加载的Service基础类
     protected abstract BaseService<T, PK> getBaseService();
 
+	/**
+	 * 获取当前学员登录用户信息
+	 * @return
+	 */
+	public static BizPtyh getAppCurrentUser(Boolean require){
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		BizPtyh userInfo = (BizPtyh)request.getAttribute("appUserInfo");
+		RuntimeCheck.ifNull(require && userInfo == null,"当前登录用户未空！");
+		return userInfo;
+	}
+	/**
+	 * 获取当前学员登录用户信息
+	 * @return
+	 */
+	public static BizPtyh getAppCurrentUser(){
+		return getAppCurrentUser(true);
+	}
     /**
      * 获取当前登录用户信息
      * @return

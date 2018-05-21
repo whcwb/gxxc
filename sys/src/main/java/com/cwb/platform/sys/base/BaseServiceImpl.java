@@ -1,29 +1,6 @@
 package com.cwb.platform.sys.base;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.persistence.Column;
-import javax.persistence.Transient;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
+import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.ExcelParams;
@@ -34,11 +11,25 @@ import com.github.pagehelper.ISelect;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
+
+import javax.persistence.Column;
+import javax.persistence.Transient;
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.text.ParseException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 通用Service，业务Service直接继承，只需重新getBaseMapper()方法，将对象所对应的Mapper对象返回即可
@@ -335,6 +326,23 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
             e.printStackTrace();
         }
         return data;
+    }
+    /**
+     * 获取当前学员登录用户信息
+     * @return
+     */
+    public static BizPtyh getAppCurrentUser(Boolean require){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        BizPtyh userInfo = (BizPtyh)request.getAttribute("appUserInfo");
+        RuntimeCheck.ifNull(require && userInfo == null,"当前登录用户未空！");
+        return userInfo;
+    }
+    /**
+     * 获取当前学员登录用户信息
+     * @return
+     */
+    public static BizPtyh getAppCurrentUser(){
+        return getAppCurrentUser(true);
     }
 
 
