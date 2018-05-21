@@ -1,30 +1,39 @@
 <style lang="less">
-  @import "./login";
+@import  "./login.less";
 </style>
 <template>
-      <div class="login box" style="background-color: #949494">
-        <div class="body" style="background-color: red">
 
-        </div>
-        <div class="body" style="background-color: aqua">
-          登录
+  <div class="md-example-child md-example-child-input-item-0">
 
-        </div>
-        <div class="body" style="background-color: red">
-
-        </div>
-        <div class="" style="height: 100px">
-123
-        </div>
-      </div>
+    <md-field>
+      <md-input-item
+        ref="input0"
+        title="账号"
+        placeholder="手机号"
+        :maxlength="5"
+      ></md-input-item>
+      <md-input-item
+        ref="input0"
+        title="密码"
+        placeholder="请输入您的密码"
+        :maxlength="5"
+      ></md-input-item>
+    </md-field>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "login"
-    }
+  import {InputItem, Field} from 'mand-mobile'
+
+  export default {
+    name: 'input-item-demo',
+    /* DELETE */
+    title: '普通输入框',
+    /* DELETE */
+    components: {
+      [InputItem.name]: InputItem,
+      [Field.name]: Field,
+    },
+  }
+
 </script>
-
-<style scoped>
-
-</style>
