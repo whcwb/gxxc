@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.cwb.platform.biz.app.AppUserBaseController.getAppCurrentUser;
+
 @Service
 public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> implements PtyhService{
     @Autowired
