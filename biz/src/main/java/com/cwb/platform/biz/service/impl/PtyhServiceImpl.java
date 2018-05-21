@@ -38,8 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.cwb.platform.biz.app.AppUserBaseController.getAppCurrentUser;
-
 @Service
 public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> implements PtyhService{
     @Autowired
@@ -163,6 +161,80 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         return i==1?ApiResponse.success():ApiResponse.fail();
     }
 
+    /**
+     * 更新用户认证状态
+     * @param bizPtyh
+     * @return
+     */
+    @Override
+    public ApiResponse<String> updateYhRz(BizPtyh bizPtyh){
+        SysYh sysYh=getCurrentUser();
+        BizPtyh user = entityMapper.selectByPrimaryKey(bizPtyh.getId());
+        if (user == null) return ApiResponse.fail("用户不存在");
+        RuntimeCheck.ifTrue(!StringUtils.equals(user.getYhLx(),"1"),"操作失败，只有学员才能进行认证操作");
+        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhZt(),"1"),"操作失败，该学员已认证无需再次认证");
+        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhSfsd(),"1"),"操作失败，该学员已锁定无法进行认证操作");
+
+        //      获取用户父级ID
+        String yhSjid="";//设置上级ID
+        String yhSsjid="";//上上级ID
+
+        String yhYyyqm=user.getYhYyyqm();//该用户的父级ID
+        SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yhYyyqm);
+        List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
+        if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+        if(bizPtyhsList.size()!=1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+        String pUserId=bizPtyhsList.get(0).getId();//获取出父级ID
+        yhSjid=pUserId;
+        BizUser pBizUser=userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
+        if(pBizUser!=null){
+            yhSsjid=pBizUser.getYhId();
+        }
+
+        //插入用户实名表  biz_user
+        BizUser bizUser=new BizUser();
+        bizUser.setYhId(user.getId());//用户ID
+        bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
+        bizUser.setYhSjhm(user.getYhZh());//用户账户
+        bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+        bizUser.setYhXm(user.getYhXm());//姓名
+        bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+        bizUser.setYhSjid(yhSjid);//设置上级ID
+        bizUser.setYhSsjid(yhSsjid);//上上级ID
+        int i = userMapper.insert(bizUser);
+        RuntimeCheck.ifTrue(i!=1,"操作失败，请重新尝试");
+
+
+        //插入定单表
+        BizOrder order=new BizOrder();
+        order.setDdId(genId());
+        order.setYhId(user.getId());//用户id
+        order.setDdSfjf("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
+        order.setCjsj(DateUtils.getNowTime());//创建时间
+        order.setYhCjr(sysYh.getYhid());//创建人
+        order.setDdZt("1");//订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
+//            order.setDdZftd();//支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+//            order.setDdZfsj();//支付时间
+        order.setDdZfzt("0");//支付状态（0,待支付 1、支付成功  2、支付失败）
+        order.setDdZfje(2500.00);//支付金额(单位 分)  todo 金额需要怎么确定，是否从配置文件中做处理
+//            order.setDdZfpz();//支付凭证ID(保存支付通道返回的CODE)
+//            order.setDdZfjg();//支付响应结果(1:成功 2:失败)
+        order.setYhXm(user.getYhXm());//姓名
+//            order.setDdBz();//订单备注
+        order.setYhSjid(yhSjid);//上级ID
+        order.setYhSsjid(yhSsjid);//上上级ID
+        i=orderMapper.insert(order);
+        RuntimeCheck.ifTrue(i!=1,"操作失败，请重新尝试");
+
+        BizPtyh newEntity=new BizPtyh();
+        newEntity.setId(user.getId());
+        newEntity.setYhZt("1");
+
+        i = update(newEntity);
+        return i==1?ApiResponse.success():ApiResponse.fail();
+
+    }
     @Override
     public BizPtyh findByIdSelect(String userid){
         BizPtyh obj=this.findById(userid);
@@ -170,6 +242,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         return obj;
     }
 
+//==============================================================APP端  开始===========
     /**
      * 用户注册操作
      * @param entity
@@ -181,16 +254,19 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 
         String telIdentifying=entity.getTelIdentifying();//短信验证码
         RuntimeCheck.ifBlank(telIdentifying,"短信验证码不能为空");
+        RuntimeCheck.ifBlank(entity.getYhYyyqm(),"用户应邀邀请码不能为空");
 
         String yhZh=entity.getYhZh();
         String identifying = redisDao.boundValueOps("app_sendSMS_"+yhZh).get();
+        String app_sendSMS_yyyqm = redisDao.boundValueOps("app_sendSMS_yyyqm"+yhZh).get();
         RuntimeCheck.ifFalse(StringUtils.equals(telIdentifying,identifying),"验证码错误，请重新输入");
+        RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhYyyqm(),app_sendSMS_yyyqm),"邀请码错误，请重新注册");
 
         RuntimeCheck.ifBlank(entity.getYhMm(),"用户密码不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhXm(),"用户姓名不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhZjhm(),"用户证件号码不能为空");
 // TODO: 2018/5/19  用户应邀邀请码存在造假的可能。是否需要验证
-        RuntimeCheck.ifBlank(entity.getYhYyyqm(),"用户应邀邀请码不能为空");
+
 
         RuntimeCheck.ifBlank(entity.getYhLx(), "用户类型不能为空");//类型 ZDCLK0041(2、驾驶员、1、学员)
         if(StringUtils.containsNone(entity.getYhLx(), new char[]{'1', '2'})){
@@ -397,7 +473,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhZjhm.name(), yhzjhm);
         List<BizPtyh> listCount = this.findByCondition(condition);
-        RuntimeCheck.ifTrue(listCount!=null&&listCount.size()>0,"该证件号已与手机号"+listCount.get(0).getYhZh()+"关联，请更换新的证件号！");
+        if(listCount!=null&&listCount.size()>0){
+            RuntimeCheck.ifTrue(true,"该证件号已与手机号"+listCount.get(0).getYhZh()+"关联，请更换新的证件号！");
+        }
 
         String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String[] imgTypeList = StringUtils.split(entity.getImgTypeList(), ",");
@@ -431,58 +509,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         newEntity.setYhSfyjz(entity.getYhSfyjz());//用户驾照状态不能为空
 
         int i = update(newEntity);
-        if(i==1){
-            //      获取用户父级ID
-            String yhSjid="";//设置上级ID
-            String yhSsjid="";//上上级ID
-
-            String yhYyyqm=user.getYhYyyqm();//该用户的父级ID
-            SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
-            newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yhYyyqm);
-            List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
-            if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
-            if(bizPtyhsList.size()!=1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
-            String pUserId=bizPtyhsList.get(0).getId();//获取出父级ID
-            yhSjid=pUserId;
-            BizUser pBizUser=userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
-            if(pBizUser!=null){
-                yhSsjid=pBizUser.getYhId();
-            }
-
-            //插入用户实名表  biz_user
-            BizUser bizUser=new BizUser();
-            bizUser.setYhId(newEntity.getId());//用户ID
-            bizUser.setYhZjhm(newEntity.getYhZjhm());//用户证件号码
-            bizUser.setYhSjhm(user.getYhZh());//用户账户
-            bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
-            bizUser.setYhXm(user.getYhXm());//姓名
-            bizUser.setCjsj(DateUtils.getNowTime());//创建时间
-            bizUser.setYhSjid(yhSjid);//设置上级ID
-            bizUser.setYhSsjid(yhSsjid);//上上级ID
-            i = userMapper.insert(bizUser);
-            RuntimeCheck.ifTrue(i!=1,"操作失败，请重新尝试");
-
-
-            //插入定单表
-            BizOrder order=new BizOrder();
-            order.setDdId(genId());
-            order.setYhId(user.getId());//用户id
-            order.setDdSfjf("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
-            order.setCjsj(DateUtils.getNowTime());//创建时间
-            order.setYhCjr(user.getId());//创建人
-            order.setDdZt("1");//订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
-//            order.setDdZftd();//支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
-//            order.setDdZfsj();//支付时间
-            order.setDdZfzt("0");//支付状态（0,待支付 1、支付成功  2、支付失败）
-            order.setDdZfje(0.00);//支付金额(单位 分)
-//            order.setDdZfpz();//支付凭证ID(保存支付通道返回的CODE)
-//            order.setDdZfjg();//支付响应结果(1:成功 2:失败)
-            order.setYhXm(entity.getYhXm());//姓名
-//            order.setDdBz();//订单备注
-            order.setYhSjid(yhSjid);//上级ID
-            order.setYhSsjid(yhSsjid);//上上级ID
-            i=orderMapper.insert(order);
-        }
         return i==1?ApiResponse.success():ApiResponse.fail();
     }
 

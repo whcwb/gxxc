@@ -33,4 +33,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> updateUserInfo(BizPtyh entity);
 
     ApiResponse<String> updateUserReal(BizPtyh entity);
+
+    ApiResponse<String> updateYhRz(BizPtyh bizPtyh);
 }
