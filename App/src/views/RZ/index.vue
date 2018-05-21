@@ -1,47 +1,58 @@
+<style lang="less">
+  @import "./rz";
+</style>
 <template>
-  <div class="md-example-child md-example-child-reader md-example-child-reader-0">
-    <ul class="image-reader-list">
-      <li
-        class="image-reader-item"
-        v-for="(img, index) in imageList['reader0']"
-        :key="index"
-        :style="{
-          'backgroundImage': `url(${img})`,
-          'backgroundPosition': 'center center',
-          'backgroundRepeat': 'no-repeat',
-          'backgroundSize': 'cover'
-        }">
-        <md-icon
-          class="image-reader-item-del"
-          name="circle-cross"
-          color="#666"
-          @click.native="onDeleteImage('reader0', index)">
-        </md-icon>
-      </li>
-      <li class="image-reader-item add">
-        <md-image-reader
-          name="reader0"
-          @select="onReaderSelect"
-          @complete="onReaderComplete"
-          @error="onReaderError"
-          is-multiple
-        ></md-image-reader>
-        <md-icon name="hollow-plus" size="md" color="#CCC"></md-icon>
-        <p>上传照片</p>
-      </li>
-    </ul>
+  <div id='rz' class="box">
+    <headTit tit="证件上传"></headTit>
+    <div class="body-D imgcenter">
+      <div class="md-example-child md-example-child-reader md-example-child-reader-0">
+        <ul class="image-reader-list">
+          <li
+            class="image-reader-item"
+            v-for="(img, index) in imageList['reader0']"
+            :key="index"
+            :style="{
+              'backgroundImage': `url(${img})`,
+              'backgroundPosition': 'center center',
+              'backgroundRepeat': 'no-repeat',
+              'backgroundSize': 'cover'
+            }">
+            <md-icon
+              class="image-reader-item-del"
+              name="circle-cross"
+              color="#666"
+              @click.native="onDeleteImage('reader0', index)">
+            </md-icon>
+          </li>
+          <li class="image-reader-item add" v-show="imageList['reader0'].length<4">
+            <md-image-reader
+              name="reader0"
+              @select="onReaderSelect"
+              @complete="onReaderComplete"
+              @error="onReaderError"
+              is-multiple
+            ></md-image-reader>
+            <md-icon name="hollow-plus" size="md" color="#CCC"></md-icon>
+            <p>上传照片</p>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
   </div>
 </template>
 
 <script>
   import {Icon, ImageReader, Toast} from 'mand-mobile'
-
+  import headTit from '../comp/headTit'
   export default {
     name: 'image-reader-demo',
     /* DELETE */
     title: '图片选择',
     /* DELETE */
     components: {
+      headTit,
       [Icon.name]: Icon,
       [ImageReader.name]: ImageReader,
     },
@@ -90,6 +101,7 @@
         position relative
         float left
         width 100%
+        height 25%
         padding-bottom 23.5%
         margin-bottom 2%
         margin-right 2%
