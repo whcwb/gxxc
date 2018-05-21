@@ -1,8 +1,12 @@
 package com.cwb.platform.biz.service.impl;
 
 
+import com.cwb.platform.biz.mapper.BizOrderMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
+import com.cwb.platform.biz.mapper.BizUserMapper;
 import com.cwb.platform.biz.mapper.BizWjMapper;
+import com.cwb.platform.biz.model.BizOrder;
+import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -34,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static com.cwb.platform.biz.app.AppUserBaseController.getAppCurrentUser;
+
 @Service
 public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> implements PtyhService{
     @Autowired
@@ -47,11 +53,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
     private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+    @Autowired
+    private PtyhService ptyhService;
     @Autowired
     private BizPtyhMapper entityMapper;
     @Autowired
     private BizWjMapper wjMapper;
+
+    @Autowired
+    private BizUserMapper userMapper;
+
+    @Autowired
+    private BizOrderMapper orderMapper;
 
 
     @Override
@@ -166,12 +179,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     public ApiResponse<String> userEnroll(BizPtyh entity) {
         RuntimeCheck.ifBlank(entity.getYhZh(),"用户账户不能为空");
 
-        if(debugTest!=null){//调试
-            String yhZh=entity.getYhZh();
-            String telIdentifying=entity.getTelIdentifying();//短信验证码
-            String identifying = redisDao.boundValueOps("app"+yhZh).get();
-            RuntimeCheck.ifFalse(StringUtils.equals(telIdentifying,identifying),"验证码错误，请重新输入");
-        }
+        String telIdentifying=entity.getTelIdentifying();//短信验证码
+        RuntimeCheck.ifBlank(telIdentifying,"短信验证码不能为空");
+
+        String yhZh=entity.getYhZh();
+        String identifying = redisDao.boundValueOps("app_sendSMS_"+yhZh).get();
+        RuntimeCheck.ifFalse(StringUtils.equals(telIdentifying,identifying),"验证码错误，请重新输入");
+
         RuntimeCheck.ifBlank(entity.getYhMm(),"用户密码不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhXm(),"用户姓名不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhZjhm(),"用户证件号码不能为空");
@@ -343,6 +357,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
      * imgList 以,进行分隔
      * imgTypeList 以,进行分隔
      *
+     * 1、证件照片上传文件表  biz_wj
+     * 2、修改用户表 biz_ptyh
+     * 3、上传实名表 biz_user
+     * 4、上传定单表  biz_order
      * @return
      */
     @Override
@@ -374,9 +392,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         if(StringUtils.isEmpty(entity.getImgTypeList())){
             return ApiResponse.fail("请上传证件照片属性");
         }
-
-        String yhYyyqm=user.getYhYyyqm();//该用户的父级ID
-
 
         String yhzjhm=entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
@@ -416,6 +431,58 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         newEntity.setYhSfyjz(entity.getYhSfyjz());//用户驾照状态不能为空
 
         int i = update(newEntity);
+        if(i==1){
+            //      获取用户父级ID
+            String yhSjid="";//设置上级ID
+            String yhSsjid="";//上上级ID
+
+            String yhYyyqm=user.getYhYyyqm();//该用户的父级ID
+            SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+            newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yhYyyqm);
+            List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
+            if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+            if(bizPtyhsList.size()!=1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+            String pUserId=bizPtyhsList.get(0).getId();//获取出父级ID
+            yhSjid=pUserId;
+            BizUser pBizUser=userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
+            if(pBizUser!=null){
+                yhSsjid=pBizUser.getYhId();
+            }
+
+            //插入用户实名表  biz_user
+            BizUser bizUser=new BizUser();
+            bizUser.setYhId(newEntity.getId());//用户ID
+            bizUser.setYhZjhm(newEntity.getYhZjhm());//用户证件号码
+            bizUser.setYhSjhm(user.getYhZh());//用户账户
+            bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+            bizUser.setYhXm(user.getYhXm());//姓名
+            bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+            bizUser.setYhSjid(yhSjid);//设置上级ID
+            bizUser.setYhSsjid(yhSsjid);//上上级ID
+            i = userMapper.insert(bizUser);
+            RuntimeCheck.ifTrue(i!=1,"操作失败，请重新尝试");
+
+
+            //插入定单表
+            BizOrder order=new BizOrder();
+            order.setDdId(genId());
+            order.setYhId(user.getId());//用户id
+            order.setDdSfjf("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
+            order.setCjsj(DateUtils.getNowTime());//创建时间
+            order.setYhCjr(user.getId());//创建人
+            order.setDdZt("1");//订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
+//            order.setDdZftd();//支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+//            order.setDdZfsj();//支付时间
+            order.setDdZfzt("0");//支付状态（0,待支付 1、支付成功  2、支付失败）
+            order.setDdZfje(0.00);//支付金额(单位 分)
+//            order.setDdZfpz();//支付凭证ID(保存支付通道返回的CODE)
+//            order.setDdZfjg();//支付响应结果(1:成功 2:失败)
+            order.setYhXm(entity.getYhXm());//姓名
+//            order.setDdBz();//订单备注
+            order.setYhSjid(yhSjid);//上级ID
+            order.setYhSsjid(yhSsjid);//上上级ID
+            i=orderMapper.insert(order);
+        }
         return i==1?ApiResponse.success():ApiResponse.fail();
     }
 

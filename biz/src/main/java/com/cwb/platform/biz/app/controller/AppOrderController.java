@@ -1,9 +1,8 @@
 package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.AppUserBaseController;
-import com.cwb.platform.biz.model.BizHd;
-import com.cwb.platform.biz.model.BizZh;
-import com.cwb.platform.biz.service.HdService;
+import com.cwb.platform.biz.app.service.AppOrderService;
+import com.cwb.platform.biz.model.BizOrder;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +13,24 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * 驾校、训练场地表
+ *  订单业务查询
  *
  */
 @RestController
-@RequestMapping("/app/hd")
-public class AppHdController extends AppUserBaseController {
+@RequestMapping("/app/order")
+public class AppOrderController extends AppUserBaseController {
     @Autowired
-    private HdService service;
+    private AppOrderService service;
 
     /**
-     * 分页查询。默认根据前台传递的值做精确搜索。需要其他搜索方式，请自行重新该方法
+     * 按全部、已付款、待付款来查询自己对应的一级，二级佣金订单
      * @param entity
      * @param pager
      * @return
      */
     @RequestMapping(value="/pager", method={RequestMethod.POST, RequestMethod.GET})
-    public ApiResponse<List<BizHd>> pager(BizZh entity, Page<BizHd> pager){
+    public ApiResponse<List<BizOrder>> pager(BizOrder entity, Page<BizOrder> pager){
+//        RuntimeCheck.ifNull(user,"用户不存在");
         return service.pager(pager);
     }
 

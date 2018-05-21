@@ -23,6 +23,20 @@ public class BizTx implements Serializable {
     private String yhId;
 
     /**
+     * 用户名称
+     */
+    @Column(name = "YH_MC")
+    private String yhMc;
+
+    /**
+     * 佣金明细表id
+     */
+    @Column(name = "YJ_ID")
+    private String yjId;
+
+
+
+    /**
      * 提现方式(1、微信红包 2、人工转账)
      */
     @Column(name = "TT_FS")
@@ -136,6 +150,22 @@ public class BizTx implements Serializable {
      */
     public void setTtFs(String ttFs) {
         this.ttFs = ttFs;
+    }
+
+    public String getYhMc() {
+        return yhMc;
+    }
+
+    public void setYhMc(String yhMc) {
+        this.yhMc = yhMc;
+    }
+
+    public String getYjId() {
+        return yjId;
+    }
+
+    public void setYjId(String yjId) {
+        this.yjId = yjId;
     }
 
     /**

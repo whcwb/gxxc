@@ -5,16 +5,20 @@ import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.bean.UserPassCredential;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.Des;
 import com.cwb.platform.util.commonUtil.JwtUtil;
+import com.cwb.platform.util.commonUtil.RandomCode;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Example;
 
@@ -42,6 +46,8 @@ public class AppMainController {
  // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
  	private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+	@Value("${debug_test}")
+	private String debugTest;
 	/**
 	 * 用户登陆接口
 	 * @param userCred
@@ -120,4 +126,37 @@ public class AppMainController {
 		redisDao.delete(userId+"-appUserInfo");
 		return result;
 	}
+
+	/**
+	 * 短信验证码下发
+	 * @param zh		手机号码
+	 * @param yyyqm	用户应邀邀请码
+	 * @return
+	 */
+	@RequestMapping(value="/sendSMS", method={RequestMethod.POST})
+	public ApiResponse<String> sendSMS(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm){
+//		1、验证参数不能为空
+		RuntimeCheck.ifTrue(StringUtils.isEmpty(zh),"请填写正确的手机号");
+		RuntimeCheck.ifTrue(StringUtils.isEmpty(yyyqm),"邀请码不能为空");
+//		2、验证登录账户不能重复
+		SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+		condition.eq(BizPtyh.InnerColumn.yhZh.name(),zh);
+		int count = ptyhService.countByCondition(condition);
+		RuntimeCheck.ifTrue(count > 0,"该手机号已注册，请使用其它手机号码");
+
+//		3、验证邀请码是否存在
+		SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+		newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yyyqm);
+		count = ptyhService.countByCondition(newCondition);
+		RuntimeCheck.ifTrue(count == 0,"请填写正确的邀请码");
+//		4、生成手机验证码
+		String identifyingCode=RandomCode.getSix();//获取验证码
+		redisDao.boundValueOps("app_sendSMS_"+zh).set(identifyingCode, 10, TimeUnit.MINUTES);//设备验证码，为10分钟过期
+		if(debugTest!=null) {//调试
+			return ApiResponse.success(identifyingCode);
+		}else{
+			return ApiResponse.success();
+		}
+	}
+
 }

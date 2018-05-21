@@ -1,7 +1,12 @@
 package com.cwb.platform.biz.model;
 
+import com.cwb.platform.sys.model.BizPtyh;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * 系统订单表
@@ -94,7 +99,63 @@ public class BizOrder implements Serializable {
     @Column(name = "DD_BZ")
     private String ddBz;
 
+    /**
+     * 上级ID
+     */
+    @Column(name = "YH_SJID")
+    private String yhSjid;
+
+    /**
+     * 上上级ID
+     */
+    @Column(name = "YH_SSJID")
+    private String yhSsjid;
+    /**
+     * 用户等级
+     * 1、一级用户   2、二级用户
+     */
+    @Transient
+    private String userGrade;
+    /**
+     * 用户信息
+     */
+    @Transient
+    private BizPtyh userDetail;
+
+
     private static final long serialVersionUID = 1L;
+
+    public BizPtyh getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(BizPtyh userDetail) {
+        this.userDetail = userDetail;
+    }
+
+    public String getUserGrade() {
+        return userGrade;
+    }
+
+    public void setUserGrade(String userGrade) {
+        this.userGrade = userGrade;
+    }
+
+    public String getYhSjid() {
+        return yhSjid;
+    }
+
+    public void setYhSjid(String yhSjid) {
+        this.yhSjid = yhSjid;
+    }
+
+    public String getYhSsjid() {
+        return yhSsjid;
+    }
+
+    public void setYhSsjid(String yhSsjid) {
+        this.yhSsjid = yhSsjid;
+    }
 
     /**
      * 获取订单id
@@ -362,6 +423,8 @@ public class BizOrder implements Serializable {
         ddZfpz("DD_ZFPZ"),
         ddZfjg("DD_ZFJG"),
         yhXm("YH_XM"),
+        yhSjid("YH_SJID"),
+        yhSsjid("YH_SSJID"),
         ddBz("DD_BZ");
 
         private final String column;
