@@ -1,26 +1,62 @@
+<style lang="less">
+  @import "./home";
+</style>
 <template>
-  <main id="home" class="view" role="main">
-    <div class="heading">
-      <h1><span>Mand Mobile</span></h1>
-      <p>一个基于Vue的移动端UI组件库，丰富、灵活、实用，快速搭建优质的金融类产品，让复杂的金融场景变简单。</p>
+  <div id="home_index" class="box">
+    <div>
+        <md-tab-bar
+          :titles="titles"
+        ></md-tab-bar>
     </div>
-		<Button type="primary">Primary</Button>
-    <!--<md-button @click="handleClick">点我</md-button>-->
-  </main>
+    <div class="home_center body">
+      <div class="rd">
+        <div class="rd_list" v-for="item in [,,,,,]">
+            <h1>
+              ***驾校
+            </h1>
+            <h5>
+              05月15日发布
+            </h5>
+            <p>
+              通过高速线路将因特网接入人员较密集的场所，由于该地区所发射出的电波可以达到距接入点半径数十米至100米的地方，用户只要将支持无线LAN的笔记本电脑或PDA拿到该区域内，即可高速接入因特网。也就是说，厂商不用耗费资金来进行网络布线接入，从而节省了大量的成本.所以被称为“热点”
+            </p>
+            <img src="../img/jx.jpg" alt="">
+        </div>
+      </div>
+    </div>
+    <div id="index_fooder">
+      <md-action-bar :actions="data"></md-action-bar>
+    </div>
+  </div>
 </template>
 
 <script>
-	import { Toast } from 'mand-mobile'
-	import {Button} from 'iview'
+	import { TabBar ,ActionBar, Toast} from 'mand-mobile'
   export default {
     name: 'home-view',
     components: {
-    	Button
+      [TabBar.name]: TabBar,
+      [ActionBar.name]: ActionBar,
+    },
+    data(){
+      return{
+        titles:['热点','驾校','训练场'],
+        data: [
+          {
+            text: '首页',
+            onClick: this.handleClick,
+          },
+          {
+            text: '我',
+            onClick: this.handleClick,
+          }
+        ]
+      }
     },
     methods: {
       handleClick() {
-        Toast.info('不错哟~')
-      }
+        Toast.succeed('Click')
+      },
     }
   }
 </script>

@@ -12,6 +12,10 @@ const router = new Router({
         path:'/login',
         name:'login',
         component:()=>import('@/views/login')
+      },{
+        path:'/myCenter',
+        name:'myCenter',
+        component:()=>import('@/views/myCenter')
       }
   ]
 })
