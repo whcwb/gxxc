@@ -1,7 +1,9 @@
 package com.cwb.platform.biz.model;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * 用户账户佣金变动明细表
@@ -34,7 +36,7 @@ public class BizYjmx implements Serializable {
     /**
      * 费用方式(1回扣 -1提现)
      */
-    @Column(name = "ZJ_FS_")
+    @Column(name = "ZJ_FS")
     private String zjFs;
 
     /**

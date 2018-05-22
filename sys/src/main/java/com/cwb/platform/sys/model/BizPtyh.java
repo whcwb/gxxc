@@ -158,6 +158,11 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_SFSD")
     private String yhSfsd;
     /**
+     * 自身邀请码图片
+     */
+    @Column(name = "YH_ZSYQM_IMG")
+    private String yhZsyqmImg;
+    /**
      * 手机验证码
      */
     @Transient
@@ -180,6 +185,14 @@ public class BizPtyh implements Serializable {
     private String imgTypeList;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhZsyqmImg() {
+        return yhZsyqmImg;
+    }
+
+    public void setYhZsyqmImg(String yhZsyqmImg) {
+        this.yhZsyqmImg = yhZsyqmImg;
+    }
 
     public String getImgTypeList() {
         return imgTypeList;
