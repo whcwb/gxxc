@@ -53,7 +53,7 @@
           <div class="submit" style="padding:0.3rem "
                @click="$router.push({name:'yjtx'})">
             <Button type="success" long
-                    style="padding: 0.18rem">
+                    style="padding: 0.18rem;font-size: 0.3rem">
               确认修改
             </Button>
           </div>
