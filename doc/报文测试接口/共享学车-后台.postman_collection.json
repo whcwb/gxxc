@@ -1,0 +1,849 @@
+{
+	"id": "b01e3dd3-8034-4036-84e4-789469033de7",
+	"name": "共享学车-后台",
+	"description": "",
+	"auth": null,
+	"events": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0549fe0b-4a9c-4cc6-a97f-0abba916cc38",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f2f7931b-e368-4c13-9e65-195d1672d762",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variables": [],
+	"order": [
+		"5ee221a7-0934-4a62-b581-60fb118b3c8e",
+		"1a52c670-483a-42d1-b9aa-046762d0f458",
+		"0d12020a-c6ae-417b-a4d6-3d00403eafc8",
+		"e70a3b27-de5c-4d43-8971-2112f6c0c027",
+		"5877986f-4b0c-4184-b607-6b12168ff81a",
+		"bcec0710-eee4-4cfe-9f6f-0142caa93bbe",
+		"2d68988e-8797-4f6a-b2a0-d94a815f9db5",
+		"6c271d19-82ae-4333-9304-65ca1c0a3219",
+		"6c53a291-a04b-4a34-b536-68e5ca76a04e",
+		"5016be6b-fa3e-4764-a50f-32527ba76a52",
+		"5ed1e647-a6cd-4c51-adaa-0996eba5335d",
+		"30e6920d-6280-446a-8a84-e4aae8f213b5",
+		"14f3db48-8c48-4c9d-90e6-318da70c0e3d",
+		"b1a2f0ce-3e6b-45ad-97ca-d81cffa7733a"
+	],
+	"folders_order": [],
+	"folders": [],
+	"requests": [
+		{
+			"id": "0d12020a-c6ae-417b-a4d6-3d00403eafc8",
+			"name": "活动修改",
+			"url": "{{ip}}/api/hd/update",
+			"description": "{\"code\":200,\"message\":\"数据修改成功！\",\"success\":true}",
+			"data": [
+				{
+					"key": "hdBt",
+					"value": "标题0",
+					"type": "text",
+					"enabled": true,
+					"description": "标题 必填"
+				},
+				{
+					"key": "hdZw",
+					"value": "正文0",
+					"type": "text",
+					"enabled": true,
+					"description": "正文 必填"
+				},
+				{
+					"key": "hdTpdz",
+					"value": "图片地址0",
+					"type": "text",
+					"enabled": true,
+					"description": "图片地址"
+				},
+				{
+					"key": "hdSx",
+					"value": "1",
+					"type": "text",
+					"enabled": true,
+					"description": "属性（字典表：ZDCLK0036 1、驾校  2、训练场）必填"
+				},
+				{
+					"key": "id",
+					"value": "446749127322107904",
+					"description": "主键，必填",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "14f3db48-8c48-4c9d-90e6-318da70c0e3d",
+			"name": "更新人工转账的提现状态",
+			"url": "{{ip}}/api/tx/updateTxzt",
+			"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}",
+			"data": [
+				{
+					"key": "id",
+					"value": "1",
+					"description": "主键 (必填)",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "ttZt",
+					"value": "1",
+					"description": "提现状态 (必填)",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "ttBz",
+					"value": "asdjflk;ja ",
+					"description": "备注 (必填)",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "1a52c670-483a-42d1-b9aa-046762d0f458",
+			"name": "活动新增",
+			"url": "{{ip}}/api/hd/save",
+			"description": "{\"code\":200,\"message\":\"数据保存成功！\",\"success\":true}",
+			"data": [
+				{
+					"key": "hdBt",
+					"value": "标题",
+					"type": "text",
+					"enabled": true,
+					"description": "标题"
+				},
+				{
+					"key": "hdZw",
+					"value": "正文",
+					"type": "text",
+					"enabled": true,
+					"description": "正文"
+				},
+				{
+					"key": "hdTpdz",
+					"value": "图片地址",
+					"type": "text",
+					"enabled": true,
+					"description": "图片地址"
+				},
+				{
+					"key": "hdSx",
+					"value": "1",
+					"type": "text",
+					"enabled": true,
+					"description": "属性（字典表：ZDCLK0036 1、驾校  2、训练场）"
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "2d68988e-8797-4f6a-b2a0-d94a815f9db5",
+			"name": "更新学员账户锁定状态",
+			"url": "{{ip}}/api/ptyh/updateSfsd",
+			"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}",
+			"data": [
+				{
+					"key": "id",
+					"value": "1",
+					"type": "text",
+					"enabled": true,
+					"description": "用户id  (必填)"
+				},
+				{
+					"key": "yhSfsd",
+					"value": "0",
+					"description": "用户是否锁定 0 否 1 是   (必填)",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "30e6920d-6280-446a-8a84-e4aae8f213b5",
+			"name": "更新人工转账的审核状态",
+			"url": "{{ip}}/api/tx/updateShzt",
+			"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}",
+			"data": [
+				{
+					"key": "id",
+					"value": "2",
+					"type": "text",
+					"enabled": true,
+					"description": "主键 (必填)"
+				},
+				{
+					"key": "ttShzt",
+					"value": "1",
+					"type": "text",
+					"enabled": true,
+					"description": "订单审核状态 (必填)"
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "5016be6b-fa3e-4764-a50f-32527ba76a52",
+			"name": "身份证号码获取佣金明细查询",
+			"url": "{{ip}}/api/yjmx/pager",
+			"description": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":8,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"id\":\"1\",\"yhId\":\"1\",\"zjJe\":22.3,\"zjId\":\"11\",\"zjFs\":\"1\",\"cjsj\":\"2018-05-21 11:20:00\",\"zjZt\":\"1\",\"zjBz\":\"11111\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"lastPage\":1,\"firstPage\":1},\"success\":true}",
+			"data": [
+				{
+					"key": "zjhm",
+					"value": "11",
+					"description": "用户身份证号码 (必填)",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "zjFs",
+					"value": "1",
+					"description": "资金方式 (必填)  1 佣金 -1 提现",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "5877986f-4b0c-4184-b607-6b12168ff81a",
+			"name": "活动推荐",
+			"url": "{{ip}}/api/hd/hdtj",
+			"description": "{\"code\":200,\"message\":\"数据保存成功！\",\"success\":true}",
+			"data": [
+				{
+					"key": "id",
+					"value": "447043884237717504",
+					"type": "text",
+					"enabled": true,
+					"description": "标题 必填"
+				},
+				{
+					"key": "hdtj",
+					"value": "1",
+					"description": "有值就推荐，没值就取消推荐",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "5ed1e647-a6cd-4c51-adaa-0996eba5335d",
+			"name": "根据条件筛选提现明细",
+			"url": "{{ip}}/api/tx/getCondition",
+			"description": "{\"code\":200,\"message\":\"操作成功\",\"result\":[{\"id\":\"1\",\"yhId\":\"1\",\"ttFs\":\"1\",\"ttJe\":66.0,\"ttSj\":\"2018-05-21 11:50:50\",\"ttZt\":\"0\",\"ttHbcs\":\"0\",\"ttHbpz\":\"654\",\"ttFjid\":\"321654\",\"ttShr\":\"2\",\"ttShzt\":\"0\",\"ttBz\":\"备注\"}],\"success\":true}",
+			"data": [
+				{
+					"key": "ttFs",
+					"value": "1",
+					"description": "提现方式  1 微信红包 2",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "ttZt",
+					"value": "0",
+					"description": "提现状态  0 待审核 1 已收取 2 已发送 3 过期未收取 4 无效申请",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "ttShzt",
+					"value": "0",
+					"description": "提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "5ee221a7-0934-4a62-b581-60fb118b3c8e",
+			"name": "登录",
+			"url": "{{ip}}/login",
+			"description": "",
+			"data": [
+				{
+					"key": "username",
+					"value": "admini",
+					"type": "text",
+					"enabled": true,
+					"description": ""
+				},
+				{
+					"key": "password",
+					"value": "123456",
+					"type": "text",
+					"enabled": true,
+					"description": ""
+				}
+			],
+			"dataMode": "params",
+			"headerData": [],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "6c271d19-82ae-4333-9304-65ca1c0a3219",
+			"name": "更新学员账户是否已分配驾校",
+			"url": "{{ip}}/api/ptyh/updateSffp",
+			"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}",
+			"data": [
+				{
+					"key": "id",
+					"value": "2",
+					"type": "text",
+					"enabled": true,
+					"description": "用户id 必填"
+				},
+				{
+					"key": "yhIxySffp",
+					"value": "1",
+					"description": "用户是否已分配 0 否 1 是",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "yhFpms",
+					"value": "随便写点什么",
+					"description": "用户分配描述 若已分配 则必填",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "6c53a291-a04b-4a34-b536-68e5ca76a04e",
+			"name": "用户资料查询",
+			"url": "{{ip}}/api/order/pager",
+			"description": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":1,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"ddId\":\"1\",\"yhId\":\"1\",\"ddSfjf\":\"1\",\"cjsj\":\"1\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"1\",\"ddZfsj\":\"1\",\"ddZfzt\":\"1\",\"ddZfje\":1.0,\"ddZfpz\":\"1\",\"ddZfjg\":\"1\",\"yhXm\":\"1\",\"ddBz\":\"1\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}",
+			"data": [
+				{
+					"key": "yhXm",
+					"value": "姓名",
+					"type": "text",
+					"enabled": false,
+					"description": "姓名"
+				},
+				{
+					"key": "ddSfjf",
+					"value": "1",
+					"type": "text",
+					"enabled": false,
+					"description": "缴费状态(缴费是否成功)  ZDCLK0046"
+				},
+				{
+					"key": "ddZt",
+					"value": "1",
+					"type": "text",
+					"enabled": false,
+					"description": "订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)"
+				},
+				{
+					"key": "ddZftd",
+					"value": "",
+					"type": "text",
+					"enabled": false,
+					"description": "支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)"
+				},
+				{
+					"key": "ddZfjg",
+					"value": "",
+					"type": "text",
+					"enabled": false,
+					"description": "支付响应结果 ZDCLK0040 (1:成功 2:失败)"
+				},
+				{
+					"key": "ddZfzt",
+					"value": "",
+					"description": "支付状态（ZDCLK0039  0,待支付 1、支付成功  2、支付失败）",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "pageSize",
+					"value": "1",
+					"type": "text",
+					"enabled": true,
+					"description": "每页大小"
+				},
+				{
+					"key": "pageNum",
+					"value": "1",
+					"type": "text",
+					"enabled": true,
+					"description": "当前页数"
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "b1a2f0ce-3e6b-45ad-97ca-d81cffa7733a",
+			"name": "学员认证审核",
+			"url": "{{ip}}/api/ptyh/updateyhrz",
+			"description": "1、用户类型=学员\n2、必须是未认证的学员\n3、学员必须未锁定",
+			"data": [
+				{
+					"key": "id",
+					"value": "448198498500739072",
+					"description": "主键 (必填)",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "bcec0710-eee4-4cfe-9f6f-0142caa93bbe",
+			"name": "学员资料查询",
+			"url": "{{ip}}/api/ptyh/pager",
+			"description": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":1,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":2,\"pages\":2,\"list\":[{\"id\":\"1\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"4\",\"cjsj\":\"5\",\"yhXgr\":\"6\",\"xgsj\":\"7\",\"yhXm\":\"8\",\"yhLx\":\"9\",\"yhXb\":\"10\",\"yhZjhm\":\"11\",\"yhMmyxq\":\"12\",\"yhZt\":\"13\",\"ddSfjx\":\"14\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"18\",\"yhZsyqm\":\"19\",\"yhYyyqm\":\"20\",\"yhIxySffp\":\"21\",\"yhSfyjz\":\"22\",\"yhFpms\":\"23\",\"yhSfsd\":\"24\"}],\"prePage\":0,\"nextPage\":2,\"isFirstPage\":true,\"isLastPage\":false,\"hasPreviousPage\":false,\"hasNextPage\":true,\"navigatePages\":8,\"navigatepageNums\":[1,2],\"navigateFirstPage\":1,\"navigateLastPage\":2,\"lastPage\":2,\"firstPage\":1},\"success\":true}",
+			"data": [
+				{
+					"key": "ddSfjx",
+					"value": "14",
+					"type": "text",
+					"enabled": false,
+					"description": "订单是否缴费"
+				},
+				{
+					"key": "yhXm",
+					"value": "8",
+					"description": "学员姓名",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "yhSfyjz",
+					"value": "22",
+					"description": "用户是否有驾照",
+					"type": "text",
+					"enabled": false
+				},
+				{
+					"key": "pageSize",
+					"value": "1",
+					"description": "每页大小",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "pageNum",
+					"value": "1",
+					"description": "当前页数",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "e70a3b27-de5c-4d43-8971-2112f6c0c027",
+			"name": "活动删除",
+			"url": "{{ip}}/api/hd/remove",
+			"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}",
+			"data": [
+				{
+					"key": "id",
+					"value": "446749127322107904",
+					"type": "text",
+					"enabled": true,
+					"description": "标题 必填"
+				}
+			],
+			"dataMode": "params",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/x-www-form-urlencoded",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "userid",
+					"value": "1",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "Content-Type: application/x-www-form-urlencoded\ntoken: {{token}}\nuserid: 1\n",
+			"pathVariables": {}
+		}
+	]
+}

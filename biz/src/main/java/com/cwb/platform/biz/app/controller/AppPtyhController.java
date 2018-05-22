@@ -102,5 +102,17 @@ public class AppPtyhController extends AppUserBaseController {
         BizPtyh users = service.findByIdSelect(user.getId());
         return ApiResponse.success(users);
     }
+    /**
+     * 我的邀请码
+     * 用户缴费成功后，为用户生成邀请码，未缴费引导用户缴费。
+     * @return
+     */
+    @RequestMapping(value="/getuser", method={RequestMethod.POST})
+    public ApiResponse<BizPtyh> getUserInvitationCode (){
+        BizPtyh user = getAppCurrentUser();
+        BizPtyh users = service.getUserInvitationCode(user.getId());
+        return ApiResponse.success(users);
+    }
+
 
 }

@@ -1,7 +1,12 @@
 package com.cwb.platform.biz.model;
 
+import com.cwb.platform.sys.model.BizPtyh;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * 用户实名制表
@@ -57,7 +62,36 @@ public class BizUser implements Serializable {
     @Column(name = "YH_SSJID")
     private String yhSsjid;
 
+    /**
+     * 用户等级
+     * 1、一级用户   2、二级用户
+     */
+    @Transient
+    private String userGrade;
+    /**
+     * 用户信息
+     */
+    @Transient
+    private BizPtyh userDetail;
+
+
     private static final long serialVersionUID = 1L;
+
+    public String getUserGrade() {
+        return userGrade;
+    }
+
+    public void setUserGrade(String userGrade) {
+        this.userGrade = userGrade;
+    }
+
+    public BizPtyh getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(BizPtyh userDetail) {
+        this.userDetail = userDetail;
+    }
 
     /**
      * 获取用户id
