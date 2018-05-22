@@ -58,7 +58,15 @@ public class PtyhController extends BaseController<BizPtyh,java.lang.String>{
     public ApiResponse<String> updateSffp(BizPtyh bizPtyh){
         return service.updateSffp(bizPtyh);
     }
-
+    /**
+     * 更新用户认证状态
+     * @param bizPtyh
+     * @return
+     */
+    @PostMapping("/updateyhrz")
+    public ApiResponse<String> updateYhRz(BizPtyh bizPtyh){
+        return service.updateYhRz(bizPtyh);
+    }
 
 
 
