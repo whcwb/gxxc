@@ -18,10 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppZhController extends AppUserBaseController {
     @Autowired
     private ZhService service;
+
+    /**
+     * 个人佣金查询
+     * @return
+     */
     @RequestMapping(value="/get", method={RequestMethod.GET})
     public ApiResponse<BizZh> get(){
         BizPtyh user = getAppCurrentUser();
         return ApiResponse.success(service.findById(user.getId()));
     }
+
 
 }

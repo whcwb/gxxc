@@ -8,11 +8,10 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.Des;
 import com.cwb.platform.util.commonUtil.JwtUtil;
-import com.cwb.platform.util.commonUtil.RandomCode;
+import com.cwb.platform.util.commonUtil.StringDivUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -58,8 +57,8 @@ public class AppMainController {
 	public ApiResponse<Map<String,Object>> login(UserPassCredential userCred, HttpServletRequest request){
 //		RuntimeCheck.ifBlank(userCred.getCodeID(),"验证码不正确！");
 		RuntimeCheck.ifTrue((
-				StringUtils.isEmpty(userCred.getUsername()) ||
-				StringUtils.isEmpty(userCred.getPassword())),
+				org.apache.commons.lang.StringUtils.isEmpty(userCred.getUsername()) ||
+				org.apache.commons.lang.StringUtils.isEmpty(userCred.getPassword())),
 //				StringUtils.isEmpty(userCred.getCaptcha())),
 				"请提交登陆用户信息！");
 //		String code = (String)request.getSession().getAttribute(userCred.getCodeID());
@@ -136,8 +135,10 @@ public class AppMainController {
 	@RequestMapping(value="/sendSMS", method={RequestMethod.POST})
 	public ApiResponse<String> sendSMS(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm){
 //		1、验证参数不能为空
-		RuntimeCheck.ifTrue(StringUtils.isEmpty(zh),"请填写正确的手机号");
-		RuntimeCheck.ifTrue(StringUtils.isEmpty(yyyqm),"邀请码不能为空");
+		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(zh),"请填写正确的手机号");
+		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(yyyqm),"邀请码不能为空");
+		RuntimeCheck.ifFalse(StringDivUtils.isPhoneValid(zh),"请填写正确的手机号");
+
 //		2、验证登录账户不能重复
 		SimpleCondition condition = new SimpleCondition(BizPtyh.class);
 		condition.eq(BizPtyh.InnerColumn.yhZh.name(),zh);
@@ -150,7 +151,7 @@ public class AppMainController {
 		count = ptyhService.countByCondition(newCondition);
 		RuntimeCheck.ifTrue(count == 0,"请填写正确的邀请码");
 //		4、生成手机验证码
-		String identifyingCode=RandomCode.getSix();//获取验证码
+		String identifyingCode= StringDivUtils.getSix();//获取验证码
 		redisDao.boundValueOps("app_sendSMS_"+zh).set(identifyingCode, 10, TimeUnit.MINUTES);//设备验证码，为10分钟过期
 		redisDao.boundValueOps("app_sendSMS_yyyqm"+zh).set(identifyingCode, 10, TimeUnit.MINUTES);//设备邀请码，为10分钟过期
 		if(debugTest!=null) {//调试

@@ -104,6 +104,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         }
     }
 
+    public BizPtyh afterReturns(BizPtyh bizPtyh) {
+        this.afterReturn(bizPtyh);
+        return bizPtyh;
+    }
+
     /**
      *  更新用户是否锁定状态 0 否 1 是
      *
@@ -435,6 +440,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
      *
      * 1、证件照片上传文件表  biz_wj
      * 2、修改用户表 biz_ptyh
+     *
+     * 下面两步是在后台审核时操作的。
      * 3、上传实名表 biz_user
      * 4、上传定单表  biz_order
      * @return
@@ -511,6 +518,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         int i = update(newEntity);
         return i==1?ApiResponse.success():ApiResponse.fail();
     }
-
-
+    /**
+     * 我的邀请码
+     * 用户缴费成功后，为用户生成邀请码，未缴费引导用户缴费。
+     * @return
+     */
+    public BizPtyh getUserInvitationCode(String id){
+        BizPtyh user=this.findByIdSelect(id);
+        RuntimeCheck.ifTrue(user==null,"用户资料有误！");
+        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhZt(),"0"),"用户还未认证，请您认证！");//认证状态 ZDCLK0043(0 未认证、1 已认证)
+//        RuntimeCheck.ifTrue(StringUtils.equals(user.getDdSfjx(),"0"),"用户还未缴费，请您缴费！");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
+        return user;
+    }
 }
