@@ -13,5 +13,6 @@ export default {
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-size: 0.26rem;
 }
 </style>

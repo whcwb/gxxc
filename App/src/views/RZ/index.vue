@@ -33,18 +33,23 @@
               is-multiple
             ></md-image-reader>
             <md-icon name="hollow-plus" size="md" color="#CCC"></md-icon>
-            <p>上传照片</p>
+            <p>{{zjimg}}</p>
           </li>
         </ul>
       </div>
 
     </div>
-
+    <div style="padding:0.3rem ">
+      <Button type="error" long
+              style="padding: 0.18rem">
+        证件上传</Button>
+    </div>
   </div>
 </template>
 
 <script>
   import {Icon, ImageReader, Toast} from 'mand-mobile'
+  import {Button} from 'iview'
   import headTit from '../comp/headTit'
   export default {
     name: 'image-reader-demo',
@@ -52,20 +57,53 @@
     title: '图片选择',
     /* DELETE */
     components: {
+      Button,
       headTit,
       [Icon.name]: Icon,
       [ImageReader.name]: ImageReader,
     },
     data() {
       return {
+        zjimg:'请拍摄身份证正面',
         imageList: {
           reader0: [
-            '//img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/27fb7f097ca218d743f816836bc7ea4a',
-            '//manhattan.didistatic.com/static/manhattan/insurancePlatform_spu/uploads/c2912793a222eb24b606a582fd849ab7',
+            // '//img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/27fb7f097ca218d743f816836bc7ea4a',
+            // '//manhattan.didistatic.com/static/manhattan/insurancePlatform_spu/uploads/c2912793a222eb24b606a582fd849ab7',
           ],
           reader1: [],
         },
       }
+    },
+    computed:{
+      zjimgLength:function() {
+        return this.imageList.reader0.length
+      }
+    },
+    watch:{
+      imageList:function (n,o) {
+        console.log('数据坚挺',n)
+        // switch (n) {
+        //   case 1:
+        //     this.zjimg='请拍摄身份证正面';
+        //       break;
+        //   case 2:
+        //     this.zjimg='请拍摄身份证反面';
+        //       break;
+        //   case 3:
+        //     this.zjimg='请拍摄驾驶证正面';
+        //       break;
+        //   case 3:
+        //     this.zjimg='请拍摄驾驶证反面';
+        //       break;
+        //   default:
+        //       this.zjimg='请拍摄身份证正面';
+        //       break;
+        // }
+
+      }
+    },
+    created(){
+
     },
     methods: {
       onReaderSelect() {
@@ -78,6 +116,22 @@
         this.$set(this.imageList, name, demoImageList)
 
         Toast.hide()
+        // debugger
+        let img =this.imageList.reader0.length
+        switch (img) {
+          case 1:
+            this.zjimg='请拍摄身份证反面';
+            break;
+          case 2:
+            this.zjimg='请拍摄驾驶证正面';
+            break;
+          case 3:
+            this.zjimg='请拍摄驾驶证反面';
+            break;
+          default:
+              this.zjimg='请拍摄身份证正面';
+              break;
+        }
       },
       onReaderError({msg}) {
         Toast.failed(msg)
@@ -98,10 +152,10 @@
       float left
       width 100%
       .image-reader-item
+        border solid 1px #dedede
         position relative
         float left
-        width 100%
-        height 25%
+        width 23.5%
         padding-bottom 23.5%
         margin-bottom 2%
         margin-right 2%

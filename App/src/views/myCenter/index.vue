@@ -40,7 +40,8 @@
                   0.00元
                 </div>
             </div>
-            <div class="body-O tixian">
+            <div class="body-O tixian"
+                 @click="$router.push({name:'yjtx'})">
               <Button type="ghost">提现</Button>
             </div>
           </div>
@@ -66,7 +67,7 @@
         </div>
         <div class="body">
           <div class="box-row boxlist" style="border-top: solid 15px #dedede">
-              <div class="body-O">
+              <div class="body-O" @click="$router.push({name:'yj'})">
                   <div class="icon">
                       <Icon type="social-usd"></Icon>
                   </div>
@@ -79,7 +80,7 @@
                       </span>元
                   </div>
               </div>
-              <div class="body-O">
+              <div class="body-O" @click="$router.push({name:'orderlist'})">
                   <div class="icon">
                       <Icon type="ios-paper"></Icon>
                   </div>
@@ -92,7 +93,7 @@
                         </span>元
                   </div>
               </div>
-              <div class="body-O">
+              <div class="body-O" @click="$router.push({name:'yjtxmx'})">
                   <div class="icon">
                       <Icon type="android-funnel"></Icon>
                   </div>
@@ -107,7 +108,7 @@
               </div>
           </div>
           <div class="box-row boxlist">
-            <div class="body-O">
+            <div class="body-O" @click="$router.push({name:'myteam'})">
                 <div class="icon">
                     <Icon type="android-people"></Icon>
                 </div>
@@ -120,7 +121,7 @@
                           </span>人
                 </div>
             </div>
-            <div class="body-O">
+            <div class="body-O" @click="showListen=true">
                 <div class="icon">
                     <Icon type="social-buffer"></Icon>
                 </div>
@@ -135,20 +136,26 @@
         <div style="height: 1.02rem;border-top:solid 1px #dedede">
           <md-action-bar :actions="data"></md-action-bar>
         </div>
+        <md-landscape v-model="showListen" :mask-closable="true">
+          <img src="../../img/ewm.png">
+        </md-landscape>
       </div>
 </template>
 
 <script>
     import {Button ,Icon} from 'iview'
-    import { ActionBar, Toast} from 'mand-mobile'
+    import { ActionBar, Toast,Landscape} from 'mand-mobile'
+
     export default {
         name: "index",
         components:{
+          [Landscape.name]: Landscape,
           [ActionBar.name]: ActionBar,
-          Button,Icon
+          Button,Icon,
         },
         data(){
           return{
+            showListen:false,
             data: [
               {
                 text: '首页',

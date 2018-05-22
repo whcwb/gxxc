@@ -2,7 +2,7 @@
   @import "./myMess";
 </style>
 <template>
-  <div id="myMess" class="box">
+  <div id="myMess" class="box" style="position: relative">
     <div>
       <headTit tit="信息中心"></headTit>
     </div>
@@ -67,6 +67,8 @@
         style="padding: 0.18rem">
         退出登录</Button>
     </div>
+    <component
+      :is="compName"></component>
   </div>
 </template>
 
@@ -74,13 +76,17 @@
     import {Button ,Icon} from 'iview'
     import {Toast} from 'mand-mobile'
     import headTit from '../comp/headTit'
+    import password from '../comp/center/password'
+    import userMess from '../comp/center/userMess'
     export default {
         name: "index",
         components:{
-          Button,Icon,headTit
+          Button,Icon,headTit,
+          password,userMess
         },
         data(){
           return{
+            compName:'',
             messList:[
               {
                 tit:'个人信息',
@@ -102,7 +108,14 @@
         },
         methods:{
           goFunc(it){
-            Toast.succeed(it.link)
+            var v =this
+              if(it.link=='password'){
+                v.compName ='password'
+              }else if(it.link=='userMess'){
+                v.compName ='userMess'
+              }else {
+                Toast.succeed(it.link)
+              }
           }
         }
     }
