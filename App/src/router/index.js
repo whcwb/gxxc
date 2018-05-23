@@ -24,7 +24,23 @@ const router = new Router({
       },{//信息认证
         path:'/rz',name:'rz',
         component:()=>import('@/views/RZ')
+      },{//佣金
+        path:'/yj',name:'yj',
+        component:()=>import('@/views/yj')
+      },{//佣金提现
+        path:'/yjtx',name:'yjtx',
+        component:()=>import('@/views/YJ_TX')
+      },{//佣金提现明细
+        path:'/yjtxmx',name:'yjtxmx',
+        component:()=>import('@/views/YJ_TXMX')
+      },{//我的团队
+        path:'/myTeam',name:'myteam',
+        component:()=>import('@/views/myTeam')
+      },{//订单列表
+        path:'/orderlist',name:'orderlist',
+        component:()=>import('@/views/orderlist')
       }
+
   ]
 })
 
