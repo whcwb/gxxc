@@ -23,7 +23,12 @@
               ></md-input-item>
             </md-field>
           </div>
-          <button>12</button>
+          <div class="box-row" style="margin-top: 0.2rem;padding: 0.3rem">
+            <div style="color: #2d8cf0" @click="$router.push({name:'login'})">登录</div>
+            <div class="body-O" style="text-align: right">
+              <Button type="primary">下一步</Button>
+            </div>
+          </div>
         </div>
         <div class="body" v-if="stepscurrent==1">
 
