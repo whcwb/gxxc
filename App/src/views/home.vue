@@ -24,18 +24,24 @@
         </div>
       </div>
     </div>
-    <div id="index_fooder">
-      <md-action-bar :actions="data"></md-action-bar>
+    <div id="index_fooder" class="box-row md-example-child md-example-child-button md-example-child-button-0">
+      <div class="body-O">
+        <md-button style="background-color: #fff;border: solid 1px #fff;color: #fc9153">首页</md-button>
+      </div>
+      <div class="body-O" @click="handleClick">
+        <md-button style="background-color: #fff;border: solid 1px #fff;color: #a5a5a5">我</md-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-	import { TabBar ,ActionBar, Toast} from 'mand-mobile'
+	import { TabBar ,ActionBar, Toast,Button} from 'mand-mobile'
   export default {
     name: 'home-view',
     components: {
       [TabBar.name]: TabBar,
+      [Button.name]: Button,
       [ActionBar.name]: ActionBar,
     },
     data(){
@@ -43,7 +49,8 @@
         titles:['热点','驾校','训练场'],
         data: [
           {
-            text: '首页'
+            text: '首页',
+            type:'ghost-primary'
           },
           {
             text: '我',
