@@ -64,6 +64,7 @@
     </div>
     <div style="padding:0.3rem ">
       <Button type="error" long
+              @click="$router.push({name:'login'})"
         style="padding: 0.18rem">
         退出登录</Button>
     </div>
