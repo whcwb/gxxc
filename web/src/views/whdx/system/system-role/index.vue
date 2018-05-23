@@ -14,10 +14,10 @@
 					   @on-keyup.enter="findMessList()"
 					   @on-change="findMessList"></Input>
 			</div>
-			<Button type="primary" @click="v.util.getPageData(v)">
+			<Button type="primary" @click="findMessList">
 				<Icon type="search"></Icon>
 			</Button>
-			<Button type="primary" @click="v.util.add(v)">
+			<Button type="primary" @click="AddDataList">
 				<Icon type="plus-round"></Icon>
 			</Button>
 		</Row>
@@ -60,6 +60,7 @@
 		},
         data () {
             return {
+                v:this,
             	SpinShow:true,
             	messdata:'',
             	userMesType:true,

@@ -115,6 +115,15 @@
 						key: 'zjhm'
 					},
 					{
+                        title: '状态',
+                        align: 'center',
+                        key: 'zt',
+						render:(h,p)=>{
+                            let s = p.row.zt == '01' ? '正常' :'锁定';
+                            return h('div',s);
+						}
+					},
+					{
 						title: '操作',
 						key: 'action',
 						width: 180,
@@ -174,23 +183,23 @@
                                         content: '证件照片查看',
                                     }
                                 },
-								[h('Button', {
-                                    props: {
-                                        type: 'info',
-                                        icon: 'ios-eye',
-                                        shape: 'circle',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        cursor: "pointer",
-                                        margin: '0 8px 0 0'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.showImgFile(params.row)
-                                        }
-                                    }
-                                })]
+                                // [h('Button', {
+                                //     props: {
+                                //         type: 'info',
+                                //         icon: 'ios-eye',
+                                //         shape: 'circle',
+                                //         size: 'small'
+                                //     },
+                                //     style: {
+                                //         cursor: "pointer",
+                                //         margin: '0 8px 0 0'
+                                //     },
+                                //     on: {
+                                //         click: () => {
+                                //             this.showImgFile(params.row)
+                                //         }
+                                //     }
+                                // })]
 								),
 								h('Button', {
 									props: {
