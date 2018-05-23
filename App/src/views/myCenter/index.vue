@@ -133,8 +133,13 @@
             </div>
           </div>
         </div>
-        <div style="height: 1.02rem;border-top:solid 1px #dedede">
-          <md-action-bar :actions="data"></md-action-bar>
+        <div class="box-row fooder">
+          <div class="body-O" @click="handleClick">
+首页
+          </div>
+          <div class="body-O">
+          我
+          </div>
         </div>
         <md-landscape v-model="showListen" :mask-closable="true">
           <img src="../../img/ewm.png">
@@ -144,27 +149,17 @@
 
 <script>
     import {Button ,Icon} from 'iview'
-    import { ActionBar, Toast,Landscape} from 'mand-mobile'
+    import { Toast,Landscape} from 'mand-mobile'
 
     export default {
         name: "index",
         components:{
           [Landscape.name]: Landscape,
-          [ActionBar.name]: ActionBar,
           Button,Icon,
         },
         data(){
           return{
-            showListen:false,
-            data: [
-              {
-                text: '首页',
-                onClick: this.handleClick,
-              },
-              {
-                text: '我'
-              }
-            ]
+            showListen:false
           }
         },
         methods: {

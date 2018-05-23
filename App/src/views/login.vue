@@ -3,42 +3,45 @@
 </style>
 <template>
 
-<div id="login" style="background-size:100%;background: url('../../static/bg.png') no-repeat center;height: 100%">
+<div id="login" style="background-size:100%;background: url('../../static/bjt.jpg') no-repeat center;height: 100%">
   <div style="font-size: 0.5rem;text-align: center;margin-bottom: 0.8rem;color: white">登录</div>
   <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
   <Row>
-    <Col span="24" >
+    <Col span="24" style="background-color:rgba(255,255,255,0.1) ">
       <md-field>
-        <div >
-          <Icon type="ios-person-outline" size="30" style="float: left;margin-top: 25px;margin-right: 10px;"></Icon>
-          <md-input-item  style="float: left" ref="name" title="真实姓名"  placeholder="投保人姓名"  is-title-latent clearable >
+        <div>
+          <md-input-item
+            title="手机号"
+            type="phone"
+            v-model="formInline.phone"
+            placeholder=" xxx xxxx xxxx"
+          >
+            <Icon type="ios-person-outline" slot="left"  size="30" ></Icon>
           </md-input-item>
+
         </div>
         <div>
-          <Icon type="ios-locked-outline" size="30" style="float: left;margin-top: 25px;margin-right: 10px;"></Icon>
           <md-input-item
-            ref="id"
-            title="身份证号"
-            placeholder="投保人身份证号"
-            is-title-latent
-            clearable
-          ></md-input-item>
+            title="密码"
+            type="password"
+            v-model="formInline.password"
+            placeholder=" *********"
+          >
+            <Icon type="ios-locked-outline" slot="left" size="30"></Icon>
+
+          </md-input-item>
         </div>
 
       </md-field>
     </Col>
   </Row>
-
-
-<div style="padding: 0.2rem;margin-top: 0.8rem;" class="but">
-
-  <Button  type="success" long @click="handleSubmit('formInline')">登录</Button>
-</div>
-    <div style="padding: 0.2rem" class="but">
-      <Button type="error" long> 注册</Button>
-    </div>
-
   </Form>
+<div style="padding: 0.2rem;margin-top: 0.8rem;" class="but">
+  <Button  type="success" long   style="font-size: 0.3rem" @click="$router.push({name:'home'})">登录</Button>
+</div>
+<div style="padding: 0.2rem" class="but" >
+  <Button type="error" long   style="font-size: 0.3rem" @click="$router.push({name:'register'})"> 注册</Button>
+</div>
 
 </div>
 </template>
@@ -60,6 +63,7 @@
     data () {
       return {
         formInline: {
+          phone:"",
           user: '',
           password: ''
         },
@@ -75,14 +79,16 @@
       }
     },
     methods: {
+      asd(it){
+        alert(it)
+      },
       handleSubmit(name) {
-        this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.$Message.success('Success!');
-          } else {
-            this.$Message.error('Fail!');
-          }
-        })
+        console.log(name);
+        if (this.formInline.phone === '' || this.formInline.password === '' ){
+          this.$Message.error('庆asdfasdgsda !');
+          return;
+        }
+        this.$Message.success("success");
       }
     }
   }
