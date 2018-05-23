@@ -215,7 +215,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         BizOrder order=new BizOrder();
         order.setDdId(genId());
         order.setYhId(user.getId());//用户id
-        order.setDdSfjf("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
+//        order.setDdSfjf("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
         order.setCjsj(DateUtils.getNowTime());//创建时间
         order.setYhCjr(sysYh.getYhid());//创建人
         order.setDdZt("1");//订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
