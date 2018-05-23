@@ -1,0 +1,814 @@
+{
+	"info": {
+		"_postman_id": "b01e3dd3-8034-4036-84e4-789469033de7",
+		"name": "共享学车-后台",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "登录",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admini",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text",
+							"description": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/login",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "活动新增",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "hdBt",
+							"value": "标题",
+							"type": "text",
+							"description": "标题"
+						},
+						{
+							"key": "hdZw",
+							"value": "正文",
+							"type": "text",
+							"description": "正文"
+						},
+						{
+							"key": "hdTpdz",
+							"value": "图片地址",
+							"type": "text",
+							"description": "图片地址"
+						},
+						{
+							"key": "hdSx",
+							"value": "1",
+							"type": "text",
+							"description": "属性（字典表：ZDCLK0036 1、驾校  2、训练场）"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/hd/save",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"hd",
+						"save"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"数据保存成功！\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "活动修改",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "hdBt",
+							"value": "标题0",
+							"type": "text",
+							"description": "标题 必填"
+						},
+						{
+							"key": "hdZw",
+							"value": "正文0",
+							"type": "text",
+							"description": "正文 必填"
+						},
+						{
+							"key": "hdTpdz",
+							"value": "图片地址0",
+							"type": "text",
+							"description": "图片地址"
+						},
+						{
+							"key": "hdSx",
+							"value": "1",
+							"type": "text",
+							"description": "属性（字典表：ZDCLK0036 1、驾校  2、训练场）必填"
+						},
+						{
+							"key": "id",
+							"value": "446749127322107904",
+							"description": "主键，必填",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/hd/update",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"hd",
+						"update"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"数据修改成功！\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "活动删除",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "446749127322107904",
+							"type": "text",
+							"description": "标题 必填"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/hd/remove",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"hd",
+						"remove"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "活动推荐",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "447043884237717504",
+							"type": "text",
+							"description": "标题 必填"
+						},
+						{
+							"key": "hdtj",
+							"value": "1",
+							"description": "有值就推荐，没值就取消推荐",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/hd/hdtj",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"hd",
+						"hdtj"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"数据保存成功！\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "学员资料查询",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ddSfjx",
+							"value": "14",
+							"type": "text",
+							"description": "订单是否缴费",
+							"disabled": true
+						},
+						{
+							"key": "yhXm",
+							"value": "8",
+							"description": "学员姓名",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "yhSfyjz",
+							"value": "22",
+							"description": "用户是否有驾照",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "pageSize",
+							"value": "1",
+							"description": "每页大小",
+							"type": "text"
+						},
+						{
+							"key": "pageNum",
+							"value": "1",
+							"description": "当前页数",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/ptyh/pager",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"ptyh",
+						"pager"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":1,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":2,\"pages\":2,\"list\":[{\"id\":\"1\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"4\",\"cjsj\":\"5\",\"yhXgr\":\"6\",\"xgsj\":\"7\",\"yhXm\":\"8\",\"yhLx\":\"9\",\"yhXb\":\"10\",\"yhZjhm\":\"11\",\"yhMmyxq\":\"12\",\"yhZt\":\"13\",\"ddSfjx\":\"14\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"18\",\"yhZsyqm\":\"19\",\"yhYyyqm\":\"20\",\"yhIxySffp\":\"21\",\"yhSfyjz\":\"22\",\"yhFpms\":\"23\",\"yhSfsd\":\"24\"}],\"prePage\":0,\"nextPage\":2,\"isFirstPage\":true,\"isLastPage\":false,\"hasPreviousPage\":false,\"hasNextPage\":true,\"navigatePages\":8,\"navigatepageNums\":[1,2],\"navigateFirstPage\":1,\"navigateLastPage\":2,\"lastPage\":2,\"firstPage\":1},\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "更新学员账户锁定状态",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text",
+							"description": "用户id  (必填)"
+						},
+						{
+							"key": "yhSfsd",
+							"value": "0",
+							"description": "用户是否锁定 0 否 1 是   (必填)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/ptyh/updateSfsd",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"ptyh",
+						"updateSfsd"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "更新学员账户是否已分配驾校",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "text",
+							"description": "用户id 必填"
+						},
+						{
+							"key": "yhIxySffp",
+							"value": "1",
+							"description": "用户是否已分配 0 否 1 是",
+							"type": "text"
+						},
+						{
+							"key": "yhFpms",
+							"value": "随便写点什么",
+							"description": "用户分配描述 若已分配 则必填",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/ptyh/updateSffp",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"ptyh",
+						"updateSffp"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "用户资料查询",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "yhXm",
+							"value": "姓名",
+							"type": "text",
+							"description": "姓名",
+							"disabled": true
+						},
+						{
+							"key": "ddSfjf",
+							"value": "1",
+							"type": "text",
+							"description": "缴费状态(缴费是否成功)  ZDCLK0046",
+							"disabled": true
+						},
+						{
+							"key": "ddZt",
+							"value": "1",
+							"type": "text",
+							"description": "订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)",
+							"disabled": true
+						},
+						{
+							"key": "ddZftd",
+							"value": "",
+							"type": "text",
+							"description": "支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)",
+							"disabled": true
+						},
+						{
+							"key": "ddZfjg",
+							"value": "",
+							"type": "text",
+							"description": "支付响应结果 ZDCLK0040 (1:成功 2:失败)",
+							"disabled": true
+						},
+						{
+							"key": "ddZfzt",
+							"value": "",
+							"description": "支付状态（ZDCLK0039  0,待支付 1、支付成功  2、支付失败）",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "pageSize",
+							"value": "1",
+							"type": "text",
+							"description": "每页大小"
+						},
+						{
+							"key": "pageNum",
+							"value": "1",
+							"type": "text",
+							"description": "当前页数"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/order/pager",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"order",
+						"pager"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":1,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"ddId\":\"1\",\"yhId\":\"1\",\"ddSfjf\":\"1\",\"cjsj\":\"1\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"1\",\"ddZfsj\":\"1\",\"ddZfzt\":\"1\",\"ddZfje\":1.0,\"ddZfpz\":\"1\",\"ddZfjg\":\"1\",\"yhXm\":\"1\",\"ddBz\":\"1\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "身份证号码获取佣金明细查询",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "zjhm",
+							"value": "11",
+							"description": "用户身份证号码 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "zjFs",
+							"value": "1",
+							"description": "资金方式 (必填)  1 佣金 -1 提现",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/yjmx/pager",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"yjmx",
+						"pager"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":8,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"id\":\"1\",\"yhId\":\"1\",\"zjJe\":22.3,\"zjId\":\"11\",\"zjFs\":\"1\",\"cjsj\":\"2018-05-21 11:20:00\",\"zjZt\":\"1\",\"zjBz\":\"11111\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"lastPage\":1,\"firstPage\":1},\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "根据条件筛选提现明细",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ttFs",
+							"value": "1",
+							"description": "提现方式  1 微信红包 2",
+							"type": "text"
+						},
+						{
+							"key": "ttZt",
+							"value": "0",
+							"description": "提现状态  0 待审核 1 已收取 2 已发送 3 过期未收取 4 无效申请",
+							"type": "text"
+						},
+						{
+							"key": "ttShzt",
+							"value": "0",
+							"description": "提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/tx/getCondition",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"tx",
+						"getCondition"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"result\":[{\"id\":\"1\",\"yhId\":\"1\",\"ttFs\":\"1\",\"ttJe\":66.0,\"ttSj\":\"2018-05-21 11:50:50\",\"ttZt\":\"0\",\"ttHbcs\":\"0\",\"ttHbpz\":\"654\",\"ttFjid\":\"321654\",\"ttShr\":\"2\",\"ttShzt\":\"0\",\"ttBz\":\"备注\"}],\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "更新人工转账的审核状态",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "text",
+							"description": "主键 (必填)"
+						},
+						{
+							"key": "ttShzt",
+							"value": "1",
+							"type": "text",
+							"description": "订单审核状态 (必填)"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/tx/updateShzt",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"tx",
+						"updateShzt"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "更新人工转账的提现状态",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "主键 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "ttZt",
+							"value": "1",
+							"description": "提现状态 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "ttBz",
+							"value": "asdjflk;ja ",
+							"description": "备注 (必填)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/tx/updateTxzt",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"tx",
+						"updateTxzt"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "学员认证审核",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "userid",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "448198498500739072",
+							"description": "主键 (必填)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/api/ptyh/updateyhrz",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"api",
+						"ptyh",
+						"updateyhrz"
+					]
+				},
+				"description": "1、用户类型=学员\n2、必须是未认证的学员\n3、学员必须未锁定"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0549fe0b-4a9c-4cc6-a97f-0abba916cc38",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f2f7931b-e368-4c13-9e65-195d1672d762",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
