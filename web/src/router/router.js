@@ -108,6 +108,43 @@ export let appRouter = [
 			}
 		]
 	},
+	{
+		path: '/platform',
+        icon: 'android-car',
+        name: 'platform',
+        meta: { title: '平台管理' },
+        component: Main,
+        children: [
+			{
+				path: 'student-list',
+				icon: 'android-clipboard',
+				name: 'student-list',
+                meta: { title: '学员列表' },
+				component: () => import('@/views/whdx/student/list')
+			},
+			{
+				path: 'hd-jx',
+				icon: 'android-clipboard',
+				name: 'hd-jx',
+                meta: { title: '驾校资料' },
+				component: () => import('@/views/whdx/hd/jx')
+			},
+			{
+				path: 'student-list',
+				icon: 'android-clipboard',
+				name: 'student-list',
+                meta: { title: '训练场资料' },
+				component: () => import('@/views/whdx/student/list')
+			},
+			{
+				path: 'text',
+				icon: 'android-clipboard',
+				name: 'text-editor',
+                meta: { title: 'text' },
+				component: () => import('@/views/my-components/text-editor/text-editor')
+			},
+		]
+	},
     {
     	path: '/',
     	meta: {

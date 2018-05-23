@@ -28,6 +28,18 @@ module.exports = {
         DELE:'/api/yh/removeIds',
         SEARCHSOME:'/api/yh/query',//用户管理
     },
+    hd:{
+        QUERY:'/api/hd/pager',//活动管理
+        ADD:'/api/hd/save',
+        CHANGE:'/api/hd/update',
+        DELE:'/api/hd/removeIds',
+    },
+    student:{
+        QUERY:'/api/ptyh/pager',//平台用户管理
+        ADD:'/api/ptyh/save',
+        CHANGE:'/api/ptyh/update',
+        DELE:'/api/ptyh/removeIds',
+    },
     ROLE:{
         QUERY:'/api/js/pager',//角色管理
         ALL:'/api/js/getAll',//角色管理

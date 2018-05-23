@@ -39,18 +39,6 @@
 								</Input>
 							</FormItem>
 						</Col>
-						<Col span="24">
-							<FormItem label='用户类型：'>
-								<!--<Select filterable clearable  v-model="addmess.lx">
-									<Option v-for="item in yhlxDict" :value="item.key">{{item.val}}</Option>
-								</Select>-->
-								<RadioGroup v-model="addmess.lx">
-									<Radio label="10">管理员</Radio>
-									<Radio label="20">工作人员</Radio>
-									<Radio label="30">教练员</Radio>
-								</RadioGroup>
-							</FormItem>
-						</Col>
 					</Row>
 					<Row>
 						<Col span="12">
@@ -59,42 +47,16 @@
 								</Input>
 							</FormItem>
 						</Col>
+					</Row>
+					<Row>
 						<Col span="12">
-							<FormItem prop="zjcx" label='准驾车型：'>
-							<Select filterable clearable  v-model="addmess.zjcx">
-								<Option v-for="e in zjcxList" :value="e.key" :key="e.key">{{e.val}}</Option>
-							</Select>
+							<FormItem prop="zt" label='状态：'>
+								<Select v-model="addmess.zt">
+									<Option value="01">正常</Option>
+									<Option value="00">锁定</Option>
+								</Select>
 							</FormItem>
 						</Col>
-					</Row>
-					<Row>
-						<Col span="24">
-						<FormItem label='入职日期：'>
-							<DatePicker :value="addmess.rzrq" type="date" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{addmess.rzrq = date}"></DatePicker>
-						</FormItem>
-						</Col>
-					</Row>
-					<Row>
-						<Col span="24">
-							<FormItem prop="zjhmexp" label='身份证有效期止：'>
-								<DatePicker :value="addmess.zjhmexp" type="date" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{addmess.zjhmexp = date}"></DatePicker>
-							</FormItem>
-						</Col>
-					</Row>
-					<Row>
-						<Col span="24">
-							<FormItem prop="jszclrq" label='驾驶证初领日期：'>
-								<DatePicker :value="addmess.jszclrq" type="date" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{addmess.jszclrq = date}"></DatePicker>
-							</FormItem>
-						</Col>
-					</Row>
-					<Row>
-						<Col span="24">
-							<FormItem prop="jszjzrq" label='驾驶证截止日期：'>
-								<DatePicker :value="addmess.jszjzrq" type="date" placement="top-start" placeholder="请选择日期" @on-change="(date)=>{addmess.jszjzrq = date}"></DatePicker>
-							</FormItem>
-						</Col>
-
 					</Row>
 	    		</div>
     		</Form>
