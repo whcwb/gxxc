@@ -44,12 +44,11 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             return ApiResponse.success("该订单已完成支付，不需要操作数据");
         }
 
-
         BizOrder newBizOrder=new BizOrder();
         newBizOrder.setDdId(l.getDdId());
         newBizOrder.setDdZt("2");//2、订单状态 2
         newBizOrder.setDdZfzt("1");//支付状态 1成功 2 失败
-        newBizOrder.setDdZftd(l.getDdZftd());//设置支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+//        newBizOrder.setDdZftd(l.getDdZftd());//设置支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
         newBizOrder.setDdZfpz(l.getDdZfpz());//支付凭证ID(保存支付通道返回的CODE)
 
         this.update(newBizOrder);
