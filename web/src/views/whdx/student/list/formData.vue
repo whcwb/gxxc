@@ -1,5 +1,9 @@
 <style lang="less">
 	@import '../../../../styles/common.less';
+	.docImg{
+		width: 100%;
+		padding: 10px;
+	}
 </style>
 <style type="text/css">
 
@@ -16,6 +20,18 @@
 						:styles="{top: '20px'}">
 					<Row>
 						<form-items :parent="v"></form-items>
+						<Col span="12">
+							<label>身份证正面</label>
+							<img class="docImg" src="../../../../../static/sfzzm.jpg"/>
+						</Col>
+						<Col span="12">
+							<label>身份证反面</label>
+							<img class="docImg" src="../../../../../static/sfzfm.jpg"/>
+						</Col>
+						<Col span="12">
+							<label>驾驶证</label>
+							<img class="docImg" src="../../../../../static/jsz.jpg"/>
+						</Col>
 					</Row>
 				</Form>
 			</div>
@@ -42,8 +58,14 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'车牌号码',prop:'vHphm',readonly:true},
-                    {label:'保养金额',prop:'bydByje'},
+                    {label:'账号',prop:'yhZh',readonly:true},
+                    {label:'姓名',prop:'yhXm'},
+                    {label:'类型',prop:'yhLx',type:'dict',dict:'ZDCLK0041'},
+                    {label:'性别',prop:'yhXb',dict:'ZDCLK0042'},
+                    {label:'身份证号码',prop:'yhZjhm'},
+                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt'},
+                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
+                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'rzzt'},
                 ],
                 ruleInline:{
 				}

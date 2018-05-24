@@ -68,6 +68,7 @@
             }
         },
         created() {
+            this.
             this.util.initTable(this)
         },
         methods: {

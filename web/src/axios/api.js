@@ -152,6 +152,12 @@ module.exports = {
         CHANGE:'/api/repair/update',
         DELE:'/api/repair/removeIds',
     },
+    order:{
+        QUERY:'api/order/pager',//订单管理
+        ADD:'/api/order/save',
+        CHANGE:'/api/order/update',
+        DELE:'/api/order/removeIds',
+    },
     repairInfo:{
         QUERY:'api/repairInfo/pager',//维修管理
         ADD:'/api/repairInfo/save',
