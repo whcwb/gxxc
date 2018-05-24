@@ -27,11 +27,11 @@ public class BizOrder implements Serializable {
     @Column(name = "YH_ID")
     private String yhId;
 
-    /**
-     * 缴费状态(缴费是否成功)
-     */
-    @Column(name = "DD_SFJF")
-    private String ddSfjf;
+//    /**
+//     * 缴费状态(缴费是否成功)
+//     */
+//    @Column(name = "DD_SFJF")
+//    private String ddSfjf;
 
     /**
      * 创建时间
@@ -81,11 +81,11 @@ public class BizOrder implements Serializable {
     @Column(name = "DD_ZFPZ")
     private String ddZfpz;
 
-    /**
-     * 支付响应结果(1:成功 2:失败)
-     */
-    @Column(name = "DD_ZFJG")
-    private String ddZfjg;
+//    /**
+//     * 支付响应结果(1:成功 2:失败)
+//     */
+//    @Column(name = "DD_ZFJG")
+//    private String ddZfjg;
 
     /**
      * 姓名
@@ -111,6 +111,31 @@ public class BizOrder implements Serializable {
     @Column(name = "YH_SSJID")
     private String yhSsjid;
     /**
+     * 定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
+     */
+    @Column(name = "JOB_TYPE")
+    private String jobType;
+    /**
+     * 定时任务处理时间。
+     */
+    @Column(name = "JOB_DISPOSE_DATE")
+    private String jobDisposeDate;
+    /**
+     * 定时任务，处理结果描述
+     */
+    @Column(name = "JOB_DESCRIBE")
+    private String jobDescribe;
+
+
+    /**
+     *订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
+     */
+    @Column(name = "PAY_MONEY")
+    private String payMoney;
+
+
+
+    /**
      * 用户等级
      * 1、一级用户   2、二级用户
      */
@@ -124,6 +149,38 @@ public class BizOrder implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
+    public String getJobDescribe() {
+        return jobDescribe;
+    }
+
+    public void setJobDescribe(String jobDescribe) {
+        this.jobDescribe = jobDescribe;
+    }
+
+    public String getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    public String getJobDisposeDate() {
+        return jobDisposeDate;
+    }
+
+    public void setJobDisposeDate(String jobDisposeDate) {
+        this.jobDisposeDate = jobDisposeDate;
+    }
+
+    public String getPayMoney() {
+        return payMoney;
+    }
+
+    public void setPayMoney(String payMoney) {
+        this.payMoney = payMoney;
+    }
 
     public BizPtyh getUserDetail() {
         return userDetail;
@@ -193,23 +250,23 @@ public class BizOrder implements Serializable {
         this.yhId = yhId;
     }
 
-    /**
-     * 获取缴费状态(缴费是否成功)
-     *
-     * @return DD_SFJF - 缴费状态(缴费是否成功)
-     */
-    public String getDdSfjf() {
-        return ddSfjf;
-    }
-
-    /**
-     * 设置缴费状态(缴费是否成功)
-     *
-     * @param ddSfjf 缴费状态(缴费是否成功)
-     */
-    public void setDdSfjf(String ddSfjf) {
-        this.ddSfjf = ddSfjf;
-    }
+//    /**
+//     * 获取缴费状态(缴费是否成功)
+//     *
+//     * @return DD_SFJF - 缴费状态(缴费是否成功)
+//     */
+//    public String getDdSfjf() {
+//        return ddSfjf;
+//    }
+//
+//    /**
+//     * 设置缴费状态(缴费是否成功)
+//     *
+//     * @param ddSfjf 缴费状态(缴费是否成功)
+//     */
+//    public void setDdSfjf(String ddSfjf) {
+//        this.ddSfjf = ddSfjf;
+//    }
 
     /**
      * 获取创建时间
@@ -355,23 +412,23 @@ public class BizOrder implements Serializable {
         this.ddZfpz = ddZfpz;
     }
 
-    /**
-     * 获取支付响应结果(1:成功 2:失败)
-     *
-     * @return DD_ZFJG - 支付响应结果(1:成功 2:失败)
-     */
-    public String getDdZfjg() {
-        return ddZfjg;
-    }
-
-    /**
-     * 设置支付响应结果(1:成功 2:失败)
-     *
-     * @param ddZfjg 支付响应结果(1:成功 2:失败)
-     */
-    public void setDdZfjg(String ddZfjg) {
-        this.ddZfjg = ddZfjg;
-    }
+//    /**
+//     * 获取支付响应结果(1:成功 2:失败)
+//     *
+//     * @return DD_ZFJG - 支付响应结果(1:成功 2:失败)
+//     */
+//    public String getDdZfjg() {
+//        return ddZfjg;
+//    }
+//
+//    /**
+//     * 设置支付响应结果(1:成功 2:失败)
+//     *
+//     * @param ddZfjg 支付响应结果(1:成功 2:失败)
+//     */
+//    public void setDdZfjg(String ddZfjg) {
+//        this.ddZfjg = ddZfjg;
+//    }
 
     /**
      * 获取姓名
@@ -412,7 +469,7 @@ public class BizOrder implements Serializable {
     public enum InnerColumn {
         ddId("DD_ID"),
         yhId("YH_ID"),
-        ddSfjf("DD_SFJF"),
+//        ddSfjf("DD_SFJF"),
         cjsj("CJSJ"),
         yhCjr("YH_CJR"),
         ddZt("DD_ZT"),
@@ -421,10 +478,11 @@ public class BizOrder implements Serializable {
         ddZfzt("DD_ZFZT"),
         ddZfje("DD_ZFJE"),
         ddZfpz("DD_ZFPZ"),
-        ddZfjg("DD_ZFJG"),
+//        ddZfjg("DD_ZFJG"),
         yhXm("YH_XM"),
         yhSjid("YH_SJID"),
         yhSsjid("YH_SSJID"),
+        jobType("JOB_TYPE"),
         ddBz("DD_BZ");
 
         private final String column;
