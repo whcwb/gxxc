@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *  订单业务查询
@@ -32,6 +33,17 @@ public class AppOrderController extends AppUserBaseController {
     public ApiResponse<List<BizOrder>> pager(BizOrder entity, Page<BizOrder> pager){
 //        RuntimeCheck.ifNull(user,"用户不存在");
         return service.pager(pager);
+    }
+
+    /**
+     * 订单新增
+     * @param entity
+     * ddZftd //支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+     * @return
+     */
+    @RequestMapping(value="/save", method={RequestMethod.POST})
+    public ApiResponse<Map<String,String>> save(BizOrder entity){
+        return service.saveAddOrder(entity);
     }
 
 }

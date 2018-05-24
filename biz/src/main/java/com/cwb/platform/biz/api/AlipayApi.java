@@ -1,6 +1,7 @@
 package com.cwb.platform.biz.api;
 
-import com.cwb.platform.biz.service.JobService;
+import com.cwb.platform.biz.model.BizOrder;
+import com.cwb.platform.biz.service.OrderService;
 import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/alipay/")
 public class AlipayApi {
     @Autowired
-    private JobService jobService;
+    private OrderService oracleService;
     /**
      * 订单处理成功
      * 1、查询所有完成的订单。
@@ -26,15 +27,15 @@ public class AlipayApi {
      */
     @RequestMapping(value="/orderFulfil", method={RequestMethod.POST})
     public ApiResponse<String> orderFulfil(String entity){
-        //1、报文验证 IP、时间戳、业务编号、md5校证值。
+        //1、验证报文是否正确
 
-        //2、验证是否成功 ，如果失败就直接失败
+        //2、向支付宝验证本次交易的真实性
 
-        //3、
-
-
-
-
+        BizOrder order=new BizOrder();
+        order.setPayMoney("2500");//支付宝，实际支付的金额
+        order.setDdZftd("1");//设置支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+        order.setDdZfpz("支付宝凭证ID-测试");//支付凭证ID(保存支付通道返回的CODE)
+        oracleService.updateOrderPayTpye(order);
 //        return jobService.orderFulfil();
         return null;
     }
