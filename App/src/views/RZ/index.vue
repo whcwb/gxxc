@@ -41,7 +41,7 @@
     </div>
     <div style="padding:0.3rem ">
       <Button type="error" long
-              style="padding: 0.18rem">
+              style="padding: 0.18rem;font-size: 0.3rem">
         证件上传</Button>
     </div>
   </div>
