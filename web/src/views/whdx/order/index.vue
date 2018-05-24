@@ -1,0 +1,84 @@
+<style lang="less">
+	@import '../../../styles/common.less';
+</style>
+<template>
+	<div class="boxbackborder">
+		<Row style="padding-bottom: 16px;">
+        	<search-items :parent="v"></search-items>
+        	<Button type="primary" @click="v.util.getPageData(v)">
+        		<Icon type="search"></Icon>
+        	</Button>
+			<Button type="primary" @click="v.util.add(v)">
+				<Icon type="plus-round"></Icon>
+			</Button>
+        </Row>
+        <Row style="position: relative;">
+        	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+        </Row>
+        <Row class="margin-top-10 pageSty">
+        	<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='(e)=>{v.util.pageChange(v, e)}'></Page>
+        </Row>
+        <component :is="componentName"></component>
+	</div>
+</template>
+
+<script>
+    import formData from './formData.vue'
+    import searchItems from '../components/searchItems'
+
+    export default {
+        name: 'order',
+        components: {formData,searchItems},
+        data() {
+            return {
+                v:this,
+                SpinShow: true,
+                apiRoot:this.apis.order,
+                tableHeight: 220,
+                componentName: '',
+                choosedItem: null,
+                tableColumns: [
+                    {title: "序号", width: 60, type: 'index'},
+                    {title:'用户',key:'yhId',searchKey:'yhIdLike'},
+                    {title:'订单状态',key:'ddZt',dict:'ZDCLK0037'},
+                    {title:'支付通道',key:'ddZftd',dict:'ZDCLK0038'},
+                    {title:'支付时间',key:'ddZfsj'},
+                    {title:'支付状态',key:'ddZfzt',dict:'ZDCLK0038'},
+                    {title:'支付金额',key:'ddZfje',unit:'分'},
+                    {title:'支付凭证ID',key:'ddZfpz',searchKey:'ddZfpzLike'},
+                    {title:'姓名',key:'yhXm',searchKey:'yhXmLike'},
+                    {title:'订单备注',key:'ddBz'},
+                    {title:'上级ID',key:'yhSjid'},
+                    {title:'上上级ID',key:'yhSsjid'},
+                    {title:'定时任务处理状态',key:'jobType',dict:'dsrwclzt'},
+                    {title:'JOB处理结果描述',key:'jobDescribe'},
+                    {title:'定时任务处理时间。',key:'jobDisposeDate'},
+                    {title:'实际支付金额',key:'payMoney',unit:'元'},
+                    // {
+                    //     title: '操作',
+                    //     key: 'action',
+                    //     width: 120,
+                    //     fixed: 'right',
+                    //     render: (h, params) => {
+                    //         return h('div', [
+                    //             this.util.buildEditButton(this,h,params),
+                    //             this.util.buildDeleteButton(this,h,params.row.id),
+                    //         ]);
+                    //     }
+                    // }
+                ],
+                pageData: [],
+                form: {
+                    total: 0,
+                    pageNum: 1,
+                    pageSize: 8,
+                },
+            }
+        },
+        created() {
+            this.util.initTable(this)
+        },
+        methods: {
+        }
+    }
+</script>

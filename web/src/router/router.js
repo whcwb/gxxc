@@ -137,12 +137,19 @@ export let appRouter = [
 				component: () => import('@/views/whdx/student/list')
 			},
 			{
-				path: 'text',
+				path: 'order-list',
 				icon: 'android-clipboard',
-				name: 'text-editor',
-                meta: { title: 'text' },
-				component: () => import('@/views/my-components/text-editor/text-editor')
+				name: 'order-list',
+                meta: { title: '订单列表' },
+				component: () => import('@/views/whdx/order')
 			},
+			// {
+			// 	path: 'text',
+			// 	icon: 'android-clipboard',
+			// 	name: 'text-editor',
+             //    meta: { title: 'text' },
+			// 	component: () => import('@/views/my-components/text-editor/text-editor')
+			// },
 		]
 	},
     {

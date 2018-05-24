@@ -14,7 +14,7 @@
               text-align: right;
               font-size: 0.3rem;
               .text{
-
+                font-size: 0.35rem;
               }
               .money{
                   color: #ff8e00;
@@ -53,7 +53,7 @@
           <div class="body-O">
               <div class="box">
                   <div class="body text">
-                    <p>{{item.text}}</p>
+                    {{item.text}}
                   </div>
                   <div class="money">
                     <Icon type="social-yen"></Icon>

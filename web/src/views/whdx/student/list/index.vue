@@ -44,23 +44,19 @@
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt'},
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz'},
                     {title: '认证状态',key:'yhZt',dict:'rzzt'},
-                    // {
-                    //     title: '操作',
-                    //     key: 'action',
-                    //     width: 120,
-                    //     render: (h, params) => {
-                    //         return h('div', [
-                    //             this.util.buildButton(this,h,'info','ios-color-wand','保养',()=>{
-                    //                 this.choosedItem = params.row;
-                    //                 this.componentName = 'formData'
-                    //             }),
-                    //             this.util.buildButton(this,h,'success','compose','历史记录',()=>{
-                    //                 this.choosedItem = params.row;
-                    //                 this.componentName = 'history'
-                    //             }),
-                    //         ]);
-                    //     }
-                    // }
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 120,
+                        render: (h, params) => {
+                            return h('div', [
+                                this.util.buildButton(this,h,'success','compose','详情',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'formData'
+                                }),
+                            ]);
+                        }
+                    }
                 ],
                 pageData: [],
                 form: {
