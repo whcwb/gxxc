@@ -27,7 +27,6 @@ util.fillTableColumns = (v)=>{
             }
         }
         r.ellipsis = true;
-
     }
 }
 util.buildDeleteButton = (v,h,id)=>{

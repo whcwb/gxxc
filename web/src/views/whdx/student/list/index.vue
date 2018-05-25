@@ -4,10 +4,17 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<search-items :parent="v"></search-items>
-			<Button type="primary" @click="v.util.getPageData(v)">
-				<Icon type="search"></Icon>
-			</Button>
+			<Col span="21">
+				<search-items :parent="v"></search-items>
+			</Col>
+			<Col span="2" style="float: right">
+				<Button type="primary" @click="v.util.getPageData(v)">
+					<Icon type="search"></Icon>
+				</Button>
+				<Button type="info" @click="exportData">
+					<Icon type="ios-download-outline"></Icon>
+				</Button>
+			</Col>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -79,6 +86,14 @@
             pageChange(event) {
                 this.util.pageChange(this, event);
             },
+			exportData(){
+                let params = {
+                    exportType:'ptyh',
+                    cols:'姓名,账号,缴费状态,是否有驾驶证,认证状态',
+					keys:'yhXm,yhZh,ddSfjx,yhSfyjz,yhZt'
+				}
+				window.open(this.apis.exportData+'?exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);
+			}
         }
     }
 </script>
