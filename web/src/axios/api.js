@@ -39,6 +39,13 @@ module.exports = {
         ADD:'/api/ptyh/save',
         CHANGE:'/api/ptyh/update',
         DELE:'/api/ptyh/removeIds',
+        getById:'/api/ptyh/',
+    },
+    user:{
+        QUERY:'/api/user/pager',//用户实名表
+        ADD:'/api/user/save',
+        CHANGE:'/api/user/update',
+        DELE:'/api/user/removeIds',
     },
     ROLE:{
         QUERY:'/api/js/pager',//角色管理

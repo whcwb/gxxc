@@ -5,9 +5,6 @@
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
 			<search-items :parent="v"></search-items>
-			<Button type="primary" @click="v.util.getPageData(v)">
-				<Icon type="search"></Icon>
-			</Button>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -22,11 +19,12 @@
 
 <script>
     import formData from './formData.vue'
+    import sublist from './sublist.vue'
 	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems},
+        components: {formData,searchItems,sublist},
         data() {
             return {
                 v:this,
@@ -41,18 +39,22 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '类型',key:'yhLx'},
-                    {title: '缴费状态',key:'ddSfjx',dict:'jfzt'},
-                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz'},
-                    {title: '认证状态',key:'yhZt',dict:'rzzt'},
+                    {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
+                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
+                    {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','compose','详情',()=>{
+                                this.util.buildButton(this,h,'success','card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
+                                }),
+                                this.util.buildButton(this,h,'info','network','下线',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'sublist'
                                 }),
                             ]);
                         }

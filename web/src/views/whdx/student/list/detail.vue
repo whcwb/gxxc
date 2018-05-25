@@ -10,7 +10,7 @@
 </style>
 <template>
 	<div>
-		<Modal v-model="showModal" width='1200' :closable='false'
+		<Modal v-model="showModal" width='900' :closable='false'
 			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
 				<Form ref="form"
@@ -29,11 +29,7 @@
 							<img class="docImg" src="../../../../../static/sfzfm.jpg"/>
 						</Col>
 						<Col span="12">
-							<label>驾驶证正本</label>
-							<img class="docImg" src="../../../../../static/jszzb.jpg"/>
-						</Col>
-						<Col span="12">
-							<label>驾驶证副本</label>
+							<label>驾驶证</label>
 							<img class="docImg" src="../../../../../static/jsz.jpg"/>
 						</Col>
 					</Row>
@@ -60,6 +56,7 @@
 				showModal: true,
 				readonly: false,
 				formItem: {
+                    yhId:''
 				},
                 formInputs:[
                     {label:'账号',prop:'yhZh',readonly:true},
@@ -76,9 +73,18 @@
 			}
 		},
 		created(){
+		    this.formItem.yhId = this.$parent.choosedItem.yhId
 		    this.util.initFormModal(this);
+		    this.getById();
 		},
 		methods: {
+		    getById(){
+				this.$http.get(this.apis.student.getById+this.formItem.yhId).then((res)=>{
+				    if (res.code === 200){
+				        this.formItem = res.result;
+					}
+				})
+			}
 		}
 	}
 </script>

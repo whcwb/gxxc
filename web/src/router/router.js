@@ -143,13 +143,13 @@ export let appRouter = [
                 meta: { title: '订单列表' },
 				component: () => import('@/views/whdx/order')
 			},
-			// {
-			// 	path: 'text',
-			// 	icon: 'android-clipboard',
-			// 	name: 'text-editor',
-             //    meta: { title: 'text' },
-			// 	component: () => import('@/views/my-components/text-editor/text-editor')
-			// },
+			{
+				path: 'create_news',
+				icon: 'android-clipboard',
+				name: 'create_news',
+                meta: { title: 'text' },
+				component: () => import('@/views/whdx/order/create')
+			},
 		]
 	},
     {

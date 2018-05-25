@@ -16,7 +16,7 @@
 
 
 <script>
-import tinymce from './tinymce';
+import tinymce from 'tinymce';
 export default {
     name: 'text-editor',
     data () {
