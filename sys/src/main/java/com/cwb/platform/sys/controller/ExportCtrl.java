@@ -26,7 +26,7 @@ import com.cwb.platform.util.spring.SpringContextUtil;
  * @since 2018/2/6
  */
 @Controller
-@RequestMapping("api")
+@RequestMapping("pub")
 public class ExportCtrl {
 
     /**
