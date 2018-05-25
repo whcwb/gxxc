@@ -19,22 +19,22 @@
 <template>
 	<div class="box" style="height: 100%;background:#fff">
 		<component :is="componentName"></component>
-		<div  class="homeE" style="padding: 5px 3px;">
-			<Row :gutter="8" class="margin-bottom-10 indexCarType">
-				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-					<infor-card id-name="user_created_count" :end-val="count.total" iconType="model-s" color="#2d8cf0" intro-text="车辆总数"></infor-card>
-				</Col>
-				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-					<infor-card id-name="visit_count" :end-val="count.lqby"  iconType="ios-color-wand" color="#64d572" :iconSize="50" intro-text="临期保养"></infor-card>
-				</Col>
-				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-					<infor-card id-name="collection_count" :end-val="count.stop" iconType="checkmark" color="#ffd572" intro-text="临期年检"></infor-card>
-				</Col>
-				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-					<infor-card id-name="transfer_count" :end-val="count.offline" iconType="briefcase" color="#f25e43" intro-text="保单到期"></infor-card>
-				</Col>
-			</Row>
-		</div>
+		<!--<div  class="homeE" style="padding: 5px 3px;">-->
+			<!--<Row :gutter="8" class="margin-bottom-10 indexCarType">-->
+				<!--<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+					<!--<infor-card id-name="user_created_count" :end-val="count.total" iconType="model-s" color="#2d8cf0" intro-text="车辆总数"></infor-card>-->
+				<!--</Col>-->
+				<!--<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+					<!--<infor-card id-name="visit_count" :end-val="count.lqby"  iconType="ios-color-wand" color="#64d572" :iconSize="50" intro-text="临期保养"></infor-card>-->
+				<!--</Col>-->
+				<!--<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+					<!--<infor-card id-name="collection_count" :end-val="count.stop" iconType="checkmark" color="#ffd572" intro-text="临期年检"></infor-card>-->
+				<!--</Col>-->
+				<!--<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+					<!--<infor-card id-name="transfer_count" :end-val="count.offline" iconType="briefcase" color="#f25e43" intro-text="保单到期"></infor-card>-->
+				<!--</Col>-->
+			<!--</Row>-->
+		<!--</div>-->
 	</div>
 </template>
 

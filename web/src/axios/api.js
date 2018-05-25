@@ -6,6 +6,7 @@ module.exports = {
     UPLOAD: BASE_URL + '/upload',
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
+    exportData:BASE_URL+'/pub/export',
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
         GET_MENU_TREE:'/api/gn/getMenuTree',
@@ -39,6 +40,13 @@ module.exports = {
         ADD:'/api/ptyh/save',
         CHANGE:'/api/ptyh/update',
         DELE:'/api/ptyh/removeIds',
+        getById:'/api/ptyh/',
+    },
+    user:{
+        QUERY:'/api/user/pager',//用户实名表
+        ADD:'/api/user/save',
+        CHANGE:'/api/user/update',
+        DELE:'/api/user/removeIds',
     },
     ROLE:{
         QUERY:'/api/js/pager',//角色管理
@@ -120,6 +128,12 @@ module.exports = {
         ADD:'/api/illegal/save',
         CHANGE:'/api/illegal/update',
         DELE:'/api/illegal/removeIds',
+    },
+    hd:{
+        QUERY:'api/hd/pager',//活动管理
+        ADD:'/api/hd/save',
+        CHANGE:'/api/hd/update',
+        DELE:'/api/hd/removeIds',
     },
     maintain:{
         QUERY:'api/maintain/pager',//保养管理

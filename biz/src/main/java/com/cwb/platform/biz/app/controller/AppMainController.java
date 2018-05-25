@@ -164,7 +164,7 @@ public class AppMainController {
 //		4、生成手机验证码
 		String identifyingCode= StringDivUtils.getSix();//获取验证码
 		redisDao.boundValueOps("app_sendSMS_"+zh).set(identifyingCode, 10, TimeUnit.MINUTES);//设备验证码，为10分钟过期
-		redisDao.boundValueOps("app_sendSMS_yyyqm"+zh).set(identifyingCode, 10, TimeUnit.MINUTES);//设备邀请码，为10分钟过期
+		redisDao.boundValueOps("app_sendSMS_yyyqm"+zh).set(yyyqm, 10, TimeUnit.MINUTES);//设备邀请码，为10分钟过期
 		if(debugTest!=null) {//调试
 			return ApiResponse.success(identifyingCode);
 		}else{

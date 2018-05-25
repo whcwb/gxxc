@@ -13,6 +13,7 @@ import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.ExcelParams;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.Des;
@@ -31,10 +32,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -72,6 +70,25 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     @Override
     protected Class<?> getEntityCls(){
         return BizPtyh.class;
+    }
+
+
+    @Override
+    public List<String> getSpecialCols(){
+        return Arrays.asList("ddSfjx","yhSfyjz","yhZt");
+    }
+
+    @Override
+    public List<Map<String,String>> getSpecialVals(List<BizPtyh> list){
+        List<Map<String,String>> data = new ArrayList<>(list.size());
+        for (BizPtyh row : list) {
+            Map<String,String> map = new HashMap<>();
+            map.put("ddSfjx", "1".equals(row.getDdSfjx()) ? "已缴费" : "未缴费");
+            map.put("yhSfyjz", "1".equals(row.getYhSfyjz()) ? "有" : "无");
+            map.put("yhZt", "1".equals(row.getYhZt()) ? "已认证" : "未认证");
+            data.add(map);
+        }
+        return data;
     }
 
 
@@ -286,8 +303,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         String yhAlipayId="";//支付宝ID
         if(StringUtils.equals(addType,"1")){
             yhOpenId=""; // TODO: 2018/5/19 请求微信的OPEN_ID
+            RuntimeCheck.ifBlank(yhOpenId, "微信唯一编号不能为空");
         }else if(StringUtils.equals(addType,"2")){
             yhAlipayId=""; // TODO: 2018/5/19 请求支付宝的ID
+            RuntimeCheck.ifBlank(yhAlipayId, "支付宝唯一编号不能为空");
         }
 
         BizPtyh newEntity =new BizPtyh();

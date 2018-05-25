@@ -27,7 +27,6 @@ util.fillTableColumns = (v)=>{
             }
         }
         r.ellipsis = true;
-
     }
 }
 util.buildDeleteButton = (v,h,id)=>{
@@ -321,20 +320,25 @@ util.closeDialog = function(v){
  * @param v
  */
 util.getPageData = function(v) {
-    let url = v.pagerUrl ? v.pagerUrl : v.apiRoot['QUERY'];
-    v.$http.post(url, v.form).then((response) => {
-            let code = response.code;
-            let msg = response.message;
-            v.SpinShow = false
-            if (code === 200) {
-                let page = response.page;
-                v.pageData = page.list;
-                v.form.total = page.total;
+    try{
+        let url = v.pagerUrl ? v.pagerUrl : v.apiRoot['QUERY'];
+        v.$http.post(url, v.form).then((response) => {
+                let code = response.code;
+                let msg = response.message;
+                v.SpinShow = false
+                if (code === 200) {
+                    let page = response.page;
+                    v.pageData = page.list;
+                    v.form.total = page.total;
+                }
+            }, (error) => {
             }
-        }, (error) => {
-        }
-    ).then((next) => {
-    });
+        ).then((next) => {
+        });
+    }catch (e) {
+        console.log(e);
+    }
+
 }
 /**
  * table分页切换事件
