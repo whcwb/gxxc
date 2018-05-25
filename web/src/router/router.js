@@ -156,10 +156,17 @@ export let appRouter = [
 				component: () => import('@/views/whdx/order')
 			},
 			{
+				path: 'news',
+				icon: 'android-clipboard',
+				name: 'news',
+                meta: { title: '新闻资讯' },
+				component: () => import('@/views/whdx/hd/list.vue')
+			},
+			{
 				path: 'create_news',
 				icon: 'android-clipboard',
 				name: 'create_news',
-                meta: { title: 'text' },
+                meta: { title: '新建资讯' },
 				component: () => import('@/views/whdx/hd/create.vue')
 			},
 		]
