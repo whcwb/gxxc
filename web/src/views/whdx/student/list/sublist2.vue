@@ -4,7 +4,10 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<search-items :parent="v" group-span="11" label-span="12" input-span="12"></search-items>
+			<search-items :parent="v"></search-items>
+			<Button type="primary" @click="v.util.getPageData(v)">
+				<Icon type="search"></Icon>
+			</Button>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -28,7 +31,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.user,
+                apiRoot:this.apis.student,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -47,7 +50,7 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
+                                this.util.buildButton(this,h,'success','compose','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),
@@ -57,25 +60,16 @@
                 ],
                 pageData: [],
                 form: {
-                    yhSsjid:'',
+                    byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
                 },
             }
         },
-        props:{
-            item:{
-                type:Object,
-                default:function(){
-                    return {};
-                }
-            }
-        },
         created() {
-            this.form.yhSsjid = this.item.id;
+            this.
             this.util.initTable(this)
-
         },
         methods: {
             pageChange(event) {
