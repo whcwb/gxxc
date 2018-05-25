@@ -10,7 +10,7 @@
 </style>
 <template>
 	<div>
-		<Modal v-model="showModal" width='1200' :closable='false'
+		<Modal v-model="showModal" width='900' :closable='false'
 			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
 				<Form ref="form"
@@ -29,11 +29,7 @@
 							<img class="docImg" src="../../../../../static/sfzfm.jpg"/>
 						</Col>
 						<Col span="12">
-							<label>驾驶证正本</label>
-							<img class="docImg" src="../../../../../static/jszzb.jpg"/>
-						</Col>
-						<Col span="12">
-							<label>驾驶证副本</label>
+							<label>驾驶证</label>
 							<img class="docImg" src="../../../../../static/jsz.jpg"/>
 						</Col>
 					</Row>

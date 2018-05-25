@@ -34,7 +34,7 @@
     "sockjs-client": "^1.1.4",
     "sortablejs": "^1.7.0",
     "sweetalert": "^2.1.0",
-    "tinymce": "^4.7.4",
+    "tinymce": "^4.7.13",
     "vue": "^2.5.13",
     "vue-baidu-map": "^0.20.7",
     "vue-fullcalendar": "^1.0.9",

@@ -2,41 +2,16 @@
 	@import '../../../../styles/common.less';
 </style>
 <template>
-	<div>
-		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+''">
-			<div style="overflow: auto;height: 500px;">
-				<Form ref="form"
-						:model="formItem"
-						:rules="ruleInline"
-						:label-width="100"
-						:styles="{top: '20px'}">
-					<Row>
-						<form-items :parent="v"></form-items>
-					</Row>
-					<Row>
-						<textarea class='tinymce-textarea' id="tinymceEditer"></textarea>
-						<Spin fix v-if="spinShow">
-							<Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
-							<div>加载组件中...</div>
-						</Spin>
-					</Row>
-				</Form>
-			</div>
-			<div slot='footer'>
-				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">确定</Button>
-			</div>
-		</Modal>
+	<div class="margin-top-20">
+		<textarea id="articleEditor"></textarea>
 	</div>
 </template>
 
 <script>
-	import formItems from '../../components/formItems'
     import tinymce from 'tinymce';
 	export default {
 		name: 'byxxForm',
-		components:{tinymce, formItems},
+		components:{tinymce},
 		data() {
 			return {
 			    v:this,
@@ -56,7 +31,6 @@
 			}
 		},
 		created(){
-		    this.util.initFormModal(this);
 		    this.init();
 		},
 		methods: {
