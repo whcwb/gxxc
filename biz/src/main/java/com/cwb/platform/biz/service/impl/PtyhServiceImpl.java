@@ -5,7 +5,6 @@ import com.cwb.platform.biz.mapper.BizOrderMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.mapper.BizUserMapper;
 import com.cwb.platform.biz.mapper.BizWjMapper;
-import com.cwb.platform.biz.model.BizOrder;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.PtyhService;
@@ -210,27 +209,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         int i = userMapper.insert(bizUser);
         RuntimeCheck.ifTrue(i!=1,"操作失败，请重新尝试");
 
-
-        //插入定单表
-        BizOrder order=new BizOrder();
-        order.setDdId(genId());
-        order.setYhId(user.getId());//用户id
-//        order.setDdSfjf("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
-        order.setCjsj(DateUtils.getNowTime());//创建时间
-        order.setYhCjr(sysYh.getYhid());//创建人
-        order.setDdZt("1");//订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
-//            order.setDdZftd();//支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
-//            order.setDdZfsj();//支付时间
-        order.setDdZfzt("0");//支付状态（0,待支付 1、支付成功  2、支付失败）
-        order.setDdZfje(2500.00);//支付金额(单位 分)  todo 金额需要怎么确定，是否从配置文件中做处理
-//            order.setDdZfpz();//支付凭证ID(保存支付通道返回的CODE)
-//            order.setDdZfjg();//支付响应结果(1:成功 2:失败)
-        order.setYhXm(user.getYhXm());//姓名
-//            order.setDdBz();//订单备注
-        order.setYhSjid(yhSjid);//上级ID
-        order.setYhSsjid(yhSsjid);//上上级ID
-        i=orderMapper.insert(order);
-        RuntimeCheck.ifTrue(i!=1,"操作失败，请重新尝试");
 
         BizPtyh newEntity=new BizPtyh();
         newEntity.setId(user.getId());

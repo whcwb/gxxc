@@ -16,6 +16,12 @@
 			<artifactId>sys</artifactId>
 			<version>0.0.1</version>
 		</dependency>
+	  <!--支付宝jar包-->
+	  <dependency>
+		  <groupId>com.alipay.sdk</groupId>
+		  <artifactId>alipay-sdk-java</artifactId>
+		  <version>3.0.1</version>
+	  </dependency>
 		<!--移除websocket里面 logging依赖 避免包冲突 -->
 		<dependency>
             <groupId>org.springframework.boot</groupId>

@@ -130,14 +130,25 @@ public class AppMainController {
 	 * 短信验证码下发
 	 * @param zh		手机号码
 	 * @param yyyqm	用户应邀邀请码
+	 * @param key		申请验证码KEY-必填
+	 * @param codeID	验证码
 	 * @return
 	 */
 	@RequestMapping(value="/sendSMS", method={RequestMethod.POST})
-	public ApiResponse<String> sendSMS(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm){
+	public ApiResponse<String> sendSMS(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm
+			,@RequestParam(name = "codeID") String codeID,@RequestParam(name = "key") String key,HttpServletRequest request){
 //		1、验证参数不能为空
 		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(zh),"请填写正确的手机号");
 		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(yyyqm),"邀请码不能为空");
 		RuntimeCheck.ifFalse(StringDivUtils.isPhoneValid(zh),"请填写正确的手机号");
+		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(codeID),"验证码不能为空");
+		if(debugTest==null) {
+	//		验证码校验
+			String code = (String)request.getSession().getAttribute(key);
+			RuntimeCheck.ifTrue(!codeID.equals(code),"验证码不正确！");
+			request.getSession().removeAttribute(key);
+		}
+
 
 //		2、验证登录账户不能重复
 		SimpleCondition condition = new SimpleCondition(BizPtyh.class);
