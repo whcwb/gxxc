@@ -97,7 +97,7 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
             condition.and().andNotEqualTo("hdtj","");
             condition.setOrderByClause("HD_TJ desc");
         }else{
-            condition.eq("hdsx",hdSx);
+            condition.eq(BizHd.InnerColumn.hdSx,hdSx);
             condition.setOrderByClause("CJSJ desc");
         }
         return true;
