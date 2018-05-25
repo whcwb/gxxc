@@ -108,6 +108,18 @@ export let appRouter = [
 			}
 		]
 	},
+    {
+        path: '/form',
+        icon: 'android-checkbox',
+        name: 'form',
+        title: '表单编辑',
+        component: Main,
+        children: [
+            { path: 'artical-publish', title: '文章发布', name: 'artical-publish', icon: 'compose', component: () => import('@/views/form/article-publish/article-publish.vue') },
+            { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/form/work-flow/work-flow.vue') }
+
+        ]
+    },
 	{
 		path: '/platform',
         icon: 'android-car',
@@ -143,13 +155,13 @@ export let appRouter = [
                 meta: { title: '订单列表' },
 				component: () => import('@/views/whdx/order')
 			},
-			// {
-			// 	path: 'text',
-			// 	icon: 'android-clipboard',
-			// 	name: 'text-editor',
-             //    meta: { title: 'text' },
-			// 	component: () => import('@/views/my-components/text-editor/text-editor')
-			// },
+			{
+				path: 'create_news',
+				icon: 'android-clipboard',
+				name: 'create_news',
+                meta: { title: 'text' },
+				component: () => import('@/views/whdx/hd/create.vue')
+			},
 		]
 	},
     {
