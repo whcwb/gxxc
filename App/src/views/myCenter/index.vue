@@ -67,7 +67,7 @@
         </div>
         <div class="body">
           <div class="box-row boxlist" style="border-top: solid 15px #dedede">
-              <div class="body-O" @click="$router.push({name:'yj'})">
+              <div class="body-O" @click="$router.push({name:'yj'})" style="color: #ffb905">
                   <div class="icon">
                       <Icon type="social-usd"></Icon>
                   </div>
@@ -80,7 +80,7 @@
                       </span>元
                   </div>
               </div>
-              <div class="body-O" @click="$router.push({name:'orderlist'})">
+              <div class="body-O" @click="$router.push({name:'orderlist'})" style="color: #ff496e">
                   <div class="icon">
                       <Icon type="ios-paper"></Icon>
                   </div>
@@ -93,7 +93,7 @@
                         </span>元
                   </div>
               </div>
-              <div class="body-O" @click="$router.push({name:'yjtxmx'})">
+              <div class="body-O" @click="$router.push({name:'yjtxmx'})"  style="color: #1ecf18">
                   <div class="icon">
                       <Icon type="android-funnel"></Icon>
                   </div>
@@ -108,7 +108,7 @@
               </div>
           </div>
           <div class="box-row boxlist">
-            <div class="body-O" @click="$router.push({name:'myteam'})">
+            <div class="body-O" @click="$router.push({name:'myteam'})"  style="color: #2d8cf0">
                 <div class="icon">
                     <Icon type="android-people"></Icon>
                 </div>
@@ -121,7 +121,7 @@
                           </span>人
                 </div>
             </div>
-            <div class="body-O" @click="showListen=true">
+            <div class="body-O" @click="showListen=true" style="color: #5e5e5e">
                 <div class="icon">
                     <Icon type="social-buffer"></Icon>
                 </div>
