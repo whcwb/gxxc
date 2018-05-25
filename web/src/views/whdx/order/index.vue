@@ -4,13 +4,10 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-        	<search-items :parent="v"></search-items>
-        	<Button type="primary" @click="v.util.getPageData(v)">
-        		<Icon type="search"></Icon>
-        	</Button>
-			<Button type="primary" @click="v.util.add(v)">
-				<Icon type="plus-round"></Icon>
-			</Button>
+        	<search-items :parent="v" show-create="true"></search-items>
+            <Button type="primary" @click="v.util.getPageData(v)">
+                <Icon type="search"></Icon>
+            </Button>
         </Row>
         <Row style="position: relative;">
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
