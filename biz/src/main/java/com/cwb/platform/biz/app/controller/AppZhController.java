@@ -23,10 +23,18 @@ public class AppZhController extends AppUserBaseController {
      * 个人佣金查询
      * @return
      */
-    @RequestMapping(value="/get", method={RequestMethod.GET})
+    @RequestMapping(value="/get", method={RequestMethod.POST})
     public ApiResponse<BizZh> get(){
         BizPtyh user = getAppCurrentUser();
-        return ApiResponse.success(service.findById(user.getId()));
+        BizZh obd= service.findById(user.getId());
+        if(obd==null){
+            obd=new BizZh();
+            obd.setYhId(user.getId());
+            obd.setYhTxdj(0.00);//提现冻结金额
+            obd.setYhZhye(0.00);//账户余额
+        }
+
+        return ApiResponse.success(obd);
     }
 
 

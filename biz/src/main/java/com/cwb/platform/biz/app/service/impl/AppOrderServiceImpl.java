@@ -146,6 +146,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 //            newEntity.setDdBz();//订单备注
         newEntity.setYhSjid(bizUser.getYhSjid());//上级ID
         newEntity.setYhSsjid(bizUser.getYhSsjid());//上上级ID
+        newEntity.setJobType("0");//定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
         entityMapper.insert(newEntity);
 
 

@@ -147,7 +147,10 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
        }
         // 更新账户表
         List<String> userList=new ArrayList<String>();
-        userList.add(userId);
+
+        if(org.apache.commons.lang.StringUtils.isNotEmpty(userId)){
+            userList.add(userId);
+        }
         zhService.userAccountUpdate(userList);
         return ApiResponse.success();
     }

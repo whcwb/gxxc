@@ -9,12 +9,15 @@ import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 @Service
 public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String> implements OrderService{
+    Logger payInfo = LoggerFactory.getLogger("access_info");
     @Autowired
     private BizOrderMapper entityMapper;
 
@@ -39,8 +42,10 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
      * @return
      */
     public ApiResponse<String> updateOrderPayTpye(BizOrder l){
+        payInfo.info("订单编号："+l.getDdId()+"*****************************************************************");
         BizOrder order=findById(l.getDdId());
         if(StringUtils.equals(order.getDdZt(),"2")||StringUtils.equals(order.getDdZfzt(),"1")){
+            payInfo.info("订单编号："+l.getDdId()+"已完成支付，不需要操作数据");
             return ApiResponse.success("该订单已完成支付，不需要操作数据");
         }
 
@@ -50,6 +55,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         newBizOrder.setDdZfzt("1");//支付状态 1成功 2 失败
 //        newBizOrder.setDdZftd(l.getDdZftd());//设置支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
         newBizOrder.setDdZfpz(l.getDdZfpz());//支付凭证ID(保存支付通道返回的CODE)
+        newBizOrder.setPayMoney(l.getPayMoney());//订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
 
         this.update(newBizOrder);
 

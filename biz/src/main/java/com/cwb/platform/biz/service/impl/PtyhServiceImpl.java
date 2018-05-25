@@ -286,8 +286,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         String yhAlipayId="";//支付宝ID
         if(StringUtils.equals(addType,"1")){
             yhOpenId=""; // TODO: 2018/5/19 请求微信的OPEN_ID
+            RuntimeCheck.ifBlank(yhOpenId, "微信唯一编号不能为空");
         }else if(StringUtils.equals(addType,"2")){
             yhAlipayId=""; // TODO: 2018/5/19 请求支付宝的ID
+            RuntimeCheck.ifBlank(yhAlipayId, "支付宝唯一编号不能为空");
         }
 
         BizPtyh newEntity =new BizPtyh();

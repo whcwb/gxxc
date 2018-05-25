@@ -35,9 +35,10 @@ public class ZhServiceImpl extends BaseServiceImpl<BizZh,java.lang.String> imple
      */
     public boolean userAccountUpdate(List<String> userId) {
         Boolean ret=false;
-
-        entityMapper.deleteUserDetail(userId);
-        entityMapper.updatUserAccount(userId);
+        if(userId!=null&& userId.size()>0){
+            entityMapper.deleteUserDetail(userId);
+            entityMapper.updatUserAccount(userId);
+        }
         ret=true;
         return ret;
     }
