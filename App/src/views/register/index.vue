@@ -36,9 +36,10 @@
             </md-field>
           </div>
           <div class="box-row" style="margin-top: 0.2rem;padding: 0.3rem">
-            <div style="color: #2d8cf0" @click="$router.push({name:'login'})">登录</div>
+            <div style="color: #2d8cf0;font-size: 0.32rem" @click="$router.push({name:'login'})">登录</div>
             <div class="body-O" style="text-align: right">
               <Button type="primary"
+                      style="font-size: 0.3rem"
                 @click="fistNext">下一步</Button>
             </div>
           </div>
@@ -55,9 +56,10 @@
             </md-field>
           </div>
           <div class="box-row" style="margin-top: 0.2rem;padding: 0.3rem">
-            <div style="color: #2d8cf0" @click="$router.push({name:'login'})">登录</div>
+            <div style="color: #2d8cf0;font-size: 0.32rem" @click="$router.push({name:'login'})">登录</div>
             <div class="body-O" style="text-align: right">
               <Button type="primary"
+                      style="font-size: 0.3rem"
                       @click="TwONext">下一步</Button>
             </div>
           </div>
@@ -82,9 +84,10 @@
             </md-field>
           </div>
           <div class="box-row" style="margin-top: 0.2rem;padding: 0.3rem">
-            <div style="color: #2d8cf0" @click="$router.push({name:'login'})">登录</div>
+            <div style="color;font-size: 0.32rem: #2d8cf0" @click="$router.push({name:'login'})">登录</div>
             <div class="body-O" style="text-align: right">
               <Button type="primary"
+                      style="font-size: 0.3rem"
                       @click="ThrNext">下一步</Button>
             </div>
           </div>

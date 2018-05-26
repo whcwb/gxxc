@@ -47,7 +47,10 @@
           </div>
         </div>
         <div class="body-O tixian">
-          <Button type="ghost" @click="$router.push({name:'pay'})">去交费</Button>
+          <Button type="success" v-if="jf">已交费</Button>
+          <Button type="ghost"
+                  v-else
+                  @click="$router.push({name:'pay'})">去交费</Button>
         </div>
       </div>
     </div>
@@ -88,6 +91,7 @@
         data(){
           return{
             compName:'',
+            jf:this.$store.state.app.jf,
             messList:[
               {
                 tit:'个人信息',
@@ -107,6 +111,9 @@
             ]
           }
         },
+      created(){
+
+      },
         methods:{
           goFunc(it){
             var v =this

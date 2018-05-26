@@ -117,6 +117,7 @@
     },
     methods: {
       doPay() {
+        var v = this
         if (this.isCashierCaptcha) {
           this.cashier.next('captcha', {
             text: '验证码发送至 156 **** 8965',
@@ -138,8 +139,15 @@
             },
           })
         } else {
-          this.createPay().then(() => {
+          this.createPay().then((res) => {
+            console.log('**********',res)
             this.cashier.next(this.cashierResult)
+
+          //  *****************************
+            this.$store.commit('CHjf', true);
+            setTimeout(function () {
+              v.$router.back()
+            },1000*2.7)
           })
         }
       },
@@ -169,13 +177,16 @@
         })
       },
       onCashierSelect(item) {
+        console.log('支付渠道选中')
         console.log(`[Mand Mobile] Select ${JSON.stringify(item)}`)
       },
       onCashierPay(item) {
+        console.log('支付确认')
         console.log(`[Mand Mobile] Pay ${JSON.stringify(item)}`)
         this.doPay()
       },
       onCashierCancel() {
+        console.log('取消')
         // Abort pay request or checking request
         this.timer && clearTimeout(this.timer)
       },

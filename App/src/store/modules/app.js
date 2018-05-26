@@ -4,8 +4,12 @@ import Vue from 'vue';
 
 const app = {
     state: {
+      jf:false
     },
     mutations: {
+      CHjf(state,data){
+        state.jf = data
+      },
     }
 };
 

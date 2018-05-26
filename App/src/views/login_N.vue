@@ -42,7 +42,7 @@
       </button>
   </div>
   <div class="box-row resAndforget">
-    <div class="body-O">
+    <div class="body-O" @click="$router.push({name:'register'})">
     注册
     </div>
     <div class="body-O">
@@ -82,7 +82,7 @@
                   iconColor:'#d9d9d9',
                   val:'',
                   error:false,
-                  errortxt:'请输密码!'
+                  errortxt:'您输入的密码有无误!'
                 }
               ]
           }
@@ -113,7 +113,7 @@
           submit(){
             var v = this
             if(v.loginMes[0].error==false&&v.loginMes[1].error==false&&v.loginMes[0].val!=""){
-              alert('denglu ')
+              v.$router.push({name:'home'})
             }else{
               v.loginMes.forEach((item,index)=>{
                 item.error = true
