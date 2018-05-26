@@ -69,7 +69,6 @@
                     {label:'身份证号码',prop:'yhZjhm'},
                     {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt'},
                     {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
-                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'rzzt'},
                 ],
                 ruleInline:{
 				}

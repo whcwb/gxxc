@@ -1,5 +1,5 @@
 //网络请求地址前缀
-let BASE_URL = 'http://127.0.0.1';
+let BASE_URL = 'http://127.0.0.1:8081';
 module.exports = {
     url: BASE_URL,
     //图片上传地址
@@ -41,6 +41,7 @@ module.exports = {
         CHANGE:'/api/ptyh/update',
         DELE:'/api/ptyh/removeIds',
         getById:'/api/ptyh/',
+        updateSffp:'/api/ptyh/updateSffp',
     },
     user:{
         QUERY:'/api/user/pager',//用户实名表

@@ -30,11 +30,12 @@
 <script>
     import formData from './formData.vue'
     import sublist from './sublist.vue'
+    import allot from './allot.vue'
 	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems,sublist},
+        components: {formData,searchItems,sublist,allot},
         data() {
             return {
                 v:this,
@@ -52,6 +53,7 @@
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},
+                    {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
                     {
                         title: '操作',
                         key: 'action',
@@ -65,6 +67,10 @@
                                 this.util.buildButton(this,h,'info','network','下线',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
+                                }),
+                                this.util.buildButton(this,h,'info','android-home','分配',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'allot'
                                 }),
                             ]);
                         }
