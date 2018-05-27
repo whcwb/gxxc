@@ -5,11 +5,11 @@ Vue.use(Router)
 const router = new Router({
   routes: [
       {
-        path: '/',
+        path: '/home',
         name: 'home',
         component: ()=>import('@/views/home')
       },{
-        path:'/login',
+        path:'/',
         name:'login',
         component:()=>import('@/views/login_N')
       },{
