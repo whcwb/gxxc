@@ -23,9 +23,9 @@
         <div class="body">
           <div class="qy fu">
             <div class="tit">
-              <span>
+              <h2>
                 区域查找
-              </span>
+              </h2>
             </div>
             <div class="box-row-list mess">
               <div class="qyName" v-for="(item,index) in qylist">

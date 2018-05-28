@@ -15,20 +15,23 @@ const router = new Router({
       ]
     },
     {
-      path: '/index',
-      name: 'index',
-      component:()=>import('@/views/homepage'),
-      children:[
-      ]
-    },
-    {
       path: '/login',
       name: 'Login',
       meta:{
         title:'登录'
       },
       component: resolve => { require(['@/views/login.vue'], resolve); }
-    }
+    },
+    {
+      path: '/index',
+      name: 'index',
+      component:()=>import('@/views/homepage')
+    },
+    {
+      path: '/mycenter',
+      name: 'mycenter',
+      component:()=>import('@/views/myCenter')
+    },
   ]
 });
 router.beforeEach((to, from, next) => {
