@@ -4,7 +4,9 @@ import Vue from 'vue'
 import * as FastClick from "fastclick"
 import App from './App'
 import router from './router'
+import './styles/box.less'
 //import './styles/global.css'
+
 
 FastClick.attach(document.body)
 
