@@ -55,6 +55,7 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
     @Override
     public ApiResponse<String> updateEntity(BizHd entity) {
         SysYh sysYh = getCurrentUser();
+        RuntimeCheck.ifBlank(entity.getId(), "主键id不能为空");
         RuntimeCheck.ifBlank(entity.getHdBt(),"标题不能为空");
         RuntimeCheck.ifBlank(entity.getHdZw(),"正文不能为空");
         RuntimeCheck.ifBlank(entity.getHdSx(), "属性不能为空");

@@ -77,6 +77,13 @@ public class BizJl implements Serializable {
     @Column(name = "JL_ZZ")
     private String jlZz;
 
+    /**
+     *  教练-评分
+     */
+    @Column(name = "JL_PF")
+    private String jlPf;
+
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -277,6 +284,23 @@ public class BizJl implements Serializable {
         this.jlZz = jlZz;
     }
 
+    /**
+     * 获取教练-评分
+     *
+     * @return
+     */
+    public String getJlPf() {
+        return jlPf;
+    }
+
+    /**
+     * 设置教练 - 评分
+     * @param jlPf
+     */
+    public void setJlPf(String jlPf) {
+        this.jlPf = jlPf;
+    }
+
     public enum InnerColumn {
         yhId("YH_ID"),
         yhXm("YH_XM"),
@@ -288,7 +312,8 @@ public class BizJl implements Serializable {
         jlZml("JL_ZML"),
         jlJjlxr("JL_JJLXR"),
         jlJjlxrdh("JL_JJLXRDH"),
-        jlZz("JL_ZZ");
+        jlZz("JL_ZZ"),
+        jlPf("JL_PF");
 
         private final String column;
 
