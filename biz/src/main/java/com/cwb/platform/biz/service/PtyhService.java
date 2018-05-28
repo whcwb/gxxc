@@ -1,6 +1,8 @@
 package com.cwb.platform.biz.service;
 
 
+import com.cwb.platform.biz.model.BizCp;
+import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -37,4 +39,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> updateYhRz(BizPtyh bizPtyh);
 
     BizPtyh getUserInvitationCode(String id);
+
+    ApiResponse<String> updatelx(BizPtyh bizPtyh, BizJl bizJl);
 }

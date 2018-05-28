@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.controller;
 
+import com.cwb.platform.biz.model.BizCp;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
@@ -66,6 +67,14 @@ public class PtyhController extends BaseController<BizPtyh,java.lang.String>{
     @PostMapping("/updateyhrz")
     public ApiResponse<String> updateYhRz(BizPtyh bizPtyh){
         return service.updateYhRz(bizPtyh);
+    }
+
+    /**
+     * 用户申请教练
+     */
+    @PostMapping("/updatelx")
+    public ApiResponse<String> updatelx(BizPtyh bizPtyh, BizCp bizCp){
+        return service.updatelx(bizPtyh, bizCp);
     }
 
 

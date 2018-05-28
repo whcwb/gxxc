@@ -5,6 +5,8 @@ import com.cwb.platform.biz.mapper.BizOrderMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.mapper.BizUserMapper;
 import com.cwb.platform.biz.mapper.BizWjMapper;
+import com.cwb.platform.biz.model.BizCp;
+import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.PtyhService;
@@ -535,5 +537,39 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         RuntimeCheck.ifTrue(StringUtils.equals(user.getYhZt(),"0"),"用户还未认证，请您认证！");//认证状态 ZDCLK0043(0 未认证、1 已认证)
 //        RuntimeCheck.ifTrue(StringUtils.equals(user.getDdSfjx(),"0"),"用户还未缴费，请您缴费！");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
         return user;
+    }
+
+    @Override
+    public ApiResponse<String> updatelx(BizPtyh bizPtyh, BizJl bizJl) {
+
+        // 修改用户的类型 和 认证状态 ， 将用户的是否有驾照改为 是
+        RuntimeCheck.ifBlank(bizPtyh.getId() , "用户id 不能为空");
+        RuntimeCheck.ifTrue(StringUtils.equals(bizPtyh.getYhLx(),"2"),"该用户已经是教练");
+
+        RuntimeCheck.ifBlank(bizJl.getYhXm(),"用户姓名不能为空");
+        RuntimeCheck.ifBlank(bizJl.getYhZjhm(), "用户身份号码不能为空");
+        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlJl(), "教练驾龄不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlQu(), "教练所属区域不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlJjlxr(), "教练紧急联系人不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlJjlxrdh(), "教练紧急联系人电话不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlZz(), "住址不能为空");
+
+
+        BizPtyh ptyh = new BizPtyh();
+        ptyh.setId(bizPtyh.getId());
+        ptyh.setYhLx("2"); // 2 为教练 1 为学员
+        ptyh.setYhZt("0"); // 0 为 未认证  1 为已认证
+        ptyh.setYhSfyjz("1"); // 0 没有驾照 1 有驾照
+        update(ptyh);
+
+        bizJl.setYhId(bizPtyh.getId());
+
+
+
+
+
+        return null;
     }
 }
