@@ -3,41 +3,32 @@
 
 -->
 <style type="text/css">
-  #allmap {
-    height: 100%;
-    width: 100%;
-  }
+  /*#allmap {*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+  /*}*/
 </style>
 <!--地图选点-->
 <template>
-  <div class="box" style="height: 100%;background-color: #00FFFF;">
-    <div id="allmap"></div>
+  <div class="box">
+    <div id="allmap" class="body"></div>
   </div>
 </template>
 
 <script>
 
   export default {
-    name: 'map',
+    name: 'region',
     components: {
     },
     data() {
       return {
-        componentName: '',
-        choosedItem: null,
         map: '',
         mapcenter: {
-          lng: 114.357527,
-          lat: 30.550822
+          lng: 114.287527,
+          lat: 30.600822
         },
-        zoom: 12,
-        carList: [],
-        zoomDot:[],
-        fancePoints: [
-          {lng: 114.27226, lat: 30.608123},
-          {lng: 114.157277, lat: 30.544446},
-          {lng: 114.418288, lat: 30.526529},
-        ]
+        zoom: 11,
       }
     },
     created() {
