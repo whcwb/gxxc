@@ -12,6 +12,17 @@ let dictUtil = {
         }
         return '';
     },
+    getItemByCode(v,zdlmCode,zdxmCode){
+        let dic	= session.getItem('dictMap')
+        let zdlm = new Map(dic).get(zdlmCode)
+        if (!zdlm)return '';
+        for (let r of zdlm){
+            if (r.key === zdxmCode){
+                return r;
+            }
+        }
+        return null;
+    },
     getByCode(v,code){
         let dic	= session.getItem('dictMap')
         let val = new Map(dic).get(code)

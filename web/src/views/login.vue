@@ -194,7 +194,7 @@ export default {
                     for (let r of res.page.list){
                         let a = [];
                         for (let e of r.zdxmList){
-                            a.push({key:e.zddm,val:e.zdmc});
+                            a.push({key:e.zddm,val:e.zdmc,color:e.by1});
                         }
                         dictMap.set(r.lmdm,a)
                     }
