@@ -4,7 +4,8 @@
 <template>
       <div id="homeSty" class="box">
         <div class="tit">
-          <mt-header fixed title="520学车联盟"></mt-header>
+          520学车联盟
+          <!--<mt-header fixed title="520学车联盟"></mt-header>-->
         </div>
         <div class="swipe">
             <mt-swipe :auto="4000">
@@ -51,46 +52,44 @@
           </div>
         </div>
         <div class="body">
+          <a name="qy"></a>
           <div class="qy fu">
             <div class="Htit">
-              <a name="qy">
               区域查找
-              </a>
             </div>
             <div class="box-row-list mess">
-              <div class="qyName" v-for="(item,index) in qylist">
+              <div class="qyName"
+                   @click="goMap(item)"
+                   v-for="(item,index) in qylist">
                 {{item.name}}
               </div>
             </div>
           </div>
 
+          <a name="bm"></a>
           <div class="bm fu">
             <div class="Htit">
-              <a name="bm">
                 报名详细
-              </a>
             </div>
             <div class="mess">
               选着您
             </div>
           </div>
 
+          <a name="xc"></a>
           <div class="xc fu">
             <div class="Htit">
-              <a name="xc">
                 学车指引
-              </a>
             </div>
             <div class="mess">
-              <h1>我要学车</h1>
+              我要学车
             </div>
           </div>
 
+          <a name="ks"></a>
           <div class="ks fu">
             <div class="Htit">
-              <a name="ks">
                 考试须知
-              </a>
             </div>
             <div class="mess ksswiper">
               <mt-swipe :auto="1000*6">
@@ -158,6 +157,15 @@
           }
         },
         created(){
+        },
+        methods:{
+          goMap(item){
+            console.log(this.$route)
+            this.$router.push({
+              name:'region',
+              params:item
+            })
+          }
         }
     }
 </script>
