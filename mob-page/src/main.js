@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import './styles/box.less'
 import Apis from './libs/apis';
+import 'iview/dist/styles/iview.css';
 //import './styles/global.css'
 
 
