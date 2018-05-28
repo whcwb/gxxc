@@ -27,12 +27,6 @@ public class BizOrder implements Serializable {
     @Column(name = "YH_ID")
     private String yhId;
 
-//    /**
-//     * 缴费状态(缴费是否成功)
-//     */
-//    @Column(name = "DD_SFJF")
-//    private String ddSfjf;
-
     /**
      * 创建时间
      */
@@ -46,13 +40,13 @@ public class BizOrder implements Serializable {
     private String yhCjr;
 
     /**
-     * 订单状态(1、待缴费 2、已缴费 3、已退费)
+     * 订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
      */
     @Column(name = "DD_ZT")
     private String ddZt;
 
     /**
-     * 支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+     * 支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)
      */
     @Column(name = "DD_ZFTD")
     private String ddZftd;
@@ -64,7 +58,7 @@ public class BizOrder implements Serializable {
     private String ddZfsj;
 
     /**
-     * 支付状态（0,待支付 1、支付成功  2、支付失败）
+     * 支付状态（ZDCLK0039  0,待支付 1、支付成功  2、支付失败）
      */
     @Column(name = "DD_ZFZT")
     private String ddZfzt;
@@ -80,12 +74,6 @@ public class BizOrder implements Serializable {
      */
     @Column(name = "DD_ZFPZ")
     private String ddZfpz;
-
-//    /**
-//     * 支付响应结果(1:成功 2:失败)
-//     */
-//    @Column(name = "DD_ZFJG")
-//    private String ddZfjg;
 
     /**
      * 姓名
@@ -110,25 +98,27 @@ public class BizOrder implements Serializable {
      */
     @Column(name = "YH_SSJID")
     private String yhSsjid;
+
     /**
      * 定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
      */
     @Column(name = "JOB_TYPE")
     private String jobType;
+
+    /**
+     * JOB处理结果描述
+     */
+    @Column(name = "JOB_DESCRIBE")
+    private String jobDescribe;
+
     /**
      * 定时任务处理时间。
      */
     @Column(name = "JOB_DISPOSE_DATE")
     private String jobDisposeDate;
-    /**
-     * 定时任务，处理结果描述
-     */
-    @Column(name = "JOB_DESCRIBE")
-    private String jobDescribe;
-
 
     /**
-     *订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
+     * 订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
      */
     @Column(name = "PAY_MONEY")
     private String payMoney;
@@ -147,48 +137,13 @@ public class BizOrder implements Serializable {
     @Transient
     private BizPtyh userDetail;
 
+    /**
+     * 产品id(BIZ_CP)
+     */
+    @Column(name = "CP_ID")
+    private String cpId;
 
     private static final long serialVersionUID = 1L;
-
-    public String getJobDescribe() {
-        return jobDescribe;
-    }
-
-    public void setJobDescribe(String jobDescribe) {
-        this.jobDescribe = jobDescribe;
-    }
-
-    public String getJobType() {
-        return jobType;
-    }
-
-    public void setJobType(String jobType) {
-        this.jobType = jobType;
-    }
-
-    public String getJobDisposeDate() {
-        return jobDisposeDate;
-    }
-
-    public void setJobDisposeDate(String jobDisposeDate) {
-        this.jobDisposeDate = jobDisposeDate;
-    }
-
-    public String getPayMoney() {
-        return payMoney;
-    }
-
-    public void setPayMoney(String payMoney) {
-        this.payMoney = payMoney;
-    }
-
-    public BizPtyh getUserDetail() {
-        return userDetail;
-    }
-
-    public void setUserDetail(BizPtyh userDetail) {
-        this.userDetail = userDetail;
-    }
 
     public String getUserGrade() {
         return userGrade;
@@ -198,20 +153,12 @@ public class BizOrder implements Serializable {
         this.userGrade = userGrade;
     }
 
-    public String getYhSjid() {
-        return yhSjid;
+    public BizPtyh getUserDetail() {
+        return userDetail;
     }
 
-    public void setYhSjid(String yhSjid) {
-        this.yhSjid = yhSjid;
-    }
-
-    public String getYhSsjid() {
-        return yhSsjid;
-    }
-
-    public void setYhSsjid(String yhSsjid) {
-        this.yhSsjid = yhSsjid;
+    public void setUserDetail(BizPtyh userDetail) {
+        this.userDetail = userDetail;
     }
 
     /**
@@ -250,24 +197,6 @@ public class BizOrder implements Serializable {
         this.yhId = yhId;
     }
 
-//    /**
-//     * 获取缴费状态(缴费是否成功)
-//     *
-//     * @return DD_SFJF - 缴费状态(缴费是否成功)
-//     */
-//    public String getDdSfjf() {
-//        return ddSfjf;
-//    }
-//
-//    /**
-//     * 设置缴费状态(缴费是否成功)
-//     *
-//     * @param ddSfjf 缴费状态(缴费是否成功)
-//     */
-//    public void setDdSfjf(String ddSfjf) {
-//        this.ddSfjf = ddSfjf;
-//    }
-
     /**
      * 获取创建时间
      *
@@ -305,36 +234,36 @@ public class BizOrder implements Serializable {
     }
 
     /**
-     * 获取订单状态(1、待缴费 2、已缴费 3、已退费)
+     * 获取订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
      *
-     * @return DD_ZT - 订单状态(1、待缴费 2、已缴费 3、已退费)
+     * @return DD_ZT - 订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
      */
     public String getDdZt() {
         return ddZt;
     }
 
     /**
-     * 设置订单状态(1、待缴费 2、已缴费 3、已退费)
+     * 设置订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
      *
-     * @param ddZt 订单状态(1、待缴费 2、已缴费 3、已退费)
+     * @param ddZt 订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
      */
     public void setDdZt(String ddZt) {
         this.ddZt = ddZt;
     }
 
     /**
-     * 获取支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+     * 获取支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)
      *
-     * @return DD_ZFTD - 支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+     * @return DD_ZFTD - 支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)
      */
     public String getDdZftd() {
         return ddZftd;
     }
 
     /**
-     * 设置支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+     * 设置支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)
      *
-     * @param ddZftd 支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+     * @param ddZftd 支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)
      */
     public void setDdZftd(String ddZftd) {
         this.ddZftd = ddZftd;
@@ -359,18 +288,18 @@ public class BizOrder implements Serializable {
     }
 
     /**
-     * 获取支付状态（0,待支付 1、支付成功  2、支付失败）
+     * 获取支付状态（ZDCLK0039  0,待支付 1、支付成功  2、支付失败）
      *
-     * @return DD_ZFZT - 支付状态（0,待支付 1、支付成功  2、支付失败）
+     * @return DD_ZFZT - 支付状态（ZDCLK0039  0,待支付 1、支付成功  2、支付失败）
      */
     public String getDdZfzt() {
         return ddZfzt;
     }
 
     /**
-     * 设置支付状态（0,待支付 1、支付成功  2、支付失败）
+     * 设置支付状态（ZDCLK0039  0,待支付 1、支付成功  2、支付失败）
      *
-     * @param ddZfzt 支付状态（0,待支付 1、支付成功  2、支付失败）
+     * @param ddZfzt 支付状态（ZDCLK0039  0,待支付 1、支付成功  2、支付失败）
      */
     public void setDdZfzt(String ddZfzt) {
         this.ddZfzt = ddZfzt;
@@ -412,24 +341,6 @@ public class BizOrder implements Serializable {
         this.ddZfpz = ddZfpz;
     }
 
-//    /**
-//     * 获取支付响应结果(1:成功 2:失败)
-//     *
-//     * @return DD_ZFJG - 支付响应结果(1:成功 2:失败)
-//     */
-//    public String getDdZfjg() {
-//        return ddZfjg;
-//    }
-//
-//    /**
-//     * 设置支付响应结果(1:成功 2:失败)
-//     *
-//     * @param ddZfjg 支付响应结果(1:成功 2:失败)
-//     */
-//    public void setDdZfjg(String ddZfjg) {
-//        this.ddZfjg = ddZfjg;
-//    }
-
     /**
      * 获取姓名
      *
@@ -466,10 +377,135 @@ public class BizOrder implements Serializable {
         this.ddBz = ddBz;
     }
 
+    /**
+     * 获取上级ID
+     *
+     * @return YH_SJID - 上级ID
+     */
+    public String getYhSjid() {
+        return yhSjid;
+    }
+
+    /**
+     * 设置上级ID
+     *
+     * @param yhSjid 上级ID
+     */
+    public void setYhSjid(String yhSjid) {
+        this.yhSjid = yhSjid;
+    }
+
+    /**
+     * 获取上上级ID
+     *
+     * @return YH_SSJID - 上上级ID
+     */
+    public String getYhSsjid() {
+        return yhSsjid;
+    }
+
+    /**
+     * 设置上上级ID
+     *
+     * @param yhSsjid 上上级ID
+     */
+    public void setYhSsjid(String yhSsjid) {
+        this.yhSsjid = yhSsjid;
+    }
+
+    /**
+     * 获取定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
+     *
+     * @return JOB_TYPE - 定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
+     */
+    public String getJobType() {
+        return jobType;
+    }
+
+    /**
+     * 设置定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
+     *
+     * @param jobType 定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
+     */
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    /**
+     * 获取JOB处理结果描述
+     *
+     * @return JOB_DESCRIBE - JOB处理结果描述
+     */
+    public String getJobDescribe() {
+        return jobDescribe;
+    }
+
+    /**
+     * 设置JOB处理结果描述
+     *
+     * @param jobDescribe JOB处理结果描述
+     */
+    public void setJobDescribe(String jobDescribe) {
+        this.jobDescribe = jobDescribe;
+    }
+
+    /**
+     * 获取定时任务处理时间。
+     *
+     * @return JOB_DISPOSE_DATE - 定时任务处理时间。
+     */
+    public String getJobDisposeDate() {
+        return jobDisposeDate;
+    }
+
+    /**
+     * 设置定时任务处理时间。
+     *
+     * @param jobDisposeDate 定时任务处理时间。
+     */
+    public void setJobDisposeDate(String jobDisposeDate) {
+        this.jobDisposeDate = jobDisposeDate;
+    }
+
+    /**
+     * 获取订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
+     *
+     * @return PAY_MONEY - 订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
+     */
+    public String getPayMoney() {
+        return payMoney;
+    }
+
+    /**
+     * 设置订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
+     *
+     * @param payMoney 订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
+     */
+    public void setPayMoney(String payMoney) {
+        this.payMoney = payMoney;
+    }
+
+    /**
+     * 获取产品id(BIZ_CP)
+     *
+     * @return CP_ID - 产品id(BIZ_CP)
+     */
+    public String getCpId() {
+        return cpId;
+    }
+
+    /**
+     * 设置产品id(BIZ_CP)
+     *
+     * @param cpId 产品id(BIZ_CP)
+     */
+    public void setCpId(String cpId) {
+        this.cpId = cpId;
+    }
+
     public enum InnerColumn {
         ddId("DD_ID"),
         yhId("YH_ID"),
-//        ddSfjf("DD_SFJF"),
         cjsj("CJSJ"),
         yhCjr("YH_CJR"),
         ddZt("DD_ZT"),
@@ -478,12 +514,15 @@ public class BizOrder implements Serializable {
         ddZfzt("DD_ZFZT"),
         ddZfje("DD_ZFJE"),
         ddZfpz("DD_ZFPZ"),
-//        ddZfjg("DD_ZFJG"),
         yhXm("YH_XM"),
+        ddBz("DD_BZ"),
         yhSjid("YH_SJID"),
         yhSsjid("YH_SSJID"),
         jobType("JOB_TYPE"),
-        ddBz("DD_BZ");
+        jobDescribe("JOB_DESCRIBE"),
+        jobDisposeDate("JOB_DISPOSE_DATE"),
+        payMoney("PAY_MONEY"),
+        cpId("CP_ID");
 
         private final String column;
 

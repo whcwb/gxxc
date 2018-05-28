@@ -2204,7 +2204,7 @@
 				{
 					"key": "yhLx",
 					"value": "1",
-					"description": "类型 ZDCLK0041(2、驾驶员、1、学员)",
+					"description": "类型 ZDCLK0041(2、教练、1、学员)",
 					"type": "text",
 					"enabled": true
 				},

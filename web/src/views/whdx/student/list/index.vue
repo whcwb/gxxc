@@ -4,17 +4,10 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<Col span="21">
-				<search-items :parent="v"></search-items>
-			</Col>
-			<Col span="2" style="float: right">
-				<Button type="primary" @click="v.util.getPageData(v)">
-					<Icon type="search"></Icon>
-				</Button>
+				<search-items :parent="v" :label-with="100"></search-items>
 				<Button type="info" @click="exportData">
 					<Icon type="ios-download-outline"></Icon>
 				</Button>
-			</Col>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -46,10 +39,10 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "序号", width: 70, type: 'index'},
+                    {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '类型',key:'yhLx'},
+                    {title: '类型',key:'yhLx',dict:'ZDCLK0041',searchType:'dict'},
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},

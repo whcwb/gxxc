@@ -4,10 +4,7 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-        	<search-items :parent="v" show-create="true"></search-items>
-            <Button type="primary" @click="v.util.getPageData(v)">
-                <Icon type="search"></Icon>
-            </Button>
+        	<search-items :parent="v"></search-items>
         </Row>
         <Row style="position: relative;">
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -35,17 +32,20 @@
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
-                    {title: "序号", width: 60, type: 'index'},
+                    {title: "#", width: 60, type: 'index'},
                     {title:'姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title:'订单状态',key:'ddZt',dict:'ZDCLK0037'},
                     {title:'支付通道',key:'ddZftd',dict:'ZDCLK0038'},
                     {title:'支付时间',key:'ddZfsj'},
-                    {title:'支付状态',key:'ddZfzt',dict:'ZDCLK0039'},
-                    {title:'支付金额',key:'ddZfje',unit:'分'},
-                    {title:'支付凭证ID',key:'ddZfpz',searchKey:'ddZfpzLike'},
+                    {title:'支付状态',key:'ddZfzt',dict:'ZDCLK0039',width:150},
+                    {title:'支付金额',key:'ddZfje', render:(h,p)=>{
+                        return h('div',parseFloat(p.row.ddZfje/100)+'元')
+                        }},
                     {title:'订单备注',key:'ddBz'},
                     {title:'处理状态',key:'jobType',dict:'dsrwclzt'},
-                    {title:'实际支付金额',key:'payMoney',unit:'元'},
+                    {title:'实际支付金额',key:'payMoney',render:(h,p)=>{
+                            return h('div',parseFloat(p.row.payMoney/100)+'元')
+                        }},
                     // {
                     //     title: '操作',
                     //     key: 'action',

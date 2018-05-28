@@ -70,7 +70,7 @@
 										{{items.zddm}}
 									</div>
 									<div class="body-8">
-										<Tag v-if="items.by1 != null && items.by1 != ''" :color="items.by1">{{items.zdmc}}</Tag>
+										<Tag v-if="items.by1 != null && items.by1 != ''" type="dot" :color="items.by1">{{items.zdmc}}</Tag>
 										<span v-else>{{items.zdmc}}</span>
 									</div>
 									<div class="body-2" style="min-width: 50px;">

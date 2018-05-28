@@ -46,7 +46,7 @@
                 SpinShow: true,
                 tableHeight: 220,
                 tableColumns: [
-                    {title: "序号",  align: 'center', type: 'index'},
+                    {title: "#",  align: 'center', type: 'index'},
                     {title: '驾驶人', align: 'center',  key: 'sjxm'},
                     {title: '车牌号', align: 'center', key: 'cph'},
                     {title: '急加速', align: 'center', key: 'speedupCount'},
