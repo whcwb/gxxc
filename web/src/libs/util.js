@@ -5,7 +5,7 @@ let util = {
 };
 
 util.title = function (title) {
-    title = title || '车辆管理系统';
+    title = title || '520学车联盟';
     window.document.title = title;
 };
 util.fillTableColumns = (v)=>{
@@ -20,7 +20,12 @@ util.fillTableColumns = (v)=>{
                 let val = p.row[r.key];
                 let s  = val ? val : '-';
                 if (r.dict  && val){
-                    s = dictUtil.getValByCode(v,r.dict,p.row[r.key]);
+                    s = dictUtil.getItemByCode(v,r.dict,p.row[r.key]);
+                    console.log(s);
+                    if (s.color && s.color != ''){
+                        return h('Tag',{props:{color:s.color,type:'dot'}}, s.val)
+                    }
+                    s = s.val;
                 }
                 if (r.unit && val)s += r.unit;
                 return h('div',s);
