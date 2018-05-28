@@ -312,7 +312,8 @@ public class BizJl implements Serializable {
         jlZml("JL_ZML"),
         jlJjlxr("JL_JJLXR"),
         jlJjlxrdh("JL_JJLXRDH"),
-        jlZz("JL_ZZ");
+        jlZz("JL_ZZ"),
+        jlPf("JL_PF");
 
         private final String column;
 
