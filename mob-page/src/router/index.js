@@ -23,6 +23,14 @@ const router = new Router({
       component: resolve => { require(['@/views/login.vue'], resolve); }
     },
     {
+      path: '/reg',
+      name: 'Reg',
+      meta:{
+        title:'注册'
+      },
+      component: resolve => { require(['@/views/reg.vue'], resolve); }
+    },
+    {
       path: '/index',
       name: 'index',
       component:()=>import('@/views/homepage')

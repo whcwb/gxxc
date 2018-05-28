@@ -4,20 +4,29 @@
       <div id="logo">
         <img src="static/icon/logo.png" width="120" height="120">
         <dt style="font-size: 28px;color: white">
-          学 车 联 盟
+            输入手机号码和验证码
         </dt>
       </div>
       <!-- 登录输入项区域 -->
       <div>
+          <md-field-item
+            name="item3"
+            title="输入框"
+            customized
+            align="center">
+            <i class="iconfont icon-user" slot="left" style="font-size: 26px"></i>
+            <md-input-item
+              ref="input1"
+              placeholder="请输入手机号码"
+            ></md-input-item>
+          </md-field-item>
           <md-input-item
             ref="name"
-            title="账号"
-            placeholder="请输入登录账号"
-            is-title-latent
+            placeholder="请输入手机号码"
             clearable
             style="border-bottom: 1px gray solid;margin: 20px;;margin-bottom: 5px"
           >
-            <i class="iconfont icon-user" slot="left" style="font-size: 26px"></i>
+
           </md-input-item>
           <md-input-item
             ref="id"
@@ -68,7 +77,7 @@
           this.$router.push("/");
       },
       reg(){
-          this.$router.push("/reg");
+        Toast.info('操作成功');
       }
     }
   }
