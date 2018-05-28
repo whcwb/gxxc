@@ -33,6 +33,7 @@
 </style>
 <template>
   <div id="home_index" class="box">
+    <box-head></box-head>
     <div class="tit">
       520学车
     </div>
@@ -114,9 +115,11 @@
 
 <script>
 	import { TabBar ,ActionBar, Toast,Button,Swiper, SwiperItem} from 'mand-mobile'
+  import boxHead from './components/header'
   export default {
     name: 'home-view',
     components: {
+      boxHead,
       [TabBar.name]: TabBar,
       [Button.name]: Button,
       [ActionBar.name]: ActionBar,
