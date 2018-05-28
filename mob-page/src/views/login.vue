@@ -68,7 +68,7 @@
           this.$router.push("/");
       },
       reg(){
-        Toast.info('操作成功');
+          this.$router.push("/reg");
       }
     }
   }

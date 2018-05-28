@@ -62,7 +62,7 @@ public class BizPtyh implements Serializable {
     private String yhXm;
 
     /**
-     * 类型 ZDCLK0041(2、驾驶员、1、学员)
+     * 类型 ZDCLK0041(2、教练、1、学员)
      */
     @Column(name = "YH_LX")
     private String yhLx;
@@ -373,18 +373,18 @@ public class BizPtyh implements Serializable {
     }
 
     /**
-     * 获取类型 ZDCLK0041(2、驾驶员、1、学员)
+     * 获取类型 ZDCLK0041(2、教练、1、学员)
      *
-     * @return YH_LX - 类型 ZDCLK0041(2、驾驶员、1、学员)
+     * @return YH_LX - 类型 ZDCLK0041(2、教练、1、学员)
      */
     public String getYhLx() {
         return yhLx;
     }
 
     /**
-     * 设置类型 ZDCLK0041(2、驾驶员、1、学员)
+     * 设置类型 ZDCLK0041(2、教练、1、学员)
      *
-     * @param yhLx 类型 ZDCLK0041(2、驾驶员、1、学员)
+     * @param yhLx 类型 ZDCLK0041(2、教练、1、学员)
      */
     public void setYhLx(String yhLx) {
         this.yhLx = yhLx;

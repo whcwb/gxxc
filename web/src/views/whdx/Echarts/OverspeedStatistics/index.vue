@@ -93,7 +93,7 @@
                 SpinShow: true,
                 tableHeight: 220,
                 tableColumns: [
-                    {title: "序号",  align: 'center', type: 'index'},
+                    {title: "#",  align: 'center', type: 'index'},
                     {title: '驾驶人', align: 'center',  key: 'sjxm'},
                     {title: '车牌号', align: 'center', key: 'cph'},
                     {title: '超速次数', align: 'center',  key: 'overspeedCount'},

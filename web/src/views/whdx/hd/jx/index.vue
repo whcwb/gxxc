@@ -34,7 +34,7 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "序号", width: 70, type: 'index'},
+                    {title: "#",  type: 'index'},
                     {title: '标题',key:'hdBt',searchKey:'hdBtLike'},
                     {title: '正文',key:'hdZw'},
                     // {
