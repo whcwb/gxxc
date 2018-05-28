@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
@@ -135,6 +136,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     public ApiResponse<String> updateSfsd(BizPtyh bizPtyh) {
         SysYh sysYh=getCurrentUser();
         RuntimeCheck.ifBlank(bizPtyh.getId(),"用户Id不能为空");
+        BizPtyh ptyh = findById(bizPtyh.getId());
+        if(ObjectUtils.isEmpty(ptyh)){
+            return ApiResponse.fail("用户不存在");
+        }
         RuntimeCheck.ifBlank(bizPtyh.getYhSfsd(),"用户锁定状态不能为空");
         if(StringUtils.containsNone(bizPtyh.getYhSfsd(), new char[]{'0', '1'})){
             return ApiResponse.fail("请输入正确的状态");
@@ -157,6 +162,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     public ApiResponse<String> updateSffp(BizPtyh bizPtyh) {
         SysYh sysYh=getCurrentUser();
         RuntimeCheck.ifBlank(bizPtyh.getId(),"用户Id不能为空");
+        BizPtyh ptyh = findById(bizPtyh.getId());
+        if(ObjectUtils.isEmpty(ptyh)){
+            return ApiResponse.fail("用户不存在");
+        }
         RuntimeCheck.ifBlank(bizPtyh.getYhIxySffp(),"用户是否分配不能为空");
         if(StringUtils.equals(bizPtyh.getYhIxySffp(),"0")){
             bizPtyh.setYhFpms("");
