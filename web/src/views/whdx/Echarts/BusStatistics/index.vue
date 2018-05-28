@@ -98,7 +98,7 @@
                 //数据传输
                 chmess: {},
                 tableTiT: [
-                    {title: "序号",  align: 'center', type: 'index'},
+                    {title: "#",  align: 'center', type: 'index'},
                     {title: '线路时间', align: 'center',  key: 'clxl',
 						render:(h,p)=>{
                         	return h('div',p.row.clXl.yxjssj+'~'+p.row.clXl.yxjssj);

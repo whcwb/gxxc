@@ -51,7 +51,7 @@
                 chmess: {},
                 tableTiT: [
                     {
-						title: "序号",
+						title: "#",
 						width: 80,
 						align: 'center',
 						type: 'index'

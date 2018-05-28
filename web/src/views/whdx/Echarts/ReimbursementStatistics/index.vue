@@ -55,7 +55,7 @@
                 componentName: '',
                 choosedItem: null,
                 tableTitle: [
-                    {title: "序号", width: 80, align: 'center', type: 'index'},
+                    {title: "#", width: 80, align: 'center', type: 'index'},
                     {title: '报销人', align: 'center', key: 'bxr'},
                     {title: '报销事项', align: 'center', key: 'bxsx'},
                     {title: '报销时间', align: 'center', key: 'bxsj'},
