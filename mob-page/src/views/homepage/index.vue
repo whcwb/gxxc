@@ -22,10 +22,8 @@
         </div>
         <div class="body">
           <div class="qy fu">
-            <div class="tit">
-              <h2>
+            <div class="Htit">
                 区域查找
-              </h2>
             </div>
             <div class="box-row-list mess">
               <div class="qyName" v-for="(item,index) in qylist">
@@ -35,10 +33,8 @@
           </div>
 
           <div class="bm fu">
-            <div class="tit">
-              <h2>
+            <div class="Htit">
                 报名详细
-              </h2>
             </div>
             <div class="mess">
               <h1>我要报名</h1>
@@ -46,8 +42,8 @@
           </div>
 
           <div class="xc fu">
-            <div class="tit">
-              <h2>学车指引</h2>
+            <div class="Htit">
+              学车指引
             </div>
             <div class="mess">
               <h1>我要学车</h1>
@@ -55,11 +51,34 @@
           </div>
 
           <div class="ks fu">
-            <div class="tit">
-              <h2>考试必备</h2>
+            <div class="Htit">
+                考试须知
             </div>
-            <div class="mess">
-              <h1>我要学车</h1>
+            <div class="mess ksswiper">
+              <mt-swipe :auto="1000*6">
+                <mt-swipe-item>
+                  <div>
+                    <h3>科目一考试须知</h3>
+                  </div>
+                  请带好相关证件
+
+                </mt-swipe-item>
+                <mt-swipe-item>
+                  <div>
+                    <h3>科目二考试须知</h3>
+                  </div>
+                </mt-swipe-item>
+                <mt-swipe-item>
+                  <div>
+                    <h3>科目三考试须知</h3>
+                  </div>
+                </mt-swipe-item>
+                <mt-swipe-item>
+                  <div>
+                    <h3>科目四考试须知</h3>
+                  </div>
+                </mt-swipe-item>
+              </mt-swipe>
             </div>
           </div>
         </div>
