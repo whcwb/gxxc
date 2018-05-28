@@ -1,7 +1,9 @@
 package com.cwb.platform.biz.model;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * OCR驾驶证识别
@@ -78,18 +80,18 @@ public class BizJszocr implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 获取C证号
+     * 获取身份证号
      *
-     * @return SFZ_ID - C证号
+     * @return SFZ_ID - 身份证号
      */
     public String getSfzId() {
         return sfzId;
     }
 
     /**
-     * 设置C证号
+     * 设置身份证号
      *
-     * @param sfzId C证号
+     * @param sfzId 身份证号
      */
     public void setSfzId(String sfzId) {
         this.sfzId = sfzId;
