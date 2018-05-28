@@ -34,6 +34,7 @@ module.exports = {
         ADD:'/api/hd/save',
         CHANGE:'/api/hd/update',
         DELE:'/api/hd/removeIds',
+        hdtj:'/api/hd/hdtj',// 活动推荐
     },
     student:{
         QUERY:'/api/ptyh/pager',//平台用户管理
@@ -129,12 +130,6 @@ module.exports = {
         ADD:'/api/illegal/save',
         CHANGE:'/api/illegal/update',
         DELE:'/api/illegal/removeIds',
-    },
-    hd:{
-        QUERY:'api/hd/pager',//活动管理
-        ADD:'/api/hd/save',
-        CHANGE:'/api/hd/update',
-        DELE:'/api/hd/removeIds',
     },
     maintain:{
         QUERY:'api/maintain/pager',//保养管理
