@@ -13,7 +13,6 @@ import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.util.bean.ExcelParams;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.Des;
@@ -29,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
@@ -135,6 +135,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     public ApiResponse<String> updateSfsd(BizPtyh bizPtyh) {
         SysYh sysYh=getCurrentUser();
         RuntimeCheck.ifBlank(bizPtyh.getId(),"用户Id不能为空");
+        BizPtyh ptyh = findById(bizPtyh.getId());
+        if(ObjectUtils.isEmpty(ptyh)){
+            return ApiResponse.fail("用户不存在");
+        }
         RuntimeCheck.ifBlank(bizPtyh.getYhSfsd(),"用户锁定状态不能为空");
         if(StringUtils.containsNone(bizPtyh.getYhSfsd(), new char[]{'0', '1'})){
             return ApiResponse.fail("请输入正确的状态");
@@ -157,6 +161,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     public ApiResponse<String> updateSffp(BizPtyh bizPtyh) {
         SysYh sysYh=getCurrentUser();
         RuntimeCheck.ifBlank(bizPtyh.getId(),"用户Id不能为空");
+        BizPtyh ptyh = findById(bizPtyh.getId());
+        if(ObjectUtils.isEmpty(ptyh)){
+            return ApiResponse.fail("用户不存在");
+        }
         RuntimeCheck.ifBlank(bizPtyh.getYhIxySffp(),"用户是否分配不能为空");
         if(StringUtils.equals(bizPtyh.getYhIxySffp(),"0")){
             bizPtyh.setYhFpms("");
@@ -268,7 +276,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 // TODO: 2018/5/19  用户应邀邀请码存在造假的可能。是否需要验证
 
 
-        RuntimeCheck.ifBlank(entity.getYhLx(), "用户类型不能为空");//类型 ZDCLK0041(2、驾驶员、1、学员)
+        RuntimeCheck.ifBlank(entity.getYhLx(), "用户类型不能为空");//类型 ZDCLK0041(2、教练、1、学员)
         if(StringUtils.containsNone(entity.getYhLx(), new char[]{'1', '2'})){
             return ApiResponse.fail("请输入正确用户类型");
         }

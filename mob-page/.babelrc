@@ -16,6 +16,10 @@
       {
         "libraryName": "mand-mobile"      }
     ],
+    ["import", {
+      "libraryName": "iview",
+      "libraryDirectory": "src/components"
+    }],
     ["component", [{
       "libraryName": "mint-ui",
       "style": true

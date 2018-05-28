@@ -1,7 +1,9 @@
 package com.cwb.platform.biz.model;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * 文件上传表
@@ -26,13 +28,13 @@ public class BizWj implements Serializable {
     private String wjTpdz;
 
     /**
-     * 文件属性(10、身份证正面 11、身份证反而  20、驾照正面 21、驾照反而…………)
+     * 文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
      */
     @Column(name = "WJ_SX")
     private String wjSx;
 
     /**
-     * 图片是否ORC进行了识别（0、未识别 1、识别成功 2、识别失败）
+     * 图片是否ORC进行了识别 ZDCLK0052（0、 待识别 1、 识别成功 2、 识别失败）
      */
     @Column(name = "WJ_SBZT")
     private String wjSbzt;
@@ -50,8 +52,7 @@ public class BizWj implements Serializable {
     private String cjsj;
 
     /**
-     * 有效状态位(0、删除 1、生效)
-             图片上传时默认为0 当用户点了保存按钮后，创建用户资料表，并更新此状态为有效。
+     * 有效状态位 ZDCLK0051（0、 删除 1、 有效) 默认为0  用户保存后创建用户资料表并更新此状态为有效。
      */
     @Column(name = "WJ_SFYX")
     private String wjSfyx;
@@ -109,36 +110,36 @@ public class BizWj implements Serializable {
     }
 
     /**
-     * 获取文件属性(10、身份证正面 11、身份证反而  20、驾照正面 21、驾照反而…………)
+     * 获取文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
      *
-     * @return WJ_SX - 文件属性(10、身份证正面 11、身份证反而  20、驾照正面 21、驾照反而…………)
+     * @return WJ_SX - 文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
      */
     public String getWjSx() {
         return wjSx;
     }
 
     /**
-     * 设置文件属性(10、身份证正面 11、身份证反而  20、驾照正面 21、驾照反而…………)
+     * 设置文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
      *
-     * @param wjSx 文件属性(10、身份证正面 11、身份证反而  20、驾照正面 21、驾照反而…………)
+     * @param wjSx 文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
      */
     public void setWjSx(String wjSx) {
         this.wjSx = wjSx;
     }
 
     /**
-     * 获取图片是否ORC进行了识别（0、未识别 1、识别成功 2、识别失败）
+     * 获取图片是否ORC进行了识别 ZDCLK0052（0、 待识别 1、 识别成功 2、 识别失败）
      *
-     * @return WJ_SBZT - 图片是否ORC进行了识别（0、未识别 1、识别成功 2、识别失败）
+     * @return WJ_SBZT - 图片是否ORC进行了识别 ZDCLK0052（0、 待识别 1、 识别成功 2、 识别失败）
      */
     public String getWjSbzt() {
         return wjSbzt;
     }
 
     /**
-     * 设置图片是否ORC进行了识别（0、未识别 1、识别成功 2、识别失败）
+     * 设置图片是否ORC进行了识别 ZDCLK0052（0、 待识别 1、 识别成功 2、 识别失败）
      *
-     * @param wjSbzt 图片是否ORC进行了识别（0、未识别 1、识别成功 2、识别失败）
+     * @param wjSbzt 图片是否ORC进行了识别 ZDCLK0052（0、 待识别 1、 识别成功 2、 识别失败）
      */
     public void setWjSbzt(String wjSbzt) {
         this.wjSbzt = wjSbzt;
@@ -181,22 +182,18 @@ public class BizWj implements Serializable {
     }
 
     /**
-     * 获取有效状态位(0、删除 1、生效)
-             图片上传时默认为0 当用户点了保存按钮后，创建用户资料表，并更新此状态为有效。
+     * 获取有效状态位 ZDCLK0051（0、 删除 1、 有效) 默认为0  用户保存后创建用户资料表并更新此状态为有效。
      *
-     * @return WJ_SFYX - 有效状态位(0、删除 1、生效)
-             图片上传时默认为0 当用户点了保存按钮后，创建用户资料表，并更新此状态为有效。
+     * @return WJ_SFYX - 有效状态位 ZDCLK0051（0、 删除 1、 有效) 默认为0  用户保存后创建用户资料表并更新此状态为有效。
      */
     public String getWjSfyx() {
         return wjSfyx;
     }
 
     /**
-     * 设置有效状态位(0、删除 1、生效)
-             图片上传时默认为0 当用户点了保存按钮后，创建用户资料表，并更新此状态为有效。
+     * 设置有效状态位 ZDCLK0051（0、 删除 1、 有效) 默认为0  用户保存后创建用户资料表并更新此状态为有效。
      *
-     * @param wjSfyx 有效状态位(0、删除 1、生效)
-             图片上传时默认为0 当用户点了保存按钮后，创建用户资料表，并更新此状态为有效。
+     * @param wjSfyx 有效状态位 ZDCLK0051（0、 删除 1、 有效) 默认为0  用户保存后创建用户资料表并更新此状态为有效。
      */
     public void setWjSfyx(String wjSfyx) {
         this.wjSfyx = wjSfyx;
