@@ -44,7 +44,7 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
             return ApiResponse.fail("请输入正确的属性");
         }
 
-        entity.setHdtj(null);
+        entity.setHdTj(null);
         entity.setId(genId());
         entity.setCjsj(DateUtils.getNowTime());
         entity.setHdCjr(sysYh.getYhid());
@@ -63,9 +63,9 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
             return ApiResponse.fail("请输入正确的属性");
         }
 
-        entity.setHdtj(null);
-        entity.setHdxgsj(DateUtils.getNowTime());
-        entity.setHdxgr(sysYh.getYhid());
+        entity.setHdTj(null);
+        entity.setHdXgsj(DateUtils.getNowTime());
+        entity.setHdXgr(sysYh.getYhid());
         update(entity);
         return ApiResponse.updateSuccess();
     }
@@ -75,10 +75,10 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
         RuntimeCheck.ifBlank(entity.getId(),"请选择推荐活动");
         BizHd newEntity=new BizHd();
         newEntity.setId(entity.getId());
-        if(StringUtils.isBlank(entity.getHdtj())){
-            newEntity.setHdtj("");
+        if(StringUtils.isBlank(entity.getHdTj())){
+            newEntity.setHdTj("");
         }else{
-            newEntity.setHdtj(DateUtils.getNowTime());
+            newEntity.setHdTj(DateUtils.getNowTime());
         }
         int i=update(newEntity);
         return i==1?ApiResponse.success():ApiResponse.fail();
