@@ -14,6 +14,13 @@ const router = new Router({
       ]
     },
     {
+      path: '/index',
+      name: 'index',
+      component:()=>import('@/views/homepage'),
+      children:[
+      ]
+    },
+    {
       path: '/login',
       name: 'Login',
       component: resolve => { require(['@/views/login.vue'], resolve); }
