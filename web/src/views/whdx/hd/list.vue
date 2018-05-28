@@ -43,7 +43,41 @@
                     {title: "序号", width: 70, type: 'index'},
                     {title: '标题',key:'hdBt',searchKey:'hdBtLike'},
                     {title: '正文',key:'hdZw'},
-                    {title: '类型',key:'hdSx',dict:'ZDCLK0036'},
+                    {title: '类型',key:'hdSx',dict:'ZDCLK0036',searchType:'dict'},
+					{title:'推荐',key:'hdtj',
+						render:(h,p)=>{
+                            let val = p.row.hdtj == '' ? '关闭' : '打开';
+                            return h('div',[
+                                h('i-switch',{
+                                    props:{
+                                        size:'large',
+                                        value:p.row.hdtj && p.row.hdtj.length > 0 ? true:false,
+                                    },
+                                    on:{
+                                        'on-change':(value)=>{
+                                            let rzt = value ? '1':''
+											let v = this;
+                                            this.$http.post(this.apis.hd.hdtj,{'id':p.row.id,'hdtj':rzt}).then((res) =>{
+                                                if(res.code==200){
+                                                    this.$Message.success(res.message);
+                                                }else{
+                                                    this.$Message.error(res.message);
+                                                }
+                                                v.util.getPageData(v)
+                                            })
+                                        }
+                                    }
+                                },[
+                                    h('span',{
+                                        slot:"open"
+                                    },'打开'),
+                                    h('span',{
+                                        slot:"close"
+                                    },'关闭')
+                                ])
+                            ]);
+						}
+					},
                     {
                         title: '操作',
                         key: 'action',

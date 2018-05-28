@@ -70,7 +70,8 @@
 										{{items.zddm}}
 									</div>
 									<div class="body-8">
-										{{items.zdmc}}
+										<Tag v-if="items.by1 != null && items.by1 != ''" :color="items.by1">{{items.zdmc}}</Tag>
+										<span v-else>{{items.zdmc}}</span>
 									</div>
 									<div class="body-2" style="min-width: 50px;">
 										<Button type="error" size='small' shape="circle" icon="close" @click="removeDcList(item,items)"></Button>
