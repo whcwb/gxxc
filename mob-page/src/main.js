@@ -4,6 +4,7 @@ import Vue from 'vue'
 import * as FastClick from "fastclick"
 import App from './App'
 import router from './router'
+import store from './store';
 import './styles/box.less'
 import Apis from './libs/apis';
 //import './styles/global.css'
@@ -18,7 +19,8 @@ Vue.prototype.$http = Apis.ajax;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
+  router:router,
+  store: store,
   components: { App },
   template: '<App/>'
 })

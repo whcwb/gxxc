@@ -20,10 +20,42 @@
               </mt-swipe-item>
             </mt-swipe>
         </div>
+        <div class="bookmark box-row-list">
+          <div class="bokList">
+              <a href="#qy">
+                <mt-button type="primary">
+                  区域选着
+                </mt-button>
+              </a>
+          </div>
+          <div class="bokList">
+              <a href="#bm">
+                <mt-button type="primary">
+                    报名详细
+                </mt-button>
+              </a>
+          </div>
+          <div class="bokList">
+              <a href="#xc">
+                  <mt-button type="primary">
+                      学车指引
+                  </mt-button>
+              </a>
+          </div>
+          <div class="bokList">
+              <a href="#ks">
+                <mt-button type="primary">
+                    考试须知
+                </mt-button>
+              </a>
+          </div>
+        </div>
         <div class="body">
           <div class="qy fu">
             <div class="Htit">
-                区域查找
+              <a name="qy">
+              区域查找
+              </a>
             </div>
             <div class="box-row-list mess">
               <div class="qyName" v-for="(item,index) in qylist">
@@ -34,16 +66,20 @@
 
           <div class="bm fu">
             <div class="Htit">
+              <a name="bm">
                 报名详细
+              </a>
             </div>
             <div class="mess">
-              <h1>我要报名</h1>
+              选着您
             </div>
           </div>
 
           <div class="xc fu">
             <div class="Htit">
-              学车指引
+              <a name="xc">
+                学车指引
+              </a>
             </div>
             <div class="mess">
               <h1>我要学车</h1>
@@ -52,7 +88,9 @@
 
           <div class="ks fu">
             <div class="Htit">
+              <a name="ks">
                 考试须知
+              </a>
             </div>
             <div class="mess ksswiper">
               <mt-swipe :auto="1000*6">
@@ -102,7 +140,7 @@
 </template>
 
 <script>
-    import { Header, Swipe, SwipeItem , Tabbar, TabItem } from 'mint-ui';
+    import { Header, Swipe, SwipeItem , Tabbar, TabItem,Button } from 'mint-ui';
     import list from './qylist'
     export default {
         name: "index",
@@ -111,7 +149,8 @@
           [Swipe.name]: Swipe,
           [SwipeItem.name]: SwipeItem,
           [Tabbar.name]: Tabbar,
-          [TabItem.name]: TabItem
+          [TabItem.name]: TabItem,
+          [Button.name]:Button
         },
         data(){
           return{

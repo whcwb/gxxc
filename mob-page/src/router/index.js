@@ -28,6 +28,11 @@ const router = new Router({
       component:()=>import('@/views/homepage')
     },
     {
+      path: '/reg',
+      name: 'region',
+      component:()=>import('@/views/map/region')
+    },
+    {
       path: '/mycenter',
       name: 'mycenter',
       component:()=>import('@/views/myCenter')
