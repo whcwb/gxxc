@@ -32,6 +32,9 @@
       }
     },
     created() {
+      if(this.$route.params.map){
+          this.mapcenter = this.$route.params.map
+      }
     },
     mounted() {
       this.Buildmap()
