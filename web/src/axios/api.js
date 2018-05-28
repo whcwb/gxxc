@@ -1,5 +1,5 @@
 //网络请求地址前缀
-let BASE_URL = 'http://127.0.0.1:8081';
+let BASE_URL = 'http://47.98.39.45:9086';
 module.exports = {
     url: BASE_URL,
     //图片上传地址
