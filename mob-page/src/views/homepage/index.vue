@@ -127,7 +127,7 @@
               </div>
               首页
             </mt-tab-item>
-            <mt-tab-item id="我的">
+            <mt-tab-item id="我的" style="color: #6f6f6f">
               <div style="margin-bottom: 0.08rem">
                 <i class="iconfont icon-gerenzhongxin"></i>
               </div>
