@@ -34,7 +34,7 @@ public class BizYjmx implements Serializable {
     private String zjId;
 
     /**
-     * 费用方式(1回扣 -1提现)
+     * 费用方式 ZDCLK0053 (1 佣金 -1 提现)
      */
     @Column(name = "ZJ_FS")
     private String zjFs;
@@ -46,7 +46,7 @@ public class BizYjmx implements Serializable {
     private String cjsj;
 
     /**
-     * 状态(0待处理 1、处理成功 2、处理失败)
+     * 提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 2、提现失败) 提现操作默认0 佣金操作默认1  
      */
     @Column(name = "ZJ_ZT")
     private String zjZt;
@@ -128,18 +128,18 @@ public class BizYjmx implements Serializable {
     }
 
     /**
-     * 获取费用方式(1回扣 -1提现)
+     * 获取费用方式 ZDCLK0053 (1 佣金 -1 提现)
      *
-     * @return ZJ_FS_ - 费用方式(1回扣 -1提现)
+     * @return ZJ_FS - 费用方式 ZDCLK0053 (1 佣金 -1 提现)
      */
     public String getZjFs() {
         return zjFs;
     }
 
     /**
-     * 设置费用方式(1回扣 -1提现)
+     * 设置费用方式 ZDCLK0053 (1 佣金 -1 提现)
      *
-     * @param zjFs 费用方式(1回扣 -1提现)
+     * @param zjFs 费用方式 ZDCLK0053 (1 佣金 -1 提现)
      */
     public void setZjFs(String zjFs) {
         this.zjFs = zjFs;
@@ -164,18 +164,18 @@ public class BizYjmx implements Serializable {
     }
 
     /**
-     * 获取状态(0待处理 1、处理成功 2、处理失败)
+     * 获取提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 2、提现失败) 提现操作默认0 佣金操作默认1  
      *
-     * @return ZJ_ZT - 状态(0待处理 1、处理成功 2、处理失败)
+     * @return ZJ_ZT - 提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 2、提现失败) 提现操作默认0 佣金操作默认1  
      */
     public String getZjZt() {
         return zjZt;
     }
 
     /**
-     * 设置状态(0待处理 1、处理成功 2、处理失败)
+     * 设置提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 2、提现失败) 提现操作默认0 佣金操作默认1  
      *
-     * @param zjZt 状态(0待处理 1、处理成功 2、处理失败)
+     * @param zjZt 提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 2、提现失败) 提现操作默认0 佣金操作默认1  
      */
     public void setZjZt(String zjZt) {
         this.zjZt = zjZt;
@@ -204,7 +204,7 @@ public class BizYjmx implements Serializable {
         yhId("YH_ID"),
         zjJe("ZJ_JE"),
         zjId("ZJ_ID"),
-        zjFs("ZJ_FS_"),
+        zjFs("ZJ_FS"),
         cjsj("CJSJ"),
         zjZt("ZJ_ZT"),
         zjBz("ZJ_BZ");

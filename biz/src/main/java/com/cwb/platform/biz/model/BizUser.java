@@ -33,7 +33,7 @@ public class BizUser implements Serializable {
     private String yhSjhm;
 
     /**
-     * 是否有驾驶证(1:有 2:没有)
+     * 是否有驾驶证 ZDCLK0046 (0 否  1 是)
      */
     @Column(name = "YH_SFJSZ")
     private String yhSfjsz;
@@ -74,6 +74,11 @@ public class BizUser implements Serializable {
     @Transient
     private BizPtyh userDetail;
 
+    /**
+     * 教练ID
+     */
+    @Column(name = "YH_JLID")
+    private String yhJlid;
 
     private static final long serialVersionUID = 1L;
 
@@ -148,18 +153,18 @@ public class BizUser implements Serializable {
     }
 
     /**
-     * 获取是否有驾驶证(1:有 2:没有)
+     * 获取是否有驾驶证 ZDCLK0046 (0 否  1 是)
      *
-     * @return YH_SFJSZ - 是否有驾驶证(1:有 2:没有)
+     * @return YH_SFJSZ - 是否有驾驶证 ZDCLK0046 (0 否  1 是)
      */
     public String getYhSfjsz() {
         return yhSfjsz;
     }
 
     /**
-     * 设置是否有驾驶证(1:有 2:没有)
+     * 设置是否有驾驶证 ZDCLK0046 (0 否  1 是)
      *
-     * @param yhSfjsz 是否有驾驶证(1:有 2:没有)
+     * @param yhSfjsz 是否有驾驶证 ZDCLK0046 (0 否  1 是)
      */
     public void setYhSfjsz(String yhSfjsz) {
         this.yhSfjsz = yhSfjsz;
@@ -237,6 +242,24 @@ public class BizUser implements Serializable {
         this.yhSsjid = yhSsjid;
     }
 
+    /**
+     * 获取教练ID
+     *
+     * @return YH_JLID - 教练ID
+     */
+    public String getYhJlid() {
+        return yhJlid;
+    }
+
+    /**
+     * 设置教练ID
+     *
+     * @param yhJlid 教练ID
+     */
+    public void setYhJlid(String yhJlid) {
+        this.yhJlid = yhJlid;
+    }
+
     public enum InnerColumn {
         yhId("YH_ID"),
         yhZjhm("YH_ZJHM"),
@@ -245,7 +268,8 @@ public class BizUser implements Serializable {
         yhXm("YH_XM"),
         cjsj("CJSJ"),
         yhSjid("YH_SJID"),
-        yhSsjid("YH_SSJID");
+        yhSsjid("YH_SSJID"),
+        yhJlid("YH_JLID");
 
         private final String column;
 

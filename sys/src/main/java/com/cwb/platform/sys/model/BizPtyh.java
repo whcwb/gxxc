@@ -62,14 +62,13 @@ public class BizPtyh implements Serializable {
     private String yhXm;
 
     /**
-     * 类型(驾驶员、学员)
      * 类型 ZDCLK0041(2、驾驶员、1、学员)
      */
     @Column(name = "YH_LX")
     private String yhLx;
 
     /**
-     * 性别(1、男;2、女)
+     * 性别 ZDCLK0042(1、男;2、女)
      */
     @Column(name = "YH_XB")
     private String yhXb;
@@ -87,13 +86,13 @@ public class BizPtyh implements Serializable {
     private String yhMmyxq;
 
     /**
-     * 状态(未认证、已认证)
+     * 认证状态 ZDCLK0043(0 未认证、1 已认证)
      */
     @Column(name = "YH_ZT")
     private String yhZt;
 
     /**
-     * 是否缴费(0无 1已缴费)
+     * 是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
      */
     @Column(name = "DD_SFJX")
     private String ddSfjx;
@@ -135,13 +134,19 @@ public class BizPtyh implements Serializable {
     private String yhYyyqm;
 
     /**
-     * 学员是否已分配
+     * 自身邀请码图片
+     */
+    @Column(name = "YH_ZSYQM_IMG")
+    private String yhZsyqmImg;
+
+    /**
+     * 学员是否已分配 ZDCLK0046 (0 否  1 是)
      */
     @Column(name = "YH_IXY_SFFP")
     private String yhIxySffp;
 
     /**
-     * 是否有驾照
+     * 是否有驾照 ZDCLK0046 (0 否  1 是)
      */
     @Column(name = "YH_SFYJZ")
     private String yhSfyjz;
@@ -153,15 +158,11 @@ public class BizPtyh implements Serializable {
     private String yhFpms;
 
     /**
-     * 用户是否锁定
+     * 用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      */
     @Column(name = "YH_SFSD")
     private String yhSfsd;
-    /**
-     * 自身邀请码图片
-     */
-    @Column(name = "YH_ZSYQM_IMG")
-    private String yhZsyqmImg;
+
     /**
      * 手机验证码
      */
@@ -183,6 +184,7 @@ public class BizPtyh implements Serializable {
      */
     @Transient
     private String imgTypeList;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -227,18 +229,18 @@ public class BizPtyh implements Serializable {
     }
 
     /**
-     * 获取用户id  
+     * 获取用户id
      *
-     * @return ID - 用户id  
+     * @return ID - 用户id
      */
     public String getId() {
         return id;
     }
 
     /**
-     * 设置用户id  
+     * 设置用户id
      *
-     * @param id 用户id  
+     * @param id 用户id
      */
     public void setId(String id) {
         this.id = id;
@@ -371,36 +373,36 @@ public class BizPtyh implements Serializable {
     }
 
     /**
-     * 获取类型(驾驶员、学员)
+     * 获取类型 ZDCLK0041(2、驾驶员、1、学员)
      *
-     * @return YH_LX - 类型(驾驶员、学员)
+     * @return YH_LX - 类型 ZDCLK0041(2、驾驶员、1、学员)
      */
     public String getYhLx() {
         return yhLx;
     }
 
     /**
-     * 设置类型(驾驶员、学员)
+     * 设置类型 ZDCLK0041(2、驾驶员、1、学员)
      *
-     * @param yhLx 类型(驾驶员、学员)
+     * @param yhLx 类型 ZDCLK0041(2、驾驶员、1、学员)
      */
     public void setYhLx(String yhLx) {
         this.yhLx = yhLx;
     }
 
     /**
-     * 获取性别(1、男;2、女)
+     * 获取性别 ZDCLK0042(1、男;2、女)
      *
-     * @return YH_XB - 性别(1、男;2、女)
+     * @return YH_XB - 性别 ZDCLK0042(1、男;2、女)
      */
     public String getYhXb() {
         return yhXb;
     }
 
     /**
-     * 设置性别(1、男;2、女)
+     * 设置性别 ZDCLK0042(1、男;2、女)
      *
-     * @param yhXb 性别(1、男;2、女)
+     * @param yhXb 性别 ZDCLK0042(1、男;2、女)
      */
     public void setYhXb(String yhXb) {
         this.yhXb = yhXb;
@@ -443,36 +445,36 @@ public class BizPtyh implements Serializable {
     }
 
     /**
-     * 获取状态(未认证、已认证)
+     * 获取认证状态 ZDCLK0043(0 未认证、1 已认证)
      *
-     * @return YH_ZT - 状态(未认证、已认证)
+     * @return YH_ZT - 认证状态 ZDCLK0043(0 未认证、1 已认证)
      */
     public String getYhZt() {
         return yhZt;
     }
 
     /**
-     * 设置状态(未认证、已认证)
+     * 设置认证状态 ZDCLK0043(0 未认证、1 已认证)
      *
-     * @param yhZt 状态(未认证、已认证)
+     * @param yhZt 认证状态 ZDCLK0043(0 未认证、1 已认证)
      */
     public void setYhZt(String yhZt) {
         this.yhZt = yhZt;
     }
 
     /**
-     * 获取是否缴费(0无 1已缴费)
+     * 获取是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
      *
-     * @return DD_SFJX - 是否缴费(0无 1已缴费)
+     * @return DD_SFJX - 是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
      */
     public String getDdSfjx() {
         return ddSfjx;
     }
 
     /**
-     * 设置是否缴费(0无 1已缴费)
+     * 设置是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
      *
-     * @param ddSfjx 是否缴费(0无 1已缴费)
+     * @param ddSfjx 是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
      */
     public void setDdSfjx(String ddSfjx) {
         this.ddSfjx = ddSfjx;
@@ -587,36 +589,36 @@ public class BizPtyh implements Serializable {
     }
 
     /**
-     * 获取学员是否已分配
+     * 获取学员是否已分配 ZDCLK0046 (0 否  1 是)
      *
-     * @return YH_IXY_SFFP - 学员是否已分配
+     * @return YH_IXY_SFFP - 学员是否已分配 ZDCLK0046 (0 否  1 是)
      */
     public String getYhIxySffp() {
         return yhIxySffp;
     }
 
     /**
-     * 设置学员是否已分配
+     * 设置学员是否已分配 ZDCLK0046 (0 否  1 是)
      *
-     * @param yhIxySffp 学员是否已分配
+     * @param yhIxySffp 学员是否已分配 ZDCLK0046 (0 否  1 是)
      */
     public void setYhIxySffp(String yhIxySffp) {
         this.yhIxySffp = yhIxySffp;
     }
 
     /**
-     * 获取是否有驾照
+     * 获取是否有驾照 ZDCLK0046 (0 否  1 是)
      *
-     * @return YH_SFYJZ - 是否有驾照
+     * @return YH_SFYJZ - 是否有驾照 ZDCLK0046 (0 否  1 是)
      */
     public String getYhSfyjz() {
         return yhSfyjz;
     }
 
     /**
-     * 设置是否有驾照
+     * 设置是否有驾照 ZDCLK0046 (0 否  1 是)
      *
-     * @param yhSfyjz 是否有驾照
+     * @param yhSfyjz 是否有驾照 ZDCLK0046 (0 否  1 是)
      */
     public void setYhSfyjz(String yhSfyjz) {
         this.yhSfyjz = yhSfyjz;
@@ -641,18 +643,18 @@ public class BizPtyh implements Serializable {
     }
 
     /**
-     * 获取用户是否锁定
+     * 获取用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      *
-     * @return YH_SFSD - 用户是否锁定
+     * @return YH_SFSD - 用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      */
     public String getYhSfsd() {
         return yhSfsd;
     }
 
     /**
-     * 设置用户是否锁定
+     * 设置用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      *
-     * @param yhSfsd 用户是否锁定
+     * @param yhSfsd 用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      */
     public void setYhSfsd(String yhSfsd) {
         this.yhSfsd = yhSfsd;
@@ -679,6 +681,7 @@ public class BizPtyh implements Serializable {
         yhBm("YH_BM"),
         yhZsyqm("YH_ZSYQM"),
         yhYyyqm("YH_YYYQM"),
+        yhZsyqmImg("YH_ZSYQM_IMG"),
         yhIxySffp("YH_IXY_SFFP"),
         yhSfyjz("YH_SFYJZ"),
         yhFpms("YH_FPMS"),

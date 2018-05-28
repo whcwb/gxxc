@@ -1,7 +1,9 @@
 package com.cwb.platform.biz.model;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  *  用户提现表
@@ -29,15 +31,14 @@ public class BizTx implements Serializable {
     private String yhMc;
 
     /**
-     * 佣金明细表id
+     * biz_yjmx佣金明细id
+
      */
     @Column(name = "YJ_ID")
     private String yjId;
 
-
-
     /**
-     * 提现方式(1、微信红包 2、人工转账)
+     * 提现方式 ZDCLK0047 (1、微信红包 2、人工转账)
      */
     @Column(name = "TT_FS")
     private String ttFs;
@@ -55,7 +56,7 @@ public class BizTx implements Serializable {
     private String ttSj;
 
     /**
-     * 提现状态(0该红包待审核 1、红包已收取 2、红包已经发送  3、红包过期未收取到)
+     * 提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
      */
     @Column(name = "TT_ZT")
     private String ttZt;
@@ -85,7 +86,7 @@ public class BizTx implements Serializable {
     private String ttShr;
 
     /**
-     * 提现审核状态(0、待审核 1、审核通过 2、审核拒绝)
+     * 提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)
      */
     @Column(name = "TT_SHZT")
     private String ttShzt;
@@ -135,37 +136,61 @@ public class BizTx implements Serializable {
     }
 
     /**
-     * 获取提现方式(1、微信红包 2、人工转账)
+     * 获取用户名称
      *
-     * @return TT_FS - 提现方式(1、微信红包 2、人工转账)
+     * @return YH_MC - 用户名称
+     */
+    public String getYhMc() {
+        return yhMc;
+    }
+
+    /**
+     * 设置用户名称
+     *
+     * @param yhMc 用户名称
+     */
+    public void setYhMc(String yhMc) {
+        this.yhMc = yhMc;
+    }
+
+    /**
+     * 获取biz_yjmx佣金明细id
+
+     *
+     * @return YJ_ID - biz_yjmx佣金明细id
+
+     */
+    public String getYjId() {
+        return yjId;
+    }
+
+    /**
+     * 设置biz_yjmx佣金明细id
+
+     *
+     * @param yjId biz_yjmx佣金明细id
+
+     */
+    public void setYjId(String yjId) {
+        this.yjId = yjId;
+    }
+
+    /**
+     * 获取提现方式 ZDCLK0047 (1、微信红包 2、人工转账)
+     *
+     * @return TT_FS - 提现方式 ZDCLK0047 (1、微信红包 2、人工转账)
      */
     public String getTtFs() {
         return ttFs;
     }
 
     /**
-     * 设置提现方式(1、微信红包 2、人工转账)
+     * 设置提现方式 ZDCLK0047 (1、微信红包 2、人工转账)
      *
-     * @param ttFs 提现方式(1、微信红包 2、人工转账)
+     * @param ttFs 提现方式 ZDCLK0047 (1、微信红包 2、人工转账)
      */
     public void setTtFs(String ttFs) {
         this.ttFs = ttFs;
-    }
-
-    public String getYhMc() {
-        return yhMc;
-    }
-
-    public void setYhMc(String yhMc) {
-        this.yhMc = yhMc;
-    }
-
-    public String getYjId() {
-        return yjId;
-    }
-
-    public void setYjId(String yjId) {
-        this.yjId = yjId;
     }
 
     /**
@@ -205,18 +230,18 @@ public class BizTx implements Serializable {
     }
 
     /**
-     * 获取提现状态(0该红包待审核 1、红包已收取 2、红包已经发送  3、红包过期未收取到)
+     * 获取提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
      *
-     * @return TT_ZT - 提现状态(0该红包待审核 1、红包已收取 2、红包已经发送  3、红包过期未收取到)
+     * @return TT_ZT - 提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
      */
     public String getTtZt() {
         return ttZt;
     }
 
     /**
-     * 设置提现状态(0该红包待审核 1、红包已收取 2、红包已经发送  3、红包过期未收取到)
+     * 设置提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
      *
-     * @param ttZt 提现状态(0该红包待审核 1、红包已收取 2、红包已经发送  3、红包过期未收取到)
+     * @param ttZt 提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
      */
     public void setTtZt(String ttZt) {
         this.ttZt = ttZt;
@@ -295,18 +320,18 @@ public class BizTx implements Serializable {
     }
 
     /**
-     * 获取提现审核状态(0、待审核 1、审核通过 2、审核拒绝)
+     * 获取提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)
      *
-     * @return TT_SHZT - 提现审核状态(0、待审核 1、审核通过 2、审核拒绝)
+     * @return TT_SHZT - 提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)
      */
     public String getTtShzt() {
         return ttShzt;
     }
 
     /**
-     * 设置提现审核状态(0、待审核 1、审核通过 2、审核拒绝)
+     * 设置提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)
      *
-     * @param ttShzt 提现审核状态(0、待审核 1、审核通过 2、审核拒绝)
+     * @param ttShzt 提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)
      */
     public void setTtShzt(String ttShzt) {
         this.ttShzt = ttShzt;
@@ -333,6 +358,8 @@ public class BizTx implements Serializable {
     public enum InnerColumn {
         id("ID"),
         yhId("YH_ID"),
+        yhMc("YH_MC"),
+        yjId("YJ_ID"),
         ttFs("TT_FS"),
         ttJe("TT_JE"),
         ttSj("TT_SJ"),
