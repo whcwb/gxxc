@@ -1,47 +1,76 @@
+<style lang="less">
+  /*@import "./homepage/home";*/
+</style>
 <template>
-  <div id="home">
-    <mt-header title="标题过长会隐藏后面的内容啊哈哈哈哈">
-      <router-link to="/" slot="left">
-        <md-icon name="arrow-left" size="lg"></md-icon>
-      </router-link>
-      <mt-button icon="more" slot="right"></mt-button>
-    </mt-header>
-    <md-button  type="ghost" size="small" disabled style="margin-left:5px">Primary</md-button>
-    <!--<md-button @click="handleClick">点我</md-button>-->
-    <mt-tabbar>
-      <mt-tab-item id="外卖">
-        外卖
-      </mt-tab-item>
-      <mt-tab-item id="订单">
-        订单
-      </mt-tab-item>
-      <mt-tab-item id="发现">
-        发现
-      </mt-tab-item>
-      <mt-tab-item id="我的">
-        我的
-      </mt-tab-item>
-    </mt-tabbar>
+  <div id="homeSty" class="box">
+    <div class="body">
+      <div style="height: 100%;">
+        <home-index v-if="tabId=='tab-home'"></home-index>
+        <user-index v-else-if="tabId=='tab-user'"></user-index>
+        <!--<mt-tab-container v-model="tabId">-->
+        <!--<mt-tab-container-item id="tab-home">-->
+        <!--<home-index></home-index>-->
+        <!--</mt-tab-container-item>-->
+        <!--<mt-tab-container-item id="tab-user">-->
+        <!--<user-index></user-index>-->
+        <!--</mt-tab-container-item>-->
+        <!--</mt-tab-container>-->
+      </div>
+    </div>
+    <div class="fooder">
+      <mt-tabbar v-model="tabId">
+        <mt-tab-item id="tab-home">
+          <div style="margin-bottom: 0.08rem">
+            <i class="iconfont icon-shouye1"></i>
+          </div>
+          首页
+        </mt-tab-item>
+        <mt-tab-item id="tab-user">
+          <div style="margin-bottom: 0.08rem">
+            <i class="iconfont icon-gerenzhongxin"></i>
+          </div>
+          我的
+        </mt-tab-item>
+      </mt-tabbar>
+    </div>
   </div>
 </template>
 
 <script>
-  import { Button, Toast, Icon } from 'mand-mobile'
-  import { Header, Tabbar, TabItem } from 'mint-ui';
-
+  import { Header, Swipe, SwipeItem , Tabbar, TabItem,Button, TabContainer, TabContainerItem } from 'mint-ui';
+  import homeIndex from '@/views/homepage/homeIndex.vue'
+  import userIndex from '@/views/myCenter'
   export default {
-    name: 'home-view',
-    components: {
-      [Icon.name]: Icon,
-      [Button.name]: Button,
+    name: "index",
+    components:{
       [Header.name]: Header,
+      [Swipe.name]: Swipe,
+      [SwipeItem.name]: SwipeItem,
       [Tabbar.name]: Tabbar,
       [TabItem.name]: TabItem,
+      [Button.name]:Button,
+      [TabContainer.name]:TabContainer,
+      [TabContainerItem.name]:TabContainerItem,
+      homeIndex,userIndex
     },
-    methods: {
-      handleClick() {
-        Toast.info('不错哟~')
+    data(){
+      return{
+        tabId:this.$store.state.app.tabId
       }
+    },
+    watch:{
+      tabId:function (n,o) {
+        this.$store.commit('M_tabId', n)
+      }
+    },
+    created(){
+
+    },
+    methods:{
     }
   }
 </script>
+
+<style scoped>
+
+</style>

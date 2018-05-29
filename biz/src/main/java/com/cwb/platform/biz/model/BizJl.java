@@ -5,9 +5,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-/**
- * 教练表
- */
 @Table(name = "biz_jl")
 public class BizJl implements Serializable {
     /**
@@ -78,11 +75,22 @@ public class BizJl implements Serializable {
     private String jlZz;
 
     /**
-     *  教练-评分
+     * 教练评分 默认 5星
      */
     @Column(name = "JL_PF")
     private String jlPf;
 
+    /**
+     * 教练头像
+     */
+    @Column(name = "JL_IMG")
+    private String jlImg;
+
+    /**
+     * 教练简界
+     */
+    @Column(name = "JL_MS")
+    private String jlMs;
 
     private static final long serialVersionUID = 1L;
 
@@ -285,20 +293,57 @@ public class BizJl implements Serializable {
     }
 
     /**
-     * 获取教练-评分
+     * 获取教练评分 默认 5星
      *
-     * @return
+     * @return JL_PF - 教练评分 默认 5星
      */
     public String getJlPf() {
         return jlPf;
     }
 
     /**
-     * 设置教练 - 评分
-     * @param jlPf
+     * 设置教练评分 默认 5星
+     *
+     * @param jlPf 教练评分 默认 5星
      */
     public void setJlPf(String jlPf) {
         this.jlPf = jlPf;
+    }
+
+    /**
+     * 获取教练头像
+     *
+     * @return JL_IMG - 教练头像
+     */
+    public String getJlImg() {
+        return jlImg;
+    }
+
+    /**
+     * 设置教练头像
+     *
+     * @param jlImg 教练头像
+     */
+    public void setJlImg(String jlImg) {
+        this.jlImg = jlImg;
+    }
+
+    /**
+     * 获取教练简界
+     *
+     * @return JL_MS - 教练简界
+     */
+    public String getJlMs() {
+        return jlMs;
+    }
+
+    /**
+     * 设置教练简界
+     *
+     * @param jlMs 教练简界
+     */
+    public void setJlMs(String jlMs) {
+        this.jlMs = jlMs;
     }
 
     public enum InnerColumn {
@@ -313,7 +358,9 @@ public class BizJl implements Serializable {
         jlJjlxr("JL_JJLXR"),
         jlJjlxrdh("JL_JJLXRDH"),
         jlZz("JL_ZZ"),
-        jlPf("JL_PF");
+        jlPf("JL_PF"),
+        jlImg("JL_IMG"),
+        jlMs("JL_MS");
 
         private final String column;
 

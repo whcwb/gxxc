@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 @Service
+<<<<<<< HEAD
 public class JlServiceImpl extends BaseServiceImpl<BizJl, String> implements JlService {
+=======
+public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlService {
+>>>>>>> ae32173d4149b92b4d44899eb17c98a59e47afdd
 
     @Autowired
     private BizJlMapper entityMapper;

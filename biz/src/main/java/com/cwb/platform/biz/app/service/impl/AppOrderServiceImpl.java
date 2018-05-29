@@ -4,8 +4,10 @@ package com.cwb.platform.biz.app.service.impl;
 import com.cwb.platform.biz.app.service.AppOrderService;
 import com.cwb.platform.biz.mapper.BizOrderMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
+import com.cwb.platform.biz.model.BizCp;
 import com.cwb.platform.biz.model.BizOrder;
 import com.cwb.platform.biz.model.BizUser;
+import com.cwb.platform.biz.service.impl.CpServiceImpl;
 import com.cwb.platform.biz.service.impl.PtyhServiceImpl;
 import com.cwb.platform.biz.service.impl.UserServiceImpl;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -42,6 +44,9 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private CpServiceImpl cpService;
 
     @Override
     protected Mapper<BizOrder> getBaseMapper() {
@@ -111,6 +116,17 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         if(StringUtils.containsNone(entity.getDdZftd(), new char[]{'1', '2','3','4'})){
             RuntimeCheck.ifTrue(true,"您好，请输入确定支付方式");
         }
+        //验证产品Id，是否有效
+        String cpId=entity.getCpId();//产品id(BIZ_CP)
+        RuntimeCheck.ifNull(cpId,"您好，请确定支付产品");
+        BizCp bizCp=cpService.findById(cpId);
+        RuntimeCheck.ifNull(bizCp,"您好，产品信息有误，请重新尝试");
+        String cpYx=bizCp.getCpYx();//获取产品是否有效(0、无效 1、生效)
+        RuntimeCheck.ifFalse(StringUtils.equals("1",cpYx),"您好，产品信息无效，请重新尝试");
+        String cpSh=bizCp.getCpSh();//产品审核(0待审核 1、审核通过 2、审核驳回)
+        RuntimeCheck.ifFalse(StringUtils.equals("1",cpSh),"您好，产品未审核，请重新尝试");
+
+
         BizPtyh user=getAppCurrentUser();
         RuntimeCheck.ifNull(user,"用户不存在");
         String userId=user.getId();

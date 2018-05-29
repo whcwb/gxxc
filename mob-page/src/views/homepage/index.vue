@@ -3,131 +3,29 @@
 </style>
 <template>
       <div id="homeSty" class="box">
-        <div class="tit">
-          520学车联盟
-          <!--<mt-header fixed title="520学车联盟"></mt-header>-->
-        </div>
-        <div class="swipe">
-            <mt-swipe :auto="4000">
-              <mt-swipe-item>
-                <img src="static/s1.jpg"
-                     style="height: 100%;width: 100%"
-                     alt="">
-              </mt-swipe-item>
-              <mt-swipe-item style="background-color: #f0f">
-                <img src="static/s2.jpg"
-                     style="height: 100%;width: 100%"
-                     alt="">
-              </mt-swipe-item>
-            </mt-swipe>
-        </div>
-        <div class="bookmark box-row-list">
-          <div class="bokList">
-              <a href="#qy">
-                <mt-button type="primary">
-                  区域选着
-                </mt-button>
-              </a>
-          </div>
-          <div class="bokList">
-              <a href="#bm">
-                <mt-button type="primary">
-                    报名详细
-                </mt-button>
-              </a>
-          </div>
-          <div class="bokList">
-              <a href="#xc">
-                  <mt-button type="primary">
-                      学车指引
-                  </mt-button>
-              </a>
-          </div>
-          <div class="bokList">
-              <a href="#ks">
-                <mt-button type="primary">
-                    考试须知
-                </mt-button>
-              </a>
-          </div>
-        </div>
         <div class="body">
-          <a name="qy"></a>
-          <div class="qy fu">
-            <div class="Htit">
-              区域查找
-            </div>
-            <div class="box-row-list mess">
-              <div class="qyName"
-                   @click="goMap(item)"
-                   v-for="(item,index) in qylist">
-                {{item.name}}
-              </div>
-            </div>
-          </div>
-
-          <a name="bm"></a>
-          <div class="bm fu">
-            <div class="Htit">
-                报名详细
-            </div>
-            <div class="mess">
-              选着您
-            </div>
-          </div>
-
-          <a name="xc"></a>
-          <div class="xc fu">
-            <div class="Htit">
-                学车指引
-            </div>
-            <div class="mess">
-              我要学车
-            </div>
-          </div>
-
-          <a name="ks"></a>
-          <div class="ks fu">
-            <div class="Htit">
-                考试须知
-            </div>
-            <div class="mess ksswiper">
-              <mt-swipe :auto="1000*6">
-                <mt-swipe-item>
-                  <div>
-                    <h3>科目一考试须知</h3>
-                  </div>
-                  请带好相关证件
-
-                </mt-swipe-item>
-                <mt-swipe-item>
-                  <div>
-                    <h3>科目二考试须知</h3>
-                  </div>
-                </mt-swipe-item>
-                <mt-swipe-item>
-                  <div>
-                    <h3>科目三考试须知</h3>
-                  </div>
-                </mt-swipe-item>
-                <mt-swipe-item>
-                  <div>
-                    <h3>科目四考试须知</h3>
-                  </div>
-                </mt-swipe-item>
-              </mt-swipe>
-            </div>
+          <div style="height: 100%;">
+            <home-index v-if="tabId=='tab-home'"></home-index>
+            <user-index v-else-if="tabId=='tab-user'"></user-index>
+            <!--<mt-tab-container v-model="tabId">-->
+              <!--<mt-tab-container-item id="tab-home">-->
+                <!--<home-index></home-index>-->
+              <!--</mt-tab-container-item>-->
+              <!--<mt-tab-container-item id="tab-user">-->
+                <!--<user-index></user-index>-->
+              <!--</mt-tab-container-item>-->
+            <!--</mt-tab-container>-->
           </div>
         </div>
         <div class="fooder">
-          <mt-tabbar>
-            <mt-tab-item id="首页" style="color: #2d8cf0">
+          <mt-tabbar v-model="tabId">
+            <mt-tab-item id="tab-home">
               <div style="margin-bottom: 0.08rem">
                   <i class="iconfont icon-shouye1"></i>
               </div>
               首页
             </mt-tab-item>
-            <mt-tab-item id="我的" style="color: #6f6f6f">
+            <mt-tab-item id="tab-user">
               <div style="margin-bottom: 0.08rem">
                 <i class="iconfont icon-gerenzhongxin"></i>
               </div>
@@ -139,8 +37,10 @@
 </template>
 
 <script>
-    import { Header, Swipe, SwipeItem , Tabbar, TabItem,Button } from 'mint-ui';
+    import { Header, Swipe, SwipeItem , Tabbar, TabItem,Button, TabContainer, TabContainerItem } from 'mint-ui';
     import list from './qylist'
+    import homeIndex from './homeIndex.vue'
+    import userIndex from '@/views/myCenter'
     export default {
         name: "index",
         components:{
@@ -149,11 +49,15 @@
           [SwipeItem.name]: SwipeItem,
           [Tabbar.name]: Tabbar,
           [TabItem.name]: TabItem,
-          [Button.name]:Button
+          [Button.name]:Button,
+          [TabContainer.name]:TabContainer,
+          [TabContainerItem.name]:TabContainerItem,
+          homeIndex,userIndex
         },
         data(){
           return{
-            qylist:list.qyList
+            qylist:list.qyList,
+            tabId:'tab-home'
           }
         },
         created(){
@@ -162,7 +66,7 @@
           goMap(item){
             console.log(this.$route)
             this.$router.push({
-              name:'region',
+              name:'jxlist',
               params:item
             })
           }

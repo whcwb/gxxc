@@ -1,5 +1,6 @@
 import axios from 'axios';
 import qs from 'qs'
+import { Toast } from 'mand-mobile'
 
 const ajaxUrl ='http://127.0.0.1';
 let API = {
@@ -21,6 +22,8 @@ API.ajax = axios.create({
 });
 
 API.ajax.interceptors.request.use(config=> {
+    //网络请求加载动画
+    Toast.loading('加载中...');
     var headers = config.headers;
     var contentType = headers['Content-Type'];
     if (contentType == "application/x-www-form-urlencoded"){
@@ -45,7 +48,24 @@ API.ajax.interceptors.request.use(config=> {
 
     return config;
 }, error=> {
+    Toast.hide();
+    setTimeout(() => {
+      Toast.failed(API.NETWORK_ERR)
+    }, 100);
     return Promise.reject(error);
+});
+
+API.ajax.interceptors.response.use(response=> {
+  //网络请求加载动画
+  Toast.hide();
+
+  return response;
+}, error=> {
+  Toast.hide();
+  setTimeout(() => {
+    Toast.failed(API.NETWORK_ERR)
+  }, 100);
+  return Promise.reject(error);
 });
 
 export default API;
