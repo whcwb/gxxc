@@ -46,7 +46,7 @@
           <div class="bokList">
             <a href="#ks">
               <mt-button type="primary">
-                考试须知
+                考场分布
               </mt-button>
             </a>
           </div>
