@@ -4,11 +4,11 @@ import Vue from 'vue';
 
 const app = {
     state: {
-      jf:false
+      tabId:'tab-home'
     },
     mutations: {
-      CHjf(state,data){
-        state.jf = data
+      M_tabId(state,data){
+        state.tabId = data
       },
     }
 };

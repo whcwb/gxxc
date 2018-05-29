@@ -35,30 +35,52 @@
         </div>
       </div>
       <div v-show="stepIndex == 1">
-        {{stepIndex}}
-        <div class="box-row">
-          <div class="body-O" style="margin-right: 20px;margin-left: 20px">
-            <md-button @click="phoneNext">验证码</md-button>
-          </div>
-        </div>
+        <md-captcha
+          ref="captchaRef"
+          :maxlength="6"
+          :isView="true"
+          :count="120"
+          @send="phoneNext"
+          @submit="vaildCodeNext"
+        >
+          验证码已发送至{{form.vaildPhone}}
+        </md-captcha>
       </div>
       <div v-show="stepIndex == 2">
         <md-field style="margin-bottom: 20px">
           <md-input-item
             ref="name"
-            placeholder="请输入手机号码"
-            type="phone"
-            v-model="form.phone"
+            placeholder="请输入姓名"
+            v-model="form.name"
             clearable
-            :error="error"
             style="border-bottom: 1px gray solid;"
           >
-            <i class="iconfont icon-mobile" slot="left" style="font-size: 26px"></i>
+            <i class="iconfont icon-user" slot="left" style="font-size: 26px"></i>
+          </md-input-item>
+          <md-input-item
+            ref="name"
+            placeholder="请输入密码"
+            v-model="form.pwd"
+            type="password"
+            clearable
+            style="border-bottom: 1px gray solid;"
+          >
+            <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
+          </md-input-item>
+          <md-input-item
+            ref="name"
+            placeholder="请输入确认密码"
+            v-model="form.secPwd"
+            clearable
+            type="password"
+            style="border-bottom: 1px gray solid;"
+          >
+            <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
           </md-input-item>
         </md-field>
         <div class="box-row">
           <div class="body-O" style="margin-right: 20px;margin-left: 20px">
-            <md-button @click="phoneNext">获取短信验证码</md-button>
+            <md-button @click="reg" style="background-color: #2d8cf0">注册</md-button>
           </div>
         </div>
       </div>
@@ -66,7 +88,7 @@
 </template>
 
 <script>
-  import { Button, InputItem, Icon, Toast,Field, FieldItem  } from 'mand-mobile'
+  import { Button, InputItem, Icon, Toast,Field, FieldItem, Captcha  } from 'mand-mobile'
   import {  Header } from 'mint-ui';
   import { Steps, Step,Tabs,TabPane } from 'iview';
 
@@ -77,7 +99,12 @@
           stepIndex:0,
           error:'',
           form:{
-              phone:''
+              phone:'',
+              vaildPhone:'',
+              code:'',
+              name:'',
+              pwd:'',
+              secPwd:''
           },
       }
     },
@@ -92,9 +119,11 @@
       [Step.name]: Step,
       [Tabs.name]: Tabs,
       [TabPane.name]: TabPane,
+      [Captcha.name]: Captcha,
 
   },
     methods: {
+      //获取短信验证码
       phoneNext() {
           if (this.form.phone == '' || this.form.phone.length < 11){
               this.error = "请输入正确手机号码";
@@ -103,13 +132,34 @@
             this.error = "";
           }
 
-          this.stepIndex++;
+          this.stepIndex = 1;
+
+          this.form.vaildPhone = this.form.phone.substring(0,3) + "****" + this.form.phone.substring(this.form.phone.length - 4);
+          this.$refs.captchaRef.countdown();
       },
-      login(){
-          this.$router.push("/");
+      //验证短信验证码是否有效
+      vaildCodeNext(code){
+        //请求接口判断验证码是否正确
+        /*this.$http.post('https://mint-ui.github.io/docs/#/zh-cn2/indicator',{code:code}).then((response)=>{
+            console.log(response);
+         }, error=> {
+            console.log('报错了');
+         });*/
+
+          this.stepIndex = 2;
       },
       reg(){
-        Toast.info('操作成功');
+          //请求接口进行注册操作
+          /*this.$http.post('https://mint-ui.github.io/docs/#/zh-cn2/indicator',{code:code}).then((response)=>{
+           console.log(response);
+           }, error=> {
+           console.log('报错了');
+           });*/
+          Toast.info('注册成功');
+
+          setTimeout(()=>{
+              this.$router.push("/");
+          }, 1000);
       }
     }
   }
@@ -133,6 +183,10 @@
       line-height: 60px;
       font-size: 26px;
       font-weight: 500;
+    }
+
+    .md-number-keyboard-container{
+      margin-top: 20px;
     }
   }
 </style>

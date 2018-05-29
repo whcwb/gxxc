@@ -11,13 +11,13 @@
       <div>
           <md-input-item
             ref="name"
-            title="账号"
-            placeholder="请输入登录账号"
+            title="手机号"
+            placeholder="请输入手机号"
             is-title-latent
             clearable
             style="border-bottom: 1px gray solid;margin: 20px;;margin-bottom: 5px"
           >
-            <i class="iconfont icon-user" slot="left" style="font-size: 26px"></i>
+            <i class="iconfont icon-mobile" slot="left" style="font-size: 26px"></i>
           </md-input-item>
           <md-input-item
             ref="id"
@@ -25,6 +25,7 @@
             placeholder="请输入登录密码"
             is-title-latent
             clearable
+            type="password"
             style="border-bottom: 1px gray solid;margin: 20px;margin-top: 0px"
           >
             <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
@@ -33,7 +34,7 @@
       <!-- 操作按钮区域 -->
       <div class="box-row">
         <div class="body-O"></div>
-        <div style="margin-right: 20px">
+        <div style="margin-right: 20px;margin-bottom: 20px">
             <a style="color: #dddee1;font-size: 20px;vertical-align: top" @click="handleClick">忘记密码？</a>
         </div>
       </div>
@@ -43,7 +44,7 @@
         </div>
       </div>
       <div class="box-row">
-        <div class="body-O" style="text-align: center">
+        <div class="body-O" style="text-align: center;margin-top: 20px">
           <a style="color: #FFCC66;font-size: 24px;" @click="reg">创 建 账 号</a>
         </div>
       </div>

@@ -30,14 +30,14 @@ const router = new Router({
       },
       component: resolve => { require(['@/views/reg.vue'], resolve); }
     },
+    // {
+    //   path: '/index',
+    //   name: 'index',
+    //   component:()=>import('@/views/homepage')
+    // },
     {
-      path: '/index',
-      name: 'index',
-      component:()=>import('@/views/homepage')
-    },
-    {
-      path: '/region',
-      name: 'region',
+      path: '/jxlist',
+      name: 'jxlist',
       component:()=>import('@/views/jxlist')
     },
     {
