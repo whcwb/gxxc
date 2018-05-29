@@ -8,7 +8,7 @@
             <home-index></home-index>
           </mt-tab-container-item>
           <mt-tab-container-item id="tab-user">
-            个人中心
+            <user-index></user-index>
           </mt-tab-container-item>
         </mt-tab-container>
         <div class="fooder">
@@ -34,6 +34,7 @@
     import { Header, Swipe, SwipeItem , Tabbar, TabItem,Button, TabContainer, TabContainerItem } from 'mint-ui';
     import list from './qylist'
     import homeIndex from './homeIndex.vue'
+    import userIndex from '@/views/myCenter'
     export default {
         name: "index",
         components:{
@@ -45,7 +46,7 @@
           [Button.name]:Button,
           [TabContainer.name]:TabContainer,
           [TabContainerItem.name]:TabContainerItem,
-          homeIndex
+          homeIndex,userIndex
         },
         data(){
           return{
