@@ -3,23 +3,29 @@
 </style>
 <template>
       <div id="homeSty" class="box">
-        <mt-tab-container v-model="tabId">
-          <mt-tab-container-item id="tab-home">
-            <home-index></home-index>
-          </mt-tab-container-item>
-          <mt-tab-container-item id="tab-user">
-            <user-index></user-index>
-          </mt-tab-container-item>
-        </mt-tab-container>
+        <div class="body">
+          <div style="height: 100%;">
+            <home-index v-if="tabId=='tab-home'"></home-index>
+            <user-index v-else-if="tabId=='tab-user'"></user-index>
+            <!--<mt-tab-container v-model="tabId">-->
+              <!--<mt-tab-container-item id="tab-home">-->
+                <!--<home-index></home-index>-->
+              <!--</mt-tab-container-item>-->
+              <!--<mt-tab-container-item id="tab-user">-->
+                <!--<user-index></user-index>-->
+              <!--</mt-tab-container-item>-->
+            <!--</mt-tab-container>-->
+          </div>
+        </div>
         <div class="fooder">
           <mt-tabbar v-model="tabId">
-            <mt-tab-item id="tab-home" style="color: #2d8cf0">
+            <mt-tab-item id="tab-home">
               <div style="margin-bottom: 0.08rem">
                   <i class="iconfont icon-shouye1"></i>
               </div>
               首页
             </mt-tab-item>
-            <mt-tab-item id="tab-user" style="color: #6f6f6f">
+            <mt-tab-item id="tab-user">
               <div style="margin-bottom: 0.08rem">
                 <i class="iconfont icon-gerenzhongxin"></i>
               </div>
