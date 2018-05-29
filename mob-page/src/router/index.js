@@ -11,6 +11,9 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
+      meta:{
+        title:'学车联盟'
+      },
       children:[
       ]
     },
@@ -29,6 +32,14 @@ const router = new Router({
         title:'注册'
       },
       component: resolve => { require(['@/views/reg.vue'], resolve); }
+    },
+    {
+      path: '/myCenter-info',
+      name: 'myCenterInfo',
+      meta:{
+        title:'个人信息'
+      },
+      component: resolve => { require(['@/views/myCenter/info.vue'], resolve); }
     },
     // {
     //   path: '/index',

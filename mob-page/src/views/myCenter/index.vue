@@ -4,18 +4,22 @@
 <template>
     <div id="myCenter" class="box">
       <!-- 用户信息区域 -->
-      <Row type="flex" justify="start" align="middle" style="height:80px" @click.native="setting">
-        <Col span="2" push="1">
-        <Avatar icon="person" size="large" style="size: 30px"/>
+      <Row type="flex" justify="start" align="middle" style="height:80px">
+        <Col span="20" @click.native="setting">
+            <Row>
+                <Col span="2" push="1">
+                    <Avatar icon="person" size="large" style="size: 30px"/>
+                </Col>
+                <Col span="8" push="3">
+                    <span style="font-weight: bold">用户姓名</span>
+                    <Row>
+                        <Col span="8"><Tag>学员</Tag></Col>
+                        <Col span="12"><Tag>未实名</Tag></Col>
+                    </Row>
+                </Col>
+            </Row>
         </Col>
-        <Col span="8" push="2">
-        <span style="font-weight: bold">用户姓名</span>
-        <Row>
-          <Col span="8"><Tag>学员</Tag></Col>
-          <Col span="12"><Tag>未实名</Tag></Col>
-        </Row>
-        </Col>
-        <Col span="2" offset="11"><i class="iconfont icon-qrcode" style="font-size: 28px"></i></Col>
+        <Col span="2" offset="1" @click.native="showQrcode"><i class="iconfont icon-qrcode" style="font-size: 28px"></i></Col>
       </Row>
       <Row type="flex" justify="start">
         <Col span="24">
@@ -25,7 +29,7 @@
         </Col>
       </Row>
       <div class="body">
-        <div id="myCenter">
+        <div>
           <!-- 用户余额区域 -->
           <Row type="flex" justify="start">
             <Col span="24">
@@ -88,7 +92,10 @@
         },
         methods:{
             setting(){
-              Toast.info("修改密码");
+                this.$router.push('/myCenter-info');
+            },
+            showQrcode(){
+                Toast.info('展示我的二维码');
             }
         }
     }
