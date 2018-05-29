@@ -23,6 +23,4 @@ public class CpController extends BaseController<BizCp,String>{
         return service;
     }
 
-
-
 }
