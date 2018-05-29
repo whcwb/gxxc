@@ -158,7 +158,7 @@
           Toast.info('注册成功');
 
           setTimeout(()=>{
-              this.$router.push("/index");
+              this.$router.push("/");
           }, 1000);
       }
     }
