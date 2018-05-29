@@ -36,9 +36,9 @@ const router = new Router({
       component:()=>import('@/views/homepage')
     },
     {
-      path: '/reg',
+      path: '/region',
       name: 'region',
-      component:()=>import('@/views/map/region')
+      component:()=>import('@/views/jxlist')
     },
     {
       path: '/mycenter',
