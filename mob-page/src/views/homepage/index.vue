@@ -221,7 +221,7 @@
           goMap(item){
             console.log(this.$route)
             this.$router.push({
-              name:'region',
+              name:'jxlist',
               params:item
             })
           }

@@ -9,12 +9,25 @@
       <div id="jxList" class="box">
         <div >
             <mt-header title="训练场">
-              <mt-button slot="left" @click="$router.back()">返回</mt-button>
+              <mt-button slot="left" @click="$router.push({name:'index'})">返回</mt-button>
             </mt-header>
         </div>
         <div class="body messList">
-          <div class="list">
-            训练场
+          <div class="list box-row">
+            <div style="width: 2rem">
+              <img src="static/xlc.jpg"
+                   width="100%"
+                   height="100%"
+                   alt="">
+            </div>
+            <div class="body-O" style="text-align: right">
+               <div>
+                    ***驾校训练场
+               </div>
+              <div>
+                占地10万亩
+              </div>
+            </div>
           </div>
         </div>
       </div>

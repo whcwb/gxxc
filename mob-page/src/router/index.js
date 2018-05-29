@@ -36,8 +36,8 @@ const router = new Router({
       component:()=>import('@/views/homepage')
     },
     {
-      path: '/region',
-      name: 'region',
+      path: '/jxlist',
+      name: 'jxlist',
       component:()=>import('@/views/jxlist')
     },
     {
