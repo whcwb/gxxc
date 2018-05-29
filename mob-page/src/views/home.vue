@@ -55,10 +55,16 @@
     },
     data(){
       return{
-        tabId:'tab-home'
+        tabId:this.$store.state.app.tabId
+      }
+    },
+    watch:{
+      tabId:function (n,o) {
+        this.$store.commit('M_tabId', n)
       }
     },
     created(){
+
     },
     methods:{
     }
