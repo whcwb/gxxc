@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style>
-  @import "//at.alicdn.com/t/font_683602_rys1c80mziee9udi.css";
+  @import "//at.alicdn.com/t/font_683602_2qfilvdrqm8ia4i.css";
   html, body, #app{
     padding: 0;
     margin: 0;

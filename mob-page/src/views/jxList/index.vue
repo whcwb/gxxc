@@ -5,6 +5,7 @@
       .list{
         border-bottom: #949494 solid 2px;
         padding-bottom: 0.2rem;
+        margin: 0.15rem;
       }
     }
   }
@@ -17,19 +18,25 @@
             </mt-header>
         </div>
         <div class="body messList">
-          <div class="list box-row">
+          <div class="list box-row"  v-for="(item,index) in [,,,,,,,,,]">
             <div style="width: 2rem">
               <img src="static/xlc.jpg"
                    width="100%"
                    height="100%"
                    alt="">
             </div>
-            <div class="body-O" style="text-align: right">
-               <div>
+            <div class="body-O" style="text-align: left;padding: 0 0 0 0.2rem">
+               <div style="text-align: left">
                     ***驾校训练场
+                    <div style="float: right">
+                          占地面积10万亩
+                    </div>
                </div>
               <div>
-                    占地10万亩
+                地址：光谷大道光谷一路52号
+              </div>
+              <div>
+                交通：566 ， 567 ，568
               </div>
             </div>
           </div>
