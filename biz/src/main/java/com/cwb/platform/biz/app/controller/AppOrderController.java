@@ -39,6 +39,7 @@ public class AppOrderController extends AppUserBaseController {
      * 订单新增
      * @param entity
      * ddZftd //支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+     * cpid//选择要支付的产品ID
      * @return
      */
     @RequestMapping(value="/save", method={RequestMethod.POST})
