@@ -128,17 +128,23 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
         redisDao.boundValueOps("order_" + l.getDdId()).set(DateUtils.getNowTime(), 1, TimeUnit.DAYS);
         log.debug("1、订单ID：" + l.getDdId() + "正在进行处理。。。");
 
+        BizOrder newBizOrder = new BizOrder();
+        newBizOrder.setDdId(l.getDdId());
+
         BizCp bizCp = cpService.findById(l.getCpId());
 
         if(ObjectUtils.isEmpty(bizCp)){
             log.debug("产品 id " + l.getCpId() + "找不到相对应的产品信息" );
             retType = false;
+
+            orderMapper.updateByPrimaryKeySelective(newBizOrder);
+            log.debug("5、更新订单主表。完成订单的分派");
+            return retType ? ApiResponse.success() : ApiResponse.fail(newBizOrder.getJobDescribe());
         }
         String yhSjid = l.getYhSjid();//上级ID
         String yhSsjid = l.getYhSsjid();//上上级ID
         //orderMoney
-        BizOrder newBizOrder = new BizOrder();
-        newBizOrder.setDdId(l.getDdId());
+
         if (!StringUtils.equals(l.getPayMoney(), orderMoney)) {
             log.debug("9、订单编号：" + l.getDdId() + "支付金额与系统配置金额不符合。系统跳过处理");
             newBizOrder.setJobType("2");
@@ -169,18 +175,18 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                     // 根据产品表判断是否 要分佣
                     if(StringUtils.equals(bizCp.getCpYj(),"1")){// 要分佣
                         //            计算出分的金额比例
-                        BigDecimal orderMoney = new BigDecimal(l.getDdZfje());
-                        BigDecimal oneEevelMoney = new BigDecimal(bizCp.getCpYjyj());
-                        BigDecimal twoEevelMoney = new BigDecimal(bizCp.getCpRjyj());
-                        BigDecimal oneEevelMoneyCount = orderMoney.multiply(oneEevelMoney);
-                        BigDecimal twoEevelMoneyCount = orderMoney.multiply(twoEevelMoney);
+//                        BigDecimal orderMoney = new BigDecimal(l.getDdZfje());
+//                        BigDecimal oneEevelMoney = new BigDecimal(bizCp.getCpYjyj());
+//                        BigDecimal twoEevelMoney = new BigDecimal(bizCp.getCpRjyj());
+//                        BigDecimal oneEevelMoneyCount = orderMoney.multiply(oneEevelMoney);
+//                        BigDecimal twoEevelMoneyCount = orderMoney.multiply(twoEevelMoney);
 
                         //插入流水表1
                         BizYjmx newBizYjmx = new BizYjmx();
                         newBizYjmx.setId(genId());
                         newBizYjmx.setZjId(l.getDdId());
                         newBizYjmx.setYhId(yhSjid);//上级ID
-                        newBizYjmx.setZjJe(oneEevelMoneyCount.doubleValue());
+                        newBizYjmx.setZjJe(bizCp.getCpYjyj());
                         newBizYjmx.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
                         newBizYjmx.setCjsj(DateUtils.getNowTime());
                         newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
@@ -191,7 +197,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         newBizYjmx.setId(genId());
                         newBizYjmx.setZjId(l.getDdId());
                         newBizYjmx.setYhId(yhSsjid);//上上级ID
-                        newBizYjmx.setZjJe(twoEevelMoneyCount.doubleValue());
+                        newBizYjmx.setZjJe(bizCp.getCpRjyj());
                         newBizYjmx.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
                         newBizYjmx.setCjsj(DateUtils.getNowTime());
                         newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
@@ -213,10 +219,11 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         }
                     }
 
-                    BizPtyh u = userMapper.selectByPrimaryKey(l.getYhId());
+//                    BizPtyh u = userMapper.selectByPrimaryKey(l.getYhId());
                     // 判断订单用户是否为 学员 ，只对学员生成邀请码
-                    if(StringUtils.equals(u.getYhLx(),"1")) {
+//                    if(StringUtils.equals(u.getYhLx(),"1")) {
                         //
+                    if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
                         String yhZsyqm = genId();
                         File logoFile = new File(logoFileUrl);
                         String yhZsyqmImg = yhZsyqm + ".png";
@@ -230,7 +237,9 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         user.setYhZsyqmImg(yhZsyqmImg);//用户自己邀请码
 
                         userMapper.updateByPrimaryKeySelective(user);
+//                    }
                     }
+
 
                 }
             }

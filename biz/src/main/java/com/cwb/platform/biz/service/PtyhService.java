@@ -1,12 +1,12 @@
 package com.cwb.platform.biz.service;
 
 
-import com.cwb.platform.biz.model.BizCp;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 
+import java.util.List;
 import java.util.Map;
 
 public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
@@ -43,4 +43,8 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
      * 用户申请教练
      */
     ApiResponse<String> updatelx(BizJl bizJl);
+
+    ApiResponse<List<BizPtyh>> getCoaches(String name, String phone, String area, int pageNum, int pageSize);
+
+    ApiResponse<List<String>> assignStudents(String yhId, String jlId);
 }

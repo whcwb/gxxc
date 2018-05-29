@@ -16,5 +16,5 @@ public interface TxService extends BaseService<BizTx,java.lang.String>{
 
     ApiResponse<String> updateTxzt(BizTx bizTx);
 
-    ApiResponse<String> saveUserDraw(Double entity, BizPtyh user);
+    ApiResponse<String> saveUserDraw(Double entity, String yhkh, String khh, String yhxm, BizPtyh user);
 }

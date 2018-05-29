@@ -97,6 +97,24 @@ public class BizTx implements Serializable {
     @Column(name = "TT_BZ")
     private String ttBz;
 
+    /**
+     * 银行卡号
+     */
+    @Column(name = "TT_YHKH")
+    private String ttYhkh;
+
+    /**
+     * 开户行
+     */
+    @Column(name = "TT_KHH")
+    private String ttKhh;
+
+    /**
+     * 提现姓名
+     */
+    @Column(name = "TX_XM")
+    private String txXm;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -355,6 +373,46 @@ public class BizTx implements Serializable {
         this.ttBz = ttBz;
     }
 
+    /**
+     * 获取用户卡号
+     * @return
+     */
+    public String getTtYhkh() {
+        return ttYhkh;
+    }
+
+    /**
+     * 设置用户卡号
+     * @param ttYhkh
+     */
+    public void setTtYhkh(String ttYhkh) {
+        this.ttYhkh = ttYhkh;
+    }
+
+    /**
+     * 获取用户开户行
+     * @return
+     */
+    public String getTtKhh() {
+        return ttKhh;
+    }
+
+    /**
+     * 设置用户开户行
+     * @param ttKhh
+     */
+    public void setTtKhh(String ttKhh) {
+        this.ttKhh = ttKhh;
+    }
+
+    public String getTxXm() {
+        return txXm;
+    }
+
+    public void setTxXm(String txXm) {
+        this.txXm = txXm;
+    }
+
     public enum InnerColumn {
         id("ID"),
         yhId("YH_ID"),
@@ -369,7 +427,10 @@ public class BizTx implements Serializable {
         ttFjid("TT_FJID"),
         ttShr("TT_SHR"),
         ttShzt("TT_SHZT"),
-        ttBz("TT_BZ");
+        ttBz("TT_BZ"),
+        ttYhkh("TT_YHKH"),
+        ttKhh("TT_KHH"),
+        txXm("TX_XM");
 
         private final String column;
 
