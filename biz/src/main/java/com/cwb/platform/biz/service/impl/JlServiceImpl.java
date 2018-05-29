@@ -1,20 +1,20 @@
 package com.cwb.platform.biz.service.impl;
 
-import com.cwb.platform.biz.mapper.BizCpMapper;
-import com.cwb.platform.biz.model.BizCp;
-import com.cwb.platform.biz.service.CpService;
+import com.cwb.platform.biz.mapper.BizJlMapper;
+import com.cwb.platform.biz.model.BizJl;
+import com.cwb.platform.biz.service.JlService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 @Service
-public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpService {
+public class JlServiceImpl extends BaseServiceImpl<BizJl, String> implements JlService {
 
     @Autowired
-    private BizCpMapper entityMapper;
+    private BizJlMapper entityMapper;
 
     @Override
-    protected Mapper<BizCp> getBaseMapper() {
+    protected Mapper<BizJl> getBaseMapper() {
         return entityMapper;
     }
 

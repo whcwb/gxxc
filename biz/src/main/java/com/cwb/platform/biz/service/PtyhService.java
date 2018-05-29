@@ -39,6 +39,8 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> updateYhRz(BizPtyh bizPtyh);
 
     BizPtyh getUserInvitationCode(String id);
-
-    ApiResponse<String> updatelx(BizPtyh bizPtyh, BizJl bizJl);
+    /**
+     * 用户申请教练
+     */
+    ApiResponse<String> updatelx(BizJl bizJl);
 }

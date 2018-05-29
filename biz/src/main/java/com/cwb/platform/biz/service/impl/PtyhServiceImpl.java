@@ -9,6 +9,7 @@ import com.cwb.platform.biz.model.BizCp;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
+import com.cwb.platform.biz.service.JlService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.bean.AccessToken;
@@ -56,6 +57,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     private BizPtyhMapper entityMapper;
     @Autowired
     private BizWjMapper wjMapper;
+    @Autowired
+    private JlService jlService;
 
     @Autowired
     private BizUserMapper userMapper;
@@ -539,10 +542,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     }
 
     @Override
-    public ApiResponse<String> updatelx(BizPtyh bizPtyh, BizJl bizJl) {
-
+    public ApiResponse<String> updatelx(BizJl bizJl) {
+        BizPtyh bizPtyh = getAppCurrentUser();
+        //String yhid = sysYh.getYhid();
         // 修改用户的类型 和 认证状态 ， 将用户的是否有驾照改为 是
-        RuntimeCheck.ifBlank(bizPtyh.getId() , "用户id 不能为空");
+        //BizPtyh bizPtyh = findById(bizJl.getYhId());
+
         RuntimeCheck.ifTrue(StringUtils.equals(bizPtyh.getYhLx(),"2"),"该用户已经是教练");
 
         RuntimeCheck.ifBlank(bizJl.getYhXm(),"用户姓名不能为空");
@@ -565,10 +570,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 
         bizJl.setYhId(bizPtyh.getId());
 
+        jlService.save(bizJl);
+
+        update(ptyh);
 
 
 
-
-        return null;
+        return ApiResponse.success();
     }
 }
