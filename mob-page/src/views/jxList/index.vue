@@ -2,6 +2,10 @@
   #jxList{
     .messList{
       padding: 0.2rem;
+      .list{
+        border-bottom: #949494 solid 2px;
+        padding-bottom: 0.2rem;
+      }
     }
   }
 </style>
@@ -9,7 +13,7 @@
       <div id="jxList" class="box">
         <div >
             <mt-header title="训练场">
-              <mt-button slot="left" @click="$router.push({name:'index'})">返回</mt-button>
+              <mt-button slot="left" @click="$router.push({name:'Home'})">返回</mt-button>
             </mt-header>
         </div>
         <div class="body messList">
@@ -25,7 +29,7 @@
                     ***驾校训练场
                </div>
               <div>
-                占地10万亩
+                    占地10万亩
               </div>
             </div>
           </div>
