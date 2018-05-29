@@ -41,6 +41,11 @@ const router = new Router({
       component:()=>import('@/views/jxlist')
     },
     {
+      path: '/kcfb',
+      name: 'kcfb',
+      component:()=>import('@/views/kcfb')
+    },
+    {
       path: '/mycenter',
       name: 'mycenter',
       component:()=>import('@/views/myCenter')
