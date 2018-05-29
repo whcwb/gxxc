@@ -4,10 +4,7 @@
       <router-link to="/" slot="left">
         <md-icon name="arrow-left" size="lg"></md-icon>
       </router-link>
-      <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
-    <md-button  type="ghost" size="small" disabled style="margin-left:5px">Primary</md-button>
-    <!--<md-button @click="handleClick">点我</md-button>-->
     <mt-tabbar>
       <mt-tab-item id="外卖">
         外卖
