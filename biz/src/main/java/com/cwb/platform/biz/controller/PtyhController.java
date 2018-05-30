@@ -87,10 +87,11 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
      */
     @PostMapping("/assignStudents")
     public ApiResponse<List<String>> assignStudents(String yhId, String jlId){
-
         return service.assignStudents(yhId, jlId);
-
     }
+
+
+
 
 
 

@@ -2,8 +2,6 @@ package com.cwb.platform.biz.mapper;
 
 import com.cwb.platform.sys.model.BizPtyh;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -26,7 +24,7 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
             " AND YH_ZH LIKE '%${phone}%' " +
             "</if> " +
             "</script>")
-    @Results({
+    /*@Results({
             @Result(property = "yhZh", column = "YH_ZH"),
             @Result(property = "yhMm", column = "YH_MM"),
             @Result(property = "yhCjr",column = "YH_CJR"),
@@ -50,6 +48,6 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
             @Result(property = "yhSfyjz", column = "YH_SFYJZ"),
             @Result(property = "yhFpms", column = "YH_FPMS"),
             @Result(property = "yhSfsd",column = "YH_SFSD"),
-    })
+    })*/
     List<BizPtyh> getJls(@Param("name") String name, @Param("phone") String phone,@Param("list") List<String> list);
 }

@@ -680,6 +680,32 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         return ApiResponse.success(ids);
     }
 
+    /**
+     * 根据当前用户显示相关人员的列表
+     * @return
+     */
+    @Override
+    public ApiResponse<List<BizPtyh>> getBizPtyhList() {
+        // 获取当前登录用户
+        BizPtyh user = getAppCurrentUser();
+        // 鉴定该用户为 教练还是学员
+        if(StringUtils.equals(user.getYhLx(), "1")){ // 用户为学员 展示其教练信息
+
+            BizUser bizUser = userService.findById(user.getId());
+            RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizUser),"学员信息不存在");
+            SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+            condition.eq(BizPtyh.InnerColumn.id.name(), bizUser.getYhJlid());
+            List<BizPtyh> bizPtyhs = findByCondition(condition);
+            return ApiResponse.success(bizPtyhs);
+        }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
+
+
+        }
+
+
+        return null;
+    }
+
 
     /*public static void main(String[] args) {
         List<String> sids = new ArrayList<>();
