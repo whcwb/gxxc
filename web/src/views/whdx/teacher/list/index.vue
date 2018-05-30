@@ -8,12 +8,9 @@
 				<Button type="info" @click="exportData">
 					<Icon type="ios-download-outline"></Icon>
 				</Button>
-				<Button type="info" @click="allot">
-					<Icon type="android-home"></Icon>
-				</Button>
 		</Row>
 		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
+			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
 		</Row>
 		<Row class="margin-top-10 pageSty">
 			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
@@ -43,13 +40,10 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "",  type: 'selection'},
+                    {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
-                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},
-                    {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
                     {
                         title: '操作',
                         key: 'action',
@@ -64,18 +58,17 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),
-                                this.util.buildButton(this,h,'info','network','下线',()=>{
+                                this.util.buildButton(this,h,'info','android-home','分配',()=>{
                                     this.choosedItem = params.row;
-                                    this.componentName = 'sublist'
+                                    this.componentName = 'allot'
                                 }),
                             ]);
                         }
                     }
                 ],
                 pageData: [],
-				choosedData:[],
                 form: {
-                    yhLx:"1",
+                    yhLx:"2",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
@@ -87,22 +80,6 @@
             this.util.initTable(this)
         },
         methods: {
-            selectionChange(e){
-				this.choosedData = e;
-			},
-            allot(){
-                if (this.choosedData.length == 0){
-                    this.$Message.error("请选择学员")
-					return;
-				}
-				for (let r of this.choosedData){
-                    if (r.yhIxySffp == '1'){
-                        this.$Message.error("请选择未分配的学员")
-                        return;
-					}
-				}
-				this.componentName = allot;
-			},
             pageChange(event) {
                 this.util.pageChange(this, event);
             },

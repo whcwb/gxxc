@@ -43,6 +43,7 @@ module.exports = {
         DELE:'/api/ptyh/removeIds',
         getById:'/api/ptyh/',
         updateSffp:'/api/ptyh/updateSffp',
+        assignStudents:'/api/ptyh/assignStudents', // 分配学员接口
     },
     user:{
         QUERY:'/api/user/pager',//用户实名表

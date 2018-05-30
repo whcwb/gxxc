@@ -12,4 +12,6 @@ public interface UserService extends BaseService<BizUser,java.lang.String>{
 
     void updateJlId(List<String> list, String jlId);
 
+    List<String> getYhIds(List<String> ids);
+
 }

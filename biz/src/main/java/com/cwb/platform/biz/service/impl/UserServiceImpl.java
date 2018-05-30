@@ -33,4 +33,9 @@ public class UserServiceImpl extends BaseServiceImpl<BizUser,java.lang.String> i
         entityMapper.updateJlid(list, jlId);
 
     }
+
+    @Override
+    public List<String> getYhIds(List<String> ids) {
+        return entityMapper.getYhIds(ids);
+    }
 }

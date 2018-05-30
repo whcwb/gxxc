@@ -209,7 +209,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
 
     /**
-     * 更新用户认证状态
+     * 更新学员认证状态
      *
      * @param bizPtyh
      * @return
@@ -223,43 +223,55 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(StringUtils.equals(user.getYhZt(), "1"), "操作失败，该学员已认证无需再次认证");
         RuntimeCheck.ifTrue(StringUtils.equals(user.getYhSfsd(), "1"), "操作失败，该学员已锁定无法进行认证操作");
 
-        //      获取用户父级ID
-        String yhSjid = "";//设置上级ID
-        String yhSsjid = "";//上上级ID
-
-        String yhYyyqm = user.getYhYyyqm();//该用户的父级ID
-        SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
-        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), yhYyyqm);
-        List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
-        if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
-        if (bizPtyhsList.size() != 1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
-        String pUserId = bizPtyhsList.get(0).getId();//获取出父级ID
-        yhSjid = pUserId;
-        BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
-        if (pBizUser != null) {
-            yhSsjid = pBizUser.getYhId();
+        RuntimeCheck.ifBlank(bizPtyh.getYhZt(), "审核状态不能为空");
+        if (StringUtils.containsNone(bizPtyh.getYhZt(), new char[]{'1', '2'})) {
+            return ApiResponse.fail("请输入正确审核状态");
         }
-
-        //插入用户实名表  biz_user
-        BizUser bizUser = new BizUser();
-        bizUser.setYhId(user.getId());//用户ID
-        bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
-        bizUser.setYhSjhm(user.getYhZh());//用户账户
-        bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
-        bizUser.setYhXm(user.getYhXm());//姓名
-        bizUser.setCjsj(DateUtils.getNowTime());//创建时间
-        bizUser.setYhSjid(yhSjid);//设置上级ID
-        bizUser.setYhSsjid(yhSsjid);//上上级ID
-        int i = userMapper.insert(bizUser);
-        RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
-
-
         BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
-        newEntity.setYhZt("1");
 
-        i = update(newEntity);
-        return i == 1 ? ApiResponse.success() : ApiResponse.fail();
+
+        if(StringUtils.equals(bizPtyh.getYhZt(),"1")){//认证成功
+            //      获取用户父级ID
+            String yhSjid = "";//设置上级ID
+            String yhSsjid = "";//上上级ID
+
+            String yhYyyqm = user.getYhYyyqm();//该用户的父级ID
+            SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+            newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), yhYyyqm);
+            List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
+            if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+            if (bizPtyhsList.size() != 1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+            String pUserId = bizPtyhsList.get(0).getId();//获取出父级ID
+            yhSjid = pUserId;
+            BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
+            if (pBizUser != null) {
+                yhSsjid = pBizUser.getYhId();
+            }
+
+            //插入用户实名表  biz_user
+            BizUser bizUser = new BizUser();
+            bizUser.setYhId(user.getId());//用户ID
+            bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
+            bizUser.setYhSjhm(user.getYhZh());//用户账户
+            bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+            bizUser.setYhXm(user.getYhXm());//姓名
+            bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+            bizUser.setYhSjid(yhSjid);//设置上级ID
+            bizUser.setYhSsjid(yhSsjid);//上上级ID
+            int i = userMapper.insert(bizUser);
+            RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
+            newEntity.setYhZt("1");
+            newEntity.setYhZtMs(" ");
+        }else{
+            String yhZtMs=bizPtyh.getYhZtMs();
+            RuntimeCheck.ifBlank(yhZtMs, "请填写审核失败原因。");
+            newEntity.setYhZt("2");
+            newEntity.setYhZtMs(yhZtMs);
+        }
+
+        int k = update(newEntity);
+        return k == 1 ? ApiResponse.success() : ApiResponse.fail();
 
     }
 
@@ -494,7 +506,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 
         BizPtyh user = entityMapper.selectByPrimaryKey(userRequest.getId());
-        if (user == null) return ApiResponse.fail("用户不存在");
+        if (user == null) {
+            return ApiResponse.fail("用户不存在");
+        }
+        if (StringUtils.equals(user.getYhZt(),"1")) {
+            return ApiResponse.fail("用户已实名认证成功，无需此操作");
+        }
         if (StringUtils.equals(user.getYhSfsd(), "1")) {
             return ApiResponse.fail("用户已锁定，无法进行操作");
         }
@@ -518,7 +535,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         if (imgList != null) {
-            if (imgList.length != imgTypeList.length) {
+            if (imgList.length != imgTypeList.length && imgList.length>0) {
                 return ApiResponse.fail("证件数据和证件属性数据不同");
             }
             for (int i = 0; i < imgList.length; i++) {
@@ -533,7 +550,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 wjList.add(wj);
             }
         }
+        //TODO
         if (wjList.size() > 0) {
+            wjMapper.deleteBatch(user.getId());
             wjMapper.insertBatch(wjList);
         }
 
@@ -621,7 +640,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     @Override
     public ApiResponse<List<BizPtyh>> getCoaches(String name, String phone, String area, int pageNum, int pageSize) {
-
+        List<BizPtyh> list = new ArrayList<>();
         // 若三个条件都为空 分页查询所有已经认证的教练
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhZt.name(), "1"); // 0 未认证 1 已认证
@@ -631,7 +650,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(name) && StringUtils.isEmpty(phone) && StringUtils.isEmpty(area)) {
 
             List<BizPtyh> bizPtyhs = this.findByCondition(condition);
-            return ApiResponse.success(bizPtyhs);
+            bizPtyhs.stream().forEach(bizPtyh -> {
+                list.add(afterReturns(bizPtyh));
+            });
+            return ApiResponse.success(list);
         }
 
         if (StringUtils.isNotBlank(name)) {
@@ -649,11 +671,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             // 拿到所在区域的所有教练的 id
             List<String> jlIds = bizJls.stream().map(BizJl::getYhId).collect(Collectors.toList());
            List<BizPtyh> bizPtyhList =  entityMapper.getJls(name, phone, jlIds);
-           return ApiResponse.success(bizPtyhList);
+            bizPtyhList.stream().forEach(bizPtyh -> {
+                list.add(afterReturns(bizPtyh));
+            });
+           return ApiResponse.success(list);
         }
 
         List<BizPtyh> ptyhs =   this.findByCondition(condition);
-        return ApiResponse.success(ptyhs);
+        ptyhs.stream().forEach(bizPtyh -> {
+            list.add(afterReturns(bizPtyh));
+        });
+        return ApiResponse.success(list);
     }
 
     @Override
@@ -662,24 +690,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizPtyh users=this.findById(jlId);
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
 
-        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
-        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
-//        // 验证教练是否认证
-//        BizJl bizJl = jlService.findById(jlId);
-//        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该教练未进行实名认证");
+        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
+        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
 
         // 将多个学员id 分开
-        String[] sIds = yhId.split(",");
+        List<String> sIds = Arrays.asList(yhId.split(","));
         // 可以分配的用户 id
-        List<String> ids = new ArrayList<>();
-        for (String s : sIds) {// 校验当前用户是否需要已经分配教练
-            BizUser user = userService.findById(s);//TOdo 后期优化
-            if (!ObjectUtils.isEmpty(user)) {
-                if (StringUtils.isBlank(user.getYhJlid())) {
-                    ids.add(s); // 添加分配用户id
-                }
-            }
-        }
+        List<String> ids = userService.getYhIds(sIds);
 
         // 进行分配操作
         if(CollectionUtils.isNotEmpty(ids)) {
@@ -730,7 +747,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<List<BizPtyh>> getBizPtyhList() {
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(int pageNum, int pageSize) {
         List<BizPtyh> list = new ArrayList<>();
         // 获取当前登录用户
         BizPtyh user = getAppCurrentUser();
@@ -742,12 +759,43 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             SimpleCondition condition = new SimpleCondition(BizPtyh.class);
             condition.eq(BizPtyh.InnerColumn.id.name(), bizUser.getYhJlid());
             List<BizPtyh> bizPtyhs = findByCondition(condition);
-            return ApiResponse.success(bizPtyhs);
+
+            BizJl bizJl = jlService.findById(bizUser.getYhJlid());
+            RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该用户的教练未进行认证");
+            if(CollectionUtils.isNotEmpty(bizPtyhs)) {
+                bizPtyhs.stream().forEach(
+                        bizPtyh -> {
+                            BizPtyh ptyh = afterReturns(bizPtyh);
+                            ptyh.setYhMm(bizJl.getJlMs()); // 用户表中没有教练简介 ， 将 密码字段设置为 教练的简介
+                            list.add(ptyh);
+                        }
+                );
+            }
+            return ApiResponse.success(list);
+
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
-// TODO: 2018/5/30
 
+            SimpleCondition condition = new SimpleCondition(BizUser.class);
+            condition.eq(BizUser.InnerColumn.yhJlid.name(), user.getId());
+            List<BizUser> bizUsers = userService.findByCondition(condition);
 
+            // 获取所有学员的 id
+            List<String> yhIds = bizUsers.stream().map(BizUser::getYhId).collect(Collectors.toList());
+            SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
+            yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
+
+            PageHelper.startPage(pageNum,pageSize);
+            List<BizPtyh> ptyhs = findByCondition(yhCondition);
+
+            if(CollectionUtils.isNotEmpty(ptyhs)){
+                ptyhs.stream().forEach(bizPtyh -> {
+                    list.add(afterReturns(bizPtyh));
+                });
+            }
+
+            return ApiResponse.success(list);
         }
+
         return ApiResponse.success(list);
     }
 

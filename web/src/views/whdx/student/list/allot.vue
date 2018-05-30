@@ -13,33 +13,16 @@
 		<Modal v-model="showModal" width='900' :closable='false'
 			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
-				<Form ref="form"
-						:model="formItem"
-						:rules="ruleInline"
-						:label-width="100"
-						:styles="{top: '20px'}">
-					<Row>
-						<Col span="24">
-							<Col span="4">
-								<label>分配状态</label>
-							</Col>
-							<Col span="20">
-								<Select v-model="formItem.yhIxySffp">
-									<Option value="0">未分配</Option>
-									<Option value="1">已分配</Option>
-								</Select>
-							</Col>
-						</Col>
-						<Col span="24" style="margin-top: 16px;">
-							<Col span="4">
-								<label>备注</label>
-							</Col>
-							<Col span="20">
-								<Input v-model="formItem.yhFpms"></Input>
-							</Col>
-						</Col>
-					</Row>
-				</Form>
+                <Row style="padding-bottom: 16px;">
+                    <search-items :parent="v" :label-with="100"></search-items>
+                </Row>
+                <Row style="position: relative;">
+                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+                </Row>
+                <Row class="margin-top-10 pageSty">
+                    <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
+                          @on-change='pageChange'></Page>
+                </Row>
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
@@ -51,37 +34,92 @@
 
 <script>
 	import formItems from '../../components/formItems'
+    import searchItems from '../../components/searchItems'
+    import fromData from '../../teacher/list/formData'
 	export default {
 		name: 'byxxForm',
-		components:{formItems},
+		components:{formItems,searchItems,fromData},
 		data() {
 			return {
 			    v:this,
                 operate:'分配',
 				showModal: true,
+                apiRoot:this.apis.student,
 				readonly: false,
-				formItem: {
-                    yhId:'',
-                    yhIxySffp:'0'
-				},
+                form: {
+                    yhZt:'1',
+                    yhLx:"2",
+                    zt:'',
+                    byBysjInRange:'',
+                    total: 0,
+                    pageNum: 1,
+                    pageSize: 8,
+                },
+                tableColumns: [
+                    {title: "#",  type: 'index'},
+                    {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
+                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 120,
+                        render: (h, params) => {
+                            return h('div', [
+                                this.util.buildButton(this,h,'success','ribbon-b','分配',()=>{
+                                    this.confirm(params.row.id);
+                                }),
+                            ]);
+                        }
+                    }
+                ],
+                pageData: [],
                 ruleInline:{
-				}
+				},
+                formItem:{
+
+                },
 			}
 		},
 		created(){
+            this.util.initTable(this)
 		    this.formItem = this.$parent.choosedItem
 		},
 		methods: {
-            confirm(){
-		        let v = this;
-                console.log(this.formItem);
-                this.$http.post(this.apis.student.updateSffp,this.formItem).then((res)=>{
+            pageChange(event) {
+                this.util.pageChange(this, event);
+            },
+            confirm(id){
+                swal({
+                    title: "确认分配?",
+                    text: "",
+                    icon: "warning",
+                    buttons:['取消','确认'],
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        this.save(id);
+                    } else {
+                    }
+                });
+			},
+            save(id){
+                let userList = this.$parent.choosedData;
+                let yhIds = '';
+                for (let r of userList){
+                    yhIds += r.id+',';
+                }
+                let params = {
+                    yhIds:yhIds,
+                    jlid:id
+                }
+                let v = this;
+                this.$http.post(this.apis.student.assignStudents,params).then((res)=>{
                     if (res.code === 200){
                         this.$Message.success(res.message);
                         v.util.closeDialog(v);
+                        v.util.getPageData(v.$parent)
                     }
                 })
-			}
+            }
 		}
 	}
 </script>

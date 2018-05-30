@@ -29,7 +29,7 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
 
     @Update("<script>" +
             " UPDATE BIZ_PTYH SET YH_IXY_SFFP = '1' , YH_FPMS = #{yhFpms} " +
-            " where YH_ID IN " +
+            " where ID IN " +
             " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
             " #{item} " +
             "</foreach>" +

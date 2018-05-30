@@ -48,7 +48,7 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     ApiResponse<List<String>> assignStudents(String yhId, String jlId);
 
-    ApiResponse<List<BizPtyh>> getBizPtyhList();
+    ApiResponse<List<BizPtyh>> getBizPtyhList(int pageNum, int pageSize);
 
     boolean sendSMS(String tel, int type,  String identifyingCode);
     /**
