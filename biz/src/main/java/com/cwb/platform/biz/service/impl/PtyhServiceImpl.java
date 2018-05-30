@@ -287,16 +287,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifBlank(entity.getYhYyyqm(), "用户应邀邀请码不能为空");
 
         String yhZh = entity.getYhZh();
-        String identifying = redisDao.boundValueOps("app_sendSMS_" + yhZh).get();
+        ApiResponse<String> validate= this.validateSms(yhZh, telIdentifying,"1");
+        RuntimeCheck.ifTrue(validate.getCode()!=200,validate.getMessage());
+
+//      用户应邀邀请码存在造假的可能。是否需要验证,这里的验证是注册下发短信时，已经查了数据库
         String app_sendSMS_yyyqm = redisDao.boundValueOps("app_sendSMS_yyyqm" + yhZh).get();
-        RuntimeCheck.ifFalse(StringUtils.equals(telIdentifying, identifying), "验证码错误，请重新输入");
         RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhYyyqm(), app_sendSMS_yyyqm), "邀请码错误，请重新注册");
 
         RuntimeCheck.ifBlank(entity.getYhMm(), "用户密码不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhXm(),"用户姓名不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhZjhm(),"用户证件号码不能为空");
-// TODO: 2018/5/19  用户应邀邀请码存在造假的可能。是否需要验证
-
 
         RuntimeCheck.ifBlank(entity.getYhLx(), "用户类型不能为空");//类型 ZDCLK0041(2、教练、1、学员)
         if (StringUtils.containsNone(entity.getYhLx(), new char[]{'1', '2'})) {
@@ -748,7 +748,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("验证失败");
         }
 
-               //		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
+//		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
         String identifying = redisDao.boundValueOps(redisKey + tel).get();
         if(StringUtils.equals(identifying,identifyingCode)){
             return ApiResponse.success();
