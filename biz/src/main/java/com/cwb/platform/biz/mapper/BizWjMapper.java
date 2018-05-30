@@ -1,6 +1,7 @@
 package com.cwb.platform.biz.mapper;
 
 import com.cwb.platform.biz.model.BizWj;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
@@ -15,4 +16,10 @@ public interface BizWjMapper extends Mapper<BizWj> {
     " </foreach> " +
     " </script>"})
     void insertBatch(@Param("list") List<BizWj> list);
+
+    @Delete("<script>" +
+            "DELETE FROM BIZ_WJ WHERE YH_ID = #{yhId}" +
+            "</script>")
+    void deleteBatch(@Param("yhId") String yhId);
+
 }

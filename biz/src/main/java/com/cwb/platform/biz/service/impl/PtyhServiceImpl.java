@@ -494,7 +494,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 
         BizPtyh user = entityMapper.selectByPrimaryKey(userRequest.getId());
-        if (user == null) return ApiResponse.fail("用户不存在");
+        if (user == null) {
+            return ApiResponse.fail("用户不存在");
+        }
+        if (StringUtils.equals(user.getYhZt(),"1")) {
+            return ApiResponse.fail("用户已实名认证成功，无需此操作");
+        }
         if (StringUtils.equals(user.getYhSfsd(), "1")) {
             return ApiResponse.fail("用户已锁定，无法进行操作");
         }
@@ -518,7 +523,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         if (imgList != null) {
-            if (imgList.length != imgTypeList.length) {
+            if (imgList.length != imgTypeList.length && imgList.length>0) {
                 return ApiResponse.fail("证件数据和证件属性数据不同");
             }
             for (int i = 0; i < imgList.length; i++) {
@@ -533,7 +538,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 wjList.add(wj);
             }
         }
+        //TODO
         if (wjList.size() > 0) {
+            wjMapper.deleteBatch(user.getId());
             wjMapper.insertBatch(wjList);
         }
 
@@ -671,24 +678,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizPtyh users=this.findById(jlId);
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
 
-        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
-        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
+        RuntimeCheck.ifTrue(!StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
+        RuntimeCheck.ifTrue(!StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
 //        // 验证教练是否认证
 //        BizJl bizJl = jlService.findById(jlId);
 //        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该教练未进行实名认证");
 
         // 将多个学员id 分开
-        String[] sIds = yhId.split(",");
+        List<String> sIds = Arrays.asList(yhId.split(","));
         // 可以分配的用户 id
-        List<String> ids = new ArrayList<>();
-        for (String s : sIds) {// 校验当前用户是否需要已经分配教练
-            BizUser user = userService.findById(s);//TOdo 后期优化
-            if (!ObjectUtils.isEmpty(user)) {
-                if (StringUtils.isBlank(user.getYhJlid())) {
-                    ids.add(s); // 添加分配用户id
-                }
-            }
-        }
+        List<String> ids = userService.getYhIds(sIds);
 
         // 进行分配操作
         if(CollectionUtils.isNotEmpty(ids)) {
