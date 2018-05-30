@@ -13,7 +13,7 @@
 <template>
       <div id="kcfb" class="box">
         <div>
-          <box-head tit="考场分布" leftToName="/">
+          <box-head tit="考场分布" leftToName="/home">
             <div slot="left" style="color: #E0DADF">
               <i class="iconfont icon-left1"></i>
             </div>

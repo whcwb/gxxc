@@ -13,7 +13,7 @@
 <template>
       <div id="jxList" class="box">
         <div>
-          <box-head tit="训练场" leftToName="/">
+          <box-head tit="训练场" leftToName="/home">
             <div slot="left" style="color: #E0DADF">
               <i class="iconfont icon-left1"></i>
             </div>
