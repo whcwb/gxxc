@@ -17,10 +17,7 @@ import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
-import com.cwb.platform.util.commonUtil.DateUtils;
-import com.cwb.platform.util.commonUtil.Des;
-import com.cwb.platform.util.commonUtil.EncryptUtil;
-import com.cwb.platform.util.commonUtil.JwtUtil;
+import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +39,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> implements PtyhService {
+
     @Autowired
     private StringRedisTemplate redisDao;
 
@@ -679,8 +677,62 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         return ApiResponse.success(ids);
     }
+    /**
+     * 下发短信
+     * @param tel    手机号码
+     * @param type        1、注册  2、重置密码
+     * @param redisKey     redis key值
+     *@param identifyingCode    验证码 如果前台没有传，就给它加上
+     *  @return
+     */
+    @Override
+   public boolean sendSMS(String tel, int type,  String identifyingCode,String redisKey) {
+        boolean ret=false;
+        if(StringUtils.isEmpty(identifyingCode)){
+            identifyingCode= StringDivUtils.getSix();//获取验证码
+        }
+        //		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
+        String identifying = redisDao.boundValueOps(redisKey + tel).get();
+        if(StringUtils.isNotEmpty(identifying)){
+            return true;
+        }
+        if(type==1){
+            //使用注册模板下发
+        }else if(type==2){
+            //使用重置密码模板进行下发
+        }else{
+            //类型不存在，不能下发
+            return false;
+        }
+        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 120, TimeUnit.SECONDS);//设备验证码，为10分钟过期
+        ret=true;
+        return  ret;
+    }
 
-
+    /**
+     * 短信验证
+     * @param tel    手机号码
+     * @param redisKey     redis key值
+     *@param identifyingCode    验证码
+     * @return
+     */
+    @Override
+    public ApiResponse<String> validateSms(String tel, String identifyingCode,String redisKey) {
+        if(StringUtils.isEmpty(identifyingCode)){
+            return ApiResponse.fail("验证码不能为空");
+        }
+        if(StringUtils.isEmpty(tel)){
+            return ApiResponse.fail("手机号码不能为空");
+        }
+               //		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
+        String identifying = redisDao.boundValueOps(redisKey + tel).get();
+        if(StringUtils.equals(identifying,identifyingCode)){
+            return ApiResponse.success();
+        }else{
+            return ApiResponse.fail("验证码验证失败");
+        }
+    }
+//
     /*public static void main(String[] args) {
         List<String> sids = new ArrayList<>();
         sids.add("1");
