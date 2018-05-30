@@ -22,13 +22,22 @@
         }
         .modright{
           text-align: left;
-          padding: 0 0.2rem;
+          padding: 0.08rem 0.2rem 0 0.2rem;
           .num{
+            text-align: center;
             font-size: 0.4rem;
             font-weight: 600;
             color: #2d8cf0;
           }
+          .text{
+            text-align: center;
+          }
         }
+    }
+    .navbar{
+      .mint-tab-item-label{
+          font-size: 0.3rem;
+      }
     }
   }
 
@@ -85,10 +94,10 @@
                   <i class="iconfont icon-duoren"></i>
                 </div>
                 <div class="body-O modright">
-                  <div>
+                  <div class="num">
                     999
                   </div>
-                  <div>
+                  <div class="text">
                     月报名数
                   </div>
                 </div>
@@ -100,21 +109,47 @@
                   <i class="iconfont icon-zan"></i>
                 </div>
                 <div class="body-O modright">
-                  <div>
+                  <div class="num">
                     666
                   </div>
-                  <div>
+                  <div class="text">
                     点赞
                   </div>
                 </div>
               </div>
             </div>
         </div>
+        <div>
+          <div class="navbar">
+            <mt-navbar v-model="selected">
+              <mt-tab-item id="1">费用明细</mt-tab-item>
+              <mt-tab-item id="2">驾校详情</mt-tab-item>
+              <mt-tab-item id="3">优劣分析</mt-tab-item>
+            </mt-navbar>
+          </div>
+          <mt-tab-container v-model="selected" style="text-align: center">
+            <mt-tab-container-item id="1">
+              <h1>
+               费用明细
+              </h1>
+            </mt-tab-container-item>
+            <mt-tab-container-item id="2">
+              <h1>
+               驾校详情
+              </h1>
+            </mt-tab-container-item>
+            <mt-tab-container-item id="3">
+              <h1>
+               优劣分析
+              </h1>
+            </mt-tab-container-item>
+          </mt-tab-container>
+        </div>
       </div>
 </template>
 
 <script>
-  import { Swipe, SwipeItem ,Button } from 'mint-ui';
+  import { Swipe, SwipeItem ,Button ,Navbar, TabItem,TabContainer, TabContainerItem } from 'mint-ui';
 
   export default {
         name: "index",
@@ -122,6 +157,15 @@
           [Swipe.name]: Swipe,
           [Button.name]: Button,
           [SwipeItem.name]: SwipeItem,
+          [Navbar.name]: Navbar,
+          [TabItem.name]: TabItem,
+          [TabContainer.name]: TabContainer,
+          [TabContainerItem.name]: TabContainerItem,
+        },
+        data(){
+          return{
+            selected:'1'
+          }
         }
     }
 </script>
