@@ -48,7 +48,7 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     ApiResponse<List<String>> assignStudents(String yhId, String jlId);
 
-    boolean sendSMS(String tel, int type,  String identifyingCode,String redisKey);
+    boolean sendSMS(String tel, int type,  String identifyingCode);
     /**
      * 短信验证
      * @param tel    手机号码
@@ -56,7 +56,7 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
      *@param identifyingCode    验证码
      * @return
      */
-    ApiResponse<String> validateSms(String tel, String identifyingCode,String redisKey);
+    ApiResponse<String> validateSms(String tel, String identifyingCode,String type);
 
 
 }

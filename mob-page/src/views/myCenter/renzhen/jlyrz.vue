@@ -33,7 +33,7 @@
             <p slot="title">基本信息</p>
             <mt-field label="真实姓名" placeholder="请输入真实姓名" v-model="form.name"style="border-bottom: 1px #e9eaec solid;"></mt-field>
             <mt-field label="身份证号" placeholder="请输入身份证号" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
-            <mt-cell title="驾龄" :value="selectorValue" is-link style="border-bottom: 1px #e9eaec solid;" @click.native="showSelector"></mt-cell>
+            <mt-cell title="驾龄" :value="form.jl" is-link style="border-bottom: 1px #e9eaec solid;" @click.native="showSelector"></mt-cell>
             <md-selector
               v-model="isSelectorShow"
               :data="data"
@@ -43,7 +43,14 @@
               cancelText="取消"
               @confirm="onSelectorConfirm($event)"
             ></md-selector>
-            <mt-field label="所属区域" placeholder="用选择框" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
+            <mt-cell title="所属区域" :value="form.ssqy" is-link style="border-bottom: 1px #e9eaec solid;" @click.native="()=>{areaPickerShow = true}"></mt-cell>
+            <md-picker
+              ref="areaPicker"
+              v-model="areaPickerShow"
+              :data="areaData"
+              @confirm="onPickerConfirm"
+              title="选择区域"
+            ></md-picker>
             <mt-field label="居住地址" placeholder="请输入居住地址" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
           </Card>
           <Card dis-hover style="margin-top: 10px">
@@ -110,9 +117,9 @@
 </template>
 
 <script>
-  import {Card, Row, Col, Avatar, Icon,Tabs,TabPane,Badge,Steps, Step  } from 'iview'
+  import {Card, Row, Col, Avatar, Icon,Steps, Step  } from 'iview'
   import { Header,Button,Field,Toast,Cell   } from 'mint-ui';
-  import { ResultPage,Selector, FieldItem  } from 'mand-mobile'
+  import { ResultPage,Selector, FieldItem,Picker  } from 'mand-mobile'
 
   export default {
     name: "myCenter",
@@ -120,6 +127,7 @@
       return {
         stepIndex:0,
         isSelectorShow: false,
+        areaPickerShow:false,
         data: [
             {
               text: '5年',
@@ -131,10 +139,18 @@
               text: '10年以上',
             },
         ],
-        selectorValue: '5年',
+        areaData:[[
+          {text:'武昌区',value:'420101'},
+          {text:'洪山区',value:'420102'},
+          {text:'江夏区',value:'420103'},
+          {text:'汉阳区',value:'420104'},
+          {text:'东西湖区',value:'420105'},]
+        ],
         errorText:{
           name:'',
-          sfzmhm:''
+          sfzmhm:'',
+          jl:'5年',
+          ssqy:''
         },
         form:{
           name:'',
@@ -143,12 +159,13 @@
       }
     },
     components: {
-      Card,Row,Col,Avatar,Icon,Tabs,TabPane,Badge,Steps, Step,
+      Card,Row,Col,Avatar,Icon,Steps, Step,
       [Header.name]:Header,
       [Field.name]:Field,
       [Button.name]:Button,
       [Selector .name]:Selector,
       [Cell.name]: Cell,
+      [Picker.name]: Picker,
       [ResultPage.name]:ResultPage
     },
     methods:{
@@ -156,7 +173,16 @@
         this.isSelectorShow = true
       },
       onSelectorConfirm({text}) {
-        this.selectorValue = text
+        this.form.jl = text
+      },
+      onPickerConfirm() {
+        const values = this.$refs['areaPicker'].getColumnValues()
+
+        let res = ''
+        values.forEach(value => {
+          value && (res += `${value.text} `)
+        })
+        this.form.ssqy = '武汉市' + res
       },
       goback(){
         this.$router.go(-1);

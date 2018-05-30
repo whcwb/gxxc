@@ -36,7 +36,8 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/app")
 public class AppMainController {
-
+	@Value("${appSendSMSRegister:app_sendSMS_register}")
+	private String appSendSMSRegister;
 
 	@Autowired
 	private PtyhService ptyhService;
@@ -48,12 +49,7 @@ public class AppMainController {
 
 	@Value("${debug_test}")
 	private String debugTest;
-	//
-	@Value("${appSendSMSRegister:app_sendSMS_register}")
-	private String appSendSMSRegister;
 
-	@Value("${appSendSMSResetting:app_sendSMS_resetting}")
-	private String appSendSMSResetting ;
 	/**
 	 * 用户登陆接口
 	 * @param userCred
@@ -142,8 +138,7 @@ public class AppMainController {
 	 * @return
 	 */
 	@RequestMapping(value="/sendSMSzc", method={RequestMethod.POST})
-	public ApiResponse<String> sendSMSRegister(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm
-			,@RequestParam(name = "codeID") String codeID,@RequestParam(name = "key") String key,HttpServletRequest request){
+	public ApiResponse<String> sendSMSRegister(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm){
 //		1、验证参数不能为空
 		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(zh),"请填写正确的手机号");
 		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(yyyqm),"邀请码不能为空");
@@ -170,9 +165,9 @@ public class AppMainController {
 		RuntimeCheck.ifTrue(count == 0,"请填写正确的邀请码");
 //		4、生成手机验证码
 		String identifyingCode= StringDivUtils.getSix();//获取验证码
-		boolean sendType=ptyhService.sendSMS(zh,1,identifyingCode,appSendSMSRegister);
+		boolean sendType=ptyhService.sendSMS(zh,1,identifyingCode);
 		if(sendType){
-			redisDao.boundValueOps(appSendSMSRegister+"yyyqm"+zh).set(yyyqm, 120, TimeUnit.SECONDS);//设备邀请码，为10分钟过期
+			redisDao.boundValueOps(appSendSMSRegister+"yyyqm"+zh).set(yyyqm, 1, TimeUnit.DAYS);//设备邀请码，为10分钟过期
 			return  ApiResponse.success();
 		}else{
 			return  ApiResponse.fail("短信下发失败");
@@ -192,15 +187,8 @@ public class AppMainController {
 		RuntimeCheck.ifTrue(StringUtils.isEmpty(zh),"请填写正确的手机号");
 		RuntimeCheck.ifTrue(StringUtils.isEmpty(type),"请填写正确的类型");
 		RuntimeCheck.ifFalse(StringDivUtils.isPhoneValid(zh),"请填写正确的手机号");
-		String redisKey="";
-		if(StringUtils.equals(type,"1")){//
-			redisKey=appSendSMSRegister;
-		}else if(StringUtils.equals(type,"2")){//重置密码
-			redisKey=appSendSMSResetting;
-		}else{
-			return ApiResponse.fail("验证失败");
-		}
-		return ptyhService.validateSms(zh, identifyingCode,redisKey);
+
+		return ptyhService.validateSms(zh, identifyingCode,type);
 	}
 
 
@@ -208,9 +196,6 @@ public class AppMainController {
 	/**
 	 * 重置密码短信验证码下发
 	 * @param zh		手机号码
-	 * @param yyyqm	用户应邀邀请码
-	 * @param key		申请验证码KEY-必填
-	 * @param codeID	验证码
 	 * @return
 	 */
 	@RequestMapping(value="/sendSMScz", method={RequestMethod.POST})
@@ -227,13 +212,13 @@ public class AppMainController {
 
 //		3、生成手机验证码
 		String identifyingCode= StringDivUtils.getSix();//获取验证码
-		boolean sendType=ptyhService.sendSMS(zh,2,identifyingCode,appSendSMSResetting);
+		boolean sendType=ptyhService.sendSMS(zh,2,identifyingCode);
 		if(sendType){
 			return  ApiResponse.success();
 		}else{
 			return  ApiResponse.fail("短信下发失败");
 		}
-
-
 	}
+
+
 }
