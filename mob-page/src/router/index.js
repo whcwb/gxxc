@@ -99,7 +99,12 @@ const router = new Router({
       path: '/bill',
       name: 'bill',
       component:()=>import('@/views/bill')
+    },{
+      path: '/tx',
+      name: 'tx',
+      component:()=>import('@/views/TX')
     }
+
   ]
 });
 router.beforeEach((to, from, next) => {
