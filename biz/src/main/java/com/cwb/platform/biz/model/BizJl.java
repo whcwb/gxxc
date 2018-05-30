@@ -45,7 +45,7 @@ public class BizJl implements Serializable {
     private String jlJl;
 
     /**
-     * 教练所属区域
+     * 教练所属区域(字典表：ZDCLK0060)
      */
     @Column(name = "JL_QU")
     private String jlQu;

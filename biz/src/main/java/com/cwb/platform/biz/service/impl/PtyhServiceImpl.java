@@ -68,6 +68,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private BizOrderMapper orderMapper;
 
 
+    //
+    @Value("${appSendSMSRegister:app_sendSMS_register}")
+    private String appSendSMSRegister;
+
+    @Value("${appSendSMSResetting:app_sendSMS_resetting}")
+    private String appSendSMSResetting ;
+
+
+
+
     @Override
     protected Mapper<BizPtyh> getBaseMapper() {
         return entityMapper;
@@ -681,30 +691,34 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * 下发短信
      * @param tel    手机号码
      * @param type        1、注册  2、重置密码
-     * @param redisKey     redis key值
-     *@param identifyingCode    验证码 如果前台没有传，就给它加上
+     * @param identifyingCode     验证码
      *  @return
      */
     @Override
-   public boolean sendSMS(String tel, int type,  String identifyingCode,String redisKey) {
+   public boolean sendSMS(String tel, int type,  String identifyingCode) {
         boolean ret=false;
         if(StringUtils.isEmpty(identifyingCode)){
             identifyingCode= StringDivUtils.getSix();//获取验证码
         }
-        //		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
-        String identifying = redisDao.boundValueOps(redisKey + tel).get();
-        if(StringUtils.isNotEmpty(identifying)){
-            return true;
-        }
+
+        String redisKey="";
         if(type==1){
+            redisKey=appSendSMSRegister;
             //使用注册模板下发
         }else if(type==2){
+            redisKey=appSendSMSResetting;
             //使用重置密码模板进行下发
         }else{
             //类型不存在，不能下发
             return false;
         }
-        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 120, TimeUnit.SECONDS);//设备验证码，为10分钟过期
+//        查询当前KEY过期时间还有多少秒 超过120秒后，可以再次下发短信
+        long identifying = redisDao.getExpire(redisKey + tel,TimeUnit.SECONDS);
+        if(identifying!=-1 && 24*60*60-identifying < 120){
+            return true;
+        }
+
+        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为10分钟过期
         ret=true;
         return  ret;
     }
@@ -712,18 +726,28 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     /**
      * 短信验证
      * @param tel    手机号码
-     * @param redisKey     redis key值
      *@param identifyingCode    验证码
+     *@param type     1、注册  2、重置密码
+     *
      * @return
      */
     @Override
-    public ApiResponse<String> validateSms(String tel, String identifyingCode,String redisKey) {
+    public ApiResponse<String> validateSms(String tel, String identifyingCode,String type) {
         if(StringUtils.isEmpty(identifyingCode)){
             return ApiResponse.fail("验证码不能为空");
         }
         if(StringUtils.isEmpty(tel)){
             return ApiResponse.fail("手机号码不能为空");
         }
+        String redisKey="";
+        if(StringUtils.equals(type,"1")){//
+            redisKey=appSendSMSRegister;
+        }else if(StringUtils.equals(type,"2")){//重置密码
+            redisKey=appSendSMSResetting;
+        }else{
+            return ApiResponse.fail("验证失败");
+        }
+
                //		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
         String identifying = redisDao.boundValueOps(redisKey + tel).get();
         if(StringUtils.equals(identifying,identifyingCode)){
