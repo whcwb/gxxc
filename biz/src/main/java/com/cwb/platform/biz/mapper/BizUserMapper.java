@@ -19,7 +19,7 @@ public interface BizUserMapper extends Mapper<BizUser> {
             "</script>")
     void updateJlid(@Param("list") List<String> list,@Param("jlId") String jlId);
 
-    @Select("<script>" +
+    @Select(" <script>" +
             " SELECT ID FROM biz_ptyh WHERE " +
             " YH_LX='1' AND YH_ZT='1' AND DD_SFJX='1' AND YH_IXY_SFFP='0' AND YH_SFSD='0' " +
             " AND ID IN " +
