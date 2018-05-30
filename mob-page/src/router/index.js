@@ -90,6 +90,16 @@ const router = new Router({
       name: 'mycenter',
       component:()=>import('@/views/myCenter')
     },
+    {
+      path: '/pay',
+      name: 'pay',
+      component:()=>import('@/views/pay')
+    },
+    {
+      path: '/bill',
+      name: 'bill',
+      component:()=>import('@/views/bill')
+    }
   ]
 });
 router.beforeEach((to, from, next) => {

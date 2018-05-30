@@ -39,7 +39,9 @@
                   <span style="font-size: 40px;font-weight: bold">300.00</span>
                   <Row type="flex" justify="center">
                     <Col span="6">
-                      <Button type="primary" shape="circle" style="font-size: 14px;width:60px">缴费</Button>
+                      <Button type="primary" shape="circle"
+                              @click="$router.push({name:'pay'})"
+                              style="font-size: 14px;width:60px">缴费</Button>
                     </Col>
                     <Col span="6">
                       <Button type="primary" shape="circle" style="font-size: 14px;width:60px">提现</Button>
@@ -53,9 +55,11 @@
           <Row type="flex" justify="start">
             <Col span="24">
               <Card dis-hover>
-                <mt-cell title="账单" is-link style="border-bottom: 1px #e9eaec solid;">
-                  <i class="iconfont icon-detail" style="font-size: 20px" slot="icon"></i>
-                </mt-cell>
+                <div @click="$router.push({name:'bill'})">
+                  <mt-cell title="账单" is-link style="border-bottom: 1px #e9eaec solid;" >
+                    <i class="iconfont icon-detail" style="font-size: 20px" slot="icon"></i>
+                  </mt-cell>
+                </div>
                 <mt-cell title="团队" is-link>
                   <i class="iconfont icon-team" style="font-size: 20px" slot="icon"></i>
                 </mt-cell>
