@@ -47,4 +47,16 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<List<BizPtyh>> getCoaches(String name, String phone, String area, int pageNum, int pageSize);
 
     ApiResponse<List<String>> assignStudents(String yhId, String jlId);
+
+    boolean sendSMS(String tel, int type,  String identifyingCode);
+    /**
+     * 短信验证
+     * @param tel    手机号码
+     * @param redisKey     redis key值
+     *@param identifyingCode    验证码
+     * @return
+     */
+    ApiResponse<String> validateSms(String tel, String identifyingCode,String type);
+
+
 }

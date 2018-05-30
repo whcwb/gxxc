@@ -65,10 +65,10 @@
           <Row type="flex" justify="start" style="margin-top: 20px">
             <Col span="24">
             <Card dis-hover>
-              <mt-cell title="实名认证" value="未认证" is-link style="border-bottom: 1px #e9eaec solid;">
+              <mt-cell title="实名认证" value="未认证" to="/myCenter-sfrz" is-link style="border-bottom: 1px #e9eaec solid;">
                 <i class="iconfont icon-shimingrenzheng" style="font-size: 20px" slot="icon"></i>
               </mt-cell>
-              <mt-cell title="教练员认证" value="未认证" is-link>
+              <mt-cell title="教练员认证" value="未认证" to="/myCenter-jlyrz" is-link>
                 <i class="iconfont icon-ai-ca" style="font-size: 20px" slot="icon"></i>
                 <span style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
               </mt-cell>
@@ -95,7 +95,7 @@
                 this.$router.push('/myCenter-info');
             },
             showQrcode(){
-                Toast.info('展示我的二维码');
+                this.$router.push('/myCenter-qrcode');
             }
         }
     }

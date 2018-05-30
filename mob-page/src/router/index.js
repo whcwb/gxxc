@@ -41,6 +41,30 @@ const router = new Router({
       },
       component: resolve => { require(['@/views/myCenter/info.vue'], resolve); }
     },
+    {
+      path: '/myCenter-qrcode',
+      name: 'myCenterQrcode',
+      meta:{
+        title:'我的二维码'
+      },
+      component: resolve => { require(['@/views/myCenter/qrcode.vue'], resolve); }
+    },
+    {
+      path: '/myCenter-sfrz',
+      name: 'myCenterSfrz',
+      meta:{
+        title:'实名认证'
+      },
+      component: resolve => { require(['@/views/myCenter/renzhen/sfrz.vue'], resolve); }
+    },
+    {
+      path: '/myCenter-jlyrz',
+      name: 'myCenterJlyrz',
+      meta:{
+        title:'教练员认证'
+      },
+      component: resolve => { require(['@/views/myCenter/renzhen/jlyrz.vue'], resolve); }
+    },
     // {
     //   path: '/index',
     //   name: 'index',
@@ -50,6 +74,11 @@ const router = new Router({
       path: '/jxlist',
       name: 'jxlist',
       component:()=>import('@/views/jxlist')
+    },
+    {
+      path: '/jxMess',
+      name: 'jxMess',
+      component:()=>import('@/views/jxMess')
     },
     {
       path: '/kcfb',

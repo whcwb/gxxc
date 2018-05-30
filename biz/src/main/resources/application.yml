@@ -66,5 +66,9 @@ order_money: 2500
 logo_file_url: D:\2003\logo.png
 
 qr_code_file_url: D:\2003\
+#注册下发短信
+appSendSMSRegister: app_sendSMS_register
+#重置 下发短信
+appSendSMSResetting: app_sendSMS_resetting
 
 
