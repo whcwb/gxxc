@@ -61,4 +61,5 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> validateSms(String tel, String identifyingCode,String type);
 
 
+    ApiResponse<String> resetPwd(String tel, String code, String newPwd);
 }

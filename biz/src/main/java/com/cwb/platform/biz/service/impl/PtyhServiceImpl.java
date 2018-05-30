@@ -728,6 +728,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     @Override
     public ApiResponse<List<BizPtyh>> getBizPtyhList() {
+        List<BizPtyh> list = new ArrayList<>();
         // 获取当前登录用户
         BizPtyh user = getAppCurrentUser();
         // 鉴定该用户为 教练还是学员
@@ -742,10 +743,48 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
 
 
+
+        }
+        return ApiResponse.success(list);
+    }
+
+    /**
+     * 用户重置密码
+     * @param tel
+     * @param code
+     * @param newPwd
+     * @return
+     */
+    @Override
+    public ApiResponse<String> resetPwd(String tel, String code, String newPwd) {
+
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhZh.name(), tel);
+        List<BizPtyh> ptyhList = findByCondition(condition);
+        RuntimeCheck.ifEmpty(ptyhList, "该账号尚未注册");
+
+        // 验证短信验证码是否正确
+        ApiResponse<String> sms = validateSms(tel, code, "2");
+
+        RuntimeCheck.ifTrue(sms.getCode()!=200,sms.getMessage());
+
+
+        if(sms.getCode() == 200){ // 验证码验证成功 , 重新设置密码
+
+            BizPtyh newEntity = new BizPtyh();
+            newEntity.setId(ptyhList.get(0).getId());
+
+            // 重置密码加密
+            String userPwd = EncryptUtil.encryptUserPwd(newPwd);
+            RuntimeCheck.ifBlank(userPwd , "重置密码出错，请重新申请");
+            newEntity.setYhMm(userPwd);
+            int i = update(newEntity);
+            return i==1?ApiResponse.success():ApiResponse.fail("重置失败");
+
+        }else{
+            return ApiResponse.fail("验证验证码出现异常");
         }
 
-
-        return null;
     }
 
 
