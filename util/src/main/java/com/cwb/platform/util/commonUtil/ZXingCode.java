@@ -111,7 +111,7 @@ public class ZXingCode {
 
             image.flush();
 
-            ImageIO.write(image, "png", codeFile); // TODO
+            ImageIO.write(image, "png", codeFile); //
         } catch (Exception e) {
             e.printStackTrace();
         }
