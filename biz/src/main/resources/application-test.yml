@@ -31,7 +31,9 @@ qr_code_file_url: D:\2003\
 wechat:
   appId: wxc79cfaa1daf98915
   secret: d7999531006d520814412b3cd0805156
-  domain:
+  token: Token
+  aesKey:
+  domain: http://jp8whm.natappfree.cc
 
 
 
