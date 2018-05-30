@@ -663,9 +663,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<List<String>> assignStudents(String yhId, String jlId) {
 
-        // 验证教练是否认证
-        BizJl bizJl = jlService.findById(jlId);
-        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该教练未进行实名认证");
+        BizPtyh users=this.findById(jlId);
+        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
+//        yhlx=2
+//        yhzt=1
+
+        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
+        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
+//        // 验证教练是否认证
+//        BizJl bizJl = jlService.findById(jlId);
+//        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该教练未进行实名认证");
 
         // 将多个学员id 分开
         String[] sIds = yhId.split(",");
@@ -683,8 +690,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         // 进行分配操作
         if(CollectionUtils.isNotEmpty(ids)) {
             userService.updateJlId(ids, jlId);
+            entityMapper.updateJlFp(ids,"该学员于："+DateUtils.getNowTime()+" 分配给教练员："+users.getYhXm()+"");
         }
-
         return ApiResponse.success(ids);
     }
     /**
