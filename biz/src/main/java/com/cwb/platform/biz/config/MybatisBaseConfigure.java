@@ -1,10 +1,8 @@
 package com.cwb.platform.biz.config;
 
+import com.cwb.platform.util.commonUtil.SnowflakeIdWorker;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.cwb.platform.util.commonUtil.SnowflakeIdWorker;
-
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -26,4 +24,7 @@ public class MybatisBaseConfigure {
 	public SnowflakeIdWorker idGenerator(){
 		return new SnowflakeIdWorker(0, 0);
 	}
+
+
+
 }

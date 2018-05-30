@@ -22,6 +22,8 @@
      <setting name="defaultStatementTimeout" value="25000" />
      <!-- 解决无效的列问题 -->
      <setting name="jdbcTypeForNull" value="NULL" />
+      <!--数据库字段与Model属性映射 ， 驼峰法-->
+     <setting name="mapUnderscoreToCamelCase" value="true"/>
   </settings> 
   
 </configuration>

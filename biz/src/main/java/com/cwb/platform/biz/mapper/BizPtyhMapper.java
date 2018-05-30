@@ -1,7 +1,9 @@
 package com.cwb.platform.biz.mapper;
 
 import com.cwb.platform.sys.model.BizPtyh;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -23,36 +25,11 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
             " AND YH_ZH LIKE '%${phone}%' " +
             "</if> " +
             "</script>")
-    @Results({
-            @Result(property = "yhZh", column = "YH_ZH"),
-            @Result(property = "yhMm", column = "YH_MM"),
-            @Result(property = "yhCjr",column = "YH_CJR"),
-            @Result(property = "yhXgr",column = "YH_XGR"),
-            @Result(property = "xgsj", column = "XGSJ"),
-            @Result(property = "yhXm", column = "YH_XM"),
-            @Result(property = "yhLx",column = "YH_LX"),
-            @Result(property = "yhXb",column = "YH_XB"),
-            @Result(property = "yhZjhm", column = "YH_ZJHM"),
-            @Result(property = "yhMmyxq", column = "YH_MMYXQ"),
-            @Result(property = "yhZt",column = "YH_ZT"),
-            @Result(property = "ddSfjx",column = "DD_SFJX"),
-            @Result(property = "yhOpenId", column = "YH_OPENID"),
-            @Result(property = "yhAlipayId", column = "YH_ALIPAYID"),
-            @Result(property = "yhTx",column = "YH_TX"),
-            @Result(property = "yhBm",column = "YH_BM"),
-            @Result(property = "yhZsyqm", column = "YH_ZSYQM"),
-            @Result(property = "yhYyyqm", column = "YH_YYYQM"),
-            @Result(property = "yhZsyqmImg",column = "YH_ZSYQM_IMG"),
-            @Result(property = "yhIxySffp",column = "YH_IXY_SFFP"),
-            @Result(property = "yhSfyjz", column = "YH_SFYJZ"),
-            @Result(property = "yhFpms", column = "YH_FPMS"),
-            @Result(property = "yhSfsd",column = "YH_SFSD"),
-    })
     List<BizPtyh> getJls(@Param("name") String name, @Param("phone") String phone,@Param("list") List<String> list);
 
     @Update("<script>" +
             " UPDATE BIZ_PTYH SET YH_IXY_SFFP = '1' , YH_FPMS = #{yhFpms} " +
-            " where YH_ID IN " +
+            " where ID IN " +
             " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
             " #{item} " +
             "</foreach>" +

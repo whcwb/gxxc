@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -118,6 +119,13 @@ public class AppPtyhController extends AppUserBaseController {
     @PostMapping("/updatelx")
     public ApiResponse<String> updatelx(BizJl bizJl){
         return service.updatelx(bizJl);
+    }
+    /**
+     *  app端 显示列表
+     */
+    @PostMapping("/ptyhlist")
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize){
+        return service.getBizPtyhList(pageNum, pageSize);
     }
 
 

@@ -1,10 +1,10 @@
 package com.cwb.platform.util.commonUtil;
 
+import org.springframework.util.FileCopyUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-
-import org.springframework.util.FileCopyUtils;
 
 /**
  * @since 2017/11/1
@@ -29,7 +29,7 @@ public class FileUtil {
                 targetFile.mkdirs();
             }
 		} catch (Exception e) {
-			// TODO: handle exception
+			//  handle exception
 		}
         
     }
@@ -44,7 +44,7 @@ public class FileUtil {
         	out.flush();
         	out.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			//  handle exception
 		} 
         //out.write(file);
         //out.flush();

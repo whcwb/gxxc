@@ -494,7 +494,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 
         BizPtyh user = entityMapper.selectByPrimaryKey(userRequest.getId());
-        if (user == null) return ApiResponse.fail("用户不存在");
+        if (user == null) {
+            return ApiResponse.fail("用户不存在");
+        }
+        if (StringUtils.equals(user.getYhZt(),"1")) {
+            return ApiResponse.fail("用户已实名认证成功，无需此操作");
+        }
         if (StringUtils.equals(user.getYhSfsd(), "1")) {
             return ApiResponse.fail("用户已锁定，无法进行操作");
         }
@@ -518,7 +523,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         if (imgList != null) {
-            if (imgList.length != imgTypeList.length) {
+            if (imgList.length != imgTypeList.length && imgList.length>0) {
                 return ApiResponse.fail("证件数据和证件属性数据不同");
             }
             for (int i = 0; i < imgList.length; i++) {
@@ -533,7 +538,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 wjList.add(wj);
             }
         }
+        //TODO
         if (wjList.size() > 0) {
+            wjMapper.deleteBatch(user.getId());
             wjMapper.insertBatch(wjList);
         }
 
@@ -570,10 +577,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<String> updatelx(BizJl bizJl) {
         BizPtyh bizPtyh = getAppCurrentUser();
-        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizPtyh), "用户不存在");
-        //String yhid = sysYh.getYhid();
-        // 修改用户的类型 和 认证状态 ， 将用户的是否有驾照改为 是
-        //BizPtyh bizPtyh = findById(bizJl.getYhId());
+
         BizJl b = jlService.findById(bizPtyh.getId());
         RuntimeCheck.ifTrue(b !=null , "该用户已经提交申请");
 
@@ -609,7 +613,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         jlService.save(bizJl);
 
-        update(ptyh);
 
 
         return ApiResponse.success();
@@ -625,7 +628,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     @Override
     public ApiResponse<List<BizPtyh>> getCoaches(String name, String phone, String area, int pageNum, int pageSize) {
-
+        List<BizPtyh> list = new ArrayList<>();
         // 若三个条件都为空 分页查询所有已经认证的教练
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhZt.name(), "1"); // 0 未认证 1 已认证
@@ -635,7 +638,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(name) && StringUtils.isEmpty(phone) && StringUtils.isEmpty(area)) {
 
             List<BizPtyh> bizPtyhs = this.findByCondition(condition);
-            return ApiResponse.success(bizPtyhs);
+            bizPtyhs.stream().forEach(bizPtyh -> {
+                list.add(afterReturns(bizPtyh));
+            });
+            return ApiResponse.success(list);
         }
 
         if (StringUtils.isNotBlank(name)) {
@@ -653,11 +659,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             // 拿到所在区域的所有教练的 id
             List<String> jlIds = bizJls.stream().map(BizJl::getYhId).collect(Collectors.toList());
            List<BizPtyh> bizPtyhList =  entityMapper.getJls(name, phone, jlIds);
-           return ApiResponse.success(bizPtyhList);
+            bizPtyhList.stream().forEach(bizPtyh -> {
+                list.add(afterReturns(bizPtyh));
+            });
+           return ApiResponse.success(list);
         }
 
         List<BizPtyh> ptyhs =   this.findByCondition(condition);
-        return ApiResponse.success(ptyhs);
+        ptyhs.stream().forEach(bizPtyh -> {
+            list.add(afterReturns(bizPtyh));
+        });
+        return ApiResponse.success(list);
     }
 
     @Override
@@ -665,33 +677,24 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         BizPtyh users=this.findById(jlId);
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
-//        yhlx=2
-//        yhzt=1
 
-        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
-        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
+        RuntimeCheck.ifTrue(!StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
+        RuntimeCheck.ifTrue(!StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
 //        // 验证教练是否认证
 //        BizJl bizJl = jlService.findById(jlId);
 //        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该教练未进行实名认证");
 
         // 将多个学员id 分开
-        String[] sIds = yhId.split(",");
+        List<String> sIds = Arrays.asList(yhId.split(","));
         // 可以分配的用户 id
-        List<String> ids = new ArrayList<>();
-        for (String s : sIds) {// 校验当前用户是否需要已经分配教练
-            BizUser user = userService.findById(s);
-            if (!ObjectUtils.isEmpty(user)) {
-                if (StringUtils.isBlank(user.getYhJlid())) {
-                    ids.add(s); // 添加分配用户id
-                }
-            }
-        }
+        List<String> ids = userService.getYhIds(sIds);
 
         // 进行分配操作
         if(CollectionUtils.isNotEmpty(ids)) {
             userService.updateJlId(ids, jlId);
             entityMapper.updateJlFp(ids,"该学员于："+DateUtils.getNowTime()+" 分配给教练员："+users.getYhXm()+"");
         }
+
         return ApiResponse.success(ids);
     }
     /**
@@ -703,32 +706,125 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     @Override
    public boolean sendSMS(String tel, int type,  String identifyingCode) {
-        boolean ret=false;
-        if(StringUtils.isEmpty(identifyingCode)){
-            identifyingCode= StringDivUtils.getSix();//获取验证码
+        boolean ret = false;
+        if (StringUtils.isEmpty(identifyingCode)) {
+            identifyingCode = StringDivUtils.getSix();//获取验证码
         }
 
-        String redisKey="";
-        if(type==1){
-            redisKey=appSendSMSRegister;
+        String redisKey = "";
+        if (type == 1) {
+            redisKey = appSendSMSRegister;
             //使用注册模板下发
-        }else if(type==2){
-            redisKey=appSendSMSResetting;
+        } else if (type == 2) {
+            redisKey = appSendSMSResetting;
             //使用重置密码模板进行下发
-        }else{
+        } else {
             //类型不存在，不能下发
             return false;
         }
 //        查询当前KEY过期时间还有多少秒 超过120秒后，可以再次下发短信
-        long identifying = redisDao.getExpire(redisKey + tel,TimeUnit.SECONDS);
-        if(identifying!=-1 && 24*60*60-identifying < 120){
+        long identifying = redisDao.getExpire(redisKey + tel, TimeUnit.SECONDS);
+        if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
             return true;
         }
-
-        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为10分钟过期
+        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
         ret=true;
         return  ret;
     }
+
+
+    /**
+     * 根据当前用户显示相关人员的列表
+     * @return
+     */
+    @Override
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(int pageNum, int pageSize) {
+        List<BizPtyh> list = new ArrayList<>();
+        // 获取当前登录用户
+        BizPtyh user = getAppCurrentUser();
+        // 鉴定该用户为 教练还是学员
+        if(StringUtils.equals(user.getYhLx(), "1")){ // 用户为学员 展示其教练信息
+
+            BizUser bizUser = userService.findById(user.getId());
+            RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizUser),"学员信息不存在");
+            SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+            condition.eq(BizPtyh.InnerColumn.id.name(), bizUser.getYhJlid());
+            List<BizPtyh> bizPtyhs = findByCondition(condition);
+
+            BizJl bizJl = jlService.findById(bizUser.getYhJlid());
+            RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该用户的教练未进行认证");
+            if(CollectionUtils.isNotEmpty(bizPtyhs)) {
+                bizPtyhs.stream().forEach(
+                        bizPtyh -> {
+                            BizPtyh ptyh = afterReturns(bizPtyh);
+                            ptyh.setYhMm(bizJl.getJlMs()); // 用户表中没有教练简介 ， 将 密码字段设置为 教练的简介
+                            list.add(ptyh);
+                        }
+                );
+            }
+            return ApiResponse.success(list);
+
+        }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
+
+            SimpleCondition condition = new SimpleCondition(BizUser.class);
+            condition.eq(BizUser.InnerColumn.yhJlid.name(), user.getId());
+            List<BizUser> bizUsers = userService.findByCondition(condition);
+
+            // 获取所有学员的 id
+            List<String> yhIds = bizUsers.stream().map(BizUser::getYhId).collect(Collectors.toList());
+            SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
+            yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
+
+            PageHelper.startPage(pageNum,pageSize);
+            List<BizPtyh> ptyhs = findByCondition(yhCondition);
+
+            if(CollectionUtils.isNotEmpty(ptyhs)){
+                ptyhs.stream().forEach(bizPtyh -> {
+                    list.add(afterReturns(bizPtyh));
+                });
+            }
+
+            return ApiResponse.success(list);
+        }
+
+        return ApiResponse.success(list);
+    }
+
+    /**
+     * 用户重置密码
+     * @param tel
+     * @param code
+     * @param newPwd
+     * @return
+     */
+    @Override
+    public ApiResponse<String> resetPwd(String tel, String code, String newPwd) {
+
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhZh.name(), tel);
+        List<BizPtyh> ptyhList = findByCondition(condition);
+        RuntimeCheck.ifEmpty(ptyhList, "该账号尚未注册");
+
+        // 验证短信验证码是否正确
+        ApiResponse<String> sms = validateSms(tel, code, "2");
+
+        RuntimeCheck.ifTrue(sms.getCode()!=200,sms.getMessage());
+
+
+
+            BizPtyh newEntity = new BizPtyh();
+            newEntity.setId(ptyhList.get(0).getId());
+
+            // 重置密码加密
+            String userPwd = EncryptUtil.encryptUserPwd(newPwd);
+            RuntimeCheck.ifBlank(userPwd , "重置密码出错，请重新申请");
+            newEntity.setYhMm(userPwd);
+            int i = update(newEntity);
+            return i==1?ApiResponse.success():ApiResponse.fail("重置失败");
+
+
+    }
+
 
     /**
      * 短信验证
@@ -755,7 +851,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("验证失败");
         }
 
-//		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
         String identifying = redisDao.boundValueOps(redisKey + tel).get();
         if(StringUtils.equals(identifying,identifyingCode)){
             return ApiResponse.success();

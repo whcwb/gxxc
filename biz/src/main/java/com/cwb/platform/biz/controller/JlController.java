@@ -22,4 +22,7 @@ public class JlController extends BaseController<BizJl,String>{
     protected BaseService<BizJl, String> getBaseService() {
         return service;
     }
+
+
+
 }
