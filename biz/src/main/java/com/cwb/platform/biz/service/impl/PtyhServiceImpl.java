@@ -730,7 +730,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<List<BizPtyh>> getBizPtyhList() {
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(int pageNum, int pageSize) {
         List<BizPtyh> list = new ArrayList<>();
         // 获取当前登录用户
         BizPtyh user = getAppCurrentUser();
@@ -744,7 +744,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<BizPtyh> bizPtyhs = findByCondition(condition);
             return ApiResponse.success(bizPtyhs);
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
-// TODO: 2018/5/30
+
+
+
 
 
         }

@@ -124,8 +124,8 @@ public class AppPtyhController extends AppUserBaseController {
      *  app端 显示列表
      */
     @PostMapping("/ptyhlist")
-    public ApiResponse<List<BizPtyh>> getBizPtyhList(){
-        return service.getBizPtyhList();
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize){
+        return service.getBizPtyhList(pageNum, pageSize);
     }
 
 
