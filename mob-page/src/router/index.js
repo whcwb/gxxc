@@ -8,7 +8,7 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'Home',
       component: Home,
       meta:{
@@ -18,7 +18,7 @@ const router = new Router({
       ]
     },
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       meta:{
         title:'登录'

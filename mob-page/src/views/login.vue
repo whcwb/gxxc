@@ -66,7 +66,7 @@
         Toast.succeed('操作成功');
       },
       login(){
-          this.$router.push("/");
+          this.$router.push("/home");
       },
       reg(){
           this.$router.push("/reg");

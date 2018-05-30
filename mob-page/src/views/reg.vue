@@ -1,7 +1,7 @@
 <template>
   <div id="reg">
       <mt-header fixed title="注册">
-        <router-link to="/login" slot="left">
+        <router-link to="/" slot="left">
           <md-icon name="arrow-left" size="lg"></md-icon>
         </router-link>
       </mt-header>
