@@ -11,27 +11,23 @@
             <mt-button slot="left" @click="$router.push({name:'Home'})">返回</mt-button>
           </mt-header>
         </div>
-        <div class="box-row-list">
-          <div style="width: 25%;padding: 0.2rem">
-            <span style="background-color: #949494;
-            border: solid 1px #E0DADF;
-            color: #E0DADF;
-            padding: 0.1rem;border-radius: 0.3rem">
-              柏林考场
-            </span>
-          </div>
-          <div style="width: 25%;padding: 0.2rem"
-                v-for="item in ['一','二','三']">
-            <span style="background-color: #949494;
-            border: solid 1px #E0DADF;
-            color: #E0DADF;
-            padding: 0.1rem;border-radius: 0.3rem">
-              考场{{item}}
-            </span>
-          </div>
-        </div>
+        <!--<div class="box-row" style="background-color: #86a9cd;height: 0.7rem;padding: 0 0.2rem 0 0.1rem">-->
+          <!--<div class="body-O jxFind">-->
+            <!--<i class="iconfont "></i>-->
+            <!--<input class="SearchInput"-->
+                   <!--placeholder="请输入关键字搜索"-->
+                   <!--type="text" v-model="Search">-->
+          <!--</div>-->
+          <!--<div style="width: 25%">-->
+            <!--<select class="selectSTY" name="" id="">-->
+              <!--<option :value="item.name"-->
+                      <!--v-for="(item,index) in qylist"-->
+                      <!--:selected="index==2">{{item.name}}</option>-->
+            <!--</select>-->
+          <!--</div>-->
+        <!--</div>-->
         <div class="body">
-          <div class="listItem box">
+          <div class="listItem" v-for="(item,index) in [,,,,]">
             <div>
               <img src="/static/blkc.png"
                    style="width: 100%;height: 3rem"
@@ -62,6 +58,12 @@
     components:{
       [Header.name]:Header,
       [Button.name]:Button
+    },
+    data(){
+      return{
+        Search:'',
+        qylist:[]
+      }
     }
   }
 </script>
