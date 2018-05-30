@@ -76,6 +76,11 @@ const router = new Router({
       component:()=>import('@/views/jxlist')
     },
     {
+      path: '/jxMess',
+      name: 'jxMess',
+      component:()=>import('@/views/jxMess')
+    },
+    {
       path: '/kcfb',
       name: 'kcfb',
       component:()=>import('@/views/kcfb')
