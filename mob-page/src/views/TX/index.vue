@@ -27,9 +27,14 @@
 <template>
       <div class="box" style="background-color: #eaeaea">
         <div>
-          <mt-header title="提现">
-            <span slot="left" @click="$router.push({name:'Home'})">返回</span>
-          </mt-header>
+          <box-head tit="提现">
+            <div slot="left" style="color: #E0DADF">
+              <i class="iconfont icon-left1"></i>
+            </div>
+          </box-head>
+          <!--<mt-header title="提现">-->
+            <!--<span slot="left" @click="$router.push({name:'Home'})">返回</span>-->
+          <!--</mt-header>-->
         </div>
         <div class="body">
           <Row type="flex" justify="start">
@@ -107,10 +112,12 @@
     import { Header ,Cell } from 'mint-ui'
     import {ActionSheet, Dialog ,InputItem ,NumberKeyboard} from 'mand-mobile'
     import {Card ,Row, Col , Button} from 'iview'
+    import boxHead from '@/views/components/boxHead'
     export default {
         name: "index",
         height: 500,
         components:{
+          boxHead,
           Card ,Row, Col,Button,
           [Header.name]:Header,
           [Cell.name]:Cell,
