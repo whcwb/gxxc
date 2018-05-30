@@ -20,11 +20,12 @@ public interface BizUserMapper extends Mapper<BizUser> {
     void updateJlid(@Param("list") List<String> list,@Param("jlId") String jlId);
 
     @Select("<script>" +
-            "SELECT YH_ID FROM BIZ_USER WHERE YH_ID IN " +
+            " SELECT ID FROM biz_ptyh WHERE " +
+            " YH_LX='1' AND YH_ZT='1' AND DD_SFJX='1' AND YH_IXY_SFFP='0' AND YH_SFSD='0' " +
+            " AND ID IN " +
             "<foreach collection='list' item='item' open='(' close=')' separator=','>" +
             " #{item} " +
             "</foreach>" +
-            " AND YH_JLID IS NULL" +
             "</script>")
     List<String> getYhIds(@Param("list") List<String> ids);
 
