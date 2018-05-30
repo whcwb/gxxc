@@ -695,27 +695,32 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     @Override
    public boolean sendSMS(String tel, int type,  String identifyingCode) {
-        boolean ret=false;
-        if(StringUtils.isEmpty(identifyingCode)){
-            identifyingCode= StringDivUtils.getSix();//获取验证码
+        boolean ret = false;
+        if (StringUtils.isEmpty(identifyingCode)) {
+            identifyingCode = StringDivUtils.getSix();//获取验证码
         }
 
-        String redisKey="";
-        if(type==1){
-            redisKey=appSendSMSRegister;
+        String redisKey = "";
+        if (type == 1) {
+            redisKey = appSendSMSRegister;
             //使用注册模板下发
-        }else if(type==2){
-            redisKey=appSendSMSResetting;
+        } else if (type == 2) {
+            redisKey = appSendSMSResetting;
             //使用重置密码模板进行下发
-        }else{
+        } else {
             //类型不存在，不能下发
             return false;
         }
 //        查询当前KEY过期时间还有多少秒 超过120秒后，可以再次下发短信
-        long identifying = redisDao.getExpire(redisKey + tel,TimeUnit.SECONDS);
-        if(identifying!=-1 && 24*60*60-identifying < 120){
+        long identifying = redisDao.getExpire(redisKey + tel, TimeUnit.SECONDS);
+        if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
             return true;
         }
+        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为10分钟过期
+        ret=true;
+        return  ret;
+    }
+
 
     /**
      * 根据当前用户显示相关人员的列表
@@ -743,10 +748,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         return null;
     }
 
-        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为10分钟过期
-        ret=true;
-        return  ret;
-    }
 
     /**
      * 短信验证
@@ -773,7 +774,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("验证失败");
         }
 
-               //		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
+        //		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
         String identifying = redisDao.boundValueOps(redisKey + tel).get();
         if(StringUtils.equals(identifying,identifyingCode)){
             return ApiResponse.success();
