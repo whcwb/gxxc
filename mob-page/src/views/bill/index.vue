@@ -79,10 +79,10 @@
   import { Header,Button } from 'mint-ui'
     export default {
         name: "index",
-  components:{
-    [Header.name]:Header,
-      [Button.name]:Button
-  },
+        components:{
+          [Header.name]:Header,
+            [Button.name]:Button
+        },
     }
 </script>
 

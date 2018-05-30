@@ -44,7 +44,9 @@
                               style="font-size: 14px;width:60px">缴费</Button>
                     </Col>
                     <Col span="6">
-                      <Button type="primary" shape="circle" style="font-size: 14px;width:60px">提现</Button>
+                      <Button type="primary" shape="circle"
+                              @click="$router.push({name:'tx'})"
+                              style="font-size: 14px;width:60px">提现</Button>
                     </Col>
                   </Row>
                 </div>
