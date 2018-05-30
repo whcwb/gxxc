@@ -30,11 +30,26 @@
         </div>
         <div v-show="stepIndex == 0">
           <Card dis-hover>
+            <p slot="title">基本信息</p>
             <mt-field label="真实姓名" placeholder="请输入真实姓名" v-model="form.name"style="border-bottom: 1px #e9eaec solid;"></mt-field>
             <mt-field label="身份证号" placeholder="请输入身份证号" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
-            <mt-field label="驾龄" placeholder="请输入驾龄" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
-            <mt-field label="紧急联系人" placeholder="请输入紧急联系人" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
-            <mt-field label="紧急联系人电话" placeholder="请输入紧急联系人电话" v-model="form.sfzmhm"></mt-field>
+            <mt-cell title="驾龄" :value="selectorValue" is-link style="border-bottom: 1px #e9eaec solid;" @click.native="showSelector"></mt-cell>
+            <md-selector
+              v-model="isSelectorShow"
+              :data="data"
+              :default-index="1"
+              title="驾龄"
+              okText="确认"
+              cancelText="取消"
+              @confirm="onSelectorConfirm($event)"
+            ></md-selector>
+            <mt-field label="所属区域" placeholder="用选择框" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
+            <mt-field label="居住地址" placeholder="请输入居住地址" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
+          </Card>
+          <Card dis-hover style="margin-top: 10px">
+            <p slot="title">紧急联系人</p>
+            <mt-field label="联系人" placeholder="请输入紧急联系人" v-model="form.sfzmhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
+            <mt-field label="联系电话" placeholder="请输入紧急联系人电话" v-model="form.sfzmhm"></mt-field>
           </Card>
           <div style="margin: 20px">
             <mt-button type="danger" size="large" @click="toPhotoNext">下一步</mt-button>
@@ -96,14 +111,27 @@
 
 <script>
   import {Card, Row, Col, Avatar, Icon,Tabs,TabPane,Badge,Steps, Step  } from 'iview'
-  import { Header,Button,Field,Toast  } from 'mint-ui';
-  import { ResultPage } from 'mand-mobile'
+  import { Header,Button,Field,Toast,Cell   } from 'mint-ui';
+  import { ResultPage,Selector, FieldItem  } from 'mand-mobile'
 
   export default {
     name: "myCenter",
     data(){
       return {
         stepIndex:0,
+        isSelectorShow: false,
+        data: [
+            {
+              text: '5年',
+            },
+            {
+              text: '5-10年',
+            },
+            {
+              text: '10年以上',
+            },
+        ],
+        selectorValue: '5年',
         errorText:{
           name:'',
           sfzmhm:''
@@ -119,9 +147,17 @@
       [Header.name]:Header,
       [Field.name]:Field,
       [Button.name]:Button,
+      [Selector .name]:Selector,
+      [Cell.name]: Cell,
       [ResultPage.name]:ResultPage
     },
     methods:{
+      showSelector() {
+        this.isSelectorShow = true
+      },
+      onSelectorConfirm({text}) {
+        this.selectorValue = text
+      },
       goback(){
         this.$router.go(-1);
       },
