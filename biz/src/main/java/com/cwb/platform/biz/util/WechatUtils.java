@@ -88,10 +88,11 @@ public class WechatUtils {
     public String getJsApiSign(String url,String token,String timestamp) {
         String ticket = getJsapiTicket(token);
         String params = "jsapi_ticket=" +ticket +
-                "&noncestr=wechat" +
+                "&noncestr=wechat123" +
                 "&timestamp="+ timestamp +
-                "&url=jp8whm.natappfree.cc";
-        String sign = DigestUtils.sha1Hex(params.getBytes());
+                "&url="+url;
+        System.out.println(params);
+        String sign = DigestUtils.shaHex(params);
         System.out.println(sign);
         return sign;
     }

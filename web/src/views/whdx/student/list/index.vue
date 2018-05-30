@@ -43,7 +43,7 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "",  type: 'selection'},
+                    {title: "",  type: 'selection',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
@@ -98,6 +98,10 @@
 				for (let r of this.choosedData){
                     if (r.yhIxySffp == '1'){
                         this.$Message.error("请选择未分配的学员")
+                        return;
+					}
+                    if (r.ddSfjx != '1'){
+                        this.$Message.error("请选择已缴费的学员")
                         return;
 					}
 				}
