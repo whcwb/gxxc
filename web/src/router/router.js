@@ -135,6 +135,13 @@ export let appRouter = [
 				component: () => import('@/views/whdx/student/list')
 			},
 			{
+				path: 'teacher-list',
+				icon: 'android-clipboard',
+				name: 'teacher-list',
+                meta: { title: '教练列表' },
+				component: () => import('@/views/whdx/teacher/list')
+			},
+			{
 				path: 'hd-jx',
 				icon: 'android-clipboard',
 				name: 'hd-jx',
