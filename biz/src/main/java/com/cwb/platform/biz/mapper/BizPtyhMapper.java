@@ -1,9 +1,9 @@
 package com.cwb.platform.biz.mapper;
 
 import com.cwb.platform.sys.model.BizPtyh;
-import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;

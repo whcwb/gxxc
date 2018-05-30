@@ -570,10 +570,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<String> updatelx(BizJl bizJl) {
         BizPtyh bizPtyh = getAppCurrentUser();
-        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizPtyh), "用户不存在");
-        //String yhid = sysYh.getYhid();
-        // 修改用户的类型 和 认证状态 ， 将用户的是否有驾照改为 是
-        //BizPtyh bizPtyh = findById(bizJl.getYhId());
+
         BizJl b = jlService.findById(bizPtyh.getId());
         RuntimeCheck.ifTrue(b !=null , "该用户已经提交申请");
 
@@ -609,7 +606,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         jlService.save(bizJl);
 
-        update(ptyh);
 
 
         return ApiResponse.success();
@@ -665,8 +661,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         BizPtyh users=this.findById(jlId);
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
-//        yhlx=2
-//        yhzt=1
 
         RuntimeCheck.ifTrue(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
         RuntimeCheck.ifTrue(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
@@ -679,7 +673,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         // 可以分配的用户 id
         List<String> ids = new ArrayList<>();
         for (String s : sIds) {// 校验当前用户是否需要已经分配教练
-            BizUser user = userService.findById(s);
+            BizUser user = userService.findById(s);//TOdo 后期优化
             if (!ObjectUtils.isEmpty(user)) {
                 if (StringUtils.isBlank(user.getYhJlid())) {
                     ids.add(s); // 添加分配用户id
@@ -725,7 +719,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
             return true;
         }
-        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为10分钟过期
+        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
         ret=true;
         return  ret;
     }
@@ -750,7 +744,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<BizPtyh> bizPtyhs = findByCondition(condition);
             return ApiResponse.success(bizPtyhs);
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
-
+// TODO: 2018/5/30
 
 
         }
@@ -778,7 +772,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(sms.getCode()!=200,sms.getMessage());
 
 
-        if(sms.getCode() == 200){ // 验证码验证成功 , 重新设置密码
 
             BizPtyh newEntity = new BizPtyh();
             newEntity.setId(ptyhList.get(0).getId());
@@ -790,9 +783,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             int i = update(newEntity);
             return i==1?ApiResponse.success():ApiResponse.fail("重置失败");
 
-        }else{
-            return ApiResponse.fail("验证验证码出现异常");
-        }
 
     }
 
@@ -822,7 +812,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("验证失败");
         }
 
-               //		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
         String identifying = redisDao.boundValueOps(redisKey + tel).get();
         if(StringUtils.equals(identifying,identifyingCode)){
             return ApiResponse.success();
