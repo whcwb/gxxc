@@ -3,6 +3,13 @@
 </style>
 <template>
   <div class="box">
+    <div>
+      <box-head tit="缴费">
+        <div slot="left" style="color: #E0DADF">
+          <i class="iconfont icon-left1"></i>
+        </div>
+      </box-head>
+    </div>
     <div class="body md-example-child md-example-child-cashier">
       <md-field
         v-show="false"
