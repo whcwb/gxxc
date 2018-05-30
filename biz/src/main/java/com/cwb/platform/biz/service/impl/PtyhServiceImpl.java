@@ -621,7 +621,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     @Override
     public ApiResponse<List<BizPtyh>> getCoaches(String name, String phone, String area, int pageNum, int pageSize) {
-
+        List<BizPtyh> list = new ArrayList<>();
         // 若三个条件都为空 分页查询所有已经认证的教练
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhZt.name(), "1"); // 0 未认证 1 已认证
@@ -631,7 +631,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(name) && StringUtils.isEmpty(phone) && StringUtils.isEmpty(area)) {
 
             List<BizPtyh> bizPtyhs = this.findByCondition(condition);
-            return ApiResponse.success(bizPtyhs);
+            bizPtyhs.stream().forEach(bizPtyh -> {
+                list.add(afterReturns(bizPtyh));
+            });
+            return ApiResponse.success(list);
         }
 
         if (StringUtils.isNotBlank(name)) {
@@ -649,11 +652,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             // 拿到所在区域的所有教练的 id
             List<String> jlIds = bizJls.stream().map(BizJl::getYhId).collect(Collectors.toList());
            List<BizPtyh> bizPtyhList =  entityMapper.getJls(name, phone, jlIds);
-           return ApiResponse.success(bizPtyhList);
+            bizPtyhList.stream().forEach(bizPtyh -> {
+                list.add(afterReturns(bizPtyh));
+            });
+           return ApiResponse.success(list);
         }
 
         List<BizPtyh> ptyhs =   this.findByCondition(condition);
-        return ApiResponse.success(ptyhs);
+        ptyhs.stream().forEach(bizPtyh -> {
+            list.add(afterReturns(bizPtyh));
+        });
+        return ApiResponse.success(list);
     }
 
     @Override
@@ -742,14 +751,43 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             SimpleCondition condition = new SimpleCondition(BizPtyh.class);
             condition.eq(BizPtyh.InnerColumn.id.name(), bizUser.getYhJlid());
             List<BizPtyh> bizPtyhs = findByCondition(condition);
-            return ApiResponse.success(bizPtyhs);
+
+            BizJl bizJl = jlService.findById(bizUser.getYhJlid());
+            RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该用户的教练未进行认证");
+            if(CollectionUtils.isNotEmpty(bizPtyhs)) {
+                bizPtyhs.stream().forEach(
+                        bizPtyh -> {
+                            BizPtyh ptyh = afterReturns(bizPtyh);
+                            ptyh.setYhMm(bizJl.getJlMs()); // 用户表中没有教练简介 ， 将 密码字段设置为 教练的简介
+                            list.add(ptyh);
+                        }
+                );
+            }
+            return ApiResponse.success(list);
+
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
 
+            SimpleCondition condition = new SimpleCondition(BizUser.class);
+            condition.eq(BizUser.InnerColumn.yhJlid.name(), user.getId());
+            List<BizUser> bizUsers = userService.findByCondition(condition);
 
+            // 获取所有学员的 id
+            List<String> yhIds = bizUsers.stream().map(BizUser::getYhId).collect(Collectors.toList());
+            SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
+            yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
 
+            PageHelper.startPage(pageNum,pageSize);
+            List<BizPtyh> ptyhs = findByCondition(yhCondition);
 
+            if(CollectionUtils.isNotEmpty(ptyhs)){
+                ptyhs.stream().forEach(bizPtyh -> {
+                    list.add(afterReturns(bizPtyh));
+                });
+            }
 
+            return ApiResponse.success(list);
         }
+
         return ApiResponse.success(list);
     }
 
