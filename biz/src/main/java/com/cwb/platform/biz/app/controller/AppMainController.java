@@ -12,6 +12,7 @@ import com.cwb.platform.util.commonUtil.StringDivUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -47,6 +48,12 @@ public class AppMainController {
 
 	@Value("${debug_test}")
 	private String debugTest;
+	//
+	@Value("${appSendSMSRegister:app_sendSMS_register}")
+	private String appSendSMSRegister;
+
+	@Value("${appSendSMSResetting:app_sendSMS_resetting}")
+	private String appSendSMSResetting ;
 	/**
 	 * 用户登陆接口
 	 * @param userCred
@@ -127,27 +134,27 @@ public class AppMainController {
 	}
 
 	/**
-	 * 短信验证码下发
+	 * 注册短信验证码下发
 	 * @param zh		手机号码
 	 * @param yyyqm	用户应邀邀请码
 	 * @param key		申请验证码KEY-必填
 	 * @param codeID	验证码
 	 * @return
 	 */
-	@RequestMapping(value="/sendSMS", method={RequestMethod.POST})
-	public ApiResponse<String> sendSMS(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm
+	@RequestMapping(value="/sendSMSzc", method={RequestMethod.POST})
+	public ApiResponse<String> sendSMSRegister(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm
 			,@RequestParam(name = "codeID") String codeID,@RequestParam(name = "key") String key,HttpServletRequest request){
 //		1、验证参数不能为空
 		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(zh),"请填写正确的手机号");
 		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(yyyqm),"邀请码不能为空");
 		RuntimeCheck.ifFalse(StringDivUtils.isPhoneValid(zh),"请填写正确的手机号");
-		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(codeID),"验证码不能为空");
-		if(debugTest==null) {
-	//		验证码校验
-			String code = (String)request.getSession().getAttribute(key);
-			RuntimeCheck.ifTrue(!codeID.equals(code),"验证码不正确！");
-			request.getSession().removeAttribute(key);
-		}
+//		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(codeID),"验证码不能为空");
+//		if(debugTest==null) {
+//	//		验证码校验
+//			String code = (String)request.getSession().getAttribute(key);
+//			RuntimeCheck.ifTrue(!codeID.equals(code),"验证码不正确！");
+//			request.getSession().removeAttribute(key);
+//		}
 
 
 //		2、验证登录账户不能重复
@@ -163,13 +170,70 @@ public class AppMainController {
 		RuntimeCheck.ifTrue(count == 0,"请填写正确的邀请码");
 //		4、生成手机验证码
 		String identifyingCode= StringDivUtils.getSix();//获取验证码
-		redisDao.boundValueOps("app_sendSMS_"+zh).set(identifyingCode, 10, TimeUnit.MINUTES);//设备验证码，为10分钟过期
-		redisDao.boundValueOps("app_sendSMS_yyyqm"+zh).set(yyyqm, 10, TimeUnit.MINUTES);//设备邀请码，为10分钟过期
-		if(debugTest!=null) {//调试
-			return ApiResponse.success(identifyingCode);
+		boolean sendType=ptyhService.sendSMS(zh,1,identifyingCode,appSendSMSRegister);
+		if(sendType){
+			redisDao.boundValueOps(appSendSMSRegister+"yyyqm"+zh).set(yyyqm, 120, TimeUnit.SECONDS);//设备邀请码，为10分钟过期
+			return  ApiResponse.success();
 		}else{
-			return ApiResponse.success();
+			return  ApiResponse.fail("短信下发失败");
 		}
 	}
 
+	/**
+	 * 短信验证码验证
+	 * @param zh		手机号码
+	 * @param identifyingCode	验证码
+	 * @param type	1、注册  2、重置密码
+	 * @return
+	 */
+	@RequestMapping(value="/validateSms", method={RequestMethod.POST})
+	public ApiResponse<String> validateSms(@RequestParam(name = "zh") String zh,@RequestParam(name = "identifyingCode") String identifyingCode,@RequestParam(name = "type") String type){
+		//		1、验证参数不能为空
+		RuntimeCheck.ifTrue(StringUtils.isEmpty(zh),"请填写正确的手机号");
+		RuntimeCheck.ifTrue(StringUtils.isEmpty(type),"请填写正确的类型");
+		RuntimeCheck.ifFalse(StringDivUtils.isPhoneValid(zh),"请填写正确的手机号");
+		String redisKey="";
+		if(StringUtils.equals(type,"1")){//
+			redisKey=appSendSMSRegister;
+		}else if(StringUtils.equals(type,"2")){//重置密码
+			redisKey=appSendSMSResetting;
+		}else{
+			return ApiResponse.fail("验证失败");
+		}
+		return ptyhService.validateSms(zh, identifyingCode,redisKey);
+	}
+
+
+
+	/**
+	 * 重置密码短信验证码下发
+	 * @param zh		手机号码
+	 * @param yyyqm	用户应邀邀请码
+	 * @param key		申请验证码KEY-必填
+	 * @param codeID	验证码
+	 * @return
+	 */
+	@RequestMapping(value="/sendSMScz", method={RequestMethod.POST})
+	public ApiResponse<String> sendSMSResetting(@RequestParam(name = "zh") String zh){
+//		1、验证参数不能为空
+		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(zh),"请填写正确的手机号");
+		RuntimeCheck.ifFalse(StringDivUtils.isPhoneValid(zh),"请填写正确的手机号");
+
+//		2、验证登录账户不能重复
+		SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+		condition.eq(BizPtyh.InnerColumn.yhZh.name(),zh);
+		int count = ptyhService.countByCondition(condition);
+		RuntimeCheck.ifTrue(count == 0,"该手机号不存在，请注册后使用");
+
+//		3、生成手机验证码
+		String identifyingCode= StringDivUtils.getSix();//获取验证码
+		boolean sendType=ptyhService.sendSMS(zh,2,identifyingCode,appSendSMSResetting);
+		if(sendType){
+			return  ApiResponse.success();
+		}else{
+			return  ApiResponse.fail("短信下发失败");
+		}
+
+
+	}
 }
