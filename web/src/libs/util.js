@@ -5,29 +5,60 @@ let util = {
 };
 
 util.title = function (title) {
-    title = title || '车辆管理系统';
+    title = title || '520学车联盟';
     window.document.title = title;
 };
 util.fillTableColumns = (v)=>{
     if (!v.tableColumns)return;
-    for(let r of v.tableColumns){
-        if (!r.align){
-            r.align = 'center'
-        }
-        if (r.title === '序号')continue;
-        if (!r.render){
-            r.render = (h,p)=>{
-                let val = p.row[r.key];
-                let s  = val ? val : '-';
-                if (r.dict  && val){
-                    s = dictUtil.getValByCode(v,r.dict,p.row[r.key]);
-                }
-                if (r.unit && val)s += r.unit;
-                return h('div',s);
+    try{
+        for(let r of v.tableColumns){
+            if (!r.align){
+                r.align = 'center'
             }
+            if (r.title === '#'){
+                r.width = 40
+                continue;
+            }
+            if (!r.render){
+                r.render = (h,p)=>{
+                    let val = p.row[r.key];
+                    let s  = val ? val : '-';
+                    if (r.dict  && val){
+                        s = dictUtil.getItemByCode(v,r.dict,p.row[r.key]);
+                        if (s.color && s.color != ''){
+                            return  h('Tag',{props:{color:s.color,type:'dot'}}, s.val)
+                        }
+                        s = s.val;
+                    }
+                    if (r.unit && val)s += r.unit;
+                    return h('div',s);
+                }
+            }
+            r.ellipsis = true;
         }
-        r.ellipsis = true;
+    }catch (e) {
+        console.log(e);
     }
+
+}
+util.buildSwitch = (h,val,onChange,content)=>{
+    try{
+        if (typeof content == 'undefined'){
+            content = ['打开','关闭']
+        }
+        return h('div',[
+            h('i-switch',{
+                props:{ size:'large', value:val},
+                on:{ 'on-change':(value)=>{  if (typeof onChange == 'function')onChange(value); } }
+            },[
+                h('span',{ slot:"open" },content[0]),
+                h('span',{ slot:"close"},content[1])
+            ])
+        ]);
+    }catch (e) {
+        console.log(e);
+    }
+
 }
 util.buildDeleteButton = (v,h,id)=>{
     return util.buildButton(v,h,'error','close','删除',()=>{
@@ -41,29 +72,39 @@ util.buildEditButton = (v,h,p)=>{
     })
 }
 util.buildButton = (v,h,type,icon,tip,onClick)=>{
-    return h('Tooltip',
-        {props: {placement: 'top',content: tip,}},
-        [
-            h('Button', {
-                props: {type: type,icon: icon,shape: 'circle',size: 'small'},
-                style: {margin: '0 8px 0 0'},
-                on: {click: onClick}
-            }),
-        ]
-    )
+    try{
+        return h('Tooltip',
+            {props: {placement: 'top',content: tip,}},
+            [
+                h('Button', {
+                    props: {type: type,icon: icon,shape: 'circle',size: 'small'},
+                    style: {margin: '0 8px 0 0'},
+                    on: {click: onClick}
+                }),
+            ]
+        )
+    }catch (e) {
+        console.log(e);
+    }
+
 }
 /**
  * 初始化字典
  */
 util.initDict = (v)=>{
     if (!v.dicts)return;
-    if (v.dicts){
-        for (let k in v.dicts){
-            let r = v.dicts[k];
-            let items = dictUtil.getByCode(v,r.code);
-            r.items = items;
+    try{
+        if (v.dicts){
+            for (let k in v.dicts){
+                let r = v.dicts[k];
+                let items = dictUtil.getByCode(v,r.code);
+                r.items = items;
+            }
         }
+    }catch (e) {
+        console.log(e);
     }
+
 }
 function getdateParaD(val){//时间转换
     if(val==null||val==""){

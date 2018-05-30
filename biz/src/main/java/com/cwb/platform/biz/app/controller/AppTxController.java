@@ -30,12 +30,12 @@ public class AppTxController extends AppUserBaseController {
      * @return
      */
    @PostMapping("/save")
-   public ApiResponse<String> save(String ttJe){
+   public ApiResponse<String> save(String ttJe, String yhkh, String khh, String txXm){
        RuntimeCheck.ifTrue(StringUtils.isEmpty(ttJe),"您好，提现金额不能为空！");
        Double ttje= Double.parseDouble(ttJe);
        RuntimeCheck.ifFalse(ttje!=null && ttje>0,"您好，提现金额不能小于0！");
        BizPtyh  user=getAppCurrentUser();
-       return service.saveUserDraw(ttje,user);
+       return service.saveUserDraw(ttje, yhkh, khh, txXm,user);
    }
 
     /**

@@ -1,16 +1,14 @@
 package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.AppUserBaseController;
+import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -112,6 +110,14 @@ public class AppPtyhController extends AppUserBaseController {
         BizPtyh user = getAppCurrentUser();
         BizPtyh users = service.getUserInvitationCode(user.getId());
         return ApiResponse.success(users);
+    }
+
+    /**
+     * 用户申请教练
+     */
+    @PostMapping("/updatelx")
+    public ApiResponse<String> updatelx(BizJl bizJl){
+        return service.updatelx(bizJl);
     }
 
 

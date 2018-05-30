@@ -1,7 +1,9 @@
 package com.cwb.platform.biz.model;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * 活动表
@@ -47,49 +49,32 @@ public class BizHd implements Serializable {
     private String hdTpdz;
 
     /**
-     * 活动热点推荐时间
+     * 活动热点推荐
      */
     @Column(name = "HD_TJ")
-    private String hdtj;
+    private String hdTj;
 
     /**
-     * 属性（1、驾校  2、训练场）
+     * 属性（字典表：ZDCLK0036 1、驾校  2、训练场）
      */
     @Column(name = "HD_SX")
     private String hdSx;
-    
+
     /**
      * 修改时间
      */
     @Column(name = "HD_XGSJ")
-    private String hdxgsj;
+    private String hdXgsj;
+
     /**
      * 修改人
      */
     @Column(name = "HD_XGR")
-    private String hdxgr;
-
+    private String hdXgr;
 
     private static final long serialVersionUID = 1L;
 
-
-    public String getHdxgr() {
-		return hdxgr;
-	}
-
-	public void setHdxgr(String hdxgr) {
-		this.hdxgr = hdxgr;
-	}
-
-	public String getHdxgsj() {
-		return hdxgsj;
-	}
-
-	public void setHdxgsj(String hdxgsj) {
-		this.hdxgsj = hdxgsj;
-	}
-
-	/**
+    /**
      * 获取主键id
      *
      * @return ID - 主键id
@@ -197,32 +182,76 @@ public class BizHd implements Serializable {
         this.hdTpdz = hdTpdz;
     }
 
-   
-
-    public String getHdtj() {
-		return hdtj;
-	}
-
-	public void setHdtj(String hdtj) {
-		this.hdtj = hdtj;
-	}
-
-	/**
-     * 获取属性（1、驾校  2、训练场）
+    /**
+     * 获取活动热点推荐
      *
-     * @return HD_SX - 属性（1、驾校  2、训练场）
+     * @return HD_TJ - 活动热点推荐
+     */
+    public String getHdTj() {
+        return hdTj;
+    }
+
+    /**
+     * 设置活动热点推荐
+     *
+     * @param hdTj 活动热点推荐
+     */
+    public void setHdTj(String hdTj) {
+        this.hdTj = hdTj;
+    }
+
+    /**
+     * 获取属性（字典表：ZDCLK0036 1、驾校  2、训练场）
+     *
+     * @return HD_SX - 属性（字典表：ZDCLK0036 1、驾校  2、训练场）
      */
     public String getHdSx() {
         return hdSx;
     }
 
     /**
-     * 设置属性（1、驾校  2、训练场）
+     * 设置属性（字典表：ZDCLK0036 1、驾校  2、训练场）
      *
-     * @param hdSx 属性（1、驾校  2、训练场）
+     * @param hdSx 属性（字典表：ZDCLK0036 1、驾校  2、训练场）
      */
     public void setHdSx(String hdSx) {
         this.hdSx = hdSx;
+    }
+
+    /**
+     * 获取修改时间
+     *
+     * @return HD_XGSJ - 修改时间
+     */
+    public String getHdXgsj() {
+        return hdXgsj;
+    }
+
+    /**
+     * 设置修改时间
+     *
+     * @param hdXgsj 修改时间
+     */
+    public void setHdXgsj(String hdXgsj) {
+        this.hdXgsj = hdXgsj;
+    }
+
+    /**
+     * 获取修改人
+     *
+     * @return HD_XGR - 修改人
+     */
+    public String getHdXgr() {
+        return hdXgr;
+    }
+
+    /**
+     * 设置修改人
+     *
+     * @param hdXgr 修改人
+     */
+    public void setHdXgr(String hdXgr) {
+        this.hdXgr = hdXgr;
     }
 
     public enum InnerColumn {

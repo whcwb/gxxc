@@ -1,5 +1,5 @@
 //网络请求地址前缀
-let BASE_URL = 'http://127.0.0.1:8081';
+let BASE_URL = 'http://47.98.39.45:9086';
 module.exports = {
     url: BASE_URL,
     //图片上传地址
@@ -34,6 +34,7 @@ module.exports = {
         ADD:'/api/hd/save',
         CHANGE:'/api/hd/update',
         DELE:'/api/hd/removeIds',
+        hdtj:'/api/hd/hdtj',// 活动推荐
     },
     student:{
         QUERY:'/api/ptyh/pager',//平台用户管理
@@ -129,12 +130,6 @@ module.exports = {
         ADD:'/api/illegal/save',
         CHANGE:'/api/illegal/update',
         DELE:'/api/illegal/removeIds',
-    },
-    hd:{
-        QUERY:'api/hd/pager',//活动管理
-        ADD:'/api/hd/save',
-        CHANGE:'/api/hd/update',
-        DELE:'/api/hd/removeIds',
     },
     maintain:{
         QUERY:'api/maintain/pager',//保养管理

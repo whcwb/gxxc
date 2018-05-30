@@ -1,6 +1,7 @@
 package com.cwb.platform.biz.mapper;
 
 import com.cwb.platform.biz.model.BizZh;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -14,7 +15,7 @@ public interface BizZhMapper extends Mapper<BizZh> {
             "  #{item} " +
             " </foreach> " +
     " </script>"})
-    void deleteUserDetail(List<String> list);
+    void deleteUserDetail(@Param("list") List<String> list);
 
     @Select({ "<script> " +
             " INSERT INTO BIZ_ZH (YH_ID, YH_ZHYE, YH_TXDJ) " +
@@ -26,5 +27,5 @@ public interface BizZhMapper extends Mapper<BizZh> {
             "  #{item} " +
             " </foreach> " +
             " </script>"})
-    void updatUserAccount(List<String> list);
+    void updatUserAccount(@Param("list") List<String> list);
 }

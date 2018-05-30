@@ -1,6 +1,7 @@
 package com.cwb.platform.biz.mapper;
 
 import com.cwb.platform.biz.model.BizWj;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -13,5 +14,5 @@ public interface BizWjMapper extends Mapper<BizWj> {
     "  #{item.id} ,#{item.yhId} ,#{item.wjTpdz} ,#{item.wjSx} ,#{item.wjSbzt} ,'' ,#{item.cjsj} ,#{item.wjSfyx} " +
     " </foreach> " +
     " </script>"})
-    void insertBatch(List<BizWj> list);
+    void insertBatch(@Param("list") List<BizWj> list);
 }

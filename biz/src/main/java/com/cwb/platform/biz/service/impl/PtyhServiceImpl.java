@@ -5,15 +5,17 @@ import com.cwb.platform.biz.mapper.BizOrderMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.mapper.BizUserMapper;
 import com.cwb.platform.biz.mapper.BizWjMapper;
+import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
+import com.cwb.platform.biz.service.JlService;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.UserService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.util.bean.ExcelParams;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.Des;
@@ -22,6 +24,7 @@ import com.cwb.platform.util.commonUtil.JwtUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,14 +32,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
-public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> implements PtyhService{
+public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> implements PtyhService {
     @Autowired
     private StringRedisTemplate redisDao;
 
@@ -54,7 +59,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     private BizPtyhMapper entityMapper;
     @Autowired
     private BizWjMapper wjMapper;
-
+    @Autowired
+    private JlService jlService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private BizUserMapper userMapper;
 
@@ -68,21 +76,21 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     }
 
     @Override
-    protected Class<?> getEntityCls(){
+    protected Class<?> getEntityCls() {
         return BizPtyh.class;
     }
 
 
     @Override
-    public List<String> getSpecialCols(){
-        return Arrays.asList("ddSfjx","yhSfyjz","yhZt");
+    public List<String> getSpecialCols() {
+        return Arrays.asList("ddSfjx", "yhSfyjz", "yhZt");
     }
 
     @Override
-    public List<Map<String,String>> getSpecialVals(List<BizPtyh> list){
-        List<Map<String,String>> data = new ArrayList<>(list.size());
+    public List<Map<String, String>> getSpecialVals(List<BizPtyh> list) {
+        List<Map<String, String>> data = new ArrayList<>(list.size());
         for (BizPtyh row : list) {
-            Map<String,String> map = new HashMap<>();
+            Map<String, String> map = new HashMap<>();
             map.put("ddSfjx", "1".equals(row.getDdSfjx()) ? "已缴费" : "未缴费");
             map.put("yhSfyjz", "1".equals(row.getYhSfyjz()) ? "有" : "无");
             map.put("yhZt", "1".equals(row.getYhZt()) ? "已认证" : "未认证");
@@ -93,10 +101,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 
 
     @Override
-    protected void afterPager(PageInfo<BizPtyh> resultPage){
-        List<BizPtyh> list=resultPage.getList();
-        if(CollectionUtils.isNotEmpty(list)){
-            list.stream().forEach(bizPtyh ->afterReturn(bizPtyh));
+    protected void afterPager(PageInfo<BizPtyh> resultPage) {
+        List<BizPtyh> list = resultPage.getList();
+        if (CollectionUtils.isNotEmpty(list)) {
+            list.stream().forEach(bizPtyh -> afterReturn(bizPtyh));
         }
 
         return;
@@ -104,17 +112,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 
     /**
      * 重置学员部分信息 ， 不对外展示
+     *
      * @param bizPtyh
      */
     private void afterReturn(BizPtyh bizPtyh) {
-        if(bizPtyh!=null){
+        if (bizPtyh != null) {
             bizPtyh.setYhMm("");
             bizPtyh.setYhOpenId("");
             bizPtyh.setYhAlipayId("");
-            if(StringUtils.isNotBlank(bizPtyh.getYhZjhm())){
-                bizPtyh.setYhZjhm(bizPtyh.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})","$1******$2"));
+            if (StringUtils.isNotBlank(bizPtyh.getYhZjhm())) {
+                bizPtyh.setYhZjhm(bizPtyh.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
             }
-            if(StringUtils.isNotBlank(bizPtyh.getYhTx()) && StringUtils.containsNone(bizPtyh.getYhTx(),"http")){
+            if (StringUtils.isNotBlank(bizPtyh.getYhTx()) && StringUtils.containsNone(bizPtyh.getYhTx(), "http")) {
                 bizPtyh.setYhTx(imgUrl + bizPtyh.getYhTx());
             }
         }
@@ -126,52 +135,61 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
     }
 
     /**
-     *  更新用户是否锁定状态 0 否 1 是
+     * 更新用户是否锁定状态 0 否 1 是
      *
      * @param bizPtyh
      * @return
      */
     @Override
     public ApiResponse<String> updateSfsd(BizPtyh bizPtyh) {
-        SysYh sysYh=getCurrentUser();
-        RuntimeCheck.ifBlank(bizPtyh.getId(),"用户Id不能为空");
-        RuntimeCheck.ifBlank(bizPtyh.getYhSfsd(),"用户锁定状态不能为空");
-        if(StringUtils.containsNone(bizPtyh.getYhSfsd(), new char[]{'0', '1'})){
+        SysYh sysYh = getCurrentUser();
+        RuntimeCheck.ifBlank(bizPtyh.getId(), "用户Id不能为空");
+        BizPtyh ptyh = findById(bizPtyh.getId());
+        if (ObjectUtils.isEmpty(ptyh)) {
+            return ApiResponse.fail("用户不存在");
+        }
+        RuntimeCheck.ifBlank(bizPtyh.getYhSfsd(), "用户锁定状态不能为空");
+        if (StringUtils.containsNone(bizPtyh.getYhSfsd(), new char[]{'0', '1'})) {
             return ApiResponse.fail("请输入正确的状态");
         }
-        BizPtyh newEntity=new BizPtyh();
+        BizPtyh newEntity = new BizPtyh();
         newEntity.setId(bizPtyh.getId());
         newEntity.setYhSfsd(bizPtyh.getYhSfsd());//用户是否锁定 ZDCLK0046 (0 否  1 是)
         newEntity.setXgsj(DateUtils.getNowTime());
         newEntity.setYhXgr(sysYh.getYhid());
         int i = update(newEntity);
-        return i==1?ApiResponse.success():ApiResponse.fail();
+        return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
     /**
      * 更新用户是否分配信息
+     *
      * @param bizPtyh
      * @return
      */
     @Override
     public ApiResponse<String> updateSffp(BizPtyh bizPtyh) {
-        SysYh sysYh=getCurrentUser();
-        RuntimeCheck.ifBlank(bizPtyh.getId(),"用户Id不能为空");
-        RuntimeCheck.ifBlank(bizPtyh.getYhIxySffp(),"用户是否分配不能为空");
-        if(StringUtils.equals(bizPtyh.getYhIxySffp(),"0")){
+        SysYh sysYh = getCurrentUser();
+        RuntimeCheck.ifBlank(bizPtyh.getId(), "用户Id不能为空");
+        BizPtyh ptyh = findById(bizPtyh.getId());
+        if (ObjectUtils.isEmpty(ptyh)) {
+            return ApiResponse.fail("用户不存在");
+        }
+        RuntimeCheck.ifBlank(bizPtyh.getYhIxySffp(), "用户是否分配不能为空");
+        if (StringUtils.equals(bizPtyh.getYhIxySffp(), "0")) {
             bizPtyh.setYhFpms("");
-        }else if(StringUtils.equals(bizPtyh.getYhIxySffp(),"1")){
-            if(StringUtils.isBlank(bizPtyh.getYhFpms())){
+        } else if (StringUtils.equals(bizPtyh.getYhIxySffp(), "1")) {
+            if (StringUtils.isBlank(bizPtyh.getYhFpms())) {
                 return ApiResponse.fail("用户分配描述不能为空");
             }
         }
-        BizPtyh newEntity=new BizPtyh();
+        BizPtyh newEntity = new BizPtyh();
         newEntity.setId(bizPtyh.getId());
         newEntity.setYhIxySffp(bizPtyh.getYhIxySffp());
-        if(StringUtils.equals(bizPtyh.getYhIxySffp(),"0")){
+        if (StringUtils.equals(bizPtyh.getYhIxySffp(), "0")) {
             newEntity.setYhFpms("");
-        }else if(StringUtils.equals(bizPtyh.getYhIxySffp(),"1")){
-            if(StringUtils.isBlank(bizPtyh.getYhFpms())){
+        } else if (StringUtils.equals(bizPtyh.getYhIxySffp(), "1")) {
+            if (StringUtils.isBlank(bizPtyh.getYhFpms())) {
                 return ApiResponse.fail("用户分配描述不能为空");
             }
             newEntity.setYhFpms(bizPtyh.getYhFpms());
@@ -179,42 +197,43 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         newEntity.setXgsj(DateUtils.getNowTime());
         newEntity.setYhXgr(sysYh.getYhid());
         int i = update(newEntity);
-        return i==1?ApiResponse.success():ApiResponse.fail();
+        return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
     /**
      * 更新用户认证状态
+     *
      * @param bizPtyh
      * @return
      */
     @Override
-    public ApiResponse<String> updateYhRz(BizPtyh bizPtyh){
-        SysYh sysYh=getCurrentUser();
+    public ApiResponse<String> updateYhRz(BizPtyh bizPtyh) {
+        SysYh sysYh = getCurrentUser();
         BizPtyh user = entityMapper.selectByPrimaryKey(bizPtyh.getId());
         if (user == null) return ApiResponse.fail("用户不存在");
-        RuntimeCheck.ifTrue(!StringUtils.equals(user.getYhLx(),"1"),"操作失败，只有学员才能进行认证操作");
-        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhZt(),"1"),"操作失败，该学员已认证无需再次认证");
-        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhSfsd(),"1"),"操作失败，该学员已锁定无法进行认证操作");
+        RuntimeCheck.ifTrue(!StringUtils.equals(user.getYhLx(), "1"), "操作失败，只有学员才能进行认证操作");
+        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhZt(), "1"), "操作失败，该学员已认证无需再次认证");
+        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhSfsd(), "1"), "操作失败，该学员已锁定无法进行认证操作");
 
         //      获取用户父级ID
-        String yhSjid="";//设置上级ID
-        String yhSsjid="";//上上级ID
+        String yhSjid = "";//设置上级ID
+        String yhSsjid = "";//上上级ID
 
-        String yhYyyqm=user.getYhYyyqm();//该用户的父级ID
+        String yhYyyqm = user.getYhYyyqm();//该用户的父级ID
         SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
-        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yhYyyqm);
+        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), yhYyyqm);
         List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
         if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
-        if(bizPtyhsList.size()!=1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
-        String pUserId=bizPtyhsList.get(0).getId();//获取出父级ID
-        yhSjid=pUserId;
-        BizUser pBizUser=userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
-        if(pBizUser!=null){
-            yhSsjid=pBizUser.getYhId();
+        if (bizPtyhsList.size() != 1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+        String pUserId = bizPtyhsList.get(0).getId();//获取出父级ID
+        yhSjid = pUserId;
+        BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
+        if (pBizUser != null) {
+            yhSsjid = pBizUser.getYhId();
         }
 
         //插入用户实名表  biz_user
-        BizUser bizUser=new BizUser();
+        BizUser bizUser = new BizUser();
         bizUser.setYhId(user.getId());//用户ID
         bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
         bizUser.setYhSjhm(user.getYhZh());//用户账户
@@ -224,52 +243,55 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         bizUser.setYhSjid(yhSjid);//设置上级ID
         bizUser.setYhSsjid(yhSsjid);//上上级ID
         int i = userMapper.insert(bizUser);
-        RuntimeCheck.ifTrue(i!=1,"操作失败，请重新尝试");
+        RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
 
 
-        BizPtyh newEntity=new BizPtyh();
+        BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
         newEntity.setYhZt("1");
 
         i = update(newEntity);
-        return i==1?ApiResponse.success():ApiResponse.fail();
+        return i == 1 ? ApiResponse.success() : ApiResponse.fail();
 
     }
+
     @Override
-    public BizPtyh findByIdSelect(String userid){
-        BizPtyh obj=this.findById(userid);
+    public BizPtyh findByIdSelect(String userid) {
+        BizPtyh obj = this.findById(userid);
         this.afterReturn(obj);
         return obj;
     }
 
 //==============================================================APP端  开始===========
+
     /**
      * 用户注册操作
+     *
      * @param entity
      * @return
      */
     @Override
     public ApiResponse<String> userEnroll(BizPtyh entity) {
-        RuntimeCheck.ifBlank(entity.getYhZh(),"用户账户不能为空");
+        RuntimeCheck.ifBlank(entity.getYhZh(), "用户账户不能为空");
 
-        String telIdentifying=entity.getTelIdentifying();//短信验证码
-        RuntimeCheck.ifBlank(telIdentifying,"短信验证码不能为空");
-        RuntimeCheck.ifBlank(entity.getYhYyyqm(),"用户应邀邀请码不能为空");
+        String telIdentifying = entity.getTelIdentifying();//短信验证码
+        RuntimeCheck.ifBlank(telIdentifying, "短信验证码不能为空");
+        RuntimeCheck.ifBlank(entity.getYhYyyqm(), "用户应邀邀请码不能为空");
 
-        String yhZh=entity.getYhZh();
-        String identifying = redisDao.boundValueOps("app_sendSMS_"+yhZh).get();
-        String app_sendSMS_yyyqm = redisDao.boundValueOps("app_sendSMS_yyyqm"+yhZh).get();
-        RuntimeCheck.ifFalse(StringUtils.equals(telIdentifying,identifying),"验证码错误，请重新输入");
-        RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhYyyqm(),app_sendSMS_yyyqm),"邀请码错误，请重新注册");
+        String yhZh = entity.getYhZh();
+        String identifying = redisDao.boundValueOps("app_sendSMS_" + yhZh).get();
+        String app_sendSMS_yyyqm = redisDao.boundValueOps("app_sendSMS_yyyqm" + yhZh).get();
+        RuntimeCheck.ifFalse(StringUtils.equals(telIdentifying, identifying), "验证码错误，请重新输入");
+        RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhYyyqm(), app_sendSMS_yyyqm), "邀请码错误，请重新注册");
 
-        RuntimeCheck.ifBlank(entity.getYhMm(),"用户密码不能为空");
+        RuntimeCheck.ifBlank(entity.getYhMm(), "用户密码不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhXm(),"用户姓名不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhZjhm(),"用户证件号码不能为空");
 // TODO: 2018/5/19  用户应邀邀请码存在造假的可能。是否需要验证
 
 
-        RuntimeCheck.ifBlank(entity.getYhLx(), "用户类型不能为空");//类型 ZDCLK0041(2、驾驶员、1、学员)
-        if(StringUtils.containsNone(entity.getYhLx(), new char[]{'1', '2'})){
+        RuntimeCheck.ifBlank(entity.getYhLx(), "用户类型不能为空");//类型 ZDCLK0041(2、教练、1、学员)
+        if (StringUtils.containsNone(entity.getYhLx(), new char[]{'1', '2'})) {
             return ApiResponse.fail("请输入正确用户类型");
         }
 
@@ -283,33 +305,33 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 //            return ApiResponse.fail("请输入正确用户驾照状态");
 //        }
 
-        String yhEncrypt="";
-        yhEncrypt=EncryptUtil.encryptUserPwd(entity.getYhMm());
-        RuntimeCheck.ifBlank(yhEncrypt,"用户密码加密失败，用户注册失败");
+        String yhEncrypt = "";
+        yhEncrypt = EncryptUtil.encryptUserPwd(entity.getYhMm());
+        RuntimeCheck.ifBlank(yhEncrypt, "用户密码加密失败，用户注册失败");
 
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhZh.name(), entity.getYhZh());
         Integer count = this.countByCondition(condition);
-        RuntimeCheck.ifTrue(count > 0,"账号已存在，请更换别的登陆账号！");
+        RuntimeCheck.ifTrue(count > 0, "账号已存在，请更换别的登陆账号！");
 
 //        注册类型  1、微信注册  2、支付宝注册 3、web页面注册
-        String addType=entity.getAddType();
+        String addType = entity.getAddType();
         RuntimeCheck.ifBlank(addType, "注册类型不能为空");//注册类型  1、微信注册  2、支付宝注册 3、web页面注册
-        if(StringUtils.containsNone(addType, new char[]{'1', '2', '3'})){
+        if (StringUtils.containsNone(addType, new char[]{'1', '2', '3'})) {
             return ApiResponse.fail("请输入正确注册类型");
         }
         // TODO: 2018/5/19 一定要确定，注册来源
-        String yhOpenId="";//微信OPEN_ID
-        String yhAlipayId="";//支付宝ID
-        if(StringUtils.equals(addType,"1")){
-            yhOpenId=""; // TODO: 2018/5/19 请求微信的OPEN_ID
+        String yhOpenId = "";//微信OPEN_ID
+        String yhAlipayId = "";//支付宝ID
+        if (StringUtils.equals(addType, "1")) {
+            yhOpenId = ""; // TODO: 2018/5/19 请求微信的OPEN_ID
             RuntimeCheck.ifBlank(yhOpenId, "微信唯一编号不能为空");
-        }else if(StringUtils.equals(addType,"2")){
-            yhAlipayId=""; // TODO: 2018/5/19 请求支付宝的ID
+        } else if (StringUtils.equals(addType, "2")) {
+            yhAlipayId = ""; // TODO: 2018/5/19 请求支付宝的ID
             RuntimeCheck.ifBlank(yhAlipayId, "支付宝唯一编号不能为空");
         }
 
-        BizPtyh newEntity =new BizPtyh();
+        BizPtyh newEntity = new BizPtyh();
         newEntity.setId(genId());//获取ID
         newEntity.setYhZh(entity.getYhZh());//用户账户
         newEntity.setYhMm(yhEncrypt);//用户密码
@@ -329,9 +351,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
 
-        int i= getBaseMapper().insertSelective(newEntity);
+        int i = getBaseMapper().insertSelective(newEntity);
 
-        return i==1?ApiResponse.success():ApiResponse.fail();
+        return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
     /**
@@ -350,7 +372,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         if (user == null) return ApiResponse.fail("用户不存在");
         try {
             String encrypt = Des.encrypt(oldPwd);
-            if (!encrypt.equals(user.getYhMm())){
+            if (!encrypt.equals(user.getYhMm())) {
                 return ApiResponse.fail("密码错误");
             }
             newEncrypt = Des.encrypt(newPwd);
@@ -364,27 +386,28 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 
     /**
      * 微信登录
-     * @param openId   获得用户的OPEN_ID
+     *
+     * @param openId 获得用户的OPEN_ID
      */
     @Override
-    public ApiResponse<Map<String,Object>> wxlogin(String openId){
+    public ApiResponse<Map<String, Object>> wxlogin(String openId) {
         // TODO: 2018/5/19 调试模式。
-        if(debugTest!=null) {//调试
-            openId="aaaaaaa";
+        if (debugTest != null) {//调试
+            openId = "aaaaaaa";
         }
 
         Example condition = new Example(BizPtyh.class);
         condition.and().andEqualTo(BizPtyh.InnerColumn.yhOpenId.name(), openId);
         List<BizPtyh> existUser = this.findByCondition(condition);
-        Map<String,Object> rMap = new HashMap<>(2);
-        ApiResponse<Map<String,Object>> result = new ApiResponse<>();
-        if (existUser != null && existUser.size() > 0){
+        Map<String, Object> rMap = new HashMap<>(2);
+        ApiResponse<Map<String, Object>> result = new ApiResponse<>();
+        if (existUser != null && existUser.size() > 0) {
             BizPtyh item = existUser.get(0);
-            RuntimeCheck.ifTrue(!"1".equals(item.getYhSfsd()),"用户已禁用！");
+            RuntimeCheck.ifTrue(!"1".equals(item.getYhSfsd()), "用户已禁用！");
             try {
-                String token = JwtUtil.createToken(item.getId(),item.getYhXm());
+                String token = JwtUtil.createToken(item.getId(), item.getYhXm());
                 redisDao.boundValueOps(item.getId()).set(token, 1, TimeUnit.DAYS);
-                redisDao.boundValueOps(item.getId()+"-appUserInfo").set(mapper.writeValueAsString(item), 1, TimeUnit.DAYS);
+                redisDao.boundValueOps(item.getId() + "-appUserInfo").set(mapper.writeValueAsString(item), 1, TimeUnit.DAYS);
                 AccessToken aToken = new AccessToken();
                 aToken.setUserId(item.getId());
                 aToken.setUsername(item.getYhBm());//用户别名
@@ -396,7 +419,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
                 result.setCode(ApiResponse.FAILED);
                 result.setMessage("用户登陆失败，请重试！");
             }
-        }else{
+        } else {
             result.setCode(203);
             result.setMessage("该微信用户未注册，请您注册后使用系统！");
         }
@@ -406,91 +429,92 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
 
     /**
      * 用户头像，别名 修改
+     *
      * @param entity
      * @return
      */
     @Override
-    public ApiResponse<String> updateUserInfo(BizPtyh entity){
-        BizPtyh user=getAppCurrentUser();
+    public ApiResponse<String> updateUserInfo(BizPtyh entity) {
+        BizPtyh user = getAppCurrentUser();
         if (user == null) return ApiResponse.fail("用户不存在");
-        BizPtyh newEntity=new BizPtyh();
+        BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
-        if(StringUtils.isNotEmpty(entity.getYhTx())){
+        if (StringUtils.isNotEmpty(entity.getYhTx())) {
             newEntity.setYhTx(entity.getYhTx());
         }
-        if(StringUtils.isNotEmpty(entity.getYhBm())){
+        if (StringUtils.isNotEmpty(entity.getYhBm())) {
             newEntity.setYhBm(entity.getYhBm());
         }
         int i = update(newEntity);
-        return i==1?ApiResponse.success():ApiResponse.fail();
+        return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
     /**
      * 用户实名操作
-     * @param entity
-     * yhXm     用户姓名
-     * yhZjhm     用户证件号码
-     * yhXb     用户性别
-     * yhSfyjz     用户驾照状态不能为空
-     * imgList 以,进行分隔
-     * imgTypeList 以,进行分隔
      *
-     * 1、证件照片上传文件表  biz_wj
-     * 2、修改用户表 biz_ptyh
-     *
-     * 下面两步是在后台审核时操作的。
-     * 3、上传实名表 biz_user
-     * 4、上传定单表  biz_order
+     * @param entity yhXm     用户姓名
+     *               yhZjhm     用户证件号码
+     *               yhXb     用户性别
+     *               yhSfyjz     用户驾照状态不能为空
+     *               imgList 以,进行分隔
+     *               imgTypeList 以,进行分隔
+     *               <p>
+     *               1、证件照片上传文件表  biz_wj
+     *               2、修改用户表 biz_ptyh
+     *               <p>
+     *               下面两步是在后台审核时操作的。
+     *               3、上传实名表 biz_user
+     *               4、上传定单表  biz_order
      * @return
      */
     @Override
-    public ApiResponse<String> updateUserReal(BizPtyh entity){
-        BizPtyh userRequest=getAppCurrentUser();
+    public ApiResponse<String> updateUserReal(BizPtyh entity) {
+        BizPtyh userRequest = getAppCurrentUser();
         if (userRequest == null) return ApiResponse.fail("用户不存在");
 
-        RuntimeCheck.ifBlank(entity.getYhXm(),"用户姓名不能为空");
-        RuntimeCheck.ifBlank(entity.getYhZjhm(),"用户证件号码不能为空");
-        RuntimeCheck.ifBlank(entity.getYhXb(),"用户性别不能为空");
-        if(StringUtils.containsNone(entity.getYhXb(), new char[]{'1', '2'})){
+        RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");
+        RuntimeCheck.ifBlank(entity.getYhZjhm(), "用户证件号码不能为空");
+        RuntimeCheck.ifBlank(entity.getYhXb(), "用户性别不能为空");
+        if (StringUtils.containsNone(entity.getYhXb(), new char[]{'1', '2'})) {
             return ApiResponse.fail("请输入正确用户性别");
         }
 
-        RuntimeCheck.ifBlank(entity.getYhSfyjz(),"用户驾照状态不能为空");
-        if(StringUtils.containsNone(entity.getYhSfyjz(), new char[]{'1', '0'})){
+        RuntimeCheck.ifBlank(entity.getYhSfyjz(), "用户驾照状态不能为空");
+        if (StringUtils.containsNone(entity.getYhSfyjz(), new char[]{'1', '0'})) {
             return ApiResponse.fail("请输入正确用户驾照状态");
         }
 
 
         BizPtyh user = entityMapper.selectByPrimaryKey(userRequest.getId());
         if (user == null) return ApiResponse.fail("用户不存在");
-        if(StringUtils.equals(user.getYhSfsd(),"1")){
+        if (StringUtils.equals(user.getYhSfsd(), "1")) {
             return ApiResponse.fail("用户已锁定，无法进行操作");
         }
-        if(StringUtils.isEmpty(entity.getImgList())){
+        if (StringUtils.isEmpty(entity.getImgList())) {
             return ApiResponse.fail("请上传证件照片");
         }
-        if(StringUtils.isEmpty(entity.getImgTypeList())){
+        if (StringUtils.isEmpty(entity.getImgTypeList())) {
             return ApiResponse.fail("请上传证件照片属性");
         }
 
-        String yhzjhm=entity.getYhZjhm();
+        String yhzjhm = entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhZjhm.name(), yhzjhm);
         List<BizPtyh> listCount = this.findByCondition(condition);
-        if(listCount!=null&&listCount.size()>0){
-            RuntimeCheck.ifTrue(true,"该证件号已与手机号"+listCount.get(0).getYhZh()+"关联，请更换新的证件号！");
+        if (listCount != null && listCount.size() > 0) {
+            RuntimeCheck.ifTrue(true, "该证件号已与手机号" + listCount.get(0).getYhZh() + "关联，请更换新的证件号！");
         }
 
         String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String[] imgTypeList = StringUtils.split(entity.getImgTypeList(), ",");
 
-        List<BizWj> wjList=new ArrayList<BizWj>();
-        if(imgList!=null){
-            if(imgList.length!=imgTypeList.length){
+        List<BizWj> wjList = new ArrayList<BizWj>();
+        if (imgList != null) {
+            if (imgList.length != imgTypeList.length) {
                 return ApiResponse.fail("证件数据和证件属性数据不同");
             }
-            for(int i = 0; i < imgList.length; i++){
-                BizWj wj=new BizWj();
+            for (int i = 0; i < imgList.length; i++) {
+                BizWj wj = new BizWj();
                 wj.setId(genId());
                 wj.setYhId(user.getId());//
                 wj.setWjTpdz(imgList[i]);//
@@ -501,11 +525,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
                 wjList.add(wj);
             }
         }
-        if(wjList.size()>0){
-            wjMapper.insertBatch (wjList);
+        if (wjList.size() > 0) {
+            wjMapper.insertBatch(wjList);
         }
 
-        BizPtyh newEntity=new BizPtyh();
+        BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
         newEntity.setYhXm(entity.getYhXm());//用户姓名
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
@@ -513,18 +537,154 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh,java.lang.String> i
         newEntity.setYhSfyjz(entity.getYhSfyjz());//用户驾照状态不能为空
 
         int i = update(newEntity);
-        return i==1?ApiResponse.success():ApiResponse.fail();
+        return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
+
     /**
      * 我的邀请码
      * 用户缴费成功后，为用户生成邀请码，未缴费引导用户缴费。
+     *
      * @return
      */
-    public BizPtyh getUserInvitationCode(String id){
-        BizPtyh user=this.findByIdSelect(id);
-        RuntimeCheck.ifTrue(user==null,"用户资料有误！");
-        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhZt(),"0"),"用户还未认证，请您认证！");//认证状态 ZDCLK0043(0 未认证、1 已认证)
+    public BizPtyh getUserInvitationCode(String id) {
+        BizPtyh user = this.findByIdSelect(id);
+        RuntimeCheck.ifTrue(user == null, "用户资料有误！");
+        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhZt(), "0"), "用户还未认证，请您认证！");//认证状态 ZDCLK0043(0 未认证、1 已认证)
 //        RuntimeCheck.ifTrue(StringUtils.equals(user.getDdSfjx(),"0"),"用户还未缴费，请您缴费！");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
         return user;
     }
+
+    /**
+     * 用户申请成为教练
+     * @param bizJl
+     * @return
+     */
+    @Override
+    public ApiResponse<String> updatelx(BizJl bizJl) {
+        BizPtyh bizPtyh = getAppCurrentUser();
+        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizPtyh), "用户不存在");
+        //String yhid = sysYh.getYhid();
+        // 修改用户的类型 和 认证状态 ， 将用户的是否有驾照改为 是
+        //BizPtyh bizPtyh = findById(bizJl.getYhId());
+        BizJl b = jlService.findById(bizPtyh.getId());
+        RuntimeCheck.ifTrue(b !=null , "该用户已经提交申请");
+
+        RuntimeCheck.ifTrue(StringUtils.equals(bizPtyh.getYhLx(), "2"), "该用户已经是教练");
+
+        RuntimeCheck.ifBlank(bizJl.getYhXm(), "用户姓名不能为空");
+        RuntimeCheck.ifBlank(bizJl.getYhZjhm(), "用户身份号码不能为空");
+
+        SimpleCondition condition = new SimpleCondition(BizJl.class);
+        condition.eq(BizJl.InnerColumn.yhZjhm.name(),bizJl.getYhZjhm());
+        List<BizJl> bizJls = jlService.findByCondition(condition);
+        if(CollectionUtils.isNotEmpty(bizJls)){
+            return ApiResponse.fail("该身份证已经与其他用户关联");
+        }
+
+        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlJl(), "教练驾龄不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlQu(), "教练所属区域不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlJjlxr(), "教练紧急联系人不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlJjlxrdh(), "教练紧急联系人电话不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlZz(), "住址不能为空");
+
+        // 更新用户信息为教练 ，未认证
+        BizPtyh ptyh = new BizPtyh();
+        ptyh.setId(bizPtyh.getId());
+        ptyh.setYhLx("2"); // 2 为教练 1 为学员
+        ptyh.setYhZt("0"); // 0 为 未认证  1 为已认证
+        ptyh.setYhSfyjz("1"); // 0 没有驾照 1 有驾照
+        update(ptyh);
+
+        bizJl.setYhId(bizPtyh.getId());
+
+        jlService.save(bizJl);
+
+        update(ptyh);
+
+
+        return ApiResponse.success();
+    }
+
+    /**
+     * 根据条件分页搜索已经认证的教练
+     * @param name
+     * @param phone
+     * @param area
+     * @param
+     * @return
+     */
+    @Override
+    public ApiResponse<List<BizPtyh>> getCoaches(String name, String phone, String area, int pageNum, int pageSize) {
+
+        // 若三个条件都为空 分页查询所有已经认证的教练
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhZt.name(), "1"); // 0 未认证 1 已认证
+        condition.eq(BizPtyh.InnerColumn.yhLx.name(), "2"); // 1 学员 2 教练
+        PageHelper.startPage(pageNum, pageSize);
+
+        if (StringUtils.isEmpty(name) && StringUtils.isEmpty(phone) && StringUtils.isEmpty(area)) {
+
+            List<BizPtyh> bizPtyhs = this.findByCondition(condition);
+            return ApiResponse.success(bizPtyhs);
+        }
+
+        if (StringUtils.isNotBlank(name)) {
+            condition.like(BizPtyh.InnerColumn.yhXm.name(), "%" + name + "%");
+        }
+        if (StringUtils.isNotBlank(phone)) {
+            condition.like(BizPtyh.InnerColumn.yhZh.name(), "%" + phone + "%");
+        }
+        if(StringUtils.isNotBlank(area)){
+
+            SimpleCondition jlCondition = new SimpleCondition(BizJl.class);
+            //  根据区域查出用户 id
+            jlCondition.like(BizJl.InnerColumn.jlQu.name(), "%" + area + "");
+            List<BizJl> bizJls = jlService.findByCondition(jlCondition);
+            // 拿到所在区域的所有教练的 id
+            List<String> jlIds = bizJls.stream().map(BizJl::getYhId).collect(Collectors.toList());
+           List<BizPtyh> bizPtyhList =  entityMapper.getJls(name, phone, jlIds);
+           return ApiResponse.success(bizPtyhList);
+        }
+
+        List<BizPtyh> ptyhs =   this.findByCondition(condition);
+        return ApiResponse.success(ptyhs);
+    }
+
+    @Override
+    public ApiResponse<List<String>> assignStudents(String yhId, String jlId) {
+
+        // 验证教练是否认证
+        BizJl bizJl = jlService.findById(jlId);
+        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该教练未进行实名认证");
+
+        // 将多个学员id 分开
+        String[] sIds = yhId.split(",");
+        // 可以分配的用户 id
+        List<String> ids = new ArrayList<>();
+        for (String s : sIds) {// 校验当前用户是否需要已经分配教练
+            BizUser user = userService.findById(s);
+            if (!ObjectUtils.isEmpty(user)) {
+                if (StringUtils.isBlank(user.getYhJlid())) {
+                    ids.add(s); // 添加分配用户id
+                }
+            }
+        }
+
+        // 进行分配操作
+        if(CollectionUtils.isNotEmpty(ids)) {
+            userService.updateJlId(ids, jlId);
+        }
+
+        return ApiResponse.success(ids);
+    }
+
+
+    /*public static void main(String[] args) {
+        List<String> sids = new ArrayList<>();
+        sids.add("1");
+        sids.remove("1");
+    }*/
+
 }

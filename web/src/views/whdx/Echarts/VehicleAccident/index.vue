@@ -131,7 +131,7 @@
             	showModal:false,
                 columns10: [
                 	{
-                        title: '序号',
+                        title: '#',
                         width: 65,
                         align:'center',
                         type: 'index',

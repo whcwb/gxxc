@@ -37,7 +37,7 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "序号", width: 70, type: 'index'},
+                    {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '手机号码',key:'yhSjhm',searchKey:'yhSjhmLike' },
                     {title: '类型',key:'yhLx'},

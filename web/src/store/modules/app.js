@@ -6,7 +6,7 @@ import session from '../../libs/session';
 
 const app = {
     state: {
-        title: '车辆管理系统',
+        title: '520学车联盟',
         ech:{
             time:'',
             cph:''
