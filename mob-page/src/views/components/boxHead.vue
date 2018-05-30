@@ -37,10 +37,9 @@
       <div id="boxHead" class="box-row">
         <div class="left" @click="back">
           <slot name="left" >
-              返回
           </slot>
         </div>
-        <div class="body-O tit">
+        <div class="body-O tit" :style="{textAlign:titAlign}">
             {{tit}}
         </div>
         <div class="right">
@@ -55,11 +54,15 @@
     export default {
         name: "boxHead",
         props:{
-          tit:{
+          tit:{//header的名字
             type:String,
             default:'tit'
           },
-          leftToName:{
+          titAlign:{//header内容的对齐方式  left  right  默认center
+            type:String,
+            default:'center'
+          },
+          leftToName:{//返回button 的去向 传递 路由的name  默认 back() 返回上一级
             type:String,
             default:'back()'
           }
