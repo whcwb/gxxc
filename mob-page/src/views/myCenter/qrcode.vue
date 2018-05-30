@@ -5,11 +5,13 @@
 </style>
 <template>
     <div id="myCenterQrcode" class="box">
-      <mt-header fixed title="我的二维码">
-        <div slot="left">
-          <Icon type="ios-arrow-back" style="font-size: 26px" @click.native="goback"></Icon>
-        </div>
-      </mt-header>
+      <div>
+        <box-head tit="我的二维码">
+          <div slot="left" style="color: #E0DADF">
+            <i class="iconfont icon-left1"></i>
+          </div>
+        </box-head>
+      </div>
       <div class="body">
           <!-- 用户设置 -->
           <div style="padding-top: 40px;">

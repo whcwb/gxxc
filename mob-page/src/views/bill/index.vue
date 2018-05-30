@@ -21,9 +21,11 @@
 <template>
       <div id="bill" class="box">
         <div>
-          <mt-header title="账单">
-            <mt-button slot="left" @click="$router.push({name:'Home'})">返回</mt-button>
-          </mt-header>
+          <box-head tit="账单">
+            <div slot="left" style="color: #E0DADF">
+              <i class="iconfont icon-left1"></i>
+            </div>
+          </box-head>
         </div>
         <div class="body">
           <div class="billList" v-for="(item,index) in [,,,]">

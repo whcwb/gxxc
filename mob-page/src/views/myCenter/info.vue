@@ -3,11 +3,13 @@
 <template>
     <div id="myCenterInfo" class="box">
       <div class="body">
-          <mt-header fixed title="个人信息">
-              <div slot="left">
-                <Icon type="ios-arrow-back" style="font-size: 26px" @click.native="goback"></Icon>
-              </div>
-          </mt-header>
+        <div>
+          <box-head tit="个人信息">
+            <div slot="left" style="color: #E0DADF">
+              <i class="iconfont icon-left1"></i>
+            </div>
+          </box-head>
+        </div>
           <!-- 用户设置 -->
           <div style="padding-top: 40px;color: black;">
               <Row type="flex" justify="start">

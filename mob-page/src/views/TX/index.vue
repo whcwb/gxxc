@@ -32,9 +32,6 @@
               <i class="iconfont icon-left1"></i>
             </div>
           </box-head>
-          <!--<mt-header title="提现">-->
-            <!--<span slot="left" @click="$router.push({name:'Home'})">返回</span>-->
-          <!--</mt-header>-->
         </div>
         <div class="body">
           <Row type="flex" justify="start">

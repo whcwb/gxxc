@@ -62,7 +62,7 @@
             type:String,
             default:'center'
           },
-          leftToName:{//返回button 的去向 传递 路由的name  默认 back() 返回上一级
+          leftToName:{//返回button 的去向 传递 路由的path  默认 back() 返回上一级
             type:String,
             default:'back()'
           }
@@ -72,7 +72,7 @@
           if(this.leftToName ==='back()'){
             this.$router.back()
           }else {
-            this.$router.push({name:this.leftToName})
+            this.$router.push({path:this.leftToName})
           }
         }
       }

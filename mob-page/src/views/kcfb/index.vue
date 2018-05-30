@@ -13,9 +13,11 @@
 <template>
       <div id="kcfb" class="box">
         <div>
-          <mt-header title="考场分布">
-            <mt-button slot="left" @click="$router.push({name:'Home'})">返回</mt-button>
-          </mt-header>
+          <box-head tit="考场分布" leftToName="/">
+            <div slot="left" style="color: #E0DADF">
+              <i class="iconfont icon-left1"></i>
+            </div>
+          </box-head>
         </div>
         <div class="box-row" style="background-color: #86a9cd;height: 0.7rem;padding: 0 0.2rem 0 0.1rem">
           <div class="body-O jxFind">

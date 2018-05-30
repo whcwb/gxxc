@@ -14,11 +14,13 @@
 </style>
 <template>
     <div id="myCenterJlyrz" class="box">
-      <mt-header fixed title="教练员认证">
-        <div slot="left">
-          <Icon type="ios-arrow-back" style="font-size: 26px" @click.native="goback"></Icon>
-        </div>
-      </mt-header>
+      <div>
+        <box-head tit="教练员认证">
+          <div slot="left" style="color: #E0DADF">
+            <i class="iconfont icon-left1"></i>
+          </div>
+        </box-head>
+      </div>
       <div class="body" style="padding-top: 40px;">
         <!-- 认证审核 -->
         <div style="margin: 20px">

@@ -141,7 +141,7 @@ function auto (window, document , num) {
 router.beforeEach((to, from, next) => {
   Util.title(to.meta.title);
   if(to.name == 'pay'){
-    auto(window, document,12.5)
+    auto(window, document,11.5)
   }else {
     auto(window, document,7.5)
   }
