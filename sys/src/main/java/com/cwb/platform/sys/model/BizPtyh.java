@@ -158,6 +158,13 @@ public class BizPtyh implements Serializable {
     private String yhFpms;
 
     /**
+     * 用户认证状态失败描述
+     */
+    @Column(name = "YH_ZT_MS")
+    private String yhZtMs;
+
+
+    /**
      * 用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      */
     @Column(name = "YH_SFSD")
@@ -187,6 +194,14 @@ public class BizPtyh implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhZtMs() {
+        return yhZtMs;
+    }
+
+    public void setYhZtMs(String yhZtMs) {
+        this.yhZtMs = yhZtMs;
+    }
 
     public String getYhZsyqmImg() {
         return yhZsyqmImg;
