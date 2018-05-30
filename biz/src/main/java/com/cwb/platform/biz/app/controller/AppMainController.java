@@ -16,10 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
@@ -219,6 +216,18 @@ public class AppMainController {
 			return  ApiResponse.fail("短信下发失败");
 		}
 	}
+
+
+
+	/**
+	 * 用户重置密码接口
+	 *
+	 */
+	@PostMapping("/resetpwd")
+	public ApiResponse<String> resetPassword(String tel, String code, String newPwd){
+		return ptyhService.resetPwd(tel, code, newPwd);
+	}
+
 
 
 }

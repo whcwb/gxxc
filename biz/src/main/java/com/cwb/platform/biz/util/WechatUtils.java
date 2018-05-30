@@ -1,6 +1,8 @@
 package com.cwb.platform.biz.util;
 
 import com.cwb.platform.util.commonUtil.JsonUtil;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by chenwei on 16/9/5.
@@ -25,11 +28,11 @@ public class WechatUtils {
     private String domain;
 
 
-    public String auth(){
+    public String getCode(){
         String redirectUrl = "";
         try {
             redirectUrl = "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri="
-                    + URLEncoder.encode(domain+ "/openuser/auth-wechat-success", Charset.defaultCharset().name()) +"&response_type=code&scope=snsapi_userinfo&state=" + URLEncoder.encode("debug",Charset.defaultCharset().name()) + "#wechat_redirect?";
+                    + domain +"&response_type=code&scope=snsapi_userinfo&state=" + URLEncoder.encode("debug",Charset.defaultCharset().name()) + "#wechat_redirect?";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -68,8 +71,7 @@ public class WechatUtils {
         return accessToken;
     }
 
-    public String getJsapiTicket(){
-        String token = getToken();
+    public String getJsapiTicket(String token){
         String ticketRes = HttpUtil.get("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+token+"&type=jsapi");
         Map<?, ?> map = JsonUtil.toBean(ticketRes, Map.class);
         String ticket = map.get("ticket").toString();
@@ -83,5 +85,15 @@ public class WechatUtils {
     }
 
 
+    public String getJsApiSign(String url,String token,String timestamp) {
+        String ticket = getJsapiTicket(token);
+        String params = "jsapi_ticket=" +ticket +
+                "&noncestr=wechat" +
+                "&timestamp="+ timestamp +
+                "&url=jp8whm.natappfree.cc";
+        String sign = DigestUtils.sha1Hex(params.getBytes());
+        System.out.println(sign);
+        return sign;
+    }
 
 }

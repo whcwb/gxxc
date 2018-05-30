@@ -570,10 +570,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<String> updatelx(BizJl bizJl) {
         BizPtyh bizPtyh = getAppCurrentUser();
-        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizPtyh), "用户不存在");
-        //String yhid = sysYh.getYhid();
-        // 修改用户的类型 和 认证状态 ， 将用户的是否有驾照改为 是
-        //BizPtyh bizPtyh = findById(bizJl.getYhId());
+
         BizJl b = jlService.findById(bizPtyh.getId());
         RuntimeCheck.ifTrue(b !=null , "该用户已经提交申请");
 
@@ -609,7 +606,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         jlService.save(bizJl);
 
-        update(ptyh);
 
 
         return ApiResponse.success();
@@ -663,16 +659,21 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<List<String>> assignStudents(String yhId, String jlId) {
 
-        // 验证教练是否认证
-        BizJl bizJl = jlService.findById(jlId);
-        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该教练未进行实名认证");
+        BizPtyh users=this.findById(jlId);
+        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
+
+        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
+        RuntimeCheck.ifTrue(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
+//        // 验证教练是否认证
+//        BizJl bizJl = jlService.findById(jlId);
+//        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该教练未进行实名认证");
 
         // 将多个学员id 分开
         String[] sIds = yhId.split(",");
         // 可以分配的用户 id
         List<String> ids = new ArrayList<>();
         for (String s : sIds) {// 校验当前用户是否需要已经分配教练
-            BizUser user = userService.findById(s);
+            BizUser user = userService.findById(s);//TOdo 后期优化
             if (!ObjectUtils.isEmpty(user)) {
                 if (StringUtils.isBlank(user.getYhJlid())) {
                     ids.add(s); // 添加分配用户id
@@ -683,6 +684,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         // 进行分配操作
         if(CollectionUtils.isNotEmpty(ids)) {
             userService.updateJlId(ids, jlId);
+            entityMapper.updateJlFp(ids,"该学员于："+DateUtils.getNowTime()+" 分配给教练员："+users.getYhXm()+"");
         }
 
         return ApiResponse.success(ids);
@@ -696,32 +698,94 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     @Override
    public boolean sendSMS(String tel, int type,  String identifyingCode) {
-        boolean ret=false;
-        if(StringUtils.isEmpty(identifyingCode)){
-            identifyingCode= StringDivUtils.getSix();//获取验证码
+        boolean ret = false;
+        if (StringUtils.isEmpty(identifyingCode)) {
+            identifyingCode = StringDivUtils.getSix();//获取验证码
         }
 
-        String redisKey="";
-        if(type==1){
-            redisKey=appSendSMSRegister;
+        String redisKey = "";
+        if (type == 1) {
+            redisKey = appSendSMSRegister;
             //使用注册模板下发
-        }else if(type==2){
-            redisKey=appSendSMSResetting;
+        } else if (type == 2) {
+            redisKey = appSendSMSResetting;
             //使用重置密码模板进行下发
-        }else{
+        } else {
             //类型不存在，不能下发
             return false;
         }
 //        查询当前KEY过期时间还有多少秒 超过120秒后，可以再次下发短信
-        long identifying = redisDao.getExpire(redisKey + tel,TimeUnit.SECONDS);
-        if(identifying!=-1 && 24*60*60-identifying < 120){
+        long identifying = redisDao.getExpire(redisKey + tel, TimeUnit.SECONDS);
+        if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
             return true;
         }
-
-        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为10分钟过期
+        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
         ret=true;
         return  ret;
     }
+
+
+    /**
+     * 根据当前用户显示相关人员的列表
+     * @return
+     */
+    @Override
+    public ApiResponse<List<BizPtyh>> getBizPtyhList() {
+        List<BizPtyh> list = new ArrayList<>();
+        // 获取当前登录用户
+        BizPtyh user = getAppCurrentUser();
+        // 鉴定该用户为 教练还是学员
+        if(StringUtils.equals(user.getYhLx(), "1")){ // 用户为学员 展示其教练信息
+
+            BizUser bizUser = userService.findById(user.getId());
+            RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizUser),"学员信息不存在");
+            SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+            condition.eq(BizPtyh.InnerColumn.id.name(), bizUser.getYhJlid());
+            List<BizPtyh> bizPtyhs = findByCondition(condition);
+            return ApiResponse.success(bizPtyhs);
+        }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
+// TODO: 2018/5/30
+
+
+        }
+        return ApiResponse.success(list);
+    }
+
+    /**
+     * 用户重置密码
+     * @param tel
+     * @param code
+     * @param newPwd
+     * @return
+     */
+    @Override
+    public ApiResponse<String> resetPwd(String tel, String code, String newPwd) {
+
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhZh.name(), tel);
+        List<BizPtyh> ptyhList = findByCondition(condition);
+        RuntimeCheck.ifEmpty(ptyhList, "该账号尚未注册");
+
+        // 验证短信验证码是否正确
+        ApiResponse<String> sms = validateSms(tel, code, "2");
+
+        RuntimeCheck.ifTrue(sms.getCode()!=200,sms.getMessage());
+
+
+
+            BizPtyh newEntity = new BizPtyh();
+            newEntity.setId(ptyhList.get(0).getId());
+
+            // 重置密码加密
+            String userPwd = EncryptUtil.encryptUserPwd(newPwd);
+            RuntimeCheck.ifBlank(userPwd , "重置密码出错，请重新申请");
+            newEntity.setYhMm(userPwd);
+            int i = update(newEntity);
+            return i==1?ApiResponse.success():ApiResponse.fail("重置失败");
+
+
+    }
+
 
     /**
      * 短信验证
@@ -748,7 +812,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("验证失败");
         }
 
-//		1、检查当前手机号码，是否已经下发，如果120秒内已经下发，就不需要再次下发
         String identifying = redisDao.boundValueOps(redisKey + tel).get();
         if(StringUtils.equals(identifying,identifyingCode)){
             return ApiResponse.success();
