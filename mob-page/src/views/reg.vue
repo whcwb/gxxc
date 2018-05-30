@@ -73,7 +73,7 @@
             v-model="form.secPwd"
             clearable
             type="password"
-            style="border-bottom: 1px gray solid;"
+            style="border-bottom: 1px #e9eaec solid;"
           >
             <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
           </md-input-item>
