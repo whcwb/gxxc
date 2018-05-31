@@ -15,6 +15,7 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  devServer: { disableHostCheck: true, },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
