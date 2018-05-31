@@ -58,11 +58,11 @@
             return {
                 v:this,
                 operate:'认证',
-                saveUrl:this.apis.maintain.ADD,
                 showModal: true,
+                saveUrl:this.apis.student.updateyhrz,
                 readonly: false,
                 formItem: {
-                    yhId:''
+                    id:''
                 },
                 formInputs:[
                     {label:'姓名',prop:'yhXm'},
@@ -74,17 +74,14 @@
             }
         },
         created(){
-            this.formItem.yhId = this.$parent.choosedItem.yhId
+            this.formItem = this.$parent.choosedItem
             this.util.initFormModal(this);
-            this.getById();
         },
         methods: {
-            getById(){
-                this.$http.get(this.apis.student.getById+this.formItem.yhId).then((res)=>{
-                    if (res.code === 200){
-                        this.formItem = res.result;
-                    }
-                })
+            beforeSave(){
+                this.formItem = {};
+                this.formItem.id = this.$parent.choosedItem.id
+                this.formItem.yhJlsh = '1';
             }
         }
     }

@@ -9,7 +9,7 @@
 					<Icon type="ios-download-outline"></Icon>
 				</Button>
 				<Button type="info" @click="allot">
-					<Icon type="android-home"></Icon>
+					<Icon type="person"></Icon>
 				</Button>
 		</Row>
 		<Row style="position: relative;">
@@ -48,18 +48,30 @@
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
-                    {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},
+                    {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
+                    {title: '锁定',key:'yhSfsd',
+                        render:(h,p)=>{
+                            return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
+                                let rzt = value ? '1':'0'
+                                let v = this;
+                                this.$http.post(this.apis.student.updateSfsd,{'id':p.row.id,'yhSfsd':rzt}).then((res) =>{
+                                    if(res.code==200){
+                                        this.$Message.success(res.message);
+                                    }else{
+                                        this.$Message.error(res.message);
+                                    }
+                                    v.util.getPageData(v)
+                                })
+                            })
+                        }
+                    },
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','ribbon-b','认证',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'audit'
-                                }),
                                 this.util.buildButton(this,h,'success','card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'

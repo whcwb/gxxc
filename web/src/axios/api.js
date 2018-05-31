@@ -1,5 +1,6 @@
 //网络请求地址前缀
 let BASE_URL = 'http://47.98.39.45:9086';
+// let BASE_URL = 'http://127.0.0.1';
 module.exports = {
     url: BASE_URL,
     //图片上传地址
@@ -45,6 +46,15 @@ module.exports = {
         updateSffp:'/api/ptyh/updateSffp',
         assignStudents:'/api/ptyh/assignStudents', // 分配学员接口
         updateyhrz:'/api/ptyh/updateyhrz', // 更新用户认证状态
+        updateSfsd:'/api/ptyh/updateSfsd',//用户管理
+    },
+    teacher:{
+        QUERY:'/api/jl/pager',//平台用户管理
+        ADD:'/api/jl/save',
+        CHANGE:'/api/jl/update',
+        DELE:'/api/jl/removeIds',
+        getById:'/api/jl/',
+        updateyhrz:'/api/jl/updateyhrz',// 更新教练认证状态
     },
     user:{
         QUERY:'/api/user/pager',//用户实名表
@@ -107,5 +117,11 @@ module.exports = {
         ADD:'/api/rz/save',
         CHANGE:'/api/rz/update',
         DELE:'/api/rz/removeIds'
+    },
+    order:{
+        QUERY:'api/order/pager',//订单管理
+        ADD:'/api/order/save',
+        CHANGE:'/api/order/update',
+        DELE:'/api/order/removeIds',
     },
 }

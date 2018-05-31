@@ -62,7 +62,7 @@
 								</div>
 							</div>
 							<div style="height: 180px;overflow: auto;">
-								<div class="box-row-nh margin-bottom-5" v-for='(items,indexs) in item.zdxmList'  style='text-align: center;'>
+								<div class="box-row-nh margin-bottom-5" v-for='(items,indexs) in item.zdxmList' :key="indexs"  style='text-align: center;'>
 									<div class="body-2" style="min-width: 30px;">
 										{{(indexs+1)}}
 									</div>

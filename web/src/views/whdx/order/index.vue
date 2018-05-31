@@ -34,15 +34,15 @@
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title:'订单状态',key:'ddZt',dict:'ZDCLK0037'},
-                    {title:'支付通道',key:'ddZftd',dict:'ZDCLK0038'},
+                    {title:'订单状态',key:'ddZt',dict:'ZDCLK0037',searchType:'dict'},
+                    {title:'支付通道',key:'ddZftd',dict:'ZDCLK0038',searchType:'dict'},
                     {title:'支付时间',key:'ddZfsj'},
-                    {title:'支付状态',key:'ddZfzt',dict:'ZDCLK0039',width:150},
+                    {title:'支付状态',key:'ddZfzt',dict:'ZDCLK0039',width:150,searchType:'dict'},
                     {title:'支付金额',key:'ddZfje', render:(h,p)=>{
                         return h('div',parseFloat(p.row.ddZfje/100)+'元')
                         }},
                     {title:'订单备注',key:'ddBz'},
-                    {title:'处理状态',key:'jobType',dict:'dsrwclzt'},
+                    {title:'处理状态',key:'jobType',dict:'dsrwclzt',searchType:'dict'},
                     {title:'实际支付金额',key:'payMoney',render:(h,p)=>{
                             return h('div',parseFloat(p.row.payMoney/100)+'元')
                         }},

@@ -20,8 +20,6 @@
 						:styles="{top: '20px'}">
 					<Row>
 						<form-items :parent="v"></form-items>
-					</Row>
-					<Row>
 						<Col span="12">
 							<label>身份证正面</label>
 							<img class="docImg" src="../../../../../static/sfzzm.jpg"/>
@@ -58,18 +56,19 @@
 			return {
 			    v:this,
                 operate:'保养',
+				saveUrl:this.apis.maintain.ADD,
 				showModal: true,
 				readonly: false,
 				formItem: {
 				},
                 formInputs:[
-                    {label:'账号',prop:'yhZh',disabled:true},
-                    {label:'姓名',prop:'yhXm',disabled:true},
-                    {label:'类型',prop:'yhLx',type:'dict',dict:'ZDCLK0041',disabled:true},
-                    {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
-                    {label:'身份证号码',prop:'yhZjhm',disabled:true},
-                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt',disabled:true},
-                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045',disabled:true},
+                    {label:'账号',prop:'yhZh',readonly:true},
+                    {label:'姓名',prop:'yhXm'},
+                    {label:'类型',prop:'yhLx',type:'dict',dict:'ZDCLK0041'},
+                    {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042'},
+                    {label:'身份证号码',prop:'yhZjhm'},
+                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt'},
+                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
                 ],
                 ruleInline:{
 				}

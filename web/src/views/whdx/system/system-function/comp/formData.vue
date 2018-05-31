@@ -16,7 +16,7 @@
 						:label-width="100"
 						:styles="{top: '20px'}">
 					<Row>
-						<Col v-for="i in formInputs" :span="i.span ? i.span : 12" >
+						<Col v-for="(i,index) in formInputs" :span="i.span ? i.span : 12" :key="index">
 							<FormItem :prop='i.prop' :label='i.label'>
 								<Input type="text" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'"></Input>
 							</FormItem>
@@ -24,7 +24,7 @@
 						<Col span="12">
 							<FormItem label='状态'>
 								<Select filterable clearable  v-model="formItem.zt" placeholder="请填选择状态...">
-									<Option v-for = '(item,index) in dicts.zt.items' :value="item.key">{{item.val}}</Option>
+									<Option v-for = '(item,index) in dicts.zt.items' :value="item.key" :key="item.key">{{item.val}}</Option>
 								</Select>
 							</FormItem>
 						</Col>

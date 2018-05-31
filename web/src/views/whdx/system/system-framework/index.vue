@@ -40,7 +40,7 @@
 							</Button>
 						</div>
 						<div class="body" style="margin: 6px;" :style="RootTree.children.length==0 ? TreeListStyleC : TreeListStyleF">
-							<Tree v-for="(item,index) in RootTree.children" :data="item"
+							<Tree v-for="(item,index) in RootTree.children" :data="item" :key="index"
 								  @on-select-change="treeClick"
 								  @on-toggle-expand="treeToggleClick"></Tree>
 						</div>
@@ -58,7 +58,7 @@
 								<Button style="float: right;margin-right: 8px;" type="primary" shape="circle" icon="android-add" @click="rootAdd()"></Button>
 							</div>
 							<div class="box-row-list" v-if="treeMess.children">
-								<Card class="bodyC" v-for="(item,index) in treeMess.children">
+								<Card class="bodyC" v-for="(item,index) in treeMess.children" :key="index">
 									<p slot="title">
 										<Icon type="ios-film-outline"></Icon>
 										{{item.title}}

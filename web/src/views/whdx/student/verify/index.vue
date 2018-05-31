@@ -10,7 +10,7 @@
 				</Button>
 		</Row>
 		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
 		</Row>
 		<Row class="margin-top-10 pageSty">
 			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
@@ -22,52 +22,58 @@
 
 <script>
     import formData from './formData.vue'
-    import sublist from './sublist.vue'
     import audit from './audit.vue'
-    import allot from './allot.vue'
 	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems,sublist,allot,audit},
+        components: {formData,searchItems,audit},
         data() {
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.teacher,
+                apiRoot:this.apis.student,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "#",  type: 'index'},
+                    {title: "",  type: 'selection',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '手机号',key:'yhSjhm',searchKey:'yhSjhmLike'},
-                    {title: '教练驾龄',key:'jlJl'},
-                    {title: '所属区域',key:'jlQu',dict:'ZDCLK0060',searchType:'dict'},
-                    {title: '认证状态',key:'yhJlsh',dict:'ZDCLK0043',searchType:'dict'},
-                    {title: '教练驾龄',key:'jlJl'},
+                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
+                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
+                    {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},
+                    {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
-                            return h('div', [
+                            let buttons = [];
+                            if (params.row.yhZt != '1'){
+                                buttons.push(
+                                    this.util.buildButton(this,h,'success','ribbon-b','认证',()=>{
+                                        this.choosedItem = params.row;
+                                        this.componentName = 'audit'
+                                    }),
+								)
+							}
+                            buttons.push(
                                 this.util.buildButton(this,h,'success','card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),
-                                this.util.buildButton(this,h,'info','android-home','分配',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'allot'
-                                }),
-                            ]);
+                            )
+                            return h('div', buttons);
                         }
                     }
                 ],
                 pageData: [],
+				choosedData:[],
                 form: {
-                    yhLx:"2",
+                    yhLx:"1",
+					yhZt:'0',
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
@@ -79,6 +85,9 @@
             this.util.initTable(this)
         },
         methods: {
+            selectionChange(e){
+				this.choosedData = e;
+			},
             pageChange(event) {
                 this.util.pageChange(this, event);
             },
