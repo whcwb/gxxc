@@ -55,8 +55,8 @@
         data() {
             return {
                 v:this,
-                operate:'保养',
-                saveUrl:this.apis.maintain.ADD,
+                operate:'认证',
+                saveUrl:this.apis.student.updateyhrz,
                 showModal: true,
                 readonly: false,
                 formItem: {
@@ -71,18 +71,10 @@
             }
         },
         created(){
-            this.formItem.yhId = this.$parent.choosedItem.yhId
+            this.formItem = this.$parent.choosedItem
             this.util.initFormModal(this);
-            this.getById();
         },
         methods: {
-            getById(){
-                this.$http.get(this.apis.student.getById+this.formItem.yhId).then((res)=>{
-                    if (res.code === 200){
-                        this.formItem = res.result;
-                    }
-                })
-            }
         }
     }
 </script>
