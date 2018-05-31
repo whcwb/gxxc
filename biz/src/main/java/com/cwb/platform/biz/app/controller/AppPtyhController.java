@@ -128,5 +128,13 @@ public class AppPtyhController extends AppUserBaseController {
         return service.getBizPtyhList(pageNum, pageSize);
     }
 
+    /**
+     * 学员修改拥有驾照
+     */
+    @PostMapping("/updatesfyjz")
+    public ApiResponse<String> updateJz(BizPtyh entity){
+        return service.updateJz(entity);
+    }
+
 
 }
