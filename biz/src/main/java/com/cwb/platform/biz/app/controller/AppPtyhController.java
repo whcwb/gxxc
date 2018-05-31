@@ -132,8 +132,8 @@ public class AppPtyhController extends AppUserBaseController {
      * 学员修改拥有驾照
      */
     @PostMapping("/updatesfyjz")
-    public ApiResponse<String> updateJz(){
-        return service.updateJz();
+    public ApiResponse<String> updateJz(BizPtyh entity){
+        return service.updateJz(entity);
     }
 
 

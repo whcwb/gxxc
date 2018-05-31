@@ -786,11 +786,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
             yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
             yhCondition.eq(BizPtyh.InnerColumn.yhSfyjz.name(), "0"); // 查询学员中无驾照的
-
-
             PageHelper.startPage(pageNum,pageSize);
             List<BizPtyh> ptyhs = findByCondition(yhCondition);
-
             if(CollectionUtils.isNotEmpty(ptyhs)){
                 ptyhs.stream().forEach(bizPtyh -> {
                     list.add(afterReturns(bizPtyh));
@@ -839,17 +836,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
 
     /**
-     * 当前登录学员修改信息
+     * 当前登录学员修改驾照信息
      * @return
      */
     @Override
-    public ApiResponse<String> updateJz() {
+    public ApiResponse<String> updateJz(BizPtyh ptyh) {
 
         BizPtyh bizPtyh = getAppCurrentUser();
-
+        RuntimeCheck.ifTrue(StringUtils.containsNone(ptyh.getYhSfyjz(),new char[]{'0','1'}), "学员驾照信息输入有误");
+        RuntimeCheck.ifTrue(StringUtils.equals(bizPtyh.getYhSfyjz(),ptyh.getYhSfyjz()), "没有修改信息");
         BizPtyh entity = new BizPtyh();
         entity.setId(bizPtyh.getId());
-        entity.setYhSfyjz("1");
+        entity.setYhSfyjz(ptyh.getYhSfyjz());
         int i = update(entity);
 
         return i==1?ApiResponse.success():ApiResponse.fail("更新失败");
