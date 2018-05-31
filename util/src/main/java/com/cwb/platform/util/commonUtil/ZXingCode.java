@@ -38,9 +38,9 @@ public class ZXingCode {
     };
 
     public static void main(String[] args) throws WriterException {
-        File logoFile = new File("D://2003/logo.png");
+        File logoFile = new File("D://222.jpg");
         File QrCodeFile = new File("D://2003/05.png");
-        String url = "baidu.com";
+        String url = "123456789";
         String note = "";
         drawLogoQRCode(logoFile, QrCodeFile, url, note);
     }

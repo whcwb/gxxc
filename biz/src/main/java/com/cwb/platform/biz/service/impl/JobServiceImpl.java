@@ -15,6 +15,7 @@ import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.commonUtil.ZXingCode;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -27,10 +28,11 @@ import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+//import java.math.BigDecimal;
 
 @Service
 public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements JobService {
@@ -129,20 +131,21 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
             log.debug("产品 id " + l.getCpId() + "找不到相对应的产品信息" );
             retType = false;
 
+            newBizOrder.setJobType("2");
+            newBizOrder.setJobDescribe("产品 id " + l.getCpId() + "找不到相对应的产品信息");
             orderMapper.updateByPrimaryKeySelective(newBizOrder);
             log.debug("5、更新订单主表。完成订单的分派");
             return retType ? ApiResponse.success() : ApiResponse.fail(newBizOrder.getJobDescribe());
         }
         String yhSjid = l.getYhSjid();//上级ID
         String yhSsjid = l.getYhSsjid();//上上级ID
-        //orderMoney
-
-        if (new BigDecimal(l.getPayMoney()).doubleValue() != new BigDecimal(bizCp.getCpJl()).doubleValue()) {
-            log.debug("9、订单编号：" + l.getDdId() + "支付金额与系统配置金额不符合。系统跳过处理");
+        //如果是
+        if (StringUtils.equals(bizCp.getCpYj(),"1") &&(MathUtil.stringToDouble(l.getPayMoney()) != MathUtil.stringToDouble(bizCp.getCpJl()))) {
+            log.debug("9、订单编号：" + l.getDdId() + "支付金额与产品配置金额不符合。系统跳过处理");
             newBizOrder.setJobType("2");
             newBizOrder.setJobDescribe("订单编号：" + l.getDdId() + "支付金额与系统配置金额不符合。系统跳过处理");
             retType = false;
-        } else {//正常流程
+        } else {    //正常流程
             String yhId = l.getYhId();
             if (StringUtils.isBlank(yhId)) {
                 log.debug("订单编号：" + l.getDdId() + ",用户ID不能为空");
@@ -165,12 +168,6 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                 } else {
                     // 根据产品表判断是否 要分佣
                     if(StringUtils.equals(bizCp.getCpYj(),"1")){// 要分佣
-                        //            计算出分的金额比例
-//                        BigDecimal orderMoney = new BigDecimal(l.getDdZfje());
-//                        BigDecimal oneEevelMoney = new BigDecimal(bizCp.getCpYjyj());
-//                        BigDecimal twoEevelMoney = new BigDecimal(bizCp.getCpRjyj());
-//                        BigDecimal oneEevelMoneyCount = orderMoney.multiply(oneEevelMoney);
-//                        BigDecimal twoEevelMoneyCount = orderMoney.multiply(twoEevelMoney);
 
                         //插入流水表1
                         BizYjmx newBizYjmx = new BizYjmx();
@@ -210,10 +207,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         }
                     }
 
-//                    BizPtyh u = userMapper.selectByPrimaryKey(l.getYhId());
                     // 判断订单用户是否为 学员 ，只对学员生成邀请码
-//                    if(StringUtils.equals(u.getYhLx(),"1")) {
-                        //
                     if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
                         String yhZsyqm = genId();
                         File logoFile = new File(logoFileUrl);
@@ -228,10 +222,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         user.setYhZsyqmImg(yhZsyqmImg);//用户自己邀请码
 
                         userMapper.updateByPrimaryKeySelective(user);
-//                    }
                     }
-
-
                 }
             }
         }

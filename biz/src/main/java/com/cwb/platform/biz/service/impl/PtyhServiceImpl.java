@@ -697,7 +697,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
 
         RuntimeCheck.ifFalse(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
-        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
+        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhJlsh(),"1"),"该教练未进行实名认证");
 
         // 将多个学员id 分开
         List<String> sIds = Arrays.asList(yhId.split(","));
@@ -896,5 +896,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         sids.add("1");
         sids.remove("1");
     }*/
-
+    @Override
+    public ApiResponse<String> validateCode(String code){
+        SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), code);
+        List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
+        if (bizPtyhsList == null) return ApiResponse.fail("邀请码不存在!");
+        if (bizPtyhsList.size() != 1) return ApiResponse.fail("邀请码不存在!");
+        if(!StringUtils.equals(bizPtyhsList.get(0).getYhZt(),"1")) return ApiResponse.fail("邀请码不存在!");
+        if(!StringUtils.equals(bizPtyhsList.get(0).getDdSfjx(),"1")) return ApiResponse.fail("邀请码不存在!");
+        if(!StringUtils.equals(bizPtyhsList.get(0).getYhSfsd(),"0")) return ApiResponse.fail("邀请码已经锁定，不能邀请您!");
+        return ApiResponse.success();
+    }
 }

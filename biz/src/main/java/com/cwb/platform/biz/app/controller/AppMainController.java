@@ -159,7 +159,7 @@ public class AppMainController {
 		SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
 		newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yyyqm);
 		newCondition.eq(BizPtyh.InnerColumn.yhSfsd.name(),"0");//用户没有锁定
-		newCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(),"1");// todo 20180531 aaaaa
+		newCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(),"1");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
 		count = ptyhService.countByCondition(newCondition);
 		RuntimeCheck.ifTrue(count == 0,"邀请码有误");
 //		4、生成手机验证码
@@ -230,6 +230,12 @@ public class AppMainController {
 		return ptyhService.resetPwd(tel, code, newPwd);
 	}
 
-
+	/**
+	 * 验证邀请码
+	 */
+	@PostMapping("/yzyym")
+	public ApiResponse<String> validateCode( String code){
+		return ptyhService.validateCode(code);
+	}
 
 }
