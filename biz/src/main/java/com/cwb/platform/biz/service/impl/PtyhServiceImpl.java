@@ -309,7 +309,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(validate.getCode()!=200,validate.getMessage());
 
 //      用户应邀邀请码存在造假的可能。是否需要验证,这里的验证是注册下发短信时，已经查了数据库
-        String app_sendSMS_yyyqm = redisDao.boundValueOps("app_sendSMS_yyyqm" + yhZh).get();
+        String app_sendSMS_yyyqm = redisDao.boundValueOps(appSendSMSRegister+"yyyqm" + yhZh).get();
         RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhYyyqm(), app_sendSMS_yyyqm), "邀请码错误，请重新注册");
 
         RuntimeCheck.ifBlank(entity.getYhMm(), "用户密码不能为空");
@@ -887,7 +887,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if(StringUtils.equals(identifying,identifyingCode)){
             return ApiResponse.success();
         }else{
-            return ApiResponse.fail("验证码验证失败");
+            return ApiResponse.fail("验证码有误");
         }
     }
 //

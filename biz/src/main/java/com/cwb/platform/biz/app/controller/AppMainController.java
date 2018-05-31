@@ -176,12 +176,12 @@ public class AppMainController {
 	/**
 	 * 短信验证码验证
 	 * @param zh		手机号码
-	 * @param identifyingCode	验证码
+	 * @param yyyqm	验证码
 	 * @param type	1、注册  2、重置密码
 	 * @return
 	 */
 	@RequestMapping(value="/validateSms", method={RequestMethod.POST})
-	public ApiResponse<String> validateSms(@RequestParam(name = "zh") String zh,@RequestParam(name = "identifyingCode") String identifyingCode,@RequestParam(name = "type") String type){
+	public ApiResponse<String> validateSms(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String identifyingCode,@RequestParam(name = "type") String type){
 		//		1、验证参数不能为空
 		RuntimeCheck.ifTrue(StringUtils.isEmpty(zh),"请填写正确的手机号");
 		RuntimeCheck.ifTrue(StringUtils.isEmpty(type),"请填写正确的类型");
