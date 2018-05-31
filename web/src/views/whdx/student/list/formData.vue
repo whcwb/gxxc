@@ -64,10 +64,9 @@
 				},
                 formInputs:[
                     {label:'账号',prop:'yhZh',disabled:true},
-                    {label:'姓名',prop:'yhXm',disabled:true},
-                    {label:'类型',prop:'yhLx',type:'dict',dict:'ZDCLK0041',disabled:true},
+                    {label:'姓名',prop:'yhXm'},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
-                    {label:'身份证号码',prop:'yhZjhm',disabled:true},
+                    {label:'身份证号码',prop:'yhZjhm'},
                     {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt',disabled:true},
                     {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045',disabled:true},
                 ],

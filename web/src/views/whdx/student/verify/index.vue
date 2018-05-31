@@ -38,7 +38,7 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "",  type: 'selection',width:60},
+                    {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
@@ -59,12 +59,12 @@
                                     }),
 								)
 							}
-                            buttons.push(
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'formData'
-                                }),
-                            )
+                            // buttons.push(
+                            //     this.util.buildButton(this,h,'success','card','详情',()=>{
+                            //         this.choosedItem = params.row;
+                            //         this.componentName = 'formData'
+                            //     }),
+                            // )
                             return h('div', buttons);
                         }
                     }

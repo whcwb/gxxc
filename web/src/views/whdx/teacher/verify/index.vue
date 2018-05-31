@@ -41,7 +41,6 @@
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '手机号',key:'yhSjhm',searchKey:'yhSjhmLike'},
-                    {title: '教练驾龄',key:'jlJl'},
                     {title: '所属区域',key:'jlQu',dict:'ZDCLK0060',searchType:'dict'},
                     {title: '教练驾龄',key:'jlJl'},
                     {
@@ -54,17 +53,17 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'audit'
                                 }),
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'formData'
-                                }),
+                                // this.util.buildButton(this,h,'success','card','详情',()=>{
+                                //     this.choosedItem = params.row;
+                                //     this.componentName = 'formData'
+                                // }),
                             ]);
                         }
                     }
                 ],
                 pageData: [],
                 form: {
-                    yhZt:'0',
+                    yhJlsh:'0',
                     yhLx:"2",
                     byBysjInRange:'',
                     total: 0,

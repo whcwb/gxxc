@@ -43,7 +43,6 @@
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '手机号',key:'yhSjhm',searchKey:'yhSjhmLike'},
-                    {title: '教练驾龄',key:'jlJl'},
                     {title: '所属区域',key:'jlQu',dict:'ZDCLK0060',searchType:'dict'},
                     {title: '认证状态',key:'yhJlsh',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '教练驾龄',key:'jlJl'},
@@ -56,10 +55,6 @@
                                 this.util.buildButton(this,h,'success','card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
-                                }),
-                                this.util.buildButton(this,h,'info','android-home','分配',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'allot'
                                 }),
                             ]);
                         }

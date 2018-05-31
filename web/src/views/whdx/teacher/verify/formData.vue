@@ -11,7 +11,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='1200' :closable='false'
-			:mask-closable="false" :title="operate+''">
+			:mask-closable="false" :title="operate+'教练'">
 			<div style="overflow: auto;height: 500px;">
 				<Form ref="form"
 						:model="formItem"
@@ -20,6 +20,8 @@
 						:styles="{top: '20px'}">
 					<Row>
 						<form-items :parent="v"></form-items>
+					</Row>
+					<Row>
 						<Col span="12">
 							<label>身份证正面</label>
 							<img class="docImg" src="../../../../../static/sfzzm.jpg"/>
@@ -55,8 +57,8 @@
 		data() {
 			return {
 			    v:this,
-                operate:'保养',
-				saveUrl:this.apis.maintain.ADD,
+                operate:'编辑',
+				saveUrl:this.apis.teacher.CHANGE,
 				showModal: true,
 				readonly: false,
 				formItem: {

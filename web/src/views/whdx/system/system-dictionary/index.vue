@@ -14,6 +14,10 @@
 					   style="width: 200px"
 					   @on-keyup.enter="findMessList()"
 					   @on-change="findMessList"></Input>
+				<Input v-model="findMess.lmdmLike" placeholder="请输入字典代码..."
+					   style="width: 200px"
+					   @on-keyup.enter="findMessList()"
+					   @on-change="findMessList"></Input>
 			</div>
 			<Button type="primary" @click="findMessList()">
 				<Icon type="search"></Icon>
