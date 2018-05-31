@@ -33,4 +33,6 @@ public class AppCpController extends AppUserBaseController{
         return service.getCpTyetList(cpType);
     }
 
+
+
 }

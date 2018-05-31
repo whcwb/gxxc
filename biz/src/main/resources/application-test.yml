@@ -16,12 +16,7 @@ server:
 #测试调试 1 进行调试  0 正式  正式环境里不需要配置这个参数
 debug_test: 1
 
-#一级金额百分比
-one_eevel_money_scale: 0.32
-
-#二级金额百分比
-two_eevel_money_scale: 0.16
-#订单总金额  用户在分派佣金时，检查支付宝、微信收到的真实金额。如果不对，就要告警。
+#学费类型的产品金额不能低于该值，如果低于该值，将无法插入。
 order_money: 2500
 
 logo_file_url: D:\2003\logo.png
