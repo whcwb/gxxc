@@ -697,7 +697,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
 
         RuntimeCheck.ifFalse(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
-        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
+        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhJlsh(),"1"),"该教练未进行实名认证");
 
         // 将多个学员id 分开
         List<String> sIds = Arrays.asList(yhId.split(","));

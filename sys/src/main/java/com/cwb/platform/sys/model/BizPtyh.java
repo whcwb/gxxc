@@ -169,7 +169,11 @@ public class BizPtyh implements Serializable {
      */
     @Column(name = "YH_SFSD")
     private String yhSfsd;
-
+    /**
+     * 教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+     */
+    @Column(name = "YH_JLSH")
+    private String yhJlsh;
     /**
      * 手机验证码
      */
@@ -673,6 +677,14 @@ public class BizPtyh implements Serializable {
      */
     public void setYhSfsd(String yhSfsd) {
         this.yhSfsd = yhSfsd;
+    }
+
+    public String getYhJlsh() {
+        return yhJlsh;
+    }
+
+    public void setYhJlsh(String yhJlsh) {
+        this.yhJlsh = yhJlsh;
     }
 
     public enum InnerColumn {
