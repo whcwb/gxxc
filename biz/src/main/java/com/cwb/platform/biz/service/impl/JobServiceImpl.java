@@ -16,7 +16,6 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.ZXingCode;
-import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +51,6 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
     @Autowired
     private CpService cpService;
 
-    @Value("${one_eevel_money_scale}")
-    private String oneEevelMoneyScale;
-    @Value("${two_eevel_money_scale}")
-    private String twoEevelMoneyScale;
     @Value("${logo_file_url}")
     private String logoFileUrl;
     @Value("${qr_code_file_url}")
@@ -94,22 +89,22 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
         if (list == null || list.isEmpty()) {
             log.debug("未查到订单，处理结束");
         }
-        RuntimeCheck.ifTrue(list == null || list.isEmpty(), "未查到订单，处理结束");
-        if (StringUtils.isBlank(oneEevelMoneyScale)) {
-            log.debug("一级比例不能为空");
-        }
-        RuntimeCheck.ifBlank(oneEevelMoneyScale, "一级比例不能为空");
-        if (StringUtils.isBlank(twoEevelMoneyScale)) {
-            log.debug("二级比例不能为空");
-        }
-        RuntimeCheck.ifBlank(twoEevelMoneyScale, "二级比例不能为空");
+//        RuntimeCheck.ifTrue(list == null || list.isEmpty(), "未查到订单，处理结束");
+//        if (StringUtils.isBlank(oneEevelMoneyScale)) {
+//            log.debug("一级比例不能为空");
+//        }
+//        RuntimeCheck.ifBlank(oneEevelMoneyScale, "一级比例不能为空");
+//        if (StringUtils.isBlank(twoEevelMoneyScale)) {
+//            log.debug("二级比例不能为空");
+//        }
+//        RuntimeCheck.ifBlank(twoEevelMoneyScale, "二级比例不能为空");
 
-        BigDecimal oneEevelMoney = new BigDecimal(oneEevelMoneyScale);
-        BigDecimal twoEevelMoney = new BigDecimal(twoEevelMoneyScale);
-        if (oneEevelMoney.add(twoEevelMoney).doubleValue() >= 1) {
-            log.debug("系统配置一级比例：" + oneEevelMoneyScale + " 一级比例：" + twoEevelMoneyScale + " 之和大于1。系统禁止分派佣金！");
-        }
-        RuntimeCheck.ifTrue(oneEevelMoney.add(twoEevelMoney).doubleValue() >= 1, "系统配置一级比例：" + oneEevelMoneyScale + " 一级比例：" + twoEevelMoneyScale + " 之和大于1。系统禁止分派佣金！");
+//        BigDecimal oneEevelMoney = new BigDecimal(oneEevelMoneyScale);
+//        BigDecimal twoEevelMoney = new BigDecimal(twoEevelMoneyScale);
+//        if (oneEevelMoney.add(twoEevelMoney).doubleValue() >= 1) {
+//            log.debug("系统配置一级比例：" + oneEevelMoneyScale + " 一级比例：" + twoEevelMoneyScale + " 之和大于1。系统禁止分派佣金！");
+//        }
+//        RuntimeCheck.ifTrue(oneEevelMoney.add(twoEevelMoney).doubleValue() >= 1, "系统配置一级比例：" + oneEevelMoneyScale + " 一级比例：" + twoEevelMoneyScale + " 之和大于1。系统禁止分派佣金！");
         return list;
 
     }
