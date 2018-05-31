@@ -61,12 +61,37 @@
       [Button.name]: Button,
       [InputItem.name]: InputItem
     },
+    data(){
+      return{
+        from:{
+          username:'13311111111',
+          password:'123456'
+        }
+      }
+    },
     methods: {
       handleClick() {
         Toast.succeed('操作成功');
       },
       login(){
-          this.$router.push("/home");
+          // this.$router.push("/home");
+        var v = this
+        this.$http.post(this.apis.LOGIN,{'username':'13311111111','password':'123456'}).then((res)=>{
+          if(res.code==200){
+            localStorage.setItem('token',res.result.accessToken)
+          }
+          console.log('**-***',res)
+          // v.userMess()
+        }).catch((err)=>{
+          console.log('出错了！！！')
+        })
+      },
+      userMess(){
+        this.$http.post(this.apis.USERMESS).then((res)=>{
+          console.log('**-***',res)
+        }).catch((err)=>{
+          console.log('出错了！！！')
+        })
       },
       reg(){
           this.$router.push("/reg");

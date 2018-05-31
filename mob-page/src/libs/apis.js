@@ -2,12 +2,13 @@ import axios from 'axios';
 import qs from 'qs'
 import { Toast } from 'mand-mobile'
 
-const ajaxUrl ='http://127.0.0.1';
+// const ajaxUrl ='http://127.0.0.1';
+const ajaxUrl ='http://192.168.31.228:9086';//羊祥
 let API = {
-    NETWORK_ERR: "网络请求异常，请重试！",
-    LOGIN: '/login',
-    LOGOUT: '/logout',
-    UPLOAD: '/upload'
+    NETWORK_ERR: "网络请求异常，请重试！"
+    // LOGIN: '/login',
+    // LOGOUT: '/logout',
+    // UPLOAD: '/upload'
 };
 
 API.title = function (title) {
