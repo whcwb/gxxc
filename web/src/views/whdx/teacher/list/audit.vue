@@ -55,7 +55,7 @@
         data() {
             return {
                 v:this,
-                operate:'保养',
+                operate:'认证',
                 saveUrl:this.apis.maintain.ADD,
                 showModal: true,
                 readonly: false,

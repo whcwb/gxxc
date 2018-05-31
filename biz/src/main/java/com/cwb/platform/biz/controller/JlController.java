@@ -2,14 +2,15 @@ package com.cwb.platform.biz.controller;
 
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.service.JlService;
-import com.cwb.platform.sys.base.BaseController;
-import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 教练扩展表
@@ -17,14 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/jl")
-public class JlController extends BaseController<BizJl,String>{
+//public class JlController extends BaseController<BizJl,String>{
+public class JlController {
     @Autowired
     private JlService service;
 
-    @Override
-    protected BaseService<BizJl, String> getBaseService() {
-        return service;
-    }
+//    @Override
+//    protected BaseService<BizJl, String> getBaseService() {
+//        return service;
+//    }
 
 
     /**
@@ -36,5 +38,10 @@ public class JlController extends BaseController<BizJl,String>{
     @PostMapping("/updateyhrz")
     public ApiResponse<String> updateYhRz(BizPtyh obd) {
         return service.updateYhRz(obd);
+    }
+
+    @RequestMapping(value="/query", method={RequestMethod.GET})
+    public ApiResponse<List<BizJl>> query(BizJl entity){
+        return ApiResponse.success(service.query(entity));
     }
 }
