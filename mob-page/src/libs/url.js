@@ -13,3 +13,5 @@ module.exports = {
   USERZH:'/app/zh/get',//账户余额
 
 }
+
+export default url;
