@@ -5,7 +5,7 @@
 		{{treeMess.title}}
 		<br />
 		<div v-if="treeMess.children">
-			<span v-for="(item,index) in treeMess.children">
+			<span v-for="(item,index) in treeMess.children" :key="index">
 				{{item.title}}
 			</span>
 		</div>

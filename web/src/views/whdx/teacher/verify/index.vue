@@ -22,14 +22,12 @@
 
 <script>
     import formData from './formData.vue'
-    import sublist from './sublist.vue'
     import audit from './audit.vue'
-    import allot from './allot.vue'
 	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems,sublist,allot,audit},
+        components: {formData,searchItems,audit},
         data() {
             return {
                 v:this,
@@ -44,7 +42,6 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '手机号',key:'yhSjhm',searchKey:'yhSjhmLike'},
                     {title: '所属区域',key:'jlQu',dict:'ZDCLK0060',searchType:'dict'},
-                    {title: '认证状态',key:'yhJlsh',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '教练驾龄',key:'jlJl'},
                     {
                         title: '操作',
@@ -52,16 +49,21 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
+                                this.util.buildButton(this,h,'success','ribbon-b','认证',()=>{
                                     this.choosedItem = params.row;
-                                    this.componentName = 'formData'
+                                    this.componentName = 'audit'
                                 }),
+                                // this.util.buildButton(this,h,'success','card','详情',()=>{
+                                //     this.choosedItem = params.row;
+                                //     this.componentName = 'formData'
+                                // }),
                             ]);
                         }
                     }
                 ],
                 pageData: [],
                 form: {
+                    yhJlsh:'0',
                     yhLx:"2",
                     byBysjInRange:'',
                     total: 0,

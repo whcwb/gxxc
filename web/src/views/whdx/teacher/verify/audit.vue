@@ -24,19 +24,19 @@
 					<Row>
 						<Col span="12">
 							<label>身份证正面</label>
-							<img class="docImg" src="../../../../../static/sfzzm.jpg"/>
+							<img class="docImg" src="static/sfzzm.jpg"/>
 						</Col>
 						<Col span="12">
 							<label>身份证反面</label>
-							<img class="docImg" src="../../../../../static/sfzfm.jpg"/>
+							<img class="docImg" src="static/sfzfm.jpg"/>
 						</Col>
 						<Col v-if="formItem.yhLx == '2'" span="12">
 							<label>驾驶证正本</label>
-							<img class="docImg" src="../../../../../static/jszzb.jpg"/>
+							<img class="docImg" src="static/jszzb.jpg"/>
 						</Col>
 						<Col v-if="formItem.yhLx == '2'" span="12">
 							<label>驾驶证副本</label>
-							<img class="docImg" src="../../../../../static/jsz.jpg"/>
+							<img class="docImg" src="static/jsz.jpg"/>
 						</Col>
 					</Row>
 				</Form>
@@ -58,33 +58,37 @@
             return {
                 v:this,
                 operate:'认证',
-                saveUrl:this.apis.maintain.ADD,
                 showModal: true,
+                saveUrl:this.apis.teacher.updateyhrz,
                 readonly: false,
                 formItem: {
-                    yhId:''
+                    id:''
                 },
                 formInputs:[
-                    {label:'姓名',prop:'yhXm'},
+                    {label:'姓名',prop:'yhXm',disabled:true},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
                     {label:'身份证号码',prop:'yhZjhm',disabled:true},
+                    {label: '手机号',prop:'yhSjhm',disabled:true},
+                    {label: '所属区域',prop:'jlQu',dict:'ZDCLK0060',type:'dict',disabled:true},
+                    {label: '教练驾龄',prop:'jlJl',disabled:true},
+                    {label: '紧急联系人',prop:'jlJjlxr',disabled:true},
+                    {label: '紧急联系人电话',prop:'jlJjlxrdh',disabled:true},
+                    {label: '审核结果',prop:'yhJlsh',dict:'ZDCLK0043',type:'dict'},
+                    {label: '失败原因',prop:'yhZtMs'},
                 ],
                 ruleInline:{
                 }
             }
         },
         created(){
-            this.formItem.yhId = this.$parent.choosedItem.yhId
+            this.formItem = this.$parent.choosedItem
             this.util.initFormModal(this);
-            this.getById();
         },
         methods: {
-            getById(){
-                this.$http.get(this.apis.student.getById+this.formItem.yhId).then((res)=>{
-                    if (res.code === 200){
-                        this.formItem = res.result;
-                    }
-                })
+            beforeSave(){
+                this.formItem = {};
+                this.formItem.id = this.$parent.choosedItem.yhId
+                this.formItem.yhJlsh = '1';
             }
         }
     }

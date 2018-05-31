@@ -13,7 +13,7 @@
 					<Checkbox :indeterminate="indeterminate" :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
 				</div>
 				<CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
-					<div class="CheckboxList" v-for="item in roleList" 
+					<div class="CheckboxList" v-for="(item,index) in roleList" :key="index"
 						style="margin-bottom: 6px;margin-left:15px;">
 						<Checkbox :label="item.key">{{item.value}}</Checkbox>
 					</div>

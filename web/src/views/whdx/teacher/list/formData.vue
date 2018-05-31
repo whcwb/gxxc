@@ -20,6 +20,8 @@
 						:styles="{top: '20px'}">
 					<Row>
 						<form-items :parent="v"></form-items>
+					</Row>
+					<Row>
 						<Col span="12">
 							<label>身份证正面</label>
 							<img class="docImg" src="../../../../../static/sfzzm.jpg"/>
@@ -55,8 +57,8 @@
 		data() {
 			return {
 			    v:this,
-                operate:'保养',
-				saveUrl:this.apis.maintain.ADD,
+                operate:'教练员',
+				saveUrl:this.apis.teacher.ADD,
 				showModal: true,
 				readonly: false,
 				formItem: {

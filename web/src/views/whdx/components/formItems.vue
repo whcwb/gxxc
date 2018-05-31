@@ -1,16 +1,16 @@
 <template>
     <div>
-        <Col v-for="i in formInputs" :span="i.span ? i.span : 12">
+        <Col v-for="(i,index) in formInputs" :span="i.span ? i.span : 12" :key="index">
             <FormItem :prop='i.prop' :label='i.label'>
                 <Input v-if="!i.type || i.type ==='text'" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="readonly && i.readonly" :disabled="readonly && i.disabled"></Input>
                 <InputNumber v-else-if="i.type ==='number'" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="readonly && i.readonly" :disabled="readonly && i.disabled"></InputNumber>
-                <DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"></DatePicker>
-                <DatePicker v-else-if="i.type == 'datetime'"  :value="formItem[i.prop]" type="datetime" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"></DatePicker>
-                <Select v-else-if="i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
-                    <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)' :value="item.key">{{item.val}}</Option>
+                <DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="readonly && i.readonly"  :disabled="readonly && i.disabled"></DatePicker>
+                <DatePicker v-else-if="i.type == 'datetime'"  :value="formItem[i.prop]" type="datetime" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="readonly && i.readonly" :disabled="readonly && i.disabled"></DatePicker>
+                <Select v-else-if="i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="readonly && i.readonly" :disabled="readonly && i.disabled">
+                    <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)' :value="item.key" :key="item.key">{{item.val}}</Option>
                 </Select>
-                <Select v-else-if="i.type === 'foreignKey'" :disabled="i.disabled" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
-                    <Option v-for = '(item,index) in foreignList[i.prop].items' :value="item.key">{{item.val}}</Option>
+                <Select v-else-if="i.type === 'foreignKey'" :disabled="readonly && i.disabled" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
+                    <Option v-for = '(item,index) in foreignList[i.prop].items' :value="item.key" :key="item.key">{{item.val}}</Option>
                 </Select>
             </FormItem>
         </Col>

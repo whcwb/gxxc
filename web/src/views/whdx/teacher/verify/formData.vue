@@ -11,7 +11,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='1200' :closable='false'
-			:mask-closable="false" :title="operate+''">
+			:mask-closable="false" :title="operate+'教练'">
 			<div style="overflow: auto;height: 500px;">
 				<Form ref="form"
 						:model="formItem"
@@ -57,18 +57,20 @@
 		data() {
 			return {
 			    v:this,
-                operate:'保养',
+                operate:'编辑',
+				saveUrl:this.apis.teacher.CHANGE,
 				showModal: true,
 				readonly: false,
 				formItem: {
 				},
                 formInputs:[
-                    {label:'账号',prop:'yhZh',disabled:true},
+                    {label:'账号',prop:'yhZh',readonly:true},
                     {label:'姓名',prop:'yhXm'},
-                    {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
+                    {label:'类型',prop:'yhLx',type:'dict',dict:'ZDCLK0041'},
+                    {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042'},
                     {label:'身份证号码',prop:'yhZjhm'},
-                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt',disabled:true},
-                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045',disabled:true},
+                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt'},
+                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
                 ],
                 ruleInline:{
 				}

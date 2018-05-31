@@ -5,7 +5,7 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<div v-for="s in searchItems" style="display: inline-block">
+			<div v-for="(s,index) in searchItems" style="display: inline-block" :key="index">
 				<label class="searchLabel">{{s.label}}:</label>
 				<Input v-model="findMess[s.formKey]" :placeholder="'请输入'+s.label" style="width: 200px"></Input>
 			</div>

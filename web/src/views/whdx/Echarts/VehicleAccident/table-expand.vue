@@ -36,7 +36,7 @@
 		</div>
 		<div v-if="row.wjlx=='00'">
 			<div class="demo-upload-list" 
-				v-for="(item,index) in uploadList"
+				v-for="(item,index) in uploadList" :key="index"
 				v-if="(index+1)!=uploadList.length">
 				<div class="demo-upload-list-box">
 					<img :src="staticPath+item.url">
@@ -59,7 +59,7 @@
 		</div>
 		<div v-else-if="row.wjlx=='01'">
 			<div class="demo-upload-list" 
-				v-for="(item,index) in uploadList" 
+				v-for="(item,index) in uploadList" :key="index"
 				v-if="(index+1)!=uploadList.length">
 				<div>
 					<video :src="staticPath+imgUrl" controls="controls" height="100%"></video>

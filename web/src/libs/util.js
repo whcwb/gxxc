@@ -25,10 +25,14 @@ util.fillTableColumns = (v)=>{
                     let s  = val ? val : '-';
                     if (r.dict  && val){
                         s = dictUtil.getItemByCode(v,r.dict,p.row[r.key]);
-                        if (s.color && s.color != ''){
-                            return  h('Tag',{props:{color:s.color,type:'dot'}}, s.val)
+                        if (s){
+                            if (s.color && s.color != ''){
+                                return  h('Tag',{props:{color:s.color,type:'dot'}}, s.val)
+                            }
+                            s = s.val;
+                        }else{
+                            s = '-';
                         }
-                        s = s.val;
                     }
                     if (r.unit && val)s += r.unit;
                     return h('div',s);
