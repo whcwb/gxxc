@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/home'
 import Util from '../libs/apis';
-
+import {Toast } from 'mint-ui';
 Vue.use(Router)
 // 路由配置
 const router = new Router({
@@ -65,11 +65,6 @@ const router = new Router({
       },
       component: resolve => { require(['@/views/myCenter/renzhen/jlyrz.vue'], resolve); }
     },
-    // {
-    //   path: '/index',
-    //   name: 'index',
-    //   component:()=>import('@/views/homepage')
-    // },
     {
       path: '/jxlist',
       name: 'jxlist',
@@ -103,11 +98,44 @@ const router = new Router({
       path: '/tx',
       name: 'tx',
       component:()=>import('@/views/TX')
+    },{
+      path:'/myTeam',name:'myteam',
+      component:()=>import('@/views/myTeam')
     }
-
   ]
 });
 
+
+router.beforeEach((to, from, next) => {
+  Util.title(to.meta.title);
+  console.log(to.name)
+  if(to.name=='Login'){
+    next()
+  }else if(to.name!='Login'&&localStorage.getItem('userMess')){
+    next()
+  }else{
+    Toast('用户信息丢失，请重新登录！')
+    next({
+      name: 'Login'
+    });
+  }
+
+
+
+
+  if(to.name == 'pay'){
+    auto(window, document,11.5)
+  }else {
+    auto(window, document,7.5)
+  }
+  // next();
+})
+
+router.afterEach((to) => {
+  //Util.openNewPage(router.app, to.name, to.params, to.query);
+  window.scrollTo(0, 0);
+});
+export default router;
 function auto (window, document , num) {
 
   function resize(){
@@ -137,19 +165,3 @@ function auto (window, document , num) {
   window.addEventListener('resize', resize);
 
 }
-
-router.beforeEach((to, from, next) => {
-  Util.title(to.meta.title);
-  if(to.name == 'pay'){
-    auto(window, document,11.5)
-  }else {
-    auto(window, document,7.5)
-  }
-  next();
-})
-
-router.afterEach((to) => {
-  //Util.openNewPage(router.app, to.name, to.params, to.query);
-  window.scrollTo(0, 0);
-});
-export default router;
