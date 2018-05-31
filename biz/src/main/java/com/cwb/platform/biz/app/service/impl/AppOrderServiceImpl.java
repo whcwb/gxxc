@@ -16,6 +16,7 @@ import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -24,11 +25,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+//import java.math.BigDecimal;
 
 @Service
 public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implements AppOrderService {
@@ -152,7 +154,8 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         newEntity.setDdZftd(entity.getDdZftd());//支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
 //            newEntity.setDdZfsj();//支付时间
         newEntity.setDdZfzt("0");//支付状态（0,待支付 1、支付成功  2、支付失败）
-        newEntity.setDdZfje(new BigDecimal(bizCp.getCpJl()).doubleValue());//支付金额(单位 分)  todo 金额需要怎么确定，是否从配置文件中做处理
+
+        newEntity.setDdZfje(MathUtil.stringToDouble(bizCp.getCpJl()));//支付金额(单位 分)
 //            newEntity.setDdZfpz();//支付凭证ID(保存支付通道返回的CODE)
 //            newEntity.setDdZfjg();//支付响应结果(1:成功 2:失败)
         newEntity.setYhXm(user.getYhXm());//姓名

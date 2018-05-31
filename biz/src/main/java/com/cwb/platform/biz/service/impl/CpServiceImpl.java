@@ -7,14 +7,13 @@ import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
-
-import java.math.BigDecimal;
 
 @Service
 public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpService {
@@ -52,14 +51,14 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
         RuntimeCheck.ifBlank(entity.getCpType(),"收费类型不能为空");
         RuntimeCheck.ifBlank(entity.getCpYj(),"请确定该产品分佣状态");
 
-        Double cpJl=new BigDecimal(entity.getCpJl()).doubleValue();//产品金额
+        Double cpJl=  MathUtil.stringToDouble(entity.getCpJl());//产品金额
         RuntimeCheck.ifFalse(cpJl>0,"收费金额不能小于0");
-        RuntimeCheck.ifFalse(cpJl>new BigDecimal(orderMoney).doubleValue(),"收费金额不能低于系统配置的最低价："+orderMoney);
+        RuntimeCheck.ifFalse(cpJl> MathUtil.stringToDouble(orderMoney) ,"收费金额不能低于系统配置的最低价："+orderMoney);
         Double cpYjyjs=0.00;
         Double cpRjyjs=0.00;
         if(StringUtils.equals(entity.getCpYj(),"1")){
-            Double cpYjyj=new BigDecimal(entity.getCpYjyj()).doubleValue();//设置一级佣金
-            Double cpRjyj=new BigDecimal(entity.getCpRjyj()).doubleValue();//设置二级佣金
+            Double cpYjyj= entity.getCpYjyj(); //new BigDecimal(entity.getCpYjyj()).doubleValue();//设置一级佣金
+            Double cpRjyj=entity.getCpRjyj();//设置二级佣金
             RuntimeCheck.ifTrue(cpYjyj+cpRjyj>cpJl,"分佣金额不能大于总金额");//
             cpYjyjs=cpYjyj;
             cpRjyjs=cpRjyj;
