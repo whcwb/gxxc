@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 二维码生成
+ * 二维码生成 工具类
  * Created by Administrator on 2018/5/23.
  */
 public class ZXingCode {

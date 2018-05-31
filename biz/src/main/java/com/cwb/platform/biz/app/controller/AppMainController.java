@@ -158,8 +158,10 @@ public class AppMainController {
 //		3、验证邀请码是否存在
 		SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
 		newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yyyqm);
+		newCondition.eq(BizPtyh.InnerColumn.yhSfsd.name(),"0");//用户没有锁定
+		newCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(),"1");// todo 20180531 aaaaa
 		count = ptyhService.countByCondition(newCondition);
-		RuntimeCheck.ifTrue(count == 0,"请填写正确的邀请码");
+		RuntimeCheck.ifTrue(count == 0,"邀请码有误");
 //		4、生成手机验证码
 		String identifyingCode= StringDivUtils.getSix();//获取验证码
 		boolean sendType=ptyhService.sendSMS(zh,1,identifyingCode);

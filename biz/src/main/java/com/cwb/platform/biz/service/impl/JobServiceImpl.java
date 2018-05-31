@@ -61,9 +61,6 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
     @Value("${qr_code_file_url}")
     private String qrCodeFileUrl;
 
-    @Value("${order_money}")
-    private String orderMoney;
-
     @Autowired
     private ZhService zhService;
 
@@ -145,11 +142,10 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
         String yhSsjid = l.getYhSsjid();//上上级ID
         //orderMoney
 
-        if (!StringUtils.equals(l.getPayMoney(), orderMoney)) {
+        if (new BigDecimal(l.getPayMoney()).doubleValue() != new BigDecimal(bizCp.getCpJl()).doubleValue()) {
             log.debug("9、订单编号：" + l.getDdId() + "支付金额与系统配置金额不符合。系统跳过处理");
             newBizOrder.setJobType("2");
             newBizOrder.setJobDescribe("订单编号：" + l.getDdId() + "支付金额与系统配置金额不符合。系统跳过处理");
-//                messaget+=newBizOrder.getJobDescribe()+"\n";
             retType = false;
         } else {//正常流程
             String yhId = l.getYhId();

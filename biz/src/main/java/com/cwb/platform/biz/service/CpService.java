@@ -7,4 +7,6 @@ import com.cwb.platform.util.bean.ApiResponse;
 
 public interface CpService extends BaseService<BizCp,String>{
     ApiResponse<BizCp> getCpTyetList(String cpType);
+
+    ApiResponse<String> saveCp(BizCp entity);
 }
