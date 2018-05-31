@@ -230,6 +230,12 @@ public class AppMainController {
 		return ptyhService.resetPwd(tel, code, newPwd);
 	}
 
-
+	/**
+	 * 验证邀请码
+	 */
+	@PostMapping("/yzyym")
+	public ApiResponse<String> validateCode( String code){
+		return ptyhService.validateCode(code);
+	}
 
 }
