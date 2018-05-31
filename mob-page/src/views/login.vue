@@ -95,7 +95,8 @@
         })
       },
       reg(){
-          this.$router.push("/reg");
+          this.wechatUtil.getAccessToken();
+          // this.$router.push("/reg");
       }
     }
   }
