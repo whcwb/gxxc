@@ -226,9 +226,9 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                     if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
                         String yhZsyqm = genId();
                         File logoFile = new File(logoFileUrl);
-                        String yhZsyqmImg = yhZsyqm + ".png";
+                        String yhZsyqmImg = "/QRCode/"+DateUtils.getToday("yyyyMMdd")+"/"+yhZsyqm + ".png";
                         String note = "您的好友：" + l.getYhXm() + " 邀请您";
-                        ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + "\\" + yhZsyqmImg), yhZsyqm, note);
+                        ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg), yhZsyqm, note);
                         log.debug("3、用户：" + l.getYhXm() + "。生成邀请码成功");
 
                         BizPtyh user = new BizPtyh();
