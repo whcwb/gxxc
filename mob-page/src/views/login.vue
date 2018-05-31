@@ -69,6 +69,9 @@
         }
       }
     },
+    created(){
+      this.wechatUtil.getAccessToken();
+    },
     methods: {
       handleClick() {
         Toast.succeed('操作成功');
@@ -96,7 +99,11 @@
         })
       },
       reg(){
-          this.wechatUtil.getAccessToken();
+        Toast.succeed('创建');
+          this.wechatUtil.qrScan((messtoback)=>{
+            Toast.succeed('微信'+messtoback);
+            console.log(messtoback)
+          })
           // this.$router.push("/reg");
       }
     }

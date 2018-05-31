@@ -48,7 +48,7 @@
             @click="$router.back()"></i>
         <div class="swipe">
           <mt-swipe :auto="4000">
-            <mt-swipe-item v-for="item in [,,,,]">
+            <mt-swipe-item>
               <img src="/static/jx1.jpg"
                    style="height: 100%;width: 100%"
                    alt="">
