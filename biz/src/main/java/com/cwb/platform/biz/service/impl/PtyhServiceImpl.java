@@ -128,6 +128,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             bizPtyh.setYhMm("");
             bizPtyh.setYhOpenId("");
             bizPtyh.setYhAlipayId("");
+            bizPtyh.setYhZsyqm("");
+            bizPtyh.setYhYyyqm("");
             if (StringUtils.isNotBlank(bizPtyh.getYhZjhm())) {
                 bizPtyh.setYhZjhm(bizPtyh.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
             }
@@ -783,6 +785,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<String> yhIds = bizUsers.stream().map(BizUser::getYhId).collect(Collectors.toList());
             SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
             yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
+            yhCondition.eq(BizPtyh.InnerColumn.yhSfyjz.name(), "0"); // 查询学员中无驾照的
+
 
             PageHelper.startPage(pageNum,pageSize);
             List<BizPtyh> ptyhs = findByCondition(yhCondition);
@@ -832,6 +836,23 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return i==1?ApiResponse.success():ApiResponse.fail("重置失败");
 
 
+    }
+
+    /**
+     * 当前登录学员修改信息
+     * @return
+     */
+    @Override
+    public ApiResponse<String> updateJz() {
+
+        BizPtyh bizPtyh = getAppCurrentUser();
+
+        BizPtyh entity = new BizPtyh();
+        entity.setId(bizPtyh.getId());
+        entity.setYhSfyjz("1");
+        int i = update(entity);
+
+        return i==1?ApiResponse.success():ApiResponse.fail("更新失败");
     }
 
 

@@ -62,4 +62,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
 
     ApiResponse<String> resetPwd(String tel, String code, String newPwd);
+
+    ApiResponse<String> updateJz();
 }
