@@ -77,9 +77,10 @@
           // this.$router.push("/home");
         var v = this
         this.$http.post(this.apis.LOGIN,{'username':'13311111111','password':'123456'}).then((res)=>{
-          if(res.code==200){
-            localStorage.setItem('token',res.result.accessToken)
-          }
+          // if(res.code==200){
+            debugger
+              localStorage.setItem('token',JSON.stringify(res.result.accessToken))
+          // }
           console.log('**-***',res)
           // v.userMess()
         }).catch((err)=>{
