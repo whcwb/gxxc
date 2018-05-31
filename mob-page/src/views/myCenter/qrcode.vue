@@ -68,6 +68,13 @@
           [Header.name]:Header,
           [ResultPage.name]:ResultPage
         },
+        created(){
+          // this.$http.post().then((res)=>{
+          //
+          // }).catch((err)=>{
+          //
+          // })
+        },
         methods:{
             goback(){
               this.$router.go(-1);

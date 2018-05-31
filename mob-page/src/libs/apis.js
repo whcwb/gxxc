@@ -38,10 +38,10 @@ API.ajax.interceptors.request.use(config=> {
     }
 
     try{
-      let accessTokenStr = localStorage.getItem("accessToken");
+      let accessTokenStr = localStorage.getItem("token");
       if (accessTokenStr != null && accessTokenStr != ''){
         let jsonObject = JSON.parse(accessTokenStr);
-        config.headers.common['user_id'] = jsonObject.userId;
+        config.headers.common['userId'] = jsonObject.userId;
         config.headers.common['token'] = jsonObject.token;
       }
     }catch(e){
@@ -60,7 +60,7 @@ API.ajax.interceptors.response.use(response=> {
   //网络请求加载动画
   Toast.hide();
 
-  return response;
+  return response.data;
 }, error=> {
   Toast.hide();
   setTimeout(() => {

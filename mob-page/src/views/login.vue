@@ -77,25 +77,27 @@
           // this.$router.push("/home");
         var v = this
         this.$http.post(this.apis.LOGIN,{'username':'13311111111','password':'123456'}).then((res)=>{
-          // if(res.code==200){
-            debugger
+          if(res.code==200){
               localStorage.setItem('token',JSON.stringify(res.result.accessToken))
-          // }
+              v.userMess()
+          }
           console.log('**-***',res)
-          // v.userMess()
         }).catch((err)=>{
           console.log('出错了！！！')
         })
       },
       userMess(){
         this.$http.post(this.apis.USERMESS).then((res)=>{
-          console.log('**-***',res)
+          if(res.code==200){
+            localStorage.setItem('userMess',JSON.stringify(res.result))
+          }
         }).catch((err)=>{
           console.log('出错了！！！')
         })
       },
       reg(){
-          this.$router.push("/reg");
+          this.wechatUtil.getAccessToken();
+          // this.$router.push("/reg");
       }
     }
   }

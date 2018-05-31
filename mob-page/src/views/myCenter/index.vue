@@ -10,11 +10,21 @@
                 <Col span="2" push="1">
                     <Avatar icon="person" size="large" style="size: 30px"/>
                 </Col>
-                <Col span="8" push="3">
-                    <span style="font-weight: bold">用户姓名</span>
+                <Col span="22" push="3">
+                    <span style="font-weight: bold">{{usermess.yhXm}}</span>
                     <Row>
-                        <Col span="8"><Tag>学员</Tag></Col>
-                        <Col span="12"><Tag>未实名</Tag></Col>
+                        <Col span="4">
+                          <Tag v-if="usermess.yhLx=='1'">学员</Tag>
+                          <Tag v-else-if="usermess.yhLx=='2'">教练</Tag>
+                        </Col>
+                        <Col span="12" v-if="usermess.yhZt=='0'">
+                          <Tag>未实名</Tag>
+                        </Col>
+                        <Col span="12" v-else-if="usermess.yhZt=='1'">
+                          <Tag>
+                            <Icon type="ios-checkmark" color="#19be6b"></Icon>
+                            已实名</Tag>
+                        </Col>
                     </Row>
                 </Col>
             </Row>
@@ -40,13 +50,18 @@
                   <Row type="flex" justify="center">
                     <Col span="6">
                       <Button type="primary" shape="circle"
+                              v-if="usermess.ddSfjx=='0'"
                               @click="$router.push({name:'pay'})"
-                              style="font-size: 14px;width:60px">缴费</Button>
+                              style="font-size: 13px;width:60px">缴费</Button>
+                      <Button type="success" shape="circle"
+                              v-else-if="usermess.ddSfjx=='1'"
+                              @click="okjf"
+                              style="font-size: 13px;width:60px">已缴费</Button>
                     </Col>
                     <Col span="6">
                       <Button type="primary" shape="circle"
                               @click="$router.push({name:'tx'})"
-                              style="font-size: 14px;width:60px">提现</Button>
+                              style="font-size: 13px;width:60px">提现</Button>
                     </Col>
                   </Row>
                 </div>
@@ -62,21 +77,31 @@
                     <i class="iconfont icon-detail" style="font-size: 20px" slot="icon"></i>
                   </mt-cell>
                 </div>
-                <mt-cell title="团队" is-link>
-                  <i class="iconfont icon-team" style="font-size: 20px" slot="icon"></i>
-                </mt-cell>
+                <div @click="$router.push({name:'myteam'})">
+                  <mt-cell title="团队" is-link>
+                    <i class="iconfont icon-team" style="font-size: 20px" slot="icon"></i>
+                  </mt-cell>
+                </div>
               </Card>
             </Col>
           </Row>
           <Row type="flex" justify="start" style="margin-top: 20px">
             <Col span="24">
             <Card dis-hover>
-              <mt-cell title="实名认证" value="未认证" to="/myCenter-sfrz" is-link style="border-bottom: 1px #e9eaec solid;">
+              <mt-cell title="实名认证" value="未认证"
+                       :to="usermess.yhZt=='1'?'/home':'/myCenter-sfrz'"
+                       is-link style="border-bottom: 1px #e9eaec solid;">
                 <i class="iconfont icon-shimingrenzheng" style="font-size: 20px" slot="icon"></i>
+                <span
+                  v-if="usermess.yhZt=='1'"
+                  style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
               </mt-cell>
-              <mt-cell title="教练员认证" value="未认证" to="/myCenter-jlyrz" is-link>
+              <mt-cell title="教练员认证" value="未认证"
+                       :to="usermess.yhLx=='2'? '/home':'/myCenter-jlyrz'" is-link>
                 <i class="iconfont icon-ai-ca" style="font-size: 20px" slot="icon"></i>
-                <span style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
+                <span
+                  v-if="usermess.yhLx=='2'"
+                  style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
               </mt-cell>
             </Card>
             </Col>
@@ -88,20 +113,38 @@
 
 <script>
     import {Card, Row, Col, Avatar, Tag, Alert, Button, Icon  } from 'iview'
-    import { Toast} from 'mand-mobile'
-    import {  Cell } from 'mint-ui';
+    // import { Toast} from 'mand-mobile'
+    import {  Cell,Toast } from 'mint-ui';
     export default {
         name: "myCenter",
         components: {
           Card,Row,Col,Avatar,Tag,Alert,Button,Icon,
-          [Cell.name]:Cell
+          [Cell.name]:Cell,
+        },
+        data(){
+          return{
+            usermess:JSON.parse(localStorage.getItem("userMess"))
+          }
+        },
+        created(){
+          console.log('***---***',this.usermess)
         },
         methods:{
+            zhye(){
+              this.$http.post(this.apis.USERZH).then((res)=>{
+
+              }).catch((err)=>{
+
+              })
+            },
             setting(){
                 this.$router.push('/myCenter-info');
             },
             showQrcode(){
                 this.$router.push('/myCenter-qrcode');
+            },
+            okjf(){
+              Toast('您已缴费')
             }
         }
     }
