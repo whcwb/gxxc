@@ -44,6 +44,7 @@ module.exports = {
         getById:'/api/ptyh/',
         updateSffp:'/api/ptyh/updateSffp',
         assignStudents:'/api/ptyh/assignStudents', // 分配学员接口
+        updateyhrz:'/api/ptyh/updateyhrz', // 更新用户认证状态
     },
     user:{
         QUERY:'/api/user/pager',//用户实名表
@@ -106,80 +107,5 @@ module.exports = {
         ADD:'/api/rz/save',
         CHANGE:'/api/rz/update',
         DELE:'/api/rz/removeIds'
-    },
-    OIL_CARD:{
-        QUERY:'api/oilCard/pager',//油卡管理
-        ADD:'/api/oilCard/save',
-        CHANGE:'/api/oilCard/update',
-        CHARGE:'/api/oilCard/charge',
-        DELE:'/api/oilCard/removeIds',
-    },
-    CAR:{
-        QUERY:'api/car/pager',//车辆管理
-        SEARCHSOME:'/api/car/query',//指定条件查询数据
-        ADD:'/api/car/save',
-        countByCondition:'/api/car/countByCondition',
-        lqnjCarList:'/api/car/lqnjCarList',
-        CHANGE:'/api/car/update',
-        DELE:'/api/car/removeIds',
-        ALLOCPERSON:'/api/car/allocPerson',
-        notUseCarList:'/api/car/notUseCarList',
-        CLNS:'/api/car/clnsUpdate',
-    },
-    illegal:{
-        QUERY:'api/illegal/pager',//违法管理
-        ADD:'/api/illegal/save',
-        CHANGE:'/api/illegal/update',
-        DELE:'/api/illegal/removeIds',
-    },
-    maintain:{
-        QUERY:'api/maintain/pager',//保养管理
-        ADD:'/api/maintain/save',
-        CHANGE:'/api/maintain/update',
-        DELE:'/api/maintain/removeIds',
-    },
-    maintainInfo:{
-        QUERY:'api/maintainInfo/pager',//保养管理
-        ADD:'/api/maintainInfo/save',
-        CHANGE:'/api/maintainInfo/update',
-        DELE:'/api/maintainInfo/removeIds',
-    },
-    insurance:{
-        QUERY:'api/insurance/pager',//保险管理
-        ADD:'/api/insurance/save',
-        CHANGE:'/api/insurance/update',
-        DELE:'/api/insurance/removeIds',
-    },
-    userCar:{
-        QUERY:'api/userCar/pager',//出车管理
-        ADD:'/api/userCar/save',
-        CHANGE:'/api/userCar/update',
-        DELE:'/api/userCar/removeIds',
-        getLastReturnMileage:'/api/userCar/getLastReturnMileage',
-    },
-    repair:{
-        QUERY:'api/repair/pager',//维修管理
-        ADD:'/api/repair/save',
-        CHANGE:'/api/repair/update',
-        DELE:'/api/repair/removeIds',
-    },
-    order:{
-        QUERY:'api/order/pager',//订单管理
-        ADD:'/api/order/save',
-        CHANGE:'/api/order/update',
-        DELE:'/api/order/removeIds',
-    },
-    repairInfo:{
-        QUERY:'api/repairInfo/pager',//维修管理
-        ADD:'/api/repairInfo/save',
-        CHANGE:'/api/repairInfo/update',
-        DELE:'/api/repairInfo/removeIds',
-    },
-    oilRecord:{
-        QUERY:'api/oilRecord/pager',//油料管理
-        list:'/api/oilRecord/list',
-        ADD:'/api/oilRecord/save',
-        CHANGE:'/api/oilRecord/update',
-        DELE:'/api/oilRecord/removeIds',
     },
 }
