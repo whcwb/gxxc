@@ -30,7 +30,7 @@ import java.util.List;
  * @param <T>
  * @param <PK>
  */
-public abstract class BaseController<T, PK extends Serializable> extends QueryController<T,PK>{
+public abstract class QueryController<T, PK extends Serializable> {
 	//@Autowird通过Spring加载的Service基础类
     protected abstract BaseService<T, PK> getBaseService();
 
@@ -62,50 +62,56 @@ public abstract class BaseController<T, PK extends Serializable> extends QueryCo
     	return userInfo;
     }
 
+    /**
+     * 根据主键获取对象基本信息
+     * @param pkid
+     * @return
+     */
+    @RequestMapping(value="/{pkid}", method={RequestMethod.GET})
+	public ApiResponse<T> get(@PathVariable("pkid")PK pkid){
+    	return ApiResponse.success(getBaseService().findById(pkid));
+	}
 
-	/**
-     * 数据新增方法
+    /**
+     * 获取指定对象表中所有数据。
      * 如果对数据要求高，请重写该方法或是不直接继承该类，防止数据泄露
+     * @return
+     */
+    @RequestMapping(value="/getAll", method={RequestMethod.GET})
+	public ApiResponse<List<T>> getAll(){
+		return ApiResponse.success(getBaseService().findAll());
+	}
+
+    /**
+     * 根据对象字段值查询数据
      * @param entity
      * @return
      */
-    @RequestMapping(value="/save", method={RequestMethod.POST})
-	public ApiResponse<String> save(T entity){
-		return getBaseService().validAndSave(entity);
+    @RequestMapping(value="/query", method={RequestMethod.GET})
+	public ApiResponse<List<T>> query(T entity){
+		return ApiResponse.success(getBaseService().query(entity));
 	}
-
     /**
-     * 数据修改方法
-     * 如果对数据要求高，请重写该方法或是不直接继承该类，防止数据泄露
+     * 根据对象字段值查询数据
      * @param entity
      * @return
      */
-    @RequestMapping(value="/update", method={RequestMethod.POST})
-	public ApiResponse<String> update(T entity){
-		return getBaseService().validAndUpdate(entity);
+    @RequestMapping(value="/getCondition", method={RequestMethod.POST})
+	public ApiResponse<List<T>> getCondition(T entity){
+		return ApiResponse.success(getBaseService().findByEntity(entity));
 	}
 
     /**
-     * 数据删除方法
-     * 如果对数据要求高，请重写该方法或是不直接继承该类，防止数据泄露
-     * @param id
+     * 分页查询。默认根据前台传递的值做精确搜索。需要其他搜索方式，请自行重新该方法
+     * @param entity
+     * @param pager
      * @return
      */
-    @RequestMapping(value="/remove/{pkid}", method={RequestMethod.POST})
-	public ApiResponse<String> remove(@PathVariable("pkid")PK id){
-		getBaseService().remove(id);
-		return ApiResponse.success();
+	@RequestMapping(value="/pager", method={RequestMethod.POST, RequestMethod.GET})
+	public ApiResponse<List<T>> pager(T entity, Page<T> pager){
+		return getBaseService().pager(pager);
 	}
 
-    /**
-	 * 批量删除操作
-	 * @param ids
-	 * @return
-	 */
-    @RequestMapping(value="/removeIds", method={RequestMethod.POST})
-	public ApiResponse<String> remove(PK[] ids){
-		return getBaseService().removeIds(ids);
-	}
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
