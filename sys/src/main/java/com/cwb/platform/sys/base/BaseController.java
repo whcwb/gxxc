@@ -31,37 +31,6 @@ import java.util.List;
  * @param <PK>
  */
 public abstract class BaseController<T, PK extends Serializable> extends QueryController<T,PK>{
-	//@Autowird通过Spring加载的Service基础类
-    protected abstract BaseService<T, PK> getBaseService();
-
-	/**
-	 * 获取当前学员登录用户信息
-	 * @return
-	 */
-	public static BizPtyh getAppCurrentUser(Boolean require){
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		BizPtyh userInfo = (BizPtyh)request.getAttribute("appUserInfo");
-		RuntimeCheck.ifNull(require && userInfo == null,"当前登录用户未空！");
-		return userInfo;
-	}
-	/**
-	 * 获取当前学员登录用户信息
-	 * @return
-	 */
-	public static BizPtyh getAppCurrentUser(){
-		return getAppCurrentUser(true);
-	}
-    /**
-     * 获取当前登录用户信息
-     * @return
-     */
-    public static SysYh getCurrentUser(){
-    	HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		SysYh userInfo = (SysYh)request.getAttribute("userInfo");
-//		RuntimeCheck.ifNull(userInfo,"当前登录用户未空！");
-    	return userInfo;
-    }
-
 
 	/**
      * 数据新增方法
@@ -106,12 +75,4 @@ public abstract class BaseController<T, PK extends Serializable> extends QueryCo
 	public ApiResponse<String> remove(PK[] ids){
 		return getBaseService().removeIds(ids);
 	}
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		dateFormat.setLenient(false);
-		//true:允许输入空值，false:不能为空值
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-    }
 }

@@ -183,6 +183,13 @@ export let appRouter = [
                 meta: { title: '新建资讯' },
 				component: () => import('@/views/whdx/hd/create.vue')
 			},
+			{
+				path: 'tx',
+				icon: 'android-clipboard',
+				name: 'tx',
+                meta: { title: '提现管理' },
+				component: () => import('@/views/whdx/tx/index.vue')
+			},
 		]
 	},
     {
