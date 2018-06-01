@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 单表通用CURD Control基础类，适用于单表有CURD业务操作的Controller继承，如果自己的业务不需要更新操作时（包含：新增、修改、删除）可以参考类方法，不继承该基础类
+ * 单表通用查询基础类
  * 该基础类是一个Rest方式接口，请注意里面提供方法的请求类型和参数内容，每个方法是可以重写的
  * 注意：
  * 1、该基础类提供的方法只返回json数据，不做页面ModelView跳转

@@ -62,6 +62,12 @@ module.exports = {
         CHANGE:'/api/user/update',
         DELE:'/api/user/removeIds',
     },
+    tx:{
+        QUERY:'/api/tx/pager',//提现管理
+        ADD:'/api/tx/save',
+        CHANGE:'/api/tx/update',
+        DELE:'/api/tx/removeIds',
+    },
     ROLE:{
         QUERY:'/api/js/pager',//角色管理
         ALL:'/api/js/getAll',//角色管理
