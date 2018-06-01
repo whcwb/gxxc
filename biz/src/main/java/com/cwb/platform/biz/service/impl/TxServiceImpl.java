@@ -105,7 +105,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         // 佣金明细
         BizYjmx bizYjmx = yjmxService.findById(tx.getYjId());
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizYjmx),"根据佣金明细id无法查询到佣金明细");
-        RuntimeCheck.ifTrue(StringUtils.equals(bizYjmx.getZjFs(),"-1"),"必须是提现才能修改提现状态");
+        RuntimeCheck.ifFalse(StringUtils.equals(bizYjmx.getZjFs(),"-1"),"必须是提现才能修改提现状态");
 
 
 
