@@ -109,7 +109,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   Util.title(to.meta.title);
   console.log(to.name)
-  if(to.name=='Login'){
+  if(to.name=='Login'||to.name=='Reg'){
     next()
   }else if(to.name!='Login'&&localStorage.getItem('userMess')){
     next()

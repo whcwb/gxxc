@@ -12,6 +12,7 @@
           <md-input-item
             ref="name"
             title="手机号"
+            v-model="from.username"
             placeholder="请输入手机号"
             is-title-latent
             clearable
@@ -22,6 +23,7 @@
           <md-input-item
             ref="id"
             title="密码"
+            v-model="from.password"
             placeholder="请输入登录密码"
             is-title-latent
             clearable
@@ -79,7 +81,7 @@
       login(){
           // this.$router.push("/home");
         var v = this
-        this.$http.post(this.apis.LOGIN,{'username':'13311111111','password':'123456'}).then((res)=>{
+        this.$http.post(this.apis.LOGIN,this.from).then((res)=>{
           if(res.code==200){
               localStorage.setItem('token',JSON.stringify(res.result.accessToken))
               v.userMess()
@@ -90,21 +92,41 @@
         })
       },
       userMess(){
+        var v = this
         this.$http.post(this.apis.USERMESS).then((res)=>{
           if(res.code==200){
+            if(res.result.yhTx == ''){
+              res.result.yhTx ='/static/userTx.png'
+            }
+
             localStorage.setItem('userMess',JSON.stringify(res.result))
+            v.$router.push({name:'Home'})
           }
         }).catch((err)=>{
           console.log('出错了！！！')
         })
       },
       reg(){
-        Toast.succeed('创建');
-          this.wechatUtil.qrScan((messtoback)=>{
-            Toast.succeed('微信'+messtoback);
-            console.log(messtoback)
-          })
-          // this.$router.push("/reg");
+        var v = this
+        // this.wechatUtil.qrScan((messtoback)=>{
+        //   Toast.succeed('微信'+messtoback);
+        //   v.codeyz(messtoback)
+            v.codeyz('123456789')
+        // })
+      },
+      codeyz(val){
+        var v = this
+        this.$http.post(this.apis.CODEYZ,{'code':val}).then((res)=>{
+          if(res.code==200){
+            localStorage.setItem('yqm',val)
+            v.$router.push("/reg");
+          }else {
+            Toast.info(res.message)
+          }
+        }).catch((err)=>{
+          alert('失败'+err)
+        })
+
       }
     }
   }
