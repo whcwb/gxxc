@@ -39,7 +39,7 @@ public class AppTxController extends AppUserBaseController {
    }
 
     /**
-     * 按全部、已付款、待付款来查询自己对应的一级，二级佣金订单
+     * 按全部、已付款、待付款来查询自己对应的一级，二级提现明细
      * @param entity
      * @param pager
      * @return

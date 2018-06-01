@@ -533,10 +533,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("请输入正确用户性别");
         }
 
-        RuntimeCheck.ifBlank(entity.getYhSfyjz(), "用户驾照状态不能为空");
-        if (StringUtils.containsNone(entity.getYhSfyjz(), new char[]{'1', '0'})) {
-            return ApiResponse.fail("请输入正确用户驾照状态");
-        }
+//        RuntimeCheck.ifBlank(entity.getYhSfyjz(), "用户驾照状态不能为空");
+//        if (StringUtils.containsNone(entity.getYhSfyjz(), new char[]{'1', '0'})) {
+//            return ApiResponse.fail("请输入正确用户驾照状态");
+//        }
 
 
         BizPtyh user = entityMapper.selectByPrimaryKey(userRequest.getId());
@@ -566,11 +566,15 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String[] imgTypeList = StringUtils.split(entity.getImgTypeList(), ",");
+        String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         if (imgList != null) {
             if (imgList.length != imgTypeList.length && imgList.length>0) {
                 return ApiResponse.fail("证件数据和证件属性数据不同");
+            }
+            if(imgList.length>2){
+                yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
                 BizWj wj = new BizWj();
@@ -595,7 +599,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhXm(entity.getYhXm());//用户姓名
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhXb(entity.getYhXb());//用户性别
-        newEntity.setYhSfyjz(entity.getYhSfyjz());//用户驾照状态不能为空
+        newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
 
         int i = update(newEntity);
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
