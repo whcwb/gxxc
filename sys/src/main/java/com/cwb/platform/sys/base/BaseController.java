@@ -1,25 +1,11 @@
 
 package com.cwb.platform.sys.base;
 
-import com.cwb.platform.sys.model.BizPtyh;
-import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.util.exception.RuntimeCheck;
-import com.github.pagehelper.Page;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 单表通用CURD Control基础类，适用于单表有CURD业务操作的Controller继承，如果自己的业务不需要更新操作时（包含：新增、修改、删除）可以参考类方法，不继承该基础类

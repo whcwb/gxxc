@@ -130,7 +130,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
      * @param user
      * @return
      */
-    public ApiResponse<String> saveUserDraw(Double ttje, String yhkh, String khh, String txXm, BizPtyh user){
+    public ApiResponse<String> saveUserDraw(Double ttje, String yhkh, String khh, String txXm,String ttFs, BizPtyh user){
         String userId=user.getId();//获取用户
         BizZh userZh=zhService.findById(userId);
         RuntimeCheck.ifFalse(userZh != null && userZh.getYhZhye() >= ttje,"提现金额不能大于余额");
@@ -139,6 +139,11 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
 
         String yjid=genId();
         BizTx newEntity=new BizTx();
+        if(StringUtils.isEmpty(ttFs)){
+            newEntity.setTtFs("2");
+        }else {
+            newEntity.setTtFs(ttFs);
+        }
         newEntity.setId(genId());
         newEntity.setYhId(userId);
         newEntity.setYhMc(user.getYhXm());
@@ -150,6 +155,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newEntity.setTtYhkh(yhkh);
         newEntity.setTtKhh(khh);
         newEntity.setTxXm(txXm);
+
        int i= entityMapper.insert(newEntity);
        if(i==1){
            //插入流水表

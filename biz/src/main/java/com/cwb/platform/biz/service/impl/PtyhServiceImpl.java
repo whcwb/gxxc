@@ -21,6 +21,7 @@ import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -756,8 +757,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<List<BizPtyh>> getBizPtyhList(int pageNum, int pageSize) {
-        List<BizPtyh> list = new ArrayList<>();
+    public ApiResponse<PageInfo<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage) {
+        PageInfo<BizPtyh> pageInfo = new PageInfo<>();
         // 获取当前登录用户
         BizPtyh user = getAppCurrentUser();
         // 鉴定该用户为 教练还是学员
@@ -767,20 +768,19 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizUser),"学员信息不存在");
             SimpleCondition condition = new SimpleCondition(BizPtyh.class);
             condition.eq(BizPtyh.InnerColumn.id.name(), bizUser.getYhJlid());
-            List<BizPtyh> bizPtyhs = findByCondition(condition);
+             pageInfo = findPage(ptyhPage,condition);
 
             BizJl bizJl = jlService.findById(bizUser.getYhJlid());
             RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该用户的教练未进行认证");
-            if(CollectionUtils.isNotEmpty(bizPtyhs)) {
-                bizPtyhs.stream().forEach(
+            if(CollectionUtils.isNotEmpty(pageInfo.getList())) {
+                pageInfo.getList().stream().forEach(
                         bizPtyh -> {
                             BizPtyh ptyh = afterReturns(bizPtyh);
                             ptyh.setYhMm(bizJl.getJlMs()); // 用户表中没有教练简介 ， 将 密码字段设置为 教练的简介
-                            list.add(ptyh);
                         }
                 );
             }
-            return ApiResponse.success(list);
+            return ApiResponse.success(pageInfo);
 
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
 
@@ -793,18 +793,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
             yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
             yhCondition.eq(BizPtyh.InnerColumn.yhSfyjz.name(), "0"); // 查询学员中无驾照的
-            PageHelper.startPage(pageNum,pageSize);
-            List<BizPtyh> ptyhs = findByCondition(yhCondition);
-            if(CollectionUtils.isNotEmpty(ptyhs)){
-                ptyhs.stream().forEach(bizPtyh -> {
-                    list.add(afterReturns(bizPtyh));
+             pageInfo = findPage(ptyhPage,yhCondition);
+
+            if(CollectionUtils.isNotEmpty(pageInfo.getList())){
+                pageInfo.getList().stream().forEach(bizPtyh -> {
+                   afterReturns(bizPtyh);
                 });
             }
 
-            return ApiResponse.success(list);
+            return ApiResponse.success(pageInfo);
         }
 
-        return ApiResponse.success(list);
+        return ApiResponse.success(pageInfo);
     }
 
     /**
