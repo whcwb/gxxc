@@ -54,7 +54,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
      */
     @Override
     public boolean fillPagerCondition(LimitedCondition condition){
-        condition.setOrderByClause("TTSJ desc");
+        condition.setOrderByClause("TT_SJ desc");
         return true;
     }
 

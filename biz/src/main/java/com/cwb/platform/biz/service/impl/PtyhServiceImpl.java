@@ -379,6 +379,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         int i = getBaseMapper().insertSelective(newEntity);
 
+        redisDao.delete(appSendSMSRegister+"yyyqm" + yhZh);
+        redisDao.delete(appSendSMSRegister + yhZh);
+
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
