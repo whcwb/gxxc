@@ -266,7 +266,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             bizUser.setCjsj(DateUtils.getNowTime());//创建时间
             bizUser.setYhSjid(yhSjid);//设置上级ID
             bizUser.setYhSsjid(yhSsjid);//上上级ID
-            int i = userMapper.insert(bizUser);
+            int i = userMapper.updateByPrimaryKey(bizUser);
             RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
             newEntity.setYhZt("1");
             newEntity.setYhZtMs(" ");
@@ -289,7 +289,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         return obj;
     }
 
-//==============================================================APP端  开始===========
+//==============================================================APP端  开始====================
 
     /**
      * 用户注册操作
@@ -322,15 +322,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("请输入正确用户类型");
         }
 
-//        RuntimeCheck.ifBlank(entity.getYhXb(),"用户性别不能为空");
-//        if(StringUtils.containsNone(entity.getYhXb(), new char[]{'1', '2'})){
-//            return ApiResponse.fail("请输入正确用户性别");
-//        }
-
-//        RuntimeCheck.ifBlank(entity.getYhSfyjz(),"用户驾照状态不能为空");
-//        if(StringUtils.containsNone(entity.getYhSfyjz(), new char[]{'1', '0'})){
-//            return ApiResponse.fail("请输入正确用户驾照状态");
-//        }
 
         String yhEncrypt = "";
         yhEncrypt = EncryptUtil.encryptUserPwd(entity.getYhMm());
@@ -378,10 +369,43 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
 
-        int i = getBaseMapper().insertSelective(newEntity);
+        int i = entityMapper.insertSelective(newEntity);
+
+        //      获取用户父级ID
+        String yhSjid = "";//设置上级ID
+        String yhSsjid = "";//上上级ID
+
+        String yhYyyqm = entity.getYhYyyqm();//该用户的父级ID
+        SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), yhYyyqm);
+        List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
+        if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+        if (bizPtyhsList.size() != 1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+        String pUserId = bizPtyhsList.get(0).getId();//获取出父级ID
+        yhSjid = pUserId;
+        BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
+        if (pBizUser != null) {
+            yhSsjid = pBizUser.getYhId();
+        }
+
+        //插入用户实名表  biz_user
+        BizUser bizUser = new BizUser();
+        bizUser.setYhId(newEntity.getId());//用户ID
+        bizUser.setYhZjhm(newEntity.getYhZjhm());//用户证件号码
+        bizUser.setYhSjhm(newEntity.getYhZh());//用户账户
+        bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+        bizUser.setYhXm(newEntity.getYhXm());//姓名
+        bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+        bizUser.setYhSjid(yhSjid);//设置上级ID
+        bizUser.setYhSsjid(yhSsjid);//上上级ID
+        i = userMapper.insert(bizUser);
+        RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
 
         redisDao.delete(appSendSMSRegister+"yyyqm" + yhZh);
         redisDao.delete(appSendSMSRegister + yhZh);
+
+
+
 
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }

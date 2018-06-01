@@ -31,33 +31,28 @@
 	import formItems from '../components/formItems'
 	export default {
 		name: 'txForm',
+        components:{formItems},
 		data() {
 			return {
 			    v:this,
-                operate:'新建',
-		        components:{formItems},
+                operate:'确认',
+                saveUrl:this.apis.tx.confirm,
 				showModal: true,
 				readonly: false,
 				formItem: {
 				},
                 formInputs:[
-                    {label:'主键id',prop:'id'},
-                    {label:'用户ID',prop:'yhId'},
+                    {separator:true,label:'基本信息'},
                     {label:'用户名称',prop:'yhMc'},
-                    {label:'biz_yjmx佣金明细id',prop:'yjId'},
-                    {label:'提现方式 ZDCLK0047 (1、微信红包 2、人工转账)',prop:'ttFs'},
-                    {label:'提现金额(单位分)',prop:'ttJe'},
-                    {label:'提现时间',prop:'ttSj'},
-                    {label:'提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)',prop:'ttZt'},
-                    {label:'红包发送的次数',prop:'ttHbcs'},
-                    {label:'提现红包凭证 (用于查询红包是否已经被领取)',prop:'ttHbpz'},
-                    {label:'父级ID(红包重发时，需要将原始记录的订单ID放到这里。)',prop:'ttFjid'},
-                    {label:'审核人',prop:'ttShr'},
-                    {label:'提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)',prop:'ttShzt'},
-                    {label:'备注',prop:'ttBz'},
+                    {label:'提现金额',prop:'ttJe',append:'分'},
                     {label:'银行卡号',prop:'ttYhkh'},
                     {label:'开户行',prop:'ttKhh'},
+                    {label:'提现方式',prop:'ttFs',dict:'ZDCLK0047'},
                     {label:'提现姓名',prop:'ttXm'},
+                    {label:'提现审核状态',prop:'ttShzt',dict:'ZDCLK0049'},
+                    {separator:true,label:'审核结果'},
+                    {label:'提现状态',prop:'ttZt',dict:'ZDCLK0048'},
+                    {label:'备注',prop:'ttBz'},
                 ],
                 ruleInline:{
 				}
