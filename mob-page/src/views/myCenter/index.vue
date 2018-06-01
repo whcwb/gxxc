@@ -14,7 +14,7 @@
                        alt="">
                 </Col>
                 <Col span="20" style="padding-top: 5px">
-                    <span style="font-weight: bold">{{usermess.yhXm}}</span>
+                    <span style="font-weight: bold">{{usermess.yhBm}}</span>
                     <Row>
                         <Col span="4">
                           <Tag v-if="usermess.yhLx=='1'">学员</Tag>
@@ -32,7 +32,7 @@
                 </Col>
             </Row>
         </Col>
-        <Col span="2" offset="1" @click.native="showQrcode">
+        <Col span="2" offset="1" @click.native="showQrcode('ewm')">
           <span>
             <i class="iconfont icon-qrcode" style="font-size: 28px"></i>
           </span>
@@ -54,7 +54,7 @@
                 <div style="text-align:center">
                   <h3>我的余额（元）</h3>
                   <span style="font-size: 40px;font-weight: bold">
-                    {{zhYE.yhZhye}}
+                    {{zhYE.yhZhye | yhZhye}}
                   </span>
                   <Row type="flex" justify="center">
                     <Col span="6">
@@ -86,7 +86,7 @@
                     <i class="iconfont icon-detail" style="font-size: 20px" slot="icon"></i>
                   </mt-cell>
                 </div>
-                <div @click="$router.push({name:'myteam'})">
+                <div @click="showQrcode('td')">
                   <mt-cell title="团队" is-link>
                     <i class="iconfont icon-team" style="font-size: 20px" slot="icon"></i>
                   </mt-cell>
@@ -130,6 +130,14 @@
           Card,Row,Col,Avatar,Tag,Alert,Button,Icon,
           [Cell.name]:Cell,
         },
+      filters:{
+        yhZhye(val){
+          if(val==''){
+            return 0
+          }
+          return val
+        }
+      },
         data(){
           return{
             usermess:JSON.parse(localStorage.getItem("userMess")),
@@ -154,14 +162,18 @@
             setting(){
                 this.$router.push('/myCenter-info');
             },
-            showQrcode(){
+            showQrcode(val){
               var v = this
               if(this.usermess.yhZsyqmImg){
-                this.$router.push(
-                  {
-                    name:'myCenterQrcode',
-                    params:v.usermess
-                  });
+                if(val=='ewm'){
+                  this.$router.push(
+                    {
+                      name:'myCenterQrcode',
+                      params:v.usermess
+                    });
+                }else if(val=='td'){
+                  this.$router.push({name:'myteam'})
+                }
               }else {
                 Toast('请先缴费')
               }

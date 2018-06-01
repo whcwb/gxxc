@@ -33,7 +33,7 @@
                 componentName: '',
                 choosedItem: null,
                 tableColumns: [
-                    {title: "序号", width: 60, type: 'index'},
+                    {title: "#", width: 60, type: 'index'},
                     {title:'用户名称',key:'yhMc',searchKey:'yhMcLike'},
                     {title:'佣金明细',key:'yjId',searchKey:'yjIdLike'},
                     {title:'提现方式',key:'ttFs',dict:'ZDCLK0047',searchType:'dict'},
@@ -55,10 +55,24 @@
                         width: 120,
                         fixed: 'right',
                         render: (h, params) => {
-                            return h('div', [
-                                this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.id),
-                            ]);
+                            let buttons = [];
+                            if (params.row.ttShzt === '0'){
+                                buttons.push(
+                                    this.util.buildButton(this,h,'success','checkmark','审核',()=>{
+                                        this.choosedItem = params.row;
+                                        this.componentName = 'audit'
+                                    }),
+                                )
+                            }
+                            if (params.row.ttShzt === '1' && params.row.ttZt == '0'){
+                                buttons.push(
+                                    this.util.buildButton(this,h,'success','checkmark-circled','确认',()=>{
+                                        this.choosedItem = params.row;
+                                        this.componentName = 'confirm'
+                                    }),
+                                )
+                            }
+                            return h('div', buttons);
                         }
                     }
                 ],

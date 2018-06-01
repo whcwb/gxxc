@@ -67,6 +67,8 @@ module.exports = {
         ADD:'/api/tx/save',
         CHANGE:'/api/tx/update',
         DELE:'/api/tx/removeIds',
+        audit:'/api/tx/updateShzt',
+        confirm:'/api/tx/updateTxzt',
     },
     ROLE:{
         QUERY:'/api/js/pager',//角色管理
