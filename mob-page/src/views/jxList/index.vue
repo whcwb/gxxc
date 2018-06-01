@@ -77,6 +77,9 @@
           [Header.name]:Header,
           [Button.name]:Button
         },
+        created(){
+          console.log(this.$route)
+        },
         data(){
           return{
             qylist:list.qyList,

@@ -7,10 +7,13 @@
       <Row type="flex" justify="start" align="middle" style="height:80px">
         <Col span="20" @click.native="setting">
             <Row>
-                <Col span="2" push="1">
-                    <Avatar icon="person" size="large" style="size: 30px"/>
+                <Col span="4">
+                    <!--<Avatar icon="person" size="large" style="size: 30px"/>-->
+                  <img :src="usermess.yhTx"
+                       style="width: 100%"
+                       alt="">
                 </Col>
-                <Col span="22" push="3">
+                <Col span="20" style="padding-top: 5px">
                     <span style="font-weight: bold">{{usermess.yhXm}}</span>
                     <Row>
                         <Col span="4">
@@ -29,7 +32,11 @@
                 </Col>
             </Row>
         </Col>
-        <Col span="2" offset="1" @click.native="showQrcode"><i class="iconfont icon-qrcode" style="font-size: 28px"></i></Col>
+        <Col span="2" offset="1" @click.native="showQrcode">
+          <span>
+            <i class="iconfont icon-qrcode" style="font-size: 28px"></i>
+          </span>
+        </Col>
       </Row>
       <Row type="flex" justify="start">
         <Col span="24">
@@ -46,7 +53,9 @@
               <Card style="margin: 20px" dis-hover>
                 <div style="text-align:center">
                   <h3>我的余额（元）</h3>
-                  <span style="font-size: 40px;font-weight: bold">300.00</span>
+                  <span style="font-size: 40px;font-weight: bold">
+                    {{zhYE.yhZhye}}
+                  </span>
                   <Row type="flex" justify="center">
                     <Col span="6">
                       <Button type="primary" shape="circle"
@@ -123,16 +132,21 @@
         },
         data(){
           return{
-            usermess:JSON.parse(localStorage.getItem("userMess"))
+            usermess:JSON.parse(localStorage.getItem("userMess")),
+            zhYE:''
           }
         },
         created(){
           console.log('***---***',this.usermess)
+          this.zhye()
         },
         methods:{
             zhye(){
               this.$http.post(this.apis.USERZH).then((res)=>{
-
+                if(res.code==200){
+                  this.zhYE = res.result
+                }
+                  console.log(res)
               }).catch((err)=>{
 
               })
@@ -141,7 +155,16 @@
                 this.$router.push('/myCenter-info');
             },
             showQrcode(){
-                this.$router.push('/myCenter-qrcode');
+              var v = this
+              if(this.usermess.yhZsyqmImg){
+                this.$router.push(
+                  {
+                    name:'myCenterQrcode',
+                    params:v.usermess
+                  });
+              }else {
+                Toast('请先缴费')
+              }
             },
             okjf(){
               Toast('您已缴费')
