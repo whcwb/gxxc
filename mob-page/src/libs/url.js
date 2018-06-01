@@ -15,4 +15,5 @@ module.exports = {
   SWIPER:'/app/hd/pager ',//轮播图
   TX:'/app/tx/save',//资金提现
   TEAM:'/app/user/pager',//我的团队
+  IDRZ:'/app/ptyh/updatesm',//身份认证
 }

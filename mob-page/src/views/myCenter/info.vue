@@ -19,7 +19,7 @@
                     <img :src="userMess.yhTx" style="width: 1rem" alt="">
                       <!--<Avatar shape="square" icon="person" size="large" style="width: 50px;height: 50px;line-height: 50px"/>-->
                   </mt-cell>
-                  <mt-cell title="姓名" :value="userMess.yhXm" style="border-bottom: 1px #e9eaec solid;"></mt-cell>
+                  <mt-cell title="姓名" :value="userMess.yhXm | yhXm" style="border-bottom: 1px #e9eaec solid;"></mt-cell>
                   <mt-cell title="修改密码" value="****"></mt-cell>
                 </Card>
                 </Col>
@@ -50,6 +50,14 @@
           [Cell.name]:Cell,
           [Header.name]:Header
         },
+      filters:{
+        yhXm(val){
+          if (val==''){
+            return '身份未认证'
+          }
+          return val
+        }
+      },
         data(){
           return{
             userMess:JSON.parse(localStorage.getItem("userMess")),
