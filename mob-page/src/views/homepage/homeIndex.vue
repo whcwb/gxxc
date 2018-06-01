@@ -9,13 +9,8 @@
         </div>
         <div class="swipe">
           <mt-swipe :auto="4000">
-            <mt-swipe-item>
-              <img src="static/s1.jpg"
-                   style="height: 100%;width: 100%"
-                   alt="">
-            </mt-swipe-item>
-            <mt-swipe-item style="background-color: #f0f">
-              <img src="static/s2.jpg"
+            <mt-swipe-item v-for="(item,index) in banerImg">
+              <img :src="item.hdTpdz"
                    style="height: 100%;width: 100%"
                    alt="">
             </mt-swipe-item>
@@ -312,10 +307,12 @@
         data(){
           return{
             qylist:list.qyList,
-            tabId:'tab-home'
+            tabId:'tab-home',
+            banerImg:[]
           }
         },
         created(){
+          this.getSwiperImg()
         },
         methods:{
           goMap(item){
@@ -323,6 +320,16 @@
             this.$router.push({
               name:'jxlist',
               params:item
+            })
+          },
+          getSwiperImg(){
+            this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{
+              if(res.code==200){
+                this.banerImg = res.page.list
+              }
+              console.log(res)
+            }).catch((err)=>{
+
             })
           }
         }

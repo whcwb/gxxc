@@ -72,7 +72,7 @@
                     <!--@keydown="onInputKeydown"-->
                     <!--@change="onInputChange"-->
                   <div>
-                    可提现余额0.6元
+                    可提现余额{{zhYE.yhZhye}}元
                   </div>
                 </div>
               </div>
@@ -81,6 +81,7 @@
 
           <div style="margin-top: 0.3rem ;padding: 0  0.3rem">
             <Button type="primary" shape="circle" long
+                    @click="TX()"
                   style="padding: 0.15rem;font-size: 0.4rem">提现</Button>
           </div>
         </div>
@@ -106,7 +107,7 @@
 </template>
 
 <script>
-    import { Header ,Cell } from 'mint-ui'
+    import { Header ,Cell ,Toast} from 'mint-ui'
     import {ActionSheet, Dialog ,InputItem ,NumberKeyboard} from 'mand-mobile'
     import {Card ,Row, Col , Button} from 'iview'
     import boxHead from '@/views/components/boxHead'
@@ -127,6 +128,7 @@
           isKeyBoardShow: true,//键盘
           number: '',
           value: false,
+          zhYE:'',//账户余额
           title: '选着您的银行卡',
           options: [
             {
@@ -146,9 +148,27 @@
           cancelText: '取消',
         }
       },
+      created(){
+        this.zhye()
+      },
       methods: {
+        zhye(){
+          this.$http.post(this.apis.USERZH).then((res)=>{
+            if(res.code==200){
+              this.zhYE = res.result
+            }
+            console.log(res)
+          }).catch((err)=>{
+
+          })
+        },
         onNumberEnter(val) {
+          var v = this
           this.number += val
+          if(parseInt(this.number)>parseInt(this.zhYE.yhZhye)){
+            Toast('提取金额不能大于您的余额')
+            v.onNumberDelete()
+          }
         },
         onNumberDelete() {
           if (this.number === '') {
@@ -159,6 +179,13 @@
         selected(item) {
           console.log('action-sheet selected:', JSON.stringify(item))
         },
+        TX(){//                                             银行卡号          开户行         提现方式
+          this.$http.post(this.apis.TX,{'ttje':this.number,'yhkh':'123123123','khh':'afdf','ttFs':'qweqweq'}).then((res)=>{
+              console.log('*****',res)
+          }).catch((err)=>{
+
+          })
+        }
       },
     }
 </script>

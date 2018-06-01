@@ -116,7 +116,12 @@
                   color:"#ff8800",
                   typ:'二级'
                 }]
-            ]
+            ],
+            pageList:{
+              userGrade:0,
+              pageSize:999999999,
+              pageNum:1
+            },
           }
         },
       created(){
@@ -126,6 +131,15 @@
           tabbarClick(n,o){
             var v =this
             v.list = v.ALL[n]
+            this.teamList()
+          },
+          teamList(){
+            var v = this
+            this.$http.post(this.apis.TEAM,this.pageList).then((res)=>{
+
+            }).catch((err)=>{
+
+            })
           }
         }
 

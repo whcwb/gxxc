@@ -16,18 +16,21 @@
                 <Col span="24">
                 <Card dis-hover>
                   <mt-cell title="头像" style="border-bottom: 1px #e9eaec solid;padding-bottom: 10px">
-                      <Avatar shape="square" icon="person" size="large" style="width: 50px;height: 50px;line-height: 50px"/>
+                    <img :src="userMess.yhTx" style="width: 1rem" alt="">
+                      <!--<Avatar shape="square" icon="person" size="large" style="width: 50px;height: 50px;line-height: 50px"/>-->
                   </mt-cell>
-                  <mt-cell title="姓名" value="某某" style="border-bottom: 1px #e9eaec solid;"></mt-cell>
+                  <mt-cell title="姓名" :value="userMess.yhXm" style="border-bottom: 1px #e9eaec solid;"></mt-cell>
                   <mt-cell title="修改密码" value="****"></mt-cell>
                 </Card>
                 </Col>
               </Row>
               <Row type="flex" justify="start" style="margin-top: 20px">
                 <Col span="24">
-                <Card dis-hover style="text-align: center">
-                  <mt-cell title="退出登录"></mt-cell>
-                </Card>
+                  <span @click="goOut">
+                      <Card dis-hover style="text-align: center">
+                        <mt-cell title="退出登录"></mt-cell>
+                      </Card>
+                  </span>
                 </Col>
               </Row>
           </div>
@@ -47,10 +50,16 @@
           [Cell.name]:Cell,
           [Header.name]:Header
         },
+        data(){
+          return{
+            userMess:JSON.parse(localStorage.getItem("userMess")),
+          }
+        },
         methods:{
-            goback(){
-              this.$router.go(-1);
-            }
+          goOut(){
+            localStorage.clear()
+            this.$router.push({name:'Login'})
+          }
         }
     }
 </script>

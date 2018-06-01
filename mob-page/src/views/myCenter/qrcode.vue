@@ -15,18 +15,18 @@
       <div class="body">
           <!-- 用户设置 -->
           <div style="padding-top: 40px;">
-              <Row type="flex" justify="start">
-                <Col span="24">
-                  <Card dis-hover>
-                    <md-result-page
-                      class="customized"
-                      img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"
-                      text="没有缴费用户不显示二维码"
-                      subtext="需要做一个显示图">
-                    </md-result-page>
-                  </Card>
-                </Col>
-              </Row>
+              <!--<Row type="flex" justify="start">-->
+                <!--<Col span="24">-->
+                  <!--<Card dis-hover>-->
+                    <!--<md-result-page-->
+                      <!--class="customized"-->
+                      <!--img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"-->
+                      <!--text="没有缴费用户不显示二维码"-->
+                      <!--subtext="需要做一个显示图">-->
+                    <!--</md-result-page>-->
+                  <!--</Card>-->
+                <!--</Col>-->
+              <!--</Row>-->
               <Row type="flex" justify="start" style="margin: 20px">
                 <Col span="24">
                   <Card dis-hover>
@@ -40,7 +40,10 @@
                     </Row>
                     <Row type="flex" justify="start" align="middle">
                       <Col span="24" style="text-align: center">
-                        <i class="iconfont icon-qrcode" style="font-size: 200px"></i>
+                        <!--<i class="iconfont icon-qrcode" style="font-size: 200px"></i>-->
+                        <div style="padding: 0.2rem">
+                            <img :src="ewm" style="width: 100%" alt="">
+                        </div>
                       </Col>
                     </Row>
                     <Row type="flex" justify="start" align="middle">
@@ -68,12 +71,12 @@
           [Header.name]:Header,
           [ResultPage.name]:ResultPage
         },
+        data(){
+          return{
+            ewm:this.$route.params.yhZsyqmImg
+          }
+        },
         created(){
-          // this.$http.post().then((res)=>{
-          //
-          // }).catch((err)=>{
-          //
-          // })
         },
         methods:{
             goback(){
