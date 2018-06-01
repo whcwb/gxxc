@@ -1,5 +1,7 @@
 package com.cwb.platform.util.commonUtil;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.math.BigDecimal;
 
 /**
@@ -41,4 +43,20 @@ public class MathUtil {
         bd   =  bd.setScale(2,roundingMode);
         return bd.floatValue();
     }
+
+    /**
+     * 字符串转 double
+     * @param val
+     * @return
+     */
+    public static Double stringToDouble (String val){
+        if(StringUtils.isNotEmpty(StringUtils.trim(val))){
+            return Double.parseDouble(val);
+        }else {
+            return 0.00;
+        }
+//        return retatin(r,num,4);
+    }
+
+
 }

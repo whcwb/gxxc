@@ -21,6 +21,7 @@ import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -137,7 +138,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 bizPtyh.setYhTx(imgUrl + bizPtyh.getYhTx());
             }
 
-            if (StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
+            if (StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && !StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
                 bizPtyh.setYhZsyqmImg(imgUrl + bizPtyh.getYhZsyqmImg());
             }
         }
@@ -309,7 +310,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(validate.getCode()!=200,validate.getMessage());
 
 //      用户应邀邀请码存在造假的可能。是否需要验证,这里的验证是注册下发短信时，已经查了数据库
-        String app_sendSMS_yyyqm = redisDao.boundValueOps("app_sendSMS_yyyqm" + yhZh).get();
+        String app_sendSMS_yyyqm = redisDao.boundValueOps(appSendSMSRegister+"yyyqm" + yhZh).get();
         RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhYyyqm(), app_sendSMS_yyyqm), "邀请码错误，请重新注册");
 
         RuntimeCheck.ifBlank(entity.getYhMm(), "用户密码不能为空");
@@ -378,6 +379,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
 
         int i = getBaseMapper().insertSelective(newEntity);
+
+        redisDao.delete(appSendSMSRegister+"yyyqm" + yhZh);
+        redisDao.delete(appSendSMSRegister + yhZh);
 
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
@@ -697,7 +701,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
 
         RuntimeCheck.ifFalse(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
-        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhZt(),"1"),"该教练未进行实名认证");
+        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhJlsh(),"1"),"该教练未进行实名认证");
 
         // 将多个学员id 分开
         List<String> sIds = Arrays.asList(yhId.split(","));
@@ -753,8 +757,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<List<BizPtyh>> getBizPtyhList(int pageNum, int pageSize) {
-        List<BizPtyh> list = new ArrayList<>();
+    public ApiResponse<PageInfo<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage) {
+        PageInfo<BizPtyh> pageInfo = new PageInfo<>();
         // 获取当前登录用户
         BizPtyh user = getAppCurrentUser();
         // 鉴定该用户为 教练还是学员
@@ -764,20 +768,19 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizUser),"学员信息不存在");
             SimpleCondition condition = new SimpleCondition(BizPtyh.class);
             condition.eq(BizPtyh.InnerColumn.id.name(), bizUser.getYhJlid());
-            List<BizPtyh> bizPtyhs = findByCondition(condition);
+             pageInfo = findPage(ptyhPage,condition);
 
             BizJl bizJl = jlService.findById(bizUser.getYhJlid());
             RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizJl), "该用户的教练未进行认证");
-            if(CollectionUtils.isNotEmpty(bizPtyhs)) {
-                bizPtyhs.stream().forEach(
+            if(CollectionUtils.isNotEmpty(pageInfo.getList())) {
+                pageInfo.getList().stream().forEach(
                         bizPtyh -> {
                             BizPtyh ptyh = afterReturns(bizPtyh);
                             ptyh.setYhMm(bizJl.getJlMs()); // 用户表中没有教练简介 ， 将 密码字段设置为 教练的简介
-                            list.add(ptyh);
                         }
                 );
             }
-            return ApiResponse.success(list);
+            return ApiResponse.success(pageInfo);
 
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
 
@@ -790,18 +793,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
             yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
             yhCondition.eq(BizPtyh.InnerColumn.yhSfyjz.name(), "0"); // 查询学员中无驾照的
-            PageHelper.startPage(pageNum,pageSize);
-            List<BizPtyh> ptyhs = findByCondition(yhCondition);
-            if(CollectionUtils.isNotEmpty(ptyhs)){
-                ptyhs.stream().forEach(bizPtyh -> {
-                    list.add(afterReturns(bizPtyh));
+             pageInfo = findPage(ptyhPage,yhCondition);
+
+            if(CollectionUtils.isNotEmpty(pageInfo.getList())){
+                pageInfo.getList().stream().forEach(bizPtyh -> {
+                   afterReturns(bizPtyh);
                 });
             }
 
-            return ApiResponse.success(list);
+            return ApiResponse.success(pageInfo);
         }
 
-        return ApiResponse.success(list);
+        return ApiResponse.success(pageInfo);
     }
 
     /**
@@ -887,7 +890,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if(StringUtils.equals(identifying,identifyingCode)){
             return ApiResponse.success();
         }else{
-            return ApiResponse.fail("验证码验证失败");
+            return ApiResponse.fail("验证码有误");
         }
     }
 //
@@ -896,5 +899,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         sids.add("1");
         sids.remove("1");
     }*/
-
+    @Override
+    public ApiResponse<String> validateCode(String code){
+        SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), code);
+        List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
+        if (bizPtyhsList == null) return ApiResponse.fail("邀请码不存在!");
+        if (bizPtyhsList.size() != 1) return ApiResponse.fail("邀请码不存在!");
+        if(!StringUtils.equals(bizPtyhsList.get(0).getYhZt(),"1")) return ApiResponse.fail("邀请码不存在!");
+        if(!StringUtils.equals(bizPtyhsList.get(0).getDdSfjx(),"1")) return ApiResponse.fail("邀请码不存在!");
+        if(!StringUtils.equals(bizPtyhsList.get(0).getYhSfsd(),"0")) return ApiResponse.fail("邀请码已经锁定，不能邀请您!");
+        return ApiResponse.success("验证成功");
+    }
 }

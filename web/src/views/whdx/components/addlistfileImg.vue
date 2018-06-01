@@ -1,6 +1,6 @@
 <template>
 	<div>
-	    <div class="demo-upload-list" v-for="item in uploadList">
+	    <div class="demo-upload-list" v-for="(item,index) in uploadList" :key="index">
 	        <template v-if="item.status === 'finished'">
 	            <img :src="item.url">
 	            <div class="demo-upload-list-cover">

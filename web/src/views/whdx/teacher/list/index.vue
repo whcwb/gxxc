@@ -34,7 +34,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.student,
+                apiRoot:this.apis.teacher,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -42,25 +42,19 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},
+                    {title: '手机号',key:'yhSjhm',searchKey:'yhSjhmLike'},
+                    {title: '所属区域',key:'jlQu',dict:'ZDCLK0060',searchType:'dict'},
+                    {title: '认证状态',key:'yhJlsh',dict:'ZDCLK0043',searchType:'dict'},
+                    {title: '教练驾龄',key:'jlJl'},
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','ribbon-b','认证',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'audit'
-                                }),
                                 this.util.buildButton(this,h,'success','card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
-                                }),
-                                this.util.buildButton(this,h,'info','android-home','分配',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'allot'
                                 }),
                             ]);
                         }

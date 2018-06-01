@@ -94,8 +94,8 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()) .getRequest();
         String hdSx = request.getParameter("hdSxs");
         if(StringUtils.equals(hdSx,"0")){
-            condition.and().andIsNotNull("hdtj");
-            condition.and().andNotEqualTo("hdtj","");
+            condition.and().andIsNotNull("hdTj");
+            condition.and().andNotEqualTo("hdTj","");
             condition.setOrderByClause("HD_TJ desc");
         }else{
             condition.eq(BizHd.InnerColumn.hdSx,hdSx);

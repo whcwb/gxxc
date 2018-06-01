@@ -9,6 +9,7 @@ import com.cwb.platform.biz.service.TxService;
 import com.cwb.platform.biz.service.YjmxService;
 import com.cwb.platform.biz.service.ZhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -44,6 +45,17 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     @Override
     protected Class<?> getEntityCls(){
         return BizTx.class;
+    }
+
+    /**
+     * 分页补充
+     * @param condition
+     * @return
+     */
+    @Override
+    public boolean fillPagerCondition(LimitedCondition condition){
+        condition.setOrderByClause("TT_SJ desc");
+        return true;
     }
 
     /**
@@ -118,15 +130,20 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
      * @param user
      * @return
      */
-    public ApiResponse<String> saveUserDraw(Double ttje, String yhkh, String khh, String txXm, BizPtyh user){
+    public ApiResponse<String> saveUserDraw(Double ttje, String yhkh, String khh, String txXm,String ttFs, BizPtyh user){
         String userId=user.getId();//获取用户
         BizZh userZh=zhService.findById(userId);
         RuntimeCheck.ifFalse(userZh != null && userZh.getYhZhye() >= ttje,"提现金额不能大于余额");
         RuntimeCheck.ifBlank(yhkh, "银行卡号不能为空");
-        RuntimeCheck.ifBlank(khh, "开户行不能为空");
+//        RuntimeCheck.ifBlank(khh, "开户行不能为空");
 
         String yjid=genId();
         BizTx newEntity=new BizTx();
+        if(StringUtils.isEmpty(ttFs)){
+            newEntity.setTtFs("2");
+        }else {
+            newEntity.setTtFs(ttFs);
+        }
         newEntity.setId(genId());
         newEntity.setYhId(userId);
         newEntity.setYhMc(user.getYhXm());
@@ -138,6 +155,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newEntity.setTtYhkh(yhkh);
         newEntity.setTtKhh(khh);
         newEntity.setTxXm(txXm);
+
        int i= entityMapper.insert(newEntity);
        if(i==1){
            //插入流水表

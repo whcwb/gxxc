@@ -20,6 +20,8 @@
 					  :styles="{top: '20px'}">
 					<Row>
 						<form-items :parent="v"></form-items>
+					</Row>
+					<Row>
 						<Col span="12">
 							<label>身份证正面</label>
 							<img class="docImg" src="../../../../../static/sfzzm.jpg"/>
@@ -41,7 +43,7 @@
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">确定</Button>
+				<Button type="primary" @click="v.util.save(v)">认证</Button>
 			</div>
 		</Modal>
 	</div>
@@ -64,7 +66,8 @@
                 },
                 formInputs:[
                     {label:'姓名',prop:'yhXm'},
-                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt'},
+                    {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
+                    {label:'身份证号码',prop:'yhZjhm',disabled:true},
                 ],
                 ruleInline:{
                 }
