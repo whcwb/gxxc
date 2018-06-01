@@ -10,7 +10,9 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -26,14 +28,14 @@ public class AppTxController extends AppUserBaseController {
      * 用户提现操作
      * @return
      */
-   @PostMapping("/save")
-   public ApiResponse<String> save(@RequestParam("ttje") String ttJe,@RequestParam("yhkh") String yhkh,
-                                   @RequestParam("khh") String khh,@RequestParam("txxm") String txXm, @RequestParam("ttfs")String ttFs){
-       RuntimeCheck.ifTrue(StringUtils.isEmpty(ttJe),"您好，提现金额不能为空！");
-       Double ttje= Double.parseDouble(ttJe);
-       RuntimeCheck.ifFalse(ttje!=null && ttje>0,"您好，提现金额不能小于0！");
+   @RequestMapping(value="/save", method={RequestMethod.POST})
+   public ApiResponse<String> save(String ttje, String yhkh,
+                                   String khh, String txxm, String ttfs){
+       RuntimeCheck.ifTrue(StringUtils.isEmpty(ttje),"您好，提现金额不能为空！");
+       Double ttJe= Double.parseDouble(ttje);
+       RuntimeCheck.ifFalse(ttje!=null && ttJe>0,"您好，提现金额不能小于0！");
        BizPtyh  user=getAppCurrentUser();
-       return service.saveUserDraw(ttje, yhkh, khh, txXm,ttFs,user);
+       return service.saveUserDraw(ttJe, yhkh, khh, txxm,ttfs,user);
    }
 
     /**

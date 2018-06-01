@@ -135,7 +135,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         BizZh userZh=zhService.findById(userId);
         RuntimeCheck.ifFalse(userZh != null && userZh.getYhZhye() >= ttje,"提现金额不能大于余额");
         RuntimeCheck.ifBlank(yhkh, "银行卡号不能为空");
-        RuntimeCheck.ifBlank(khh, "开户行不能为空");
+//        RuntimeCheck.ifBlank(khh, "开户行不能为空");
 
         String yjid=genId();
         BizTx newEntity=new BizTx();
