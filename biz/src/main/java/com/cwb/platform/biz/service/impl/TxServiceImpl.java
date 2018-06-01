@@ -166,6 +166,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
             newBizYjmx.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
             newBizYjmx.setCjsj(DateUtils.getNowTime());
             newBizYjmx.setZjZt("0");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+           newBizYjmx.setMxlx("4");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
            yjmxService.save(newBizYjmx);
        }
         // 更新账户表

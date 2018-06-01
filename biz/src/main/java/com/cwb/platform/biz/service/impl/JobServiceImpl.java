@@ -178,6 +178,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         newBizYjmx.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
                         newBizYjmx.setCjsj(DateUtils.getNowTime());
                         newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+                        newBizYjmx.setMxlx("2");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
                         yjmxService.save(newBizYjmx);
                         log.debug("2-1、订单ID：" + l.getDdId() + "。插入流水表：" + newBizYjmx.toString());
                         //          插入流水表2
@@ -189,6 +190,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         newBizYjmx.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
                         newBizYjmx.setCjsj(DateUtils.getNowTime());
                         newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+                        newBizYjmx.setMxlx("2");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
                         yjmxService.save(newBizYjmx);
                         log.debug("2-2、订单ID：" + l.getDdId() + "。插入流水表：" + newBizYjmx.toString());
                         if (StringUtils.isNotEmpty(yhSjid)) {
@@ -206,6 +208,23 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                             log.debug("4、更新账户表,该用户没有上级账户，需要核实*******");
                         }
                     }
+
+                    //插入两条支付信息插入流水表
+                    BizYjmx newBizYjmx = new BizYjmx();
+                    newBizYjmx.setId(genId());
+                    newBizYjmx.setZjId(l.getDdId());
+                    newBizYjmx.setYhId(l.getYhId());//消费的用户
+                    newBizYjmx.setZjJe(MathUtil.stringToDouble( l.getPayMoney()));//支付的金额
+                    newBizYjmx.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
+                    newBizYjmx.setCjsj(DateUtils.getNowTime());
+                    newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+                    newBizYjmx.setMxlx("1");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+                    yjmxService.save(newBizYjmx);
+                    newBizYjmx.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
+                    newBizYjmx.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+                    yjmxService.save(newBizYjmx);
+
+//                    所属订单ID
 
                     // 判断订单用户是否为 学员 ，只对学员生成邀请码
                     if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码

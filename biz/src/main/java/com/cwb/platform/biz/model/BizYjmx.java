@@ -56,8 +56,23 @@ public class BizYjmx implements Serializable {
      */
     @Column(name = "ZJ_BZ")
     private String zjBz;
+    /**
+     * 明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+     */
+    @Column(name = "MX_LX")
+    private String mxlx;
+
+
 
     private static final long serialVersionUID = 1L;
+
+    public String getMxlx() {
+        return mxlx;
+    }
+
+    public void setMxlx(String mxlx) {
+        this.mxlx = mxlx;
+    }
 
     /**
      * @return ID
