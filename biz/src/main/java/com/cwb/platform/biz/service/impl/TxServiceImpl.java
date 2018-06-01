@@ -9,6 +9,7 @@ import com.cwb.platform.biz.service.TxService;
 import com.cwb.platform.biz.service.YjmxService;
 import com.cwb.platform.biz.service.ZhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -44,6 +45,17 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     @Override
     protected Class<?> getEntityCls(){
         return BizTx.class;
+    }
+
+    /**
+     * 分页补充
+     * @param condition
+     * @return
+     */
+    @Override
+    public boolean fillPagerCondition(LimitedCondition condition){
+        condition.setOrderByClause("TTSJ desc");
+        return true;
     }
 
     /**

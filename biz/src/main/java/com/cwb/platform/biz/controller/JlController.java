@@ -2,6 +2,8 @@ package com.cwb.platform.biz.controller;
 
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.service.JlService;
+import com.cwb.platform.sys.base.BaseService;
+import com.cwb.platform.sys.base.QueryController;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +20,15 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/jl")
-//public class JlController extends BaseController<BizJl,String>{
-public class JlController {
+public class JlController extends QueryController<BizJl,String> {
+//public class JlController {
     @Autowired
     private JlService service;
 
-//    @Override
-//    protected BaseService<BizJl, String> getBaseService() {
-//        return service;
-//    }
+    @Override
+    protected BaseService<BizJl, String> getBaseService() {
+        return service;
+    }
 
 
     /**

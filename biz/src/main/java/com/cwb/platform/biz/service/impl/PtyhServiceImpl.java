@@ -137,7 +137,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 bizPtyh.setYhTx(imgUrl + bizPtyh.getYhTx());
             }
 
-            if (StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
+            if (StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && !StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
                 bizPtyh.setYhZsyqmImg(imgUrl + bizPtyh.getYhZsyqmImg());
             }
         }
