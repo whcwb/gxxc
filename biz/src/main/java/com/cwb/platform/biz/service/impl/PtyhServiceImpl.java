@@ -906,6 +906,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if(!StringUtils.equals(bizPtyhsList.get(0).getYhZt(),"1")) return ApiResponse.fail("邀请码不存在!");
         if(!StringUtils.equals(bizPtyhsList.get(0).getDdSfjx(),"1")) return ApiResponse.fail("邀请码不存在!");
         if(!StringUtils.equals(bizPtyhsList.get(0).getYhSfsd(),"0")) return ApiResponse.fail("邀请码已经锁定，不能邀请您!");
-        return ApiResponse.success();
+        return ApiResponse.success("验证成功");
     }
 }
