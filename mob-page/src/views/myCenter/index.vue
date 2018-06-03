@@ -106,11 +106,16 @@
                   style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
               </mt-cell>
               <mt-cell title="教练员认证" value="未认证"
-                       :to="usermess.yhLx=='2'? '/home':'/myCenter-jlyrz'" is-link>
+                       :to="usermess.yhLx=='2'? '/home':'/myCenter-jlyrz'"
+                       is-link style="border-bottom: 1px #e9eaec solid;"  >
                 <i class="iconfont icon-ai-ca" style="font-size: 20px" slot="icon"></i>
                 <span
                   v-if="usermess.yhLx=='2'"
                   style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
+              </mt-cell>
+              <mt-cell title="我的学员" value="0人"
+                        is-link style="border-bottom: 1px #e9eaec solid;">
+                <i class="iconfont icon-qianzaixueyuan" style="font-size: 20px" slot="icon"></i>
               </mt-cell>
             </Card>
             </Col>

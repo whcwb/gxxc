@@ -68,26 +68,41 @@ const router = new Router({
     {
       path: '/jxlist',
       name: 'jxlist',
+      meta:{
+        title:'训练场'
+      },
       component:()=>import('@/views/jxlist')
     },
     {
       path: '/jxMess',
       name: 'jxMess',
+      meta:{
+        title:'训练场详情'
+      },
       component:()=>import('@/views/jxMess')
     },
     {
       path: '/kcfb',
       name: 'kcfb',
+      meta:{
+        title:'考场分布'
+      },
       component:()=>import('@/views/kcfb')
     },
     {
       path: '/mycenter',
       name: 'mycenter',
+      meta:{
+        title:'个人中心'
+      },
       component:()=>import('@/views/myCenter')
     },
     {
       path: '/pay',
       name: 'pay',
+      meta:{
+        title:'缴费'
+      },
       component:()=>import('@/views/pay')
     },
     {
@@ -97,10 +112,18 @@ const router = new Router({
     },{
       path: '/tx',
       name: 'tx',
+      meta:{
+        title:'提现'
+      },
       component:()=>import('@/views/TX')
     },{
       path:'/myTeam',name:'myteam',
+      meta:{title:'我的团队'},
       component:()=>import('@/views/myTeam')
+    },{
+      path:'/myStudent',name:'myStudent',
+      meta:{title:'我的学员'},
+      component:()=>import('@/views/student')
     }
   ]
 });
@@ -109,16 +132,17 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   Util.title(to.meta.title);
   console.log(to.name)
-  if(to.name=='Login'||to.name=='Reg'){
-    next()
-  }else if(to.name!='Login'&&localStorage.getItem('userMess')){
-    next()
-  }else{
-    Toast('用户信息丢失，请重新登录！')
-    next({
-      name: 'Login'
-    });
-  }
+  next()
+  // if(to.name=='Login'||to.name=='Reg'){
+  //   next()
+  // }else if(to.name!='Login'&&localStorage.getItem('userMess')){
+  //   next()
+  // }else{
+  //   Toast('用户信息丢失，请重新登录！')
+  //   next({
+  //     name: 'Login'
+  //   });
+  // }
 
 
 

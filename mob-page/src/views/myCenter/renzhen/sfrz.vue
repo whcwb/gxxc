@@ -115,7 +115,6 @@
           [Field.name]:Field,
           [Button.name]:Button,
           [ResultPage.name]:ResultPage,
-          [Radio.name]:Radio
         },
         data(){
           return {
