@@ -124,10 +124,10 @@ const router = new Router({
       path:'/myStudent',name:'myStudent',
       meta:{title:'我的学员'},
       component:()=>import('@/views/student')
-    // },{
-    //   path:'/stuMesss',name:'stuMesss',
-    //   meta:{title:'学员信息'},
-    //   component:()=>import('@/views/student/stuMesss.vue')
+    },{
+      path:'/stuMess',name:'stuMess',
+      meta:{title:'学员信息'},
+      component:()=>import('@/views/stuMess')
     }
   ]
 });

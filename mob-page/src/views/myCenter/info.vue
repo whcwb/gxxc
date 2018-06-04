@@ -6,7 +6,7 @@
         <div>
           <box-head tit="个人信息">
             <div slot="left" style="color: #E0DADF">
-              <i class="iconfont icon-left1"></i>
+              <i class="iconfont icon-left"></i>
             </div>
           </box-head>
         </div>
@@ -65,6 +65,11 @@
         },
         methods:{
           goOut(){
+            this.$http.get(this.apis.LOGOUT).then((res)=>{
+
+            }).catch((err)=>{
+
+            })
             localStorage.clear()
             this.$router.push({name:'Login'})
           }

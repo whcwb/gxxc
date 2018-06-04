@@ -28,14 +28,13 @@
       </mt-navbar>
     <!--</div>-->
     <div class="body" style="margin-top: 0.12rem">
-        <div class="list box-row" style="height: 1.5rem;border-bottom:solid 1px #dedede">
+        <div class="list box-row"
+             @click="$router.push({name:'stuMess'})"
+             style="height: 1.5rem;border-bottom:solid 1px #dedede">
               <div style="font-size: 0.8rem;font-weight: 700;padding: 0.2rem 0.4rem;">
                     学
               </div>
               <div class="body-O" style="font-size: 0.3rem">
-                <!--<div class="time" style="padding-top: 0.2rem">-->
-                  <!--报名时间：2018-01-01-->
-                <!--</div>-->
                 <div class="box-row" style="padding: 0.15rem 0.2rem 0 0">
                   <div class="" style="padding: 0 0.2rem 0 0">
                     小明

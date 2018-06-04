@@ -6,7 +6,7 @@
     <div class="box-row"style="background-color: #2d8cf0;height: 1.5rem;;line-height: 1.5rem;text-align: center">
           <div style="height: 1.5rem;width: 1.2rem;text-align: center;color: #ededed"
           @click="$router.back()">
-            <i class="iconfont icon-left1"></i>
+            <i class="iconfont icon-left"></i>
           </div>
           <div class="body-O" style="font-weight: 700;font-size: 0.5rem;color: #fff">
             现金提现
@@ -16,7 +16,7 @@
         </div>
       <!--<box-head tit="缴费">-->
         <!--<div slot="left" style="color: #E0DADF">-->
-          <!--<i class="iconfont icon-left1"></i>-->
+          <!--<i class="iconfont icon-left"></i>-->
         <!--</div>-->
       <!--</box-head>-->
     </div>

@@ -4,7 +4,7 @@
       border: solid 1px #949494;
       margin-bottom: 0.4rem;
       width: 48%;
-      margin: 0.2rem auto;
+      margin: 0.2rem 1%;
       font-size: 0.22rem;
     }
   }
@@ -15,7 +15,7 @@
         <div>
           <box-head tit="考场分布" leftToName="/home">
             <div slot="left" style="color: #E0DADF">
-              <i class="iconfont icon-left1"></i>
+              <i class="iconfont icon-left"></i>
             </div>
           </box-head>
         </div>
@@ -26,18 +26,19 @@
                    placeholder="请输入关键字搜索"
                    type="text" v-model="Search">
           </div>
-          <!--<div style="width: 25%">-->
-            <!--<select class="selectSTY" name="" id="">-->
-              <!--<option :value="item.name"-->
-                      <!--v-for="(item,index) in qylist"-->
-                      <!--:selected="index==2">{{item.name}}</option>-->
-            <!--</select>-->
-          <!--</div>-->
+          <div style="width: 25%;text-align: center">
+            <select class="selectSTY" name=""
+                    v-model="selectVal"
+                    id="" style="text-align: center">
+              <option :value="index"
+                      v-for="(item,index) in qylist">{{item.quyu}}</option>
+            </select>
+          </div>
         </div>
         <div class="body" style="padding: 0.2rem">
           <div class="box-row-list">
-            <div class="listItem" v-for="(item,index) in [,,,,]">
-              <h2 style="margin: 0.1rem 0">柏林考场</h2>
+            <div class="listItem" v-for="(item,index) in qumess">
+              <h2 style="margin: 0.1rem 0">{{item.name}}</h2>
               <div>
                 <img src="/static/blkc.png"
                      style="width: 100%;height: 1.5rem"
@@ -80,9 +81,21 @@
     data(){
       return{
         Search:'',
-        qylist:[]
+        selectVal:0,
+        qylist:this.$route.params,
+        qumess:[]
       }
+    },
+    watch:{
+      selectVal:function (n,o) {
+        this.qumess = this.qylist[n].mess
+      }
+    },
+    created(){
+      this.qumess = this.qylist[this.selectVal].mess
+      console.log(this.$route.params)
     }
+
   }
 </script>
 

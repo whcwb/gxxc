@@ -5,7 +5,9 @@ module.exports = {
       getAccessToken:'/wechat/getAccessToken',
       getJsApiSign:'/wechat/getJsApiSign',
   },
+  getImgUrl:'http://47.98.39.45:9088/',
   LOGIN:'/app/login',//登录接口
+  LOGOUT:'/app/logout',//退出用戶
   USERMESS:'/app/ptyh/get',//用户信息
   USERZH:'/app/zh/get',//账户余额
   CODEYZ:'/app/yzyym',//邀请码验证

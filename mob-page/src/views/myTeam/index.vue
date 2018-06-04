@@ -28,6 +28,13 @@
         }
       }
   }
+  .mint-navbar{
+    .mint-tab-item{
+      .mint-tab-item-label{
+        font-size: 0.24rem;
+      }
+    }
+  }
 </style>
 <template>
       <div class="box">
@@ -36,10 +43,15 @@
               <i class="iconfont icon-left1"></i>
             </div>
           </box-head>
-          <md-tab-bar
-            :titles="titles"
-            @indexChanged="tabbarClick"
-          ></md-tab-bar>
+          <!--<md-tab-bar-->
+            <!--:titles="titles"-->
+            <!--@indexChanged="tabbarClick"-->
+          <!--&gt;</md-tab-bar>-->
+          <mt-navbar v-model="selected">
+            <mt-tab-item id="0">全部</mt-tab-item>
+            <mt-tab-item id="1">一级</mt-tab-item>
+            <mt-tab-item id="2">二级</mt-tab-item>
+          </mt-navbar>
           <div class="body timeList" style="">
             <div class="list" v-for="item in  list">
               <div class="box-row ddsty">
@@ -76,16 +88,20 @@
 
 <script>
     import { TabBar } from 'mand-mobile'
+    import { Navbar, TabItem } from 'mint-ui';
     import {Icon} from 'iview'
     export default {
         name: "index",
         components:{
           Icon,
           [TabBar.name]: TabBar,
+          [Navbar.name]: Navbar,
+          [TabItem.name]: TabItem,
         },
         data(){
           return{
             titles: ['全部','一级','二级'],
+            selected:'0',
             list:[],
             ALL:[
               [{//已完成
@@ -124,6 +140,11 @@
             },
           }
         },
+      watch:{
+        selected:function(n,o) {
+          this.list = this.ALL[n]
+        }
+      },
       created(){
         this.list= this.ALL[0]
       },

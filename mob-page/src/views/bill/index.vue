@@ -23,7 +23,7 @@
         <div>
           <box-head tit="账单">
             <div slot="left" style="color: #E0DADF">
-              <i class="iconfont icon-left1"></i>
+              <i class="iconfont icon-left"></i>
             </div>
           </box-head>
         </div>
