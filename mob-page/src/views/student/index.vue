@@ -1,3 +1,16 @@
+<style lang="less">
+  #student{
+    font-size: 0.24rem;
+    .mint-navbar{
+      .mint-tab-item{
+        .mint-tab-item-label{
+          font-size: 0.24rem;
+        }
+      }
+    }
+
+  }
+</style>
 <template>
   <div id="student" class="box">
     <box-head tit="我的学员">
@@ -6,7 +19,7 @@
       </div>
     </box-head>
     <!--<div>-->
-      <mt-navbar v-model="selected">
+      <mt-navbar v-model="selected" style="font-size: 0.3rem">
         <mt-tab-item id="1">科目一</mt-tab-item>
         <mt-tab-item id="2">科目二</mt-tab-item>
         <mt-tab-item id="4">科目三</mt-tab-item>
@@ -20,23 +33,54 @@
                     学
               </div>
               <div class="body-O" style="font-size: 0.3rem">
-                <div>
-                  报名时间：*****************
+                <!--<div class="time" style="padding-top: 0.2rem">-->
+                  <!--报名时间：2018-01-01-->
+                <!--</div>-->
+                <div class="box-row" style="padding: 0.15rem 0.2rem 0 0">
+                  <div class="" style="padding: 0 0.2rem 0 0">
+                    小明
+                  </div>
+                  <div class="body-O">
+                    13112345678
+                  </div>
+                  <div class="" >
+                    08/05/06
+                  </div>
                 </div>
-                <div class="box-row">
+                <div class="box-row" style="font-size: 0.24rem;padding-top: 0.14rem;">
                   <div class="body-O">
-1
+                    <div>
+                     科目一
+                    </div>
+                    <div>
+                      90
+                    </div>
                   </div>
                   <div class="body-O">
-2
+                    <div>
+                      科目二
+                    </div>
+                    <div>
+                      *****
+                    </div>
                   </div>
                   <div class="body-O">
-3
+                    <div>
+                     科目三
+                    </div>
+                    <div>
+                      ****
+                    </div>
+                  </div>
+                  <div class="body-O">
+                    <div>
+                      科目四
+                    </div>
+                    <div>
+                      ****
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div>
-                >
               </div>
         </div>
     </div>

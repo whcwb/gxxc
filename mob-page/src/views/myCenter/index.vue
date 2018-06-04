@@ -114,6 +114,7 @@
                   style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
               </mt-cell>
               <mt-cell title="我的学员" value="0人"
+                        to="/myStudent"
                         is-link style="border-bottom: 1px #e9eaec solid;">
                 <i class="iconfont icon-qianzaixueyuan" style="font-size: 20px" slot="icon"></i>
               </mt-cell>
