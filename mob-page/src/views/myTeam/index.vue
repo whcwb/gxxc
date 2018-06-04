@@ -11,9 +11,9 @@
           .body-O{
             padding-left: 0.2rem;
             text-align: right;
-            font-size: 0.3rem;
+            font-size: 0.28rem;
             .text{
-              font-size: 0.35rem;
+              font-size: 0.3rem;
             }
             .money{
               /*color: #ff8e00;*/
@@ -43,10 +43,6 @@
               <i class="iconfont icon-left1"></i>
             </div>
           </box-head>
-          <!--<md-tab-bar-->
-            <!--:titles="titles"-->
-            <!--@indexChanged="tabbarClick"-->
-          <!--&gt;</md-tab-bar>-->
           <mt-navbar v-model="selected">
             <mt-tab-item id="0">全部</mt-tab-item>
             <mt-tab-item id="1">一级</mt-tab-item>
@@ -55,7 +51,7 @@
           <div class="body timeList" style="">
             <div class="list" v-for="item in  list">
               <div class="box-row ddsty">
-                <div style="width: 1.1rem">
+                <div style="width: 0.8rem">
                   <img src="/static/bill.png"
                        width="100%" alt="">
                 </div>
@@ -72,7 +68,6 @@
                       </div>
                     </div>
                     <div class="money" :style="{color:item.color}">
-                      <!--<Icon type="social-yen"></Icon>-->
                       {{item.money}}
                     </div>
                     <div class="typ">
@@ -87,20 +82,17 @@
 </template>
 
 <script>
-    import { TabBar } from 'mand-mobile'
     import { Navbar, TabItem } from 'mint-ui';
     import {Icon} from 'iview'
     export default {
         name: "index",
         components:{
           Icon,
-          [TabBar.name]: TabBar,
           [Navbar.name]: Navbar,
           [TabItem.name]: TabItem,
         },
         data(){
           return{
-            titles: ['全部','一级','二级'],
             selected:'0',
             list:[],
             ALL:[
@@ -147,6 +139,7 @@
       },
       created(){
         this.list= this.ALL[0]
+        this.teamList()
       },
         methods:{
           tabbarClick(n,o){

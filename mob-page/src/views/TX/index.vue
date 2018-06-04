@@ -29,7 +29,7 @@
         <div>
           <box-head tit="提现">
             <div slot="left" style="color: #E0DADF">
-              <i class="iconfont icon-left"></i>
+              <i class="iconfont icon-left1"></i>
             </div>
           </box-head>
         </div>
@@ -60,8 +60,9 @@
                   <i class="iconfont icon-ico-money"
                      style=" font-weight: 600;font-size: 0.6rem;line-height: 1.5rem"></i>
                 </div>
-                <div class="body-O">
+                <div class="body-O" @click="isKeyBoardShow=true">
                   <md-input-item
+                    disabled
                     type="money"
                     style="border-bottom: #949494 2px solid"
                     v-model="number"
@@ -90,6 +91,7 @@
             v-model="isKeyBoardShow"
             @enter="onNumberEnter"
             @delete="onNumberDelete"
+            @confirm="confirm"
           ></md-number-keyboard>
           <div class="md-example-display" v-show="isKeyBoardShow" v-text="number"></div>
         </div>
@@ -164,7 +166,10 @@
         },
         onNumberEnter(val) {
           var v = this
-          this.number += val
+          this.number += val;
+
+          console.log(this.number)
+
           if(parseInt(this.number)>parseInt(this.zhYE.yhZhye)){
             Toast('提取金额不能大于您的余额')
             v.onNumberDelete()
@@ -176,15 +181,28 @@
           }
           this.number = this.number.substr(0, this.number.length - 1)
         },
+        confirm(){
+
+        },
         selected(item) {
           console.log('action-sheet selected:', JSON.stringify(item))
         },
         TX(){//                                             银行卡号          开户行         提现方式
-          this.$http.post(this.apis.TX,{'ttje':this.number,'yhkh':'123123123','khh':'afdf','ttFs':'qweqweq'}).then((res)=>{
-              console.log('*****',res)
-          }).catch((err)=>{
+          var v = this
+          if(this.number){
+              this.$http.post(this.apis.TX,{'ttje':this.number,'yhkh':'123123123','khh':'afdf','ttFs':'qweqweq'}).then((res)=>{
+                if(res.code==200){
+                  Toast(res.message)
+                  v.number = ''
+                }else{
+                  Toast(res.message)
+                }
+              }).catch((err)=>{
 
-          })
+              })
+          }else {
+            Toast('提现金额不能为空')
+          }
         }
       },
     }
