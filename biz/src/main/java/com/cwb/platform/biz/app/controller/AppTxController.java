@@ -3,7 +3,9 @@ package com.cwb.platform.biz.app.controller;
 import com.cwb.platform.biz.app.AppUserBaseController;
 import com.cwb.platform.biz.app.service.AppTxService;
 import com.cwb.platform.biz.model.BizTx;
+import com.cwb.platform.biz.model.BizYhk;
 import com.cwb.platform.biz.service.TxService;
+import com.cwb.platform.biz.service.YhkService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
@@ -24,18 +26,24 @@ public class AppTxController extends AppUserBaseController {
     @Autowired
     private AppTxService appTxService;
 
+    @Autowired
+    private YhkService yhkService;
+
+
     /**
      * 用户提现操作
      * @return
      */
    @RequestMapping(value="/save", method={RequestMethod.POST})
-   public ApiResponse<String> save(String ttje, String yhkh,
-                                   String khh, String txxm, String ttfs){
+   public ApiResponse<String> save(String ttje, String yhkid){
+       RuntimeCheck.ifTrue(StringUtils.isEmpty(yhkid),"您好，请选择银行卡！");
+       BizYhk bizYhk=yhkService.findById(yhkid);
+       RuntimeCheck.ifNull(bizYhk,"您好，请选择银行卡！");
        RuntimeCheck.ifTrue(StringUtils.isEmpty(ttje),"您好，提现金额不能为空！");
        Double ttJe= Double.parseDouble(ttje);
        RuntimeCheck.ifFalse(ttje!=null && ttJe>0,"您好，提现金额不能小于0！");
        BizPtyh  user=getAppCurrentUser();
-       return service.saveUserDraw(ttJe, yhkh, khh, txxm,ttfs,user);
+       return service.saveUserDraw(ttJe, yhkid,bizYhk,user);
    }
 
     /**

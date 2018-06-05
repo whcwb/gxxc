@@ -23,8 +23,8 @@ public class BizYhk implements Serializable {
     /**
      * 银行卡户主
      */
-    @Column(name = "YH_XM")
-    private String yhXm;
+    @Column(name = "YHK_XM")
+    private String yhkXm;
 
     /**
      * 用户提现 银行卡号
@@ -93,17 +93,17 @@ public class BizYhk implements Serializable {
      *
      * @return YH_XM - 银行卡户主
      */
-    public String getYhXm() {
-        return yhXm;
+    public String getYhkXm() {
+        return yhkXm;
     }
 
     /**
      * 设置银行卡户主
      *
-     * @param yhXm 银行卡户主
+     * @param yhkXm 银行卡户主
      */
-    public void setYhXm(String yhXm) {
-        this.yhXm = yhXm;
+    public void setYhkXm(String yhkXm) {
+        this.yhkXm = yhkXm;
     }
 
     /**
@@ -181,7 +181,7 @@ public class BizYhk implements Serializable {
     public enum InnerColumn {
         id("ID"),
         yhId("YH_ID"),
-        yhXm("YH_XM"),
+        yhkXm("YHK_XM"),
         yhkKh("YHK_KH"),
         yhkKhh("YHK_KHH"),
         yhkSsyh("YHK_SSYH"),
