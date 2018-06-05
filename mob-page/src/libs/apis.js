@@ -2,12 +2,14 @@ import axios from 'axios';
 import qs from 'qs'
 import { Toast } from 'mand-mobile'
 
-const ajaxUrl ='http://127.0.0.1';
+// const ajaxUrl ='http://127.0.0.1';
+// const ajaxUrl = 'http://47.98.39.45:9086/';//服务器
+const ajaxUrl ='http://192.168.31.228:9086';//羊祥
 let API = {
-    NETWORK_ERR: "网络请求异常，请重试！",
-    LOGIN: '/login',
-    LOGOUT: '/logout',
-    UPLOAD: '/upload'
+    NETWORK_ERR: "网络请求异常，请重试！"
+    // LOGIN: '/login',
+    // LOGOUT: '/logout',
+    // UPLOAD: '/upload'
 };
 
 API.title = function (title) {
@@ -37,10 +39,10 @@ API.ajax.interceptors.request.use(config=> {
     }
 
     try{
-      let accessTokenStr = localStorage.getItem("accessToken");
+      let accessTokenStr = localStorage.getItem("token");
       if (accessTokenStr != null && accessTokenStr != ''){
         let jsonObject = JSON.parse(accessTokenStr);
-        config.headers.common['user_id'] = jsonObject.userId;
+        config.headers.common['userId'] = jsonObject.userId;
         config.headers.common['token'] = jsonObject.token;
       }
     }catch(e){
@@ -59,7 +61,8 @@ API.ajax.interceptors.response.use(response=> {
   //网络请求加载动画
   Toast.hide();
 
-  return response;
+
+  return response.data;
 }, error=> {
   Toast.hide();
   setTimeout(() => {

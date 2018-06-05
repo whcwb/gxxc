@@ -41,6 +41,25 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return null;
     }
 
+    @RequestMapping(value="/{pkid}", method={RequestMethod.GET})
+    public ApiResponse<BizPtyh> get(@PathVariable("pkid")String pkid){
+        return null;
+    }
+    @RequestMapping(value="/getAll", method={RequestMethod.GET})
+    public ApiResponse<List<BizPtyh>> getAll(){
+        return null;
+    }
+
+    @RequestMapping(value="/query", method={RequestMethod.GET})
+    public ApiResponse<List<BizPtyh>> query(BizPtyh entity){
+        return null;
+    }
+
+    @RequestMapping(value="/getCondition", method={RequestMethod.POST})
+    public ApiResponse<List<BizPtyh>> getCondition(BizPtyh entity){
+        return null;
+    }
+
     /**
      * 更新用户是否锁定状态 0 否 1 是
      *
@@ -54,7 +73,7 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
 
     /**
      * 更新用户是否分配信息
-     *
+     *  这个接口可能被放弃掉了
      * @param bizPtyh
      * @return
      */
@@ -76,6 +95,7 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
 
     /**
      * 根据条件查询已实名的教练
+     * 这个接口让前台去分页去查
      */
     @PostMapping("/getCoaches")
     public ApiResponse<List<BizPtyh>> getCoaches(String name, String phone, String area,@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "10") int pageSize) {
@@ -84,13 +104,16 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
 
     /**
      * 分配学员接口
+     * 1
      */
     @PostMapping("/assignStudents")
-    public ApiResponse<List<String>> assignStudents(String yhId, String jlId){
-
-        return service.assignStudents(yhId, jlId);
+    public ApiResponse<List<String>> assignStudents(@RequestParam(name = "yhIds") String yhIds,@RequestParam(name = "jlid") String jlId){
+        return service.assignStudents(yhIds, jlId);
 
     }
+
+
+
 
 
 

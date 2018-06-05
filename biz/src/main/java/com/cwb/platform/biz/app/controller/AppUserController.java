@@ -22,7 +22,7 @@ public class AppUserController extends AppUserBaseController {
     @Autowired
     private AppUserService service;
     /**
-     * 按全部、已付款、待付款来查询自己对应的一级，二级佣金订单
+     * 我的团队
      * @param entity
      * @param pager
      * @return

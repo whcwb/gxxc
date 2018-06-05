@@ -54,7 +54,7 @@ public class BizCp implements Serializable {
     private Double cpRjyj;
 
     /**
-     * 产品是否有效(0、无效 1、生效) 
+     * 产品是否有效(0、无效 1、生效)
      */
     @Column(name = "CP_YX")
     private String cpYx;
@@ -70,24 +70,24 @@ public class BizCp implements Serializable {
      */
     @Column(name = "CJR")
     private String cjr;
+//
+//    /**
+//     * 审核人
+//     */
+//    @Column(name = "SHR")
+//    private String shr;
 
-    /**
-     * 审核人
-     */
-    @Column(name = "SHR")
-    private String shr;
+//    /**
+//     * 审核时间
+//     */
+//    @Column(name = "SHSJ")
+//    private String shsj;
 
-    /**
-     * 审核时间
-     */
-    @Column(name = "SHSJ")
-    private String shsj;
-
-    /**
-     * 产品审核(0待审核 1、审核通过 2、审核驳回)
-     */
-    @Column(name = "CP_SH")
-    private String cpSh;
+//    /**
+//     * 产品审核(0待审核 1、审核通过 2、审核驳回)
+//     */
+//    @Column(name = "CP_SH")
+//    private String cpSh;
 
     private static final long serialVersionUID = 1L;
 
@@ -218,18 +218,18 @@ public class BizCp implements Serializable {
     }
 
     /**
-     * 获取产品是否有效(0、无效 1、生效) 
+     * 获取产品是否有效(0、无效 1、生效)
      *
-     * @return CP_YX - 产品是否有效(0、无效 1、生效) 
+     * @return CP_YX - 产品是否有效(0、无效 1、生效)
      */
     public String getCpYx() {
         return cpYx;
     }
 
     /**
-     * 设置产品是否有效(0、无效 1、生效) 
+     * 设置产品是否有效(0、无效 1、生效)
      *
-     * @param cpYx 产品是否有效(0、无效 1、生效) 
+     * @param cpYx 产品是否有效(0、无效 1、生效)
      */
     public void setCpYx(String cpYx) {
         this.cpYx = cpYx;
@@ -270,60 +270,60 @@ public class BizCp implements Serializable {
     public void setCjr(String cjr) {
         this.cjr = cjr;
     }
-
-    /**
-     * 获取审核人
-     *
-     * @return SHR - 审核人
-     */
-    public String getShr() {
-        return shr;
-    }
-
-    /**
-     * 设置审核人
-     *
-     * @param shr 审核人
-     */
-    public void setShr(String shr) {
-        this.shr = shr;
-    }
-
-    /**
-     * 获取审核时间
-     *
-     * @return SHSJ - 审核时间
-     */
-    public String getShsj() {
-        return shsj;
-    }
-
-    /**
-     * 设置审核时间
-     *
-     * @param shsj 审核时间
-     */
-    public void setShsj(String shsj) {
-        this.shsj = shsj;
-    }
-
-    /**
-     * 获取产品审核(0待审核 1、审核通过 2、审核驳回)
-     *
-     * @return CP_SH - 产品审核(0待审核 1、审核通过 2、审核驳回)
-     */
-    public String getCpSh() {
-        return cpSh;
-    }
-
-    /**
-     * 设置产品审核(0待审核 1、审核通过 2、审核驳回)
-     *
-     * @param cpSh 产品审核(0待审核 1、审核通过 2、审核驳回)
-     */
-    public void setCpSh(String cpSh) {
-        this.cpSh = cpSh;
-    }
+//
+//    /**
+//     * 获取审核人
+//     *
+//     * @return SHR - 审核人
+//     */
+//    public String getShr() {
+//        return shr;
+//    }
+//
+//    /**
+//     * 设置审核人
+//     *
+//     * @param shr 审核人
+//     */
+//    public void setShr(String shr) {
+//        this.shr = shr;
+//    }
+//
+//    /**
+//     * 获取审核时间
+//     *
+//     * @return SHSJ - 审核时间
+//     */
+//    public String getShsj() {
+//        return shsj;
+//    }
+//
+//    /**
+//     * 设置审核时间
+//     *
+//     * @param shsj 审核时间
+//     */
+//    public void setShsj(String shsj) {
+//        this.shsj = shsj;
+//    }
+//
+//    /**
+//     * 获取产品审核(0待审核 1、审核通过 2、审核驳回)
+//     *
+//     * @return CP_SH - 产品审核(0待审核 1、审核通过 2、审核驳回)
+//     */
+//    public String getCpSh() {
+//        return cpSh;
+//    }
+//
+//    /**
+//     * 设置产品审核(0待审核 1、审核通过 2、审核驳回)
+//     *
+//     * @param cpSh 产品审核(0待审核 1、审核通过 2、审核驳回)
+//     */
+//    public void setCpSh(String cpSh) {
+//        this.cpSh = cpSh;
+//    }
 
     public enum InnerColumn {
         id("ID"),

@@ -1,0 +1,3191 @@
+{
+	"info": {
+		"_postman_id": "c4eb345d-797d-44c0-a9e0-ad84c6fbef3e",
+		"name": "共享学车-APP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "前台平台活动",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "hdSxs",
+							"value": "0",
+							"description": "0、热门 1、驾校  2、训练场",
+							"type": "text"
+						},
+						{
+							"key": "pageSize",
+							"value": "10",
+							"description": "每页大小",
+							"type": "text"
+						},
+						{
+							"key": "pageNum",
+							"value": "1",
+							"description": "当前页数",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/hd/pager",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"hd",
+						"pager"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": []
+		},
+		{
+			"name": "APP登录",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "13311111111",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "13365985412",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/login",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "APP登录-微信登录",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/wxlogin",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"wxlogin"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}\n\n{\"code\":203,\"message\":\"该微信用户未注册，请您注册后使用系统！\",\"success\":true} 需要向引导用户进行注册。"
+			},
+			"response": []
+		},
+		{
+			"name": "APP下发短信时，验证码申请",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip}}/pub/image/Kaptcha/123456",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"pub",
+						"image",
+						"Kaptcha",
+						"123456"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "手机短信下发验证",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "zh",
+							"value": "13311111111",
+							"type": "text",
+							"description": "登录账户-必填"
+						},
+						{
+							"key": "yyyqm",
+							"value": "123456789",
+							"type": "text",
+							"description": "邀请码-必填"
+						},
+						{
+							"key": "key",
+							"value": "123456",
+							"description": "申请验证码KEY-必填",
+							"type": "text"
+						},
+						{
+							"key": "codeID",
+							"value": "w67",
+							"description": "验证码-必填",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/sendSMSzc",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"sendSMSzc"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "59e01649-a79a-4596-a13c-f4f959f11d2d",
+					"name": "手机短信下发验证-下发短信成功 ",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "zh",
+									"value": "13311111111",
+									"type": "text",
+									"description": "登录账户-必填"
+								},
+								{
+									"key": "yyyqm",
+									"value": "123456789",
+									"type": "text",
+									"description": "邀请码-必填"
+								},
+								{
+									"key": "key",
+									"value": "123456",
+									"description": "申请验证码KEY-必填",
+									"type": "text"
+								},
+								{
+									"key": "codeID",
+									"value": "g5ff",
+									"description": "验证码-必填",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/sendSMS",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"sendSMS"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 25 May 2018 02:57:38 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=55D7865A6E33DE0A78369391EDDE0167; Path=/; HttpOnly",
+							"name": "Set-Cookie",
+							"description": "an HTTP cookie"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "55D7865A6E33DE0A78369391EDDE0167",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"313905\",\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "前台平台用户-注册学员",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "yhZh",
+							"value": "13311111111",
+							"description": "手机号(登录账户)",
+							"type": "text"
+						},
+						{
+							"key": "yhMm",
+							"value": "123456",
+							"description": "密码",
+							"type": "text"
+						},
+						{
+							"key": "yhYyyqm",
+							"value": "123456789",
+							"description": "用户应邀邀请码(必填)",
+							"type": "text"
+						},
+						{
+							"key": "yhLx",
+							"value": "1",
+							"description": "类型 ZDCLK0041(2、教练、1、学员)",
+							"type": "text"
+						},
+						{
+							"key": "addType",
+							"value": "3",
+							"description": "注册类型  1、微信注册  2、支付宝注册 3、web页面注册",
+							"type": "text"
+						},
+						{
+							"key": "telIdentifying",
+							"value": "908775",
+							"description": "手机验证码",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/save",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"save"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "前台平台用户-修改密码",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "oldPwd",
+							"value": "123456",
+							"description": "原始密码",
+							"type": "text"
+						},
+						{
+							"key": "newPwd",
+							"value": "123456",
+							"description": "新密码",
+							"type": "text"
+						},
+						{
+							"key": "secPwd",
+							"value": "123456",
+							"description": "再次输入新密码",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/mdfPwd",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"mdfPwd"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "前台平台用户-用户实名请求",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "yhXm",
+							"value": "姓名",
+							"type": "text",
+							"description": "用户姓名"
+						},
+						{
+							"key": "yhZjhm",
+							"value": "320999999911111111",
+							"type": "text",
+							"description": "用户证件号码"
+						},
+						{
+							"key": "yhXb",
+							"value": "1",
+							"type": "text",
+							"description": "用户性别"
+						},
+						{
+							"key": "yhSfyjz",
+							"value": "1",
+							"type": "text",
+							"description": "用户驾照状态不能为空"
+						},
+						{
+							"key": "imgList",
+							"value": "/aaa.jpg,/bbb.jpg",
+							"type": "text",
+							"description": "照片地址 以,进行分隔"
+						},
+						{
+							"key": "imgTypeList",
+							"value": "10,11",
+							"type": "text",
+							"description": "文件属性(10、身份证正面 11、身份证反而  20、驾照正面 21、驾照反而…………)"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/updatesm",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"updatesm"
+					]
+				},
+				"description": "这个接口请求数据库比较多，所以响应时间会很长，需要做一个等待框\n{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "前台-订单支付-申请",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ddZftd",
+							"value": "1",
+							"description": "获取支付通道(1、支付宝  2、微信  3、银联  4、快钱……)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/order/save",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"order",
+						"save"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": [
+				{
+					"id": "86f826b1-d349-4c57-b925-57907c6c4137",
+					"name": "前台我的订单-查询全部订单",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ddZt",
+									"value": "1",
+									"description": "订单状态(1、待缴费 2、已缴费 3、已退费)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/order/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"order",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:26:53 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":4,\"startRow\":1,\"endRow\":4,\"total\":4,\"pages\":1,\"list\":[{\"ddId\":\"1\",\"yhId\":\"1\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"2\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"1\",\"yhZh\":\"1\",\"yhMm\":\"\",\"yhCjr\":\"4\",\"cjsj\":\"5\",\"yhXgr\":\"6\",\"xgsj\":\"7\",\"yhXm\":\"8\",\"yhLx\":\"9\",\"yhXb\":\"10\",\"yhZjhm\":\"11\",\"yhMmyxq\":\"12\",\"yhZt\":\"13\",\"ddSfjx\":\"14\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"18\",\"yhZsyqm\":\"19\",\"yhYyyqm\":\"20\",\"yhIxySffp\":\"21\",\"yhSfyjz\":\"22\",\"yhFpms\":\"23\",\"yhSfsd\":\"0\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"ddId\":\"2\",\"yhId\":\"2\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"2\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"创建人\",\"cjsj\":\"2018-05-19 11:22:00\",\"yhXgr\":\"修改人\",\"xgsj\":\"2018-06-19 11:22:00\",\"yhXm\":\"张明\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******9999\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2493320796,2222420184&fm=58&bpow=1280&bpoh=1947\",\"yhBm\":\"奶茶公\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"1\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"0\",\"yhFpms\":\"0\",\"yhSfsd\":\"1\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"ddId\":\"3\",\"yhId\":\"3\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"},{\"ddId\":\"5\",\"yhId\":\"5\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				},
+				{
+					"id": "e359ddd8-7944-4ebc-bb2c-8b772cda25bc",
+					"name": "前台我的订单-查询待缴费订单",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ddZt",
+									"value": "1",
+									"description": "订单状态(1、待缴费 2、已缴费 3、已退费)",
+									"type": "text"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/order/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"order",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:28:00 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":3,\"startRow\":1,\"endRow\":3,\"total\":3,\"pages\":1,\"list\":[{\"ddId\":\"2\",\"yhId\":\"2\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"2\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"创建人\",\"cjsj\":\"2018-05-19 11:22:00\",\"yhXgr\":\"修改人\",\"xgsj\":\"2018-06-19 11:22:00\",\"yhXm\":\"张明\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******9999\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2493320796,2222420184&fm=58&bpow=1280&bpoh=1947\",\"yhBm\":\"奶茶公\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"1\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"0\",\"yhFpms\":\"0\",\"yhSfsd\":\"1\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"ddId\":\"3\",\"yhId\":\"3\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"},{\"ddId\":\"5\",\"yhId\":\"5\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "前台平台个人资料查询-获取登录人的头像、姓名(别名)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/get",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"get"
+					]
+				},
+				"description": "无入参\n\n{\"code\":200,\"message\":\"操作成功\",\"result\":{\"id\":\"447425892747051008\",\"yhZh\":\"13311111111\",\"yhMm\":\"\",\"yhCjr\":\"\",\"cjsj\":\"2018-05-19 15:50:45\",\"yhXgr\":\"\",\"xgsj\":\"\",\"yhXm\":\"姓名\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******1111\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://img11.360buyimg.com/babel/s190x150_jfs/t20674/36/121988616/63047/789f8b0a/5afd3cd1N2f403adc.png!q90!cc_190x150\",\"yhBm\":\"别名\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"123456\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"1\",\"yhFpms\":\"\",\"yhSfsd\":\"0\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"},\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "前台平台用户-修改个人资料",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "yhTx",
+							"value": "https://img11.360buyimg.com/babel/s190x150_jfs/t20674/36/121988616/63047/789f8b0a/5afd3cd1N2f403adc.png!q90!cc_190x150",
+							"description": "用户头像",
+							"type": "text"
+						},
+						{
+							"key": "yhBm",
+							"value": "别名",
+							"description": "用户别名",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/update",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"update"
+					]
+				},
+				"description": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+			},
+			"response": []
+		},
+		{
+			"name": "前台个人佣金查询",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip}}/app/zh/get",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"zh",
+						"get"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": []
+		},
+		{
+			"name": "前台 个人缴请码",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/getuser",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"getuser"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": [
+				{
+					"id": "82a1926d-4fd4-425b-b3a6-2cba5d2328ce",
+					"name": "前台 个人缴请码-用户未认证",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ip}}/app/ptyh/getuser",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"ptyh",
+								"getuser"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:36:34 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 500,\n    \"message\": \"用户还未认证，请您认证！\",\n    \"success\": false\n}"
+				},
+				{
+					"id": "05a8caf9-4c8d-4b3a-a2a4-7e73f34fbcd4",
+					"name": "前台 个人缴请码-提取成功  yhZsyqmImg 我的二维码图片",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ip}}/app/ptyh/getuser",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"ptyh",
+								"getuser"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:38:43 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 200,\n    \"message\": \"操作成功\",\n    \"result\": {\n        \"id\": \"448198498500739072\",\n        \"yhZh\": \"13311111111\",\n        \"yhMm\": \"\",\n        \"yhCjr\": \"\",\n        \"cjsj\": \"2018-05-21 19:00:49\",\n        \"yhXgr\": \"\",\n        \"xgsj\": \"\",\n        \"yhXm\": \"姓名\",\n        \"yhLx\": \"1\",\n        \"yhXb\": \"1\",\n        \"yhZjhm\": \"320******1111\",\n        \"yhMmyxq\": \"\",\n        \"yhZt\": \"1\",\n        \"ddSfjx\": \"0\",\n        \"yhOpenId\": \"\",\n        \"yhAlipayId\": \"\",\n        \"yhTx\": \"\",\n        \"yhBm\": \"\",\n        \"yhZsyqm\": \"\",\n        \"yhYyyqm\": \"19\",\n        \"yhIxySffp\": \"0\",\n        \"yhSfyjz\": \"1\",\n        \"yhFpms\": \"\",\n        \"yhSfsd\": \"0\",\n        \"yhZsyqmImg\": \"\",\n        \"telIdentifying\": \"\",\n        \"addType\": \"\",\n        \"imgList\": \"\",\n        \"imgTypeList\": \"\"\n    },\n    \"success\": true\n}"
+				},
+				{
+					"id": "0a3e873e-fb4f-4a97-89e7-1dbfb2ac314d",
+					"name": "前台 个人缴请码-判断用户是否缴费",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ip}}/app/ptyh/getuser",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"ptyh",
+								"getuser"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:36:34 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":500,\"message\":\"用户还未缴费，请您缴费！\",\"success\":false}"
+				}
+			]
+		},
+		{
+			"name": "前台我的团队列表查询",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userGrade",
+							"value": "2",
+							"type": "text",
+							"description": " 用户等级  1、一级用户   2、二级用户。不写查全部"
+						},
+						{
+							"key": "pageSize",
+							"value": "10",
+							"type": "text",
+							"description": "每页大小"
+						},
+						{
+							"key": "pageNum",
+							"value": "1",
+							"type": "text",
+							"description": "当前页数"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/user/pager",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"user",
+						"pager"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": [
+				{
+					"id": "86b239ea-8d0e-4c70-9a78-e617d7cc9bfa",
+					"name": "前台我的团队列表查询-查询全部",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userGrade",
+									"value": "2",
+									"type": "text",
+									"description": " 用户等级  1、一级用户   2、二级用户。不写查全部",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/user/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"user",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 02:49:56 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":3,\"startRow\":1,\"endRow\":3,\"total\":3,\"pages\":1,\"list\":[{\"yhId\":\"1\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"1\",\"yhZh\":\"1\",\"yhMm\":\"\",\"yhCjr\":\"4\",\"cjsj\":\"5\",\"yhXgr\":\"6\",\"xgsj\":\"7\",\"yhXm\":\"8\",\"yhLx\":\"9\",\"yhXb\":\"10\",\"yhZjhm\":\"11\",\"yhMmyxq\":\"12\",\"yhZt\":\"13\",\"ddSfjx\":\"14\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"18\",\"yhZsyqm\":\"19\",\"yhYyyqm\":\"20\",\"yhIxySffp\":\"21\",\"yhSfyjz\":\"22\",\"yhFpms\":\"23\",\"yhSfsd\":\"0\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"yhId\":\"2\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"2\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"创建人\",\"cjsj\":\"2018-05-19 11:22:00\",\"yhXgr\":\"修改人\",\"xgsj\":\"2018-06-19 11:22:00\",\"yhXm\":\"张明\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******9999\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2493320796,2222420184&fm=58&bpow=1280&bpoh=1947\",\"yhBm\":\"奶茶公\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"1\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"0\",\"yhFpms\":\"0\",\"yhSfsd\":\"1\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"yhId\":\"3\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				},
+				{
+					"id": "769f1ad1-682d-4c9e-b9dd-f5a9b35294d3",
+					"name": "前台我的团队列表查询-查询二级用户",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userGrade",
+									"value": "2",
+									"type": "text",
+									"description": " 用户等级  1、一级用户   2、二级用户。不写查全部"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/user/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"user",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:29:18 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"yhId\":\"3\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				},
+				{
+					"id": "ec9befc0-d4f7-4906-8770-d511c573110c",
+					"name": "前台我的团队列表查询-查询一级用户",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userGrade",
+									"value": "1",
+									"type": "text",
+									"description": " 用户等级  1、一级用户   2、二级用户。不写查全部"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/user/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"user",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:29:02 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":2,\"startRow\":1,\"endRow\":2,\"total\":2,\"pages\":1,\"list\":[{\"yhId\":\"1\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"1\",\"yhZh\":\"1\",\"yhMm\":\"\",\"yhCjr\":\"4\",\"cjsj\":\"5\",\"yhXgr\":\"6\",\"xgsj\":\"7\",\"yhXm\":\"8\",\"yhLx\":\"9\",\"yhXb\":\"10\",\"yhZjhm\":\"11\",\"yhMmyxq\":\"12\",\"yhZt\":\"13\",\"ddSfjx\":\"14\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"18\",\"yhZsyqm\":\"19\",\"yhYyyqm\":\"20\",\"yhIxySffp\":\"21\",\"yhSfyjz\":\"22\",\"yhFpms\":\"23\",\"yhSfsd\":\"0\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"yhId\":\"2\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"2\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"创建人\",\"cjsj\":\"2018-05-19 11:22:00\",\"yhXgr\":\"修改人\",\"xgsj\":\"2018-06-19 11:22:00\",\"yhXm\":\"张明\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******9999\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2493320796,2222420184&fm=58&bpow=1280&bpoh=1947\",\"yhBm\":\"奶茶公\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"1\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"0\",\"yhFpms\":\"0\",\"yhSfsd\":\"1\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "前台我的订单",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userGrade",
+							"value": "2",
+							"type": "text",
+							"description": " 用户等级  1、一级用户   2、二级用户。不写查全部",
+							"disabled": true
+						},
+						{
+							"key": "pageSize",
+							"value": "10",
+							"type": "text",
+							"description": "每页大小"
+						},
+						{
+							"key": "pageNum",
+							"value": "1",
+							"type": "text",
+							"description": "当前页数"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/order/pager",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"order",
+						"pager"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": [
+				{
+					"id": "a054604e-7966-4a76-9e96-2153fdd08183",
+					"name": "前台我的订单-查询待缴费订单",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ddZt",
+									"value": "1",
+									"description": "订单状态(1、待缴费 2、已缴费 3、已退费)",
+									"type": "text"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/order/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"order",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:28:00 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":3,\"startRow\":1,\"endRow\":3,\"total\":3,\"pages\":1,\"list\":[{\"ddId\":\"2\",\"yhId\":\"2\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"2\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"创建人\",\"cjsj\":\"2018-05-19 11:22:00\",\"yhXgr\":\"修改人\",\"xgsj\":\"2018-06-19 11:22:00\",\"yhXm\":\"张明\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******9999\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2493320796,2222420184&fm=58&bpow=1280&bpoh=1947\",\"yhBm\":\"奶茶公\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"1\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"0\",\"yhFpms\":\"0\",\"yhSfsd\":\"1\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"ddId\":\"3\",\"yhId\":\"3\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"},{\"ddId\":\"5\",\"yhId\":\"5\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				},
+				{
+					"id": "3b56cacb-2812-41d0-8881-92ed626e7e2c",
+					"name": "前台我的订单-查询全部订单",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ddZt",
+									"value": "1",
+									"description": "订单状态(1、待缴费 2、已缴费 3、已退费)",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/order/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"order",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:26:53 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":4,\"startRow\":1,\"endRow\":4,\"total\":4,\"pages\":1,\"list\":[{\"ddId\":\"1\",\"yhId\":\"1\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"2\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"1\",\"yhZh\":\"1\",\"yhMm\":\"\",\"yhCjr\":\"4\",\"cjsj\":\"5\",\"yhXgr\":\"6\",\"xgsj\":\"7\",\"yhXm\":\"8\",\"yhLx\":\"9\",\"yhXb\":\"10\",\"yhZjhm\":\"11\",\"yhMmyxq\":\"12\",\"yhZt\":\"13\",\"ddSfjx\":\"14\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"18\",\"yhZsyqm\":\"19\",\"yhYyyqm\":\"20\",\"yhIxySffp\":\"21\",\"yhSfyjz\":\"22\",\"yhFpms\":\"23\",\"yhSfsd\":\"0\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"ddId\":\"2\",\"yhId\":\"2\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"2\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"创建人\",\"cjsj\":\"2018-05-19 11:22:00\",\"yhXgr\":\"修改人\",\"xgsj\":\"2018-06-19 11:22:00\",\"yhXm\":\"张明\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******9999\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2493320796,2222420184&fm=58&bpow=1280&bpoh=1947\",\"yhBm\":\"奶茶公\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"1\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"0\",\"yhFpms\":\"0\",\"yhSfsd\":\"1\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"ddId\":\"3\",\"yhId\":\"3\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"},{\"ddId\":\"5\",\"yhId\":\"5\",\"ddSfjf\":\"0\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhCjr\":\"1\",\"ddZt\":\"1\",\"ddZftd\":\"\",\"ddZfsj\":\"\",\"ddZfzt\":\"0\",\"ddZfje\":0.0,\"ddZfpz\":\"\",\"ddZfjg\":\"\",\"yhXm\":\"姓名\",\"ddBz\":\"\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "前台用户提现操作",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ttJe",
+							"value": "1",
+							"description": "提现金额(单位分)",
+							"type": "text"
+						},
+						{
+							"key": "yhkh",
+							"value": "4566",
+							"description": "银行卡号 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "khh",
+							"value": "56456",
+							"description": "开户行 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "txXm",
+							"value": "654654",
+							"description": "提现姓名 (必填)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/tx/save",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"tx",
+						"save"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": [
+				{
+					"id": "f8f636ec-6252-47da-be7e-42f9a9bcce65",
+					"name": "前台用户提现操作",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "ttJe",
+									"value": "1",
+									"description": "提现金额(单位分)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/tx/save",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"tx",
+								"save"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 08:18:30 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "前台用户提现查询",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ttZt",
+							"value": "2",
+							"type": "text",
+							"description": "状态：0 待审核 1已打款 2待打款 4无效",
+							"disabled": true
+						},
+						{
+							"key": "pageSize",
+							"value": "10",
+							"type": "text",
+							"description": "每页大小"
+						},
+						{
+							"key": "pageNum",
+							"value": "1",
+							"type": "text",
+							"description": "当前页数"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/tx/pager",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"tx",
+						"pager"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": [
+				{
+					"id": "a8eb83fc-f4b6-416a-920a-2f95fef71171",
+					"name": "前台我的团队列表查询-查询二级用户",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userGrade",
+									"value": "2",
+									"type": "text",
+									"description": " 用户等级  1、一级用户   2、二级用户。不写查全部"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/user/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"user",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:29:18 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":1,\"startRow\":1,\"endRow\":1,\"total\":1,\"pages\":1,\"list\":[{\"yhId\":\"3\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				},
+				{
+					"id": "78c11213-4b5a-456b-972d-c656db30a96c",
+					"name": "前台我的团队列表查询-查询全部",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userGrade",
+									"value": "2",
+									"type": "text",
+									"description": " 用户等级  1、一级用户   2、二级用户。不写查全部",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/user/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"user",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 02:49:56 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":3,\"startRow\":1,\"endRow\":3,\"total\":3,\"pages\":1,\"list\":[{\"yhId\":\"1\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"1\",\"yhZh\":\"1\",\"yhMm\":\"\",\"yhCjr\":\"4\",\"cjsj\":\"5\",\"yhXgr\":\"6\",\"xgsj\":\"7\",\"yhXm\":\"8\",\"yhLx\":\"9\",\"yhXb\":\"10\",\"yhZjhm\":\"11\",\"yhMmyxq\":\"12\",\"yhZt\":\"13\",\"ddSfjx\":\"14\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"18\",\"yhZsyqm\":\"19\",\"yhYyyqm\":\"20\",\"yhIxySffp\":\"21\",\"yhSfyjz\":\"22\",\"yhFpms\":\"23\",\"yhSfsd\":\"0\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"yhId\":\"2\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"2\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"创建人\",\"cjsj\":\"2018-05-19 11:22:00\",\"yhXgr\":\"修改人\",\"xgsj\":\"2018-06-19 11:22:00\",\"yhXm\":\"张明\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******9999\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2493320796,2222420184&fm=58&bpow=1280&bpoh=1947\",\"yhBm\":\"奶茶公\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"1\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"0\",\"yhFpms\":\"0\",\"yhSfsd\":\"1\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"yhId\":\"3\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"1\",\"yhSsjid\":\"448198498500739072\",\"userGrade\":\"\",\"userDetail\":\"\"}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				},
+				{
+					"id": "812c864b-fd92-41fd-a7b5-eea23094b0f5",
+					"name": "前台我的团队列表查询-查询一级用户",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userGrade",
+									"value": "1",
+									"type": "text",
+									"description": " 用户等级  1、一级用户   2、二级用户。不写查全部"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"type": "text",
+									"description": "每页大小"
+								},
+								{
+									"key": "pageNum",
+									"value": "1",
+									"type": "text",
+									"description": "当前页数"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/user/pager",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"user",
+								"pager"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 May 2018 03:29:02 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [],
+					"body": "{\"code\":200,\"message\":\"请求成功！\",\"page\":{\"pageNum\":1,\"pageSize\":10,\"size\":2,\"startRow\":1,\"endRow\":2,\"total\":2,\"pages\":1,\"list\":[{\"yhId\":\"1\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"1\",\"yhZh\":\"1\",\"yhMm\":\"\",\"yhCjr\":\"4\",\"cjsj\":\"5\",\"yhXgr\":\"6\",\"xgsj\":\"7\",\"yhXm\":\"8\",\"yhLx\":\"9\",\"yhXb\":\"10\",\"yhZjhm\":\"11\",\"yhMmyxq\":\"12\",\"yhZt\":\"13\",\"ddSfjx\":\"14\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"18\",\"yhZsyqm\":\"19\",\"yhYyyqm\":\"20\",\"yhIxySffp\":\"21\",\"yhSfyjz\":\"22\",\"yhFpms\":\"23\",\"yhSfsd\":\"0\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}},{\"yhId\":\"2\",\"yhZjhm\":\"320999999911111111\",\"yhSjhm\":\"13311111111\",\"yhSfjsz\":\"1\",\"yhXm\":\"姓名\",\"cjsj\":\"2018-05-21 19:02:08\",\"yhSjid\":\"448198498500739072\",\"yhSsjid\":\"\",\"userGrade\":\"1\",\"userDetail\":{\"id\":\"2\",\"yhZh\":\"2\",\"yhMm\":\"\",\"yhCjr\":\"创建人\",\"cjsj\":\"2018-05-19 11:22:00\",\"yhXgr\":\"修改人\",\"xgsj\":\"2018-06-19 11:22:00\",\"yhXm\":\"张明\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******9999\",\"yhMmyxq\":\"\",\"yhZt\":\"0\",\"ddSfjx\":\"0\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2493320796,2222420184&fm=58&bpow=1280&bpoh=1947\",\"yhBm\":\"奶茶公\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"1\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"0\",\"yhFpms\":\"0\",\"yhSfsd\":\"1\",\"yhZsyqmImg\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}}],\"prePage\":0,\"nextPage\":0,\"isFirstPage\":true,\"isLastPage\":true,\"hasPreviousPage\":false,\"hasNextPage\":false,\"navigatePages\":8,\"navigatepageNums\":[1],\"navigateFirstPage\":1,\"navigateLastPage\":1,\"firstPage\":1,\"lastPage\":1},\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "定时任务-佣金分派",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip}}/job/orderFulfil",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"job",
+						"orderFulfil"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": []
+		},
+		{
+			"name": "定时任务-支付回调",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ddId",
+							"value": "449577604513529856",
+							"description": "支付的订单ID",
+							"type": "text"
+						},
+						{
+							"key": "ddZfpz",
+							"value": "alipay-20180525001",
+							"description": "支付凭证",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/alipay/orderFulfil",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"alipay",
+						"orderFulfil"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": []
+		},
+		{
+			"name": "用户申请教练员",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{apptoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "{{userid}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "yhXm",
+							"value": "xm",
+							"description": "用户姓名 （必填）",
+							"type": "text"
+						},
+						{
+							"key": "yhZjhm",
+							"value": "zjhm",
+							"description": "身份证号 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "yhSjhm",
+							"value": "sjhm",
+							"description": "手机号码 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "jlJl",
+							"value": "10",
+							"description": "教练驾龄 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "jlQu",
+							"value": "qu",
+							"description": "教练所属区域 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "jlZml",
+							"value": "zml",
+							"description": "教练证明人 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "jlJjlxr",
+							"value": "lxr",
+							"description": "教练紧急联系人 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "jlJjlxrdh",
+							"value": "dh",
+							"description": "教练紧急联系人电话 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "jlZz",
+							"value": "zz",
+							"description": "教练住址 (必填)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/updatelx",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"updatelx"
+					]
+				},
+				"description": "不需要登录"
+			},
+			"response": [
+				{
+					"id": "563628c0-b29f-4d9c-a321-405b48c6447a",
+					"name": "用户申请教练员",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}"
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "yhXm",
+									"value": "xm",
+									"description": "用户姓名 （必填）",
+									"type": "text"
+								},
+								{
+									"key": "yhZjhm",
+									"value": "zjhm",
+									"description": "用户身份证号 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "yhSjhm",
+									"value": "sjhm",
+									"description": "用户手机号码 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "jlJl",
+									"value": "23",
+									"description": "教练驾龄 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "jlQu",
+									"value": "jlQu",
+									"description": "教练所属区域 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "jlZml",
+									"value": "jlZml",
+									"description": "教练证明人姓名  (必填)",
+									"type": "text"
+								},
+								{
+									"key": "jlJjlxr",
+									"value": "jlJjlxr",
+									"description": "教练紧急联系人 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "jlJjlxrdh",
+									"value": "jlJjlxrdh",
+									"description": "教练紧急联系人电话 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "jlZz",
+									"value": "jlZz",
+									"description": "教练住址 (必填)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/ptyh/updatelx",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"ptyh",
+								"updatelx"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 29 May 2018 02:30:24 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "91DEE662A73966C123028C04168C5BE6",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "app端 展示教练信息或者学员列表",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{yhtoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "449591122332692096"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "pageNum",
+							"value": "1",
+							"description": "当前页 默认为1  教练端登录时需要分页展示学员列表",
+							"type": "text"
+						},
+						{
+							"key": "pageSize",
+							"value": "10",
+							"description": "每页大小 默认为10 教练端登录所需",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/ptyh/ptyhlist",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"ptyh",
+						"ptyhlist"
+					]
+				},
+				"description": "学员端返回数据应为没有教练简介字段，所以将教练简介字段放入到 用户密码字段中"
+			},
+			"response": [
+				{
+					"id": "cadf8dce-cd0e-4f7a-a2e3-4b8e075e8f2f",
+					"name": "app端 展示教练信息或者学员列表",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"disabled": false
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}",
+								"disabled": false
+							},
+							{
+								"key": "userid",
+								"value": "449591122482692096",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pageNum",
+									"value": "1",
+									"description": "当前页 默认为1  教练端登录时需要分页展示学员列表",
+									"type": "text"
+								},
+								{
+									"key": "pageSize",
+									"value": "1",
+									"description": "每页大小 默认为10 教练端登录所需",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/ptyh/ptyhlist",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"ptyh",
+								"ptyhlist"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 31 May 2018 06:09:58 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 11:14:07 GMT+0800 (中国标准时间)",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "91DEE662A73966C123028C04168C5BE6",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+				},
+				{
+					"id": "325c1708-7e5f-49ef-994b-2f09177f6c4a",
+					"name": "app端 展示教练信息或者学员列表 (学员端)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"disabled": false
+							},
+							{
+								"key": "token",
+								"value": "{{yhtoken}}",
+								"disabled": false
+							},
+							{
+								"key": "userid",
+								"value": "449591122332692096",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/ptyh/ptyhlist",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"ptyh",
+								"ptyhlist"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 30 May 2018 05:46:32 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 11:14:07 GMT+0800 (中国标准时间)",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "91DEE662A73966C123028C04168C5BE6",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"result\":[{\"id\":\"449591122482692096\",\"yhZh\":\"13311111111\",\"yhMm\":\"教练简介\",\"yhCjr\":\"\",\"cjsj\":\"2018-05-25 15:14:36\",\"yhXgr\":\"\",\"xgsj\":\"\",\"yhXm\":\"姓名\",\"yhLx\":\"2\",\"yhXb\":\"1\",\"yhZjhm\":\"320******1111\",\"yhMmyxq\":\"\",\"yhZt\":\"1\",\"ddSfjx\":\"1\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"\",\"yhZsyqm\":\"449609243398504448\",\"yhYyyqm\":\"123456789\",\"yhZsyqmImg\":\"449609243398504448.png\",\"yhIxySffp\":\"0\",\"yhSfyjz\":\"1\",\"yhFpms\":\"\",\"yhSfsd\":\"0\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}],\"success\":true}"
+				},
+				{
+					"id": "d572f0a8-13fa-495e-b7b6-136d841b154a",
+					"name": "app端 展示教练信息或者学员列表 （教练端）",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"disabled": false
+							},
+							{
+								"key": "token",
+								"value": "{{apptoken}}",
+								"disabled": false
+							},
+							{
+								"key": "userid",
+								"value": "{{userid}}",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pageNum",
+									"value": "1",
+									"description": "当前页  (默认为1) 当用户为教练时需要传入，分页展示学员列表",
+									"type": "text"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"description": "每页大小 （默认为10） 用户为教练时使用",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/ptyh/ptyhlist",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"ptyh",
+								"ptyhlist"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 30 May 2018 05:39:38 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 11:14:07 GMT+0800 (中国标准时间)",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "91DEE662A73966C123028C04168C5BE6",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"result\":[{\"id\":\"449591122332692096\",\"yhZh\":\"13365985412\",\"yhMm\":\"\",\"yhCjr\":\"测试人员\",\"cjsj\":\"2018-05-29 15:28:45\",\"yhXgr\":\"\",\"xgsj\":\"\",\"yhXm\":\"xinming\",\"yhLx\":\"1\",\"yhXb\":\"1\",\"yhZjhm\":\"320******7899\",\"yhMmyxq\":\"\",\"yhZt\":\"1\",\"ddSfjx\":\"1\",\"yhOpenId\":\"\",\"yhAlipayId\":\"\",\"yhTx\":\"\",\"yhBm\":\"\",\"yhZsyqm\":\"\",\"yhYyyqm\":\"\",\"yhZsyqmImg\":\"\",\"yhIxySffp\":\"\",\"yhSfyjz\":\"\",\"yhFpms\":\"\",\"yhSfsd\":\"\",\"telIdentifying\":\"\",\"addType\":\"\",\"imgList\":\"\",\"imgTypeList\":\"\"}],\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "重置密码短信下发",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{yhtoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "449591122332692096"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "zh",
+							"value": "13365985412",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/sendSMScz",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"sendSMScz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "用户重置密码接口",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{yhtoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "449591122332692096"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "tel",
+							"value": "13365985412",
+							"description": "用户手机号 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "654825",
+							"description": "验证码 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "newPwd",
+							"value": "123456",
+							"description": "新密码 (必填)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/resetpwd",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"resetpwd"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "5a90b626-3b24-415d-9188-0eaa38aac29c",
+					"name": "用户重置密码接口",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"disabled": false
+							},
+							{
+								"key": "token",
+								"value": "{{yhtoken}}",
+								"disabled": false
+							},
+							{
+								"key": "userid",
+								"value": "449591122332692096",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "tel",
+									"value": "13365985412",
+									"description": "用户手机号 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "654825",
+									"description": "验证码 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "newPwd",
+									"value": "123456",
+									"description": "新密码 (必填)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/resetpwd",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"resetpwd"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 30 May 2018 07:14:38 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 11:14:07 GMT+0800 (中国标准时间)",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "91DEE662A73966C123028C04168C5BE6",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "获取产品类型",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{yhtoken}}"
+					},
+					{
+						"key": "userid",
+						"value": "449591122332692096"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "cpType",
+							"value": "1",
+							"description": "产品类型",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/cp/getcplx",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"cp",
+						"getcplx"
+					]
+				},
+				"description": "方法请求类型 GET||POST"
+			},
+			"response": [
+				{
+					"id": "623f9c40-f73d-4e12-ace3-3eae50225934",
+					"name": "获取产品类型",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text",
+								"disabled": false
+							},
+							{
+								"key": "token",
+								"value": "{{yhtoken}}",
+								"type": "text",
+								"disabled": false
+							},
+							{
+								"key": "userid",
+								"value": "449591122332692096",
+								"type": "text",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cpType",
+									"value": "1",
+									"description": "产品类型",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/cp/getcplx",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"cp",
+								"getcplx"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 30 May 2018 09:26:27 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 11:14:07 GMT+0800 (中国标准时间)",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "91DEE662A73966C123028C04168C5BE6",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"result\":{\"id\":\"2\",\"cpMc\":\"产品名称2\",\"cpType\":\"1\",\"cpJl\":\"2500\",\"cpYj\":\"0\",\"cpYjyj\":10.0,\"cpRjyj\":5.0,\"cpYx\":\"1\",\"cjsj\":\"20180529170459\",\"cjr\":\"创建人\",\"shr\":\"\",\"shsj\":\"\",\"cpSh\":\"1\"},\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "学员修改驾照为有驾照",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": [
+				{
+					"id": "294db2f7-df8c-47c5-9141-eea8e4f396dc",
+					"name": "学员修改驾照为有驾照",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"disabled": false
+							},
+							{
+								"key": "token",
+								"value": "{{yhtoken}}",
+								"disabled": false
+							},
+							{
+								"key": "userid",
+								"value": "449591122332692096",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "yhSfyjz",
+									"value": "1",
+									"description": "用户是否有驾照 0 为无 1为有  (必填)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/ptyh/updatesfyjz",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"ptyh",
+								"updatesfyjz"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 31 May 2018 06:09:42 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 11:14:07 GMT+0800 (中国标准时间)",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "91DEE662A73966C123028C04168C5BE6",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+				}
+			]
+		},
+		{
+			"name": "学员上传成绩单，并对教练进行评价",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "token",
+						"value": "{{yhtoken}}",
+						"disabled": true
+					},
+					{
+						"key": "userid",
+						"value": "449591122332692096",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "jlId",
+							"value": "449591122332692096",
+							"description": "教练id (必填)",
+							"type": "text"
+						},
+						{
+							"key": "xySfhg",
+							"value": "0",
+							"description": "学员是否合格 0：否 1：是 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "kmBm",
+							"value": "1",
+							"description": "科目编码 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "imgUrl",
+							"value": "/123.jpg",
+							"description": "图片路径 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "jlPf",
+							"value": "1",
+							"description": "教练评分 (必填)",
+							"type": "text"
+						},
+						{
+							"key": "jlPl",
+							"value": "sadfhlkashdjlf",
+							"description": "评论 ",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip}}/app/cjd/save",
+					"host": [
+						"{{ip}}"
+					],
+					"path": [
+						"app",
+						"cjd",
+						"save"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "3fad0ff3-8fd6-4e4a-8a26-fdbb16e7210c",
+					"name": "学员上传成绩单，并对教练进行评价",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"disabled": false
+							},
+							{
+								"key": "token",
+								"value": "{{yhtoken}}",
+								"disabled": false
+							},
+							{
+								"key": "userid",
+								"value": "449591122332692096",
+								"disabled": false
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "jlId",
+									"value": "449591122332692096",
+									"description": "教练id (必填)",
+									"type": "text"
+								},
+								{
+									"key": "xySfhg",
+									"value": "0",
+									"description": "学员是否合格 0：否 1：是 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "kmBm",
+									"value": "1",
+									"description": "科目编码 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "imgUrl",
+									"value": "/123.jpg",
+									"description": "图片路径 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "jlPf",
+									"value": "1",
+									"description": "教练评分 (必填)",
+									"type": "text"
+								},
+								{
+									"key": "jlPl",
+									"value": "sadfhlkashdjlf",
+									"description": "评论 ",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip}}/app/cjd/save",
+							"host": [
+								"{{ip}}"
+							],
+							"path": [
+								"app",
+								"cjd",
+								"save"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 31 May 2018 07:13:22 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 11:14:07 GMT+0800 (中国标准时间)",
+							"httpOnly": true,
+							"domain": "127.0.0.1",
+							"path": "/",
+							"secure": false,
+							"value": "91DEE662A73966C123028C04168C5BE6",
+							"key": "JSESSIONID"
+						}
+					],
+					"body": "{\"code\":200,\"message\":\"操作成功\",\"success\":true}"
+				}
+			]
+		}
+	]
+}

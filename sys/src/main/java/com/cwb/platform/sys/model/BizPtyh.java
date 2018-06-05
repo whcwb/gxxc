@@ -158,11 +158,22 @@ public class BizPtyh implements Serializable {
     private String yhFpms;
 
     /**
+     * 用户认证状态失败描述
+     */
+    @Column(name = "YH_ZT_MS")
+    private String yhZtMs;
+
+
+    /**
      * 用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      */
     @Column(name = "YH_SFSD")
     private String yhSfsd;
-
+    /**
+     * 教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+     */
+    @Column(name = "YH_JLSH")
+    private String yhJlsh;
     /**
      * 手机验证码
      */
@@ -187,6 +198,14 @@ public class BizPtyh implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhZtMs() {
+        return yhZtMs;
+    }
+
+    public void setYhZtMs(String yhZtMs) {
+        this.yhZtMs = yhZtMs;
+    }
 
     public String getYhZsyqmImg() {
         return yhZsyqmImg;
@@ -658,6 +677,14 @@ public class BizPtyh implements Serializable {
      */
     public void setYhSfsd(String yhSfsd) {
         this.yhSfsd = yhSfsd;
+    }
+
+    public String getYhJlsh() {
+        return yhJlsh;
+    }
+
+    public void setYhJlsh(String yhJlsh) {
+        this.yhJlsh = yhJlsh;
     }
 
     public enum InnerColumn {

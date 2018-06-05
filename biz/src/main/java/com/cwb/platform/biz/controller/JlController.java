@@ -1,29 +1,27 @@
 package com.cwb.platform.biz.controller;
 
 import com.cwb.platform.biz.model.BizJl;
-<<<<<<< HEAD
-import com.cwb.platform.biz.model.BizZh;
 import com.cwb.platform.biz.service.JlService;
-import com.cwb.platform.biz.service.ZhService;
-=======
-import com.cwb.platform.biz.service.JlService;
->>>>>>> ae32173d4149b92b4d44899eb17c98a59e47afdd
-import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
+import com.cwb.platform.sys.base.QueryController;
+import com.cwb.platform.sys.model.BizPtyh;
+import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< HEAD
-=======
+import java.util.List;
+
 /**
  * 教练扩展表
  *
  */
->>>>>>> ae32173d4149b92b4d44899eb17c98a59e47afdd
 @RestController
 @RequestMapping("/api/jl")
-public class JlController extends BaseController<BizJl,String>{
+public class JlController extends QueryController<BizJl,String> {
+//public class JlController {
     @Autowired
     private JlService service;
 
@@ -31,9 +29,21 @@ public class JlController extends BaseController<BizJl,String>{
     protected BaseService<BizJl, String> getBaseService() {
         return service;
     }
-<<<<<<< HEAD
-=======
 
 
->>>>>>> ae32173d4149b92b4d44899eb17c98a59e47afdd
+    /**
+     * 更新教练认证状态
+     *
+     * @param obd
+     * @return
+     */
+    @PostMapping("/updateyhrz")
+    public ApiResponse<String> updateYhRz(BizPtyh obd) {
+        return service.updateYhRz(obd);
+    }
+
+    @RequestMapping(value="/query", method={RequestMethod.GET})
+    public ApiResponse<List<BizJl>> query(BizJl entity){
+        return ApiResponse.success(service.query(entity));
+    }
 }

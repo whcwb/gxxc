@@ -8,9 +8,12 @@
 				<Button type="info" @click="exportData">
 					<Icon type="ios-download-outline"></Icon>
 				</Button>
+				<Button type="info" @click="allot">
+					<Icon type="person"></Icon>
+				</Button>
 		</Row>
 		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
 		</Row>
 		<Row class="margin-top-10 pageSty">
 			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
@@ -23,12 +26,13 @@
 <script>
     import formData from './formData.vue'
     import sublist from './sublist.vue'
+    import audit from './audit.vue'
     import allot from './allot.vue'
 	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems,sublist,allot},
+        components: {formData,searchItems,sublist,allot,audit},
         data() {
             return {
                 v:this,
@@ -39,14 +43,29 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "#",  type: 'index'},
+                    {title: "",  type: 'selection',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '类型',key:'yhLx',dict:'ZDCLK0041',searchType:'dict'},
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
-                    {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},
+                    {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
+                    {title: '锁定',key:'yhSfsd',
+                        render:(h,p)=>{
+                            return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
+                                let rzt = value ? '1':'0'
+                                let v = this;
+                                this.$http.post(this.apis.student.updateSfsd,{'id':p.row.id,'yhSfsd':rzt}).then((res) =>{
+                                    if(res.code==200){
+                                        this.$Message.success(res.message);
+                                    }else{
+                                        this.$Message.error(res.message);
+                                    }
+                                    v.util.getPageData(v)
+                                })
+                            })
+                        }
+                    },
                     {
                         title: '操作',
                         key: 'action',
@@ -61,16 +80,14 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
                                 }),
-                                this.util.buildButton(this,h,'info','android-home','分配',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'allot'
-                                }),
                             ]);
                         }
                     }
                 ],
                 pageData: [],
+				choosedData:[],
                 form: {
+                    yhLx:"1",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
@@ -82,6 +99,26 @@
             this.util.initTable(this)
         },
         methods: {
+            selectionChange(e){
+				this.choosedData = e;
+			},
+            allot(){
+                if (this.choosedData.length == 0){
+                    this.$Message.error("请选择学员")
+					return;
+				}
+				for (let r of this.choosedData){
+                    if (r.yhIxySffp == '1'){
+                        this.$Message.error("请选择未分配的学员")
+                        return;
+					}
+                    if (r.ddSfjx != '1'){
+                        this.$Message.error("请选择已缴费的学员")
+                        return;
+					}
+				}
+				this.componentName = allot;
+			},
             pageChange(event) {
                 this.util.pageChange(this, event);
             },

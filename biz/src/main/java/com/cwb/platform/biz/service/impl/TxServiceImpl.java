@@ -9,6 +9,7 @@ import com.cwb.platform.biz.service.TxService;
 import com.cwb.platform.biz.service.YjmxService;
 import com.cwb.platform.biz.service.ZhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -44,6 +45,17 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     @Override
     protected Class<?> getEntityCls(){
         return BizTx.class;
+    }
+
+    /**
+     * 分页补充
+     * @param condition
+     * @return
+     */
+    @Override
+    public boolean fillPagerCondition(LimitedCondition condition){
+        condition.setOrderByClause("TT_SJ desc");
+        return true;
     }
 
     /**
@@ -93,7 +105,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         // 佣金明细
         BizYjmx bizYjmx = yjmxService.findById(tx.getYjId());
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(bizYjmx),"根据佣金明细id无法查询到佣金明细");
-        RuntimeCheck.ifTrue(StringUtils.equals(bizYjmx.getZjFs(),"-1"),"必须是提现才能修改提现状态");
+        RuntimeCheck.ifFalse(StringUtils.equals(bizYjmx.getZjFs(),"-1"),"必须是提现才能修改提现状态");
 
 
 
@@ -118,15 +130,20 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
      * @param user
      * @return
      */
-    public ApiResponse<String> saveUserDraw(Double ttje, String yhkh, String khh, String txXm, BizPtyh user){
+    public ApiResponse<String> saveUserDraw(Double ttje, String yhkh, String khh, String txXm,String ttFs, BizPtyh user){
         String userId=user.getId();//获取用户
         BizZh userZh=zhService.findById(userId);
         RuntimeCheck.ifFalse(userZh != null && userZh.getYhZhye() >= ttje,"提现金额不能大于余额");
         RuntimeCheck.ifBlank(yhkh, "银行卡号不能为空");
-        RuntimeCheck.ifBlank(khh, "开户行不能为空");
+//        RuntimeCheck.ifBlank(khh, "开户行不能为空");
 
         String yjid=genId();
         BizTx newEntity=new BizTx();
+        if(StringUtils.isEmpty(ttFs)){
+            newEntity.setTtFs("2");
+        }else {
+            newEntity.setTtFs(ttFs);
+        }
         newEntity.setId(genId());
         newEntity.setYhId(userId);
         newEntity.setYhMc(user.getYhXm());
@@ -138,6 +155,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newEntity.setTtYhkh(yhkh);
         newEntity.setTtKhh(khh);
         newEntity.setTxXm(txXm);
+
        int i= entityMapper.insert(newEntity);
        if(i==1){
            //插入流水表
@@ -148,6 +166,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
             newBizYjmx.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
             newBizYjmx.setCjsj(DateUtils.getNowTime());
             newBizYjmx.setZjZt("0");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+           newBizYjmx.setMxlx("4");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
            yjmxService.save(newBizYjmx);
        }
         // 更新账户表

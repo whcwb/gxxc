@@ -42,7 +42,8 @@ spring:
 mybatis:
   configLocation: classpath:mybatis/MapperConfig.xml
   mapperLocations: classpath:mybatis/sql/*.xml,classpath:mybatis/sql/extend/*.xml
-
+#  configuration:
+#    map-underscore-to-camel-case: true
 logging:
   config: classpath:log4j2.xml
 
@@ -52,19 +53,19 @@ mapper:
 server:
   port: 81
 
-img_url: http://127.0.0.1:80
+staticPath: D:\2003\
 
+img_url: http://192.168.31.228:8080
 
-#一级金额百分比
-one_eevel_money_scale: 0.32
-
-#二级金额百分比
-two_eevel_money_scale: 0.16
-#订单总金额  用户在分派佣金时，检查支付宝、微信收到的真实金额。如果不对，就要告警。
+#学费类型的产品金额不能低于该值，如果低于该值，将无法插入。
 order_money: 2500
 
 logo_file_url: D:\2003\logo.png
 
 qr_code_file_url: D:\2003\
+#注册下发短信
+appSendSMSRegister: app_sendSMS_register
+#重置 下发短信
+appSendSMSResetting: app_sendSMS_resetting
 
 

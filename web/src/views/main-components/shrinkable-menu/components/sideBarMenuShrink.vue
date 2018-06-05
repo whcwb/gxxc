@@ -18,7 +18,7 @@
                                         <Icon type="arrow-right-b"></Icon>
                                     </DropdownItem>
                                     <DropdownMenu slot="list">
-                                        <DropdownItem v-for = "childs in child.children" :name="childs.name">
+                                        <DropdownItem v-for = "childs in child.children" :name="childs.name" :key="childs.name">
                                             <Icon :type="childs.icon"></Icon>
                                             <span style="padding-left:10px;">
                                                 {{ itemTitle(childs) }}

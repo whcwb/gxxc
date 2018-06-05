@@ -72,7 +72,21 @@ public class BizHd implements Serializable {
     @Column(name = "HD_XGR")
     private String hdXgr;
 
+    /**
+     * 活动区域
+     */
+    @Column(name = "HD_QY")
+    private String hdQy;
+
     private static final long serialVersionUID = 1L;
+
+    public String getHdQy() {
+        return hdQy;
+    }
+
+    public void setHdQy(String hdQy) {
+        this.hdQy = hdQy;
+    }
 
     /**
      * 获取主键id
@@ -264,6 +278,7 @@ public class BizHd implements Serializable {
         hdTj("HD_TJ"),
         hdSx("HD_SX"),
         hdxgsj("HD_XGSJ"),
+        hdQy("HD_QY"),
         hdxgr("HD_XGR");
 
         private final String column;

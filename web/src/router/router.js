@@ -135,18 +135,32 @@ export let appRouter = [
 				component: () => import('@/views/whdx/student/list')
 			},
 			{
+				path: 'student-verify',
+				icon: 'android-clipboard',
+				name: 'student-verify',
+                meta: { title: '学员认证' },
+				component: () => import('@/views/whdx/student/verify')
+			},
+			{
+				path: 'teacher-list',
+				icon: 'android-clipboard',
+				name: 'teacher-list',
+                meta: { title: '教练列表' },
+				component: () => import('@/views/whdx/teacher/list')
+			},
+			{
+				path: 'teacher-verify',
+				icon: 'android-clipboard',
+				name: 'teacher-verify',
+                meta: { title: '教练审核' },
+				component: () => import('@/views/whdx/teacher/verify')
+			},
+			{
 				path: 'hd-jx',
 				icon: 'android-clipboard',
 				name: 'hd-jx',
                 meta: { title: '驾校资料' },
 				component: () => import('@/views/whdx/hd/jx')
-			},
-			{
-				path: 'student-list',
-				icon: 'android-clipboard',
-				name: 'student-list',
-                meta: { title: '训练场资料' },
-				component: () => import('@/views/whdx/student/list')
 			},
 			{
 				path: 'order-list',
@@ -168,6 +182,13 @@ export let appRouter = [
 				name: 'create_news',
                 meta: { title: '新建资讯' },
 				component: () => import('@/views/whdx/hd/create.vue')
+			},
+			{
+				path: 'tx',
+				icon: 'android-clipboard',
+				name: 'tx',
+                meta: { title: '提现管理' },
+				component: () => import('@/views/whdx/tx/index.vue')
 			},
 		]
 	},

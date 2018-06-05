@@ -19,7 +19,11 @@ public class ExtendInterceptor extends BaseWebConfigure {
 		//APP用户鉴权
 		registry.addInterceptor(new AppInterceptor(redisDao))
 		.addPathPatterns("/app/**")
-				.excludePathPatterns("/app/login","/app/ptyh/save","/app/ptyh/wxlogin","/app/sendSMS");//白名单  (前台登录、用户注册、微信登录、下发手机验证码)
+				.excludePathPatterns("/app/login","/app/ptyh/save","/app/ptyh/wxlogin","/app/sendSMSzc"
+						,"/app/sendSMScz"
+						,"/app/yzyym"
+						,"/app/validateSms"
+						,"/app/resetpwd");//白名单  (前台登录、用户注册、微信登录、下发手机验证码)
 		//SYS系统管理鉴权
 		registry.addInterceptor(new AccessInterceptor(redisDao))
 				.addPathPatterns("/api/**")

@@ -1,0 +1,138 @@
+<template>
+    <div>
+      <div v-if="imgUrl!=''"
+          style="text-align: center">
+          <img :src="imgUrl" width="120" height="120">
+      </div>
+    <Upload
+      v-else
+      ref="upload"
+      :show-upload-list="false"
+      :default-file-list="defaultList"
+      :format="['jpg','jpeg','png']"
+      :max-size="20480"
+      :on-success="handleSuccess"
+      :on-error="handleError"
+      :on-format-error="handleFormatError"
+      :on-exceeded-size="handleMaxSize"
+      :before-upload="handleBeforeUpload"
+      multiple
+      type="drag"
+      action="http://47.98.39.45:9086/upload"
+      style="border: none">
+      <div align="center">
+        <img :src="demoImg" width="120" height="120">
+      </div>
+    </Upload>
+    </div>
+</template>
+<script>
+  import {Card,Upload ,Modal,Icon} from 'iview'
+  export default {
+    name:'img',
+    components:{
+      Card, Upload,Modal,Icon
+    },
+    props:{
+      demoImg:{
+        type:String,
+        default:''
+      },
+      imgUrl:{
+        type:String,
+        default:''
+      },
+    },
+    data () {
+      return {
+        url:this.apis.getImgUrl,
+        defaultList: [
+        ],
+        uploadList: []
+      }
+    },
+    methods: {
+      handleRemove (file) {//移除
+        const fileList = this.$refs.upload.fileList;
+        this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+      },
+      handleSuccess (res, file) {
+        console.log('文件上传成功')
+        console.log(res)
+        console.log(file)
+        this.imgUrl=this.url+res.message
+      },
+      handleError(res,file){
+        console.log('文件上传失败')
+        console.log(res)
+        console.log(file)
+      },
+      handleFormatError (file) {
+        console.log({
+          title: 'The file format is incorrect',
+          desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+        });
+      },
+      handleMaxSize (file) {
+        console.log('File  ' + file.name + ' 文件太大了 2M.');
+      },
+      handleBeforeUpload () {
+        const check = this.uploadList.length < 5;
+        if (!check) {
+          console.log({
+            title: 'Up to five pictures can be uploaded.'
+          });
+        }
+        return check;
+      }
+    },
+    mounted () {
+      this.uploadList = this.$refs.upload.fileList;
+    }
+  }
+</script>
+<style>
+  .ivu-upload-drag{
+   border: none;
+  }
+  .ivu-upload-drag:hover{
+    border: none;
+  }
+  .demo-upload-list{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    /*border: 1px solid transparent;*/
+    border: none;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+    box-shadow: 0 1px 1px rgba(0,0,0,.2);
+    margin-right: 4px;
+  }
+  .demo-upload-list img{
+    width: 100%;
+    height: 100%;
+  }
+  .demo-upload-list-cover{
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,.6);
+  }
+  .demo-upload-list:hover .demo-upload-list-cover{
+    display: block;
+  }
+  .demo-upload-list-cover i{
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0 2px;
+  }
+</style>

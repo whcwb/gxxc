@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 二维码生成
+ * 二维码生成 工具类
  * Created by Administrator on 2018/5/23.
  */
 public class ZXingCode {
@@ -38,9 +38,9 @@ public class ZXingCode {
     };
 
     public static void main(String[] args) throws WriterException {
-        File logoFile = new File("D://2003/logo.png");
-        File QrCodeFile = new File("D://2003/05.png");
-        String url = "baidu.com";
+        File logoFile = new File("D://222.jpg");
+        File QrCodeFile = new File("D://2003/123456789.png");
+        String url = "123456789";
         String note = "";
         drawLogoQRCode(logoFile, QrCodeFile, url, note);
     }
@@ -111,7 +111,7 @@ public class ZXingCode {
 
             image.flush();
 
-            ImageIO.write(image, "png", codeFile); // TODO
+            ImageIO.write(image, "png", codeFile); //
         } catch (Exception e) {
             e.printStackTrace();
         }

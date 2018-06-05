@@ -15,8 +15,8 @@ import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.commonUtil.ZXingCode;
-import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +28,11 @@ import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+//import java.math.BigDecimal;
 
 @Service
 public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements JobService {
@@ -52,17 +53,10 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
     @Autowired
     private CpService cpService;
 
-    @Value("${one_eevel_money_scale}")
-    private String oneEevelMoneyScale;
-    @Value("${two_eevel_money_scale}")
-    private String twoEevelMoneyScale;
     @Value("${logo_file_url}")
     private String logoFileUrl;
     @Value("${qr_code_file_url}")
     private String qrCodeFileUrl;
-
-    @Value("${order_money}")
-    private String orderMoney;
 
     @Autowired
     private ZhService zhService;
@@ -97,22 +91,22 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
         if (list == null || list.isEmpty()) {
             log.debug("未查到订单，处理结束");
         }
-        RuntimeCheck.ifTrue(list == null || list.isEmpty(), "未查到订单，处理结束");
-        if (StringUtils.isBlank(oneEevelMoneyScale)) {
-            log.debug("一级比例不能为空");
-        }
-        RuntimeCheck.ifBlank(oneEevelMoneyScale, "一级比例不能为空");
-        if (StringUtils.isBlank(twoEevelMoneyScale)) {
-            log.debug("二级比例不能为空");
-        }
-        RuntimeCheck.ifBlank(twoEevelMoneyScale, "二级比例不能为空");
+//        RuntimeCheck.ifTrue(list == null || list.isEmpty(), "未查到订单，处理结束");
+//        if (StringUtils.isBlank(oneEevelMoneyScale)) {
+//            log.debug("一级比例不能为空");
+//        }
+//        RuntimeCheck.ifBlank(oneEevelMoneyScale, "一级比例不能为空");
+//        if (StringUtils.isBlank(twoEevelMoneyScale)) {
+//            log.debug("二级比例不能为空");
+//        }
+//        RuntimeCheck.ifBlank(twoEevelMoneyScale, "二级比例不能为空");
 
-        BigDecimal oneEevelMoney = new BigDecimal(oneEevelMoneyScale);
-        BigDecimal twoEevelMoney = new BigDecimal(twoEevelMoneyScale);
-        if (oneEevelMoney.add(twoEevelMoney).doubleValue() >= 1) {
-            log.debug("系统配置一级比例：" + oneEevelMoneyScale + " 一级比例：" + twoEevelMoneyScale + " 之和大于1。系统禁止分派佣金！");
-        }
-        RuntimeCheck.ifTrue(oneEevelMoney.add(twoEevelMoney).doubleValue() >= 1, "系统配置一级比例：" + oneEevelMoneyScale + " 一级比例：" + twoEevelMoneyScale + " 之和大于1。系统禁止分派佣金！");
+//        BigDecimal oneEevelMoney = new BigDecimal(oneEevelMoneyScale);
+//        BigDecimal twoEevelMoney = new BigDecimal(twoEevelMoneyScale);
+//        if (oneEevelMoney.add(twoEevelMoney).doubleValue() >= 1) {
+//            log.debug("系统配置一级比例：" + oneEevelMoneyScale + " 一级比例：" + twoEevelMoneyScale + " 之和大于1。系统禁止分派佣金！");
+//        }
+//        RuntimeCheck.ifTrue(oneEevelMoney.add(twoEevelMoney).doubleValue() >= 1, "系统配置一级比例：" + oneEevelMoneyScale + " 一级比例：" + twoEevelMoneyScale + " 之和大于1。系统禁止分派佣金！");
         return list;
 
     }
@@ -137,21 +131,21 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
             log.debug("产品 id " + l.getCpId() + "找不到相对应的产品信息" );
             retType = false;
 
+            newBizOrder.setJobType("2");
+            newBizOrder.setJobDescribe("产品 id " + l.getCpId() + "找不到相对应的产品信息");
             orderMapper.updateByPrimaryKeySelective(newBizOrder);
             log.debug("5、更新订单主表。完成订单的分派");
             return retType ? ApiResponse.success() : ApiResponse.fail(newBizOrder.getJobDescribe());
         }
         String yhSjid = l.getYhSjid();//上级ID
         String yhSsjid = l.getYhSsjid();//上上级ID
-        //orderMoney
-
-        if (!StringUtils.equals(l.getPayMoney(), orderMoney)) {
-            log.debug("9、订单编号：" + l.getDdId() + "支付金额与系统配置金额不符合。系统跳过处理");
+        //如果是
+        if (StringUtils.equals(bizCp.getCpYj(),"1") &&(MathUtil.stringToDouble(l.getPayMoney()) != MathUtil.stringToDouble(bizCp.getCpJl()))) {
+            log.debug("9、订单编号：" + l.getDdId() + "支付金额与产品配置金额不符合。系统跳过处理");
             newBizOrder.setJobType("2");
             newBizOrder.setJobDescribe("订单编号：" + l.getDdId() + "支付金额与系统配置金额不符合。系统跳过处理");
-//                messaget+=newBizOrder.getJobDescribe()+"\n";
             retType = false;
-        } else {//正常流程
+        } else {    //正常流程
             String yhId = l.getYhId();
             if (StringUtils.isBlank(yhId)) {
                 log.debug("订单编号：" + l.getDdId() + ",用户ID不能为空");
@@ -174,12 +168,6 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                 } else {
                     // 根据产品表判断是否 要分佣
                     if(StringUtils.equals(bizCp.getCpYj(),"1")){// 要分佣
-                        //            计算出分的金额比例
-//                        BigDecimal orderMoney = new BigDecimal(l.getDdZfje());
-//                        BigDecimal oneEevelMoney = new BigDecimal(bizCp.getCpYjyj());
-//                        BigDecimal twoEevelMoney = new BigDecimal(bizCp.getCpRjyj());
-//                        BigDecimal oneEevelMoneyCount = orderMoney.multiply(oneEevelMoney);
-//                        BigDecimal twoEevelMoneyCount = orderMoney.multiply(twoEevelMoney);
 
                         //插入流水表1
                         BizYjmx newBizYjmx = new BizYjmx();
@@ -190,6 +178,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         newBizYjmx.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
                         newBizYjmx.setCjsj(DateUtils.getNowTime());
                         newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+                        newBizYjmx.setMxlx("2");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
                         yjmxService.save(newBizYjmx);
                         log.debug("2-1、订单ID：" + l.getDdId() + "。插入流水表：" + newBizYjmx.toString());
                         //          插入流水表2
@@ -201,6 +190,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         newBizYjmx.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
                         newBizYjmx.setCjsj(DateUtils.getNowTime());
                         newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+                        newBizYjmx.setMxlx("2");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
                         yjmxService.save(newBizYjmx);
                         log.debug("2-2、订单ID：" + l.getDdId() + "。插入流水表：" + newBizYjmx.toString());
                         if (StringUtils.isNotEmpty(yhSjid)) {
@@ -219,16 +209,30 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         }
                     }
 
-//                    BizPtyh u = userMapper.selectByPrimaryKey(l.getYhId());
+                    //插入两条支付信息插入流水表
+                    BizYjmx newBizYjmx = new BizYjmx();
+                    newBizYjmx.setId(genId());
+                    newBizYjmx.setZjId(l.getDdId());
+                    newBizYjmx.setYhId(l.getYhId());//消费的用户
+                    newBizYjmx.setZjJe(MathUtil.stringToDouble( l.getPayMoney()));//支付的金额
+                    newBizYjmx.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
+                    newBizYjmx.setCjsj(DateUtils.getNowTime());
+                    newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+                    newBizYjmx.setMxlx("1");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+                    yjmxService.save(newBizYjmx);
+                    newBizYjmx.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
+                    newBizYjmx.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+                    yjmxService.save(newBizYjmx);
+
+//                    所属订单ID
+
                     // 判断订单用户是否为 学员 ，只对学员生成邀请码
-//                    if(StringUtils.equals(u.getYhLx(),"1")) {
-                        //
                     if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
                         String yhZsyqm = genId();
                         File logoFile = new File(logoFileUrl);
-                        String yhZsyqmImg = yhZsyqm + ".png";
+                        String yhZsyqmImg = "/QRCode/"+DateUtils.getToday("yyyyMMdd")+"/"+yhZsyqm + ".png";
                         String note = "您的好友：" + l.getYhXm() + " 邀请您";
-                        ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + "\\" + yhZsyqmImg), yhZsyqm, note);
+                        ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg), yhZsyqm, note);
                         log.debug("3、用户：" + l.getYhXm() + "。生成邀请码成功");
 
                         BizPtyh user = new BizPtyh();
@@ -237,10 +241,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         user.setYhZsyqmImg(yhZsyqmImg);//用户自己邀请码
 
                         userMapper.updateByPrimaryKeySelective(user);
-//                    }
                     }
-
-
                 }
             }
         }

@@ -9,13 +9,8 @@
         </div>
         <div class="swipe">
           <mt-swipe :auto="4000">
-            <mt-swipe-item>
-              <img src="static/s1.jpg"
-                   style="height: 100%;width: 100%"
-                   alt="">
-            </mt-swipe-item>
-            <mt-swipe-item style="background-color: #f0f">
-              <img src="static/s2.jpg"
+            <mt-swipe-item v-for="(item,index) in banerImg">
+              <img :src="item.hdTpdz"
                    style="height: 100%;width: 100%"
                    alt="">
             </mt-swipe-item>
@@ -220,7 +215,7 @@
               考场分布
             </div>
             <div class="mess ksswiper box-row-list">
-              <div class="ksList" @click="$router.push({name:'kcfb'})">
+              <div class="ksList" @click="kcMess(0)">
                 <div class="ksess">
                   <div>
                     科目一
@@ -230,7 +225,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ksList"  @click="$router.push({name:'kcfb'})">
+              <div class="ksList"  @click="kcMess(1)">
                 <div class="ksess">
                   <div>
                     科目二
@@ -240,7 +235,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ksList"  @click="$router.push({name:'kcfb'})">
+              <div class="ksList"  @click="kcMess(2)">
                 <div class="ksess">
                   <div>
                     科目三
@@ -250,7 +245,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ksList" @click="$router.push({name:'kcfb'})">
+              <div class="ksList" @click="kcMess(3)">
                 <div class="ksess">
                   <div>
                     科目四
@@ -297,6 +292,7 @@
 <script>
     import { Header, Swipe, SwipeItem , Tabbar, TabItem,Button, TabContainer, TabContainerItem } from 'mint-ui';
     import list from './qylist'
+    import kc from './ks'
     export default {
         name: "index",
         components:{
@@ -312,17 +308,37 @@
         data(){
           return{
             qylist:list.qyList,
-            tabId:'tab-home'
+            tabId:'tab-home',
+            banerImg:[]
           }
         },
         created(){
+          this.getSwiperImg()
+          console.log(kc)
         },
         methods:{
+          kcMess(val){//考场分布
+            this.$router.push(
+              {
+                name:'kcfb',
+                params:kc[val]
+              })
+          },
           goMap(item){
             console.log(this.$route)
             this.$router.push({
               name:'jxlist',
               params:item
+            })
+          },
+          getSwiperImg(){
+            this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{
+              if(res.code==200){
+                this.banerImg = res.page.list
+              }
+              console.log(res)
+            }).catch((err)=>{
+
             })
           }
         }

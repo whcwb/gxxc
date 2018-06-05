@@ -6,6 +6,8 @@ import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -118,6 +120,21 @@ public class AppPtyhController extends AppUserBaseController {
     @PostMapping("/updatelx")
     public ApiResponse<String> updatelx(BizJl bizJl){
         return service.updatelx(bizJl);
+    }
+    /**
+     *  app端 显示列表
+     */
+    @PostMapping("/ptyhlist")
+    public ApiResponse<PageInfo<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage){
+        return service.getBizPtyhList(ptyhPage);
+    }
+
+    /**
+     * 学员修改拥有驾照
+     */
+    @PostMapping("/updatesfyjz")
+    public ApiResponse<String> updateJz(BizPtyh entity){
+        return service.updateJz(entity);
     }
 
 
