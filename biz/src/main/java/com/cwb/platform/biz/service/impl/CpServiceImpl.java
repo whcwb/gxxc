@@ -53,7 +53,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
 
         Double cpJl=  MathUtil.stringToDouble(entity.getCpJl());//产品金额
         RuntimeCheck.ifFalse(cpJl>0,"收费金额不能小于0");
-        RuntimeCheck.ifFalse(cpJl> MathUtil.stringToDouble(orderMoney) ,"收费金额不能低于系统配置的最低价："+orderMoney);
+        RuntimeCheck.ifFalse(cpJl>= MathUtil.stringToDouble(orderMoney) ,"收费金额不能低于系统配置的最低价："+orderMoney);
         Double cpYjyjs=0.00;
         Double cpRjyjs=0.00;
         if(StringUtils.equals(entity.getCpYj(),"1")){
