@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.service.impl;
 
+import com.cwb.platform.biz.app.bean.StudentListModel;
 import com.cwb.platform.biz.mapper.BizCjdMapper;
 import com.cwb.platform.biz.model.BizCjd;
 import com.cwb.platform.biz.service.CjdService;
@@ -10,6 +11,8 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,6 +119,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         ret.put("yhbm",ptyh.getYhBm());//用户别名
         ret.put("yhxm",ptyh.getYhXm());//用户姓名
         ret.put("yhzh",ptyh.getYhZh());//用户账户
+        ret.put("yhTx",ptyh.getYhTx());//用户头像
 
         //  根据用户ID查询出自己的银行卡
         condition.like(BizCjd.InnerColumn.xyId.name(), xyid);
@@ -125,4 +129,21 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         ret.put("markList",bizJls);//学员考试成绩图片
         return ApiResponse.success(ret);
     }
+
+   public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage){
+       PageInfo<StudentListModel> pageInfo = new PageInfo<>();
+       // 获取当前登录用户
+       BizPtyh user = getAppCurrentUser();
+       SimpleCondition condition = new SimpleCondition(StudentListModel.class);
+       condition.eq(StudentListModel.InnerColumn.yhJlid.name(), user.getId());
+// todo 填写参数值
+       //condition.like(StudentListModel.InnerColumn.xyZt.name(), "%" + ptyhPage.get + "%");
+
+
+       condition.eq(StudentListModel.InnerColumn.yhJlid.name(), user.getId());
+
+//       pageInfo = findPage(ptyhPage,condition);
+
+       return ApiResponse.success(pageInfo);
+   }
 }

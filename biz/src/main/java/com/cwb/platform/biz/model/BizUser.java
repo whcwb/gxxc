@@ -80,7 +80,21 @@ public class BizUser implements Serializable {
     @Column(name = "YH_JLID")
     private String yhJlid;
 
+    /**
+     * 学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
+     */
+    @Column(name = "XY_ZT")
+    private String xyZt;
+
     private static final long serialVersionUID = 1L;
+
+    public String getXyZt() {
+        return xyZt;
+    }
+
+    public void setXyZt(String xyZt) {
+        this.xyZt = xyZt;
+    }
 
     public String getUserGrade() {
         return userGrade;
