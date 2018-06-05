@@ -19,7 +19,7 @@
 					  :label-width="100"
 					  :styles="{top: '20px'}">
 					<Row>
-						<form-items :parent="v"></form-items>
+						<form-items :parent="v" :parentFormInputs="formInputs1"></form-items>
 					</Row>
 					<Row>
 						<Col span="12">
@@ -38,6 +38,9 @@
 							<label>驾驶证副本</label>
 							<img class="docImg" src="../../../../../static/jsz.jpg"/>
 						</Col>
+					</Row>
+					<Row>
+						<form-items :parent="v" :parentFormInputs="formInputs2"></form-items>
 					</Row>
 				</Form>
 			</div>
@@ -64,10 +67,16 @@
                 formItem: {
                     id:'',
                 },
-                formInputs:[
+                formInputs1:[
+                    {separator:true,label:'基本信息'},
                     {label:'姓名',prop:'yhXm',disabled:true},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
                     {label:'身份证号码',prop:'yhZjhm',disabled:true},
+                ],
+                formInputs2:[
+                    {separator:true,label:'审核结果'},
+                    {label: '审核结果',prop:'yhJlsh',dict:'ZDCLK0043',type:'dict'},
+                    {label: '失败原因',prop:'yhZtMs'},
                 ],
                 ruleInline:{
                 }

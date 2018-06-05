@@ -1,6 +1,4 @@
-<style lang="less">
-	@import '../../../../styles/common.less';
-</style>
+
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
@@ -55,6 +53,10 @@
                                 this.util.buildButton(this,h,'success','card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
+                                }),
+                                this.util.buildButton(this,h,'success','person','已分配学员',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'sublist'
                                 }),
                             ]);
                         }
