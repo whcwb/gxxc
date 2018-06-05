@@ -128,6 +128,13 @@ export let appRouter = [
         component: Main,
         children: [
 			{
+				path: 'product',
+				icon: 'android-clipboard',
+				name: 'product',
+                meta: { title: '产品管理' },
+				component: () => import('@/views/whdx/cp')
+			},
+			{
 				path: 'student-list',
 				icon: 'android-clipboard',
 				name: 'student-list',

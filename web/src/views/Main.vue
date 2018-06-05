@@ -1,5 +1,6 @@
 <style lang="less">
     @import "./main.less";
+    @import '../styles/common.less';
 </style>
 <template>
     <div class="main" :class="{'main-hide-text': shrink}">
