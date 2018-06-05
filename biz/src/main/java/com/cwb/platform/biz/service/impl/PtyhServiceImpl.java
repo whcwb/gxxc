@@ -427,7 +427,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         try {
             String encrypt = Des.encrypt(oldPwd);
             if (!encrypt.equals(user.getYhMm())) {
-                return ApiResponse.fail("密码错误");
+                return ApiResponse.fail("原始密码错误");
             }
             newEncrypt = Des.encrypt(newPwd);
         } catch (Exception e) {

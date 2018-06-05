@@ -55,7 +55,7 @@ server:
 
 staticPath: D:\2003\
 
-img_url: http://192.168.31.228:8080
+img_url: http://192.168.31.228:8080/
 
 #学费类型的产品金额不能低于该值，如果低于该值，将无法插入。
 order_money: 2500
@@ -67,5 +67,14 @@ qr_code_file_url: D:\2003\
 appSendSMSRegister: app_sendSMS_register
 #重置 下发短信
 appSendSMSResetting: app_sendSMS_resetting
+
+#科目一
+SUBJECT_MARK_1: 90
+#科目二
+SUBJECT_MARK_2: 90
+#科目三
+SUBJECT_MARK_3: 90
+#科目四
+SUBJECT_MARK_4: 90
 
 
