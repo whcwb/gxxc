@@ -42,6 +42,7 @@ module.exports = {
         ADD:'/api/cp/save',
         CHANGE:'/api/cp/update',
         DELE:'/api/cp/removeIds',
+        getcplx:'/api/cp/getcplx',
     },
     student:{
         QUERY:'/api/ptyh/pager',//平台用户管理

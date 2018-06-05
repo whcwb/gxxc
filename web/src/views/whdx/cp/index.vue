@@ -1,69 +1,121 @@
 <template>
 	<div class="boxbackborder">
-		<Row style="padding-bottom: 16px;">
-        	<search-items :parent="v"></search-items>
+        <Row>
+            <Form ref="form"
+                  :model="formItem1"
+                  :rules="ruleInline"
+                  :label-width="100"
+                  :styles="{top: '20px'}">
+                <Row style="text-align: center;margin-top: 16px;margin-bottom: 16px;">
+                    <h3>学费</h3>
+                </Row>
+                <Row>
+                    <Col span="6" v-for="(i,index) in formInputs1">
+                        <FormItem :key="index" :label="i.label">
+                            <Input v-if="!i.dict &&(!i.type || i.type ==='text')" v-model="formItem1[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="!edit1">
+                                <span v-if="i.prepend" slot="prepend">{{i.prepend}}</span>
+                                <span v-if="i.append" slot="append">{{i.append}}</span>
+                            </Input>
+                            <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem1[i.prop]" :placeholder="'请选择'+i.label+'...'" :disabled="!edit1" >
+                                <Option v-for = '(item,index) in v.dictUtil.getByCode(v,i.dict)' :value="item.key" :key="item.key">{{item.val}}</Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                </Row>
+                <Row style="text-align: center">
+                    <Button v-if="!edit1" type="primary" @click="edit1 = true">编辑</Button>
+                    <Button v-else type="primary" @click="save('1')">保存</Button>
+                </Row>
+            </Form>
+            <Form ref="form"
+                  :model="formItem2"
+                  :rules="ruleInline"
+                  :label-width="100"
+                  :styles="{top: '20px'}">
+                <Row style="text-align: center;margin-top: 16px;margin-bottom: 16px;">
+                    <h3>补考费</h3>
+                </Row>
+                <Row>
+                    <Col span="6" v-for="(i,index) in formInputs2">
+                        <FormItem :key="index" :label="i.label">
+                            <Input v-if="!i.dict &&(!i.type || i.type ==='text')" v-model="formItem2[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="!edit2">
+                            <span v-if="i.prepend" slot="prepend">{{i.prepend}}</span>
+                            <span v-if="i.append" slot="append">{{i.append}}</span>
+                            </Input>
+                            <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem2[i.prop]" :placeholder="'请选择'+i.label+'...'" :disabled="!edit2" >
+                                <Option v-for = '(item,index) in v.dictUtil.getByCode(v,i.dict)' :value="item.key" :key="item.key">{{item.val}}</Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                </Row>
+                <Row style="text-align: center">
+                    <Button v-if="!edit2" type="primary" @click="edit2 = true">编辑</Button>
+                    <Button v-else type="primary" @click="save('2')">保存</Button>
+                </Row>
+            </Form>
         </Row>
-        <Row style="position: relative;">
-        	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
-        </Row>
-        <Row class="margin-top-10 pageSty">
-        	<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='(e)=>{v.util.pageChange(v, e)}'></Page>
-        </Row>
-        <component :is="componentName"></component>
 	</div>
 </template>
 
 <script>
-    import formData from './formData.vue'
-	import searchItems from '../components/searchItems'
+    import table1 from './table1'
+    import table2 from './table2'
 
     export default {
         name: 'cp',
-        components: {formData,searchItems},
+        components: {table1,table2},
         data() {
             return {
                 v:this,
-                SpinShow: true,
-                apiRoot:this.apis.cp,
-                tableHeight: 220,
-                componentName: '',
-                choosedItem: null,
-                tableColumns: [
-                    {title: "#", width: 60, type: 'index'},
-                    {title:'产品名称',key:'cpMc',searchKey:'cpMcLike'},
-                    {title:'产品类型',key:'cpType',searchKey:'cpTypeLike',dict:'ZDCLK0063',searchType:'dict'},
-                    {title:'产品总金额',key:'cpJl',append:'元'},
-                    {title:'是否分佣',key:'cpYj',dict:'ZDCLK0064',searchType:'dict'},
-                    {title:'一级佣金',key:'cpYjyj',append:'元'},
-                    {title:'二级佣金',key:'cpRjyj',append:'元'},
-                    {title:'产品是否有效',key:'cpYx',dict:'ZDCLK0065',searchType:'dict'},
-                    {
-                        title: '操作',
-                        key: 'action',
-                        width: 120,
-                        fixed: 'right',
-                        render: (h, params) => {
-                            return h('div', [
-                                this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.id),
-                            ]);
-                        }
-                    }
-                ],
-                pageData: [],
-                form: {
-                    total: 0,
-                    pageNum: 1,
-                    pageSize: 8,
+                operate:'新建',
+                showModal: true,
+                readonly: false,
+                edit1:false,
+                edit2:false,
+                formItem1: {
+
                 },
+                formItem2: {
+
+                },
+                formInputs1:[
+                    {label:'产品名称',prop:'cpMc'},
+                    {label:'产品总金额',prop:'cpJl',append:'元'},
+                    {label:'是否分佣',prop:'cpYj',dict:'ZDCLK0064'},
+                    {label:'一级佣金',prop:'cpYjyj',append:'元'},
+                    {label:'二级佣金',prop:'cpRjyj',append:'元'},
+                ],
+                formInputs2:[
+                    {label:'产品名称',prop:'cpMc'},
+                    {label:'产品总金额',prop:'cpJl',append:'元'},
+                ],
+                ruleInline:{
+                }
             }
         },
         created() {
-            this.util.initTable(this)
+            this.getCp("1");
+            this.getCp("2");
         },
         methods: {
-            pageChange(event) {
-                this.util.pageChange(this, event);
+            save(cpType){
+                this.$http.post(this.apis.cp.ADD,this['formItem'+cpType]).then((res)=>{
+                    if (res.code === 200){
+                        this.$Message.success(res.message);
+                        this['edit'+cpType] = false;
+                        this.getCp(cpType);
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
+            },
+            getCp(cpType){
+                let v = this;
+                this.$http.get(this.apis.cp.getcplx,{params:{cpType:cpType}}).then((res)=>{
+                    if (res.code === 200){
+                        this['formItem'+cpType] = res.result;
+                    }
+                })
             },
         }
     }
