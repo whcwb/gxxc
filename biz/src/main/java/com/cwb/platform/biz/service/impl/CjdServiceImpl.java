@@ -130,15 +130,16 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         return ApiResponse.success(ret);
     }
 
-   public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage){
+   public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage,String xyZt){
        PageInfo<StudentListModel> pageInfo = new PageInfo<>();
        // 获取当前登录用户
        BizPtyh user = getAppCurrentUser();
        SimpleCondition condition = new SimpleCondition(StudentListModel.class);
        condition.eq(StudentListModel.InnerColumn.yhJlid.name(), user.getId());
 // todo 填写参数值
-       //condition.like(StudentListModel.InnerColumn.xyZt.name(), "%" + ptyhPage.get + "%");
+       condition.like(StudentListModel.InnerColumn.xyZt.name(), "%" + xyZt + "%");
 
+       ptyhPage.get(0);
 
        condition.eq(StudentListModel.InnerColumn.yhJlid.name(), user.getId());
 

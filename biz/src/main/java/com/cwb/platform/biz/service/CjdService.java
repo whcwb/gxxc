@@ -16,5 +16,5 @@ public interface CjdService extends BaseService<BizCjd, String> {
 
     ApiResponse<Map<String,Object>> getUserMessage(String xyid);
 
-    ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage);
+    ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage,String xyZt);
 }

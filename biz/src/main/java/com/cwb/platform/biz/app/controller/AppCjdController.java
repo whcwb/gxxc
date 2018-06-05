@@ -53,8 +53,8 @@ public class AppCjdController extends AppUserBaseController{
      *  http://192.168.31.38:8080/#/myStudent
      */
     @PostMapping("/getcjblist")
-    public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage){
-        return service.getBizCjbList(ptyhPage);
+    public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage,String xyZt){
+        return service.getBizCjbList(ptyhPage,xyZt);
     }
 
 }
