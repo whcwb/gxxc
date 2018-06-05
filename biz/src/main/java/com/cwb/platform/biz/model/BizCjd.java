@@ -47,34 +47,10 @@ public class BizCjd implements Serializable {
     private String imgUrl;
 
     /**
-     * 评分来源  0：app  1：web
+     * 学员考试成绩
      */
-    @Column(name = "PF_LY")
-    private String pfLy;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "PF_CJSJ")
-    private String pfCjsj;
-
-    /**
-     * 创建人
-     */
-    @Column(name = "PF_CJR")
-    private String pfCjr;
-
-    /**
-     * 学员对教练评分  最大为5
-     */
-    @Column(name = "JL_PF")
-    private String jlPf;
-
-    /**
-     * 评论
-     */
-    @Column(name = "JL_PL")
-    private String jlPl;
+    @Column(name = "XY_CJ")
+    private String xyCj;
 
     private static final long serialVersionUID = 1L;
 
@@ -186,94 +162,12 @@ public class BizCjd implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    /**
-     * 获取评分来源  0：app  1：web
-     *
-     * @return PF_LY - 评分来源  0：app  1：web
-     */
-    public String getPfLy() {
-        return pfLy;
+    public String getXyCj() {
+        return xyCj;
     }
 
-    /**
-     * 设置评分来源  0：app  1：web
-     *
-     * @param pfLy 评分来源  0：app  1：web
-     */
-    public void setPfLy(String pfLy) {
-        this.pfLy = pfLy;
-    }
-
-    /**
-     * 获取创建时间
-     *
-     * @return PF_CJSJ - 创建时间
-     */
-    public String getPfCjsj() {
-        return pfCjsj;
-    }
-
-    /**
-     * 设置创建时间
-     *
-     * @param pfCjsj 创建时间
-     */
-    public void setPfCjsj(String pfCjsj) {
-        this.pfCjsj = pfCjsj;
-    }
-
-    /**
-     * 获取创建人
-     *
-     * @return PF_CJR - 创建人
-     */
-    public String getPfCjr() {
-        return pfCjr;
-    }
-
-    /**
-     * 设置创建人
-     *
-     * @param pfCjr 创建人
-     */
-    public void setPfCjr(String pfCjr) {
-        this.pfCjr = pfCjr;
-    }
-
-    /**
-     * 获取学员对教练评分  最大为5
-     *
-     * @return JL_PF - 学员对教练评分  最大为5
-     */
-    public String getJlPf() {
-        return jlPf;
-    }
-
-    /**
-     * 设置学员对教练评分  最大为5
-     *
-     * @param jlPf 学员对教练评分  最大为5
-     */
-    public void setJlPf(String jlPf) {
-        this.jlPf = jlPf;
-    }
-
-    /**
-     * 获取评论
-     *
-     * @return JL_PL - 评论
-     */
-    public String getJlPl() {
-        return jlPl;
-    }
-
-    /**
-     * 设置评论
-     *
-     * @param jlPl 评论
-     */
-    public void setJlPl(String jlPl) {
-        this.jlPl = jlPl;
+    public void setXyCj(String xyCj) {
+        this.xyCj = xyCj;
     }
 
     public enum InnerColumn {
@@ -283,11 +177,7 @@ public class BizCjd implements Serializable {
         xySfhg("XY_SFHG"),
         kmBm("KM_BM"),
         imgUrl("IMG_URL"),
-        pfLy("PF_LY"),
-        pfCjsj("PF_CJSJ"),
-        pfCjr("PF_CJR"),
-        jlPf("JL_PF"),
-        jlPl("JL_PL");
+        xyCj("XY_CJ");
 
         private final String column;
 

@@ -37,6 +37,13 @@ module.exports = {
         DELE:'/api/hd/removeIds',
         hdtj:'/api/hd/hdtj',// 活动推荐
     },
+    cp:{
+        QUERY:'/api/cp/pager',//产品管理
+        ADD:'/api/cp/save',
+        CHANGE:'/api/cp/update',
+        DELE:'/api/cp/removeIds',
+        getcplx:'/api/cp/getcplx',
+    },
     student:{
         QUERY:'/api/ptyh/pager',//平台用户管理
         ADD:'/api/ptyh/save',

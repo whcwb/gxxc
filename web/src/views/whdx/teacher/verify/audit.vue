@@ -11,7 +11,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			   :mask-closable="false" :title="operate+''">
+			   :mask-closable="false" title="审核">
 			<div style="overflow: auto;height: 500px;">
 				<Form ref="form"
 					  :model="formItem"
@@ -19,7 +19,7 @@
 					  :label-width="100"
 					  :styles="{top: '20px'}">
 					<Row>
-						<form-items :parent="v"></form-items>
+						<form-items :parent="v" :parentFormInputs="formInputs1"></form-items>
 					</Row>
 					<Row>
 						<Col span="12">
@@ -39,6 +39,9 @@
 							<img class="docImg" src="static/jsz.jpg"/>
 						</Col>
 					</Row>
+					<Row>
+						<form-items :parent="v" :parentFormInputs="formInputs2"></form-items>
+					</Row>
 				</Form>
 			</div>
 			<div slot='footer'>
@@ -57,14 +60,14 @@
         data() {
             return {
                 v:this,
-                operate:'认证',
                 showModal: true,
                 saveUrl:this.apis.teacher.updateyhrz,
                 readonly: false,
                 formItem: {
                     id:''
                 },
-                formInputs:[
+                formInputs1:[
+                    {separator:true,label:'基本信息'},
                     {label:'姓名',prop:'yhXm',disabled:true},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
                     {label:'身份证号码',prop:'yhZjhm',disabled:true},
@@ -73,6 +76,10 @@
                     {label: '教练驾龄',prop:'jlJl',disabled:true},
                     {label: '紧急联系人',prop:'jlJjlxr',disabled:true},
                     {label: '紧急联系人电话',prop:'jlJjlxrdh',disabled:true},
+                    {label: '失败原因',prop:'yhZtMs'},
+                ],
+                formInputs2:[
+                    {separator:true,label:'审核结果'},
                     {label: '审核结果',prop:'yhJlsh',dict:'ZDCLK0043',type:'dict'},
                     {label: '失败原因',prop:'yhZtMs'},
                 ],

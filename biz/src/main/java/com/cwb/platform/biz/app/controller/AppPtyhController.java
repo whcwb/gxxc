@@ -8,7 +8,6 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,10 +41,9 @@ public class AppPtyhController extends AppUserBaseController {
      */
     @RequestMapping(value = "/mdfPwd",method = RequestMethod.POST)
     public ApiResponse<String> updateMdfPwd(@RequestParam(name = "oldPwd")String oldPwd,
-                                      @RequestParam(name = "newPwd")String newPwd,
-                                      @RequestParam(name = "secPwd")String secPwd){
-        RuntimeCheck.ifTrue(( StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd) ||  StringUtils.isEmpty(secPwd)),"请输入密码");
-        RuntimeCheck.ifTrue(!newPwd.equals(secPwd),"两次输入密码不一致");
+                                      @RequestParam(name = "newPwd")String newPwd){
+//        RuntimeCheck.ifTrue(( StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd) ||  StringUtils.isEmpty(secPwd)),"请输入密码");
+//        RuntimeCheck.ifTrue(!newPwd.equals(secPwd),"两次输入密码不一致");
         BizPtyh user = getAppCurrentUser();
         RuntimeCheck.ifTrue(user == null,"请重启登录！");
         return service.mdfPwd(user.getId(),oldPwd,newPwd);

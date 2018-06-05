@@ -115,7 +115,22 @@ public class BizTx implements Serializable {
     @Column(name = "TX_XM")
     private String txXm;
 
+    /**
+     * 银行卡ID
+     */
+    @Column(name = "YHK_ID")
+    private String yhkid;
+
+
     private static final long serialVersionUID = 1L;
+
+    public String getYhkid() {
+        return yhkid;
+    }
+
+    public void setYhkid(String yhkid) {
+        this.yhkid = yhkid;
+    }
 
     /**
      * 获取主键id

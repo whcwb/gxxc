@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 /**
- * 学生成绩单
+ * 银行卡管理
  *
  */
 @RestController
