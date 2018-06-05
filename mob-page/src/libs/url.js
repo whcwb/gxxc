@@ -18,4 +18,8 @@ module.exports = {
   TX:'/app/tx/save',//资金提现
   TEAM:'/app/user/pager',//我的团队
   IDRZ:'/app/ptyh/updatesm',//身份认证
+  CHUSERMESS:'/app/ptyh/update',//昵称 头像修改
+  UPWORLD:'app/ptyh/mdfPwd',//密码修改
+  CPTYPE:'/app/cp/getcplx',//产品类别
+  CPPAY:'/app/order/save',//产品支付
 }

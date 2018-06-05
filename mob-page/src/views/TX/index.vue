@@ -10,34 +10,34 @@
     }
   }
 
-  #yhkxz{
-    header{
-      height: 1rem;
-      line-height: 1rem;
+  #bank{
+    background-color: #eaeaea;
+    position: relative;
+    #bankList,#bankCard{
+      background-color: #7e7e7e;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
     }
-    .md-action-sheet .md-action-sheet-content >ul li{
-      height: 1rem;
-      line-height: 1rem;
-    }
-    ul li{
 
-    }
   }
 </style>
 <template>
-      <div class="box" style="background-color: #eaeaea">
-        <div>
-          <box-head tit="提现">
-            <div slot="left" style="color: #E0DADF">
-              <i class="iconfont icon-left1"></i>
-            </div>
-          </box-head>
-        </div>
+      <div id="bank" class="box">
+        <component :is="compName"></component>
+        <box-head tit="提现">
+          <div slot="left" style="color: #E0DADF">
+            <i class="iconfont icon-left1"></i>
+          </div>
+        </box-head>
         <div class="body">
           <Row type="flex" justify="start">
             <Col span="24">
               <Card style="border: none">
-                <div class="box-row" @click="value=true,isKeyBoardShow=false">
+                <div class="box-row" @click="compName='bankList'">
                   <i class="iconfont icon-detail" style="font-size: 20px" slot="icon"></i>
                   <div class="body-O">
                       <mt-cell title="汉口银行"
@@ -95,16 +95,7 @@
           ></md-number-keyboard>
           <div class="md-example-display" v-show="isKeyBoardShow" v-text="number"></div>
         </div>
-        <div id="yhkxz" class="md-example-child md-example-child-action-sheet">
-          <md-action-sheet
-            v-model="value"
-            :title="title"
-            :default-index="defaultIndex"
-            :cancel-text="cancelText"
-            :options="options"
-            @selected="selected"
-          ></md-action-sheet>
-        </div>
+
       </div>
 </template>
 
@@ -112,12 +103,13 @@
     import { Header ,Cell ,Toast} from 'mint-ui'
     import {ActionSheet, Dialog ,InputItem ,NumberKeyboard} from 'mand-mobile'
     import {Card ,Row, Col , Button} from 'iview'
-    import boxHead from '@/views/components/boxHead'
+    import bankList from './comp/bankCarList'
+    import addbankCard from './comp/addBankCard'
     export default {
         name: "index",
         height: 500,
         components:{
-          boxHead,
+          bankList,addbankCard,
           Card ,Row, Col,Button,
           [Header.name]:Header,
           [Cell.name]:Cell,
@@ -129,25 +121,8 @@
         return {
           isKeyBoardShow: true,//键盘
           number: '',
-          value: false,
           zhYE:'',//账户余额
-          title: '选着您的银行卡',
-          options: [
-            {
-              label: '招商银行卡_尾号6699',
-              value: 0,
-            },
-            {
-              label: '工商银行卡_尾号6699',
-              value: 1,
-            },
-            {
-              label: '汉口银行卡_尾号6699',
-              value: 2,
-            },
-          ],
-          defaultIndex: 1,
-          cancelText: '取消',
+          compName:''
         }
       },
       created(){
@@ -183,9 +158,6 @@
         },
         confirm(){
 
-        },
-        selected(item) {
-          console.log('action-sheet selected:', JSON.stringify(item))
         },
         TX(){//                                             银行卡号          开户行         提现方式
           var v = this

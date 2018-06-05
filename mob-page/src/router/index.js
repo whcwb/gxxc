@@ -182,14 +182,12 @@ function auto (window, document , num) {
       document.body.style.opacity = 1;
     }
   }
-
   if (document.readyState !== 'loading') {
     resize();
   }
   else {
     document.addEventListener('DOMContentLoaded', resize);
   }
-
   window.addEventListener('resize', resize);
 
 }
