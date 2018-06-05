@@ -11,14 +11,18 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.ISelect;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.HashMap;
 import java.util.List;
@@ -130,21 +134,52 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         return ApiResponse.success(ret);
     }
 
+    @Override
    public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage,String xyZt){
-       PageInfo<StudentListModel> pageInfo = new PageInfo<>();
+       PageInfo<StudentListModel> pageInfo = new PageInfo<StudentListModel>();
        // 获取当前登录用户
        BizPtyh user = getAppCurrentUser();
        SimpleCondition condition = new SimpleCondition(StudentListModel.class);
        condition.eq(StudentListModel.InnerColumn.yhJlid.name(), user.getId());
-// todo 填写参数值
+// 填写参数值
        condition.like(StudentListModel.InnerColumn.xyZt.name(), "%" + xyZt + "%");
-
-       ptyhPage.get(0);
 
        condition.eq(StudentListModel.InnerColumn.yhJlid.name(), user.getId());
 
-//       pageInfo = findPage(ptyhPage,condition);
-
+       pageInfo = this.pagers(ptyhPage,condition);
+       List<StudentListModel> list=pageInfo.getList();
+        if(CollectionUtils.isNotEmpty(list)){
+            for(StudentListModel l:list){
+                ApiResponse<Map<String,Object>> obd=this.getUserMessage(l.getId());
+                if(obd.isSuccess()){
+                    l.setMap(obd.getResult());
+                }
+            }
+        }
        return ApiResponse.success(pageInfo);
    }
+
+    /**
+     * 分页查询
+     * @param page
+     * @param condition
+     * @return
+     */
+    public PageInfo<StudentListModel> pagers(Page page, Example condition) {
+        if (page.getPageSize() == 0){
+            page.setPageSize(8);
+        }
+        if (page.getPageNum() == 0){
+            page.setPageNum(1);
+        }
+        PageInfo<StudentListModel> resultPage = PageHelper.startPage(page.getPageNum(), page.getPageSize()).doSelectPageInfo(new ISelect() {
+            @Override
+            public void doSelect() {
+                getBaseMapper().selectByExample(condition);
+            }
+        });
+
+        return resultPage;
+    }
+
 }
