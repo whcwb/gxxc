@@ -1,6 +1,7 @@
 package com.cwb.platform.util.commonUtil;
 
 
+import com.alibaba.druid.util.StringUtils;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsRequest;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 短信下发平台
+ * 短信 下发平台
  */
 public class SendSmsUtil {
 
@@ -64,7 +65,19 @@ public class SendSmsUtil {
 //        return sendSmsResponse;
 //    }
 
-    public static SendSmsResponse sendSms(Map<String,String> requestMap) throws ClientException {
+    public static Boolean sendSms(Map<String,String> requestMap){
+        Boolean ret=false;
+        try {
+            SendSmsResponse response= sendSmsMap(requestMap);
+            if(StringUtils.equals(response.getCode(),"200")){
+                ret=true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+    public static SendSmsResponse sendSmsMap(Map<String,String> requestMap) throws ClientException {
 
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -134,13 +147,13 @@ public class SendSmsUtil {
     public static void main(String[] args) throws ClientException, InterruptedException {
 
         Map<String,String> map=new HashMap<>();
-        map.put("phoneNumbers","18672922385");//电话号码
+        map.put("phoneNumbers","133111111");//电话号码
         map.put("templateCode","SMS_136430180");//短信模板
         map.put("templateParam","{\"code\":\"TestCode\"}");//短信报文
 //        map.put("","");
 //        map.put("","");
         //发短信
-        SendSmsResponse response = sendSms(map);
+        SendSmsResponse response = sendSmsMap(map);
         System.out.println("短信接口返回的数据----------------");
         System.out.println("Code=" + response.getCode());
         System.out.println("Message=" + response.getMessage());
