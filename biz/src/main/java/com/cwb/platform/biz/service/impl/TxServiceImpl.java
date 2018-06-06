@@ -85,6 +85,15 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newBizTx.setTtBz(bizTx.getTtBz());//审核描述
 
         int i = update(newBizTx);
+        //提现审核拒绝时，明细表中的申请也要是失败的
+        if(StringUtils.equals(bizTx.getTtShzt(),"2")){
+            BizYjmx bizYjmx=new BizYjmx();
+            bizYjmx.setId(tx.getYjId());
+            bizYjmx.setZjZt("2");
+            bizYjmx.setZjBz(bizTx.getTtBz());
+            // 更新佣金明细表
+            yjmxService.update(bizYjmx);
+        }
         return i == 1 ? ApiResponse.success():ApiResponse.fail();
     }
 
