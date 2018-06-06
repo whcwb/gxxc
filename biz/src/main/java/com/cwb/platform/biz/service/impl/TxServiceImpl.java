@@ -88,15 +88,20 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         }
 
         int i = update(newBizTx);
+
+        BizYjmx bizYjmx=new BizYjmx();
+        bizYjmx.setId(tx.getYjId());
         //提现审核拒绝时，明细表中的申请也要是失败的
         if(StringUtils.equals(bizTx.getTtShzt(),"2")){
-            BizYjmx bizYjmx=new BizYjmx();
-            bizYjmx.setId(tx.getYjId());
             bizYjmx.setZjZt("2");
-            bizYjmx.setZjBz(bizTx.getTtBz());
-            // 更新佣金明细表
-            yjmxService.update(bizYjmx);
+            bizYjmx.setTxShZt("2");
+
+        }else {
+            bizYjmx.setTxShZt("1");
         }
+        bizYjmx.setZjBz(bizTx.getTtBz());
+        // 更新佣金明细表
+        yjmxService.update(bizYjmx);
         return i == 1 ? ApiResponse.success():ApiResponse.fail();
     }
 
@@ -168,7 +173,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newEntity.setTtZt("0");
         newEntity.setTtSj(DateUtils.getNowTime());
         newEntity.setTtShzt("0");
-        newEntity.setYjId(yjid);//佣金明细表id
+        newEntity.setYjId(yjid);//流水表id
         newEntity.setTtYhkh(yhkh);
         newEntity.setTtKhh(bizYhk.getYhkKhh());//设置用户开户行
         newEntity.setTxXm(bizYhk.getYhkXm());//提现姓名
@@ -184,7 +189,8 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
             newBizYjmx.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
             newBizYjmx.setCjsj(DateUtils.getNowTime());
             newBizYjmx.setZjZt("0");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
-           newBizYjmx.setMxlx("4");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+            newBizYjmx.setMxlx("4");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+            newBizYjmx.setTxShZt(newEntity.getTtShzt());
            yjmxService.save(newBizYjmx);
        }
         // 更新账户表
