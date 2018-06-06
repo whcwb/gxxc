@@ -88,6 +88,8 @@ public class BizUser implements Serializable {
     private String xyZt;
 
 
+
+
     @Transient
     private Map<String,Object> map;
 

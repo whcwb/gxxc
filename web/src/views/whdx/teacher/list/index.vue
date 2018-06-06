@@ -32,7 +32,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.teacher,
+                apiRoot:this.apis.student,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
