@@ -7,7 +7,7 @@ module.exports = {
   },
   // getImgUrl:'http://47.98.39.45:9088/',//获取
   // upImgUrl:'http://47.98.39.45:9086/upload',//上传
-  getImgUrl:'',
+  getImgUrl:'http://192.168.31.228:9086',
   upImgUrl:'http://192.168.31.228:9086/upload',
   LOGIN:'/app/login',//登录接口
   LOGOUT:'/app/logout',//退出用戶
@@ -25,4 +25,8 @@ module.exports = {
   UPWORLD:'app/ptyh/mdfPwd',//密码修改
   CPTYPE:'/app/cp/getcplx',//产品类别
   CPPAY:'/app/order/save',//产品支付
+  ADDBANK:'/app/yhk/save',//新增銀行卡
+  BANKLIST:'/app/yhk/getCondition',//银行卡列表
+  ZDLIST:'/app/yjmx/pager',//账单列表
+  ZDLISTTYPE:'/app/zdxm',//账单列表状态
 }
