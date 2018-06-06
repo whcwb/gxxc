@@ -5,7 +5,10 @@ module.exports = {
       getAccessToken:'/wechat/getAccessToken',
       getJsApiSign:'/wechat/getJsApiSign',
   },
-  getImgUrl:'http://47.98.39.45:9088/',
+  // getImgUrl:'http://47.98.39.45:9088/',//获取
+  // upImgUrl:'http://47.98.39.45:9086/upload',//上传
+  getImgUrl:'',
+  upImgUrl:'http://192.168.31.228:9086/upload',
   LOGIN:'/app/login',//登录接口
   LOGOUT:'/app/logout',//退出用戶
   USERMESS:'/app/ptyh/get',//用户信息
