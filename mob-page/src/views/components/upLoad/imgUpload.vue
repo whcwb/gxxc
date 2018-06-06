@@ -1,11 +1,10 @@
 <template>
     <div>
-      <div v-if="imgUrl!=''"
-          style="text-align: center">
-          <img :src="imgUrl" width="120" height="120">
-      </div>
+      <!--<div v-if="imgUrl!=''"-->
+          <!--style="text-align: center">-->
+          <!--<img :src="imgUrl" width="120" height="120">-->
+      <!--</div>-->
     <Upload
-      v-else
       ref="upload"
       :show-upload-list="false"
       :default-file-list="defaultList"
@@ -18,7 +17,7 @@
       :before-upload="handleBeforeUpload"
       multiple
       type="drag"
-      action="http://47.98.39.45:9086/upload"
+      :action="apis.upImgUrl"
       style="border: none">
       <div align="center">
         <img :src="demoImg" width="120" height="120">
@@ -35,10 +34,6 @@
     },
     props:{
       demoImg:{
-        type:String,
-        default:''
-      },
-      imgUrl:{
         type:String,
         default:''
       },
@@ -60,7 +55,7 @@
         console.log('文件上传成功')
         console.log(res)
         console.log(file)
-        this.imgUrl=this.url+res.message
+        this.$emit('handleSuccess',res)
       },
       handleError(res,file){
         console.log('文件上传失败')

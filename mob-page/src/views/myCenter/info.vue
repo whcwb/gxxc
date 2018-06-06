@@ -39,7 +39,9 @@
                 <Col span="24">
                 <Card dis-hover>
                   <mt-cell title="头像" style="border-bottom: 1px #e9eaec solid;padding-bottom: 10px">
-                    <img :src="userMess.yhTx" style="width: 1rem" alt="">
+                    <imgup :demoImg="userMess.yhTx"
+                      @handleSuccess="handleSuccess">
+                    </imgup>
                       <!--<Avatar shape="square" icon="person" size="large" style="width: 50px;height: 50px;line-height: 50px"/>-->
                   </mt-cell>
                   <div @click="compname='bm'">
@@ -72,10 +74,11 @@
     import {  Cell, Header , Toast} from 'mint-ui';
     import bm from './comp/bm'
     import word from  './comp/upWorld'
+    import imgup from '@/views/components/upLoad/imgUpload'
     export default {
         name: "myCenter",
         components: {
-          bm,word,
+          bm,word,imgup,
           Card,Row,Col,Avatar,Tag,Alert,Button,Icon,
           [Cell.name]:Cell,
           [Header.name]:Header
@@ -103,7 +106,7 @@
 
             })
           },
-          userMessF(){
+          userMessF(){//获取个人信息
             var v = this
             this.$http.post(this.apis.USERMESS).then((res)=>{
               if(res.code==200){
@@ -117,6 +120,21 @@
             }).catch((err)=>{
               console.log('出错了！！！')
             })
+          },
+          UPTx(url){
+            var v = this
+            this.$http.post(this.apis.CHUSERMESS,{'yhTx':url}).then((res)=>{
+              if(res.code==200){
+                v.$parent.userMessF()
+              }
+            }).catch((err)=>{
+
+            })
+          },
+          handleSuccess(res){
+            console.log('上传成功事件监听',res)
+            this.UPTx('/'+res.message)
+            this.userMessF()
           }
         }
     }

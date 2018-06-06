@@ -16,6 +16,9 @@
             <i class="iconfont icon-add" style="font-size: 0.44rem"></i>
           </div>
         </div>
+        <div class="body">
+
+        </div>
       </div>
 </template>
 
