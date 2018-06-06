@@ -528,10 +528,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");
         RuntimeCheck.ifBlank(entity.getYhZjhm(), "用户证件号码不能为空");
-        RuntimeCheck.ifBlank(entity.getYhXb(), "用户性别不能为空");
-        if (StringUtils.containsNone(entity.getYhXb(), new char[]{'1', '2'})) {
-            return ApiResponse.fail("请输入正确用户性别");
+        String CardCode=entity.getYhZjhm();
+        String sex;//获取性别 ZDCLK0042(1、男;2、女)
+        if (Integer.parseInt(CardCode.substring(16).substring(0, 1)) % 2 == 0) {// 判断性别
+            sex = "2";
+        } else {
+            sex = "1";
         }
+        entity.setYhXb(sex);
+//        RuntimeCheck.ifBlank(entity.getYhXb(), "用户性别不能为空");
+//        if (StringUtils.containsNone(entity.getYhXb(), new char[]{'1', '2'})) {
+//            return ApiResponse.fail("请输入正确用户性别");
+//        }
 
 //        RuntimeCheck.ifBlank(entity.getYhSfyjz(), "用户驾照状态不能为空");
 //        if (StringUtils.containsNone(entity.getYhSfyjz(), new char[]{'1', '0'})) {
