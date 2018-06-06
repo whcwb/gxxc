@@ -45,16 +45,15 @@
             <mt-button type="danger" size="large" @click="toPhotoNext">下一步</mt-button>
           </div>
         </div>
-        <div v-show="stepIndex == 1">
+        <div v-show="stepIndex == 1" style="padding: 0.15rem">
 
-            <Row>
-              <Col span="11" style="margin-left: 5px;margin-right: 5px;margin-bottom: 5px">
+            <Row :gutter="10">
+              <Col span="12" style="margin-bottom: 5px">
                 <Card dis-hover>
                   <p slot="title">身份证正面</p>
-                  <div align="center" style="padding:0 0.3rem"
-                      @click="zjBm(0)">
-                    <imgup :demoImg="sfzzm"
-                           @handleSuccess="handleSuccess">
+                  <div align="center" style="padding:0 0.3rem;height: 2.5rem">
+                    <imgup :demoImg="imgList[0]"
+                           @handleSuccess="(res)=>handleSuccess(res,0)">
                     </imgup>
                   </div>
                 </Card>
@@ -62,26 +61,32 @@
               <Col span="12">
                 <Card dis-hover>
                   <p slot="title">身份证反面</p>
-                  <div align="center">
-                    <img src="static/renzhen/sfzfm.png" width="120" height="120">
+                  <div align="center" style="padding:0 0.3rem;height: 2.5rem">
+                    <imgup :demoImg="imgList[1]"
+                           @handleSuccess="(res)=>handleSuccess(res,1)">
+                    </imgup>
                   </div>
                 </Card>
               </Col>
             </Row>
-            <Row>
-              <Col span="11" style="margin-left: 5px;margin-right: 5px;margin-bottom: 5px">
+            <Row :gutter="10">
+              <Col span="12" style="margin-bottom: 5px">
                 <Card dis-hover>
                   <p slot="title">驾驶证正本</p>
-                  <div align="center">
-                    <img src="static/renzhen/sfzzm.png" width="120" height="120">
+                  <div align="center" style="padding:0 0.3rem;height: 2.5rem">
+                    <imgup :demoImg="imgList[2]"
+                           @handleSuccess="(res)=>handleSuccess(res,2)">
+                    </imgup>
                   </div>
                 </Card>
               </Col>
               <Col span="12">
                 <Card dis-hover>
                   <p slot="title">驾驶证副本</p>
-                  <div align="center">
-                    <img src="static/renzhen/sfzfm.png" width="120" height="120">
+                  <div align="center" style="padding:0 0.3rem;height: 2.5rem">
+                    <imgup :demoImg="imgList[3]"
+                           @handleSuccess="(res)=>handleSuccess(res,3)">
+                    </imgup>
                   </div>
                 </Card>
               </Col>
@@ -126,9 +131,10 @@
             form:{
                 yhXm:'',
                 yhZjhm:'',
+                imgList:''
             },
-            sfzzm:'static/renzhen/sfzzm.png',
-            zjCode:0
+            imgList:['static/renzhen/sfzzm.png','static/renzhen/sfzfm.png','static/renzhen/sfzzm.png','static/renzhen/sfzfm.png'],
+            imgListN:['-','-','-','-'],
           }
         },
         methods:{
@@ -148,13 +154,17 @@
             },
             toResult(){
               //切换到下一个界面
-              this.stepIndex = 2;
+              // this.stepIndex = 2;
+              this.form.imgList = this.imgListN.join(',')
+              this.form.imgTypeList = this.imgTypeListN.join(',')
+              console.log(this.form)
             },
-            zjBm(val){
-
-            },
-            handleSuccess(){
-
+            handleSuccess(res,val){
+              console.log('上传成功事件监听',res)
+              console.log(val)
+              var v = this
+              this.imgList.splice(val,1,v.apis.getImgUrl+res.message)
+              this.imgListN.splice(val,1,'/'+res.message)
             }
         }
     }

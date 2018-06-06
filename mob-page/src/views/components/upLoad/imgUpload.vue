@@ -53,9 +53,9 @@
         this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
       },
       handleSuccess (res, file) {
-        console.log('文件上传成功')
-        console.log(res)
-        console.log(file)
+        // console.log('文件上传成功')
+        // console.log(res)
+        // console.log(file)
         this.$emit('handleSuccess',res)
       },
       handleError(res,file){
