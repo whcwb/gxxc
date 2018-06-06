@@ -87,6 +87,20 @@ public class BizUser implements Serializable {
     @Column(name = "XY_ZT")
     private String xyZt;
 
+    /**
+     * 用户信息
+     */
+    @Transient
+    private BizPtyh bizPtyh;
+
+    public BizPtyh getBizPtyh() {
+        return bizPtyh;
+    }
+
+    public void setBizPtyh(BizPtyh bizPtyh) {
+        this.bizPtyh = bizPtyh;
+    }
+
 
     @Transient
     private Map<String,Object> map;
