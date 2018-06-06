@@ -50,7 +50,6 @@ public class AppCjdController extends AppUserBaseController{
     }
     /**
      *  我的学员列表  分页查询
-     *  http://192.168.31.38:8080/#/myStudent
      */
     @PostMapping("/getcjblist")
     public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage,String xyZt){

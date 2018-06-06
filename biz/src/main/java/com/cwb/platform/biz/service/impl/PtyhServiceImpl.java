@@ -757,14 +757,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(identifyingCode)) {
             identifyingCode = StringDivUtils.getSix();//获取验证码
         }
-
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("phoneNumbers",tel);//电话号码
+        map.put("templateParam","{\"code\":\""+identifyingCode+"\"}");//短信验证码
         String redisKey = "";
         if (type == 1) {
             redisKey = appSendSMSRegister;
             //使用注册模板下发
+            map.put("templateCode","SMS_136430180");//用户注册验证码
         } else if (type == 2) {
             redisKey = appSendSMSResetting;
             //使用重置密码模板进行下发
+            map.put("templateCode","SMS_136430180");//短信模板
         } else {
             //类型不存在，不能下发
             return false;
@@ -774,8 +778,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
             return true;
         }
+        //短信下发
+        ret= SendSmsUtil.sendSms(map);
+
         redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
-        ret=true;
         return  ret;
     }
 

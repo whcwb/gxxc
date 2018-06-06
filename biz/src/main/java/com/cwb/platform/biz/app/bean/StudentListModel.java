@@ -1,7 +1,9 @@
 package com.cwb.platform.biz.app.bean;
 
 import javax.persistence.Column;
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 教练页面-我的学员列表中的对象
@@ -25,8 +27,19 @@ public class StudentListModel implements Serializable {
     @Column(name = "YH_JLID")
     private String yhJlid;
 
+    @Transient
+    private Map<String,Object> map;
+
 
     private static final long serialVersionUID = 2L;
+
+    public Map<String, Object> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Object> map) {
+        this.map = map;
+    }
 
     public String getXyZt() {
         return xyZt;
