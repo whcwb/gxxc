@@ -29,7 +29,7 @@ public class UserController extends QueryController<BizUser,String> {
      * 展示教练的学员列表
      */
     @PostMapping("/getStudentList")
-    public ApiResponse<PageInfo<BizUser>> getStudentList(@RequestParam("yhid")String yhid, @RequestParam("xyzt")String xyZt, Page<BizUser> page){
+    public ApiResponse<PageInfo<BizUser>> getStudentList(@RequestParam("yhid")String yhid, @RequestParam(value = "xyzt",required = false)String xyZt, Page<BizUser> page){
         return service.getStudentList(yhid,xyZt, page);
     }
 
