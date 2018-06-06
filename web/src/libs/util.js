@@ -378,7 +378,7 @@ util.getPageData = function(v) {
                 let msg = response.message;
                 v.SpinShow = false
                 if (code === 200) {
-                    let page = response.page;
+                    let page = response.page ? response.page : response.result ? response.result : {};
                     v.pageData = page.list;
                     v.form.total = page.total;
                 }
