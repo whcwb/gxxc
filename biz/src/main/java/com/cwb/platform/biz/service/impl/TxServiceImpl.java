@@ -83,8 +83,20 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newBizTx.setId(bizTx.getId());//订单ID
         newBizTx.setTtShzt(bizTx.getTtShzt());//提现审核状态(0、待审核 1、审核通过 2、审核拒绝)
         newBizTx.setTtBz(bizTx.getTtBz());//审核描述
+        if(StringUtils.equals(bizTx.getTtShzt(),"2")){
+            newBizTx.setTtZt("4");//设置提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
+        }
 
         int i = update(newBizTx);
+        //提现审核拒绝时，明细表中的申请也要是失败的
+        if(StringUtils.equals(bizTx.getTtShzt(),"2")){
+            BizYjmx bizYjmx=new BizYjmx();
+            bizYjmx.setId(tx.getYjId());
+            bizYjmx.setZjZt("2");
+            bizYjmx.setZjBz(bizTx.getTtBz());
+            // 更新佣金明细表
+            yjmxService.update(bizYjmx);
+        }
         return i == 1 ? ApiResponse.success():ApiResponse.fail();
     }
 
@@ -96,7 +108,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     @Override
     public ApiResponse<String> updateTxzt(BizTx bizTx) {
         RuntimeCheck.ifBlank(bizTx.getId(),"Id不能为空");
-        RuntimeCheck.ifBlank(bizTx.getTtZt(),"提现状态不能为空");//获取提现状态(0该红包待审核 1、红包已收取 2、红包已经发送  3、红包过期未收取到)
+        RuntimeCheck.ifBlank(bizTx.getTtZt(),"提现状态不能为空");//获取提现状态 ZDCLK0048 (0 待收取 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
 
         RuntimeCheck.ifBlank(bizTx.getTtBz(),"备注不能为空");
 

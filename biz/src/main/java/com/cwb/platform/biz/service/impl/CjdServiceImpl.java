@@ -102,6 +102,11 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         entity.setId(genId());
         entity.setXySfhg(xySfhg);
         int i = save(entity);
+        /**
+         * 修改 学员状态
+         */
+        entityMapper.updateBizUserZt(userRequest.getId());
+
         return i==1?ApiResponse.success():ApiResponse.fail("上传失败");
     }
     /**
