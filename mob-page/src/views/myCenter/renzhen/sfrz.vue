@@ -18,7 +18,7 @@
       <div>
         <box-head tit="实名认证">
           <div slot="left" style="color: #E0DADF">
-            <i class="iconfont icon-left"></i>
+            <i class="iconfont icon-left1"></i>
           </div>
         </box-head>
       </div>
@@ -51,8 +51,11 @@
               <Col span="11" style="margin-left: 5px;margin-right: 5px;margin-bottom: 5px">
                 <Card dis-hover>
                   <p slot="title">身份证正面</p>
-                  <div align="center">
-                    <img src="static/renzhen/sfzzm.png" width="120" height="120">
+                  <div align="center" style="padding:0 0.3rem"
+                      @click="zjBm(0)">
+                    <imgup :demoImg="sfzzm"
+                           @handleSuccess="handleSuccess">
+                    </imgup>
                   </div>
                 </Card>
               </Col>
@@ -106,10 +109,11 @@
     import {Card, Row, Col, Avatar, Icon,Tabs,TabPane,Badge,Steps, Step  } from 'iview'
     import { Header,Button,Field,Toast } from 'mint-ui';
     import { ResultPage } from 'mand-mobile'
-
+    import imgup from '@/views/components/upLoad/imgUpload'
     export default {
         name: "myCenter",
         components: {
+          imgup,
           Card,Row,Col,Avatar,Icon,Tabs,TabPane,Badge,Steps, Step,
           [Header.name]:Header,
           [Field.name]:Field,
@@ -118,63 +122,39 @@
         },
         data(){
           return {
-            droptions:[
-              {
-                label: '无驾驶证',
-                value: '0'
-              },
-              {
-                label: '有驾驶证',
-                value: '1'
-              }],
-            stepIndex:0,
+            stepIndex:1,
             form:{
                 yhXm:'',
                 yhZjhm:'',
-            }
+            },
+            sfzzm:'static/renzhen/sfzzm.png',
+            zjCode:0
           }
         },
-        /*computed:{
-          yhXm:function () {
-            return this.form.yhXm
-          }
-        },*/
-        /*watch:{
-          form:{
-            handler(newValue, oldValue) {
-              console.log(newValue.yhXm+"=="+newValue.yhXm.length);
-              if (newValue.yhXm.length > 3){
-                newValue.yhXm = "123";
-                //this.form.yhXm = "123";
-              }
-            },
-            deep:true
-          }
-        },*/
         methods:{
             goback(){
               this.$router.go(-1);
             },
             toPhotoNext(){
-                //var sfzh =/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/
-                //console.log(sfzh.test(this.form.yhZjhm))
-                /*if (this.form.yhXm == ""){
-                  Toast({message:'请填写您的姓名'});
-                  return;
-                }else if(!sfzh.test(this.form.yhZjhm)){
-                  Toast({message:'你的证件号有误！'});
-                  return;
-                }*/
+                // if (this.form.yhXm == ""){
+                //   Toast({message:'请填写您的姓名'});
+                //   return;
+                // }else if(this.form.yhZjhm==""||this.form.yhZjhm.length!=18){
+                //   Toast({message:'请填写正确的身份证号码！'});
+                //   return;
+                // }
                   // 切换到下一个界面
                    this.stepIndex = 1;
-              /*if (this.form.sfzmhm == "" || this.form.sfzmhm.length < 18){
-                  Toast({message:'请输入正确的18位身份证号码',position:'bottom'});
-                  return;
-              }*/
             },
             toResult(){
               //切换到下一个界面
               this.stepIndex = 2;
+            },
+            zjBm(val){
+
+            },
+            handleSuccess(){
+
             }
         }
     }

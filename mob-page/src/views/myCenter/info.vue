@@ -39,10 +39,11 @@
                 <Col span="24">
                 <Card dis-hover>
                   <mt-cell title="头像" style="border-bottom: 1px #e9eaec solid;padding-bottom: 10px">
-                    <imgup :demoImg="userMess.yhTx"
-                      @handleSuccess="handleSuccess">
-                    </imgup>
-                      <!--<Avatar shape="square" icon="person" size="large" style="width: 50px;height: 50px;line-height: 50px"/>-->
+                    <div style="width: 1.2rem;height: 1.2rem;border-radius: 1rem;background-color: #2d8cf0">
+                        <imgup :demoImg="userMess.yhTx"
+                          @handleSuccess="handleSuccess">
+                        </imgup>
+                    </div>
                   </mt-cell>
                   <div @click="compname='bm'">
                     <mt-cell title="姓名" :value="userMess.yhBm"
@@ -63,6 +64,17 @@
                   </span>
                 </Col>
               </Row>
+              <div style="text-align: center;padding: 1rem 0 0 0;color: #949494">
+                  <div>
+                      Copyright@2017-2018
+                  </div>
+                  <div>
+                    520学车联盟
+                  </div>
+                  <div>
+                    武汉天弘腾创科技有限公司
+                  </div>
+              </div>
           </div>
       </div>
       <component :is="compname"></component>
@@ -78,7 +90,8 @@
     export default {
         name: "myCenter",
         components: {
-          bm,word,imgup,
+          bm,word,
+          imgup,
           Card,Row,Col,Avatar,Tag,Alert,Button,Icon,
           [Cell.name]:Cell,
           [Header.name]:Header
@@ -125,7 +138,7 @@
             var v = this
             this.$http.post(this.apis.CHUSERMESS,{'yhTx':url}).then((res)=>{
               if(res.code==200){
-                v.$parent.userMessF()
+                v.userMessF()
               }
             }).catch((err)=>{
 
@@ -135,7 +148,7 @@
             console.log('上传成功事件监听',res)
             this.UPTx('/'+res.message)
             this.userMessF()
-          }
+          },
         }
     }
 </script>

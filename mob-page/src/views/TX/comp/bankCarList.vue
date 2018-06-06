@@ -16,18 +16,51 @@
             <i class="iconfont icon-add" style="font-size: 0.44rem"></i>
           </div>
         </div>
-        <div class="body">
-
+        <div class="body" style="padding: 0.2rem 0.35rem 0">
+          <div v-for="(item,index) in bankList"
+               @click="seltBankCard(item,index)"
+            style="padding: 0.2rem 0">
+              <div style="background-color: #fff;padding: 0.1rem 0.2rem;font-size: 0.32rem">
+                <div style="border-bottom: 1px #eaeaea solid;padding: 0.1rem 0">
+                  {{item.yhkSsyh}}
+                </div>
+                <div style="padding: 0.1rem 0">
+                  {{item.yhkKh}}
+                </div>
+              </div>
+          </div>
         </div>
       </div>
 </template>
 
 <script>
+  import {  Cell, Toast} from 'mint-ui';
     export default {
         name: "bankCarList",
-      mounted(){
-        this.MyFunc.auto(window, document,7.5)
-      },
+        components:{
+          [Cell.name]:Cell,
+        },
+        data(){
+          return{
+          }
+        },
+        props:{
+          bankList:{
+            type:Array,
+            default:[]
+          }
+        },
+        created(){
+        },
+        mounted(){
+          this.MyFunc.auto(window, document,7.5)
+        },
+        methods:{
+          seltBankCard(item,index){
+            this.$parent.compName = ''
+            this.$emit('seltBankCard',index)
+          }
+        }
     }
 </script>
 

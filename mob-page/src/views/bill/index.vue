@@ -21,31 +21,14 @@
 <template>
       <div id="bill" class="box">
         <div>
-          <box-head tit="账单">
+          <box-head tit="账单" leftToName="home">
             <div slot="left" style="color: #E0DADF">
-              <i class="iconfont icon-left"></i>
+              <i class="iconfont icon-left1"></i>
             </div>
           </box-head>
         </div>
         <div class="body">
           <div class="billList" v-for="(item,index) in [,,,]">
-            <div class="tit">
-                <div class="mon">
-                  {{(index+1)}}月
-                </div>
-                <div class="sz">
-                  <span style="margin-right: 0.2rem">
-                    本月支出
-                    <i class="iconfont icon-ico-money"></i>
-                    9,999.00
-                  </span>
-                  <span>
-                    本月收入
-                    <i class="iconfont icon-ico-money"></i>
-                    6,666.00
-                  </span>
-                </div>
-            </div>
             <div class="box-row" v-for="it in [,,,,,]">
               <div style="width: 1.3rem;padding: 0.2rem">
                 <img
@@ -85,6 +68,29 @@
           [Header.name]:Header,
             [Button.name]:Button
         },
+        created(){
+          // this.zdListType()
+          this.getList()
+        },
+        methods:{
+          zdListType(){
+            this.$http.post(this.apis.ZDLISTTYPE,{'typeCode':''}).then((res)=>{
+              console.log(res)
+
+            }).catch((err)=>{
+
+            })
+          },
+          getList(){
+              this.$http.post(this.apis.ZDLIST).then((res)=>{
+                console.log(res)
+                if(res.code==200){
+
+                }
+              }).catch((err)=>{})
+
+          }
+        }
     }
 </script>
 
