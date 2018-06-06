@@ -1,8 +1,8 @@
 package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.AppUserBaseController;
-import com.cwb.platform.biz.app.bean.StudentListModel;
 import com.cwb.platform.biz.model.BizCjd;
+import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.service.CjdService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -52,8 +52,8 @@ public class AppCjdController extends AppUserBaseController{
      *  我的学员列表  分页查询
      */
     @PostMapping("/getcjblist")
-    public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage,String xyZt){
-        return service.getBizCjbList(ptyhPage,xyZt);
+    public ApiResponse<PageInfo<BizUser>> getBizCjbList(Page<BizUser> ptyhPage, String xyZt){
+       return service.getBizCjbList(ptyhPage,xyZt);
     }
 
 }
