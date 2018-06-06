@@ -2,12 +2,15 @@ package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.AppUserBaseController;
 import com.cwb.platform.biz.model.BizJl;
+import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.UserService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +24,8 @@ import java.util.Map;
 public class AppPtyhController extends AppUserBaseController {
     @Autowired
     private PtyhService service;
-
+    @Autowired
+    private UserService userService;
 
     /**
      * 用户注册
@@ -98,6 +102,19 @@ public class AppPtyhController extends AppUserBaseController {
     public ApiResponse<BizPtyh> get(){
         BizPtyh user = getAppCurrentUser();
         BizPtyh users = service.findByIdSelect(user.getId());
+        //判断一下，这个用户有没有上传实名资料 没有上传就给前台-1，让前台提示用户去实名。
+        if(users!=null){
+            //认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+            String yhZt=users.getYhZt();
+            if(StringUtils.equals(yhZt,"0")){
+                BizUser realName=new BizUser();
+                realName.setYhId(users.getId());
+                int i=userService.countByEntity(realName);
+                if(i<1){
+                    users.setYhZt("-1");
+                }
+            }
+        }
         return ApiResponse.success(users);
     }
     /**
