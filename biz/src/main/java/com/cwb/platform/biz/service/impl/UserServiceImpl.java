@@ -92,7 +92,7 @@ public class UserServiceImpl extends BaseServiceImpl<BizUser,java.lang.String> i
                 bizUser -> {
                     // 根据yhid查询详细信息
                     BizPtyh ptyh = ptyhService.findById(bizUser.getYhId());
-                    bizUser.setBizPtyh(ptyhService.afterReturns(ptyh));
+                    bizUser.setUserDetail(ptyhService.afterReturns(ptyh));
                 }
         );
 
