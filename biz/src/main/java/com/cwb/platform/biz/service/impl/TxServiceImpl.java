@@ -83,8 +83,25 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newBizTx.setId(bizTx.getId());//订单ID
         newBizTx.setTtShzt(bizTx.getTtShzt());//提现审核状态(0、待审核 1、审核通过 2、审核拒绝)
         newBizTx.setTtBz(bizTx.getTtBz());//审核描述
+        if(StringUtils.equals(bizTx.getTtShzt(),"2")){
+            newBizTx.setTtZt("4");//设置提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
+        }
 
         int i = update(newBizTx);
+
+        BizYjmx bizYjmx=new BizYjmx();
+        bizYjmx.setId(tx.getYjId());
+        //提现审核拒绝时，明细表中的申请也要是失败的
+        if(StringUtils.equals(bizTx.getTtShzt(),"2")){
+            bizYjmx.setZjZt("2");
+            bizYjmx.setTxShZt("2");
+
+        }else {
+            bizYjmx.setTxShZt("1");
+        }
+        bizYjmx.setZjBz(bizTx.getTtBz());
+        // 更新佣金明细表
+        yjmxService.update(bizYjmx);
         return i == 1 ? ApiResponse.success():ApiResponse.fail();
     }
 
@@ -96,7 +113,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     @Override
     public ApiResponse<String> updateTxzt(BizTx bizTx) {
         RuntimeCheck.ifBlank(bizTx.getId(),"Id不能为空");
-        RuntimeCheck.ifBlank(bizTx.getTtZt(),"提现状态不能为空");//获取提现状态(0该红包待审核 1、红包已收取 2、红包已经发送  3、红包过期未收取到)
+        RuntimeCheck.ifBlank(bizTx.getTtZt(),"提现状态不能为空");//获取提现状态 ZDCLK0048 (0 待收取 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
 
         RuntimeCheck.ifBlank(bizTx.getTtBz(),"备注不能为空");
 
@@ -156,7 +173,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newEntity.setTtZt("0");
         newEntity.setTtSj(DateUtils.getNowTime());
         newEntity.setTtShzt("0");
-        newEntity.setYjId(yjid);//佣金明细表id
+        newEntity.setYjId(yjid);//流水表id
         newEntity.setTtYhkh(yhkh);
         newEntity.setTtKhh(bizYhk.getYhkKhh());//设置用户开户行
         newEntity.setTxXm(bizYhk.getYhkXm());//提现姓名
@@ -172,7 +189,8 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
             newBizYjmx.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
             newBizYjmx.setCjsj(DateUtils.getNowTime());
             newBizYjmx.setZjZt("0");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
-           newBizYjmx.setMxlx("4");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+            newBizYjmx.setMxlx("4");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+            newBizYjmx.setTxShZt(newEntity.getTtShzt());
            yjmxService.save(newBizYjmx);
        }
         // 更新账户表

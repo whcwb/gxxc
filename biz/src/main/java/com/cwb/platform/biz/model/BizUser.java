@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 用户实名制表
@@ -86,7 +87,21 @@ public class BizUser implements Serializable {
     @Column(name = "XY_ZT")
     private String xyZt;
 
+
+
+
+    @Transient
+    private Map<String,Object> map;
+
     private static final long serialVersionUID = 1L;
+
+    public Map<String, Object> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Object> map) {
+        this.map = map;
+    }
 
     public String getXyZt() {
         return xyZt;
@@ -283,6 +298,7 @@ public class BizUser implements Serializable {
         cjsj("CJSJ"),
         yhSjid("YH_SJID"),
         yhSsjid("YH_SSJID"),
+        xyZt("XY_ZT"),
         yhJlid("YH_JLID");
 
         private final String column;

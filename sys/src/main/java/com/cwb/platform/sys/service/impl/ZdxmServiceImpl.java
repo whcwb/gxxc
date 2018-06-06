@@ -36,6 +36,7 @@ public class ZdxmServiceImpl extends BaseServiceImpl<SysZdxm,String> implements 
     public List<SysZdxm> findByTypeCode(String typeCode) {
         SimpleCondition condition = new SimpleCondition(SysZdxm.class);
         condition.eq(SysZdxm.InnerColumn.zdlmdm,typeCode);
+        condition.setOrderByClause( SysZdxm.InnerColumn.qz.asc());
         return zdxmMapper.selectByExample(condition);
     }
 

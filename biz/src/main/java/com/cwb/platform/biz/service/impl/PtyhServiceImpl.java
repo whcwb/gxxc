@@ -134,7 +134,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             if (StringUtils.isNotBlank(bizPtyh.getYhZjhm())) {
                 bizPtyh.setYhZjhm(bizPtyh.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
             }
-            if (StringUtils.isNotBlank(bizPtyh.getYhTx()) && StringUtils.containsNone(bizPtyh.getYhTx(), "http")) {
+            if (StringUtils.isNotBlank(bizPtyh.getYhTx()) && !StringUtils.containsNone(bizPtyh.getYhTx(), "http")) {
                 bizPtyh.setYhTx(imgUrl + bizPtyh.getYhTx());
             }
 
@@ -573,7 +573,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             if (imgList.length != imgTypeList.length && imgList.length>0) {
                 return ApiResponse.fail("证件数据和证件属性数据不同");
             }
-            if(imgList.length>2){
+            if(StringUtils.indexOf(entity.getImgTypeList(),"20")>-1){
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
@@ -588,7 +588,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 wjList.add(wj);
             }
         }
-        //TODO
+        //
         if (wjList.size() > 0) {
             wjMapper.deleteBatch(user.getId());
             wjMapper.insertBatch(wjList);

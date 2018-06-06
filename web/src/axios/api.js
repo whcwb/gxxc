@@ -68,6 +68,7 @@ module.exports = {
         ADD:'/api/user/save',
         CHANGE:'/api/user/update',
         DELE:'/api/user/removeIds',
+        getStudentList:'/api/user/getStudentList',
     },
     tx:{
         QUERY:'/api/tx/pager',//提现管理

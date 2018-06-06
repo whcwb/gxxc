@@ -1,8 +1,9 @@
 package com.cwb.platform.biz.service.impl;
 
-import com.cwb.platform.biz.app.bean.StudentListModel;
 import com.cwb.platform.biz.mapper.BizCjdMapper;
+import com.cwb.platform.biz.mapper.BizUserMapper;
 import com.cwb.platform.biz.model.BizCjd;
+import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.service.CjdService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -41,7 +42,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
     private String subjectMark4;
 
     @Autowired
-    private BizCjdMapper entityMapper;
+    private BizUserMapper userMapper;
 
     @Autowired
     private PtyhService ptyhService;
@@ -51,7 +52,8 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
     protected Mapper<BizCjd> getBaseMapper() {
         return entityMapper;
     }
-
+    @Autowired
+    private BizCjdMapper entityMapper;
 
     /**
      * 用户上传传成绩单
@@ -100,6 +102,11 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         entity.setId(genId());
         entity.setXySfhg(xySfhg);
         int i = save(entity);
+        /**
+         * 修改 学员状态
+         */
+        entityMapper.updateBizUserZt(userRequest.getId());
+
         return i==1?ApiResponse.success():ApiResponse.fail("上传失败");
     }
     /**
@@ -114,7 +121,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         if(!StringUtils.equals(yhLx,"2")){//不等于教练
             xyid=user.getId();
         }else{
-            condition.like(BizCjd.InnerColumn.jlId.name(), user.getId());//教练ID
+            condition.eq(BizCjd.InnerColumn.jlId.name(), user.getId());//教练ID
         }
 
         Map<String,Object> ret= new HashMap<String,Object>();
@@ -126,7 +133,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         ret.put("yhTx",ptyh.getYhTx());//用户头像
 
         //  根据用户ID查询出自己的银行卡
-        condition.like(BizCjd.InnerColumn.xyId.name(), xyid);
+        condition.eq(BizCjd.InnerColumn.xyId.name(), xyid);
         condition.setOrderByClause( BizCjd.InnerColumn.kmBm.desc());
         List<BizCjd> bizJls = this.findByCondition(condition);
 
@@ -135,22 +142,31 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
     }
 
     @Override
-   public ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage,String xyZt){
-       PageInfo<StudentListModel> pageInfo = new PageInfo<StudentListModel>();
+   public ApiResponse<PageInfo<BizUser>> getBizCjbList(Page<BizUser> ptyhPage, String xyZt){
+       PageInfo<BizUser> pageInfo = new PageInfo<BizUser>();
        // 获取当前登录用户
        BizPtyh user = getAppCurrentUser();
-       SimpleCondition condition = new SimpleCondition(StudentListModel.class);
-       condition.eq(StudentListModel.InnerColumn.yhJlid.name(), user.getId());
-// 填写参数值
-       condition.like(StudentListModel.InnerColumn.xyZt.name(), "%" + xyZt + "%");
+       SimpleCondition condition = new SimpleCondition(BizUser.class);
+       condition.eq(BizUser.InnerColumn.yhJlid.name(), user.getId());//教练ID
 
-       condition.eq(StudentListModel.InnerColumn.yhJlid.name(), user.getId());
+        if(xyZt!=null){
+            if(org.apache.commons.lang.StringUtils.containsNone(xyZt, new char[]{'1', '2','3','4','0'})){
+                RuntimeCheck.ifTrue(true,"您好，请输入确定学员状态");
+            }
+            if(StringUtils.equals(xyZt,"0")){
+                condition.eq(BizUser.InnerColumn.xyZt.name(), xyZt);//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
+            }else{
+                if(xyZt!=null){
+                    condition.and().andCondition(" ( XY_ZT NOT LIKE ='%"+xyZt+"%' OR XY_ZT IS NULL ) ");//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
+                }
+            }
+        }
 
        pageInfo = this.pagers(ptyhPage,condition);
-       List<StudentListModel> list=pageInfo.getList();
+       List<BizUser> list=pageInfo.getList();
         if(CollectionUtils.isNotEmpty(list)){
-            for(StudentListModel l:list){
-                ApiResponse<Map<String,Object>> obd=this.getUserMessage(l.getId());
+            for(BizUser l:list){
+                ApiResponse<Map<String,Object>> obd=this.getUserMessage(l.getYhId());
                 if(obd.isSuccess()){
                     l.setMap(obd.getResult());
                 }
@@ -165,17 +181,17 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
      * @param condition
      * @return
      */
-    public PageInfo<StudentListModel> pagers(Page page, Example condition) {
+    public PageInfo<BizUser> pagers(Page page, Example condition) {
         if (page.getPageSize() == 0){
             page.setPageSize(8);
         }
         if (page.getPageNum() == 0){
             page.setPageNum(1);
         }
-        PageInfo<StudentListModel> resultPage = PageHelper.startPage(page.getPageNum(), page.getPageSize()).doSelectPageInfo(new ISelect() {
+        PageInfo<BizUser> resultPage = PageHelper.startPage(page.getPageNum(), page.getPageSize()).doSelectPageInfo(new ISelect() {
             @Override
             public void doSelect() {
-                getBaseMapper().selectByExample(condition);
+                userMapper.selectByExample(condition);
             }
         });
 

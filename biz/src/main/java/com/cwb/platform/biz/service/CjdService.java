@@ -1,8 +1,8 @@
 package com.cwb.platform.biz.service;
 
 
-import com.cwb.platform.biz.app.bean.StudentListModel;
 import com.cwb.platform.biz.model.BizCjd;
+import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
@@ -16,5 +16,5 @@ public interface CjdService extends BaseService<BizCjd, String> {
 
     ApiResponse<Map<String,Object>> getUserMessage(String xyid);
 
-    ApiResponse<PageInfo<StudentListModel>> getBizCjbList(Page<StudentListModel> ptyhPage,String xyZt);
+    ApiResponse<PageInfo<BizUser>> getBizCjbList(Page<BizUser> ptyhPage, String xyZt);
 }
