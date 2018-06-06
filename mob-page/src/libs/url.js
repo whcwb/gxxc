@@ -7,7 +7,7 @@ module.exports = {
   },
   // getImgUrl:'http://47.98.39.45:9088/',//获取
   // upImgUrl:'http://47.98.39.45:9086/upload',//上传
-  getImgUrl:'http://192.168.31.228:9086',
+  getImgUrl:'http://192.168.31.228:8080/',
   upImgUrl:'http://192.168.31.228:9086/upload',
   LOGIN:'/app/login',//登录接口
   LOGOUT:'/app/logout',//退出用戶
@@ -20,7 +20,7 @@ module.exports = {
   SWIPER:'/app/hd/pager ',//轮播图
   TX:'/app/tx/save',//资金提现
   TEAM:'/app/user/pager',//我的团队
-  IDRZ:'/app/ptyh/updatesm',//身份认证
+  IDRZ:'/app/ptyh/updatesm',//身份认证 实名认证
   CHUSERMESS:'/app/ptyh/update',//昵称 头像修改
   UPWORLD:'app/ptyh/mdfPwd',//密码修改
   CPTYPE:'/app/cp/getcplx',//产品类别
