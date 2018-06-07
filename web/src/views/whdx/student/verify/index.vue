@@ -43,7 +43,7 @@
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
-                    {title: '认证状态',key:'yhZt',dict:'rzzt',searchType:'dict'},
+                    {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
                     {
                         title: '操作',

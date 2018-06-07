@@ -1,7 +1,31 @@
 <style lang="less">
 	@import '../styles/common.less';
     @import './login.less';
-    .login{
+	.loginForm{
+		width: 400px;
+		position:absolute;
+		top:200px;
+		right: 290px;
+		float: right;
+		display: inline-block;
+	}
+	.loginBg{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		background:rgba(0,0,0,0.5);
+	}
+
+	.loginImg{
+		width: 100%;
+	}
+	.login{
+		background-color: rgba(0,0,0,0.5);
 	    .imgLeft{
 	    	position: relative;
 	    	.loginImg{
@@ -28,53 +52,44 @@
 </style>
 
 <template>
-    <div class="login" @keydown.enter="handleSubmit">
-    	<div v-if="SpinShow" style="width:100%;height:100%;position: absolute;top: 0;left:0;z-index: 100;">
-			<Spin fix>
-				<Icon type="load-c" size=55 class="demo-spin-icon-load"></Icon>
-				<div style="font-size: 30px;">数据加载中...</div>
-			</Spin>
+    <div class="login" @keydown.enter="handleSubmit" >
+		<div class="loginBg">
+
 		</div>
-        <div class="login-con">
-            <Card :bordered="false" style="width: 100%;">
-                <div class="form-con box-row">
-                	<div class="body-O imgLeft">
-                		<!--<img class="loginImg" src="/static/logo.png" alt="" />-->
-                		<img class="loginImg" src="/static/login-left.png" alt="" />
-                	</div>
-                	<div class="body-O from">
-	                	<div class="loginTiT">
-	                		<h1>
-	                			{{title}}
-	                		</h1>
-	                	</div>
-	                    <Form ref="loginForm" :model="form" :rules="rules">
-	                    	<div class="fromList">
-		                        <FormItem prop="username">
-		                            <Input v-model="form.username" placeholder="请输入用户名">
-		                                <span slot="prepend">
+		<Card class="loginForm">
+			<Row>
+				<div class="body-O">
+					<img class="loginImg" src="/static/login-left.png" alt="" />
+				</div>
+			</Row>
+			<Row>
+				<div class="body-O from">
+					<Form ref="loginForm" :model="form" :rules="rules">
+						<div class="fromList">
+							<FormItem prop="username">
+								<Input v-model="form.username" placeholder="请输入用户名">
+								<span slot="prepend">
 		                                    <Icon :size="16" type="person"></Icon>
 		                                </span>
-		                            </Input>
-		                        </FormItem>
-	                    	</div>
-	                    	<div class="fromList">
-		                        <FormItem prop="password">
-		                            <Input type="password" v-model="form.password" placeholder="请输入密码">
-		                                <span slot="prepend">
+								</Input>
+							</FormItem>
+						</div>
+						<div class="fromList">
+							<FormItem prop="password">
+								<Input type="password" v-model="form.password" placeholder="请输入密码">
+								<span slot="prepend">
 		                                    <Icon :size="14" type="locked"></Icon>
 		                                </span>
-		                            </Input>
-		                        </FormItem>
-	                    	</div>
-	                        <FormItem>
-	                            <Button @click="handleSubmit" type="primary" long>登录</Button>
-	                        </FormItem>
-	                    </Form>
-                	</div>
-                </div>
-            </Card>
-        </div>
+								</Input>
+							</FormItem>
+						</div>
+						<FormItem>
+							<Button @click="handleSubmit" type="primary" long>登录</Button>
+						</FormItem>
+					</Form>
+				</div>
+			</Row>
+		</Card>
     </div>
 </template>
 

@@ -44,7 +44,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         RuntimeCheck.ifTrue(!StringUtils.equals(user.getYhLx(), "2"), "操作失败，只有教练才能进行认证操作");
         RuntimeCheck.ifTrue(StringUtils.equals(user.getYhJlsh(), "1"), "操作失败，该教练已认证无需再次认证");
         RuntimeCheck.ifTrue(StringUtils.equals(user.getYhSfsd(), "1"), "操作失败，该教练已锁定无法进行认证操作");
-        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhSfyjz(), "1"), "操作失败，该教练无驾照无法进行认证操作");
+        RuntimeCheck.ifFalse(StringUtils.equals(user.getYhSfyjz(), "1"), "操作失败，该教练无驾照无法进行认证操作");
 
         RuntimeCheck.ifBlank(obd.getYhJlsh(), "审核状态不能为空");
         if (StringUtils.containsNone(obd.getYhJlsh(), new char[]{'1', '2'})) {
