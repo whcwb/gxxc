@@ -576,6 +576,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
+        List<String> wjSxList=new ArrayList<String>();0
         if (imgList != null) {
             if(StringUtils.trimToNull(imgList[2])!=null){
                 yhSfyjz="1";
@@ -606,11 +607,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 wj.setCjsj(DateUtils.getNowTime());
                 wj.setWjSfyx("1");
                 wjList.add(wj);
+                wjSxList.add(wj.getWjSx());
             }
         }
         //
         if (wjList.size() > 0) {
-            wjMapper.deleteBatch(user.getId());
+            wjMapper.deleteBatch(user.getId(),wjSxList);
             wjMapper.insertBatch(wjList);
         }
 
