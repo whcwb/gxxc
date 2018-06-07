@@ -41,6 +41,10 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
     @Value("${SUBJECT_MARK_4:90}")
     private String subjectMark4;
 
+    @Value("${img_url}")
+    private String imgUrl;
+
+
     @Autowired
     private BizUserMapper userMapper;
 
@@ -130,12 +134,23 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         ret.put("yhbm",ptyh.getYhBm());//用户别名
         ret.put("yhxm",ptyh.getYhXm());//用户姓名
         ret.put("yhzh",ptyh.getYhZh());//用户账户
-        ret.put("yhTx",ptyh.getYhTx());//用户头像
+        String yhTx=ptyh.getYhTx();
+        if (StringUtils.isNotBlank(yhTx) && !StringUtils.containsNone(yhTx, "http")) {
+            yhTx=(imgUrl + yhTx);
+        }
+        ret.put("yhTx",yhTx);//用户头像
+        ret.put("xyid",xyid);//学员ID
 
-        //  根据用户ID查询出自己的银行卡
         condition.eq(BizCjd.InnerColumn.xyId.name(), xyid);
-        condition.setOrderByClause( BizCjd.InnerColumn.kmBm.desc());
+        condition.setOrderByClause( BizCjd.InnerColumn.kmBm.asc());
         List<BizCjd> bizJls = this.findByCondition(condition);
+        if(bizJls!=null){
+            for(BizCjd l:bizJls){
+                if (org.apache.commons.lang.StringUtils.isNotBlank(l.getImgUrl()) && !org.apache.commons.lang.StringUtils.containsNone(l.getImgUrl(), "http")) {
+                    l.setImgUrl(imgUrl + l.getImgUrl());
+                }
+            }
+        }
 
         ret.put("markList",bizJls);//学员考试成绩图片
         return ApiResponse.success(ret);
