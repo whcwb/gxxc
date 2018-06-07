@@ -85,13 +85,38 @@
         created(){
             this.formItem = this.$parent.choosedItem
             this.util.initFormModal(this);
+            this.getImages();
         },
         methods: {
             beforeSave(){
                 this.formItem = {};
                 this.formItem.id = this.$parent.choosedItem.id
                 this.formItem.yhZt = '1';
-			}
+			},
+            getImages(){
+                let v = this;
+                this.$http.post(this.apis.wj.getByCondition,{yhId:this.formItem.id}).then((res)=>{
+                    if (res.code === 200 && res.result){
+                        for (let r of res.result){
+                            switch(r.wjSx){
+                                case '10':
+                                    v.files.cardFront = r.wjTpdz;
+                                    break;
+                                case '11':
+                                    v.files.cardback = r.wjTpdz;
+                                    break;
+                                case '20':
+                                    v.files.licenceFront = r.wjTpdz;
+                                    break;
+                                case '21':
+                                    v.files.licenceBack = r.wjTpdz;
+                                    break;
+                                default:
+                            }
+                        }
+                    }
+                })
+            }
         }
     }
 </script>

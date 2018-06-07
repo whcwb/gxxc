@@ -24,19 +24,23 @@
 					<Row>
 						<Col span="12">
 							<label>身份证正面</label>
-							<img class="docImg" src="../../../../../static/sfzzm.jpg"/>
+							<img v-if="files.cardFront != ''" class="docImg" :src="staticPath+files.cardFront"/>
+							<img v-else class="docImg" src="static/sfzzm.jpg"/>
 						</Col>
 						<Col span="12">
 							<label>身份证反面</label>
-							<img class="docImg" src="../../../../../static/sfzfm.jpg"/>
+							<img v-if="files.cardBack != ''" class="docImg" :src="staticPath+files.cardBack"/>
+							<img v-else class="docImg" src="static/sfzfm.jpg"/>
 						</Col>
-						<Col span="12">
+						<Col v-if="formItem.yhLx == '2'" span="12">
 							<label>驾驶证正本</label>
-							<img class="docImg" src="../../../../../static/jszzb.jpg"/>
+							<img v-if="files.licenceFront != ''" class="docImg" :src="staticPath+files.licenceFront"/>
+							<img v-else class="docImg" src="static/jszzb.jpg"/>
 						</Col>
-						<Col span="12">
+						<Col v-if="formItem.yhLx == '2'" span="12">
 							<label>驾驶证副本</label>
-							<img class="docImg" src="../../../../../static/jsz.jpg"/>
+							<img v-if="files.licenceBack != ''" class="docImg" :src="staticPath+files.licenceBack"/>
+							<img v-else class="docImg" src="static/jsz.jpg"/>
 						</Col>
 					</Row>
 				</Form>
@@ -61,6 +65,12 @@
 				saveUrl:this.apis.teacher.ADD,
 				showModal: true,
 				readonly: false,
+                files:{
+                    cardFront:'',
+                    cardBack:'',
+                    licenceFront:'',
+                    licenceBack:''
+                },
 				formItem: {
 				},
                 formInputs:[
@@ -78,8 +88,33 @@
 		},
 		created(){
 		    this.util.initFormModal(this);
+		    this.getImages();
 		},
 		methods: {
+            getImages(){
+                let v = this;
+                this.$http.post(this.apis.wj.getByCondition,{yhId:this.formItem.yhId}).then((res)=>{
+                    if (res.code === 200 && res.result){
+                        for (let r of res.result){
+                            switch(r.wjSx){
+                                case '10':
+                                    v.files.cardFront = r.wjTpdz;
+                                    break;
+                                case '11':
+                                    v.files.cardback = r.wjTpdz;
+                                    break;
+                                case '20':
+                                    v.files.licenceFront = r.wjTpdz;
+                                    break;
+                                case '21':
+                                    v.files.licenceBack = r.wjTpdz;
+                                    break;
+                                default:
+                            }
+                        }
+                    }
+                })
+            }
 		}
 	}
 </script>
