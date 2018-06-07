@@ -157,7 +157,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
                 condition.eq(BizUser.InnerColumn.xyZt.name(), xyZt);//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
             }else{
                 if(xyZt!=null){
-                    condition.and().andCondition(" ( XY_ZT NOT LIKE ='%"+xyZt+"%' OR XY_ZT IS NULL ) ");//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
+                    condition.and().andCondition(" ( XY_ZT NOT LIKE '%"+xyZt+"%' OR XY_ZT IS NULL ) AND XY_ZT != '0' ");//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
                 }
             }
         }
