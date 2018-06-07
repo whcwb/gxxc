@@ -108,8 +108,9 @@
                   v-if="usermess.yhZt=='1'"
                   style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
               </mt-cell>
+                       <!--:to="usermess.yhLx=='2'? '/home':'/myCenter-jlyrz'"-->
               <mt-cell title="教练员认证" value="未认证"
-                       :to="usermess.yhLx=='2'? '/home':'/myCenter-jlyrz'"
+                       to="/myCenter-jlyrz"
                        is-link style="border-bottom: 1px #e9eaec solid;"  >
                 <i class="iconfont icon-ai-ca" style="font-size: 20px" slot="icon"></i>
                 <span

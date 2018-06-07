@@ -1,8 +1,7 @@
+import Apis from '@/libs/apis';
+import apis from '@/libs/url';
 let myFunction = {}
 
-myFunction.alt=function (a) {
-  alert(a)
-}
 myFunction.auto=function (window, document , num) {
   function resize(){
     var ww = window.innerWidth;
@@ -29,4 +28,22 @@ myFunction.auto=function (window, document , num) {
   window.addEventListener('resize', resize);
 
 }
+
+myFunction.userMess = function(v,usermes){//获取个人信息
+  Apis.ajax.post(apis.USERMESS).then((res)=>{
+    if(res.code==200){
+      if(res.result.yhTx == ''){
+        res.result.yhTx ='/static/userTx.png'
+      }
+      localStorage.setItem('userMess',JSON.stringify(res.result))
+      usermes(JSON.parse(localStorage.getItem("userMess")))
+    }
+  }).catch((err)=>{
+    console.log('出错了！！！')
+  })
+}
+
+
+
+
 export default myFunction

@@ -1,7 +1,7 @@
 <style lang="less">
   .timeList{
     padding: 0.25rem;
-    font-size: 0.3rem;
+    font-size: 0.26rem;
       .list{
         background-color: #fff;
         margin-bottom: 0.2rem;
@@ -13,7 +13,7 @@
             text-align: right;
             font-size: 0.28rem;
             .text{
-              font-size: 0.3rem;
+              font-size: 0.2rem;
             }
             .money{
               /*color: #ff8e00;*/
@@ -31,7 +31,7 @@
   .mint-navbar{
     .mint-tab-item{
       .mint-tab-item-label{
-        font-size: 0.24rem;
+        font-size: 0.32rem;
       }
     }
   }
@@ -49,29 +49,29 @@
             <mt-tab-item id="2">二级</mt-tab-item>
           </mt-navbar>
           <div class="body timeList" style="">
-            <div class="list" v-for="item in  list">
+            <div class="list" v-for="(item,index) in list">
               <div class="box-row ddsty">
-                <div style="width: 0.8rem">
-                  <img src="/static/bill.png"
-                       width="100%" alt="">
+                <div style="width: 1rem">
+                  <img :src="item.userDetail.yhTx | yhTx"
+                       style="width: 1rem;height:1rem;border-radius: 0.5rem">
                 </div>
                 <div class="body-O" style="text-align: right">
                   <div class="box">
                     <div class="body text">
                       <div class="box-row">
                         <div class="body-O">
-                          {{item.text}}
+                          {{item.yhXm}}
                         </div>
                         <div class="body-O">
-                          <a :href="'tel:'+item.phone">{{item.phone}}</a>
+                          <a :href="'tel:'+item.yhSjhm">{{item.yhSjhm}}</a>
                         </div>
                       </div>
                     </div>
-                    <div class="money" :style="{color:item.color}">
-                      {{item.money}}
+                    <div class="money" :style="{color:item.userDetail.ddSfjx=='1'?'#00b65f':'#ff8800'}">
+                      {{item.userDetail.ddSfjx | ddSfjx}}
                     </div>
                     <div class="typ">
-                      {{item.typ}}
+                      {{item.userGrade | userGrade}}
                     </div>
                   </div>
                 </div>
@@ -132,13 +132,40 @@
             },
           }
         },
+      filters:{
+        yhTx:(val)=>{
+          if(val){
+            return val
+          }
+          return 'static/tx.png'
+        },
+        ddSfjx:(val)=>{
+          switch (val){
+            case '0':
+              return '未交费'
+            break;
+            case '1':
+              return '已交费'
+          }
+        },
+        userGrade:(val)=>{
+          switch (val){
+            case '1':
+              return '一级用户'
+              break;
+            case '2':
+              return '二级用户'
+          }
+        }
+      },
       watch:{
         selected:function(n,o) {
-          this.list = this.ALL[n]
+          this.pageList.userGrade = n
+          this.teamList()
         }
       },
       created(){
-        this.list= this.ALL[0]
+        // this.list= this.ALL[0]
         this.teamList()
       },
         methods:{
@@ -150,7 +177,8 @@
           teamList(){
             var v = this
             this.$http.post(this.apis.TEAM,this.pageList).then((res)=>{
-
+              console.log(res)
+              v.list = res.page.list
             }).catch((err)=>{
 
             })

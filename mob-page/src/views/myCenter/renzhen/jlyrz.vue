@@ -17,7 +17,7 @@
       <div>
         <box-head tit="教练员认证">
           <div slot="left" style="color: #E0DADF">
-            <i class="iconfont icon-left"></i>
+            <i class="iconfont icon-left1"></i>
           </div>
         </box-head>
       </div>
