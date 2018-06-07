@@ -29,4 +29,9 @@ module.exports = {
   BANKLIST:'/app/yhk/getCondition',//银行卡列表
   ZDLIST:'/app/yjmx/pager',//账单列表
   ZDLISTTYPE:'/app/zdxm',//账单列表状态
+
+  //我的学员
+  SUDENTLIST:'/app/cjd/getcjblist',//学院列表
+  XYMESS:'/app/cjd/getxy',//学员详情
+  XYCJD:'/app/cjd/save',//学院成绩单上传
 }

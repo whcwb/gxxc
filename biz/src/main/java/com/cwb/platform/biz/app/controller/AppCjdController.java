@@ -35,7 +35,7 @@ public class AppCjdController extends AppUserBaseController{
     public ApiResponse<String> giveMark(BizCjd bizCjd){
         BizPtyh ptyh= getAppCurrentUser();
         String yhLx=ptyh.getYhLx();
-        RuntimeCheck.ifTrue(StringUtils.equals(yhLx,"2"),"您好，非教练不能上传成绩单");
+        RuntimeCheck.ifFalse(StringUtils.equals(yhLx,"2"),"您好，非教练不能上传成绩单");
         return service.giveMark(bizCjd);
     }
 

@@ -28,6 +28,7 @@
 </template>
 <script>
   import {Card,Upload ,Modal,Icon} from 'iview'
+  import {Toast} from 'mand-mobile'
   export default {
     name:'imgUp',
     components:{
@@ -56,6 +57,7 @@
         // console.log('文件上传成功')
         // console.log(res)
         // console.log(file)
+        Toast.hide();
         this.$emit('handleSuccess',res)
       },
       handleError(res,file){
@@ -72,7 +74,8 @@
       handleMaxSize (file) {
         console.log('File  ' + file.name + ' 文件太大了 2M.');
       },
-      handleBeforeUpload () {
+      handleBeforeUpload () {//上传之前
+        Toast.loading('加载中...');
         const check = this.uploadList.length < 5;
         if (!check) {
           console.log({
