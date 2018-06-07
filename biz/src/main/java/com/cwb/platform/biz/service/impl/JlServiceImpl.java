@@ -63,6 +63,15 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         }
         newEntity.setYhZtMs(yhZtMs);
        int i = ptyhService.update(newEntity);
+       if(i>0){
+           BizJl jl=new BizJl();
+           jl.setYhId(newEntity.getId());
+           jl.setJlShZt(obd.getYhJlsh());
+           jl.setJlShMs(yhZtMs);
+           this.update(jl);
+       }
+
+
         return i==1?ApiResponse.success():ApiResponse.fail("审核失败");
     }
 }

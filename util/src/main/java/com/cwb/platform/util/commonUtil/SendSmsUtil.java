@@ -1,7 +1,6 @@
 package com.cwb.platform.util.commonUtil;
 
 
-import com.alibaba.druid.util.StringUtils;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsRequest;
@@ -36,7 +35,7 @@ public class SendSmsUtil {
         Boolean ret=false;
         try {
             SendSmsResponse response= sendSmsMap(requestMap);
-            if(StringUtils.equals(response.getCode(),"200")){
+            if(response.getCode() != null && response.getCode().equals("OK")) {
                 ret=true;
             }
         } catch (Exception e) {
@@ -114,9 +113,9 @@ public class SendSmsUtil {
     public static void main(String[] args) throws ClientException, InterruptedException {
 
         Map<String,String> map=new HashMap<>();
-        map.put("phoneNumbers","133111111");//电话号码
+        map.put("phoneNumbers","18672922385");//电话号码
         map.put("templateCode","SMS_136430180");//短信模板
-        map.put("templateParam","{\"code\":\"TestCode\"}");//短信报文
+        map.put("templateParam","{\"code\":\"123456\"}");//短信报文
 //        map.put("","");
 //        map.put("","");
         //发短信

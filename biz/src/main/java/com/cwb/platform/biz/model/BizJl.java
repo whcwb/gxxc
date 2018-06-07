@@ -92,7 +92,36 @@ public class BizJl implements Serializable {
     @Column(name = "JL_MS")
     private String jlMs;
 
+    /**
+     * 教练审核状态
+     */
+    @Column(name = "JL_SH_ZT")
+    private String jlShZt;
+
+    /**
+     * 教练审核描述
+     */
+    @Column(name = "JL_SH_MS")
+    private String jlShMs;
+
     private static final long serialVersionUID = 1L;
+
+
+    public String getJlShMs() {
+        return jlShMs;
+    }
+
+    public void setJlShMs(String jlShMs) {
+        this.jlShMs = jlShMs;
+    }
+
+    public String getJlShZt() {
+        return jlShZt;
+    }
+
+    public void setJlShZt(String jlShZt) {
+        this.jlShZt = jlShZt;
+    }
 
     /**
      * 获取用户id

@@ -798,10 +798,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
             return true;
         }
-        //短信下发
-        ret= SendSmsUtil.sendSms(map);
-
-        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
+        // TODO: 2018/5/19 调试模式。
+        if (debugTest != null) {//调试
+            ret=true;
+        }else{
+            //短信下发
+            ret= SendSmsUtil.sendSms(map);
+        }
+        if(ret){
+            redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
+        }
         return  ret;
     }
 
