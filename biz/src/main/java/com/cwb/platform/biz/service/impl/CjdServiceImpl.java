@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,15 +145,25 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         condition.eq(BizCjd.InnerColumn.xyId.name(), xyid);
         condition.setOrderByClause( BizCjd.InnerColumn.kmBm.asc());
         List<BizCjd> bizJls = this.findByCondition(condition);
+        Map<String,BizCjd> bizCjdMap=new HashMap<String,BizCjd>();
         if(bizJls!=null){
             for(BizCjd l:bizJls){
                 if (org.apache.commons.lang.StringUtils.isNotBlank(l.getImgUrl()) && !org.apache.commons.lang.StringUtils.containsNone(l.getImgUrl(), "http")) {
                     l.setImgUrl(imgUrl + l.getImgUrl());
                 }
+                bizCjdMap.put(l.getKmBm(),l);
             }
         }
-
-        ret.put("markList",bizJls);//学员考试成绩图片
+        List<BizCjd> bizCjdList =new ArrayList<BizCjd>();
+        for(int i=1;i<5;i++){
+            BizCjd bizCjd=bizCjdMap.get(i+"");
+            if(bizCjd==null){
+                bizCjd=new BizCjd();
+                bizCjd.setKmBm(i+"");
+            }
+            bizCjdList.add(bizCjd);
+        }
+        ret.put("markList",bizCjdList);//学员考试成绩图片
         return ApiResponse.success(ret);
     }
 
