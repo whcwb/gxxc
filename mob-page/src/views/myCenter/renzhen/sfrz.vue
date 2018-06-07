@@ -100,10 +100,18 @@
             class="customized"
             img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"
             text="需要做一个审核结果界面图"
-            subtext="审核会有：审核中、通过、驳回。三种情况">
+            :subtext="userMess.yhZt | yhZt">
           </md-result-page>
+          <div
+            v-show="userMess.yhZt=='2'"
+            style="font-size: 0.4rem;color: #999999;text-align: center">
+            {{userMess.yhZtMs}}
+          </div>
           <div style="padding-top: 20px">
-            <mt-button type="primary" size="large">完成</mt-button>
+            <mt-button v-if="userMess.yhZt=='2'"
+                       @click="stepIndex=0"
+                       type="primary" size="large">重新提交</mt-button>
+            <mt-button @click="$router.back()" v-else type="primary" size="large">完成</mt-button>
           </div>
         </div>
       </div>
@@ -125,9 +133,31 @@
           [Button.name]:Button,
           [ResultPage.name]:ResultPage,
         },
+        filters:{
+          yhZt:function(val){
+            switch(val){
+              case '0':
+                return '审核中';
+                break;
+              case '1':
+                return '审核已通过';
+                break;
+              case '2':
+                return '审核已驳回';
+                break;
+              case '-1':
+                return '未认证';
+                break;
+              default:
+                return val
+                break;
+            }
+          },
+        },
         data(){
           return {
-            stepIndex:1,
+            userMess:'',
+            stepIndex:0,
             form:{
                 yhXm:'',
                 yhZjhm:'',
@@ -137,20 +167,32 @@
             imgListN:['-','-','-','-'],
           }
         },
+        created(){
+          // 0审核中  1通过  2驳回（yhZtMs-驳回信息） -1未认证
+          if(this.userMess.yhZt==-1){
+              this.stepIndex = 0
+          }else if(this.userMess.yhZt!=-1){
+              this.stepIndex = 2
+          }
+          this.MyFunc.userMess(this,(res)=>{
+            this.userMess = res
+          })
+        },
         methods:{
             goback(){
               this.$router.go(-1);
             },
             toPhotoNext(){
-                // if (this.form.yhXm == ""){
-                //   Toast({message:'请填写您的姓名'});
-                //   return;
-                // }else if(this.form.yhZjhm==""||this.form.yhZjhm.length!=18){
-                //   Toast({message:'请填写正确的身份证号码！'});
-                //   return;
-                // }
+                if (this.form.yhXm == ""){
+                  Toast({message:'请填写您的姓名'});
+                  return;
+                }else if(this.form.yhZjhm==""||this.form.yhZjhm.length!=18){
+                  Toast({message:'请填写正确的身份证号码！'});
+                  return;
+                }else {
                   // 切换到下一个界面
                    this.stepIndex = 1;
+                }
             },
             toResult(){
               //切换到下一个界面

@@ -2,6 +2,7 @@
 let BASE_URL = 'http://47.98.39.45:9086';
 // let BASE_URL = 'http://127.0.0.1';
 module.exports = {
+    getImgUrl:'http://192.168.31.228:8080/',
     url: BASE_URL,
     //图片上传地址
     UPLOAD: BASE_URL + '/upload',
@@ -36,6 +37,13 @@ module.exports = {
         CHANGE:'/api/hd/update',
         DELE:'/api/hd/removeIds',
         hdtj:'/api/hd/hdtj',// 活动推荐
+    },
+    wj:{
+        QUERY:'/api/wj/pager',//活动管理
+        ADD:'/api/wj/save',
+        CHANGE:'/api/wj/update',
+        DELE:'/api/wj/removeIds',
+        getByCondition:'/api/wj/getCondition',
     },
     cp:{
         QUERY:'/api/cp/pager',//产品管理
