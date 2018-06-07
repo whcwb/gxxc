@@ -3,12 +3,12 @@
 </style>
 <template>
 	<div class="boxbackborder">
-		<Row style="padding-bottom: 16px;">
-			<search-items :parent="v"  ></search-items>
-			<Button type="primary" @click="v.util.getPageData(v)">
-				<Icon type="search"></Icon>
-			</Button>
-		</Row>
+		<!--<Row style="padding-bottom: 16px;">-->
+			<!--<search-items :parent="v"  ></search-items>-->
+			<!--<Button type="primary" @click="v.util.getPageData(v)">-->
+				<!--<Icon type="search"></Icon>-->
+			<!--</Button>-->
+		<!--</Row>-->
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
 		</Row>
@@ -39,8 +39,11 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '手机号码',key:'yhSjhm',searchKey:'yhSjhmLike' },
+                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '类型',key:'yhLx'},
+                    {title: '缴费状态',key:'ddSfjx',dict:'jfzt'},
+                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz'},
+                    {title: '认证状态',key:'yhZt',dict:'rzzt'},
                     {
                         title: '操作',
                         key: 'action',
@@ -57,7 +60,8 @@
                 ],
                 pageData: [],
                 form: {
-                    yhSjid:'',
+                    userId:'',
+                    userGrade:'1',
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
@@ -74,7 +78,7 @@
 		  }
 		},
         created() {
-            this.form.yhSjid = this.item.id;
+            this.form.userId = this.item.id;
             this.util.initTable(this)
         },
         methods: {

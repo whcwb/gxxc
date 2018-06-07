@@ -7,13 +7,15 @@
       <Row type="flex" justify="start" align="middle" style="height:80px">
         <Col span="20" @click.native="setting">
             <Row>
-                <Col span="4">
+                <Col span="6">
                     <!--<Avatar icon="person" size="large" style="size: 30px"/>-->
-                  <img :src="usermess.yhTx"
-                       style="width: 100%"
-                       alt="">
+                  <div style="width: 1rem;height: 1rem;margin: 0 0.2rem">
+                      <img :src="usermess.yhTx"
+                           style="width: 100%;height: 100%;border-radius: 1rem"
+                           alt="">
+                  </div>
                 </Col>
-                <Col span="20" style="padding-top: 5px">
+                <Col span="18" style="padding-top: 5px">
                     <span style="font-weight: bold">{{usermess.yhBm}}</span>
                     <Row>
                         <Col span="4">
@@ -54,18 +56,18 @@
                 <div style="text-align:center">
                   <h3>我的余额（元）</h3>
                   <span style="font-size: 40px;font-weight: bold">
-                    {{zhYE.yhZhye | yhZhye}}
+                    {{zhYE.yhZhye/100 | yhZhye}}
                   </span>
                   <Row type="flex" justify="center">
                     <Col span="6">
                       <Button type="primary" shape="circle"
-                              v-if="usermess.ddSfjx=='0'"
                               @click="$router.push({name:'pay'})"
                               style="font-size: 13px;width:60px">缴费</Button>
-                      <Button type="success" shape="circle"
-                              v-else-if="usermess.ddSfjx=='1'"
-                              @click="okjf"
-                              style="font-size: 13px;width:60px">已缴费</Button>
+                              <!--v-if="usermess.ddSfjx=='0'"-->
+                      <!--<Button type="success" shape="circle"-->
+                              <!--v-else-if="usermess.ddSfjx=='1'"-->
+                              <!--@click="okjf"-->
+                              <!--style="font-size: 13px;width:60px">已缴费</Button>-->
                     </Col>
                     <Col span="6">
                       <Button type="primary" shape="circle"
@@ -97,16 +99,18 @@
           <Row type="flex" justify="start" style="margin-top: 20px">
             <Col span="24">
             <Card dis-hover>
+                       <!--:to="usermess.yhZt=='1'?'/home':'/myCenter-sfrz'"-->
               <mt-cell title="实名认证" value="未认证"
-                       :to="usermess.yhZt=='1'?'/home':'/myCenter-sfrz'"
+                       to="/myCenter-sfrz"
                        is-link style="border-bottom: 1px #e9eaec solid;">
                 <i class="iconfont icon-shimingrenzheng" style="font-size: 20px" slot="icon"></i>
                 <span
                   v-if="usermess.yhZt=='1'"
                   style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
               </mt-cell>
+                       <!--:to="usermess.yhLx=='2'? '/home':'/myCenter-jlyrz'"-->
               <mt-cell title="教练员认证" value="未认证"
-                       :to="usermess.yhLx=='2'? '/home':'/myCenter-jlyrz'"
+                       to="/myCenter-jlyrz"
                        is-link style="border-bottom: 1px #e9eaec solid;"  >
                 <i class="iconfont icon-ai-ca" style="font-size: 20px" slot="icon"></i>
                 <span

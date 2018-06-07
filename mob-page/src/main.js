@@ -31,6 +31,8 @@ Vue.config.productionTip = false
 Vue.prototype.wechatUtil = wechatUtil;
 Vue.prototype.apis = url;
 Vue.prototype.$http = Apis.ajax;
+import MyFunction from './util/auto'
+Vue.prototype.MyFunc = MyFunction
 
 /* eslint-disable no-new */
 new Vue({

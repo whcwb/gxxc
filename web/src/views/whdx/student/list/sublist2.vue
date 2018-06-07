@@ -3,12 +3,12 @@
 </style>
 <template>
 	<div class="boxbackborder">
-		<Row style="padding-bottom: 16px;">
-			<search-items :parent="v" ></search-items>
-			<Button type="primary" @click="v.util.getPageData(v)">
-				<Icon type="search"></Icon>
-			</Button>
-		</Row>
+		<!--<Row style="padding-bottom: 16px;">-->
+			<!--<search-items :parent="v" ></search-items>-->
+			<!--<Button type="primary" @click="v.util.getPageData(v)">-->
+				<!--<Icon type="search"></Icon>-->
+			<!--</Button>-->
+		<!--</Row>-->
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
 		</Row>
@@ -60,7 +60,8 @@
                 ],
                 pageData: [],
                 form: {
-                    yhSsjid:'',
+                    userGrade:'2',
+                    userId:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -76,7 +77,7 @@
             }
         },
         created() {
-            this.form.yhSsjid = this.item.id;
+            this.form.userId = this.item.id;
             this.util.initTable(this)
 
         },

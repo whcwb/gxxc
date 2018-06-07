@@ -2,6 +2,7 @@ package com.cwb.platform.biz.service;
 
 
 import com.cwb.platform.biz.model.BizTx;
+import com.cwb.platform.biz.model.BizYhk;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -16,5 +17,5 @@ public interface TxService extends BaseService<BizTx,java.lang.String>{
 
     ApiResponse<String> updateTxzt(BizTx bizTx);
 
-    ApiResponse<String> saveUserDraw(Double entity, String yhkh, String khh, String yhxm,String ttFs, BizPtyh user);
+    ApiResponse<String> saveUserDraw(Double ttJe, String yhkid, BizYhk bizYhk, BizPtyh user);
 }

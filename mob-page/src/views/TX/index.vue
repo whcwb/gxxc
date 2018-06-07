@@ -10,38 +10,47 @@
     }
   }
 
-  #yhkxz{
-    header{
-      height: 1rem;
-      line-height: 1rem;
+  #bank{
+    background-color: #eaeaea;
+    position: relative;
+    #bankList,#bankCard{
+      background-color: #7e7e7e;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
     }
-    .md-action-sheet .md-action-sheet-content >ul li{
-      height: 1rem;
-      line-height: 1rem;
-    }
-    ul li{
 
-    }
   }
 </style>
 <template>
-      <div class="box" style="background-color: #eaeaea">
-        <div>
-          <box-head tit="提现">
-            <div slot="left" style="color: #E0DADF">
-              <i class="iconfont icon-left1"></i>
-            </div>
-          </box-head>
-        </div>
+      <div id="bank" class="box">
+        <component :is="compName"
+                   @seltBankCard="seltBankCard"
+                   :bankList="bankList"></component>
+        <box-head tit="提现">
+          <div slot="left" style="color: #E0DADF">
+            <i class="iconfont icon-left1"></i>
+          </div>
+        </box-head>
         <div class="body">
           <Row type="flex" justify="start">
             <Col span="24">
               <Card style="border: none">
-                <div class="box-row" @click="value=true,isKeyBoardShow=false">
+                <div v-if="bankList.length==0"
+                    @click="compName = 'addbankCard'"
+                    style="text-align: right;color: #eb873a;font-size: 0.28rem">
+                    绑定银行卡后，才能提现！点
+                    <span style="color: #ff7100;font-size: 0.32rem;font-weight: 700">我</span>
+                    绑定银行卡！
+                </div>
+                <div class="box-row" @click="compName='bankList'" v-else>
                   <i class="iconfont icon-detail" style="font-size: 20px" slot="icon"></i>
                   <div class="body-O">
-                      <mt-cell title="汉口银行"
-                               label="尾号6677 储蓄卡"
+                      <mt-cell :title="bankList[bankListIndex].yhkSsyh"
+                               :label="bankList[bankListIndex].yhkKh"
                                is-link style="border-bottom: 1px #e9eaec solid;" >
                       </mt-cell>
                   </div>
@@ -73,7 +82,7 @@
                     <!--@keydown="onInputKeydown"-->
                     <!--@change="onInputChange"-->
                   <div>
-                    可提现余额{{zhYE.yhZhye}}元
+                    可提现余额{{zhYE.yhZhye/100}}元
                   </div>
                 </div>
               </div>
@@ -95,16 +104,7 @@
           ></md-number-keyboard>
           <div class="md-example-display" v-show="isKeyBoardShow" v-text="number"></div>
         </div>
-        <div id="yhkxz" class="md-example-child md-example-child-action-sheet">
-          <md-action-sheet
-            v-model="value"
-            :title="title"
-            :default-index="defaultIndex"
-            :cancel-text="cancelText"
-            :options="options"
-            @selected="selected"
-          ></md-action-sheet>
-        </div>
+
       </div>
 </template>
 
@@ -112,12 +112,13 @@
     import { Header ,Cell ,Toast} from 'mint-ui'
     import {ActionSheet, Dialog ,InputItem ,NumberKeyboard} from 'mand-mobile'
     import {Card ,Row, Col , Button} from 'iview'
-    import boxHead from '@/views/components/boxHead'
+    import bankList from './comp/bankCarList'
+    import addbankCard from './comp/addBankCard'
     export default {
         name: "index",
         height: 500,
         components:{
-          boxHead,
+          bankList,addbankCard,
           Card ,Row, Col,Button,
           [Header.name]:Header,
           [Cell.name]:Cell,
@@ -129,29 +130,15 @@
         return {
           isKeyBoardShow: true,//键盘
           number: '',
-          value: false,
           zhYE:'',//账户余额
-          title: '选着您的银行卡',
-          options: [
-            {
-              label: '招商银行卡_尾号6699',
-              value: 0,
-            },
-            {
-              label: '工商银行卡_尾号6699',
-              value: 1,
-            },
-            {
-              label: '汉口银行卡_尾号6699',
-              value: 2,
-            },
-          ],
-          defaultIndex: 1,
-          cancelText: '取消',
+          compName:'',
+          bankListIndex:0,
+          bankList:[]
         }
       },
       created(){
         this.zhye()
+        this.getbanklist()
       },
       methods: {
         zhye(){
@@ -184,16 +171,14 @@
         confirm(){
 
         },
-        selected(item) {
-          console.log('action-sheet selected:', JSON.stringify(item))
-        },
         TX(){//                                             银行卡号          开户行         提现方式
           var v = this
           if(this.number){
-              this.$http.post(this.apis.TX,{'ttje':this.number,'yhkh':'123123123','khh':'afdf','ttFs':'qweqweq'}).then((res)=>{
+              this.$http.post(this.apis.TX,{'ttje':this.number*100,'yhkid':v.bankList[v.bankListIndex].id}).then((res)=>{
                 if(res.code==200){
                   Toast(res.message)
                   v.number = ''
+                  v.$router.push({name:'bill'})
                 }else{
                   Toast(res.message)
                 }
@@ -203,6 +188,22 @@
           }else {
             Toast('提现金额不能为空')
           }
+        },
+        getbanklist(){
+          this.$http.post(this.apis.BANKLIST).then((res)=>{
+            if(res.code==200 && res.result){
+              this.bankList = res.result
+            }else {
+
+            }
+          }).catch((err)=>{
+
+          })
+        },
+        seltBankCard(index){
+          // console.log(item)
+          console.log(index)
+          this.bankListIndex = index
         }
       },
     }

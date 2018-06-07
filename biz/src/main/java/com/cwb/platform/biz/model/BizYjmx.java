@@ -61,10 +61,22 @@ public class BizYjmx implements Serializable {
      */
     @Column(name = "MX_LX")
     private String mxlx;
-
+    /**
+     * 提现审核状态 该字段仅限提现业务 与biz_tx表中(TT_SHZT 提现审核状态)的审核字段同步   ZDCLK0049 (0、 待收取 1、 审核通过 2、 审核拒绝)
+     */
+    @Column(name = "TX_SH_ZT")
+    private String txShZt;
 
 
     private static final long serialVersionUID = 1L;
+
+    public String getTxShZt() {
+        return txShZt;
+    }
+
+    public void setTxShZt(String txShZt) {
+        this.txShZt = txShZt;
+    }
 
     public String getMxlx() {
         return mxlx;

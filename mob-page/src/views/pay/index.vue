@@ -6,7 +6,7 @@
     <div class="box-row"style="background-color: #2d8cf0;height: 1.5rem;;line-height: 1.5rem;text-align: center">
           <div style="height: 1.5rem;width: 1.2rem;text-align: center;color: #ededed"
           @click="$router.back()">
-            <i class="iconfont icon-left"></i>
+            <i class="iconfont icon-left1"></i>
           </div>
           <div class="body-O" style="font-weight: 700;font-size: 0.5rem;color: #fff">
             现金提现
@@ -14,11 +14,6 @@
           </div>
         <div style="height: 1.5rem;width: 1.2rem;text-align: center;">
         </div>
-      <!--<box-head tit="缴费">-->
-        <!--<div slot="left" style="color: #E0DADF">-->
-          <!--<i class="iconfont icon-left"></i>-->
-        <!--</div>-->
-      <!--</box-head>-->
     </div>
     <div class="body md-example-child md-example-child-cashier">
       <md-field
@@ -83,7 +78,8 @@
       return {
         isCashierhow: false,
         isCashierCaptcha: false,
-        cashierAmount: '2500.00',
+        cp:{},
+        cashierAmount: '0.00',
         cashierResult: 'success',
         cashierResults: [
           {
@@ -96,33 +92,36 @@
           },
         ],
         cashierChannels: [
-          {
-            icon: 'cashier-icon-1',
-            text: '招商银行储蓄卡(0056)支付',
-            value: '001',
-          },
-          {
-            icon: 'cashier-icon-2',
-            text: '支付宝支付',
-            value: '002',
-          },
+          // {
+          //   icon: 'cashier-icon-1',
+          //   text: '招商银行储蓄卡(0056)支付',
+          //   value: '001',
+          // },
+          // {
+          //   icon: 'cashier-icon-2',
+          //   text: '支付宝支付',
+          //   value: '002',
+          // },
           {
             icon: 'cashier-icon-3',
             text: '微信支付',
-            value: '003',
+            value: '2',
           },
-          {
-            icon: 'cashier-icon-4',
-            text: 'QQ钱包支付',
-            value: '004',
-          },
-          {
-            icon: 'cashier-icon-5',
-            text: '一网通支付',
-            value: '005',
-          },
+          // {
+          //   icon: 'cashier-icon-4',
+          //   text: 'QQ钱包支付',
+          //   value: '004',
+          // },
+          // {
+          //   icon: 'cashier-icon-5',
+          //   text: '一网通支付',
+          //   value: '005',
+          // },
         ],
       }
+    },
+    created(){
+      this.getCPlist()
     },
     computed: {
       cashier() {
@@ -196,15 +195,35 @@
       },
       onCashierPay(item) {
         console.log('支付确认')
-        console.log(`[Mand Mobile] Pay ${JSON.stringify(item)}`)
-        this.doPay()
+        console.log(item)
+        // var  v = this
+        // this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
+        //   console.log(res)
+        //
+        // }).catch((err)=>{
+        //
+        // })
+        // this.doPay()
       },
       onCashierCancel() {
         console.log('取消')
         // Abort pay request or checking request
         this.timer && clearTimeout(this.timer)
       },
-    },
+      getCPlist(){
+        var v = this
+        this.$http.post(this.apis.CPTYPE,{cpType:1}).then((res)=>{
+          console.log(res)
+          if(res.code==200){
+            v.cp = res.result
+            v.cashierAmount = res.result.cpJl
+          }
+
+        }).catch((err)=>{
+
+        })
+      }
+    }
   }
 
 </script>

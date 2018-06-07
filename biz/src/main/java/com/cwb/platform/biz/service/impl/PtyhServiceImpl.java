@@ -134,7 +134,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             if (StringUtils.isNotBlank(bizPtyh.getYhZjhm())) {
                 bizPtyh.setYhZjhm(bizPtyh.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
             }
-            if (StringUtils.isNotBlank(bizPtyh.getYhTx()) && StringUtils.containsNone(bizPtyh.getYhTx(), "http")) {
+            if (StringUtils.isNotBlank(bizPtyh.getYhTx()) && !StringUtils.containsNone(bizPtyh.getYhTx(), "http")) {
                 bizPtyh.setYhTx(imgUrl + bizPtyh.getYhTx());
             }
 
@@ -427,7 +427,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         try {
             String encrypt = Des.encrypt(oldPwd);
             if (!encrypt.equals(user.getYhMm())) {
-                return ApiResponse.fail("密码错误");
+                return ApiResponse.fail("原始密码错误");
             }
             newEncrypt = Des.encrypt(newPwd);
         } catch (Exception e) {
@@ -528,10 +528,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");
         RuntimeCheck.ifBlank(entity.getYhZjhm(), "用户证件号码不能为空");
-        RuntimeCheck.ifBlank(entity.getYhXb(), "用户性别不能为空");
-        if (StringUtils.containsNone(entity.getYhXb(), new char[]{'1', '2'})) {
-            return ApiResponse.fail("请输入正确用户性别");
+        String CardCode=entity.getYhZjhm();
+        String sex;//获取性别 ZDCLK0042(1、男;2、女)
+        if (Integer.parseInt(CardCode.substring(16).substring(0, 1)) % 2 == 0) {// 判断性别
+            sex = "2";
+        } else {
+            sex = "1";
         }
+        entity.setYhXb(sex);
+//        RuntimeCheck.ifBlank(entity.getYhXb(), "用户性别不能为空");
+//        if (StringUtils.containsNone(entity.getYhXb(), new char[]{'1', '2'})) {
+//            return ApiResponse.fail("请输入正确用户性别");
+//        }
 
 //        RuntimeCheck.ifBlank(entity.getYhSfyjz(), "用户驾照状态不能为空");
 //        if (StringUtils.containsNone(entity.getYhSfyjz(), new char[]{'1', '0'})) {
@@ -552,9 +560,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(entity.getImgList())) {
             return ApiResponse.fail("请上传证件照片");
         }
-        if (StringUtils.isEmpty(entity.getImgTypeList())) {
-            return ApiResponse.fail("请上传证件照片属性");
-        }
+//        if (StringUtils.isEmpty(entity.getImgTypeList())) {
+//            return ApiResponse.fail("请上传证件照片属性");
+//        }
 
         String yhzjhm = entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
@@ -564,16 +572,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             RuntimeCheck.ifTrue(true, "该证件号已与手机号" + listCount.get(0).getYhZh() + "关联，请更换新的证件号！");
         }
 
-        String[] imgList = StringUtils.split(entity.getImgList(), ",");
-        String[] imgTypeList = StringUtils.split(entity.getImgTypeList(), ",");
+        String[] imgList = StringUtils.split(StringUtils.removeStart(entity.getImgList(), "-") , ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         if (imgList != null) {
-            if (imgList.length != imgTypeList.length && imgList.length>0) {
-                return ApiResponse.fail("证件数据和证件属性数据不同");
-            }
-            if(imgList.length>2){
+            if(StringUtils.trimToNull(imgList[2])!=null){
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
@@ -581,14 +585,30 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 wj.setId(genId());
                 wj.setYhId(user.getId());//
                 wj.setWjTpdz(imgList[i]);//
-                wj.setWjSx(imgTypeList[i]);
+
+                //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                switch (i) {
+                    case 0:
+                        wj.setWjSx("10");
+                        break;
+                    case 1:
+                        wj.setWjSx("11");
+                        break;
+                    case 2:
+                        wj.setWjSx("20");
+                        break;
+                    case 3:
+                        wj.setWjSx("21");
+                        break;
+                }
+
                 wj.setWjSbzt("0");
                 wj.setCjsj(DateUtils.getNowTime());
                 wj.setWjSfyx("1");
                 wjList.add(wj);
             }
         }
-        //TODO
+        //
         if (wjList.size() > 0) {
             wjMapper.deleteBatch(user.getId());
             wjMapper.insertBatch(wjList);
@@ -757,14 +777,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(identifyingCode)) {
             identifyingCode = StringDivUtils.getSix();//获取验证码
         }
-
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("phoneNumbers",tel);//电话号码
+        map.put("templateParam","{\"code\":\""+identifyingCode+"\"}");//短信验证码
         String redisKey = "";
         if (type == 1) {
             redisKey = appSendSMSRegister;
             //使用注册模板下发
+            map.put("templateCode","SMS_136430180");//用户注册验证码
         } else if (type == 2) {
             redisKey = appSendSMSResetting;
             //使用重置密码模板进行下发
+            map.put("templateCode","SMS_136430180");//短信模板
         } else {
             //类型不存在，不能下发
             return false;
@@ -774,8 +798,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
             return true;
         }
-        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
-        ret=true;
+        // TODO: 2018/5/19 调试模式。
+        if (debugTest != null) {//调试
+            ret=true;
+        }else{
+            //短信下发
+            ret= SendSmsUtil.sendSms(map);
+        }
+        if(ret){
+            redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
+        }
         return  ret;
     }
 

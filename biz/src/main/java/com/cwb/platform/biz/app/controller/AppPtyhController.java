@@ -2,7 +2,9 @@ package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.AppUserBaseController;
 import com.cwb.platform.biz.model.BizJl;
+import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
@@ -22,7 +24,8 @@ import java.util.Map;
 public class AppPtyhController extends AppUserBaseController {
     @Autowired
     private PtyhService service;
-
+    @Autowired
+    private WjService wjService;
 
     /**
      * 用户注册
@@ -42,10 +45,9 @@ public class AppPtyhController extends AppUserBaseController {
      */
     @RequestMapping(value = "/mdfPwd",method = RequestMethod.POST)
     public ApiResponse<String> updateMdfPwd(@RequestParam(name = "oldPwd")String oldPwd,
-                                      @RequestParam(name = "newPwd")String newPwd,
-                                      @RequestParam(name = "secPwd")String secPwd){
-        RuntimeCheck.ifTrue(( StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd) ||  StringUtils.isEmpty(secPwd)),"请输入密码");
-        RuntimeCheck.ifTrue(!newPwd.equals(secPwd),"两次输入密码不一致");
+                                      @RequestParam(name = "newPwd")String newPwd){
+//        RuntimeCheck.ifTrue(( StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd) ||  StringUtils.isEmpty(secPwd)),"请输入密码");
+//        RuntimeCheck.ifTrue(!newPwd.equals(secPwd),"两次输入密码不一致");
         BizPtyh user = getAppCurrentUser();
         RuntimeCheck.ifTrue(user == null,"请重启登录！");
         return service.mdfPwd(user.getId(),oldPwd,newPwd);
@@ -100,6 +102,19 @@ public class AppPtyhController extends AppUserBaseController {
     public ApiResponse<BizPtyh> get(){
         BizPtyh user = getAppCurrentUser();
         BizPtyh users = service.findByIdSelect(user.getId());
+        //判断一下，这个用户有没有上传实名资料 没有上传就给前台-1，让前台提示用户去实名。
+        if(users!=null){
+            //认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+            String yhZt=users.getYhZt();
+            if(StringUtils.equals(yhZt,"0")){
+                BizWj realName=new BizWj();
+                realName.setYhId(users.getId());
+                int i=wjService.countByEntity(realName);
+                if(i<1){
+                    users.setYhZt("-1");
+                }
+            }
+        }
         return ApiResponse.success(users);
     }
     /**

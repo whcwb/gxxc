@@ -56,7 +56,7 @@ public class BizTx implements Serializable {
     private String ttSj;
 
     /**
-     * 提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
+     * 提现状态 ZDCLK0048 (0 待收取 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
      */
     @Column(name = "TT_ZT")
     private String ttZt;
@@ -115,7 +115,22 @@ public class BizTx implements Serializable {
     @Column(name = "TX_XM")
     private String txXm;
 
+    /**
+     * 银行卡ID
+     */
+    @Column(name = "YHK_ID")
+    private String yhkid;
+
+
     private static final long serialVersionUID = 1L;
+
+    public String getYhkid() {
+        return yhkid;
+    }
+
+    public void setYhkid(String yhkid) {
+        this.yhkid = yhkid;
+    }
 
     /**
      * 获取主键id

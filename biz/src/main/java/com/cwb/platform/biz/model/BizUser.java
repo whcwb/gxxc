@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 用户实名制表
@@ -80,7 +81,35 @@ public class BizUser implements Serializable {
     @Column(name = "YH_JLID")
     private String yhJlid;
 
+    /**
+     * 学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
+     */
+    @Column(name = "XY_ZT")
+    private String xyZt;
+
+
+
+
+    @Transient
+    private Map<String,Object> map;
+
     private static final long serialVersionUID = 1L;
+
+    public Map<String, Object> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, Object> map) {
+        this.map = map;
+    }
+
+    public String getXyZt() {
+        return xyZt;
+    }
+
+    public void setXyZt(String xyZt) {
+        this.xyZt = xyZt;
+    }
 
     public String getUserGrade() {
         return userGrade;
@@ -269,6 +298,7 @@ public class BizUser implements Serializable {
         cjsj("CJSJ"),
         yhSjid("YH_SJID"),
         yhSsjid("YH_SSJID"),
+        xyZt("XY_ZT"),
         yhJlid("YH_JLID");
 
         private final String column;

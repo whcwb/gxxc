@@ -41,5 +41,7 @@ public class AppYjmxServiceImpl extends BaseServiceImpl<BizYjmx,String> implemen
         condition.and().andEqualTo(BizYjmx.InnerColumn.yhId.name(),userId);//登录人的账户
         return true;
     }
+
+
    
 }

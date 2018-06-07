@@ -18,7 +18,7 @@
       <div>
         <box-head tit="实名认证">
           <div slot="left" style="color: #E0DADF">
-            <i class="iconfont icon-left"></i>
+            <i class="iconfont icon-left1"></i>
           </div>
         </box-head>
       </div>
@@ -45,40 +45,48 @@
             <mt-button type="danger" size="large" @click="toPhotoNext">下一步</mt-button>
           </div>
         </div>
-        <div v-show="stepIndex == 1">
+        <div v-show="stepIndex == 1" style="padding: 0.15rem">
 
-            <Row>
-              <Col span="11" style="margin-left: 5px;margin-right: 5px;margin-bottom: 5px">
+            <Row :gutter="10">
+              <Col span="12" style="margin-bottom: 5px">
                 <Card dis-hover>
                   <p slot="title">身份证正面</p>
-                  <div align="center">
-                    <img src="static/renzhen/sfzzm.png" width="120" height="120">
+                  <div align="center" style="padding:0 0.3rem;height: 2.5rem">
+                    <imgup :demoImg="imgList[0]"
+                           @handleSuccess="(res)=>handleSuccess(res,0)">
+                    </imgup>
                   </div>
                 </Card>
               </Col>
               <Col span="12">
                 <Card dis-hover>
                   <p slot="title">身份证反面</p>
-                  <div align="center">
-                    <img src="static/renzhen/sfzfm.png" width="120" height="120">
+                  <div align="center" style="padding:0 0.3rem;height: 2.5rem">
+                    <imgup :demoImg="imgList[1]"
+                           @handleSuccess="(res)=>handleSuccess(res,1)">
+                    </imgup>
                   </div>
                 </Card>
               </Col>
             </Row>
-            <Row>
-              <Col span="11" style="margin-left: 5px;margin-right: 5px;margin-bottom: 5px">
+            <Row :gutter="10">
+              <Col span="12" style="margin-bottom: 5px">
                 <Card dis-hover>
                   <p slot="title">驾驶证正本</p>
-                  <div align="center">
-                    <img src="static/renzhen/sfzzm.png" width="120" height="120">
+                  <div align="center" style="padding:0 0.3rem;height: 2.5rem">
+                    <imgup :demoImg="imgList[2]"
+                           @handleSuccess="(res)=>handleSuccess(res,2)">
+                    </imgup>
                   </div>
                 </Card>
               </Col>
               <Col span="12">
                 <Card dis-hover>
                   <p slot="title">驾驶证副本</p>
-                  <div align="center">
-                    <img src="static/renzhen/sfzfm.png" width="120" height="120">
+                  <div align="center" style="padding:0 0.3rem;height: 2.5rem">
+                    <imgup :demoImg="imgList[3]"
+                           @handleSuccess="(res)=>handleSuccess(res,3)">
+                    </imgup>
                   </div>
                 </Card>
               </Col>
@@ -92,10 +100,18 @@
             class="customized"
             img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"
             text="需要做一个审核结果界面图"
-            subtext="审核会有：审核中、通过、驳回。三种情况">
+            :subtext="userMess.yhZt | yhZt">
           </md-result-page>
+          <div
+            v-show="userMess.yhZt=='2'"
+            style="font-size: 0.4rem;color: #999999;text-align: center">
+            {{userMess.yhZtMs}}
+          </div>
           <div style="padding-top: 20px">
-            <mt-button type="primary" size="large">完成</mt-button>
+            <mt-button v-if="userMess.yhZt=='2'"
+                       @click="stepIndex=0"
+                       type="primary" size="large">重新提交</mt-button>
+            <mt-button @click="$router.back()" v-else type="primary" size="large">完成</mt-button>
           </div>
         </div>
       </div>
@@ -106,75 +122,91 @@
     import {Card, Row, Col, Avatar, Icon,Tabs,TabPane,Badge,Steps, Step  } from 'iview'
     import { Header,Button,Field,Toast } from 'mint-ui';
     import { ResultPage } from 'mand-mobile'
-
+    import imgup from '@/views/components/upLoad/imgUpload'
     export default {
         name: "myCenter",
         components: {
+          imgup,
           Card,Row,Col,Avatar,Icon,Tabs,TabPane,Badge,Steps, Step,
           [Header.name]:Header,
           [Field.name]:Field,
           [Button.name]:Button,
           [ResultPage.name]:ResultPage,
         },
+        filters:{
+          yhZt:function(val){
+            switch(val){
+              case '0':
+                return '审核中';
+                break;
+              case '1':
+                return '审核已通过';
+                break;
+              case '2':
+                return '审核已驳回';
+                break;
+              case '-1':
+                return '未认证';
+                break;
+              default:
+                return val
+                break;
+            }
+          },
+        },
         data(){
           return {
-            droptions:[
-              {
-                label: '无驾驶证',
-                value: '0'
-              },
-              {
-                label: '有驾驶证',
-                value: '1'
-              }],
+            userMess:'',
             stepIndex:0,
             form:{
                 yhXm:'',
                 yhZjhm:'',
-            }
+                imgList:''
+            },
+            imgList:['static/renzhen/sfzzm.png','static/renzhen/sfzfm.png','static/renzhen/sfzzm.png','static/renzhen/sfzfm.png'],
+            imgListN:['-','-','-','-'],
           }
         },
-        /*computed:{
-          yhXm:function () {
-            return this.form.yhXm
+        created(){
+          // 0审核中  1通过  2驳回（yhZtMs-驳回信息） -1未认证
+          if(this.userMess.yhZt==-1){
+              this.stepIndex = 0
+          }else if(this.userMess.yhZt!=-1){
+              this.stepIndex = 2
           }
-        },*/
-        /*watch:{
-          form:{
-            handler(newValue, oldValue) {
-              console.log(newValue.yhXm+"=="+newValue.yhXm.length);
-              if (newValue.yhXm.length > 3){
-                newValue.yhXm = "123";
-                //this.form.yhXm = "123";
-              }
-            },
-            deep:true
-          }
-        },*/
+          this.MyFunc.userMess(this,(res)=>{
+            this.userMess = res
+          })
+        },
         methods:{
             goback(){
               this.$router.go(-1);
             },
             toPhotoNext(){
-                //var sfzh =/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/
-                //console.log(sfzh.test(this.form.yhZjhm))
-                /*if (this.form.yhXm == ""){
+                if (this.form.yhXm == ""){
                   Toast({message:'请填写您的姓名'});
                   return;
-                }else if(!sfzh.test(this.form.yhZjhm)){
-                  Toast({message:'你的证件号有误！'});
+                }else if(this.form.yhZjhm==""||this.form.yhZjhm.length!=18){
+                  Toast({message:'请填写正确的身份证号码！'});
                   return;
-                }*/
+                }else {
                   // 切换到下一个界面
                    this.stepIndex = 1;
-              /*if (this.form.sfzmhm == "" || this.form.sfzmhm.length < 18){
-                  Toast({message:'请输入正确的18位身份证号码',position:'bottom'});
-                  return;
-              }*/
+                }
             },
             toResult(){
               //切换到下一个界面
-              this.stepIndex = 2;
+              // this.stepIndex = 2;
+              this.form.imgList = this.imgListN.join(',')
+              this.form.imgTypeList = this.imgTypeListN.join(',')
+              console.log(this.form)
+            },
+            handleSuccess(res,val){
+              console.log('上传成功事件监听',res)
+              console.log(val)
+              var v = this
+              this.imgList.splice(val,1,v.apis.getImgUrl+res.message)
+              this.imgListN.splice(val,1,'/'+res.message)
             }
         }
     }

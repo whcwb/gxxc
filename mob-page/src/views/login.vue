@@ -86,6 +86,8 @@
           if(res.code==200){
               localStorage.setItem('token',JSON.stringify(res.result.accessToken))
               v.userMess()
+          }else {
+            Toast.failed(res.message)
           }
           console.log('**-***',res)
         }).catch((err)=>{

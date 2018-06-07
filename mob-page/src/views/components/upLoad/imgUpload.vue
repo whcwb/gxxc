@@ -1,44 +1,41 @@
+<style>
+  .ivu-upload{
+    height: 100%;
+  }
+</style>
 <template>
-    <div>
-      <div v-if="imgUrl!=''"
-          style="text-align: center">
-          <img :src="imgUrl" width="120" height="120">
-      </div>
-    <Upload
-      v-else
-      ref="upload"
-      :show-upload-list="false"
-      :default-file-list="defaultList"
-      :format="['jpg','jpeg','png']"
-      :max-size="20480"
-      :on-success="handleSuccess"
-      :on-error="handleError"
-      :on-format-error="handleFormatError"
-      :on-exceeded-size="handleMaxSize"
-      :before-upload="handleBeforeUpload"
-      multiple
-      type="drag"
-      action="http://47.98.39.45:9086/upload"
-      style="border: none">
-      <div align="center">
-        <img :src="demoImg" width="120" height="120">
-      </div>
-    </Upload>
-    </div>
+    <!--<div class="box">-->
+      <Upload
+        ref="upload"
+        :show-upload-list="false"
+        :default-file-list="defaultList"
+        :format="['jpg','jpeg','png']"
+        :max-size="20480"
+        :on-success="handleSuccess"
+        :on-error="handleError"
+        :on-format-error="handleFormatError"
+        :on-exceeded-size="handleMaxSize"
+        :before-upload="handleBeforeUpload"
+        multiple
+        type="drag"
+        :action="apis.upImgUrl"
+        style="border: none;width: 100%;height: 100%">
+        <div style="height: 100%;width:100%">
+          <img :src="demoImg" width="100%" height="100%">
+        </div>
+      </Upload>
+    <!--</div>-->
 </template>
 <script>
   import {Card,Upload ,Modal,Icon} from 'iview'
+  import {Toast} from 'mand-mobile'
   export default {
-    name:'img',
+    name:'imgUp',
     components:{
       Card, Upload,Modal,Icon
     },
     props:{
       demoImg:{
-        type:String,
-        default:''
-      },
-      imgUrl:{
         type:String,
         default:''
       },
@@ -57,10 +54,11 @@
         this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
       },
       handleSuccess (res, file) {
-        console.log('文件上传成功')
-        console.log(res)
-        console.log(file)
-        this.imgUrl=this.url+res.message
+        // console.log('文件上传成功')
+        // console.log(res)
+        // console.log(file)
+        Toast.hide();
+        this.$emit('handleSuccess',res)
       },
       handleError(res,file){
         console.log('文件上传失败')
@@ -76,7 +74,8 @@
       handleMaxSize (file) {
         console.log('File  ' + file.name + ' 文件太大了 2M.');
       },
-      handleBeforeUpload () {
+      handleBeforeUpload () {//上传之前
+        Toast.loading('加载中...');
         const check = this.uploadList.length < 5;
         if (!check) {
           console.log({
