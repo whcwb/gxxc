@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,10 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
     private String subjectMark3;
     @Value("${SUBJECT_MARK_4:90}")
     private String subjectMark4;
+
+    @Value("${img_url}")
+    private String imgUrl;
+
 
     @Autowired
     private BizUserMapper userMapper;
@@ -130,14 +135,35 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         ret.put("yhbm",ptyh.getYhBm());//用户别名
         ret.put("yhxm",ptyh.getYhXm());//用户姓名
         ret.put("yhzh",ptyh.getYhZh());//用户账户
-        ret.put("yhTx",ptyh.getYhTx());//用户头像
+        String yhTx=ptyh.getYhTx();
+        if (StringUtils.isNotBlank(yhTx) && !StringUtils.containsNone(yhTx, "http")) {
+            yhTx=(imgUrl + yhTx);
+        }
+        ret.put("yhTx",yhTx);//用户头像
+        ret.put("xyid",xyid);//学员ID
 
-        //  根据用户ID查询出自己的银行卡
         condition.eq(BizCjd.InnerColumn.xyId.name(), xyid);
-        condition.setOrderByClause( BizCjd.InnerColumn.kmBm.desc());
+        condition.setOrderByClause( BizCjd.InnerColumn.kmBm.asc());
         List<BizCjd> bizJls = this.findByCondition(condition);
-
-        ret.put("markList",bizJls);//学员考试成绩图片
+        Map<String,BizCjd> bizCjdMap=new HashMap<String,BizCjd>();
+        if(bizJls!=null){
+            for(BizCjd l:bizJls){
+                if (org.apache.commons.lang.StringUtils.isNotBlank(l.getImgUrl()) && !org.apache.commons.lang.StringUtils.containsNone(l.getImgUrl(), "http")) {
+                    l.setImgUrl(imgUrl + l.getImgUrl());
+                }
+                bizCjdMap.put(l.getKmBm(),l);
+            }
+        }
+        List<BizCjd> bizCjdList =new ArrayList<BizCjd>();
+        for(int i=1;i<5;i++){
+            BizCjd bizCjd=bizCjdMap.get(i+"");
+            if(bizCjd==null){
+                bizCjd=new BizCjd();
+                bizCjd.setKmBm(i+"");
+            }
+            bizCjdList.add(bizCjd);
+        }
+        ret.put("markList",bizCjdList);//学员考试成绩图片
         return ApiResponse.success(ret);
     }
 
@@ -157,7 +183,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
                 condition.eq(BizUser.InnerColumn.xyZt.name(), xyZt);//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
             }else{
                 if(xyZt!=null){
-                    condition.and().andCondition(" ( XY_ZT NOT LIKE ='%"+xyZt+"%' OR XY_ZT IS NULL ) ");//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
+                    condition.and().andCondition(" ( XY_ZT NOT LIKE '%"+xyZt+"%' OR XY_ZT IS NULL ) AND XY_ZT != '0' ");//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
                 }
             }
         }

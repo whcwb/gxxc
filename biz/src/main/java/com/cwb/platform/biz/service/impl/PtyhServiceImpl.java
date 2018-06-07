@@ -560,9 +560,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(entity.getImgList())) {
             return ApiResponse.fail("请上传证件照片");
         }
-        if (StringUtils.isEmpty(entity.getImgTypeList())) {
-            return ApiResponse.fail("请上传证件照片属性");
-        }
+//        if (StringUtils.isEmpty(entity.getImgTypeList())) {
+//            return ApiResponse.fail("请上传证件照片属性");
+//        }
 
         String yhzjhm = entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
@@ -572,16 +572,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             RuntimeCheck.ifTrue(true, "该证件号已与手机号" + listCount.get(0).getYhZh() + "关联，请更换新的证件号！");
         }
 
-        String[] imgList = StringUtils.split(entity.getImgList(), ",");
-        String[] imgTypeList = StringUtils.split(entity.getImgTypeList(), ",");
+        String[] imgList = StringUtils.split(StringUtils.removeStart(entity.getImgList(), "-") , ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         if (imgList != null) {
-            if (imgList.length != imgTypeList.length && imgList.length>0) {
-                return ApiResponse.fail("证件数据和证件属性数据不同");
-            }
-            if(StringUtils.indexOf(entity.getImgTypeList(),"20")>-1){
+            if(StringUtils.trimToNull(imgList[2])!=null){
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
@@ -589,7 +585,23 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 wj.setId(genId());
                 wj.setYhId(user.getId());//
                 wj.setWjTpdz(imgList[i]);//
-                wj.setWjSx(imgTypeList[i]);
+
+                //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                switch (i) {
+                    case 0:
+                        wj.setWjSx("10");
+                        break;
+                    case 1:
+                        wj.setWjSx("11");
+                        break;
+                    case 2:
+                        wj.setWjSx("20");
+                        break;
+                    case 3:
+                        wj.setWjSx("21");
+                        break;
+                }
+
                 wj.setWjSbzt("0");
                 wj.setCjsj(DateUtils.getNowTime());
                 wj.setWjSfyx("1");
@@ -786,10 +798,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
             return true;
         }
-        //短信下发
-        ret= SendSmsUtil.sendSms(map);
-
-        redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
+        // TODO: 2018/5/19 调试模式。
+        if (debugTest != null) {//调试
+            ret=true;
+        }else{
+            //短信下发
+            ret= SendSmsUtil.sendSms(map);
+        }
+        if(ret){
+            redisDao.boundValueOps(redisKey+tel).set(identifyingCode, 1, TimeUnit.DAYS);//设备验证码，为一天过期
+        }
         return  ret;
     }
 
