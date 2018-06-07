@@ -55,8 +55,9 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         newEntity.setId(user.getId());
 
         String yhZtMs=" ";
+        yhZtMs=obd.getYhZtMs();
         if(StringUtils.equals("2",obd.getYhJlsh())){
-            yhZtMs=obd.getYhZtMs();
+            RuntimeCheck.ifBlank(yhZtMs, "请填写审核失败原因。");
         } else if(StringUtils.equals("1",obd.getYhJlsh())){
             newEntity.setYhZt(obd.getYhJlsh());
             newEntity.setYhJlsh(obd.getYhJlsh());
