@@ -104,7 +104,7 @@
 			 * yhid (用户id) ， xyzt (学员状态 0 完成学业，1科目一，2科目二，3科目三，4科目四) , pageNum,pageSize
              */
             this.item = this.$parent.choosedItem;
-            this.form.yhid = this.item.id;
+            this.form.yhid = this.item.yhId;
             this.util.initTable(this)
         },
         methods: {

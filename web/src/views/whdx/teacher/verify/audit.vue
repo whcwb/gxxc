@@ -76,7 +76,6 @@
                     {label: '教练驾龄',prop:'jlJl',disabled:true},
                     {label: '紧急联系人',prop:'jlJjlxr',disabled:true},
                     {label: '紧急联系人电话',prop:'jlJjlxrdh',disabled:true},
-                    {label: '失败原因',prop:'yhZtMs'},
                 ],
                 formInputs2:[
                     {separator:true,label:'审核结果'},
@@ -94,7 +93,7 @@
         methods: {
             beforeSave(){
                 this.formItem = {};
-                this.formItem.id = this.$parent.choosedItem.yhId
+                this.formItem.id = this.$parent.choosedItem.id
                 this.formItem.yhJlsh = '1';
             }
         }

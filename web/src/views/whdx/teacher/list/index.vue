@@ -32,7 +32,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.student,
+                apiRoot:this.apis.teacher,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -42,8 +42,7 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '手机号',key:'yhSjhm',searchKey:'yhSjhmLike'},
                     {title: '所属区域',key:'jlQu',dict:'ZDCLK0060',searchType:'dict'},
-                    {title: '认证状态',key:'yhJlsh',dict:'ZDCLK0043',searchType:'dict'},
-                    {title: '教练驾龄',key:'jlJl'},
+                    {title: '教练驾龄',key:'jlJl',append:'年'},
                     {
                         title: '操作',
                         key: 'action',

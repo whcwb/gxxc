@@ -114,7 +114,9 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     public ApiResponse<String> updateTxzt(BizTx bizTx) {
         RuntimeCheck.ifBlank(bizTx.getId(),"Id不能为空");
         RuntimeCheck.ifBlank(bizTx.getTtZt(),"提现状态不能为空");//获取提现状态 ZDCLK0048 (0 待收取 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
-
+        if(StringUtils.containsNone(bizTx.getTtZt(), new char[]{'1', '4'})){
+            return ApiResponse.fail("请输入正确的提现状态属性");
+        }
         RuntimeCheck.ifBlank(bizTx.getTtBz(),"备注不能为空");
 
         // 提现明细
@@ -128,10 +130,14 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         RuntimeCheck.ifFalse(StringUtils.equals(bizYjmx.getZjFs(),"-1"),"必须是提现才能修改提现状态");
 
 
-
+        if(StringUtils.equals(bizTx.getTtZt(),"1")){
+            bizYjmx.setZjZt("1");
+        }else{
+            bizYjmx.setZjZt("2");
+        }
         // 更新佣金明细表
-        bizYjmx.setZjZt("1");
         bizYjmx.setZjBz(bizTx.getTtBz());
+
         // 更新提现明细表
         update(bizTx);
         // 更新佣金明细表

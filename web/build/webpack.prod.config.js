@@ -24,8 +24,8 @@ const package = require('../package.json');
 module.exports = merge(webpackBaseConfig, {
     output: {
         publicPath: './dist/',  // 修改 https://iv...admin 这部分为你的服务器域名
-        filename: '[name].[chunkhash].js',
-        chunkFilename: '[name].[chunkhash].chunk.js'
+        filename: 'js/[name].[chunkhash].js',
+        chunkFilename: 'js/[name].[chunkhash].chunk.js'
     },
     module: {
         rules: [
@@ -40,7 +40,7 @@ module.exports = merge(webpackBaseConfig, {
             root: path.resolve(__dirname, '../')
         }),
         new ExtractTextPlugin({
-            filename: '[name].[chunkhash].css',
+            filename: 'css/[name].[chunkhash].css',
             allChunks: true
         }),
         new webpack.optimize.CommonsChunkPlugin({
