@@ -2,9 +2,9 @@ package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.AppUserBaseController;
 import com.cwb.platform.biz.model.BizJl;
-import com.cwb.platform.biz.model.BizUser;
+import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.PtyhService;
-import com.cwb.platform.biz.service.UserService;
+import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
@@ -25,7 +25,7 @@ public class AppPtyhController extends AppUserBaseController {
     @Autowired
     private PtyhService service;
     @Autowired
-    private UserService userService;
+    private WjService wjService;
 
     /**
      * 用户注册
@@ -107,9 +107,9 @@ public class AppPtyhController extends AppUserBaseController {
             //认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
             String yhZt=users.getYhZt();
             if(StringUtils.equals(yhZt,"0")){
-                BizUser realName=new BizUser();
+                BizWj realName=new BizWj();
                 realName.setYhId(users.getId());
-                int i=userService.countByEntity(realName);
+                int i=wjService.countByEntity(realName);
                 if(i<1){
                     users.setYhZt("-1");
                 }
