@@ -120,7 +120,7 @@ public class AppPtyhController extends AppUserBaseController {
                 realName.setYhId(users.getId());
                 int i=wjService.countByEntity(realName);
                 if(i<1){
-                    users.setYhSfsd("-1");
+                    users.setYhJlsh("-1");
                 }
             }
 
