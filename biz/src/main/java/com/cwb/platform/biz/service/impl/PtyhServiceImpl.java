@@ -672,7 +672,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlJl(), "教练驾龄不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlQu(), "教练所属区域不能为空");
-        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
+//        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlJjlxr(), "教练紧急联系人不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlJjlxrdh(), "教练紧急联系人电话不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlZz(), "住址不能为空");
