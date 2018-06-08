@@ -154,11 +154,15 @@
       },
         data(){
           return{
-            usermess:JSON.parse(localStorage.getItem("userMess")),
+            usermess:{},
             zhYE:''
           }
         },
         created(){
+          var v =this
+          this.MyFunc.userMess(v,(res)=>{
+            v.usermess = res
+          })
           console.log('***---***',this.usermess)
           this.zhye()
         },

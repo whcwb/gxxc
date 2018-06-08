@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs'
 import { Toast } from 'mand-mobile'
+import router from '@/router'
 
 // const ajaxUrl ='http://127.0.0.1';
 // const ajaxUrl = 'http://47.98.39.45:9086/';//服务器
@@ -60,7 +61,11 @@ API.ajax.interceptors.request.use(config=> {
 API.ajax.interceptors.response.use(response=> {
   //网络请求加载动画
   Toast.hide();
-
+  if(response.data.code==403){
+    Toast.info('权限丢失，请重新登录')
+    router.push({name:'Login'})
+    return
+  }
 
   return response.data;
 }, error=> {
