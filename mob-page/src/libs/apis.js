@@ -5,7 +5,7 @@ import router from '@/router'
 
 // const ajaxUrl ='http://127.0.0.1';
 // const ajaxUrl = 'http://47.98.39.45:9086/';//服务器
-const ajaxUrl ='http://192.168.31.228:9086';//羊祥
+const ajaxUrl ='http://127.0.0.1:9086';//羊祥
 let API = {
     NETWORK_ERR: "网络请求异常，请重试！"
     // LOGIN: '/login',

@@ -1,8 +1,8 @@
 //网络请求地址前缀
 // let BASE_URL = 'http://47.98.39.45:9086';
-let BASE_URL = 'http://192.168.31.228:9086';
+let BASE_URL = 'http://127.0.0.1:9086';
 module.exports = {
-    getImgUrl:'http://192.168.31.228:8080/',
+    getImgUrl:'http://127.0.0.1:8080/',
     url: BASE_URL,
     //图片上传地址
     UPLOAD: BASE_URL + '/upload',
