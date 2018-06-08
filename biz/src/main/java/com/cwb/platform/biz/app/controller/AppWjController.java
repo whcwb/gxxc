@@ -25,7 +25,6 @@ public class AppWjController extends AppUserBaseController {
      */
     @RequestMapping(value="/getCondition", method={RequestMethod.POST})
     public ApiResponse<List<BizWj>> getCondition(){
-//        RuntimeCheck.ifNull(entity.getYhId(),"您好，请选择银行卡！");
         BizPtyh bizPtyh= getAppCurrentUser();
         BizWj entity=new BizWj();
         entity.setYhId(bizPtyh.getId());
