@@ -196,21 +196,21 @@
       onCashierPay(item) {
         console.log('支付确认')
         console.log(item)
-        // var  v = this
-        // this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
-        //   console.log(res)
-        //
-        // }).catch((err)=>{
-        //
-        // })
-        // this.doPay()
+        var  v = this
+        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
+          console.log(res)
+
+        }).catch((err)=>{
+
+        })
+        this.doPay()
       },
       onCashierCancel() {
         console.log('取消')
         // Abort pay request or checking request
         this.timer && clearTimeout(this.timer)
       },
-      getCPlist(){
+      getCPlist(){//获取缴费
         var v = this
         this.$http.post(this.apis.CPTYPE,{cpType:1}).then((res)=>{
           console.log(res)

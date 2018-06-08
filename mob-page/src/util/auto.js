@@ -29,15 +29,15 @@ myFunction.auto=function (window, document , num) {
 
 }
 
-myFunction.userMess = function(v,usermes){//获取个人信息
+myFunction.userMess = function(v,usermess){//获取个人信息
   Apis.ajax.post(apis.USERMESS).then((res)=>{
     if(res.code==200){
       if(res.result.yhTx == ''){
         res.result.yhTx ='/static/userTx.png'
       }
       localStorage.setItem('userMess',JSON.stringify(res.result))
-      usermes(JSON.parse(localStorage.getItem("userMess")))
     }
+    usermess(res.result)
   }).catch((err)=>{
     console.log('出错了！！！')
   })
