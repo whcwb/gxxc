@@ -669,7 +669,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("该身份证已经与其他用户关联");
         }
 
-        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
+//        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
+        bizJl.setYhSjhm(bizPtyh.getYhZh());
         RuntimeCheck.ifBlank(bizJl.getJlJl(), "教练驾龄不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlQu(), "教练所属区域不能为空");
 //        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
