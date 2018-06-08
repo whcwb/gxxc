@@ -176,7 +176,6 @@ public class AppMainController {
 	/**
 	 * 短信验证码验证
 	 * @param zh		手机号码
-	 * @param yyyqm	验证码
 	 * @param type	1、注册  2、重置密码
 	 * @return
 	 */

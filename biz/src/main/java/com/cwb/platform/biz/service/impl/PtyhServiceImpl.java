@@ -576,6 +576,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
+        List<String> wjSxList=new ArrayList<String>();
         if (imgList != null) {
             if(StringUtils.trimToNull(imgList[2])!=null){
                 yhSfyjz="1";
@@ -606,11 +607,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 wj.setCjsj(DateUtils.getNowTime());
                 wj.setWjSfyx("1");
                 wjList.add(wj);
+                wjSxList.add(wj.getWjSx());
             }
         }
         //
         if (wjList.size() > 0) {
-            wjMapper.deleteBatch(user.getId());
+            wjMapper.deleteBatch(user.getId(),wjSxList);
             wjMapper.insertBatch(wjList);
         }
 
@@ -641,11 +643,15 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     /**
      * 用户申请成为教练
-     * @param bizJl
+     * @param bizJl imgList
      * @return
      */
     @Override
     public ApiResponse<String> updatelx(BizJl bizJl) {
+        if (StringUtils.isEmpty(bizJl.getImgList())) {
+            return ApiResponse.fail("请上传证件照片");
+        }
+
         BizPtyh bizPtyh = getAppCurrentUser();
 
         BizJl b = jlService.findById(bizPtyh.getId());
@@ -663,10 +669,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("该身份证已经与其他用户关联");
         }
 
-        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
+//        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
+        bizJl.setYhSjhm(bizPtyh.getYhZh());
         RuntimeCheck.ifBlank(bizJl.getJlJl(), "教练驾龄不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlQu(), "教练所属区域不能为空");
-        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
+//        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlJjlxr(), "教练紧急联系人不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlJjlxrdh(), "教练紧急联系人电话不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlZz(), "住址不能为空");
@@ -683,6 +690,50 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         jlService.save(bizJl);
 
+
+        String[] imgList = StringUtils.split(StringUtils.removeStart(bizJl.getImgList(), "-") , ",");
+        String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
+
+        List<BizWj> wjList = new ArrayList<BizWj>();
+        List<String> wjSxList=new ArrayList<String>();
+        if (imgList != null) {
+            if(StringUtils.trimToNull(imgList[2])!=null){
+                yhSfyjz="1";
+            }
+            for (int i = 0; i < imgList.length; i++) {
+                BizWj wj = new BizWj();
+                wj.setId(genId());
+                wj.setYhId(bizPtyh.getId());//
+                wj.setWjTpdz(imgList[i]);//
+
+                //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                switch (i) {
+                    case 0:
+                        wj.setWjSx("10");
+                        break;
+                    case 1:
+                        wj.setWjSx("11");
+                        break;
+                    case 2:
+                        wj.setWjSx("20");
+                        break;
+                    case 3:
+                        wj.setWjSx("21");
+                        break;
+                }
+
+                wj.setWjSbzt("0");
+                wj.setCjsj(DateUtils.getNowTime());
+                wj.setWjSfyx("1");
+                wjList.add(wj);
+                wjSxList.add(wj.getWjSx());
+            }
+        }
+        //
+        if (wjList.size() > 0) {
+            wjMapper.deleteBatch(bizPtyh.getId(),wjSxList);
+            wjMapper.insertBatch(wjList);
+        }
 
 
         return ApiResponse.success();

@@ -18,8 +18,11 @@ public interface BizWjMapper extends Mapper<BizWj> {
     void insertBatch(@Param("list") List<BizWj> list);
 
     @Delete("<script>" +
-            "DELETE FROM BIZ_WJ WHERE YH_ID = #{yhId}" +
+            "DELETE FROM BIZ_WJ WHERE YH_ID = #{yhId} AND WJ_SX IN " +
+            " <foreach collection='list' item='item' open='(' close=')' separator=','> " +
+            "  #{item} " +
+            " </foreach> " +
             "</script>")
-    void deleteBatch(@Param("yhId") String yhId);
+    void deleteBatch(@Param("yhId") String yhId, @Param("list") List<String> list);
 
 }

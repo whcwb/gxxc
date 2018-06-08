@@ -3,6 +3,7 @@ package com.cwb.platform.biz.model;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Table(name = "biz_jl")
@@ -104,8 +105,21 @@ public class BizJl implements Serializable {
     @Column(name = "JL_SH_MS")
     private String jlShMs;
 
+    /**
+     * 上传个人文件，以","进行分隔。
+     */
+    @Transient
+    private String imgList;
+
     private static final long serialVersionUID = 1L;
 
+    public String getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(String imgList) {
+        this.imgList = imgList;
+    }
 
     public String getJlShMs() {
         return jlShMs;
