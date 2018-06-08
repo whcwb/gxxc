@@ -17,4 +17,6 @@ public interface CjdService extends BaseService<BizCjd, String> {
     ApiResponse<Map<String,Object>> getUserMessage(String xyid);
 
     ApiResponse<PageInfo<BizUser>> getBizCjbList(Page<BizUser> ptyhPage, String xyZt);
+
+    ApiResponse<String> updateUserGrade(Double scored);
 }
