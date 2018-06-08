@@ -106,7 +106,7 @@ public class AppPtyhController extends AppUserBaseController {
         if(users!=null){
             //认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
             String yhZt=users.getYhZt();
-            if(StringUtils.equals(yhZt,"0")){
+            if(StringUtils.equals(yhZt,"0")&&StringUtils.equals("1",user.getYhLx())){
                 BizWj realName=new BizWj();
                 realName.setYhId(users.getId());
                 int i=wjService.countByEntity(realName);
@@ -114,6 +114,16 @@ public class AppPtyhController extends AppUserBaseController {
                     users.setYhZt("-1");
                 }
             }
+            String yhJlsh=user.getYhJlsh();//教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+            if(StringUtils.equals(yhJlsh,"0")&&StringUtils.equals("2",user.getYhLx())){
+                BizWj realName=new BizWj();
+                realName.setYhId(users.getId());
+                int i=wjService.countByEntity(realName);
+                if(i<1){
+                    users.setYhJlsh("-1");
+                }
+            }
+
         }
         return ApiResponse.success(users);
     }

@@ -13,6 +13,14 @@ let httpInstance = axios.create({
     headers: {'Content-Type':'application/x-www-form-urlencoded'},
     withCredentials:true
 });
+httpInstance.getData = (url,params)=>{
+    if (params){
+        let p = {params:params}
+        return httpInstance.get(url,p);
+    }else{
+        return httpInstance.get(url);
+    }
+}
 // 添加请求拦截器 数据请求之前
 httpInstance.interceptors.request.use((config) => {
 
