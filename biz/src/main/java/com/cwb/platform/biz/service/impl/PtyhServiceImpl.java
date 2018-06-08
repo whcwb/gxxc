@@ -643,11 +643,15 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     /**
      * 用户申请成为教练
-     * @param bizJl
+     * @param bizJl imgList
      * @return
      */
     @Override
     public ApiResponse<String> updatelx(BizJl bizJl) {
+        if (StringUtils.isEmpty(bizJl.getImgList())) {
+            return ApiResponse.fail("请上传证件照片");
+        }
+
         BizPtyh bizPtyh = getAppCurrentUser();
 
         BizJl b = jlService.findById(bizPtyh.getId());
@@ -685,6 +689,50 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         jlService.save(bizJl);
 
+
+        String[] imgList = StringUtils.split(StringUtils.removeStart(bizJl.getImgList(), "-") , ",");
+        String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
+
+        List<BizWj> wjList = new ArrayList<BizWj>();
+        List<String> wjSxList=new ArrayList<String>();
+        if (imgList != null) {
+            if(StringUtils.trimToNull(imgList[2])!=null){
+                yhSfyjz="1";
+            }
+            for (int i = 0; i < imgList.length; i++) {
+                BizWj wj = new BizWj();
+                wj.setId(genId());
+                wj.setYhId(bizPtyh.getId());//
+                wj.setWjTpdz(imgList[i]);//
+
+                //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                switch (i) {
+                    case 0:
+                        wj.setWjSx("10");
+                        break;
+                    case 1:
+                        wj.setWjSx("11");
+                        break;
+                    case 2:
+                        wj.setWjSx("20");
+                        break;
+                    case 3:
+                        wj.setWjSx("21");
+                        break;
+                }
+
+                wj.setWjSbzt("0");
+                wj.setCjsj(DateUtils.getNowTime());
+                wj.setWjSfyx("1");
+                wjList.add(wj);
+                wjSxList.add(wj.getWjSx());
+            }
+        }
+        //
+        if (wjList.size() > 0) {
+            wjMapper.deleteBatch(bizPtyh.getId(),wjSxList);
+            wjMapper.insertBatch(wjList);
+        }
 
 
         return ApiResponse.success();
