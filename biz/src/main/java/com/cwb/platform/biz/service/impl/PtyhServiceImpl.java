@@ -567,6 +567,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String yhzjhm = entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhZjhm.name(), yhzjhm);
+        condition.and().andNotEqualTo(BizPtyh.InnerColumn.id.name(), userRequest.getId());
         List<BizPtyh> listCount = this.findByCondition(condition);
         if (listCount != null && listCount.size() > 0) {
             RuntimeCheck.ifTrue(true, "该证件号已与手机号" + listCount.get(0).getYhZh() + "关联，请更换新的证件号！");
@@ -582,32 +583,34 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
-                BizWj wj = new BizWj();
-                wj.setId(genId());
-                wj.setYhId(user.getId());//
-                wj.setWjTpdz(imgList[i]);//
+                if(StringUtils.trimToNull(imgList[i])!=null){
+                    BizWj wj = new BizWj();
+                    wj.setId(genId());
+                    wj.setYhId(user.getId());//
+                    wj.setWjTpdz(imgList[i]);//
 
-                //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
-                switch (i) {
-                    case 0:
-                        wj.setWjSx("10");
-                        break;
-                    case 1:
-                        wj.setWjSx("11");
-                        break;
-                    case 2:
-                        wj.setWjSx("20");
-                        break;
-                    case 3:
-                        wj.setWjSx("21");
-                        break;
+                    //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                    switch (i) {
+                        case 0:
+                            wj.setWjSx("10");
+                            break;
+                        case 1:
+                            wj.setWjSx("11");
+                            break;
+                        case 2:
+                            wj.setWjSx("20");
+                            break;
+                        case 3:
+                            wj.setWjSx("21");
+                            break;
+                    }
+
+                    wj.setWjSbzt("0");
+                    wj.setCjsj(DateUtils.getNowTime());
+                    wj.setWjSfyx("1");
+                    wjList.add(wj);
+                    wjSxList.add(wj.getWjSx());
                 }
-
-                wj.setWjSbzt("0");
-                wj.setCjsj(DateUtils.getNowTime());
-                wj.setWjSfyx("1");
-                wjList.add(wj);
-                wjSxList.add(wj.getWjSx());
             }
         }
         //
@@ -701,32 +704,34 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
-                BizWj wj = new BizWj();
-                wj.setId(genId());
-                wj.setYhId(bizPtyh.getId());//
-                wj.setWjTpdz(imgList[i]);//
+                if(StringUtils.trimToNull(imgList[i])!=null) {
+                    BizWj wj = new BizWj();
+                    wj.setId(genId());
+                    wj.setYhId(bizPtyh.getId());//
+                    wj.setWjTpdz(imgList[i]);//
 
-                //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
-                switch (i) {
-                    case 0:
-                        wj.setWjSx("10");
-                        break;
-                    case 1:
-                        wj.setWjSx("11");
-                        break;
-                    case 2:
-                        wj.setWjSx("20");
-                        break;
-                    case 3:
-                        wj.setWjSx("21");
-                        break;
+                    //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                    switch (i) {
+                        case 0:
+                            wj.setWjSx("10");
+                            break;
+                        case 1:
+                            wj.setWjSx("11");
+                            break;
+                        case 2:
+                            wj.setWjSx("20");
+                            break;
+                        case 3:
+                            wj.setWjSx("21");
+                            break;
+                    }
+
+                    wj.setWjSbzt("0");
+                    wj.setCjsj(DateUtils.getNowTime());
+                    wj.setWjSfyx("1");
+                    wjList.add(wj);
+                    wjSxList.add(wj.getWjSx());
                 }
-
-                wj.setWjSbzt("0");
-                wj.setCjsj(DateUtils.getNowTime());
-                wj.setWjSfyx("1");
-                wjList.add(wj);
-                wjSxList.add(wj.getWjSx());
             }
         }
         //
