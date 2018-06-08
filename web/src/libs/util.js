@@ -266,7 +266,8 @@ util.save = function(v){
             // 执行save方法之前的操作
             v.beforeSave();
         }
-        v.$http.post(url,v.formItem).then((res) =>{
+        let params = v.saveParams ? v.saveParams : v.formItem;
+        v.$http.post(url,params).then((res) =>{
             if(res.code===200){
                 v.$Message.success(res.message);
                 util.getPageData(v.$parent)

@@ -94,7 +94,8 @@
                     {label: '失败原因',prop:'yhZtMs'},
                 ],
                 ruleInline:{
-                }
+                },
+                saveParams:{}
             }
         },
         created(){
@@ -104,9 +105,10 @@
         },
         methods: {
             beforeSave(){
-                this.formItem = {};
-                this.formItem.id = this.$parent.choosedItem.id
-                this.formItem.yhJlsh = '1';
+                this.saveParams = {
+                    id:this.$parent.choosedItem.id,
+                    yhJlsh:this.formItem.yhJlsh
+                };
             },
             getImages(){
                 let v = this;
