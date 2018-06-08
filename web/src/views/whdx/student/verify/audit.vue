@@ -24,11 +24,13 @@
 					<Row>
 						<Col span="12">
 							<label>身份证正面</label>
-							<img class="docImg" src="../../../../../static/sfzzm.jpg"/>
+							<img v-if="files.cardFront != ''" class="docImg" :src="staticPath+files.cardFront"/>
+							<img v-else class="docImg" src="static/card_front.png"/>
 						</Col>
 						<Col span="12">
 							<label>身份证反面</label>
-							<img class="docImg" src="../../../../../static/sfzfm.jpg"/>
+							<img v-if="files.cardBack != ''" class="docImg" :src="staticPath+files.cardBack"/>
+							<img v-else class="docImg" src="static/card_back.png"/>
 						</Col>
 						<Col v-if="formItem.yhLx == '2'" span="12">
 							<label>驾驶证正本</label>
@@ -64,6 +66,12 @@
                 saveUrl:this.apis.student.updateyhrz,
                 showModal: true,
                 readonly: false,
+                files:{
+                    cardFront:'',
+                    cardBack:'',
+                    licenceFront:'',
+                    licenceBack:''
+                },
                 formItem: {
                     id:'',
                 },
