@@ -61,13 +61,17 @@
                   <Row type="flex" justify="center">
                     <Col span="6">
                       <Button type="primary" shape="circle"
+                              v-if="usermess.ddSfjx=='0'&&usermess.yhZt=='1'"
                               @click="$router.push({name:'pay'})"
                               style="font-size: 13px;width:60px">缴费</Button>
-                              <!--v-if="usermess.ddSfjx=='0'"-->
-                      <!--<Button type="success" shape="circle"-->
-                              <!--v-else-if="usermess.ddSfjx=='1'"-->
-                              <!--@click="okjf"-->
-                              <!--style="font-size: 13px;width:60px">已缴费</Button>-->
+                      <Button type="success" shape="circle"
+                              v-else-if="usermess.ddSfjx=='1'"
+                              @click="okjf"
+                              style="font-size: 13px;width:60px">已缴费</Button>
+                      <Button type="warning" shape="circle"
+                              v-else
+                              @click="tost"
+                              style="font-size: 13px;width:60px">缴费</Button>
                     </Col>
                     <Col span="6">
                       <Button type="primary" shape="circle"
@@ -159,6 +163,9 @@
           this.zhye()
         },
         methods:{
+            tost(){
+              Toast('请实名认证')
+            },
             zhye(){
               this.$http.post(this.apis.USERZH).then((res)=>{
                 if(res.code==200){

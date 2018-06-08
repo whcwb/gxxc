@@ -12,6 +12,8 @@ module.exports = {
   LOGIN:'/app/login',//登录接口
   LOGOUT:'/app/logout',//退出用戶
   USERMESS:'/app/ptyh/get',//用户信息
+  USERIMGMESS:'/app/wj/getCondition',//获取用户图片
+
   USERZH:'/app/zh/get',//账户余额
   CODEYZ:'/app/yzyym',//邀请码验证
   PHINECODE:'/app/sendSMSzc',//获取短信验证码
@@ -20,7 +22,6 @@ module.exports = {
   SWIPER:'/app/hd/pager ',//轮播图
   TX:'/app/tx/save',//资金提现
   TEAM:'/app/user/pager',//我的团队
-  IDRZ:'/app/ptyh/updatesm',//身份认证 实名认证
   CHUSERMESS:'/app/ptyh/update',//昵称 头像修改
   UPWORLD:'app/ptyh/mdfPwd',//密码修改
   CPTYPE:'/app/cp/getcplx',//产品类别
@@ -34,4 +35,8 @@ module.exports = {
   SUDENTLIST:'/app/cjd/getcjblist',//学院列表
   XYMESS:'/app/cjd/getxy',//学员详情
   XYCJD:'/app/cjd/save',//学院成绩单上传
+
+  //认证
+  IDRZ:'/app/ptyh/updatesm',//身份认证 实名认证
+  JLRZ:'app/ptyh/updatelx',//教练员认证
 }

@@ -15,7 +15,7 @@
         <div>
           <box-head tit="考场分布" leftToName="/home">
             <div slot="left" style="color: #E0DADF">
-              <i class="iconfont icon-left"></i>
+              <i class="iconfont icon-left1"></i>
             </div>
           </box-head>
         </div>
@@ -51,6 +51,7 @@
                       位置：
                     </span>
                     <div>
+                      {{item.name}}
                       湖北省武汉市蔡甸区X088
                     </div>
                 </div>
@@ -60,7 +61,7 @@
                       交通：
                     </span>
                     <div>
-                        655路 ，667路 ，996路 ，855路
+                      {{item.gj}}
                     </div>
                 </div>
               </div>
