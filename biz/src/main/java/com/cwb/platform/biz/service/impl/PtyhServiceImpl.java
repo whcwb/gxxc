@@ -573,12 +573,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             RuntimeCheck.ifTrue(true, "该证件号已与手机号" + listCount.get(0).getYhZh() + "关联，请更换新的证件号！");
         }
 
-        String[] imgList = StringUtils.split(StringUtils.removeStart(entity.getImgList(), "-") , ",");
+
+        String[] imgList = StringUtils.split(entity.getImgList().replaceAll("-",""), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         List<String> wjSxList=new ArrayList<String>();
-        if (imgList != null) {
+        if (imgList != null&&imgList.length>0) {
             if(StringUtils.trimToNull(imgList[2])!=null){
                 yhSfyjz="1";
             }
@@ -694,12 +695,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         jlService.save(bizJl);
 
 
-        String[] imgList = StringUtils.split(StringUtils.removeStart(bizJl.getImgList(), "-") , ",");
+        String[] imgList = StringUtils.split(bizJl.getImgList().replaceAll("-",""), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         List<String> wjSxList=new ArrayList<String>();
-        if (imgList != null) {
+        if (imgList != null&&imgList.length>0) {
             if(StringUtils.trimToNull(imgList[2])!=null){
                 yhSfyjz="1";
             }
