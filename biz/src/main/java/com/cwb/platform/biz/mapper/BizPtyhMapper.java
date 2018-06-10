@@ -36,4 +36,10 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
             "</script>")
     void updateJlFp(@Param("list") List<String> list,@Param("yhFpms") String yhFpms);
 
+
+
+    @Select("<script>" +
+            " SELECT IFNULL(SUM(ZJ_JE*ZJ_FS),0) as fymoney FROM BIZ_YJMX WHERE MX_LX='2' AND ZJ_ID=#{ddId} " +
+            "</script>")
+    String fyMoney(@Param("ddId")  String ddId);
 }

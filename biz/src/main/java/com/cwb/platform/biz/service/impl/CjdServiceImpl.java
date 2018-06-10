@@ -77,19 +77,19 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         String kmBm=bizCjd.getKmBm();//科目编码
         String xyCj=bizCjd.getXyCj();//学员考试成绩
         if(StringUtils.equals(kmBm,"1")){
-            if(MathUtil.stringToDouble(xyCj)>MathUtil.stringToDouble(subjectMark1)){
+            if(MathUtil.stringToDouble(xyCj)>=MathUtil.stringToDouble(subjectMark1)){
                 xySfhg="1";
             }
         }else if(StringUtils.equals(kmBm,"2")){
-            if(MathUtil.stringToDouble(xyCj)>MathUtil.stringToDouble(subjectMark2)){
+            if(MathUtil.stringToDouble(xyCj)>=MathUtil.stringToDouble(subjectMark2)){
                 xySfhg="1";
             }
         }else if(StringUtils.equals(kmBm,"3")){
-            if(MathUtil.stringToDouble(xyCj)>MathUtil.stringToDouble(subjectMark3)){
+            if(MathUtil.stringToDouble(xyCj)>=MathUtil.stringToDouble(subjectMark3)){
                 xySfhg="1";
             }
         }else if(StringUtils.equals(kmBm,"4")){
-            if(MathUtil.stringToDouble(xyCj)>MathUtil.stringToDouble(subjectMark4)){
+            if(MathUtil.stringToDouble(xyCj)>=MathUtil.stringToDouble(subjectMark4)){
                 xySfhg="1";
             }
         }
@@ -110,7 +110,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
         /**
          * 修改 学员状态
          */
-        entityMapper.updateBizUserZt(userRequest.getId());
+        entityMapper.updateBizUserZt(bizCjd.getXyId());
 
         return i==1?ApiResponse.success():ApiResponse.fail("上传失败");
     }
@@ -183,7 +183,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
                 condition.eq(BizUser.InnerColumn.xyZt.name(), xyZt);//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
             }else{
                 if(xyZt!=null){
-                    condition.and().andCondition(" ( XY_ZT NOT LIKE '%"+xyZt+"%' OR XY_ZT IS NULL ) AND XY_ZT != '0' ");//学员状态(0、完成学习  1、科目一 2、科目二 3、科目三 4、科目四)
+                    condition.and().andCondition(" ( XY_ZT NOT LIKE '%"+xyZt+"%' OR XY_ZT IS NULL ) AND LENGTH(XY_ZT)>1  ");
                 }
             }
         }
@@ -227,7 +227,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
     /**
      * 学员评分操作
      *
-     * @param score  该学员的评分
+     * @param scored  该学员的评分
      */
     public ApiResponse<String> updateUserGrade(Double scored){
 
