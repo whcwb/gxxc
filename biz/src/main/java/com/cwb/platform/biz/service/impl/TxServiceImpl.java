@@ -102,6 +102,11 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         bizYjmx.setZjBz(bizTx.getTtBz());
         // 更新佣金明细表
         yjmxService.update(bizYjmx);
+
+        // 更新账户表
+        List<String> userList=new ArrayList<String>();
+        userList.add(tx.getYhId());
+        zhService.userAccountUpdate(userList);
         return i == 1 ? ApiResponse.success():ApiResponse.fail();
     }
 
