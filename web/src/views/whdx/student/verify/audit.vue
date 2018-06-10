@@ -64,6 +64,7 @@
                 v:this,
                 operate:'认证',
                 saveUrl:this.apis.student.updateyhrz,
+                staticPath:this.apis.getImgUrl,
                 showModal: true,
                 readonly: false,
                 files:{
@@ -87,7 +88,8 @@
                     {label: '失败原因',prop:'yhZtMs'},
                 ],
                 ruleInline:{
-                }
+                },
+                saveParams:{}
             }
         },
         created(){
@@ -97,9 +99,10 @@
         },
         methods: {
             beforeSave(){
-                this.formItem = {};
-                this.formItem.id = this.$parent.choosedItem.id
-                this.formItem.yhZt = '1';
+                this.saveParams = {
+                    id:this.$parent.choosedItem.id,
+                    yhZt:this.formItem.yhZt
+				};
 			},
             getImages(){
                 let v = this;
