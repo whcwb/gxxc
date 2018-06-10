@@ -6,10 +6,7 @@ import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.model.BizCp;
 import com.cwb.platform.biz.model.BizOrder;
 import com.cwb.platform.biz.model.BizYjmx;
-import com.cwb.platform.biz.service.CpService;
-import com.cwb.platform.biz.service.JobService;
-import com.cwb.platform.biz.service.YjmxService;
-import com.cwb.platform.biz.service.ZhService;
+import com.cwb.platform.biz.service.*;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -40,6 +37,9 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
 
     @Autowired
     private BizOrderMapper orderMapper;
+
+    @Autowired
+    private PtyhService pyhtService;
 
     @Autowired
     private StringRedisTemplate redisDao;
@@ -153,7 +153,6 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                 newBizOrder.setJobDescribe("订单编号：" + l.getDdId() + ",用户ID不能为空");
                 retType = false;
             } else {
-
                 //查询这个用户是否有已经处理成功的记录。 目的，防止一个用户支付两次，重复支付时，不能分佣金，需要联系用户做退款处理。
                 SimpleCondition condition = new SimpleCondition(BizOrder.class);
                 condition.eq(BizOrder.InnerColumn.yhId.name(), yhId);
@@ -168,6 +167,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                 } else {
                     // 根据产品表判断是否 要分佣
                     if(StringUtils.equals(bizCp.getCpYj(),"1")){// 要分佣
+                        // TODO: 2018/6/8 增加一层判断，该订单所有分佣 
 
                         //插入流水表1
                         BizYjmx newBizYjmx = new BizYjmx();
@@ -199,7 +199,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                         if (StringUtils.isNotEmpty(yhSsjid)) {
                             updateUserList.add(yhSsjid);
                         }
-                        newBizOrder.setJobType("1");
+
                         if (updateUserList.size() > 0) {
                             zhService.userAccountUpdate(updateUserList);
                             log.debug("4、更新账户表");
@@ -220,31 +220,44 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                     newBizYjmx.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
                     newBizYjmx.setMxlx("1");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
                     yjmxService.save(newBizYjmx);
+                    newBizYjmx.setId(genId());
                     newBizYjmx.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
                     newBizYjmx.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
                     yjmxService.save(newBizYjmx);
 
 //                    所属订单ID
 
-                    // 判断订单用户是否为 学员 ，只对学员生成邀请码
+                    // 判断订单产品是否属于学费，只有学费才生成邀请码
                     if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
-                        String yhZsyqm = genId();
-                        File logoFile = new File(logoFileUrl);
-                        String yhZsyqmImg = "/QRCode/"+DateUtils.getToday("yyyyMMdd")+"/"+yhZsyqm + ".png";
-                        String note = "您的好友：" + l.getYhXm() + " 邀请您";
-                        ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg), yhZsyqm, note);
-                        log.debug("3、用户：" + l.getYhXm() + "。生成邀请码成功");
+                        BizPtyh bizPtyh=pyhtService.findByIdSelect(l.getYhId());
+                        if(StringUtils.isEmpty(bizPtyh.getYhZsyqm())){//如果该用户已有邀请码，就不难再给该用户创建
+                            String yhZsyqm = genId();
 
-                        BizPtyh user = new BizPtyh();
-                        user.setId(l.getYhId());
-                        user.setYhZsyqm(yhZsyqm);//用户自己邀请码
-                        user.setYhZsyqmImg(yhZsyqmImg);//用户自己邀请码
+                            File logoFile = new File(logoFileUrl);
+                            String yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
 
-                        userMapper.updateByPrimaryKeySelective(user);
+                            File file=new File(qrCodeFileUrl + yhZsyqmImg);
+                            if (!file.exists()  && !file.isDirectory()){
+                                file.mkdirs();
+                            }
+
+                            String note = "您的好友：" + l.getYhXm() + " 邀请您";
+                            ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg+yhZsyqm + ".png"), yhZsyqm, note);
+                            log.debug("3、用户：" + l.getYhXm() + "。生成邀请码成功");
+
+                            BizPtyh user = new BizPtyh();
+                            user.setId(l.getYhId());
+                            user.setYhZsyqm(yhZsyqm);//用户自己邀请码
+                            user.setYhZsyqmImg(yhZsyqmImg);//用户自己邀请码
+                            userMapper.updateByPrimaryKeySelective(user);
+
+                        }
                     }
+                    newBizOrder.setJobType("1");// 定时任务操作成功
                 }
             }
         }
+
         orderMapper.updateByPrimaryKeySelective(newBizOrder);
         log.debug("5、更新订单主表。完成订单的分派");
         return retType ? ApiResponse.success() : ApiResponse.fail(newBizOrder.getJobDescribe());
