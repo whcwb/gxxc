@@ -127,8 +127,8 @@
 			exportData(){
                 let params = {
                     exportType:'ptyh',
-                    cols:'姓名,账号,缴费状态,是否有驾驶证,认证状态',
-					keys:'yhXm,yhZh,ddSfjx,yhSfyjz,yhZt'
+                    cols:'姓名,账号,是否有驾驶证,认证状态,教练姓名,教练电话',
+					keys:'yhXm,yhZh,yhSfyjz,yhZt,jlxm,jldh'
 				}
 				window.open(this.apis.exportData+'?ddSfjx=1&exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);
 			}

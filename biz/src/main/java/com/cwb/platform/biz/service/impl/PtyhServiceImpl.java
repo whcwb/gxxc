@@ -99,17 +99,22 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public List<String> getSpecialCols() {
-        return Arrays.asList("ddSfjx", "yhSfyjz", "yhZt");
+        return Arrays.asList("ddSfjx", "yhSfyjz", "yhZt","jlxm","jldh");
     }
 
     @Override
     public List<Map<String, String>> getSpecialVals(List<BizPtyh> list) {
+        if (CollectionUtils.isNotEmpty(list)) {
+            list.forEach(this::afterReturn);
+        }
         List<Map<String, String>> data = new ArrayList<>(list.size());
         for (BizPtyh row : list) {
             Map<String, String> map = new HashMap<>();
             map.put("ddSfjx", "1".equals(row.getDdSfjx()) ? "已缴费" : "未缴费");
             map.put("yhSfyjz", "1".equals(row.getYhSfyjz()) ? "有" : "无");
             map.put("yhZt", "1".equals(row.getYhZt()) ? "已认证" : "未认证");
+            map.put("jlxm", row.getJlXm());
+            map.put("jldh", row.getSjhm());
             data.add(map);
         }
         return data;
