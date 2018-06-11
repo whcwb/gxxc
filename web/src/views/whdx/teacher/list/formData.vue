@@ -25,12 +25,12 @@
 						<Col span="12">
 							<label>身份证正面</label>
 							<img v-if="files.cardFront != ''" class="docImg" :src="staticPath+files.cardFront"/>
-							<img v-else class="docImg" src="static/sfzzm.jpg"/>
+							<img v-else class="docImg" src="static/card_front.png"/>
 						</Col>
 						<Col span="12">
 							<label>身份证反面</label>
 							<img v-if="files.cardBack != ''" class="docImg" :src="staticPath+files.cardBack"/>
-							<img v-else class="docImg" src="static/sfzfm.jpg"/>
+							<img v-else class="docImg" src="static/card_back.png"/>
 						</Col>
 						<Col v-if="formItem.yhLx == '2'" span="12">
 							<label>驾驶证正本</label>
@@ -63,6 +63,7 @@
 			    v:this,
                 operate:'教练员',
 				saveUrl:this.apis.teacher.ADD,
+                staticPath:this.apis.getImgUrl,
 				showModal: true,
 				readonly: false,
                 files:{

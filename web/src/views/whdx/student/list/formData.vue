@@ -25,12 +25,12 @@
 						<Col span="12">
 							<label>身份证正面</label>
 							<img v-if="files.cardFront != ''" class="docImg" :src="staticPath+files.cardFront"/>
-							<img v-else class="docImg" src="static/sfzzm.jpg"/>
+							<img v-else class="docImg" src="static/card_front.png"/>
 						</Col>
 						<Col span="12">
 							<label>身份证反面</label>
 							<img v-if="files.cardBack != ''" class="docImg" :src="staticPath+files.cardBack"/>
-							<img v-else class="docImg" src="static/sfzfm.jpg"/>
+							<img v-else class="docImg" src="static/card_back.png"/>
 						</Col>
 						<Col v-if="formItem.yhLx == '2'" span="12">
 							<label>驾驶证正本</label>
@@ -92,7 +92,7 @@
 		methods: {
             getImages(){
                 let v = this;
-                this.$http.post(this.apis.wj.getByCondition,{yhId:this.formItem.yhId}).then((res)=>{
+                this.$http.post(this.apis.wj.getByCondition,{yhId:this.formItem.id}).then((res)=>{
                     if (res.code === 200 && res.result){
 						for (let r of res.result){
 						    switch(r.wjSx){

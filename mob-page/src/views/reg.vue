@@ -99,7 +99,7 @@
           stepIndex:0,
           error:'',
           form:{
-              phone:'13164183391',
+              phone:'',
               vaildPhone:'',
               code:'',
               name:'',
@@ -123,7 +123,6 @@
 
   },
     created(){
-      localStorage.setItem('yqm','449609243398504448')
     },
     methods: {
       //获取短信验证码

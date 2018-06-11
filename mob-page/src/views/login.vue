@@ -32,6 +32,18 @@
           >
             <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
           </md-input-item>
+          <md-input-item
+            ref="id"
+            title="邀请码"
+            v-model="yqm"
+            placeholder="邀请码"
+            is-title-latent
+            clearable
+            type="text"
+            style="border-bottom: 1px gray solid;margin: 20px;margin-top: 0px"
+          >
+            <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
+          </md-input-item>
       </div>
       <!-- 操作按钮区域 -->
       <div class="box-row">
@@ -68,7 +80,8 @@
         from:{
           username:'13311111111',
           password:'123456'
-        }
+        },
+        yqm:''
       }
     },
     created(){
@@ -89,9 +102,8 @@
           }else {
             Toast.failed(res.message)
           }
-          console.log('**-***',res)
         }).catch((err)=>{
-          console.log('出错了！！！')
+          console.log('登录出错了！！！')
         })
       },
       userMess(){
@@ -114,7 +126,7 @@
         // this.wechatUtil.qrScan((messtoback)=>{
         //   Toast.succeed('微信'+messtoback);
         //   v.codeyz(messtoback)
-            v.codeyz('123456789')
+            v.codeyz(v.yqm)
         // })
       },
       codeyz(val){

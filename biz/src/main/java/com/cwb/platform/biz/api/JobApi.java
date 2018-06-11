@@ -55,7 +55,7 @@ public class JobApi {
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    messaget+="订单："+l.getDdId()+"处理异常\n";
+                    messaget+="订单："+l.getDdId()+"处理异常\n"; // TODO: 2018/6/8 数据库异常，需要回写到定时任务中
                 }
                 finally {
                     redisDao.delete("order_"+l.getDdId());

@@ -168,17 +168,22 @@
           }
         },
         created(){
-          // 0审核中  1通过  2驳回（yhZtMs-驳回信息） -1未认证
-          if(this.userMess.yhZt==-1){
-              this.stepIndex = 0
-          }else if(this.userMess.yhZt!=-1){
-              this.stepIndex = 2
-          }
-          this.MyFunc.userMess(this,(res)=>{
-            this.userMess = res
-          })
+          this.rz()
         },
         methods:{
+          rz(){
+            var v =this
+            this.MyFunc.userMess(v,(res)=>{
+              v.userMess = res
+              // 0审核中  1通过  2驳回（yhZtMs-驳回信息） -1未认证
+              console.log(v.userMess)
+              if(v.userMess.yhZt=='-1'){
+                v.stepIndex = 0
+              }else if(v.userMess.yhZt!='-1'){
+                v.stepIndex = 2
+              }
+            })
+          },
             goback(){
               this.$router.go(-1);
             },
@@ -196,10 +201,17 @@
             },
             toResult(){
               //切换到下一个界面
-              // this.stepIndex = 2;
+              var v = this
               this.form.imgList = this.imgListN.join(',')
-              this.form.imgTypeList = this.imgTypeListN.join(',')
+              // this.form.imgTypeList = this.imgTypeListN.join(',')
               console.log(this.form)
+              this.$http.post(this.apis.IDRZ,this.form).then((res)=>{
+                if(res.code==200){
+                  v.stepIndex = 2;
+                }
+              }).catch((err)=>{
+
+              })
             },
             handleSuccess(res,val){
               console.log('上传成功事件监听',res)

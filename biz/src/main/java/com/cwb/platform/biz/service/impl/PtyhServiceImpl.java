@@ -253,10 +253,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             yhSjid = pUserId;
             BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
             if (pBizUser != null) {
-                yhSsjid = pBizUser.getYhId();
+                yhSsjid = pBizUser.getYhSjid();
             }
 
-            //插入用户实名表  biz_user
+            //修改用户实名表  biz_user
             BizUser bizUser = new BizUser();
             bizUser.setYhId(user.getId());//用户ID
             bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
@@ -567,47 +567,51 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String yhzjhm = entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhZjhm.name(), yhzjhm);
+        condition.and().andNotEqualTo(BizPtyh.InnerColumn.id.name(), userRequest.getId());
         List<BizPtyh> listCount = this.findByCondition(condition);
         if (listCount != null && listCount.size() > 0) {
             RuntimeCheck.ifTrue(true, "该证件号已与手机号" + listCount.get(0).getYhZh() + "关联，请更换新的证件号！");
         }
 
-        String[] imgList = StringUtils.split(StringUtils.removeStart(entity.getImgList(), "-") , ",");
+
+        String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         List<String> wjSxList=new ArrayList<String>();
-        if (imgList != null) {
-            if(StringUtils.trimToNull(imgList[2])!=null){
+        if (imgList != null&&imgList.length>0) {
+            if(StringUtils.trimToNull(imgList[2])!=null && !StringUtils.equals(imgList[2],"-")){
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
-                BizWj wj = new BizWj();
-                wj.setId(genId());
-                wj.setYhId(user.getId());//
-                wj.setWjTpdz(imgList[i]);//
+                if(StringUtils.trimToNull(imgList[i])!=null  && !StringUtils.equals(imgList[i],"-")){
+                    BizWj wj = new BizWj();
+                    wj.setId(genId());
+                    wj.setYhId(user.getId());//
+                    wj.setWjTpdz(imgList[i]);//
 
-                //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
-                switch (i) {
-                    case 0:
-                        wj.setWjSx("10");
-                        break;
-                    case 1:
-                        wj.setWjSx("11");
-                        break;
-                    case 2:
-                        wj.setWjSx("20");
-                        break;
-                    case 3:
-                        wj.setWjSx("21");
-                        break;
+                    //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                    switch (i) {
+                        case 0:
+                            wj.setWjSx("10");
+                            break;
+                        case 1:
+                            wj.setWjSx("11");
+                            break;
+                        case 2:
+                            wj.setWjSx("20");
+                            break;
+                        case 3:
+                            wj.setWjSx("21");
+                            break;
+                    }
+
+                    wj.setWjSbzt("0");
+                    wj.setCjsj(DateUtils.getNowTime());
+                    wj.setWjSfyx("1");
+                    wjList.add(wj);
+                    wjSxList.add(wj.getWjSx());
                 }
-
-                wj.setWjSbzt("0");
-                wj.setCjsj(DateUtils.getNowTime());
-                wj.setWjSfyx("1");
-                wjList.add(wj);
-                wjSxList.add(wj.getWjSx());
             }
         }
         //
@@ -622,8 +626,22 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhXb(entity.getYhXb());//用户性别
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
+        newEntity.setYhZt("0");//用户驾照状态不能为空
+        newEntity.setYhZtMs(" ");//用户驾照状态不能为空
 
         int i = update(newEntity);
+        if(i>0){
+            userMapper.deleteByPrimaryKey(user.getId());
+            //插入用户实名表  biz_user
+            BizUser bizUser = new BizUser();
+            bizUser.setYhId(user.getId());//用户ID
+            bizUser.setYhZjhm(entity.getYhZjhm());//用户证件号码
+            bizUser.setYhSjhm(user.getYhZh());//用户账户
+            bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+            bizUser.setYhXm(entity.getYhXm());//姓名
+            bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+            i = userMapper.insert(bizUser);
+        }
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
@@ -669,10 +687,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("该身份证已经与其他用户关联");
         }
 
-        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
+        bizJl.setYhSjhm(bizPtyh.getYhZh());
         RuntimeCheck.ifBlank(bizJl.getJlJl(), "教练驾龄不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlQu(), "教练所属区域不能为空");
-        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
+//        RuntimeCheck.ifBlank(bizJl.getJlZml(), "教练证明人不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlJjlxr(), "教练紧急联系人不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlJjlxrdh(), "教练紧急联系人电话不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlZz(), "住址不能为空");
@@ -690,42 +708,44 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         jlService.save(bizJl);
 
 
-        String[] imgList = StringUtils.split(StringUtils.removeStart(bizJl.getImgList(), "-") , ",");
+        String[] imgList = StringUtils.split(bizJl.getImgList(), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         List<String> wjSxList=new ArrayList<String>();
-        if (imgList != null) {
-            if(StringUtils.trimToNull(imgList[2])!=null){
+        if (imgList != null&&imgList.length>0) {
+            if(StringUtils.trimToNull(imgList[2])!=null  && !StringUtils.equals(imgList[2],"-")){
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
-                BizWj wj = new BizWj();
-                wj.setId(genId());
-                wj.setYhId(bizPtyh.getId());//
-                wj.setWjTpdz(imgList[i]);//
+                if(StringUtils.trimToNull(imgList[i])!=null  && !StringUtils.equals(imgList[i],"-")) {
+                    BizWj wj = new BizWj();
+                    wj.setId(genId());
+                    wj.setYhId(bizPtyh.getId());//
+                    wj.setWjTpdz(imgList[i]);//
 
-                //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
-                switch (i) {
-                    case 0:
-                        wj.setWjSx("10");
-                        break;
-                    case 1:
-                        wj.setWjSx("11");
-                        break;
-                    case 2:
-                        wj.setWjSx("20");
-                        break;
-                    case 3:
-                        wj.setWjSx("21");
-                        break;
+                    //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                    switch (i) {
+                        case 0:
+                            wj.setWjSx("10");
+                            break;
+                        case 1:
+                            wj.setWjSx("11");
+                            break;
+                        case 2:
+                            wj.setWjSx("20");
+                            break;
+                        case 3:
+                            wj.setWjSx("21");
+                            break;
+                    }
+
+                    wj.setWjSbzt("0");
+                    wj.setCjsj(DateUtils.getNowTime());
+                    wj.setWjSfyx("1");
+                    wjList.add(wj);
+                    wjSxList.add(wj.getWjSx());
                 }
-
-                wj.setWjSbzt("0");
-                wj.setCjsj(DateUtils.getNowTime());
-                wj.setWjSfyx("1");
-                wjList.add(wj);
-                wjSxList.add(wj.getWjSx());
             }
         }
         //
