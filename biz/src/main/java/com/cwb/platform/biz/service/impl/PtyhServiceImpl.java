@@ -930,7 +930,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<PageInfo<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage) {
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage) {
+
+        ApiResponse<List<BizPtyh>> result = new ApiResponse<>();
+
         PageInfo<BizPtyh> pageInfo = new PageInfo<>();
         // 获取当前登录用户
         BizPtyh user = getAppCurrentUser();
@@ -950,10 +953,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                         bizPtyh -> {
                             BizPtyh ptyh = afterReturns(bizPtyh);
                             ptyh.setYhMm(bizJl.getJlMs()); // 用户表中没有教练简介 ， 将 密码字段设置为 教练的简介
+                            ptyh.setJljj(bizJl.getJlMs()); // 教练简介
                         }
                 );
             }
-            return ApiResponse.success(pageInfo);
+            afterPager(pageInfo);
+            result.setPage(pageInfo);
+            return result;
 
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
 
@@ -973,11 +979,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                    afterReturns(bizPtyh);
                 });
             }
-
-            return ApiResponse.success(pageInfo);
+            afterPager(pageInfo);
+            result.setPage(pageInfo);
+            return result;
         }
 
-        return ApiResponse.success(pageInfo);
+        return result;
     }
 
     /**

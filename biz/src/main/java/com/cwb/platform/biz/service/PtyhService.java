@@ -6,7 +6,6 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -50,7 +49,7 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     ApiResponse<List<String>> assignStudents(String yhId, String jlId);
 
-    ApiResponse<PageInfo<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage);
+    ApiResponse<List<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage);
 
     boolean sendSMS(String tel, int type,  String identifyingCode);
     /**

@@ -207,9 +207,23 @@ public class BizPtyh implements Serializable {
      */
     @Transient
     private String sjhm;
+    /**
+     * 教练简介
+     */
+    @Transient
+    private String jljj;
 
 
     private static final long serialVersionUID = 1L;
+
+
+    public String getJljj() {
+        return jljj;
+    }
+
+    public void setJljj(String jljj) {
+        this.jljj = jljj;
+    }
 
     public String getJlXm() {
         return jlXm;
