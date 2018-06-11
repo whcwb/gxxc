@@ -253,10 +253,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             yhSjid = pUserId;
             BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
             if (pBizUser != null) {
-                yhSsjid = pBizUser.getYhId();
+                yhSsjid = pBizUser.getYhSjid();
             }
 
-            //插入用户实名表  biz_user
+            //修改用户实名表  biz_user
             BizUser bizUser = new BizUser();
             bizUser.setYhId(user.getId());//用户ID
             bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
@@ -446,7 +446,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<Map<String, Object>> wxlogin(String openId) {
         // TODO: 2018/5/19 调试模式。
-        if (debugTest != null) {//调试
+        if(debugTest!=null&&debugTest.equals("1")) {//调试
             openId = "aaaaaaa";
         }
 
@@ -574,17 +574,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         }
 
 
-        String[] imgList = StringUtils.split(entity.getImgList().replaceAll("-",""), ",");
+        String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         List<String> wjSxList=new ArrayList<String>();
         if (imgList != null&&imgList.length>0) {
-            if(StringUtils.trimToNull(imgList[2])!=null){
+            if(StringUtils.trimToNull(imgList[2])!=null && !StringUtils.equals(imgList[2],"-")){
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
-                if(StringUtils.trimToNull(imgList[i])!=null){
+                if(StringUtils.trimToNull(imgList[i])!=null  && !StringUtils.equals(imgList[i],"-")){
                     BizWj wj = new BizWj();
                     wj.setId(genId());
                     wj.setYhId(user.getId());//
@@ -626,8 +626,22 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhXb(entity.getYhXb());//用户性别
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
+        newEntity.setYhZt("0");//用户驾照状态不能为空
+        newEntity.setYhZtMs(" ");//用户驾照状态不能为空
 
         int i = update(newEntity);
+        if(i>0){
+            userMapper.deleteByPrimaryKey(user.getId());
+            //插入用户实名表  biz_user
+            BizUser bizUser = new BizUser();
+            bizUser.setYhId(user.getId());//用户ID
+            bizUser.setYhZjhm(entity.getYhZjhm());//用户证件号码
+            bizUser.setYhSjhm(user.getYhZh());//用户账户
+            bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+            bizUser.setYhXm(entity.getYhXm());//姓名
+            bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+            i = userMapper.insert(bizUser);
+        }
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
@@ -673,7 +687,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("该身份证已经与其他用户关联");
         }
 
-//        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "手机号码不能为空");
         bizJl.setYhSjhm(bizPtyh.getYhZh());
         RuntimeCheck.ifBlank(bizJl.getJlJl(), "教练驾龄不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlQu(), "教练所属区域不能为空");
@@ -695,17 +708,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         jlService.save(bizJl);
 
 
-        String[] imgList = StringUtils.split(bizJl.getImgList().replaceAll("-",""), ",");
+        String[] imgList = StringUtils.split(bizJl.getImgList(), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
         List<BizWj> wjList = new ArrayList<BizWj>();
         List<String> wjSxList=new ArrayList<String>();
         if (imgList != null&&imgList.length>0) {
-            if(StringUtils.trimToNull(imgList[2])!=null){
+            if(StringUtils.trimToNull(imgList[2])!=null  && !StringUtils.equals(imgList[2],"-")){
                 yhSfyjz="1";
             }
             for (int i = 0; i < imgList.length; i++) {
-                if(StringUtils.trimToNull(imgList[i])!=null) {
+                if(StringUtils.trimToNull(imgList[i])!=null  && !StringUtils.equals(imgList[i],"-")) {
                     BizWj wj = new BizWj();
                     wj.setId(genId());
                     wj.setYhId(bizPtyh.getId());//
@@ -856,7 +869,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return true;
         }
         // TODO: 2018/5/19 调试模式。
-        if (debugTest != null) {//调试
+        if(debugTest!=null&&debugTest.equals("1")) {//调试
             ret=true;
         }else{
             //短信下发

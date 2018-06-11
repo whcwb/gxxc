@@ -63,6 +63,7 @@
 			    v:this,
                 operate:'教练员',
 				saveUrl:this.apis.teacher.ADD,
+                staticPath:this.apis.getImgUrl,
 				showModal: true,
 				readonly: false,
                 files:{

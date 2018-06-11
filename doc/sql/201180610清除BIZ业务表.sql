@@ -1,0 +1,13 @@
+DELETE FROM biz_cjd;
+DELETE FROM biz_cp;
+DELETE FROM BIZ_JL;
+DELETE FROM biz_jszocr;
+DELETE FROM biz_order;
+DELETE FROM biz_ptyh WHERE ID !='1';
+DELETE FROM biz_sfzocr;
+DELETE FROM biz_tx;
+DELETE FROM biz_user;
+DELETE FROM biz_WJ;
+DELETE FROM biz_yhk;
+DELETE FROM biz_yjmx;
+DELETE FROM biz_zh;
