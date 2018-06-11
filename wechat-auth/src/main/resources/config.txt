@@ -1,0 +1,5 @@
+appId=wxc79cfaa1daf98915
+secret=d7999531006d520814412b3cd0805156
+token=Token
+aesKey=
+domain=http://tzbtti.natappfree.cc
