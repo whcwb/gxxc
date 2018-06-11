@@ -60,10 +60,8 @@
 </template>
 
 <script>
-    import formItems from '../../components/formItems'
     export default {
         name: 'byxxForm',
-        components:{formItems},
         data() {
             return {
                 v:this,

@@ -33,10 +33,8 @@
 </template>
 
 <script>
-	import formItems from '../components/formItems'
 	export default {
 		name: 'txForm',
-        components:{formItems},
 		data() {
 			return {
 			    v:this,

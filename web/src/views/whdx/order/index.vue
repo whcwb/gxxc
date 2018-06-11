@@ -10,19 +10,16 @@
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
         </Row>
         <Row class="margin-top-10 pageSty">
-        	<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator @on-change='(e)=>{v.util.pageChange(v, e)}'></Page>
+            <pager :parent="v"></pager>
         </Row>
         <component :is="componentName"></component>
 	</div>
 </template>
 
 <script>
-    import formData from './formData.vue'
-    import searchItems from '../components/searchItems'
 
     export default {
         name: 'order',
-        components: {formData,searchItems},
         data() {
             return {
                 v:this,

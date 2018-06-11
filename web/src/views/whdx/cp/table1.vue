@@ -15,11 +15,10 @@
 
 <script>
     import formData from './formData.vue'
-	import searchItems from '../components/searchItems'
 
     export default {
         name: 'cp',
-        components: {formData,searchItems},
+        components: {formData},
         data() {
             return {
                 v:this,

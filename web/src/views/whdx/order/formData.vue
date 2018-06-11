@@ -28,10 +28,8 @@
 </template>
 
 <script>
-    import formItems from '../components/formItems'
 	export default {
 		name: 'orderForm',
-		components:{formItems},
 		data() {
 			return {
 			    v:this,
