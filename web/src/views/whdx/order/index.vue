@@ -36,6 +36,7 @@
                     {title:'姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title:'订单状态',key:'ddZt',dict:'ZDCLK0037',searchType:'dict'},
                     {title:'支付通道',key:'ddZftd',dict:'ZDCLK0038',searchType:'dict'},
+                    {title:'创建时间',key:'cjsj'},
                     {title:'支付时间',key:'ddZfsj'},
                     {title:'支付状态',key:'ddZfzt',dict:'ZDCLK0039',width:150,searchType:'dict'},
                     {title:'支付金额',key:'ddZfje', render:(h,p)=>{

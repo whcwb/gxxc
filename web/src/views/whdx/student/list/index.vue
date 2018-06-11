@@ -50,6 +50,8 @@
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
+                    {title: '教练姓名',key:'jlXm'},
+                    {title: '教练电话',key:'sjhm'},
                     {title: '锁定',key:'yhSfsd',
                         render:(h,p)=>{
                             return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
@@ -128,7 +130,7 @@
                     cols:'姓名,账号,缴费状态,是否有驾驶证,认证状态',
 					keys:'yhXm,yhZh,ddSfjx,yhSfyjz,yhZt'
 				}
-				window.open(this.apis.exportData+'?exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);
+				window.open(this.apis.exportData+'?ddSfjx=1&exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);
 			}
         }
     }

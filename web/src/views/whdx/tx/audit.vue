@@ -16,6 +16,11 @@
         						:styles="{top: '20px'}">
         					<Row>
         						<form-items :parent="v"></form-items>
+								<Col span="12">
+									<FormItem v-if="formItem.ttShzt == '2'" prop='ttBz' label='失败原因'>
+										<Input v-model="formItem.ttBz"></Input>
+									</FormItem>
+								</Col>
         					</Row>
         		</Form>
         	</div>
@@ -52,17 +57,25 @@
                         }
                     },
                     {separator:true,label:'审核结果'},
-                    {label:'提现审核状态',prop:'ttShzt',dict:'ZDCLK0049'},
-                    {label:'备注',prop:'ttBz'},
+                    {label:'提现审核状态',prop:'ttShzt',dict:'ZDCLK0049',type:'radio'},
                 ],
                 ruleInline:{
-				}
+				},
+                formValid:true,
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
 		},
 		methods: {
+            beforeSave(){
+                if (this.formItem.ttShzt == '2' && (this.formItem.ttBz == null || this.formItem.ttBz == '')){
+                    this.$Message.error("请填写备注");
+                    this.formValid = false;
+                    return;
+                }
+                this.formValid = true;
+            },
 		}
 	}
 </script>

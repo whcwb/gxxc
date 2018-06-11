@@ -72,6 +72,7 @@
                 pageData: [],
 				choosedData:[],
                 form: {
+                    rz:'1',
                     yhLx:"1",
 					yhZt:'0',
                     byBysjInRange:'',
