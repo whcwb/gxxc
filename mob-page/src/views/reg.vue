@@ -39,7 +39,7 @@
           ref="captchaRef"
           :maxlength="6"
           :isView="true"
-          :count="10"
+          :count="120"
           @send="getPhoneCode"
           @submit="vaildCodeNext"
         >

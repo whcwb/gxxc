@@ -13,17 +13,6 @@ import boxHead from '@/views/components/boxHead'
 import wechatUtil from './libs/wechatUtil'
 
 
-// router.beforeEach((to, from, next) => {
-//   console.log('***************',to)
-//   if(to.name == 'pay'){
-//     import responsiveto from '@/js/responsiveto.js'
-//   }else {
-//     import responsive from '@/js/responsive.js'
-//   }
-//   next();
-// })
-
-
 Vue.component(boxHead.name, boxHead)
 FastClick.attach(document.body)
 

@@ -1,5 +1,6 @@
 import Apis from '@/libs/apis';
 import apis from '@/libs/url';
+import store from '@/store'
 let myFunction = {}
 
 myFunction.auto=function (window, document , num) {
@@ -38,6 +39,8 @@ myFunction.userMess = function(v,usermess){//获取个人信息
       localStorage.setItem('userMess',JSON.stringify(res.result))
     }
     usermess(res.result)
+    store.commit('M_userMess', res.result)
+
   }).catch((err)=>{
     console.log('出错了！！！')
   })

@@ -28,7 +28,7 @@
 </template>
 <script>
   import {Card,Upload ,Modal,Icon} from 'iview'
-  import {Toast} from 'mand-mobile'
+  import { Indicator } from 'mint-ui';
   export default {
     name:'imgUp',
     components:{
@@ -57,10 +57,11 @@
         // console.log('文件上传成功')
         // console.log(res)
         // console.log(file)
-        Toast.hide();
+        Indicator.close();
         this.$emit('handleSuccess',res)
       },
       handleError(res,file){
+        Indicator.close();
         console.log('文件上传失败')
         console.log(res)
         console.log(file)
@@ -75,7 +76,10 @@
         console.log('File  ' + file.name + ' 文件太大了 2M.');
       },
       handleBeforeUpload () {//上传之前
-        Toast.loading('加载中...');
+        Indicator.open({
+          text: '文件上传中……',
+          spinnerType: 'fading-circle'
+        });
         const check = this.uploadList.length < 5;
         if (!check) {
           console.log({
