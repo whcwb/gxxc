@@ -11,7 +11,9 @@ import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.JlService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.UserService;
+import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
@@ -31,9 +33,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -64,6 +69,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private UserService userService;
     @Autowired
     private BizUserMapper userMapper;
+    @Autowired
+    private WjService wjService;
 
     @Autowired
     private BizOrderMapper orderMapper;
@@ -110,6 +117,20 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 
     @Override
+    public boolean fillPagerCondition(LimitedCondition condition) {
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String rz = request.getParameter("rz");
+        if(StringUtils.isNotBlank(rz)){ // 若不为空则为学员认证列表
+            condition.and().andIsNotNull("yhZjhm");
+        }
+
+
+
+        return true;
+    }
+
+    @Override
     protected void afterPager(PageInfo<BizPtyh> resultPage) {
         List<BizPtyh> list = resultPage.getList();
         if (CollectionUtils.isNotEmpty(list)) {
@@ -141,6 +162,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             if (StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && !StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
                 bizPtyh.setYhZsyqmImg(imgUrl + bizPtyh.getYhZsyqmImg());
             }
+            // 查询该用户是否有所属教练
+            BizUser bizUser = userService.findById(bizPtyh.getId());
+            if(!ObjectUtils.isEmpty(bizUser)){
+                // 通过用户实名表查询教练属性
+                BizJl bizJl = jlService.findById(bizUser.getYhJlid());
+                if(!ObjectUtils.isEmpty(bizJl)) {
+                    bizPtyh.setJlXm(bizJl.getYhXm()); // 教练姓名
+                    bizPtyh.setSjhm(bizJl.getYhSjhm()); // 手机号码
+                }
+            }
+
         }
     }
 
@@ -672,6 +704,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         BizPtyh bizPtyh = getAppCurrentUser();
 
+        // 查看用户是否已经实名认证
+        if(StringUtils.equals(bizPtyh.getYhZt(),"1")){  // 用户已认证 ，会写部分信息
+            bizJl.setYhXm(bizPtyh.getYhXm());
+            bizJl.setYhZjhm(bizPtyh.getYhZjhm());
+        }
+
+
         BizJl b = jlService.findById(bizPtyh.getId());
         RuntimeCheck.ifTrue(b !=null , "该用户已经提交申请");
 
@@ -706,6 +745,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         bizJl.setYhId(bizPtyh.getId());
 
         jlService.save(bizJl);
+
+        // 更新用户实名表 todo
+
+
 
 
         String[] imgList = StringUtils.split(bizJl.getImgList(), ",");
@@ -887,7 +930,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<PageInfo<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage) {
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage) {
+
+        ApiResponse<List<BizPtyh>> result = new ApiResponse<>();
+
         PageInfo<BizPtyh> pageInfo = new PageInfo<>();
         // 获取当前登录用户
         BizPtyh user = getAppCurrentUser();
@@ -907,10 +953,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                         bizPtyh -> {
                             BizPtyh ptyh = afterReturns(bizPtyh);
                             ptyh.setYhMm(bizJl.getJlMs()); // 用户表中没有教练简介 ， 将 密码字段设置为 教练的简介
+                            ptyh.setJljj(bizJl.getJlMs()); // 教练简介
                         }
                 );
             }
-            return ApiResponse.success(pageInfo);
+            afterPager(pageInfo);
+            result.setPage(pageInfo);
+            return result;
 
         }else if(StringUtils.equals(user.getYhLx(), "2")) { // 用户为教练 ， 需要展示其学员列表
 
@@ -930,11 +979,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                    afterReturns(bizPtyh);
                 });
             }
-
-            return ApiResponse.success(pageInfo);
+            afterPager(pageInfo);
+            result.setPage(pageInfo);
+            return result;
         }
 
-        return ApiResponse.success(pageInfo);
+        return result;
     }
 
     /**

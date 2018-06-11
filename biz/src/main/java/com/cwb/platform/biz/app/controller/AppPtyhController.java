@@ -9,11 +9,11 @@ import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -150,7 +150,7 @@ public class AppPtyhController extends AppUserBaseController {
      *  app端 显示列表
      */
     @PostMapping("/ptyhlist")
-    public ApiResponse<PageInfo<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage){
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage){
         return service.getBizPtyhList(ptyhPage);
     }
 
