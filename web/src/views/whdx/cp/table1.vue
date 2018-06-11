@@ -30,13 +30,13 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
-                    {title:'产品名称',key:'cpMc',searchKey:'cpMcLike'},
-                    {title:'产品类型',key:'cpType',searchKey:'cpTypeLike',dict:'ZDCLK0063',searchType:'dict'},
-                    {title:'产品总金额',key:'cpJl',append:'元'},
+                    {title:'费用名称',key:'cpMc',searchKey:'cpMcLike'},
+                    {title:'费用类型',key:'cpType',searchKey:'cpTypeLike',dict:'ZDCLK0063',searchType:'dict'},
+                    {title:'费用总金额',key:'cpJl',append:'元'},
                     {title:'是否分佣',key:'cpYj',dict:'ZDCLK0064',searchType:'dict'},
                     {title:'一级佣金',key:'cpYjyj',append:'元'},
                     {title:'二级佣金',key:'cpRjyj',append:'元'},
-                    {title:'产品是否有效',key:'cpYx',dict:'ZDCLK0065',searchType:'dict'},
+                    {title:'费用是否有效',key:'cpYx',dict:'ZDCLK0065',searchType:'dict'},
                     {
                         title: '操作',
                         key: 'action',
