@@ -446,7 +446,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<Map<String, Object>> wxlogin(String openId) {
         // TODO: 2018/5/19 调试模式。
-        if (debugTest != null) {//调试
+        if(debugTest!=null&&debugTest.equals("1")) {//调试
             openId = "aaaaaaa";
         }
 
@@ -869,7 +869,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return true;
         }
         // TODO: 2018/5/19 调试模式。
-        if (debugTest != null) {//调试
+        if(debugTest!=null&&debugTest.equals("1")) {//调试
             ret=true;
         }else{
             //短信下发

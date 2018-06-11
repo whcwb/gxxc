@@ -43,7 +43,7 @@ public class AlipayApi {
 
         BizOrder order=new BizOrder();
         // TODO: 2018/5/19 调试模式。
-        if(debugTest!=null) {//调试
+        if(debugTest!=null&&debugTest.equals("1")) {//调试
         order.setDdId(ddId);
         order.setDdZfpz(ddZfpz);//支付凭证ID(保存支付通道返回的CODE)
         }
