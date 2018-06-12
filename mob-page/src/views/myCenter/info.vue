@@ -112,12 +112,12 @@
             this.$http.get(this.apis.LOGOUT).then((res)=>{
               if(res.code==200){
                 localStorage.clear()
-                this.$router.push({name:'Login'})
               }
 
             }).catch((err)=>{
 
             })
+            this.$router.push({name:'Login'})
           },
           userMessF(){//获取个人信息
             var v = this

@@ -81,6 +81,7 @@
         isCashierCaptcha: false,//非否发送验证码
         cp:{},
         cashierAmount: '0.00',
+        money:0,
         cashierResult: 'success',
         cashierResults: [
           {
@@ -122,6 +123,10 @@
         payMess:{}
       }
     },
+    watch:{
+      money:function (n,o) {
+      }
+    },
     created(){
       this.getCPlist()
     },
@@ -137,6 +142,7 @@
           console.log(res)
           if(res.code==200){
             res.result.timeStamp = parseInt(res.result.timeStamp)
+            console.log(res.result)
             v.payID = res.result
             this.isCashierhow = !this.isCashierhow
           }else {
@@ -215,6 +221,7 @@
         console.log(item)
         var  v = this
         v.wechatUtil.pay(v.payMess,(res)=>{
+          alert(res)
           if(res.get_brand_wcpay_request=='ok'){
             v.cashierResult = 'success'
             this.doPay()
@@ -238,7 +245,7 @@
           console.log(res)
           if(res.code==200){
             v.cp = res.result
-            v.cashierAmount = res.result.cpJl/100
+            v.cashierAmount ="'" + parseInt(res.result.cpJl)/100 +"'"
           }
 
         }).catch((err)=>{

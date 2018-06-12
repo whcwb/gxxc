@@ -138,7 +138,7 @@ router.beforeEach((to, from, next) => {
   // 判断有无code，如果有，则说明此次请求是微信回传code
     let wxCode = wx.getQueryString('code')
     if(wxCode) {
-        sessionStorage.setItem('WXcode',wxCode)
+        localStorage.setItem('WXcode',wxCode)
         // alert(wxCode)
     }
 
