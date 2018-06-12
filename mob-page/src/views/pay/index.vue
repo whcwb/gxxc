@@ -136,6 +136,7 @@
         this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
           console.log(res)
           if(res.code==200){
+            res.result.timeStamp = parseInt(res.result.timeStamp)
             v.payID = res.result
             this.isCashierhow = !this.isCashierhow
           }else {
@@ -237,7 +238,7 @@
           console.log(res)
           if(res.code==200){
             v.cp = res.result
-            v.cashierAmount = res.result.cpJl
+            v.cashierAmount = res.result.cpJl/100
           }
 
         }).catch((err)=>{
