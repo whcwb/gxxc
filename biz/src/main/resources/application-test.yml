@@ -5,31 +5,41 @@ spring:
     port: 6379
   #数据库连接配置信息
   datasource:
-    url: jdbc:mysql://47.98.39.45:9097/gxxc?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://47.96.101.240:6088/gxxc?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username: 'root'
-    password: '123456'
+    password: 'THXC-DB**2018'
 
 
 server:
   port: 9086
 
 #测试调试 1 进行调试  0 正式  正式环境里不需要配置这个参数
-debug_test: 1
+debug_test: 0
 
 #学费类型的产品金额不能低于该值，如果低于该值，将无法插入。
 order_money: 2500
 
-logo_file_url: D:\2003\logo.png
+logo_file_url: /opt/gxxc/logo.png
 
-qr_code_file_url: D:\2003\
+qr_code_file_url: /opt/gxxc/nginx/
 
 wechat:
-  appId: wxc79cfaa1daf98915
-  secret: d7999531006d520814412b3cd0805156
-  token: Token
-  aesKey:
-  domain: http://tzbtti.natappfree.cc
-
-
-
+  appId: wxb01394ea85904296
+  secret: 1357c923084a743e10131df166796303
+  #设置微信公众号的token
+  token: xclmToken
+  #设置微信公众号的EncodingAESKey
+  aesKey: FaCUOuOXFk2l80CMkrtALclKwFVaFxa4UOzKpBOFNlk
+  domain: http://xclm.xxpt123.com
+  tradeType: JSAPI
+  pay:
+    appId: wxb01394ea85904296
+    mchId: 1506987921
+    mchKey: rFNTUgr6ptfTEe7pTuoEWViJE2Jh3jwU
+    subAppId:
+    subMchId:
+    keyPath:
+    domain: http://xclm.xxpt123.com
+    trade_type: JSAPI
+    notify_url: http://xclm.xxpt123.com:8080/biz/wxPay/notifyCallback
 

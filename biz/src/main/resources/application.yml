@@ -53,16 +53,17 @@ mapper:
 server:
   port: 81
 
-staticPath: D:\2003\
+staticPath: /opt/gxxc/nginx/
 
-img_url: http://192.168.31.228:8080/
+img_url: http://47.96.101.240:8001/
 
 #学费类型的产品金额不能低于该值，如果低于该值，将无法插入。
 order_money: 2500
 
-logo_file_url: D:\2003\logo.png
+logo_file_url: /opt/gxxc/logo.png
 
-qr_code_file_url: D:\2003\
+qr_code_file_url: /opt/gxxc/nginx/
+
 #注册下发短信
 appSendSMSRegister: app_sendSMS_register
 #重置 下发短信
