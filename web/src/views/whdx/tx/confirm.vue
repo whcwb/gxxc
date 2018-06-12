@@ -16,6 +16,11 @@
         						:styles="{top: '20px'}">
         					<Row>
         						<form-items :parent="v"></form-items>
+								<Col span="12">
+									<FormItem v-if="formItem.ttZt == '4'" prop='ttBz' label='失败原因'>
+										<Input v-model="formItem.ttBz"></Input>
+									</FormItem>
+								</Col>
         					</Row>
         		</Form>
         	</div>
@@ -28,10 +33,8 @@
 </template>
 
 <script>
-	import formItems from '../components/formItems'
 	export default {
 		name: 'txForm',
-        components:{formItems},
 		data() {
 			return {
 			    v:this,
@@ -53,17 +56,25 @@
                         }
                     },
                     {separator:true,label:'审核结果'},
-                    {label:'提现状态',prop:'ttZt',dict:'ZDCLK0068'},
-                    {label:'备注',prop:'ttBz'},
+                    {label:'提现状态',prop:'ttZt',dict:'ZDCLK0048',type:'radio',excludeDict:['0','2','3']},
                 ],
                 ruleInline:{
-				}
+				},
+                formValid:true
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
 		},
 		methods: {
+            beforeSave(){
+                if (this.formItem.ttZt == '4' && (this.formItem.ttBz == null || this.formItem.ttBz == '')){
+                    this.$Message.error("请填写备注");
+                    this.formValid = false;
+                    return;
+                }
+                this.formValid = true;
+            },
 		}
 	}
 </script>

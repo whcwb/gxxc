@@ -28,14 +28,12 @@
 </template>
 
 <script>
-	import formItems from '../components/formItems'
 	export default {
 		name: 'txForm',
 		data() {
 			return {
 			    v:this,
                 operate:'新建',
-		        components:{formItems},
 				showModal: true,
 				readonly: false,
 				formItem: {

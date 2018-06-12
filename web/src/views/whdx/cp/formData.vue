@@ -38,13 +38,13 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'产品名称',prop:'cpMc'},
-                    {label:'产品类型',prop:'cpType',dict:'ZDCLK0063'},
-                    {label:'产品总金额',prop:'cpJl',type:'number',append:'元'},
+                    {label:'费用名称',prop:'cpMc'},
+                    {label:'费用类型',prop:'cpType',dict:'ZDCLK0063'},
+                    {label:'费用总金额',prop:'cpJl',type:'number',append:'元'},
                     {label:'是否分佣',prop:'cpYj',dict:'ZDCLK0064'},
                     {label:'一级佣金',prop:'cpYjyj',type:'number',append:'元'},
                     {label:'二级佣金',prop:'cpRjyj',type:'number',append:'元'},
-                    {label:'产品是否有效',prop:'cpYx',dict:'ZDCLK0065'},
+                    {label:'费用是否有效',prop:'cpYx',dict:'ZDCLK0065'},
                 ],
                 ruleInline:{
 				}

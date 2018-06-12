@@ -33,12 +33,10 @@
 </template>
 
 <script>
-	import formItems from '../../components/formItems'
-    import searchItems from '../../components/searchItems'
     import fromData from '../../teacher/list/formData'
 	export default {
 		name: 'byxxForm',
-		components:{formItems,searchItems,fromData},
+		components:{fromData},
 		data() {
 			return {
 			    v:this,

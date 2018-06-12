@@ -13,6 +13,10 @@ import apis from './axios/api';
 import dictUtil from './libs/dictUtil';
 import session from './libs/session';
 
+import pager from './views/whdx/components/pager'
+import formItems from './views/whdx/components/formItems'
+import searchItems from './views/whdx/components/searchItems'
+
 import swal from 'sweetalert'
 
 Vue.use(VueI18n);
@@ -55,6 +59,10 @@ new Vue({
         this.$store.commit('setTagsList', tagsList);
     }
 });
+// 注册全局组件
+Vue.component('pager',pager)
+Vue.component('formItems',formItems)
+Vue.component('searchItems',searchItems)
 
 Date.prototype.format = function(format)
 {

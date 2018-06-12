@@ -2,18 +2,17 @@ package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.AppUserBaseController;
 import com.cwb.platform.biz.model.BizJl;
-import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,21 +106,27 @@ public class AppPtyhController extends AppUserBaseController {
             //认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
             String yhZt=users.getYhZt();
             if(StringUtils.equals(yhZt,"0")&&StringUtils.equals("1",user.getYhLx())){
-                BizWj realName=new BizWj();
-                realName.setYhId(users.getId());
-                int i=wjService.countByEntity(realName);
-                if(i<1){
+                if(StringUtils.isEmpty(user.getYhZjhm())){
                     users.setYhZt("-1");
                 }
+//                String yhzjhmgetYhZjhm{}
+//                BizWj realName=new BizWj();
+//                realName.setYhId(users.getId());
+//                int i=wjService.countByEntity(realName);
+//                if(i<1){
+//                }
             }
             String yhJlsh=user.getYhJlsh();//教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
             if(StringUtils.equals(yhJlsh,"0")&&StringUtils.equals("2",user.getYhLx())){
-                BizWj realName=new BizWj();
-                realName.setYhId(users.getId());
-                int i=wjService.countByEntity(realName);
-                if(i<1){
+                if(StringUtils.isEmpty(user.getYhZjhm())){
                     users.setYhJlsh("-1");
                 }
+//                BizWj realName=new BizWj();
+//                realName.setYhId(users.getId());
+//                int i=wjService.countByEntity(realName);
+//                if(i<1){
+//                    users.setYhJlsh("-1");
+//                }
             }
 
         }
@@ -150,7 +155,7 @@ public class AppPtyhController extends AppUserBaseController {
      *  app端 显示列表
      */
     @PostMapping("/ptyhlist")
-    public ApiResponse<PageInfo<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage){
+    public ApiResponse<List<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage){
         return service.getBizPtyhList(ptyhPage);
     }
 

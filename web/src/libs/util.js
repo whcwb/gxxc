@@ -264,7 +264,12 @@ util.save = function(v){
     function sendSave(){
         if (typeof v.beforeSave === 'function'){
             // 执行save方法之前的操作
-            v.beforeSave();
+            v.beforeSave()
+            console.log(typeof v.formValid);
+            console.log(!v.formValid);
+            if (typeof v.formValid != 'undefined' && !v.formValid){
+                return;
+            }
         }
         let params = v.saveParams ? v.saveParams : v.formItem;
         v.$http.post(url,params).then((res) =>{

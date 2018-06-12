@@ -1,0 +1,5 @@
+appId=wxb01394ea85904296
+secret=1357c923084a743e10131df166796303
+token=xclmToken
+aesKey=FaCUOuOXFk2l80CMkrtALclKwFVaFxa4UOzKpBOFNlk
+domain=http://xclm.xxpt123.com
