@@ -8,7 +8,7 @@ wechatUtil.token = '';
 wechatUtil.sign = '';
 wechatUtil.code = '';
 wechatUtil.openid = '';
-wechatUtil.baseUrl = 'http://w254rd.natappfree.cc';
+wechatUtil.baseUrl = 'http://xclm.xxpt123.com:8080/biz/';
 
 wechatUtil.getQueryString = function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");

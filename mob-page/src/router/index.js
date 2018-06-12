@@ -139,7 +139,7 @@ router.beforeEach((to, from, next) => {
     let wxCode = wx.getQueryString('code')
     if(wxCode) {
         sessionStorage.setItem('WXcode',wxCode)
-        alert(wxCode)
+        // alert(wxCode)
     }
 
   Util.title(to.meta.title);
