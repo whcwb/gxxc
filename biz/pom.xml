@@ -26,7 +26,12 @@
 	  <dependency>
 		  <groupId>com.github.binarywang</groupId>
 		  <artifactId>weixin-java-mp</artifactId>
-		  <version>2.9.0</version>
+		  <version>3.0.0</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>com.github.binarywang</groupId>
+		  <artifactId>weixin-java-pay</artifactId>
+		  <version>3.0.0</version>
 	  </dependency>
 		<!--移除websocket里面 logging依赖 避免包冲突 -->
 		<dependency>
