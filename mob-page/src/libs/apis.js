@@ -3,6 +3,7 @@ import qs from 'qs'
 import { Indicator } from 'mint-ui';
 import router from '@/router'
 import url from './url'
+import wxutil from  './wechatUtil'
 
 // const dk = '9086'
 const dk = '8080/biz'
@@ -26,6 +27,21 @@ API.ajax = axios.create({
 });
 
 API.ajax.interceptors.request.use(config=> {
+    let openid = sessionStorage.getItem("openid");
+    if (!openid){ // 如果没有openid，则需要获取
+        let wxcode = sessionStorage.getItem("wxcode");
+        if (!wxcode){
+            wxutil.getCode();
+            return;
+        }else{
+            wxutil.getOpenid(wxcode,(openid)=>{
+                sessionStorage.setItem("openid",openid);
+                config.headers.common['openid'] = openid;
+            })
+        }
+    }else{
+        config.headers.common['openid'] = openid;
+    }
     //网络请求加载动画
     Indicator.open({
       text: '数据加载中……',

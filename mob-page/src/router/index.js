@@ -134,12 +134,10 @@ const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
-  console.log(to.query.code)
-  if(to.query.code) {
-      localStorage.setItem('WXcode',to.query.code)
-  }
-
-
+  // 判断有无code，如果有，则说明此次请求是微信回传code
+    if(to.query.code) {
+        sessionStorage.setItem('WXcode',to.query.code)
+    }
 
   Util.title(to.meta.title);
   next()
