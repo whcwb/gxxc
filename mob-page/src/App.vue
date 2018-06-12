@@ -8,7 +8,11 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  computed:{
+  },
+  created(){
+  }
 }
 </script>
 

@@ -87,8 +87,13 @@
     created(){
       // this.wechatUtil.getAccessToken();
       this.$store.commit('M_tabId', 'tab-home')
+
     },
     methods: {
+      fet(){
+        this.wechatUtil.getCode()
+      },
+
       handleClick() {
         Toast.succeed('操作成功');
       },
@@ -98,27 +103,15 @@
         this.$http.post(this.apis.LOGIN,this.from).then((res)=>{
           if(res.code==200){
               localStorage.setItem('token',JSON.stringify(res.result.accessToken))
-              v.userMess()
+              this.util.userMess(v,()=>{
+                v.$router.push({name:'Home'})
+              })
           }else {
             Toast.failed(res.message)
           }
         }).catch((err)=>{
+          console.log(err)
           console.log('登录出错了！！！')
-        })
-      },
-      userMess(){
-        var v = this
-        this.$http.post(this.apis.USERMESS).then((res)=>{
-          if(res.code==200){
-            if(res.result.yhTx == ''){
-              res.result.yhTx ='/static/userTx.png'
-            }
-
-            localStorage.setItem('userMess',JSON.stringify(res.result))
-            v.$router.push({name:'Home'})
-          }
-        }).catch((err)=>{
-          console.log('出错了！！！')
         })
       },
       reg(){

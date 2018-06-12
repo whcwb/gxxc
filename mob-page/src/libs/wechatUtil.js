@@ -8,7 +8,7 @@ wechatUtil.token = '';
 wechatUtil.sign = '';
 wechatUtil.code = '';
 wechatUtil.openid = '';
-wechatUtil.baseUrl = 'http://tzbtti.natappfree.cc';
+wechatUtil.baseUrl = 'http://3remnq.natappfree.cc';
 
 wechatUtil.getQueryString = function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -19,7 +19,7 @@ wechatUtil.getQueryString = function(name) {
 wechatUtil.getCode = ()=>{
     window.location.href = wechatUtil.baseUrl+urls.wechat.getCode;
 }
-wechatUtil.getOpenid = (code)=>{
+wechatUtil.getOpenid = (code,callback)=>{
     $.ajax({
         url:wechatUtil.baseUrl+urls.wechat.getOpenid+"?code="+code,
         type:'get',
@@ -29,6 +29,7 @@ wechatUtil.getOpenid = (code)=>{
                 wechatUtil.openid = res.message;
             }
             $.cookie('openid',openid);
+            callback && callback(openid)
         }
     })
 }

@@ -13,17 +13,6 @@ import boxHead from '@/views/components/boxHead'
 import wechatUtil from './libs/wechatUtil'
 
 
-// router.beforeEach((to, from, next) => {
-//   console.log('***************',to)
-//   if(to.name == 'pay'){
-//     import responsiveto from '@/js/responsiveto.js'
-//   }else {
-//     import responsive from '@/js/responsive.js'
-//   }
-//   next();
-// })
-
-
 Vue.component(boxHead.name, boxHead)
 FastClick.attach(document.body)
 
@@ -31,8 +20,8 @@ Vue.config.productionTip = false
 Vue.prototype.wechatUtil = wechatUtil;
 Vue.prototype.apis = url;
 Vue.prototype.$http = Apis.ajax;
-import MyFunction from './util/auto'
-Vue.prototype.MyFunc = MyFunction
+import utiltion from './util/auto'
+Vue.prototype.util = utiltion
 
 /* eslint-disable no-new */
 new Vue({

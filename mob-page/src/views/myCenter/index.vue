@@ -122,6 +122,7 @@
                   style="color: #19be6b"><Icon type="ios-checkmark"></Icon>&nbsp;&nbsp;已认证</span>
               </mt-cell>
               <mt-cell title="我的学员" value="0人"
+                       v-if="usermess.yhLx=='2'"
                         to="/myStudent"
                         is-link style="border-bottom: 1px #e9eaec solid;">
                 <i class="iconfont icon-qianzaixueyuan" style="font-size: 20px" slot="icon"></i>
@@ -136,7 +137,6 @@
 
 <script>
     import {Card, Row, Col, Avatar, Tag, Alert, Button, Icon  } from 'iview'
-    // import { Toast} from 'mand-mobile'
     import {  Cell,Toast } from 'mint-ui';
     export default {
         name: "myCenter",
@@ -154,23 +154,24 @@
       },
         data(){
           return{
-            usermess:{},
-            zhYE:''
+            usermess:this.$store.state.app.userMess,
+            zhYE:{
+              yhZhye:0
+            }
           }
         },
         created(){
           var v =this
-          this.MyFunc.userMess(v,(res)=>{
-            v.usermess = res
-          })
+          // this.util.userMess(v,(res)=>{
+          // })
           console.log('***---***',this.usermess)
-          this.zhye()
+          this.getZhye()
         },
         methods:{
             tost(){
               Toast('请实名认证')
             },
-            zhye(){
+            getZhye(){
               this.$http.post(this.apis.USERZH).then((res)=>{
                 if(res.code==200){
                   this.zhYE = res.result

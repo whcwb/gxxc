@@ -197,7 +197,7 @@
         console.log('支付确认')
         console.log(item)
         var  v = this
-        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
+        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id,openId:'oBtVUwtknY6gL4Q3gfoZs2kDCjW0'}).then((res)=>{
           console.log(res)
 
         }).catch((err)=>{

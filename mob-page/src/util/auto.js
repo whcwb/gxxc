@@ -1,8 +1,9 @@
 import Apis from '@/libs/apis';
 import apis from '@/libs/url';
-let myFunction = {}
+import store from '@/store'
+let utiltion = {}
 
-myFunction.auto=function (window, document , num) {
+utiltion.auto=function (window, document , num) {
   function resize(){
     var ww = window.innerWidth;
     if (ww > window.screen.width) {
@@ -29,7 +30,7 @@ myFunction.auto=function (window, document , num) {
 
 }
 
-myFunction.userMess = function(v,usermess){//获取个人信息
+utiltion.userMess = function(v,usermess){//获取个人信息
   Apis.ajax.post(apis.USERMESS).then((res)=>{
     if(res.code==200){
       if(res.result.yhTx == ''){
@@ -38,6 +39,8 @@ myFunction.userMess = function(v,usermess){//获取个人信息
       localStorage.setItem('userMess',JSON.stringify(res.result))
     }
     usermess(res.result)
+    store.commit('M_userMess', res.result)
+
   }).catch((err)=>{
     console.log('出错了！！！')
   })
@@ -46,4 +49,4 @@ myFunction.userMess = function(v,usermess){//获取个人信息
 
 
 
-export default myFunction
+export default utiltion

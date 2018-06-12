@@ -173,7 +173,7 @@
         methods:{
           rz(){
             var v =this
-            this.MyFunc.userMess(v,(res)=>{
+            this.util.userMess(v,(res)=>{
               v.userMess = res
               // 0审核中  1通过  2驳回（yhZtMs-驳回信息） -1未认证
               console.log(v.userMess)

@@ -161,7 +161,7 @@
               this.$http.post(this.apis.ZDLIST).then((res)=>{
                 console.log(res)
                 if(res.code==200){
-                   // v.pageList = res.page.list
+                   v.pageList = res.page.list
                 }
               }).catch((err)=>{})
 
