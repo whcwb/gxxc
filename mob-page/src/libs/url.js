@@ -8,7 +8,7 @@ module.exports = {
 // ajaxUrl:'http://127.0.0.1',
 // ajaxUrl:'http://47.98.39.45:',//服务器
 //   ajaxUrl:'http://192.168.31.228:',//羊祥
-  ajaxUrl:'http://3remnq.natappfree.cc',
+  ajaxUrl:'http://3remnq.natappfree.cc:',
 
   getImgUrl:'http://192.168.31.228:'+'8080/',
   upImgUrl:'http://192.168.31.228:'+'9086/upload',

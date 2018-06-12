@@ -8,7 +8,7 @@ wechatUtil.token = '';
 wechatUtil.sign = '';
 wechatUtil.code = '';
 wechatUtil.openid = '';
-wechatUtil.baseUrl = 'http://3remnq.natappfree.cc';
+wechatUtil.baseUrl = 'http://w254rd.natappfree.cc';
 
 wechatUtil.getQueryString = function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -27,9 +27,11 @@ wechatUtil.getOpenid = (code,callback)=>{
             console.log(res);
             if (res.code == 200){
                 wechatUtil.openid = res.message;
+                // $.cookie('openid',res.message);
+                callback && callback(res.message)
+            }else {
+              alert('ID获取失败！！！')
             }
-            $.cookie('openid',openid);
-            callback && callback(openid)
         }
     })
 }

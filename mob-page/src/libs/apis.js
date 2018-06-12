@@ -1,6 +1,6 @@
 import axios from 'axios';
 import qs from 'qs'
-import { Indicator } from 'mint-ui';
+import { Indicator , Toast} from 'mint-ui';
 import router from '@/router'
 import url from './url'
 import wxutil from  './wechatUtil'
@@ -29,14 +29,14 @@ API.ajax = axios.create({
 API.ajax.interceptors.request.use(config=> {
     let openid = sessionStorage.getItem("openid");
     if (!openid){ // 如果没有openid，则需要获取
-        let wxcode = sessionStorage.getItem("wxcode");
+        let wxcode = sessionStorage.getItem("WXcode");
         if (!wxcode){
             wxutil.getCode();
             return;
         }else{
-            wxutil.getOpenid(wxcode,(openid)=>{
-                sessionStorage.setItem("openid",openid);
-                config.headers.common['openid'] = openid;
+            wxutil.getOpenid(wxcode,(res)=>{
+                sessionStorage.setItem("openid",res);
+                openid = res;
             })
         }
     }else{
@@ -73,7 +73,7 @@ API.ajax.interceptors.request.use(config=> {
 }, error=> {
     Indicator.close();
     setTimeout(() => {
-      Toast.failed(API.NETWORK_ERR)
+      // Toast.failed(API.NETWORK_ERR)
     }, 100);
     return Promise.reject(error);
 });
@@ -92,7 +92,7 @@ API.ajax.interceptors.response.use(response=> {
 }, error=> {
   Indicator.close();
   setTimeout(() => {
-    Toast.failed(API.NETWORK_ERR)
+    Toast(API.NETWORK_ERR)
   }, 100);
   return Promise.reject(error);
 });

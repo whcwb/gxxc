@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/views/home'
 import Util from '../libs/apis';
 import {Toast } from 'mint-ui';
+import wx from '../libs/wechatUtil'
 Vue.use(Router)
 // 路由配置
 const router = new Router({
@@ -135,8 +136,10 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   // 判断有无code，如果有，则说明此次请求是微信回传code
-    if(to.query.code) {
-        sessionStorage.setItem('WXcode',to.query.code)
+    let wxCode = wx.getQueryString('code')
+    if(wxCode) {
+        sessionStorage.setItem('WXcode',wxCode)
+        alert(wxCode)
     }
 
   Util.title(to.meta.title);
