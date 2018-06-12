@@ -78,7 +78,7 @@
     data() {
       return {
         isCashierhow: false,
-        isCashierCaptcha: false,
+        isCashierCaptcha: false,//非否发送验证码
         cp:{},
         cashierAmount: '0.00',
         cashierResult: 'success',
