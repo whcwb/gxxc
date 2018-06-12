@@ -185,21 +185,21 @@ public class WxPayController implements WxPayService {
   }
 
   /**
-   * TODO 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
+   *  此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
    */
   public WxPayOrderNotifyResult parseOrderNotifyResult(@RequestBody String xmlData) throws WxPayException {
     return this.wxService.parseOrderNotifyResult(xmlData);
   }
 
   /**
-   * TODO 此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
+   *  此方法需要改造，根据实际需要返回com.github.binarywang.wxpay.bean.notify.WxPayNotifyResponse对象
    */
   public WxPayRefundNotifyResult parseRefundNotifyResult(@RequestBody String xmlData) throws WxPayException {
     return this.wxService.parseRefundNotifyResult(xmlData);
   }
 
   /**
-   * TODO 此方法需要改造，根据实际需要返回所需对象
+   *  此方法需要改造，根据实际需要返回所需对象
    */
   public WxScanPayNotifyResult parseScanPayNotifyResult(String xmlData) throws WxPayException {
     return this.wxService.parseScanPayNotifyResult(xmlData);
@@ -406,25 +406,25 @@ public class WxPayController implements WxPayService {
 
   @Override
   public String shorturl(WxPayShorturlRequest wxPayShorturlRequest) throws WxPayException {
-    //TODO 待补充完善
+    // 待补充完善
     return null;
   }
 
   @Override
   public String shorturl(String s) throws WxPayException {
-    //TODO 待补充完善
+    // 待补充完善
     return null;
   }
 
   @Override
   public String authcode2Openid(WxPayAuthcode2OpenidRequest wxPayAuthcode2OpenidRequest) throws WxPayException {
-    //TODO 待补充完善
+    // 待补充完善
     return null;
   }
 
   @Override
   public String authcode2Openid(String s) throws WxPayException {
-    //TODO 待补充完善
+    // 待补充完善
     return null;
   }
 
