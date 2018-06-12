@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL -->
-<Configuration status="DEBUG">
+<Configuration status="INFO">
 	<properties>  
         <property name="LOG_HOME">/opt/gxxc/log</property>
         <!-- 日志备份目录 -->  
