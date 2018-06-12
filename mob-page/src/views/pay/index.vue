@@ -9,7 +9,7 @@
             <i class="iconfont icon-left1"></i>
           </div>
           <div class="body-O" style="font-weight: 700;font-size: 0.5rem;color: #fff">
-            现金提现
+            缴费
 
           </div>
         <div style="height: 1.5rem;width: 1.2rem;text-align: center;">
@@ -43,7 +43,7 @@
           <md-switch v-model="isCashierCaptcha"></md-switch>
         </md-field-item>
       </md-field>
-      <md-button @click="isCashierhow = !isCashierhow">{{ isCashierhow ? '立即支付' : '立即支付' }}</md-button>
+      <md-button @click="payMoney">{{ isCashierhow ? '立即支付' : '立即支付' }}</md-button>
       <md-cashier
         ref="cashier"
         v-model="isCashierhow"
@@ -60,6 +60,7 @@
 
 <script>
   import {Button, Radio, Field, FieldItem, InputItem, Switch, Cashier} from 'mand-mobile'
+  import { Toast } from 'mint-ui';
   export default {
     name: 'cashier-demo',
     /* DELETE */
@@ -118,6 +119,7 @@
           //   value: '005',
           // },
         ],
+        payID:''
       }
     },
     created(){
@@ -129,6 +131,20 @@
       },
     },
     methods: {
+      payMoney(){
+        var v = this
+        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
+          console.log(res)
+          if(res.code==200){
+            v.payID = res.prepayId
+            this.isCashierhow = !this.isCashierhow
+          }else {
+            Toast(res.message)
+          }
+        }).catch((err)=>{
+
+        })
+      },
       doPay() {
         var v = this
         if (this.isCashierCaptcha) {
@@ -197,12 +213,7 @@
         console.log('支付确认')
         console.log(item)
         var  v = this
-        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id,openId:'oBtVUwtknY6gL4Q3gfoZs2kDCjW0'}).then((res)=>{
-          console.log(res)
 
-        }).catch((err)=>{
-
-        })
         this.doPay()
       },
       onCashierCancel() {
