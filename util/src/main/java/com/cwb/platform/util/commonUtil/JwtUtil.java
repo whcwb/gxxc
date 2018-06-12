@@ -58,6 +58,7 @@ public class JwtUtil {
                     .withAudience("wcpms")
                     .withClaim("userId",userId)
                     .withClaim("loginName",loginName)
+                    .withClaim("timeStamp",System.currentTimeMillis())
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException exception){

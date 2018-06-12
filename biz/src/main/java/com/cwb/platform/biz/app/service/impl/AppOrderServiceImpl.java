@@ -18,6 +18,7 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.IpUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
+import com.cwb.platform.util.commonUtil.WeixinUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
@@ -33,9 +34,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //import java.math.BigDecimal;
@@ -44,6 +43,11 @@ import java.util.stream.Collectors;
 public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implements AppOrderService {
     @Value("${wechat.pay.trade_type}")
     private String tradeType;
+    @Value("${wechat.pay.appId}")
+    private String appid;
+
+    @Value("${wechat.pay.mchKey}")
+    private String mchKey;
 
     @Value("${wechat.pay.notify_url}")
     private String notifyUrl;
@@ -200,8 +204,18 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
                     prepayId=orderResult.getPrepayId();
                     if(StringUtils.isNotEmpty(prepayId)){
                         payType=true;
-                        ret.put("prepayId",prepayId);
                         entity.setDdZfpz(prepayId);//支付凭证ID
+
+                        //拼装给前台的报文
+                        SortedMap retSorteMap=new TreeMap<String, String>();
+                        retSorteMap.put("appId", appid);
+                        retSorteMap.put("timeStamp", String.valueOf(new Date().getTime()));
+                        retSorteMap.put("nonceStr", genId()); // 必填，生成签名的随机串
+                        retSorteMap.put("package", "prepay_id="+prepayId);
+                        retSorteMap.put("signType", "MD5");
+                        String paySign = WeixinUtils.createSign("UTF-8",retSorteMap,mchKey);//签名，微信根据参数字段的ASCII码值进行排序 加密签名,故使用SortMap进行参数排序
+                        ret.putAll(retSorteMap);
+                        ret.put("paySign", paySign);
                     }
                 }
             }
@@ -238,15 +252,10 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 
             //用户IP地址
             orderRequest.setSpbillCreateIp(IpUtils.getRealIp(request));
-            WxPayUnifiedOrderRequest orderRequests= wxService.createOrder(orderRequest);
 
-            WxPayUnifiedOrderResult orderResult = wxService.unifiedOrder(orderRequests);
+            WxPayUnifiedOrderResult orderResult = wxService.unifiedOrder(orderRequest);
             Map<String,Object>map =new HashedMap();
-            map.put("orderRequest", orderRequest);
             map.put("orderResult", orderResult);
-            map.put("timeStamp", System.currentTimeMillis());// 必填，生成签名的时间戳
-            map.put("nonceStr", genId()); // 必填，生成签名的随机串
-
             return map;
         } catch (Exception e) {
 //            log.error("【微信支付】支付失败 订单号={} 原因={}", orderDTO.getOrderId(), e.getMessage());
