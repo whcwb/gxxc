@@ -119,7 +119,7 @@
           //   value: '005',
           // },
         ],
-        payID:''
+        payMess:{}
       }
     },
     created(){
@@ -136,7 +136,7 @@
         this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
           console.log(res)
           if(res.code==200){
-            v.payID = res.prepayId
+            v.payID = res.result
             this.isCashierhow = !this.isCashierhow
           }else {
             Toast(res.message)
@@ -213,7 +213,7 @@
         console.log('支付确认')
         console.log(item)
         var  v = this
-        v.wechatUtil.pay(v.payID,(res)=>{
+        v.wechatUtil.pay(v.payMess,(res)=>{
           if(res.get_brand_wcpay_request=='ok'){
             v.cashierResult = 'success'
             this.doPay()
