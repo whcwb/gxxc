@@ -213,8 +213,18 @@
         console.log('支付确认')
         console.log(item)
         var  v = this
-
-        this.doPay()
+        v.wechatUtil.pay(v.payID,(res)=>{
+          if(res.get_brand_wcpay_request=='ok'){
+            v.cashierResult = 'success'
+            this.doPay()
+          }else if(res.get_brand_wcpay_request=='fail'){
+            v.cashierResult = 'fail'
+            this.doPay()
+          }else if(res.get_brand_wcpay_request=='cancel'){
+            this.isCashierhow = !this.isCashierhow
+            Toast('支付取消')
+          }
+        })
       },
       onCashierCancel() {
         console.log('取消')
