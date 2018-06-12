@@ -43,9 +43,14 @@ public class WxChatController {
 			@RequestParam(name = "nonce", required = false) String nonce,
 			@RequestParam(name = "echostr", required = false) String echostr) {
 
+		System.out.println("signature:"+signature);
+		System.out.println("timestamp:"+timestamp);
+		System.out.println("nonce:"+nonce);
+		System.out.println("echostr:"+echostr);
 		if (StringUtils.isNoneEmpty(signature, timestamp, nonce, echostr)){
 			if (this.wxService.checkSignature(timestamp, nonce, signature)) {
 				System.out.println("接收到来自微信服务器的认证消息：signature = ["+signature+"] timestamp = ["+timestamp+"] nonce=["+nonce+"] echostr=["+echostr+"]");
+
 				return echostr;
 			}
 		}
