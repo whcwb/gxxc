@@ -200,6 +200,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
                     prepayId=orderResult.getPrepayId();
                     if(StringUtils.isNotEmpty(prepayId)){
                         payType=true;
+                        ret.put("prepayId",prepayId);
                         entity.setDdZfpz(prepayId);//支付凭证ID
                     }
                 }
