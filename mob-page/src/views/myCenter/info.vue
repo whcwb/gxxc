@@ -139,7 +139,7 @@
             this.$http.post(this.apis.CHUSERMESS,{'yhTx':url}).then((res)=>{
               if(res.code==200){
                 // v.userMessF()
-                v.MyFunc.userMess(v,(mess)=>{
+                v.util.userMess(v,(mess)=>{
                   v.userMess = mess
                 })
               }

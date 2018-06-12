@@ -162,7 +162,7 @@
         },
         created(){
           var v =this
-          // this.MyFunc.userMess(v,(res)=>{
+          // this.util.userMess(v,(res)=>{
           // })
           console.log('***---***',this.usermess)
           this.getZhye()

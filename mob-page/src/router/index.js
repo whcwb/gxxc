@@ -134,8 +134,14 @@ const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
+  console.log(to.query.code)
+  if(to.query.code) {
+      localStorage.setItem('WXcode',to.query.code)
+  }
+
+
+
   Util.title(to.meta.title);
-  console.log(to.name)
   next()
   if(to.name=='Login'||to.name=='Reg'){
     next()

@@ -19,7 +19,7 @@ wechatUtil.getQueryString = function(name) {
 wechatUtil.getCode = ()=>{
     window.location.href = wechatUtil.baseUrl+urls.wechat.getCode;
 }
-wechatUtil.getOpenid = (code)=>{
+wechatUtil.getOpenid = (code,opID)=>{
     $.ajax({
         url:wechatUtil.baseUrl+urls.wechat.getOpenid+"?code="+code,
         type:'get',
@@ -29,6 +29,7 @@ wechatUtil.getOpenid = (code)=>{
                 wechatUtil.openid = res.message;
             }
             $.cookie('openid',openid);
+            opID(openid)
         }
     })
 }

@@ -206,7 +206,7 @@
     methods:{
       rz(){
         var v =this
-        this.MyFunc.userMess(this,(res)=>{
+        this.util.userMess(this,(res)=>{
           v.userMess = res
           // 0未认证  1已认证  2认证失败
           if(this.userMess.yhJlsh==0){

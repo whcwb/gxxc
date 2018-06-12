@@ -4,7 +4,9 @@ import { Indicator } from 'mint-ui';
 import router from '@/router'
 import url from './url'
 
-const ajaxUrl =url.ajaxUrl + '9086';//羊祥
+// const dk = '9086'
+const dk = '8080/biz'
+const ajaxUrl =url.ajaxUrl + dk;//羊祥
 let API = {
     NETWORK_ERR: "网络请求异常，请重试！",
     // LOGIN: '/login',

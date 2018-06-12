@@ -87,8 +87,13 @@
     created(){
       // this.wechatUtil.getAccessToken();
       this.$store.commit('M_tabId', 'tab-home')
+
     },
     methods: {
+      fet(){
+        this.wechatUtil.getCode()
+      },
+
       handleClick() {
         Toast.succeed('操作成功');
       },
@@ -98,7 +103,7 @@
         this.$http.post(this.apis.LOGIN,this.from).then((res)=>{
           if(res.code==200){
               localStorage.setItem('token',JSON.stringify(res.result.accessToken))
-              this.MyFunc.userMess(v,()=>{
+              this.util.userMess(v,()=>{
                 v.$router.push({name:'Home'})
               })
           }else {

@@ -188,7 +188,10 @@
                 iconClass: 'icon icon-success'
               });
               setTimeout(()=>{
-                  this.$router.push("/");
+                  // this.util.userMess(v,()=>{
+                  //   this.$router.push({name:'Home'});
+                  // })
+                v.login()
               }, 1000);
             }else {
               console.log(res.message)
@@ -196,8 +199,24 @@
           }).catch((err)=> {
                console.log('报错了');
           });
-
-      }
+      },
+      login(){
+        // this.$router.push("/home");
+        var v = this
+        this.$http.post(this.apis.LOGIN,{'username':this.form.phone,'password':this.form.pwd}).then((res)=>{
+          if(res.code==200){
+            localStorage.setItem('token',JSON.stringify(res.result.accessToken))
+            this.util.userMess(v,()=>{
+              v.$router.push({name:'Home'})
+            })
+          }else {
+            Toast.failed(res.message)
+          }
+        }).catch((err)=>{
+          console.log(err)
+          console.log('登录出错了！！！')
+        })
+      },
     }
   }
 </script>
