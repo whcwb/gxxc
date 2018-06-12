@@ -196,8 +196,50 @@ public class BizPtyh implements Serializable {
     @Transient
     private String imgTypeList;
 
+    /**
+     * 教练姓名
+     */
+    @Transient
+    private String jlXm;
+
+    /**
+     * 教练手机号码
+     */
+    @Transient
+    private String sjhm;
+    /**
+     * 教练简介
+     */
+    @Transient
+    private String jljj;
+
 
     private static final long serialVersionUID = 1L;
+
+
+    public String getJljj() {
+        return jljj;
+    }
+
+    public void setJljj(String jljj) {
+        this.jljj = jljj;
+    }
+
+    public String getJlXm() {
+        return jlXm;
+    }
+
+    public void setJlXm(String jlXm) {
+        this.jlXm = jlXm;
+    }
+
+    public String getSjhm() {
+        return sjhm;
+    }
+
+    public void setSjhm(String sjhm) {
+        this.sjhm = sjhm;
+    }
 
     public String getYhZtMs() {
         return yhZtMs;
