@@ -8,7 +8,7 @@ wechatUtil.token = '';
 wechatUtil.sign = '';
 wechatUtil.code = '';
 wechatUtil.openid = '';
-wechatUtil.baseUrl = 'http://3remnq.natappfree.cc';
+wechatUtil.baseUrl = 'http://xclm.xxpt123.com:8080/biz/';
 
 wechatUtil.getQueryString = function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -27,9 +27,11 @@ wechatUtil.getOpenid = (code,callback)=>{
             console.log(res);
             if (res.code == 200){
                 wechatUtil.openid = res.message;
+                // $.cookie('openid',res.message);
+                callback && callback(res.message)
+            }else {
+              alert('ID获取失败！！！')
             }
-            $.cookie('openid',openid);
-            callback && callback(openid)
         }
     })
 }
@@ -72,6 +74,20 @@ wechatUtil.config = ()=>{
         nonceStr: 'wechat123', // 必填，生成签名的随机串
         signature: wechatUtil.sign,// 必填，签名
         jsApiList: ['scanQRCode','chooseImage','uploadImage'] // 必填，需要使用的JS接口列表
+    });
+}
+wechatUtil.pay = (prepay,callback)=>{
+    console.log('chooseWXPay');
+    wx.chooseWXPay({
+        timestamp: prepay.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+        nonceStr: prepay.nonceStr, // 支付签名随机串，不长于 32 位
+        package: prepay.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+        signType: prepay.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+        paySign: prepay.paySign, // 支付签名
+        success: function (res) {
+          callback && callback(res)
+// 支付成功后的回调函数
+        }
     });
 }
 

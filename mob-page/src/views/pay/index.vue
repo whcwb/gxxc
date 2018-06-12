@@ -9,7 +9,7 @@
             <i class="iconfont icon-left1"></i>
           </div>
           <div class="body-O" style="font-weight: 700;font-size: 0.5rem;color: #fff">
-            现金提现
+            缴费
 
           </div>
         <div style="height: 1.5rem;width: 1.2rem;text-align: center;">
@@ -43,7 +43,7 @@
           <md-switch v-model="isCashierCaptcha"></md-switch>
         </md-field-item>
       </md-field>
-      <md-button @click="isCashierhow = !isCashierhow">{{ isCashierhow ? '立即支付' : '立即支付' }}</md-button>
+      <md-button @click="payMoney">{{ isCashierhow ? '立即支付' : '立即支付' }}</md-button>
       <md-cashier
         ref="cashier"
         v-model="isCashierhow"
@@ -60,6 +60,7 @@
 
 <script>
   import {Button, Radio, Field, FieldItem, InputItem, Switch, Cashier} from 'mand-mobile'
+  import { Toast } from 'mint-ui';
   export default {
     name: 'cashier-demo',
     /* DELETE */
@@ -77,7 +78,7 @@
     data() {
       return {
         isCashierhow: false,
-        isCashierCaptcha: false,
+        isCashierCaptcha: false,//非否发送验证码
         cp:{},
         cashierAmount: '0.00',
         cashierResult: 'success',
@@ -118,6 +119,7 @@
           //   value: '005',
           // },
         ],
+        payMess:{}
       }
     },
     created(){
@@ -129,6 +131,20 @@
       },
     },
     methods: {
+      payMoney(){
+        var v = this
+        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
+          console.log(res)
+          if(res.code==200){
+            v.payID = res.result
+            this.isCashierhow = !this.isCashierhow
+          }else {
+            Toast(res.message)
+          }
+        }).catch((err)=>{
+
+        })
+      },
       doPay() {
         var v = this
         if (this.isCashierCaptcha) {
@@ -197,13 +213,18 @@
         console.log('支付确认')
         console.log(item)
         var  v = this
-        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id,openId:'oBtVUwtknY6gL4Q3gfoZs2kDCjW0'}).then((res)=>{
-          console.log(res)
-
-        }).catch((err)=>{
-
+        v.wechatUtil.pay(v.payMess,(res)=>{
+          if(res.get_brand_wcpay_request=='ok'){
+            v.cashierResult = 'success'
+            this.doPay()
+          }else if(res.get_brand_wcpay_request=='fail'){
+            v.cashierResult = 'fail'
+            this.doPay()
+          }else if(res.get_brand_wcpay_request=='cancel'){
+            this.isCashierhow = !this.isCashierhow
+            Toast('支付取消')
+          }
         })
-        this.doPay()
       },
       onCashierCancel() {
         console.log('取消')
