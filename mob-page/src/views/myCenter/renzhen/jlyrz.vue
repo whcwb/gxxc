@@ -32,8 +32,12 @@
         <div v-show="stepIndex == 0">
           <Card dis-hover>
             <p slot="title">基本信息</p>
-            <mt-field label="真实姓名" placeholder="请输入真实姓名" v-model="form.yhXm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
-            <mt-field label="身份证号" placeholder="请输入身份证号" v-model="form.yhZjhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
+            <mt-field label="真实姓名" placeholder="请输入真实姓名"
+                      :readonly="userMess.yhXm!=''"
+                      v-model="form.yhXm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
+            <mt-field label="身份证号" placeholder="请输入身份证号"
+                      :readonly="userMess.yhZjhm!=''"
+                      v-model="form.yhZjhm"style="border-bottom: 1px #e9eaec solid;"></mt-field>
             <mt-cell title="驾龄" :value="form.jlJl" is-link style="border-bottom: 1px #e9eaec solid;" @click.native="showSelector"></mt-cell>
             <md-selector
               v-model="isSelectorShow"
@@ -56,8 +60,8 @@
           </Card>
           <Card dis-hover style="margin-top: 10px">
             <p slot="title">紧急联系人</p>
-            <mt-field label="联系人" placeholder="请输入紧急联系人" v-model="form.jlJilxr"style="border-bottom: 1px #e9eaec solid;"></mt-field>
-            <mt-field label="联系电话" placeholder="请输入紧急联系人电话" v-model="form.jlJilxrdh"></mt-field>
+            <mt-field label="联系人" placeholder="请输入紧急联系人" v-model="form.jlJjlxr"style="border-bottom: 1px #e9eaec solid;"></mt-field>
+            <mt-field label="联系电话" placeholder="请输入紧急联系人电话" v-model="form.jlJjlxrdh"></mt-field>
           </Card>
           <div style="margin: 20px">
             <mt-button type="danger" size="large" @click="toPhotoNext">下一步</mt-button>
@@ -118,13 +122,14 @@
             class="customized"
             img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"
             text="需要做一个审核结果界面图"
-            subtext="审核会有：审核中、通过、驳回。三种情况">
+            :subtext="userMess.yhJlsh | yhJlsh">
           </md-result-page>
-          <!--<div-->
-            <!--v-show="userMess.yhJlsh=='2'"-->
-            <!--style="font-size: 0.4rem;color: #999999;text-align: center">-->
-            <!--{{userMess.yhZtMs}}-->
-          <!--</div>-->
+          <div
+            v-show="userMess.yhJlsh=='2'"
+            style="font-size: 0.4rem;color: #999999;text-align: center">
+            <!--教练员认证驳回信息-->
+            {{userMess.yhJlMs}}
+          </div>
           <div style="padding-top: 20px">
             <mt-button v-if="userMess.yhJlsh=='2'"
                        @click="stepIndex=0"
@@ -154,6 +159,27 @@
       [Picker.name]: Picker,
       [ResultPage.name]:ResultPage
     },
+    filters:{
+      yhJlsh:function(val){
+        switch(val){
+          case '0':
+            return '审核中';
+            break;
+          case '1':
+            return '审核已通过';
+            break;
+          case '2':
+            return '审核已驳回';
+            break;
+          case '-1':
+            return '未认证';
+            break;
+          default:
+            return val
+            break;
+        }
+      },
+    },
     data(){
       return {
         userMess:'',
@@ -178,12 +204,6 @@
           {text:'汉阳区',value:'420104'},
           {text:'东西湖区',value:'420105'}]
         ],
-        errorText:{
-          name:'',
-          sfzmhm:'',
-          jl:'5年',
-          ssqy:''
-        },
         ssqy:'',
         form:{
           yhXm:'',//姓名
@@ -191,8 +211,8 @@
           jlJl:'',//驾龄
           jlQu:'',//教练区域
           jlZz:'',//教练住址
-          jlJilxr:'',//教练紧急联系人
-          jlJilxrdh:'',//紧急联系电话
+          jlJjlxr:'',//教练紧急联系人
+          jlJjlxrdh:'',//紧急联系电话
           imgList:''
         },
         imgList:['static/renzhen/sfzzm.png','static/renzhen/sfzfm.png','static/renzhen/sfzzm.png','static/renzhen/sfzfm.png'],
@@ -208,10 +228,12 @@
         var v =this
         this.util.userMess(this,(res)=>{
           v.userMess = res
-          // 0未认证  1已认证  2认证失败
-          if(this.userMess.yhJlsh==0){
+          v.form.yhXm = res.yhXm
+          v.form.yhZjhm = res.yhZjhm
+          // 0审核中  1通过  2驳回（yhZtMs-驳回信息） -1未认证
+          if(this.userMess.yhJlsh=='-1'){
             this.stepIndex = 0
-          }else if(this.userMess.yhJlsh!=0){
+          }else if(this.userMess.yhJlsh!='-1'){
             this.stepIndex = 2
           }
         })

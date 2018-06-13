@@ -85,7 +85,6 @@
       }
     },
     created(){
-      //this.wechatUtil.getAccessToken();
       this.$store.commit('M_tabId', 'tab-home')
     },
     methods: {

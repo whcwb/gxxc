@@ -66,7 +66,7 @@ wechatUtil.getSign = (token)=>{
     })
 }
 
-wechatUtil.config = ()=>{
+wechatUtil.config = function(){
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: wechatUtil.appId, // 必填，公众号的唯一标识
@@ -76,8 +76,26 @@ wechatUtil.config = ()=>{
         jsApiList: ['scanQRCode','chooseImage','uploadImage','chooseWXPay'] // 必填，需要使用的JS接口列表
     });
 }
-wechatUtil.pay = (prepay,callback)=>{
+
+// wechatUtil.pay = (prepay,callback)=>{
+//   wx.invoke('getBrandWCPayRequest', {
+//       "appId":prepay.appId,     //公众号名称，由商户传入
+//       "timeStamp":prepay.timeStamp,         //时间戳，自1970年以来的秒数
+//       "nonceStr":prepay.nonceStr, //随机串
+//       "package":prepay.nonceStr,
+//       "signType":"MD5",         //微信签名方式：
+//       "paySign": prepay.paySign//微信签名
+//     },
+//     function(res){
+//       callback && callback(res)
+//       // if(res.err_msg == "get_brand_wcpay_request:ok" ) {}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+//     }
+//   );
+// }
+
+wechatUtil.pay = function(prepay,callback){
     console.log('chooseWXPay');
+
     wx.chooseWXPay({
         appId:prepay.appId,
         timestamp: prepay.timeStamp,// 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -86,6 +104,7 @@ wechatUtil.pay = (prepay,callback)=>{
         signType: prepay.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
         paySign: prepay.paySign, // 支付签名
         success: function (res) {
+          alert('res')
           callback && callback(res)
 // 支付成功后的回调函数
         }

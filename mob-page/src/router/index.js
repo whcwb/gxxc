@@ -12,7 +12,7 @@ const router = new Router({
       path: '/index',
       name: 'index',
       meta:{
-        title:'学车联盟首页'
+        title:'学车联盟'
       },
       component: resolve => { require(['@/views/index.vue'], resolve); }
     },
