@@ -27,7 +27,7 @@ const router = new Router({
       ]
     },
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       meta:{
         title:'登录'
@@ -171,7 +171,8 @@ router.beforeEach((to, from, next) => {
       }else {
         auto(window, document,7.5)
       }
-      // next();
+
+      next();
     }
 })
 
