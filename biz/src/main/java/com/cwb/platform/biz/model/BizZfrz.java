@@ -14,7 +14,7 @@ public class BizZfrz {
     @Column(name = "ID")
     private String id;
     /**
-     * 支付类型
+     * 支付类型 (1、支付宝  2、微信  3、银联  4、快钱……)
      */
     @Column(name = "ZF_LX")
     private String zfLx;
@@ -58,6 +58,19 @@ public class BizZfrz {
      */
     @Column(name = "ZF_CLZT")
     private String zfClzt;
+    /**
+     * 日志描述
+     */
+    @Column(name = "ZF_MS")
+    private String zfMs;
+
+    public String getZfMs() {
+        return zfMs;
+    }
+
+    public void setZfMs(String zfMs) {
+        this.zfMs = zfMs;
+    }
 
     /**
      * 获取主键id

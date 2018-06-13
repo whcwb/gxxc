@@ -45,6 +45,10 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
     public ApiResponse<String> updateOrderPayTpye(BizOrder l){
         payInfo.info("订单编号："+l.getDdId()+"*****************************************************************");
         BizOrder order=findById(l.getDdId());
+        if(order==null){
+            payInfo.info("订单编号："+l.getDdId()+"不存在，不需要操作数据");
+            return ApiResponse.success("订单编号："+l.getDdId()+"不存在，不需要操作数据");
+        }
         if(StringUtils.equals(order.getDdZt(),"2")||StringUtils.equals(order.getDdZfzt(),"1")){
             payInfo.info("订单编号："+l.getDdId()+"已完成支付，不需要操作数据");
             return ApiResponse.success("该订单已完成支付，不需要操作数据");

@@ -27,6 +27,8 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implements AppOrderService {
+
+    Logger payInfo = LoggerFactory.getLogger("access_info");
     @Value("${wechat.pay.trade_type}")
     private String tradeType;
     @Value("${wechat.pay.appId}")
@@ -142,7 +146,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         }
         if(entity.getDdZftd().equals(("2"))){
             String openId=request.getHeader("openid");
-            RuntimeCheck.ifNull(StringUtils.isEmpty(openId),"OPEN_ID不能为空");
+            RuntimeCheck.ifTrue(StringUtils.isEmpty(openId),"OPEN_ID不能为空");
             entity.setOpenId(openId);
         }
         //验证产品Id，是否有效
@@ -194,6 +198,8 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         newEntity.setOpenId(entity.getOpenId());
         boolean payType=false;//就否完成支付。
         if(entity.getDdZftd().equals(("2"))){//微信支付
+
+            payInfo.debug("openId="+newEntity.getOpenId()+"---------------------------------------------------");
 
             Map<String,Object> wxMap= create(newEntity,bizCp,request);
             payMessage=wxMap.get("message");

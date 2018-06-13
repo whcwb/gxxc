@@ -8,7 +8,6 @@ import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -102,34 +101,34 @@ public class AppPtyhController extends AppUserBaseController {
         BizPtyh user = getAppCurrentUser();
         BizPtyh users = service.findByIdSelect(user.getId());
         //判断一下，这个用户有没有上传实名资料 没有上传就给前台-1，让前台提示用户去实名。
-        if(users!=null){
-            //认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
-            String yhZt=users.getYhZt();
-            if(StringUtils.equals(yhZt,"0")&&StringUtils.equals("1",user.getYhLx())){
-                if(StringUtils.isEmpty(user.getYhZjhm())){
-                    users.setYhZt("-1");
-                }
-//                String yhzjhmgetYhZjhm{}
-//                BizWj realName=new BizWj();
-//                realName.setYhId(users.getId());
-//                int i=wjService.countByEntity(realName);
-//                if(i<1){
+//        if(users!=null){
+//            //认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+//            String yhZt=users.getYhZt();
+//            if(StringUtils.equals(yhZt,"0")&&StringUtils.equals("1",user.getYhLx())){
+//                if(StringUtils.isEmpty(user.getYhZjhm())){
+//                    users.setYhZt("-1");
 //                }
-            }
-            String yhJlsh=user.getYhJlsh();//教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
-            if(StringUtils.equals(yhJlsh,"0")&&StringUtils.equals("2",user.getYhLx())){
-                if(StringUtils.isEmpty(user.getYhZjhm())){
-                    users.setYhJlsh("-1");
-                }
-//                BizWj realName=new BizWj();
-//                realName.setYhId(users.getId());
-//                int i=wjService.countByEntity(realName);
-//                if(i<1){
+////                String yhzjhmgetYhZjhm{}
+////                BizWj realName=new BizWj();
+////                realName.setYhId(users.getId());
+////                int i=wjService.countByEntity(realName);
+////                if(i<1){
+////                }
+//            }
+//            String yhJlsh=user.getYhJlsh();//教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+//            if(StringUtils.equals(yhJlsh,"0")&&StringUtils.equals("2",user.getYhLx())){
+//                if(StringUtils.isEmpty(user.getYhZjhm())){
 //                    users.setYhJlsh("-1");
 //                }
-            }
-
-        }
+////                BizWj realName=new BizWj();
+////                realName.setYhId(users.getId());
+////                int i=wjService.countByEntity(realName);
+////                if(i<1){
+////                    users.setYhJlsh("-1");
+////                }
+//            }
+//
+//        }
         return ApiResponse.success(users);
     }
     /**
