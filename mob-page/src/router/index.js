@@ -9,6 +9,14 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
+      path: '/index',
+      name: 'index',
+      meta:{
+        title:'学车联盟'
+      },
+      component: resolve => { require(['@/views/index.vue'], resolve); }
+    },
+    {
       path: '/home',
       name: 'Home',
       component: Home,
@@ -99,7 +107,7 @@ const router = new Router({
       component:()=>import('@/views/myCenter')
     },
     {
-      path: '/pay',
+      path: '/pay/payIndex',
       name: 'pay',
       meta:{
         title:'缴费'
@@ -135,35 +143,37 @@ const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
-  // 判断有无code，如果有，则说明此次请求是微信回传code
-    let wxCode = wx.getQueryString('code')
-    if(wxCode) {
-        sessionStorage.setItem('WXcode',wxCode)
-        // alert(wxCode)
+    Util.title(to.meta.title);
+    let openid = localStorage.getItem("openid");
+
+    // 如果没有openid，则需要获取
+    if (openid == null && to.path != '/index') {
+      next({
+        name: 'index'
+      });
+      return;
+    }else if (openid == null && to.path == '/index') {
+      next();
+    }else if (openid != null){
+      if(to.name=='Login'||to.name=='Reg'){
+        next()
+      }else if(to.name!='Login' && localStorage.getItem('userMess')){
+        next()
+      }else{
+        Toast('用户信息丢失，请重新登录！')
+        next({
+          name: 'Login'
+        });
+      }
+
+      if(to.name == 'pay'){
+        auto(window, document,11.5)
+      }else {
+        auto(window, document,7.5)
+      }
+
+      next();
     }
-
-  Util.title(to.meta.title);
-  next()
-  if(to.name=='Login'||to.name=='Reg'){
-    next()
-  }else if(to.name!='Login'&&localStorage.getItem('userMess')){
-    next()
-  }else{
-    Toast('用户信息丢失，请重新登录！')
-    next({
-      name: 'Login'
-    });
-  }
-
-
-
-
-  if(to.name == 'pay'){
-    auto(window, document,11.5)
-  }else {
-    auto(window, document,7.5)
-  }
-  // next();
 })
 
 router.afterEach((to) => {

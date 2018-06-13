@@ -1,4 +1,6 @@
+let ajaxUrl = "http://xclm.xxpt123.com";
 module.exports = {
+  url:ajaxUrl,
   wechat:{
       getCode:'/wechat/getCode',
       getOpenid:'/wechat/getOpenid',
@@ -7,15 +9,13 @@ module.exports = {
   },
 // ajaxUrl:'http://127.0.0.1',
 // ajaxUrl:'http://47.98.39.45:',//服务器
-//   ajaxUrl:'http://192.168.31.228:',//羊祥
-//   ajaxUrl:'http://3remnq.natappfree.cc:',
-  ajaxUrl:'http://xclm.xxpt123.com:',
+  ajaxUrl: ajaxUrl + ':',
 
 
-  getImgUrl:':http://xclm.xxpt123.com:80',
-  upImgUrl:'http://xclm.xxpt123.com:8080/biz/upload',
-  // getImgUrl:'http://47.98.39.45:9088/',//获取
-  // upImgUrl:'http://47.98.39.45:9086/upload',//上传
+  // getImgUrl:':http://xclm.xxpt123.com:80',
+  // upImgUrl:'http://xclm.xxpt123.com:8080/biz/upload',
+  getImgUrl:'http://192.168.31.228:8080/',//获取
+  upImgUrl:'http://192.168.31.228:9086/upload',//上传
   LOGIN:'/app/login',//登录接口
   LOGOUT:'/app/logout',//退出用戶
   USERMESS:'/app/ptyh/get',//用户信息

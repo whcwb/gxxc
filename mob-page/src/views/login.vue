@@ -32,18 +32,18 @@
           >
             <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
           </md-input-item>
-          <md-input-item
-            ref="id"
-            title="邀请码"
-            v-model="yqm"
-            placeholder="邀请码"
-            is-title-latent
-            clearable
-            type="text"
-            style="border-bottom: 1px gray solid;margin: 20px;margin-top: 0px"
-          >
-            <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
-          </md-input-item>
+          <!--<md-input-item-->
+            <!--ref="id"-->
+            <!--title="邀请码"-->
+            <!--v-model="yqm"-->
+            <!--placeholder="邀请码"-->
+            <!--is-title-latent-->
+            <!--clearable-->
+            <!--type="text"-->
+            <!--style="border-bottom: 1px gray solid;margin: 20px;margin-top: 0px"-->
+          <!--&gt;-->
+            <!--<i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>-->
+          <!--</md-input-item>-->
       </div>
       <!-- 操作按钮区域 -->
       <div class="box-row">
@@ -78,16 +78,14 @@
     data(){
       return{
         from:{
-          username:'13311111111',
+          username:'15214273391',
           password:'123456'
         },
-        yqm:''
+        // yqm:''
       }
     },
     created(){
-      // this.wechatUtil.getAccessToken();
       this.$store.commit('M_tabId', 'tab-home')
-
     },
     methods: {
       fet(){
@@ -116,11 +114,11 @@
       },
       reg(){
         var v = this
-        // this.wechatUtil.qrScan((messtoback)=>{
-        //   Toast.succeed('微信'+messtoback);
-        //   v.codeyz(messtoback)
-            v.codeyz(v.yqm)
-        // })
+        this.wechatUtil.qrScan((messtoback)=>{
+          // Toast.succeed('微信'+messtoback);
+          v.codeyz(messtoback)
+        //     v.codeyz(v.yqm)
+        })
       },
       codeyz(val){
         var v = this

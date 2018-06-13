@@ -5,7 +5,7 @@ import router from '@/router'
 import url from './url'
 import wxutil from  './wechatUtil'
 
-// const dk = '9086'
+//const dk = '9086'
 const dk = '8080/biz'
 const ajaxUrl =url.ajaxUrl + dk;//羊祥
 let API = {
@@ -23,30 +23,68 @@ API.title = function (title) {
 API.ajax = axios.create({
   baseURL: ajaxUrl,
   timeout: 30000,
-  headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'openid':'oRPNG0pmiE91Qt9qjas37mMpnz0I',
+  }
 });
 
 API.ajax.interceptors.request.use(config=> {
-    let openid = sessionStorage.getItem("openid");
-    if (!openid){ // 如果没有openid，则需要获取
-        let wxcode = sessionStorage.getItem("WXcode");
-        if (!wxcode){
-            wxutil.getCode();
-            return;
-        }else{
-            wxutil.getOpenid(wxcode,(res)=>{
-                sessionStorage.setItem("openid",res);
-                openid = res;
-            })
-        }
-    }else{
-        config.headers.common['openid'] = openid;
-    }
-    //网络请求加载动画
-    Indicator.open({
-      text: '数据加载中……',
-      spinnerType: 'fading-circle'
-    });
+  //网络请求加载动画
+  Indicator.open({
+    text: '数据加载中……',
+    spinnerType: 'fading-circle'
+  });
+
+
+
+    // let openid = localStorage.getItem("openid");
+    // console.log('$$$$$$$$$$$$$$$$$$$$$$$$$',openid)
+    // if (!openid){ // 如果没有openid，则需要获取
+    //     let wxcode = localStorage.getItem("WXcode");
+    //     if (!wxcode){
+    //         wxutil.getCode();
+    //         return;
+    //     }else{
+    //         wxutil.getOpenid(wxcode,(res)=>{
+    //           localStorage.setItem("openid",res);
+    //             openid = res;
+    //
+    //             //**********************
+    //             var headers = config.headers;
+    //             var contentType = headers['Content-Type'];
+    //             if (contentType == "application/x-www-form-urlencoded"){
+    //               config.data = qs.stringify(config.data);
+    //               try{
+    //                 //如果是数组对象，将转换出来的数组字符串中的[]关键字替换，这样方便后台接收数据
+    //                 config.data = config.data.replace(/(%5B\d%5D)/g,"");
+    //               }catch(e){
+    //
+    //               }
+    //             }
+    //
+    //             try{
+    //               let accessTokenStr = localStorage.getItem("token");
+    //               if (accessTokenStr != null && accessTokenStr != ''){
+    //                 let jsonObject = JSON.parse(accessTokenStr);
+    //                 config.headers.common['userId'] = jsonObject.userId;
+    //                 config.headers.common['token'] = jsonObject.token;
+    //               }
+    //             }catch(e){
+    //             }
+    //
+    //             return config;
+    //             //*****************************
+    //
+    //         })
+    //     }
+    // }else{
+    //     config.headers.common['openid'] = openid;
+    // }
+
+
+
+
     var headers = config.headers;
     var contentType = headers['Content-Type'];
     if (contentType == "application/x-www-form-urlencoded"){
