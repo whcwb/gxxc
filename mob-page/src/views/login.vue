@@ -2,7 +2,7 @@
   <div id="login">
       <!-- logo区域 -->
       <div id="logo">
-        <img src="static/icon/logo.png" width="120" height="120">
+        <img src="static/icon/LOGO.png" width="120" height="120">
         <dt style="font-size: 28px;color: white">
           学 车 联 盟
         </dt>
@@ -81,7 +81,7 @@
           username:'15214273391',
           password:'123456'
         },
-        // yqm:''
+        yqm:''
       }
     },
     created(){
@@ -117,7 +117,7 @@
         this.wechatUtil.qrScan((messtoback)=>{
           // Toast.succeed('微信'+messtoback);
           v.codeyz(messtoback)
-        //     v.codeyz(v.yqm)
+            // v.codeyz(v.yqm)
         })
       },
       codeyz(val){

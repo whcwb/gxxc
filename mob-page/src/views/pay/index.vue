@@ -136,21 +136,6 @@
       },
     },
     methods: {
-      payMoney(){
-        var v = this
-        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
-          console.log(res)
-          if(res.code==200){
-            console.log(res.result)
-            v.payMess = res.result
-            this.isCashierhow = !this.isCashierhow
-          }else {
-            Toast(res.message)
-          }
-        }).catch((err)=>{
-
-        })
-      },
       doPay() {
         var v = this
         if (this.isCashierCaptcha) {
@@ -228,30 +213,39 @@
             "paySign":v.payMess.paySign //微信签名
           },
           function(res){
-            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-
-            }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+            alert(JSON.stringify(res))
+            console.log(res)
+            if(res.err_msg=='get_brand_wcpay_request:ok'){
+              v.cashierResult = 'success'
+              this.doPay()
+            }else if(res.err_msg=='get_brand_wcpay_request::fail'){
+              v.cashierResult = 'fail'
+              this.doPay()
+            }else if(res.err_msg=='get_brand_wcpay_request:cancel'){
+              this.isCashierhow = !this.isCashierhow
+              Toast('支付取消')
+            }
+            // if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+            //
+            // }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
           }
         );
-        alert(2);
-        /*v.wechatUtil.pay(v.payMess,(res)=>{
         console.log('支付确认')
         console.log(item)
-        var  v = this
-        v.wechatUtil.config
-        v.wechatUtil.pay(v.payMess,(res)=>{
-          alert(res)
-          if(res.get_brand_wcpay_request=='ok'){
-            v.cashierResult = 'success'
-            this.doPay()
-          }else if(res.get_brand_wcpay_request=='fail'){
-            v.cashierResult = 'fail'
-            this.doPay()
-          }else if(res.get_brand_wcpay_request=='cancel'){
-            this.isCashierhow = !this.isCashierhow
-            Toast('支付取消')
-          }
-        })*/
+        // var  v = this
+        // v.wechatUtil.pay(v.payMess,(res)=>{
+        //   alert(res)
+        //   if(res.get_brand_wcpay_request=='ok'){
+        //     v.cashierResult = 'success'
+        //     this.doPay()
+        //   }else if(res.get_brand_wcpay_request=='fail'){
+        //     v.cashierResult = 'fail'
+        //     this.doPay()
+        //   }else if(res.get_brand_wcpay_request=='cancel'){
+        //     this.isCashierhow = !this.isCashierhow
+        //     Toast('支付取消')
+        //   }
+        // })
       },
       onCashierCancel() {
         console.log('取消')
@@ -265,12 +259,29 @@
           if(res.code==200){
             v.cp = res.result
             v.cashierAmount ="'" + parseInt(res.result.cpJl)/100 +"'"
+            v.payMoney(res.result.id)
           }
 
         }).catch((err)=>{
 
         })
-      }
+      },
+      payMoney(id){
+        var v = this
+        console.log(id)
+        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:id}).then((res)=>{
+          console.log(res)
+          if(res.code==200){
+            console.log(res.result)
+            v.payMess = res.result
+            this.isCashierhow = !this.isCashierhow
+          }else {
+            Toast(res.message)
+          }
+        }).catch((err)=>{
+
+        })
+      },
     }
   }
 

@@ -291,6 +291,8 @@
             if(res.code==200){
               v.stepIndex = 2;
               v.rz()
+            }else {
+              Toast(res.message)
             }
         }).catch((err)=>{
 
