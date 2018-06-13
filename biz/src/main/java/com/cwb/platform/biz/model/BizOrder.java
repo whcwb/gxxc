@@ -122,7 +122,17 @@ public class BizOrder implements Serializable {
      */
     @Column(name = "PAY_MONEY")
     private String payMoney;
+    /**
+     * 产品id(BIZ_CP)
+     */
+    @Column(name = "CP_ID")
+    private String cpId;
 
+    /**
+     * 微信的OPEN_ID
+     */
+    @Column(name = "OPEN_ID")
+    private String openId;
 
 
     /**
@@ -137,11 +147,7 @@ public class BizOrder implements Serializable {
     @Transient
     private BizPtyh userDetail;
 
-    /**
-     * 产品id(BIZ_CP)
-     */
-    @Column(name = "CP_ID")
-    private String cpId;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -159,6 +165,14 @@ public class BizOrder implements Serializable {
 
     public void setUserDetail(BizPtyh userDetail) {
         this.userDetail = userDetail;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
     /**

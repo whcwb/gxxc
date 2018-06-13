@@ -32,7 +32,7 @@ public class WechatUtils {
         String redirectUrl = "";
         try {
             redirectUrl = "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri="
-                    + domain +"&response_type=code&scope=snsapi_userinfo&state=" + URLEncoder.encode("debug",Charset.defaultCharset().name()) + "#wechat_redirect?";
+                    + domain +"&response_type=code&scope=snsapi_base&state=" + URLEncoder.encode("debug",Charset.defaultCharset().name()) + "#wechat_redirect?";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

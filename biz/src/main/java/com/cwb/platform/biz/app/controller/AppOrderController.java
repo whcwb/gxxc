@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +44,8 @@ public class AppOrderController extends AppUserBaseController {
      * @return
      */
     @RequestMapping(value="/save", method={RequestMethod.POST})
-    public ApiResponse<Map<String,String>> save(BizOrder entity){
-        return service.saveAddOrder(entity);
+    public ApiResponse<Map<String,String>> save(BizOrder entity,HttpServletRequest request){
+        return service.saveAddOrder(entity,request);
     }
 
 }

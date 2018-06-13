@@ -38,8 +38,12 @@
         </div>
         <div v-show="stepIndex == 0">
           <Card dis-hover>
-            <mt-field label="真实姓名" placeholder="请输入真实姓名" v-model="form.yhXm" style="border-bottom: 1px #e9eaec solid;"></mt-field>
-            <mt-field label="身份证号" placeholder="请输入身份证号" v-model="form.yhZjhm" style="border-bottom: 1px #e9eaec solid;"></mt-field>
+            <mt-field label="真实姓名" placeholder="请输入真实姓名"
+                      :readonly="userMess.yhXm!=''"
+                      v-model="form.yhXm" style="border-bottom: 1px #e9eaec solid;"></mt-field>
+            <mt-field label="身份证号" placeholder="请输入身份证号"
+                      :readonly="userMess.yhZjhm!=''"
+                      v-model="form.yhZjhm" style="border-bottom: 1px #e9eaec solid;"></mt-field>
           </Card>
           <div style="margin: 20px">
             <mt-button type="danger" size="large" @click="toPhotoNext">下一步</mt-button>
@@ -105,6 +109,7 @@
           <div
             v-show="userMess.yhZt=='2'"
             style="font-size: 0.4rem;color: #999999;text-align: center">
+            <!--实名认证驳回信息-->
             {{userMess.yhZtMs}}
           </div>
           <div style="padding-top: 20px">
@@ -156,7 +161,7 @@
         },
         data(){
           return {
-            userMess:'',
+            userMess:{},
             stepIndex:0,
             form:{
                 yhXm:'',
@@ -173,8 +178,10 @@
         methods:{
           rz(){
             var v =this
-            this.MyFunc.userMess(v,(res)=>{
+            this.util.userMess(v,(res)=>{
               v.userMess = res
+              v.form.yhXm = res.yhXm
+              v.form.yhZjhm = res.yhZjhm
               // 0审核中  1通过  2驳回（yhZtMs-驳回信息） -1未认证
               console.log(v.userMess)
               if(v.userMess.yhZt=='-1'){
@@ -208,6 +215,7 @@
               this.$http.post(this.apis.IDRZ,this.form).then((res)=>{
                 if(res.code==200){
                   v.stepIndex = 2;
+                  v.rz()
                 }
               }).catch((err)=>{
 

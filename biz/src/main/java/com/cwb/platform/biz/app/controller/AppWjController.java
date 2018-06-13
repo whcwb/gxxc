@@ -2,9 +2,11 @@ package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.AppUserBaseController;
 import com.cwb.platform.biz.model.BizWj;
+import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,8 @@ import java.util.Map;
 public class AppWjController extends AppUserBaseController {
     @Autowired
     private WjService service;
-
+    @Autowired
+    private PtyhService ptyhService;
 
     /**
      * 根据对象字段值查询数据
@@ -30,12 +33,25 @@ public class AppWjController extends AppUserBaseController {
     @RequestMapping(value="/getCondition", method={RequestMethod.POST})
     public ApiResponse<List<Boolean>> getCondition(){
         BizPtyh bizPtyh= getAppCurrentUser();
+
+        List<Boolean> retlise=new ArrayList<Boolean>();
+
+        BizPtyh ptyh= ptyhService.findById(bizPtyh.getId());
+        String yhZt=ptyh.getYhZt();
+        if(StringUtils.equals("2",yhZt)){
+            retlise.add(false);
+            retlise.add(false);
+            retlise.add(false);
+            retlise.add(false);
+            return ApiResponse.success(retlise);
+        }
+        RuntimeCheck.ifNull(ptyh,"当前登录用户未空！");
         BizWj entity=new BizWj();
         entity.setYhId(bizPtyh.getId());
         entity.setWjSfyx("1");
         List<BizWj> list=service.findByEntity(entity);
         Map<String,String> bizWjMap=new HashMap<String,String>();
-        List<Boolean> retlise=new ArrayList<Boolean>();
+
         if(list!=null&&list.size()>0){
             for(BizWj l:list){
                 l.setWjTpdz("");//将文件地址给去掉

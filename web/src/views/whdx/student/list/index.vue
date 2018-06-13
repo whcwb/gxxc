@@ -16,8 +16,7 @@
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
 		</Row>
 		<Row class="margin-top-10 pageSty">
-			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
-				  @on-change='pageChange'></Page>
+			<pager :parent="v"></pager>
 		</Row>
 		<component :is="componentName"></component>
 	</div>
@@ -28,11 +27,10 @@
     import sublist from './sublist.vue'
     import audit from './audit.vue'
     import allot from './allot.vue'
-	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems,sublist,allot,audit},
+        components: {formData,sublist,allot,audit},
         data() {
             return {
                 v:this,
@@ -50,6 +48,8 @@
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
+                    {title: '教练姓名',key:'jlXm'},
+                    {title: '教练电话',key:'sjhm'},
                     {title: '锁定',key:'yhSfsd',
                         render:(h,p)=>{
                             return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
@@ -125,10 +125,10 @@
 			exportData(){
                 let params = {
                     exportType:'ptyh',
-                    cols:'姓名,账号,缴费状态,是否有驾驶证,认证状态',
-					keys:'yhXm,yhZh,ddSfjx,yhSfyjz,yhZt'
+                    cols:'姓名,账号,是否有驾驶证,认证状态,教练姓名,教练电话',
+					keys:'yhXm,yhZh,yhSfyjz,yhZt,jlxm,jldh'
 				}
-				window.open(this.apis.exportData+'?exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);
+				window.open(this.apis.exportData+'?ddSfjx=1&exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);
 			}
         }
     }

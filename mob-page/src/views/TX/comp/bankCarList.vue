@@ -53,7 +53,7 @@
         created(){
         },
         mounted(){
-          this.MyFunc.auto(window, document,7.5)
+          this.util.auto(window, document,7.5)
         },
         methods:{
           seltBankCard(item,index){

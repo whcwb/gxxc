@@ -112,12 +112,12 @@
             this.$http.get(this.apis.LOGOUT).then((res)=>{
               if(res.code==200){
                 localStorage.clear()
-                this.$router.push({name:'Login'})
               }
 
             }).catch((err)=>{
 
             })
+            this.$router.push({name:'Login'})
           },
           userMessF(){//获取个人信息
             var v = this
@@ -138,7 +138,10 @@
             var v = this
             this.$http.post(this.apis.CHUSERMESS,{'yhTx':url}).then((res)=>{
               if(res.code==200){
-                v.userMessF()
+                // v.userMessF()
+                v.util.userMess(v,(mess)=>{
+                  v.userMess = mess
+                })
               }
             }).catch((err)=>{
 
@@ -147,7 +150,6 @@
           handleSuccess(res){
             console.log('上传成功事件监听',res)
             this.UPTx('/'+res.message)
-            this.userMessF()
           },
         }
     }

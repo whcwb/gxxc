@@ -16,11 +16,14 @@
                 </InputNumber>
                 <DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="readonly && i.readonly"  :disabled="readonly && i.disabled"></DatePicker>
                 <DatePicker v-else-if="i.type == 'datetime'"  :value="formItem[i.prop]" type="datetime" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="readonly && i.readonly" :disabled="readonly && i.disabled"></DatePicker>
-                <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="readonly && i.readonly" :disabled="readonly && i.disabled">
-                    <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)' :value="item.key" :key="item.key">{{item.val}}</Option>
-                </Select>
                 <Select v-else-if="i.type === 'foreignKey'" :disabled="readonly && i.disabled" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
                     <Option v-for = '(item,index) in foreignList[i.prop].items' :value="item.key" :key="item.key">{{item.val}}</Option>
+                </Select>
+                <RadioGroup v-else-if="i.type === 'radio'" v-model="formItem[i.prop]">
+                    <Radio v-for='(item,index) in parent.dictUtil.getByCode(parent,i.dict)' v-if="i.excludeDict == null || i.excludeDict.indexOf(item.key) < 0" :label="item.key">{{item.val}}</Radio>
+                </RadioGroup>
+                <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="readonly && i.readonly" :disabled="readonly && i.disabled">
+                    <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)' :value="item.key" :key="item.key">{{item.val}}</Option>
                 </Select>
             </FormItem>
         </Col>

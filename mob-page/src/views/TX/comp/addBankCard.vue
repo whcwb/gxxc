@@ -99,7 +99,7 @@
           }
         },
         mounted(){
-          this.MyFunc.auto(window, document,11)
+          this.util.auto(window, document,11)
         },
         methods:{
           yz(){

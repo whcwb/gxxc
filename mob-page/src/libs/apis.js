@@ -1,13 +1,15 @@
 import axios from 'axios';
 import qs from 'qs'
-import { Toast } from 'mand-mobile'
+import { Indicator , Toast} from 'mint-ui';
 import router from '@/router'
+import url from './url'
+import wxutil from  './wechatUtil'
 
-// const ajaxUrl ='http://127.0.0.1';
-// const ajaxUrl = 'http://47.98.39.45:9086/';//服务器
-const ajaxUrl ='http://127.0.0.1:9086';//羊祥
+// const dk = '9086'
+const dk = '8080/biz'
+const ajaxUrl =url.ajaxUrl + dk;//羊祥
 let API = {
-    NETWORK_ERR: "网络请求异常，请重试！"
+    NETWORK_ERR: "网络请求异常，请重试！",
     // LOGIN: '/login',
     // LOGOUT: '/logout',
     // UPLOAD: '/upload'
@@ -21,12 +23,19 @@ API.title = function (title) {
 API.ajax = axios.create({
   baseURL: ajaxUrl,
   timeout: 30000,
-  headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  }
+    // 'openid':'oRPNG0pmiE91Qt9qjas37mMpnz0I',
 });
 
 API.ajax.interceptors.request.use(config=> {
-    //网络请求加载动画
-    Toast.loading('加载中...');
+  //网络请求加载动画
+  Indicator.open({
+    text: '数据加载中……',
+    spinnerType: 'fading-circle'
+  });
+
     var headers = config.headers;
     var contentType = headers['Content-Type'];
     if (contentType == "application/x-www-form-urlencoded"){
@@ -45,22 +54,24 @@ API.ajax.interceptors.request.use(config=> {
         let jsonObject = JSON.parse(accessTokenStr);
         config.headers.common['userId'] = jsonObject.userId;
         config.headers.common['token'] = jsonObject.token;
+        config.headers.common['openid'] = localStorage.getItem('openid')
       }
     }catch(e){
     }
 
     return config;
 }, error=> {
-    Toast.hide();
+    Indicator.close();
     setTimeout(() => {
-      Toast.failed(API.NETWORK_ERR)
+      // Toast.failed(API.NETWORK_ERR)
     }, 100);
     return Promise.reject(error);
 });
 
 API.ajax.interceptors.response.use(response=> {
   //网络请求加载动画
-  Toast.hide();
+  Indicator.close();
+
   if(response.data.code==403){
     Toast.info('权限丢失，请重新登录')
     router.push({name:'Login'})
@@ -69,9 +80,9 @@ API.ajax.interceptors.response.use(response=> {
 
   return response.data;
 }, error=> {
-  Toast.hide();
+  Indicator.close();
   setTimeout(() => {
-    Toast.failed(API.NETWORK_ERR)
+    Toast(API.NETWORK_ERR)
   }, 100);
   return Promise.reject(error);
 });

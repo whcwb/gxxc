@@ -16,24 +16,46 @@ import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.IpUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
+import com.cwb.platform.util.commonUtil.WeixinUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
+import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //import java.math.BigDecimal;
 
 @Service
 public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implements AppOrderService {
+
+    Logger payInfo = LoggerFactory.getLogger("access_info");
+    @Value("${wechat.pay.trade_type}")
+    private String tradeType;
+    @Value("${wechat.pay.appId}")
+    private String appid;
+
+    @Value("${wechat.pay.mchKey}")
+    private String mchKey;
+
+    @Value("${wechat.pay.notify_url}")
+    private String notifyUrl;
+
     @Autowired
     private BizOrderMapper entityMapper;
 
@@ -48,6 +70,9 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 
     @Autowired
     private CpServiceImpl cpService;
+
+    @Resource(name = "wxPayService")
+    private WxPayService wxService;
 
     @Override
     protected Mapper<BizOrder> getBaseMapper() {
@@ -108,15 +133,21 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         }
         return;
     }
-    public ApiResponse<Map<String,String>> saveAddOrder(BizOrder entity){
+    public ApiResponse<Map<String,String>> saveAddOrder(BizOrder entity,HttpServletRequest request){
         BizPtyh user=getAppCurrentUser();
         RuntimeCheck.ifNull(user,"用户不存在");
+        Object payMessage=null;//支付明细
 
         Map<String,String> ret=new HashMap<String,String>();
         //获取支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
         RuntimeCheck.ifNull(entity.getDdZftd(),"您好，请确定支付方式");
         if(StringUtils.containsNone(entity.getDdZftd(), new char[]{'1', '2','3','4'})){
             RuntimeCheck.ifTrue(true,"您好，请输入确定支付方式");
+        }
+        if(entity.getDdZftd().equals(("2"))){
+            String openId=request.getHeader("openid");
+            RuntimeCheck.ifTrue(StringUtils.isEmpty(openId),"OPEN_ID不能为空");
+            entity.setOpenId(openId);
         }
         //验证产品Id，是否有效
         String cpId=entity.getCpId();//产品id(BIZ_CP)
@@ -164,9 +195,81 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         newEntity.setYhSsjid(bizUser.getYhSsjid());//上上级ID
         newEntity.setJobType("0");//定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
         newEntity.setCpId(cpId);
-        entityMapper.insert(newEntity);
+        newEntity.setOpenId(entity.getOpenId());
+        boolean payType=false;//就否完成支付。
+        if(entity.getDdZftd().equals(("2"))){//微信支付
 
-        return ApiResponse.success(ret);
+            payInfo.debug("openId="+newEntity.getOpenId()+"---------------------------------------------------");
+
+            Map<String,Object> wxMap= create(newEntity,bizCp,request);
+            payMessage=wxMap.get("message");
+            if(wxMap!=null&&payMessage==null){
+                String prepayId="";//ddZfpz
+                WxPayUnifiedOrderResult orderResult= (WxPayUnifiedOrderResult) wxMap.get("orderResult");
+                if(orderResult!=null){
+                    prepayId=orderResult.getPrepayId();
+                    if(StringUtils.isNotEmpty(prepayId)){
+                        payType=true;
+                        entity.setDdZfpz(prepayId);//支付凭证ID
+
+                        //拼装给前台的报文
+                        SortedMap retSorteMap=new TreeMap<String, String>();
+                        retSorteMap.put("appId", appid);
+                        retSorteMap.put("timeStamp", String.valueOf(new Date().getTime()));
+                        retSorteMap.put("nonceStr", genId()); // 必填，生成签名的随机串
+                        retSorteMap.put("package", "prepay_id="+prepayId);
+                        retSorteMap.put("signType", "MD5");
+                        String paySign = WeixinUtils.createSign("UTF-8",retSorteMap,mchKey);//签名，微信根据参数字段的ASCII码值进行排序 加密签名,故使用SortMap进行参数排序
+                        ret.putAll(retSorteMap);
+                        ret.put("paySign", paySign);
+                    }
+                }
+            }
+
+        }else if(entity.getDdZftd().equals(("1"))){//支付宝方式支付。
+
+        }
+        if(payType){
+            entityMapper.insert(newEntity);
+            return ApiResponse.success(ret);
+        }else{
+            ApiResponse<Map<String,String>> res = new ApiResponse<Map<String,String>>();
+            res.setCode(500);
+            res.setMessage("请求支付通道失败，请稍后尝试。");
+            if(payMessage!=null){
+                res.setMessage((String) payMessage);
+            }
+            return res;
+        }
+    }
+
+    public Map<String,Object> create(BizOrder order, BizCp bizCp,HttpServletRequest request) {
+        try {
+            WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();   //商户订单类
+            orderRequest.setBody(bizCp.getCpMc());
+            orderRequest.setOpenid(order.getOpenId());//用户的openID
+//            //元转成分
+            orderRequest.setTotalFee((int) Math.ceil(MathUtil.stringToDouble(bizCp.getCpJl())));   //注意：传入的金额参数单位为分
+            //outTradeNo  订单号
+            orderRequest.setOutTradeNo(order.getDdId());
+            //tradeType 支付方式
+            orderRequest.setTradeType(tradeType);//JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
+            orderRequest.setNotifyUrl(notifyUrl);//接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数
+
+            //用户IP地址
+            orderRequest.setSpbillCreateIp(IpUtils.getRealIp(request));
+
+            WxPayUnifiedOrderResult orderResult = wxService.unifiedOrder(orderRequest);
+            Map<String,Object>map =new HashedMap();
+            map.put("orderResult", orderResult);
+            return map;
+        } catch (Exception e) {
+//            log.error("【微信支付】支付失败 订单号={} 原因={}", orderDTO.getOrderId(), e.getMessage());
+            e.printStackTrace();
+            Map<String,Object>map =new HashedMap();
+            map.put("message", e.getMessage());
+            return map;
+        }
 
     }
 }

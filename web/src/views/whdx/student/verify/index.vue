@@ -13,8 +13,7 @@
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
 		</Row>
 		<Row class="margin-top-10 pageSty">
-			<Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
-				  @on-change='pageChange'></Page>
+			<pager :parent="v"></pager>
 		</Row>
 		<component :is="componentName"></component>
 	</div>
@@ -23,11 +22,10 @@
 <script>
     import formData from './formData.vue'
     import audit from './audit.vue'
-	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems,audit},
+        components: {formData,audit},
         data() {
             return {
                 v:this,

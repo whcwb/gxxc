@@ -11,7 +11,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			   :mask-closable="false" :title="operate+''">
+			   :mask-closable="false" title="认证">
 			<div style="overflow: auto;height: 500px;">
 				<Form ref="form"
 					  :model="formItem"
@@ -43,28 +43,32 @@
 					</Row>
 					<Row>
 						<form-items :parent="v" :parentFormInputs="formInputs2"></form-items>
+						<Col span="12">
+							<FormItem v-if="formItem.yhZt == '2'" prop='yhZtMs' label='失败原因'>
+								<Input v-model="formItem.yhZtMs"></Input>
+							</FormItem>
+						</Col>
 					</Row>
 				</Form>
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">认证</Button>
+				<Button type="primary" @click="v.util.save(v)">确认</Button>
 			</div>
 		</Modal>
 	</div>
 </template>
 
 <script>
-    import formItems from '../../components/formItems'
     export default {
         name: 'byxxForm',
-        components:{formItems},
         data() {
             return {
                 v:this,
                 operate:'认证',
                 saveUrl:this.apis.student.updateyhrz,
                 staticPath:this.apis.getImgUrl,
+				formValid:true,
                 showModal: true,
                 readonly: false,
                 files:{
@@ -75,6 +79,7 @@
                 },
                 formItem: {
                     id:'',
+                    yhZtMs:'',
                 },
                 formInputs1:[
                     {separator:true,label:'基本信息'},
@@ -84,8 +89,7 @@
                 ],
                 formInputs2:[
                     {separator:true,label:'审核结果'},
-                    {label: '审核结果',prop:'yhJlsh',dict:'ZDCLK0043',type:'dict'},
-                    {label: '失败原因',prop:'yhZtMs'},
+                    {label: '审核结果',prop:'yhZt',dict:'ZDCLK0043',type:'radio',excludeDict:['0']},
                 ],
                 ruleInline:{
                 },
@@ -98,10 +102,25 @@
             this.getImages();
         },
         methods: {
+            pass(){
+                this.formItem.yhZt = '1';
+                this.util.save(this);
+            },
+            reject(){
+                this.formItem.yhZt = '2';
+                this.util.save(this);
+            },
             beforeSave(){
+                if (this.formItem.yhZt == '2' && (this.formItem.yhZtMs == null || this.formItem.yhZtMs == '')){
+                    this.$Message.error("请填写备注");
+                    this.formValid = false;
+                    return;
+                }
+                this.formValid = true;
                 this.saveParams = {
                     id:this.$parent.choosedItem.id,
-                    yhZt:this.formItem.yhZt
+                    yhZt:this.formItem.yhZt,
+                    yhZtMs:this.formItem.yhZtMs,
 				};
 			},
             getImages(){

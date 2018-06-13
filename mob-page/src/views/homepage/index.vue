@@ -64,7 +64,6 @@
         },
         methods:{
           goMap(item){
-            console.log(this.$route)
             this.$router.push({
               name:'jxlist',
               params:item

@@ -45,12 +45,17 @@
 					</Row>
 					<Row>
 						<form-items :parent="v" :parentFormInputs="formInputs2"></form-items>
+						<Col span="12">
+							<FormItem v-if="formItem.yhJlsh == '2'" prop='yhZtMs' label='失败原因'>
+								<Input v-model="formItem.yhZtMs"></Input>
+							</FormItem>
+						</Col>
 					</Row>
 				</Form>
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">认证</Button>
+				<Button type="primary" @click="v.util.save(v)">确认</Button>
 			</div>
 		</Modal>
 	</div>
@@ -67,6 +72,7 @@
 				staticPath:this.apis.getImgUrl,
                 showModal: true,
                 saveUrl:this.apis.teacher.updateyhrz,
+                formValid:true,
                 readonly: false,
 				files:{
                     cardFront:'',
@@ -90,8 +96,7 @@
                 ],
                 formInputs2:[
                     {separator:true,label:'审核结果'},
-                    {label: '审核结果',prop:'yhJlsh',dict:'ZDCLK0043',type:'dict'},
-                    {label: '失败原因',prop:'yhZtMs'},
+                    {label: '审核结果',prop:'yhJlsh',dict:'ZDCLK0043',type:'radio',excludeDict:['0']},
                 ],
                 ruleInline:{
                 },
@@ -105,9 +110,17 @@
         },
         methods: {
             beforeSave(){
+                if (this.formItem.yhJlsh == '2' && (this.formItem.yhZtMs == null || this.formItem.yhZtMs == '')){
+                    this.$Message.error("请填写备注");
+                    this.formValid = false;
+                    return;
+                }
+                this.formValid = true;
                 this.saveParams = {
-                    id:this.$parent.choosedItem.id,
-                    yhJlsh:this.formItem.yhJlsh
+                    id:this.$parent.choosedItem.yhId,
+                    yhJlsh:this.formItem.yhJlsh,
+                    yhZtMs:this.formItem.yhZtMs,
+                    yhZtMs:this.formItem.yhZtMs,
                 };
             },
             getImages(){

@@ -163,7 +163,8 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_ZT_MS")
     private String yhZtMs;
 
-
+    @Column(name = "YH_JL_MS")
+    private String yhJlMs;
     /**
      * 用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      */
@@ -196,8 +197,50 @@ public class BizPtyh implements Serializable {
     @Transient
     private String imgTypeList;
 
+    /**
+     * 教练姓名
+     */
+    @Transient
+    private String jlXm;
+
+    /**
+     * 教练手机号码
+     */
+    @Transient
+    private String sjhm;
+    /**
+     * 教练简介
+     */
+    @Transient
+    private String jljj;
+
 
     private static final long serialVersionUID = 1L;
+
+
+    public String getJljj() {
+        return jljj;
+    }
+
+    public void setJljj(String jljj) {
+        this.jljj = jljj;
+    }
+
+    public String getJlXm() {
+        return jlXm;
+    }
+
+    public void setJlXm(String jlXm) {
+        this.jlXm = jlXm;
+    }
+
+    public String getSjhm() {
+        return sjhm;
+    }
+
+    public void setSjhm(String sjhm) {
+        this.sjhm = sjhm;
+    }
 
     public String getYhZtMs() {
         return yhZtMs;
@@ -245,6 +288,14 @@ public class BizPtyh implements Serializable {
 
     public void setTelIdentifying(String telIdentifying) {
         this.telIdentifying = telIdentifying;
+    }
+
+    public String getYhJlMs() {
+        return yhJlMs;
+    }
+
+    public void setYhJlMs(String yhJlMs) {
+        this.yhJlMs = yhJlMs;
     }
 
     /**

@@ -2,7 +2,7 @@
   <div id="login">
       <!-- logo区域 -->
       <div id="logo">
-        <img src="static/icon/logo.png" width="120" height="120">
+        <img src="static/icon/LOGO.png" width="120" height="120">
         <dt style="font-size: 28px;color: white">
           学 车 联 盟
         </dt>
@@ -32,18 +32,18 @@
           >
             <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
           </md-input-item>
-          <md-input-item
-            ref="id"
-            title="邀请码"
-            v-model="yqm"
-            placeholder="邀请码"
-            is-title-latent
-            clearable
-            type="text"
-            style="border-bottom: 1px gray solid;margin: 20px;margin-top: 0px"
-          >
-            <i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>
-          </md-input-item>
+          <!--<md-input-item-->
+            <!--ref="id"-->
+            <!--title="邀请码"-->
+            <!--v-model="yqm"-->
+            <!--placeholder="邀请码"-->
+            <!--is-title-latent-->
+            <!--clearable-->
+            <!--type="text"-->
+            <!--style="border-bottom: 1px gray solid;margin: 20px;margin-top: 0px"-->
+          <!--&gt;-->
+            <!--<i class="iconfont icon-lock" slot="left" style="font-size: 26px"></i>-->
+          <!--</md-input-item>-->
       </div>
       <!-- 操作按钮区域 -->
       <div class="box-row">
@@ -78,17 +78,20 @@
     data(){
       return{
         from:{
-          username:'13311111111',
+          username:'15214273391',
           password:'123456'
         },
         yqm:''
       }
     },
     created(){
-      // this.wechatUtil.getAccessToken();
       this.$store.commit('M_tabId', 'tab-home')
     },
     methods: {
+      fet(){
+        this.wechatUtil.getCode()
+      },
+
       handleClick() {
         Toast.succeed('操作成功');
       },
@@ -98,36 +101,24 @@
         this.$http.post(this.apis.LOGIN,this.from).then((res)=>{
           if(res.code==200){
               localStorage.setItem('token',JSON.stringify(res.result.accessToken))
-              v.userMess()
+              this.util.userMess(v,()=>{
+                v.$router.push({name:'Home'})
+              })
           }else {
             Toast.failed(res.message)
           }
         }).catch((err)=>{
+          console.log(err)
           console.log('登录出错了！！！')
-        })
-      },
-      userMess(){
-        var v = this
-        this.$http.post(this.apis.USERMESS).then((res)=>{
-          if(res.code==200){
-            if(res.result.yhTx == ''){
-              res.result.yhTx ='/static/userTx.png'
-            }
-
-            localStorage.setItem('userMess',JSON.stringify(res.result))
-            v.$router.push({name:'Home'})
-          }
-        }).catch((err)=>{
-          console.log('出错了！！！')
         })
       },
       reg(){
         var v = this
-        // this.wechatUtil.qrScan((messtoback)=>{
-        //   Toast.succeed('微信'+messtoback);
-        //   v.codeyz(messtoback)
-            v.codeyz(v.yqm)
-        // })
+        this.wechatUtil.qrScan((messtoback)=>{
+          // Toast.succeed('微信'+messtoback);
+          v.codeyz(messtoback)
+            // v.codeyz(v.yqm)
+        })
       },
       codeyz(val){
         var v = this

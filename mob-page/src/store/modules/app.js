@@ -6,9 +6,13 @@ const app = {
     state: {
       tabId:'tab-home'
     },
+    userMess:'',
     mutations: {
       M_tabId(state,data){
         state.tabId = data
+      },
+      M_userMess(state,data){
+        state.userMess = data
       },
     }
 };
