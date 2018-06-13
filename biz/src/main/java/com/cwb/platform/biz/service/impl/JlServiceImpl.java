@@ -111,10 +111,10 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
                 //修改用户实名表  biz_user
                 BizUser bizUser = new BizUser();
                 bizUser.setYhId(user.getId());//用户ID
-                bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
+                bizUser.setYhZjhm(jlInfo.getYhZjhm());//用户证件号码
                 bizUser.setYhSjhm(user.getYhZh());//用户账户
                 bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
-                bizUser.setYhXm(user.getYhXm());//姓名
+                bizUser.setYhXm(jlInfo.getYhXm());//姓名
                 bizUser.setCjsj(DateUtils.getNowTime());//创建时间
                 bizUser.setYhSjid(yhSjid);//设置上级ID
                 bizUser.setYhSsjid(yhSsjid);//上上级ID

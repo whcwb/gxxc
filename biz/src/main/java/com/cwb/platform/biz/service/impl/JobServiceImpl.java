@@ -243,13 +243,14 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                                 }
 
                                 String note = "您的好友：" + l.getYhXm() + " 邀请您";
+                                note="";//经理说，生成的图片不需要增加文件。所以这行去掉
                                 ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg+yhZsyqm + ".png"), yhZsyqm, note);
                                 log.debug("3、用户：" + l.getYhXm() + "。生成邀请码成功");
 
                                 BizPtyh user = new BizPtyh();
                                 user.setId(l.getYhId());
                                 user.setYhZsyqm(yhZsyqm);//用户自己邀请码
-                                user.setYhZsyqmImg(yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
+                                user.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
                                 userMapper.updateByPrimaryKeySelective(user);
 
                             }
