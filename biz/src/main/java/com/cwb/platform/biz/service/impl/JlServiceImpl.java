@@ -41,7 +41,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         BizPtyh user = bizPtyhMapper.selectByPrimaryKey(obd.getId());
         if (user == null) return ApiResponse.fail("用户不存在");
 
-        RuntimeCheck.ifTrue(!StringUtils.equals(user.getYhLx(), "2"), "操作失败，只有教练才能进行认证操作");
+        RuntimeCheck.ifTrue(!StringUtils.equals(user.getYhJlsh(), "0"), "操作失败，只有提交教练资料才能进行认证操作");
         RuntimeCheck.ifTrue(StringUtils.equals(user.getYhJlsh(), "1"), "操作失败，该教练已认证无需再次认证");
         RuntimeCheck.ifTrue(StringUtils.equals(user.getYhSfsd(), "1"), "操作失败，该教练已锁定无法进行认证操作");
         RuntimeCheck.ifFalse(StringUtils.equals(user.getYhSfyjz(), "1"), "操作失败，该教练无驾照无法进行认证操作");
@@ -54,15 +54,20 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
 
-        String yhZtMs=" ";
+        String yhZtMs="";
         yhZtMs=obd.getYhZtMs();
         if(StringUtils.equals("2",obd.getYhJlsh())){
             RuntimeCheck.ifBlank(yhZtMs, "请填写审核失败原因。");
         } else if(StringUtils.equals("1",obd.getYhJlsh())){
+            if(!StringUtils.equals(user.getYhZtMs(),"1")){//如果学员资料没有审核，就需要将学员资料进行同步审核
+
+
+            }
             newEntity.setYhZt(obd.getYhJlsh());
-            newEntity.setYhJlsh(obd.getYhJlsh());
+            newEntity.setYhLx("2");//设置类型 ZDCLK0041(2、教练、1、学员)
         }
-        newEntity.setYhZtMs(yhZtMs);
+        newEntity.setYhJlsh(obd.getYhJlsh());
+        newEntity.setYhJlMs(yhZtMs);
        int i = ptyhService.update(newEntity);
        if(i>0){
            BizJl jl=new BizJl();
@@ -71,8 +76,6 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
            jl.setJlShMs(yhZtMs);
            this.update(jl);
        }
-
-
         return i==1?ApiResponse.success():ApiResponse.fail("审核失败");
     }
 }
