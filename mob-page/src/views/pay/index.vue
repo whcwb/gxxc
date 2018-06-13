@@ -217,10 +217,25 @@
         console.log(`[Mand Mobile] Select ${JSON.stringify(item)}`)
       },
       onCashierPay(item) {
-        console.log('支付确认')
-        console.log(item)
-        var  v = this
-        v.wechatUtil.pay(v.payMess,(res)=>{
+        var  v = this;
+        alert(1);
+        WeixinJSBridge.invoke(
+          'getBrandWCPayRequest', {
+            "appId":v.payMess.appId,     //公众号名称，由商户传入
+            "timeStamp":v.payMess.timeStamp,         //时间戳，自1970年以来的秒数
+            "nonceStr":v.payMess.nonceStr, //随机串
+            "package":v.payMess.package,
+            "signType":v.payMess.signType,         //微信签名方式：
+            "paySign":v.payMess.paySign //微信签名
+          },
+          function(res){
+            if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+
+            }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+          }
+        );
+        alert(2);
+        /*v.wechatUtil.pay(v.payMess,(res)=>{
           alert(res)
           if(res.get_brand_wcpay_request=='ok'){
             v.cashierResult = 'success'
@@ -232,7 +247,7 @@
             this.isCashierhow = !this.isCashierhow
             Toast('支付取消')
           }
-        })
+        })*/
       },
       onCashierCancel() {
         console.log('取消')

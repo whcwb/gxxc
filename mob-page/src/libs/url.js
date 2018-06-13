@@ -1,4 +1,6 @@
+let ajaxUrl = "http://xclm.xxpt123.com";
 module.exports = {
+  url:ajaxUrl,
   wechat:{
       getCode:'/wechat/getCode',
       getOpenid:'/wechat/getOpenid',
@@ -9,7 +11,7 @@ module.exports = {
 // ajaxUrl:'http://47.98.39.45:',//服务器
 //   ajaxUrl:'http://192.168.31.228:',//羊祥
 //   ajaxUrl:'http://3remnq.natappfree.cc:',
-  ajaxUrl:'http://xclm.xxpt123.com:',
+  ajaxUrl: ajaxUrl + ':',
 
 
   getImgUrl:':http://xclm.xxpt123.com:80',

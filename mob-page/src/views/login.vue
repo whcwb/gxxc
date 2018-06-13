@@ -78,16 +78,15 @@
     data(){
       return{
         from:{
-          username:'',
-          password:''
+          username:'15214273391',
+          password:'123456'
         },
         // yqm:''
       }
     },
     created(){
-      // this.wechatUtil.getAccessToken();
+      //this.wechatUtil.getAccessToken();
       this.$store.commit('M_tabId', 'tab-home')
-
     },
     methods: {
       fet(){
