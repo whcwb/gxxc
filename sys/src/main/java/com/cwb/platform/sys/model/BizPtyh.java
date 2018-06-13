@@ -163,7 +163,8 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_ZT_MS")
     private String yhZtMs;
 
-
+    @Column(name = "YH_JL_MS")
+    private String yhJlMs;
     /**
      * 用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
      */
@@ -287,6 +288,14 @@ public class BizPtyh implements Serializable {
 
     public void setTelIdentifying(String telIdentifying) {
         this.telIdentifying = telIdentifying;
+    }
+
+    public String getYhJlMs() {
+        return yhJlMs;
+    }
+
+    public void setYhJlMs(String yhJlMs) {
+        this.yhJlMs = yhJlMs;
     }
 
     /**

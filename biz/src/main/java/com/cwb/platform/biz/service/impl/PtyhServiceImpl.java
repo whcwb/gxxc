@@ -1,10 +1,7 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.cwb.platform.biz.mapper.BizOrderMapper;
-import com.cwb.platform.biz.mapper.BizPtyhMapper;
-import com.cwb.platform.biz.mapper.BizUserMapper;
-import com.cwb.platform.biz.mapper.BizWjMapper;
+import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
@@ -63,6 +60,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private BizPtyhMapper entityMapper;
     @Autowired
     private BizWjMapper wjMapper;
+    @Autowired
+    private BizJlMapper jlMapper;
     @Autowired
     private JlService jlService;
     @Autowired
@@ -306,7 +305,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             int i = userMapper.updateByPrimaryKey(bizUser);
             RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
             newEntity.setYhZt("1");
-            newEntity.setYhZtMs(" ");
+            newEntity.setYhZtMs("");
         }else{
             String yhZtMs=bizPtyh.getYhZtMs();
             RuntimeCheck.ifBlank(yhZtMs, "请填写审核失败原因。");
@@ -395,13 +394,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhLx(entity.getYhLx());//用户类型
         newEntity.setYhXb(entity.getYhXb());//用户性别
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
-        newEntity.setYhZt("0");//认证状态 ZDCLK0043(0 未认证、1 已认证)
+        newEntity.setYhZt("-1");//认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setDdSfjx("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
         newEntity.setYhOpenId(yhOpenId);//微信OPEN_ID
         newEntity.setYhAlipayId(yhAlipayId);//支付宝ID
         newEntity.setYhTx(entity.getYhTx());//用户头像
         newEntity.setYhBm(entity.getYhBm());//用户别名
-        newEntity.setYhYyyqm(entity.getYhYyyqm());//用户应邀邀请码
+        newEntity.setYhYyyqm(entity.getYhYyyqm());//用户应邀邀请码f
         newEntity.setYhIxySffp("0");//学员是否已分配
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
@@ -573,16 +572,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             sex = "1";
         }
         entity.setYhXb(sex);
-//        RuntimeCheck.ifBlank(entity.getYhXb(), "用户性别不能为空");
-//        if (StringUtils.containsNone(entity.getYhXb(), new char[]{'1', '2'})) {
-//            return ApiResponse.fail("请输入正确用户性别");
-//        }
-
-//        RuntimeCheck.ifBlank(entity.getYhSfyjz(), "用户驾照状态不能为空");
-//        if (StringUtils.containsNone(entity.getYhSfyjz(), new char[]{'1', '0'})) {
-//            return ApiResponse.fail("请输入正确用户驾照状态");
-//        }
-
 
         BizPtyh user = entityMapper.selectByPrimaryKey(userRequest.getId());
         if (user == null) {
@@ -597,9 +586,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(entity.getImgList())) {
             return ApiResponse.fail("请上传证件照片");
         }
-//        if (StringUtils.isEmpty(entity.getImgTypeList())) {
-//            return ApiResponse.fail("请上传证件照片属性");
-//        }
 
         String yhzjhm = entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
@@ -609,8 +595,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (listCount != null && listCount.size() > 0) {
             RuntimeCheck.ifTrue(true, "该证件号已与手机号" + listCount.get(0).getYhZh() + "关联，请更换新的证件号！");
         }
-
-
         String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
@@ -663,8 +647,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhXb(entity.getYhXb());//用户性别
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
-        newEntity.setYhZt("0");//用户驾照状态不能为空
-        newEntity.setYhZtMs(" ");//用户驾照状态不能为空
+        newEntity.setYhZt("0");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
+        newEntity.setYhZtMs("");//用户驾照状态不能为空
 
         int i = update(newEntity);
         if(i>0){
@@ -708,26 +692,30 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         }
 
         BizPtyh bizPtyh = getAppCurrentUser();
-
+        BizPtyh user=this.findById(bizPtyh.getId());
         // 查看用户是否已经实名认证
-        if(StringUtils.equals(bizPtyh.getYhZt(),"1")){  // 用户已认证 ，会写部分信息
-            bizJl.setYhXm(bizPtyh.getYhXm());
-            bizJl.setYhZjhm(bizPtyh.getYhZjhm());
+        if(StringUtils.equals(user.getYhZt(),"1")){  // 用户已认证 ，会写部分信息
+            bizJl.setYhXm(user.getYhXm());
+            bizJl.setYhZjhm(user.getYhZjhm());
         }
 
 
-        BizJl b = jlService.findById(bizPtyh.getId());
-        RuntimeCheck.ifTrue(b !=null , "该用户已经提交申请");
+//        BizJl b = jlService.findById(bizPtyh.getId());
+        RuntimeCheck.ifTrue(StringUtils.equals(user.getYhJlsh(),"1") , "该用户已经提交申请");
 
         RuntimeCheck.ifTrue(StringUtils.equals(bizPtyh.getYhLx(), "2"), "该用户已经是教练");
 
         RuntimeCheck.ifBlank(bizJl.getYhXm(), "用户姓名不能为空");
         RuntimeCheck.ifBlank(bizJl.getYhZjhm(), "用户身份号码不能为空");
 
+
+
         SimpleCondition condition = new SimpleCondition(BizJl.class);
         condition.eq(BizJl.InnerColumn.yhZjhm.name(),bizJl.getYhZjhm());
         List<BizJl> bizJls = jlService.findByCondition(condition);
-        if(CollectionUtils.isNotEmpty(bizJls)){
+        if(CollectionUtils.isNotEmpty(bizJls)&&StringUtils.equals(bizJls.get(0).getYhId(),bizPtyh.getId())){
+            jlMapper.deleteByPrimaryKey(bizPtyh.getId());
+        }else if(CollectionUtils.isNotEmpty(bizJls)&&!StringUtils.equals(bizJls.get(0).getYhId(),bizPtyh.getId())){
             return ApiResponse.fail("该身份证已经与其他用户关联");
         }
 
@@ -742,19 +730,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         // 更新用户信息为教练 ，未认证
         BizPtyh ptyh = new BizPtyh();
         ptyh.setId(bizPtyh.getId());
-        ptyh.setYhLx("2"); // 2 为教练 1 为学员
-        ptyh.setYhZt("0"); // 0 为 未认证  1 为已认证
+//        ptyh.setYhLx("2"); // 2 为教练 1 为学员
+//        ptyh.setYhZt("0"); // 0 为 未认证  1 为已认证
+        ptyh.setYhJlsh("0");
         ptyh.setYhSfyjz("1"); // 0 没有驾照 1 有驾照
         update(ptyh);
 
         bizJl.setYhId(bizPtyh.getId());
+        bizJl.setJlShZt(ptyh.getYhJlsh());
+
 
         jlService.save(bizJl);
-
-        // 更新用户实名表 todo
-
-
-
 
         String[] imgList = StringUtils.split(bizJl.getImgList(), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
