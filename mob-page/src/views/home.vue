@@ -3,19 +3,11 @@
 </style>
 <template>
   <div id="homeSty" class="box">
-    <a @click="pay">支付测试内容</a>
+    <!--<a @click="pay">支付测试内容</a>-->
     <div class="body">
       <div style="height: 100%;">
         <home-index v-if="tabId=='tab-home'"></home-index>
         <user-index v-else-if="tabId=='tab-user'"></user-index>
-        <!--<mt-tab-container v-model="tabId">-->
-        <!--<mt-tab-container-item id="tab-home">-->
-        <!--<home-index></home-index>-->
-        <!--</mt-tab-container-item>-->
-        <!--<mt-tab-container-item id="tab-user">-->
-        <!--<user-index></user-index>-->
-        <!--</mt-tab-container-item>-->
-        <!--</mt-tab-container>-->
       </div>
     </div>
     <div class="fooder">

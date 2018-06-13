@@ -145,8 +145,9 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     Util.title(to.meta.title);
     let openid = localStorage.getItem("openid");
-
-    // 如果没有openid，则需要获取
+    // let openid ='123'
+    console.log(openid);
+  // 如果没有openid，则需要获取
     if (openid == null && to.path != '/index') {
       next({
         name: 'index'
