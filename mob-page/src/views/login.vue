@@ -2,7 +2,7 @@
   <div id="login">
       <!-- logo区域 -->
       <div id="logo">
-        <img src="static/icon/LOGO.png" width="120" height="120">
+        <img src="static/icon/logo.png" width="120" height="120">
         <dt style="font-size: 28px;color: white">
           学 车 联 盟
         </dt>
@@ -85,9 +85,12 @@
       }
     },
     created(){
-      if(this.$store.state.app.SYS){
-      }
-      this.$store.commit('M_tabId', 'tab-home')
+        let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+        if(ISLOGIN == null){
+          this.wechatUtil.getAccessToken();
+          sessionStorage.setItem("ISLOGIN",true);
+        }
+        this.$store.commit('M_tabId', 'tab-home')
     },
     methods: {
       fet(){
