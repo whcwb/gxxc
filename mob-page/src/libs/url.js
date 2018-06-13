@@ -11,8 +11,8 @@ module.exports = {
   ajaxUrl: ajaxUrl + ':',
 
 
-  getImgUrl:ajaxUrl+':80/',//获取
-  upImgUrl:ajaxUrl+':8080/upload',//上传
+  getImgUrl:ajaxUrl+':8001/',//获取
+  upImgUrl:ajaxUrl+':8080/biz/upload',//上传
   LOGIN:'/app/login',//登录接口
   LOGOUT:'/app/logout',//退出用戶
   USERMESS:'/app/ptyh/get',//用户信息

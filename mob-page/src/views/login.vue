@@ -78,25 +78,36 @@
     data(){
       return{
         from:{
-          username:'15214273391',
-          password:'123456'
+          username:'',
+          password:''
         },
         yqm:''
       }
     },
     created(){
+      if(this.$store.state.app.SYS){
+      }
       this.$store.commit('M_tabId', 'tab-home')
     },
     methods: {
       fet(){
-        this.wechatUtil.getCode()
+        // this.wechatUtil.getCode()
+        let authCode = this.wechatUtil.getQueryString("code");
+        if (!authCode){
+          this.wechatUtil.getCode();
+        }else{
+          this.wechatUtil.getOpenid(authCode,(res)=>{
+            localStorage.setItem("openid",res);
+
+            this.wechatUtil.getAccessToken();
+          });
+        }
       },
 
       handleClick() {
         Toast.succeed('操作成功');
       },
       login(){
-          // this.$router.push("/home");
         var v = this
         this.$http.post(this.apis.LOGIN,this.from).then((res)=>{
           if(res.code==200){
@@ -113,15 +124,18 @@
         })
       },
       reg(){
+        Toast.info('创建账号')
         var v = this
         this.wechatUtil.qrScan((messtoback)=>{
+          alert('微信'+messtoback)
           // Toast.succeed('微信'+messtoback);
-          v.codeyz(messtoback)
+          // v.codeyz(messtoback)
             // v.codeyz(v.yqm)
         })
       },
       codeyz(val){
         var v = this
+        alert(val)
         this.$http.post(this.apis.CODEYZ,{'code':val}).then((res)=>{
           if(res.code==200){
             localStorage.setItem('yqm',val)
