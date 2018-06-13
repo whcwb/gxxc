@@ -4,9 +4,10 @@ import Vue from 'vue';
 
 const app = {
     state: {
-      tabId:'tab-home'
+      tabId:'tab-home',
+      userMess:'',
+      SYS:true
     },
-    userMess:'',
     mutations: {
       M_tabId(state,data){
         state.tabId = data
@@ -14,6 +15,9 @@ const app = {
       M_userMess(state,data){
         state.userMess = data
       },
+      M_SYS(state,data){
+        state.SYS = data
+      }
     }
 };
 

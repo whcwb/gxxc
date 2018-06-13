@@ -21,6 +21,8 @@
                 this.wechatUtil.getAccessToken();
             });
         }
+
+        this.$store.commit('M_SYS',false)
     }
   }
 </script>
