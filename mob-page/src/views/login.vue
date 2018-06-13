@@ -129,7 +129,7 @@
         this.wechatUtil.qrScan((messtoback)=>{
           alert('微信'+messtoback)
           // Toast.succeed('微信'+messtoback);
-          // v.codeyz(messtoback)
+          v.codeyz(messtoback)
             // v.codeyz(v.yqm)
         })
       },
