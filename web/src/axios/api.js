@@ -1,9 +1,9 @@
 //网络请求地址前缀
-// let BASE_URL = 'http://47.98.39.45:9086';
+let BASE_URL = 'http://xclm.xxpt123.com:8080/biz/';
 // let BASE_URL = 'http://127.0.0.1:9086';
-let BASE_URL = 'http://192.168.31.228:9086'//洋
+// let BASE_URL = 'http://192.168.31.228:9086'//洋
 module.exports = {
-    getImgUrl:'http://127.0.0.1:8080/',
+    getImgUrl:'http://xclm.xxpt123.com:8001/',
     url: BASE_URL,
     //图片上传地址
     UPLOAD: BASE_URL + '/upload',
