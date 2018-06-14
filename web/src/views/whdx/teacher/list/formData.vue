@@ -32,12 +32,12 @@
 							<img v-if="files.cardBack != ''" class="docImg" :src="staticPath+files.cardBack"/>
 							<img v-else class="docImg" src="static/card_back.png"/>
 						</Col>
-						<Col v-if="formItem.yhLx == '2'" span="12">
+						<Col v-if="files.licenceFront != ''" span="12">
 							<label>驾驶证正本</label>
 							<img v-if="files.licenceFront != ''" class="docImg" :src="staticPath+files.licenceFront"/>
 							<img v-else class="docImg" src="static/jszzb.jpg"/>
 						</Col>
-						<Col v-if="formItem.yhLx == '2'" span="12">
+						<Col v-if="files.licenceBack != ''" span="12">
 							<label>驾驶证副本</label>
 							<img v-if="files.licenceBack != ''" class="docImg" :src="staticPath+files.licenceBack"/>
 							<img v-else class="docImg" src="static/jsz.jpg"/>
@@ -46,8 +46,7 @@
 				</Form>
 			</div>
 			<div slot='footer'>
-				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">确定</Button>
+				<Button type="ghost" @click="v.util.closeDialog(v)">确定</Button>
 			</div>
 		</Modal>
 	</div>
@@ -75,9 +74,9 @@
                 formInputs:[
                     {label:'账号',prop:'yhZh',readonly:true},
                     {label:'姓名',prop:'yhXm'},
+                    {label:'身份证号码',prop:'yhZjhm'},
                     {label:'类型',prop:'yhLx',type:'dict',dict:'ZDCLK0041'},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042'},
-                    {label:'身份证号码',prop:'yhZjhm'},
                     {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt'},
                     {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
                 ],
@@ -100,7 +99,7 @@
                                     v.files.cardFront = r.wjTpdz;
                                     break;
                                 case '11':
-                                    v.files.cardback = r.wjTpdz;
+                                    v.files.cardBack = r.wjTpdz;
                                     break;
                                 case '20':
                                     v.files.licenceFront = r.wjTpdz;
@@ -111,6 +110,7 @@
                                 default:
                             }
                         }
+                        console.log(v.files);
                     }
                 })
             }

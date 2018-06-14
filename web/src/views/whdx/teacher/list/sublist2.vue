@@ -21,12 +21,9 @@
 </template>
 
 <script>
-    import formData from './formData.vue'
-	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems},
         data() {
             return {
                 v:this,
@@ -60,7 +57,8 @@
                 ],
                 pageData: [],
                 form: {
-                    yhSsjid:'',
+                    userId:'',
+                    userGrade:'2',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -76,7 +74,7 @@
             }
         },
         created() {
-            this.form.yhSsjid = this.item.id;
+            this.form.userId = this.item.id;
             this.util.initTable(this)
 
         },
