@@ -12,6 +12,9 @@
       font-size: 16px;
     }
   }
+  /*.ivu-steps .ivu-steps-head,.ivu-steps .ivu-steps-title{*/
+    /*background:#fff0!important;*/
+  /*}*/
 </style>
 <template>
     <div id="myCenterSfrz" class="box">
@@ -29,7 +32,7 @@
                      @click="stepIndex=0"
                      size="small" plain>上一步</mt-button>
         </div>
-        <div style="margin: 20px">
+        <div style="margin: 20px;text-align: center">
           <Steps :current="stepIndex">
             <Step title="填写资料"></Step>
             <Step title="上传证件照片"></Step>
@@ -100,15 +103,21 @@
           </div>
         </div>
         <div v-show="stepIndex == 2">
-          <md-result-page
-            class="customized"
-            img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"
-            text="需要做一个审核结果界面图"
-            :subtext="userMess.yhZt | yhZt">
-          </md-result-page>
+          <!--<md-result-page-->
+            <!--class="customized"-->
+            <!--img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"-->
+            <!--text="需要做一个审核结果界面图"-->
+            <!--:subtext="userMess.yhZt | yhZt">-->
+          <!--</md-result-page>-->
+          <div style="text-align: center">
+              <img :src="'static/zjsh/zjsh'+userMess.yhZt+'.png'" alt="">
+              <div style="font-size: 0.35rem;font-weight: 700">
+                {{userMess.yhZt | yhZt}}
+              </div>
+          </div>
           <div
             v-show="userMess.yhZt=='2'"
-            style="font-size: 0.4rem;color: #999999;text-align: center">
+            style="font-size: 0.3rem;color: #999999;text-align: center">
             <!--实名认证驳回信息-->
             {{userMess.yhZtMs}}
           </div>

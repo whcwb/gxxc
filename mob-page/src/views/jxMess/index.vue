@@ -49,7 +49,7 @@
         <div class="swipe">
           <mt-swipe :auto="4000">
             <mt-swipe-item>
-              <img src="/static/jx1.jpg"
+              <img src="static/images/jx1.jpg"
                    style="height: 100%;width: 100%"
                    alt="">
             </mt-swipe-item>

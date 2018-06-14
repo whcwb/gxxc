@@ -32,12 +32,12 @@
 							<img v-if="files.cardBack != ''" class="docImg" :src="staticPath+files.cardBack"/>
 							<img v-else class="docImg" src="static/card_back.png"/>
 						</Col>
-						<Col v-if="formItem.yhLx == '2'" span="12">
+						<Col v-if="files.licenceFront != ''" span="12">
 							<label>驾驶证正本</label>
 							<img v-if="files.licenceFront != ''" class="docImg" :src="staticPath+files.licenceFront"/>
 							<img v-else class="docImg" src="static/jszzb.jpg"/>
 						</Col>
-						<Col v-if="formItem.yhLx == '2'" span="12">
+						<Col v-if="files.licenceBack != ''" span="12">
 							<label>驾驶证副本</label>
 							<img v-if="files.licenceBack != ''" class="docImg" :src="staticPath+files.licenceBack"/>
 							<img v-else class="docImg" src="static/jsz.jpg"/>
@@ -100,7 +100,7 @@
 								    v.files.cardFront = r.wjTpdz;
 								    break;
 								case '11':
-                                    v.files.cardback = r.wjTpdz;
+                                    v.files.cardBack = r.wjTpdz;
                                     break;
 								case '20':
                                     v.files.licenceFront = r.wjTpdz;

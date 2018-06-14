@@ -17,7 +17,7 @@
         					<Row>
         						<form-items :parent="v"></form-items>
 								<Col span="12">
-									<FormItem v-if="formItem.ttShzt == '2'" prop='ttBz' label='失败原因'>
+									<FormItem v-if="formItem.ttShzt == '2'" prop='ttBz' label='备注'>
 										<Input v-model="formItem.ttBz"></Input>
 									</FormItem>
 								</Col>
@@ -55,7 +55,7 @@
                         }
                     },
                     {separator:true,label:'审核结果'},
-                    {label:'提现审核状态',prop:'ttShzt',dict:'ZDCLK0049',type:'radio'},
+                    {label:'提现审核状态',prop:'ttShzt',dict:'ZDCLK0049',type:'radio',excludeDict:['0']},
                 ],
                 ruleInline:{
 				},

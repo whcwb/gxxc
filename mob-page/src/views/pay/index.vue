@@ -202,7 +202,6 @@
       },
       onCashierPay(item) {
         var  v = this;
-        alert(1);
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest', {
             "appId":v.payMess.appId,     //公众号名称，由商户传入
@@ -213,16 +212,15 @@
             "paySign":v.payMess.paySign //微信签名
           },
           function(res){
-            alert(JSON.stringify(res))
             console.log(res)
             if(res.err_msg=='get_brand_wcpay_request:ok'){
               v.cashierResult = 'success'
-              this.doPay()
+              v.doPay()
             }else if(res.err_msg=='get_brand_wcpay_request::fail'){
               v.cashierResult = 'fail'
-              this.doPay()
+              v.doPay()
             }else if(res.err_msg=='get_brand_wcpay_request:cancel'){
-              this.isCashierhow = !this.isCashierhow
+              v.isCashierhow = !v.isCashierhow
               Toast('支付取消')
             }
             // if(res.err_msg == "get_brand_wcpay_request:ok" ) {
@@ -232,20 +230,6 @@
         );
         console.log('支付确认')
         console.log(item)
-        // var  v = this
-        // v.wechatUtil.pay(v.payMess,(res)=>{
-        //   alert(res)
-        //   if(res.get_brand_wcpay_request=='ok'){
-        //     v.cashierResult = 'success'
-        //     this.doPay()
-        //   }else if(res.get_brand_wcpay_request=='fail'){
-        //     v.cashierResult = 'fail'
-        //     this.doPay()
-        //   }else if(res.get_brand_wcpay_request=='cancel'){
-        //     this.isCashierhow = !this.isCashierhow
-        //     Toast('支付取消')
-        //   }
-        // })
       },
       onCashierCancel() {
         console.log('取消')
@@ -259,17 +243,17 @@
           if(res.code==200){
             v.cp = res.result
             v.cashierAmount ="'" + parseInt(res.result.cpJl)/100 +"'"
-            v.payMoney(res.result.id)
+            // v.payMoney(res.result.id)
           }
 
         }).catch((err)=>{
 
         })
       },
-      payMoney(id){
+      payMoney(){
         var v = this
-        console.log(id)
-        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:id}).then((res)=>{
+        console.log(v.cp)
+        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
           console.log(res)
           if(res.code==200){
             console.log(res.result)

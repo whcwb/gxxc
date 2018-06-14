@@ -17,10 +17,13 @@
         }else{
             this.wechatUtil.getOpenid(authCode,(res)=>{
                 localStorage.setItem("openid",res);
+                sessionStorage.setItem("ISLOGIN",true);
 
                 this.wechatUtil.getAccessToken();
             });
         }
+
+
     }
   }
 </script>

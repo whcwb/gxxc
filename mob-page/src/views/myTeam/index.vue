@@ -137,7 +137,7 @@
           if(val){
             return val
           }
-          return 'static/tx.png'
+          return 'static/images/tx.png'
         },
         ddSfjx:(val)=>{
           switch (val){

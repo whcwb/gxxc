@@ -104,7 +104,7 @@
             if(val){
               return val
             }
-            return 'static/djcl.png'
+            return 'static/images/djcl.png'
           },
           km:(val)=>{
             switch (val){

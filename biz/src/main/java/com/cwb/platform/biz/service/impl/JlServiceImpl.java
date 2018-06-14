@@ -71,6 +71,9 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         yhZtMs=obd.getYhZtMs();
         if(StringUtils.equals("2",obd.getYhJlsh())){
             RuntimeCheck.ifBlank(yhZtMs, "请填写审核失败原因。");
+
+            entityMapper.deleteByPrimaryKey(user.getId());
+
         } else if(StringUtils.equals("1",obd.getYhJlsh())){
             if(!StringUtils.equals(user.getYhZtMs(),"1")){//如果学员资料没有审核，就需要将学员资料进行同步审核
                 //biz_ptyh平台用户表 字段拼装
@@ -111,10 +114,10 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
                 //修改用户实名表  biz_user
                 BizUser bizUser = new BizUser();
                 bizUser.setYhId(user.getId());//用户ID
-                bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
+                bizUser.setYhZjhm(jlInfo.getYhZjhm());//用户证件号码
                 bizUser.setYhSjhm(user.getYhZh());//用户账户
                 bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
-                bizUser.setYhXm(user.getYhXm());//姓名
+                bizUser.setYhXm(jlInfo.getYhXm());//姓名
                 bizUser.setCjsj(DateUtils.getNowTime());//创建时间
                 bizUser.setYhSjid(yhSjid);//设置上级ID
                 bizUser.setYhSsjid(yhSsjid);//上上级ID

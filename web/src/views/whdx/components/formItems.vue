@@ -6,23 +6,23 @@
             </div>
             <div v-if="i.separator" style="border-bottom: 1px solid #e9eaec;height: 2px;text-align: center;margin-top: 1px;margin-bottom: 16px;"></div>
             <FormItem v-else :prop='i.prop' :label='i.label'>
-                <Input v-if="!i.dict &&(!i.type || i.type ==='text')" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="readonly && i.readonly" :disabled="readonly && i.disabled">
+                <Input v-if="!i.dict &&(!i.type || i.type ==='text')" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled">
                     <span v-if="i.prepend" slot="prepend">{{i.prepend}}</span>
                     <span v-if="i.append" slot="append">{{i.append}}</span>
                 </Input>
-                <InputNumber v-else-if="i.type ==='number'" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="readonly && i.readonly" :disabled="readonly && i.disabled">
+                <InputNumber v-else-if="i.type ==='number'" v-model="formItem[i.prop]" :placeholder="'请填写'+i.label+'...'" :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled">
                     <span v-if="i.prepend" slot="prepend">{{i.prepend}}</span>
                     <span v-if="i.append" slot="append">{{i.append}}</span>
                 </InputNumber>
-                <DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="readonly && i.readonly"  :disabled="readonly && i.disabled"></DatePicker>
-                <DatePicker v-else-if="i.type == 'datetime'"  :value="formItem[i.prop]" type="datetime" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="readonly && i.readonly" :disabled="readonly && i.disabled"></DatePicker>
-                <Select v-else-if="i.type === 'foreignKey'" :disabled="readonly && i.disabled" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
+                <DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="parent.readonly && i.readonly"  :disabled="parent.readonly && i.disabled"></DatePicker>
+                <DatePicker v-else-if="i.type == 'datetime'"  :value="formItem[i.prop]" type="datetime" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled"></DatePicker>
+                <Select v-else-if="i.type === 'foreignKey'" :disabled="parent.readonly && i.disabled" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
                     <Option v-for = '(item,index) in foreignList[i.prop].items' :value="item.key" :key="item.key">{{item.val}}</Option>
                 </Select>
                 <RadioGroup v-else-if="i.type === 'radio'" v-model="formItem[i.prop]">
                     <Radio v-for='(item,index) in parent.dictUtil.getByCode(parent,i.dict)' v-if="i.excludeDict == null || i.excludeDict.indexOf(item.key) < 0" :label="item.key">{{item.val}}</Radio>
                 </RadioGroup>
-                <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="readonly && i.readonly" :disabled="readonly && i.disabled">
+                <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled">
                     <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)' :value="item.key" :key="item.key">{{item.val}}</Option>
                 </Select>
             </FormItem>
@@ -46,10 +46,15 @@
                   return null;
               }
             },
+            parentFormItems:{
+              type:Object,
+              default:function(){
+                  return null;
+              }
+            },
         },
         data(){
           return{
-              readonly:false,
               foreignList:[],
               formInputs:[],
               formItem:{},
@@ -64,14 +69,14 @@
             }else if (this.parent.formInputs){
                 this.formInputs = this.parent.formInputs;
             }
-            if (this.parent.formItem){
+            if (this.parentFormItems != null){
+                this.formItem = this.parentFormItems;
+            }else if (this.parent.formItem){
                 this.formItem = this.parent.formItem;
             }
-            if (this.parent.readonly){
-                this.readonly = this.parent.readonly;
-            }
             for (let r of this.formInputs){
-                if (typeof r.handler === 'functino'){
+                if (typeof r.handler === 'function'){
+                    this.formItem[r.prop] = r.handler(this.formItem[r.prop]);
                 }
             }
         }

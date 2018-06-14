@@ -124,7 +124,7 @@
             this.$http.post(this.apis.USERMESS).then((res)=>{
               if(res.code==200){
                 if(res.result.yhTx == ''){
-                  res.result.yhTx ='/static/userTx.png'
+                  res.result.yhTx ='static/images/userTx.png'
                 }
                 localStorage.setItem('userMess',JSON.stringify(res.result))
                 v.compname = ''
