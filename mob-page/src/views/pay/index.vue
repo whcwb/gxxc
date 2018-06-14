@@ -202,7 +202,6 @@
       },
       onCashierPay(item) {
         var  v = this;
-        alert(1);
         WeixinJSBridge.invoke(
           'getBrandWCPayRequest', {
             "appId":v.payMess.appId,     //公众号名称，由商户传入

@@ -71,6 +71,9 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         yhZtMs=obd.getYhZtMs();
         if(StringUtils.equals("2",obd.getYhJlsh())){
             RuntimeCheck.ifBlank(yhZtMs, "请填写审核失败原因。");
+
+            entityMapper.deleteByPrimaryKey(user.getId());
+
         } else if(StringUtils.equals("1",obd.getYhJlsh())){
             if(!StringUtils.equals(user.getYhZtMs(),"1")){//如果学员资料没有审核，就需要将学员资料进行同步审核
                 //biz_ptyh平台用户表 字段拼装

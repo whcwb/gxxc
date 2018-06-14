@@ -2,7 +2,7 @@
   <div id="login">
       <!-- logo区域 -->
       <div id="logo">
-        <img src="static/icon/logo.png" width="120" height="120">
+        <img src="static/icon/LOGO.png" width="120">
         <dt style="font-size: 28px;color: white">
           学 车 联 盟
         </dt>
@@ -49,7 +49,7 @@
       <div class="box-row">
         <div class="body-O"></div>
         <div style="margin-right: 20px;margin-bottom: 20px">
-            <a style="color: #dddee1;font-size: 20px;vertical-align: top" @click="handleClick">忘记密码？</a>
+            <a style="color: #dddee1;font-size: 20px;vertical-align: top" @click="handleClick">忘记密码！</a>
         </div>
       </div>
       <div class="box-row">
@@ -127,10 +127,9 @@
         })
       },
       reg(){
-        Toast.info('创建账号')
         var v = this
         this.wechatUtil.qrScan((messtoback)=>{
-          alert('微信'+messtoback)
+          // alert('微信'+messtoback)
           // Toast.succeed('微信'+messtoback);
           v.codeyz(messtoback)
             // v.codeyz(v.yqm)

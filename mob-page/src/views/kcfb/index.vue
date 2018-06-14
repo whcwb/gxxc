@@ -40,7 +40,7 @@
             <div class="listItem" v-for="(item,index) in qumess">
               <h2 style="margin: 0.1rem 0">{{item.name}}</h2>
               <div>
-                <img src="/static/blkc.png"
+                <img src="static/images/blkc.png"
                      style="width: 100%;height: 1.5rem"
                      alt="">
               </div>

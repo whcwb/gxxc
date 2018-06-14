@@ -30,6 +30,8 @@ public class ZhServiceImpl extends BaseServiceImpl<BizZh,java.lang.String> imple
      * 更新用户账户信息
      * 1、删除该账户信息
      * 2、从拥金明细表中统计出所有的金额
+     *
+     * 统计明细表中  提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 2、提现失败) 提现操作默认0 佣金操作默认1
      * @param userId
      * @return
      */
