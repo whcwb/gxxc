@@ -17,7 +17,7 @@
         					<Row>
         						<form-items :parent="v"></form-items>
 								<Col span="12">
-									<FormItem v-if="formItem.ttZt == '4'" prop='ttBz' label='失败原因'>
+									<FormItem v-if="formItem.ttZt == '1' || formItem.ttZt == '4'" prop='ttBz' label='备注'>
 										<Input v-model="formItem.ttBz"></Input>
 									</FormItem>
 								</Col>

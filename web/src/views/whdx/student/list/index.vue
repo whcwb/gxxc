@@ -76,7 +76,7 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),
-                                this.util.buildButton(this,h,'info','network','下线',()=>{
+                                this.util.buildButton(this,h,'info','network','查看下线',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
                                 }),

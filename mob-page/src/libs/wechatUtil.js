@@ -38,9 +38,9 @@ wechatUtil.getOpenid = (code,callback)=>{
     })
 }
 
-wechatUtil.getAccessToken = ()=>{//生成token
+wechatUtil.getAccessToken = (openid)=>{//生成token
     $.ajax({
-        url:wechatUtil.baseUrl + urls.wechat.getAccessToken,
+        url:wechatUtil.baseUrl + urls.wechat.getAccessToken+'?openid='+openid,
         type:'get',
         success:function(res){
             if (res.code == 200){

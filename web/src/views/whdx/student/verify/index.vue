@@ -20,12 +20,11 @@
 </template>
 
 <script>
-    import formData from './formData.vue'
     import audit from './audit.vue'
 
     export default {
         name: 'byxxTable',
-        components: {formData,audit},
+        components: {audit},
         data() {
             return {
                 v:this,
@@ -57,12 +56,6 @@
                                     }),
 								)
 							}
-                            // buttons.push(
-                            //     this.util.buildButton(this,h,'success','card','详情',()=>{
-                            //         this.choosedItem = params.row;
-                            //         this.componentName = 'formData'
-                            //     }),
-                            // )
                             return h('div', buttons);
                         }
                     }

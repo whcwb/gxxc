@@ -20,13 +20,11 @@
 </template>
 
 <script>
-    import formData from './formData.vue'
     import audit from './audit.vue'
-	import searchItems from '../../components/searchItems'
 
     export default {
         name: 'byxxTable',
-        components: {formData,searchItems,audit},
+        components: { audit},
         data() {
             return {
                 v:this,
@@ -52,10 +50,6 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'audit'
                                 }),
-                                // this.util.buildButton(this,h,'success','card','详情',()=>{
-                                //     this.choosedItem = params.row;
-                                //     this.componentName = 'formData'
-                                // }),
                             ]);
                         }
                     }

@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 @Controller
 @RequestMapping("wechat")
 public class WxChatController {
-	
+
 	private final Logger logger = LoggerFactory.getLogger("access_info");
 	@Autowired
 	private WechatUtils wechatUtils;
@@ -61,8 +61,8 @@ public class WxChatController {
 
 	@RequestMapping("getAccessToken")
 	@ResponseBody
-	public ApiResponse<String> getAccessToken(){
-		return ApiResponse.success(wechatUtils.getToken());
+	public ApiResponse<String> getAccessToken(String openid){
+		return ApiResponse.success(wechatUtils.getToken(openid));
 	}
 
 
@@ -86,18 +86,18 @@ public class WxChatController {
 			@RequestParam(name = "timestamp", required = false) String timestamp,
 			@RequestParam(name = "nonce", required = false) String nonce,
 			@RequestParam(name = "echostr", required = false) String echostr) {
-		
+
 		if (StringUtils.isNoneEmpty(signature, timestamp, nonce, echostr)){
 			if (this.wxService.checkSignature(timestamp, nonce, signature)) {
 				this.logger.info("\n接收到来自微信服务器的认证消息：signature = [{}], timestamp = [{}], nonce = [{}], echostr = [{}]", signature, timestamp, nonce, echostr);
-				
+
 				return echostr;
 			}
 		}
 
 		return "非法请求";
 	}
-	
+
 
 	@PostMapping(produces = "application/xml; charset=UTF-8")
 	@ResponseBody

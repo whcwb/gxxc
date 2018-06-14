@@ -18,14 +18,14 @@
 </template>
 
 <script>
-    import formData from './formData.vue'
     import sublist from './sublist.vue'
-    import audit from './audit.vue'
+    import allotList from './allotList.vue'
     import allot from './allot.vue'
+    import formData from './formData.vue'
 
     export default {
         name: 'byxxTable',
-        components: {formData,sublist,allot,audit},
+        components: {allotList,sublist,allot,formData},
         data() {
             return {
                 v:this,
@@ -41,6 +41,7 @@
                     {title: '手机号',key:'yhSjhm',searchKey:'yhSjhmLike'},
                     {title: '所属区域',key:'jlQu',dict:'ZDCLK0060',searchType:'dict'},
                     {title: '教练驾龄',key:'jlJl',append:'年'},
+                    {title: '审核状态',key:'jlShZt',dict:'ZDCLK0043',searchType:'dict'},
                     {
                         title: '操作',
                         key: 'action',
@@ -52,6 +53,10 @@
                                     this.componentName = 'formData'
                                 }),
                                 this.util.buildButton(this,h,'success','person','已分配学员',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'allotList'
+                                }),
+                                this.util.buildButton(this,h,'info','network','查看下线',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
                                 }),
