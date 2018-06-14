@@ -41,7 +41,7 @@
                         <span style="font-size:16px"> {{usermess.yhXm}}</span>
                       </Col>
                     </Row>
-                    <Row type="flex" justify="start" align="middle" v-if="!ewm">
+                    <Row type="flex" justify="start" align="middle" v-if="ewm">
                       <Col span="24" style="text-align: center">
                         <div style="padding: 0.2rem">
                             <img :src="ewm" style="width: 100%" alt="">

@@ -92,6 +92,7 @@
           sessionStorage.setItem("ISLOGIN",true);
         }
         this.$store.commit('M_tabId', 'tab-home')
+        // this.getUrlCode()
     },
     methods: {
       fet(){
@@ -135,6 +136,10 @@
           v.codeyz(messtoback)
             // v.codeyz(v.yqm)
         })
+      },
+      getUrlCode(){
+        // let urlCode = this.$route.jquery.wxCode
+        alert(urlCode)
       },
       codeyz(val){
         var v = this
