@@ -127,7 +127,7 @@
                   <Icon v-if="usermess.yhJlsh=='1'"
                         type="ios-checkmark"></Icon>&nbsp;&nbsp;{{usermess.yhJlsh | yhZt}}</span>
               </mt-cell>
-              <mt-cell title="我的学员" value="0人"
+              <mt-cell title="我的学员" value=""
                        v-if="usermess.yhLx=='2'"
                        to="/myStudent"
                        is-link style="border-bottom: 1px #e9eaec solid;">

@@ -33,7 +33,7 @@
               <div style="width: 1.3rem;padding: 0.2rem">
                 <img
                   style="width: 100%"
-                  src="/static/bill.png" alt="">
+                  src="static/images/bill.png" alt="">
               </div>
               <div class="body-O" style="border-bottom: #949494 solid 1px;margin-right: 0.2rem">
                   <div class="box-row" style="padding-top: 0.25rem;

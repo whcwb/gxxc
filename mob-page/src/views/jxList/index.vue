@@ -37,7 +37,7 @@
         <div class="body messList">
           <div class="list box-row"  v-for="(item,index) in [,,,,,,,,,]">
             <div style="width: 2rem" @click="$router.push({name:'jxMess'})">
-              <img src="static/xlc.jpg"
+              <img src="static/images/xlc.jpg"
                    width="100%"
                    height="100%"
                    alt="">
