@@ -110,7 +110,7 @@
             <!--:subtext="userMess.yhZt | yhZt">-->
           <!--</md-result-page>-->
           <div style="text-align: center">
-              <img :src="'/static/zjsh/zjsh'+userMess.yhZt+'.png'" alt="">
+              <img :src="'static/zjsh/zjsh'+userMess.yhZt+'.png'" alt="">
               <div style="font-size: 0.35rem;font-weight: 700">
                 {{userMess.yhZt | yhZt}}
               </div>
