@@ -53,9 +53,6 @@
 
 <template>
     <div class="login" @keydown.enter="handleSubmit" >
-		<div class="loginBg">
-
-		</div>
 		<Card class="loginForm">
 			<Row>
 				<div class="body-O">
