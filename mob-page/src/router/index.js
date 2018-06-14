@@ -146,7 +146,7 @@ router.beforeEach((to, from, next) => {
     Util.title(to.meta.title);
     let openid = localStorage.getItem("openid");
   // let openid = "123123";
-    // console.log(openid);
+  //   console.log(openid);
   // 如果没有openid，则需要获取
     if (openid == null && to.path != '/index') {
       next({
