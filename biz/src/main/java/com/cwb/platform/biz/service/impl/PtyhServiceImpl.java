@@ -693,22 +693,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         BizPtyh bizPtyh = getAppCurrentUser();
         BizPtyh user=this.findById(bizPtyh.getId());
+        String yhZjhm=bizJl.getYhZjhm();
+
         // 查看用户是否已经实名认证
-        if(StringUtils.equals(user.getYhZt(),"1")){  // 用户已认证 ，会写部分信息
+        if(StringUtils.equals(user.getYhZt(),"1")||(StringUtils.indexOf(yhZjhm,"*")>-1)){  // 用户已认证 ，会写部分信息
             bizJl.setYhXm(user.getYhXm());
             bizJl.setYhZjhm(user.getYhZjhm());
         }
-
-
-//        BizJl b = jlService.findById(bizPtyh.getId());
         RuntimeCheck.ifTrue(StringUtils.equals(user.getYhJlsh(),"1") , "该用户已经提交申请");
-
         RuntimeCheck.ifTrue(StringUtils.equals(bizPtyh.getYhLx(), "2"), "该用户已经是教练");
-
         RuntimeCheck.ifBlank(bizJl.getYhXm(), "用户姓名不能为空");
         RuntimeCheck.ifBlank(bizJl.getYhZjhm(), "用户身份号码不能为空");
-
-
 
         SimpleCondition condition = new SimpleCondition(BizJl.class);
         condition.eq(BizJl.InnerColumn.yhZjhm.name(),bizJl.getYhZjhm());
