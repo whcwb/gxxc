@@ -72,7 +72,7 @@ API.ajax.interceptors.response.use(response=> {
   //网络请求加载动画
   Indicator.close();
 
-  if(response.data.code==403){
+  if(response.data.code===403){
     Toast.info('权限丢失，请重新登录')
     router.push({name:'Login'})
     return

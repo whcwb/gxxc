@@ -148,7 +148,7 @@
                   <div style="text-align: center">
                     <a href="http://m.jiakaobaodian.com/mnks/kemu2/car-beijing.html">
                       <img style="width: 100%;height: 2.5rem"
-                        src="/static/ke.jpg" alt="">
+                        src="static/images/ke.jpg" alt="">
                     </a>
                   </div>
                   <!--小车科目二考试又叫小路考，包括倒车入库、侧方停车、坡道定点、直角拐弯、曲线行驶等5个科目二考试技巧项目，满分100分，80分及以上合格，更多内容请看小车C1科目二考试内容及合格标准。-->
@@ -160,7 +160,7 @@
                   <div style="text-align: center">
                     <a target="_blank" href="http://m.jiakaobaodian.com/mnks/kemu3/car-beijing.html">
                       <img style="width: 100%;height: 2.5rem"
-                           src="/static/kms.jpg" alt="">
+                           src="static/images/kms.jpg" alt="">
                     </a>
                   </div>
                   <!--小车科目三考试又叫大路考，您需要掌握包括上车准备、直线行驶、百米加减档、灯光模拟考试等17项科目三考试技巧，满分为100分，80分及以上为及格。更多内容请看小车C1科目三考试内容及合格标准。-->

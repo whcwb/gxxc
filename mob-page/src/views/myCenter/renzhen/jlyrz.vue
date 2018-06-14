@@ -118,12 +118,19 @@
           </div>
         </div>
         <div v-show="stepIndex == 2">
-          <md-result-page
-            class="customized"
-            img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"
-            text="需要做一个审核结果界面图"
-            :subtext="userMess.yhJlsh | yhJlsh">
-          </md-result-page>
+          <!--<md-result-page-->
+            <!--class="customized"-->
+            <!--img-url="//manhattan.didistatic.com/static/manhattan/do1_JX7bcfXqLpStKRv31xlp"-->
+            <!--text="需要做一个审核结果界面图"-->
+            <!--:subtext="userMess.yhJlsh | yhJlsh">-->
+          <!--</md-result-page>-->
+          <div style="text-align: center">
+            <img :src="'/static/zjsh/zjsh'+userMess.yhJlsh+'.png'" alt="">
+            <div style="font-size: 0.35rem;font-weight: 700">
+              {{userMess.yhJlsh | yhJlsh
+              }}
+            </div>
+          </div>
           <div
             v-show="userMess.yhJlsh=='2'"
             style="font-size: 0.4rem;color: #999999;text-align: center">
