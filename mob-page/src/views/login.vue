@@ -138,7 +138,7 @@
       },
       codeyz(val){
         var v = this
-        alert(val)
+        // alert(val)
         this.$http.post(this.apis.CODEYZ,{'code':val}).then((res)=>{
           if(res.code==200){
             localStorage.setItem('yqm',val)

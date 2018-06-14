@@ -173,6 +173,11 @@
         },
         TX(){//                                             银行卡号          开户行         提现方式
           var v = this
+          // let bank =v.bankList[v.bankListIndex].id
+          if(v.bankList.length==0){
+            Toast('请选择银行卡')
+            return
+          }
           if(this.number){
               this.$http.post(this.apis.TX,{'ttje':this.number*100,'yhkid':v.bankList[v.bankListIndex].id}).then((res)=>{
                 if(res.code==200){

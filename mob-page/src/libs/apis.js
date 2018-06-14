@@ -73,9 +73,10 @@ API.ajax.interceptors.response.use(response=> {
   Indicator.close();
 
   if(response.data.code===403){
-    Toast.info('权限丢失，请重新登录')
-    router.push({name:'Login'})
-    return
+    Toast('权限丢失，请重新登录')
+    setTimeout(function () {
+        router.push({name:'Login'})
+    },100)
   }
 
   return response.data;

@@ -101,11 +101,10 @@
         data(){
           return{
             compname:'',
-            userMess:JSON.parse(localStorage.getItem("userMess")),
+            userMess:this.$store.state.app.userMess,
           }
         },
       created(){
-        this.bm = this.userMess.yhXm
       },
         methods:{
           goOut(){

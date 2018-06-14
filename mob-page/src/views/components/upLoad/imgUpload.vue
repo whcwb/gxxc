@@ -40,6 +40,9 @@
         default:''
       },
     },
+    created(){
+      console.log('图片地址',this.demoImg)
+    },
     data () {
       return {
         url:this.apis.getImgUrl,
