@@ -73,13 +73,12 @@ wechatUtil.config = function(){
         timestamp: parseInt(wechatUtil.now.getTime()/1000), // 必填，生成签名的时间戳
         nonceStr: 'wechat123', // 必填，生成签名的随机串
         signature: wechatUtil.sign,// 必填，签名
-        jsApiList: ['scanQRCode','chooseImage','uploadImage','chooseWXPay'] // 必填，需要使用的JS接口列表
+        jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay'] // 必填，需要使用的JS接口列表
     });
 }
 
 wechatUtil.pay = function(prepay,callback){
     console.log('chooseWXPay');
-
     wx.chooseWXPay({
         appId:prepay.appId,
         timestamp: prepay.timeStamp,// 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -121,7 +120,7 @@ wechatUtil.qrScan = (messtoback)=>{//打开微信扫码功能
         }
     });
 }
-wechatUtil.chooseImage = ()=>{
+wechatUtil.chooseImage = ()=>{//拍照或从手机相册中选图接口
     console.log('chooseImage');
     wx.chooseImage({
         count: 1, // 默认9
@@ -132,7 +131,13 @@ wechatUtil.chooseImage = ()=>{
         }
     });
 }
-wechatUtil.uploadImage = ()=>{
+wechatUtil.previewImage = ()=>{//预览图片接口
+  wx.previewImage({
+    current: '', // 当前显示图片的http链接
+    urls: [] // 需要预览的图片http链接列表
+  })
+},
+wechatUtil.uploadImage = ()=>{//下载图片接口
     wx.uploadImage({
         localId: '', // 需要上传的图片的本地ID，由chooseImage接口获得
         isShowProgressTips: 1, // 默认为1，显示进度提示
