@@ -1,6 +1,8 @@
 package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.util.DloadImgUtil;
+import com.cwb.platform.biz.util.WechatUtils;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.bean.UserPassCredential;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -13,6 +15,8 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -33,11 +37,19 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/app")
 public class AppMainController {
+	Logger log = LoggerFactory.getLogger("access_info");
+
+	@Value("${staticPath:/}")
+	private String staticPath;
+
 	@Value("${appSendSMSRegister:app_sendSMS_register}")
 	private String appSendSMSRegister;
 
 	@Autowired
 	private PtyhService ptyhService;
+
+	@Autowired
+	private WechatUtils wechatUtils;
 
     @Autowired
 	private StringRedisTemplate redisDao;
@@ -237,4 +249,28 @@ public class AppMainController {
 		return ptyhService.validateCode(code);
 	}
 
+	/**
+	 * 从微信端下载图片到本地
+	 * 微信在获取到图片地址后，要将serverId 这个值的内容传到code中去。openid也不能为空。让后台来
+	 */
+	@PostMapping("/getWxFile")
+	public ApiResponse<String> downloadMedia( String code,HttpServletRequest request){
+		String openId=request.getHeader("openid");
+		openId="oRPNG0uKqXvvKg23RtAxZZyiuqBI";
+		RuntimeCheck.ifTrue(StringUtils.isEmpty(openId),"OPEN_ID不能为空");
+		RuntimeCheck.ifTrue(StringUtils.isEmpty(code),"微信文件ID不能为空");
+		String savePath=staticPath;
+		if (!savePath.endsWith("/")) {
+			savePath += "/";
+		}
+		savePath+="temp";
+
+		String accessToken =wechatUtils.getToken(openId);
+		log.debug("1、获取到accessToken："+accessToken);
+		String fileUrl=DloadImgUtil.downloadMedia(code,savePath,accessToken);
+		if(StringUtils.isNotEmpty(fileUrl)){
+			fileUrl=fileUrl.replace(staticPath,"");
+		}
+		return ApiResponse.success(fileUrl);
+	}
 }
