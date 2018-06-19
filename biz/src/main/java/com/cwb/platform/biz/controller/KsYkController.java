@@ -4,8 +4,10 @@ import com.cwb.platform.biz.model.BizKsYk;
 import com.cwb.platform.biz.service.KsYkService;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.base.QueryController;
+import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,5 +24,10 @@ public class KsYkController extends QueryController<BizKsYk,String> {
     @Override
     protected BaseService<BizKsYk, String> getBaseService() {
         return service;
+    }
+
+    @RequestMapping(value="/save", method={RequestMethod.POST})
+    public ApiResponse<String> save(BizKsYk entity){
+        return service.validAndSave(entity);
     }
 }
