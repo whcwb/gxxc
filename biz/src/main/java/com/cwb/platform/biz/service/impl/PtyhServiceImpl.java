@@ -421,7 +421,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         yhSjid = pUserId;
         BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
         if (pBizUser != null) {
-            yhSsjid = pBizUser.getYhId();
+            yhSsjid = pBizUser.getYhSjid();
         }
 
         //插入用户实名表  biz_user
