@@ -24,13 +24,29 @@ module.exports = {
         FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
         UPLOAD:BASE_URL + '/api/files/upload',//根据主ID查询文件信息
     },
-    USER:{
-        QUERY:'/api/yh/pager',//用户管理
-        ADD:'/api/yh/save',
-        CHANGE:'/api/yh/update',
-        GIVE:'/api/js/modifyUserRoles',
-        DELE:'/api/yh/removeIds',
-        SEARCHSOME:'/api/yh/query',//用户管理
+    ksJf:{
+        QUERY:'/api/ksjf/pager',//考试缴费管理
+        ADD:'/api/ksjf/save',
+        CHANGE:'/api/ksjf/update',
+        DELE:'/api/ksjf/removeIds',
+    },
+    ksjg:{
+        QUERY:'/api/ksjg/pager',//考试结果记录
+        ADD:'/api/ksjg/save',
+        CHANGE:'/api/ksjg/update',
+        DELE:'/api/ksjg/removeIds',
+    },
+    kssl:{
+        QUERY:'/api/kssl/pager',//考试受理信息
+        ADD:'/api/kssl/save',
+        CHANGE:'/api/kssl/update',
+        DELE:'/api/kssl/removeIds',
+    },
+    ksyk:{
+        QUERY:'/api/ksyk/pager',//学员考试约考
+        ADD:'/api/ksyk/save',
+        CHANGE:'/api/ksyk/update',
+        DELE:'/api/ksyk/removeIds',
     },
     hd:{
         QUERY:'/api/hd/pager',//活动管理
