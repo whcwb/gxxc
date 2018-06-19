@@ -1,8 +1,8 @@
 const app = {
     state: {
-      tabId:0
+      tabId:2,
+      userMess:'',
     },
-    userMess:'',
     mutations: {
       M_tabId(state,data){
         state.tabId = data

@@ -1,8 +1,8 @@
 <template>
   <div id="app" class="box_col">
-    <transition name="el-fade-in-linear">
+    <!--<transition name="el-fade-in-linear">-->
       <router-view/>
-    </transition>
+    <!--</transition>-->
   </div>
 </template>
 
@@ -13,5 +13,5 @@ export default {
 </script>
 
 <style>
-  @import "//at.alicdn.com/t/font_683602_n9i0ce745jj.css";
+  @import "//at.alicdn.com/t/font_683602_2uzi7642sdm.css";
 </style>
