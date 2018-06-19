@@ -42,7 +42,6 @@ import chooseImg from '../components/chooseImg'
                     {title:'教练车总数',key:'carTotal'},
                     {title:'教练场总面积',key:'totalAreaJlc'},
                     {title:'备注',key:'remark'},
-                    {title:'背景图片',key:'bgFileId'},
                     {
                         title: '操作',
                         key: 'action',
