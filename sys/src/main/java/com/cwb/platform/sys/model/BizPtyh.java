@@ -214,9 +214,21 @@ public class BizPtyh implements Serializable {
     @Transient
     private String jljj;
 
+    /**
+     * 用户邀请人数
+     */
+    @Transient
+    private long userInviteCount;
 
     private static final long serialVersionUID = 1L;
 
+    public long getUserInviteCount() {
+        return userInviteCount;
+    }
+
+    public void setUserInviteCount(long userInviteCount) {
+        this.userInviteCount = userInviteCount;
+    }
 
     public String getJljj() {
         return jljj;

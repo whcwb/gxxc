@@ -7,6 +7,7 @@ import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,11 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         return BizKsSl.class;
     }
 
-
+    @Override
+    public ApiResponse<String> validAndSave(BizKsSl entity) {
+        int i=save(entity);
+        return i==1?ApiResponse.success():ApiResponse.fail();
+    }
     @Override
     public int save(BizKsSl entity) {
         SysYh user=getCurrentUser();
