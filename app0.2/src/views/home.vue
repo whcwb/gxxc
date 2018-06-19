@@ -42,15 +42,15 @@
             icon:'icon-shouye',
             text:'首页'
           },
-          {
-            now:false,
-            icon:'icon-zixun',
-            text:'资讯'
-          },
+          // {
+          //   now:false,
+          //   icon:'icon-zixun',
+          //   text:'资讯'
+          // },
           {
             now:false,
             icon:'icon-xiaoxi',
-            text:'消息'
+            text:'学车'
           },
           {
             now:false,
