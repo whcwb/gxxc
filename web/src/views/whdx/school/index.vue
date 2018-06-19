@@ -33,7 +33,7 @@ import chooseImg from '../components/chooseImg'
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'区域代码',key:'regionCode',dict:'ZDCLK0060'},
-                    {title:'驾校名称',key:'schoolName'},
+                    {title:'驾校名称',key:'schoolName',searchKey:'schoolNameLike'},
                     {title:'驾校地址',key:'schoolAddress'},
                     {title:'联系人',key:'linkMan'},
                     {title:'联系电话',key:'linkTel'},
@@ -49,12 +49,12 @@ import chooseImg from '../components/chooseImg'
                         width: 150,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
+                                this.util.buildButton(this,h,'success','image','驾校图片',()=>{
                                     this.choosedItem = params.row;
                                     this.choosedImgs = params.row.bgFileId
                                     this.componentName = 'chooseImg'
                                 }),
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
+                                this.util.buildButton(this,h,'success','ios-location','地理位置',()=>{
                                     this.choosedItem = params.row;
                                     this.choosedPoint = {lat:params.row.lat,lng:params.row.lng};
                                     this.componentName = 'chooseMapPoint'
