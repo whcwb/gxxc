@@ -1,12 +1,12 @@
 //网络请求地址前缀
-let BASE_URL = 'http://xclm.xxpt123.com:8080/biz/';
-// let BASE_URL = 'http://127.0.0.1:9086';
+// let BASE_URL = 'http://xclm.xxpt123.com:8080/biz/';
+let BASE_URL = 'http://127.0.0.1:8080';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
 module.exports = {
     getImgUrl:'http://xclm.xxpt123.com:8001/',
     url: BASE_URL,
     //图片上传地址
-    UPLOAD: BASE_URL + '/upload',
+    UPLOAD: 'http://xclm.xxpt123.com:8080/biz' + '/upload',
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
     exportData:BASE_URL+'/pub/export',
@@ -78,6 +78,18 @@ module.exports = {
         CHANGE:'/api/user/update',
         DELE:'/api/user/removeIds',
         getStudentList:'/api/user/getStudentList',
+    },
+    school:{
+        QUERY:'/api/school/pager',//用户实名表
+        ADD:'/api/school/save',
+        CHANGE:'/api/school/update',
+        DELE:'/api/school/removeIds',
+    },
+    trainPlace:{
+        QUERY:'/api/trainPlace/pager',//用户实名表
+        ADD:'/api/trainPlace/save',
+        CHANGE:'/api/trainPlace/update',
+        DELE:'/api/trainPlace/removeIds',
     },
     tx:{
         QUERY:'/api/tx/pager',//提现管理
