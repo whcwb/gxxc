@@ -1,6 +1,6 @@
 module.exports = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component:()=>import('@/views/login'),
     meta:{
@@ -8,7 +8,7 @@ module.exports = [
     }
   },
   {
-    path: '/Home',
+    path: '/',
     name: 'Home',
     component:()=>import('@/views/home'),
     meta:{
