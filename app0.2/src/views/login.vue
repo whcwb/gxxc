@@ -1,0 +1,103 @@
+<style lang="less">
+  @import "./login";
+</style>
+<template>
+      <div id="login" class="box_col">
+        <div class="login_Logo">
+          <img src="/static/login/LOGO.png" style="width: 1.1rem;" alt="">
+        </div>
+        <div class="login_tit">
+          学车联盟
+        </div>
+        <div class="login_form">
+          <el-form :model="loginForm" status-icon
+                   :rules="FormRules"
+                   label-position="top"
+                   ref="loginForm" class="demo-ruleForm">
+            <el-form-item label="" prop="username">
+              <el-input type="text"
+                        v-model="loginForm.username"
+                        placeholder="帐号"
+                        auto-complete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="" prop="password">
+              <el-input v-model.number="loginForm.password"
+                        placeholder="密码"
+                        auto-complete="off"></el-input>
+            </el-form-item>
+            <div style="text-align: right;font-size: 0.15rem;color: #fff;">
+              <span style="border-bottom: solid 1px #fff">
+               忘记密码
+              </span>
+            </div>
+            <el-form-item>
+              <el-button style="width: 100%;color:#409eff;font-weight: 700;margin-top: 0.2rem"
+                         @click="submitForm('loginForm')">提交</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="box_col_auto" style="font-size: 0.23rem;color: #fff;text-align: center;">
+          <div>
+            创建帐号
+          </div>
+        </div>
+      </div>
+</template>
+
+<script>
+    export default {
+        name: "login",
+        data(){
+          var zh = (rule, value, callback) => {
+            if (!value) {
+              return callback(new Error('请输入密码！'));
+            }else {
+              callback();
+            }
+          };
+          var mm = (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请输入帐号！'));
+            }else if(value.length!=11){
+              callback(new Error('你的输入帐号不正确！'));
+            }else {
+              callback();
+            }
+          };
+          return{
+            loginForm: {
+              username: '',
+              password: ''
+            },
+            FormRules: {
+              username: [
+                { validator: zh, trigger: 'blur' }
+              ],
+              password: [
+                { validator: mm, trigger: 'blur' }
+              ]
+            }
+          };
+        },
+        created(){
+          this.util.auto
+        },
+        methods:{
+          submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+              if (valid) {
+                alert('submit!');
+              } else {
+                console.log('error submit!!');
+                return false;
+              }
+            });
+          }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>
