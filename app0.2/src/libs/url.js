@@ -1,18 +1,19 @@
+// let ajaxUrl = "http://xclm.xxpt123.com";
+let ajaxUrl = "http://192.168.31.228"
 module.exports = {
+  url:ajaxUrl,
   wechat:{
       getCode:'/wechat/getCode',
       getOpenid:'/wechat/getOpenid',
       getAccessToken:'/wechat/getAccessToken',
       getJsApiSign:'/wechat/getJsApiSign',
   },
-// ajaxUrl:'http://127.0.0.1',
-// ajaxUrl:'http://47.98.39.45:',//服务器
-  ajaxUrl:'http://192.168.31.228:',//羊祥
+  ajaxUrl: ajaxUrl + ':',
 
-  getImgUrl:'http://192.168.31.228:'+'8080/',
-  upImgUrl:'http://192.168.31.228:'+'9086/upload',
-  // getImgUrl:'http://47.98.39.45:9088/',//获取
-  // upImgUrl:'http://47.98.39.45:9086/upload',//上传
+
+  getImgUrl:ajaxUrl+':8001/',//获取
+  // upImgUrl:ajaxUrl+':8080/biz/upload',//上传
+  upImgUrl:ajaxUrl+':9086/upload',//上传
   LOGIN:'/app/login',//登录接口
   LOGOUT:'/app/logout',//退出用戶
   USERMESS:'/app/ptyh/get',//用户信息

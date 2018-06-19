@@ -30,15 +30,15 @@ myFunction.auto=function (window, document , num) {
 
 }
 
-myFunction.GetUserMess = function(v,usermess){//获取个人信息
+myFunction.GetUserMess = function(v,callback){//获取个人信息
   Apis.ajax.post(apis.USERMESS).then((res)=>{
     if(res.code==200){
       if(res.result.yhTx == ''){
-        res.result.yhTx ='/static/userTx.png'
+        res.result.yhTx ='/static/login/LOGO.png'
       }
       localStorage.setItem('userMess',JSON.stringify(res.result))
     }
-    usermess(res.result)
+    callback && callback(res.result)
     store.commit('M_userMess', res.result)
 
   }).catch((err)=>{
