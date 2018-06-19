@@ -34,7 +34,7 @@
     data(){
       return{
         compname:'',
-        compnameList:['homePage','infor','mess','Homecenter'],
+        compnameList:['homePage','mess','Homecenter'],
         footerNum:this.$store.state.app.tabId,
         footerList:[
           {
