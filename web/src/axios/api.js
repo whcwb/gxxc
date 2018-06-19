@@ -1,12 +1,12 @@
 //网络请求地址前缀
-let BASE_URL = 'http://xclm.xxpt123.com:8080/biz/';
-// let BASE_URL = 'http://127.0.0.1:9086';
+// let BASE_URL = 'http://xclm.xxpt123.com:8080/biz/';
+let BASE_URL = 'http://127.0.0.1:8080';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
 module.exports = {
     getImgUrl:'http://xclm.xxpt123.com:8001/',
     url: BASE_URL,
     //图片上传地址
-    UPLOAD: BASE_URL + '/upload',
+    UPLOAD: 'http://xclm.xxpt123.com:8080/biz' + '/upload',
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
     exportData:BASE_URL+'/pub/export',
@@ -24,13 +24,29 @@ module.exports = {
         FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
         UPLOAD:BASE_URL + '/api/files/upload',//根据主ID查询文件信息
     },
-    USER:{
-        QUERY:'/api/yh/pager',//用户管理
-        ADD:'/api/yh/save',
-        CHANGE:'/api/yh/update',
-        GIVE:'/api/js/modifyUserRoles',
-        DELE:'/api/yh/removeIds',
-        SEARCHSOME:'/api/yh/query',//用户管理
+    ksJf:{
+        QUERY:'/api/ksjf/pager',//考试缴费管理
+        ADD:'/api/ksjf/save',
+        CHANGE:'/api/ksjf/update',
+        DELE:'/api/ksjf/removeIds',
+    },
+    ksjg:{
+        QUERY:'/api/ksjg/pager',//考试结果记录
+        ADD:'/api/ksjg/save',
+        CHANGE:'/api/ksjg/update',
+        DELE:'/api/ksjg/removeIds',
+    },
+    kssl:{
+        QUERY:'/api/kssl/pager',//考试受理信息
+        ADD:'/api/kssl/save',
+        CHANGE:'/api/kssl/update',
+        DELE:'/api/kssl/removeIds',
+    },
+    ksyk:{
+        QUERY:'/api/ksyk/pager',//学员考试约考
+        ADD:'/api/ksyk/save',
+        CHANGE:'/api/ksyk/update',
+        DELE:'/api/ksyk/removeIds',
     },
     hd:{
         QUERY:'/api/hd/pager',//活动管理
@@ -78,6 +94,18 @@ module.exports = {
         CHANGE:'/api/user/update',
         DELE:'/api/user/removeIds',
         getStudentList:'/api/user/getStudentList',
+    },
+    school:{
+        QUERY:'/api/school/pager',//用户实名表
+        ADD:'/api/school/save',
+        CHANGE:'/api/school/update',
+        DELE:'/api/school/removeIds',
+    },
+    trainPlace:{
+        QUERY:'/api/trainPlace/pager',//用户实名表
+        ADD:'/api/trainPlace/save',
+        CHANGE:'/api/trainPlace/update',
+        DELE:'/api/trainPlace/removeIds',
     },
     tx:{
         QUERY:'/api/tx/pager',//提现管理
