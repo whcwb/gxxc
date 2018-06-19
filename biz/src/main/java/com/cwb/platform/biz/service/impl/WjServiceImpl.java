@@ -1,13 +1,11 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.baidu.aip.ocr.AipOcr;
 import com.cwb.platform.biz.mapper.BizWjMapper;
 import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import org.apache.commons.lang.StringUtils;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -46,7 +44,6 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
         String path=retMap.get("path");//文件地址
 // TODO: 2018/6/19 这里需要重写
         // 初始化一个AipOcr
-        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
         //解析文件
         if(StringUtils.indexOf(fileType,"1")==0){//身份证识别
             HashMap<String, String> options = new HashMap<String, String>();
@@ -58,15 +55,6 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
             if(StringUtils.equals(fileType,"10")){
                 idCardSide = "front";
             }
-            JSONObject res = client.idcard(filePath, idCardSide, options);
-
-            System.out.println(res.toString(2));
-            System.out.println("姓名:"+res.getJSONObject("words_result").getJSONObject("姓名").getString("words"));
-            System.out.println("性别:"+res.getJSONObject("words_result").getJSONObject("性别").getString("words"));
-            System.out.println("民族:"+res.getJSONObject("words_result").getJSONObject("民族").getString("words"));
-            System.out.println("出生:"+res.getJSONObject("words_result").getJSONObject("出生").getString("words"));
-            System.out.println("公民身份号码:"+res.getJSONObject("words_result").getJSONObject("公民身份号码").getString("words"));
-            System.out.println("住址:"+res.getJSONObject("words_result").getJSONObject("住址").getString("words"));
 
         }else if(StringUtils.indexOf(fileType,"2")==0){//驾驶证识别
 
