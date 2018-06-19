@@ -1,0 +1,208 @@
+package com.cwb.platform.biz.model;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+
+/**
+ * 学员考试约考表
+ */
+@Table(name = "biz_ks_yk")
+public class BizKsYk implements Serializable {
+    @Id
+    @Column(name = "ID")
+    private String id;
+
+    /**
+     * 平台用户ID
+     */
+    @Column(name = "YH_ID")
+    private String yhId;
+
+    /**
+     * 科目编码 [ZDCLK0067]
+     */
+    @Column(name = "KM_CODE")
+    private String kmCode;
+
+    /**
+     * 考场名称
+     */
+    @Column(name = "SCHOOL_NAME")
+    private String schoolName;
+
+    /**
+     * 预约考试时间
+     */
+    @Column(name = "YK_SJ")
+    private String ykSj;
+
+    /**
+     * 用户姓名
+     */
+    @Column(name = "YH_XM")
+    private String yhXm;
+
+    /**
+     * 用户证件号码
+     */
+    @Column(name = "YH_ZJHM")
+    private String yhZjhm;
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @return ID
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * 获取平台用户ID
+     *
+     * @return YH_ID - 平台用户ID
+     */
+    public String getYhId() {
+        return yhId;
+    }
+
+    /**
+     * 设置平台用户ID
+     *
+     * @param yhId 平台用户ID
+     */
+    public void setYhId(String yhId) {
+        this.yhId = yhId;
+    }
+
+    /**
+     * 获取科目编码 [ZDCLK0067]
+     *
+     * @return KM_CODE - 科目编码 [ZDCLK0067]
+     */
+    public String getKmCode() {
+        return kmCode;
+    }
+
+    /**
+     * 设置科目编码 [ZDCLK0067]
+     *
+     * @param kmCode 科目编码 [ZDCLK0067]
+     */
+    public void setKmCode(String kmCode) {
+        this.kmCode = kmCode;
+    }
+
+    /**
+     * 获取考场名称
+     *
+     * @return SCHOOL_NAME - 考场名称
+     */
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    /**
+     * 设置考场名称
+     *
+     * @param schoolName 考场名称
+     */
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    /**
+     * 获取预约考试时间
+     *
+     * @return YK_SJ - 预约考试时间
+     */
+    public String getYkSj() {
+        return ykSj;
+    }
+
+    /**
+     * 设置预约考试时间
+     *
+     * @param ykSj 预约考试时间
+     */
+    public void setYkSj(String ykSj) {
+        this.ykSj = ykSj;
+    }
+
+    /**
+     * 获取用户姓名
+     *
+     * @return YH_XM - 用户姓名
+     */
+    public String getYhXm() {
+        return yhXm;
+    }
+
+    /**
+     * 设置用户姓名
+     *
+     * @param yhXm 用户姓名
+     */
+    public void setYhXm(String yhXm) {
+        this.yhXm = yhXm;
+    }
+
+    /**
+     * 获取用户证件号码
+     *
+     * @return YH_ZJHM - 用户证件号码
+     */
+    public String getYhZjhm() {
+        return yhZjhm;
+    }
+
+    /**
+     * 设置用户证件号码
+     *
+     * @param yhZjhm 用户证件号码
+     */
+    public void setYhZjhm(String yhZjhm) {
+        this.yhZjhm = yhZjhm;
+    }
+
+    public enum InnerColumn {
+        id("ID"),
+        yhId("YH_ID"),
+        kmCode("KM_CODE"),
+        schoolName("SCHOOL_NAME"),
+        ykSj("YK_SJ"),
+        yhXm("YH_XM"),
+        yhZjhm("YH_ZJHM");
+
+        private final String column;
+
+        public String value() {
+            return this.column;
+        }
+
+        public String getValue() {
+            return this.column;
+        }
+
+        InnerColumn(String column) {
+            this.column = column;
+        }
+
+        public String desc() {
+            return this.column + " DESC";
+        }
+
+        public String asc() {
+            return this.column + " ASC";
+        }
+    }
+}
