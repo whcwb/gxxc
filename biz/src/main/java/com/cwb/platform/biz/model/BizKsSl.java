@@ -62,6 +62,18 @@ public class BizKsSl implements Serializable {
     @Column(name = "YH_ZJHM")
     private String yhZjhm;
 
+    /**
+     * 创建人
+     */
+    @Column(name = "CJR")
+    private String cjr;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "CJSJ")
+    private String cjsj;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -222,6 +234,42 @@ public class BizKsSl implements Serializable {
         this.yhZjhm = yhZjhm;
     }
 
+    /**
+     * 获取创建人
+     *
+     * @return CJR - 创建人
+     */
+    public String getCjr() {
+        return cjr;
+    }
+
+    /**
+     * 设置创建人
+     *
+     * @param cjr 创建人
+     */
+    public void setCjr(String cjr) {
+        this.cjr = cjr;
+    }
+
+    /**
+     * 获取创建时间
+     *
+     * @return CJSJ - 创建时间
+     */
+    public String getCjsj() {
+        return cjsj;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param cjsj 创建时间
+     */
+    public void setCjsj(String cjsj) {
+        this.cjsj = cjsj;
+    }
+
     public enum InnerColumn {
         id("ID"),
         yhId("YH_ID"),
@@ -231,7 +279,9 @@ public class BizKsSl implements Serializable {
         slCx("SL_CX"),
         slKsyy("SL_KSYY"),
         yhXm("YH_XM"),
-        yhZjhm("YH_ZJHM");
+        yhZjhm("YH_ZJHM"),
+        cjr("CJR"),
+        cjsj("CJSJ");
 
         private final String column;
 
