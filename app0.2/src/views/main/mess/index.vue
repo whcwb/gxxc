@@ -134,32 +134,7 @@
                       <span class="title-subname">基础理论知识考试</span>
                     </span>
                     <div class="content">
-                      <el-row>
-                        <el-col>
-                          <el-card :body-style="{ padding: '0px' }">
-                            <div style="padding: 10px;">
-                              <el-row type="flex">
-                                <el-col :span="8" style="margin-top: 8px">
-                                  <span style="font-size:14px">约考</span>
-                                  <el-tag type="success" style="font-size: 16px;font-weight: bold">0</el-tag>
-                                  <span style="font-size:14px">次</span>
-                                </el-col>
-                                <el-col :span="8" style="margin-top: 8px">
-                                  <span style="font-size:14px">已考</span>
-                                    <el-tag type="success" style="font-size: 16px;font-weight: bold">0</el-tag>
-                                  <span style="font-size:14px">次</span>
-                                </el-col>
-                                <el-col :span="8" style="margin-top: 8px">
-                                  <span style="font-size:14px">考试费</span>
-                                  <el-tag type="danger">未缴</el-tag>
-                                  <el-tag type="success">已缴</el-tag>
-                                </el-col>
-                              </el-row>
-                            </div>
-                          </el-card>
-                        </el-col>
-                      </el-row>
-                      <el-row :gutter="20" style="padding-top: 10px;padding-bottom: 10px">
+                      <el-row :gutter="20" style="padding-bottom: 10px">
                         <el-col :span="8">
                           <a href="http://m.jxedt.com/mnks/ckm1/sxlx/">
                             <el-card :body-style="{ padding: '0px' }">
@@ -189,6 +164,21 @@
                               </div>
                             </el-card>
                           </a>
+                        </el-col>
+                      </el-row>
+                      <el-row style="padding-bottom: 10px">
+                        <el-col>
+                          <el-card :body-style="{ padding: '0px' }">
+                            <div style="padding: 10px;">
+                              <el-row type="flex">
+                                <el-col :span="24" style="margin-top: 8px">
+                                  <span style="font-size:14px">当前科目考试费</span>
+                                  <el-tag type="danger">未缴</el-tag>
+                                  <el-tag type="success">已缴</el-tag>
+                                </el-col>
+                              </el-row>
+                            </div>
+                          </el-card>
                         </el-col>
                       </el-row>
                       <el-card shadow="never">
@@ -254,32 +244,7 @@
                       <span class="title-subname">场地驾驶技能考试</span>
                     </span>
                     <div class="content">
-                      <el-row>
-                        <el-col>
-                          <el-card :body-style="{ padding: '0px' }">
-                            <div style="padding: 10px;">
-                              <el-row type="flex">
-                                <el-col :span="8" style="margin-top: 8px">
-                                  <span style="font-size:14px">约考</span>
-                                  <el-tag type="success" style="font-size: 16px;font-weight: bold">0</el-tag>
-                                  <span style="font-size:14px">次</span>
-                                </el-col>
-                                <el-col :span="8" style="margin-top: 8px">
-                                  <span style="font-size:14px">已考</span>
-                                  <el-tag type="success" style="font-size: 16px;font-weight: bold">0</el-tag>
-                                  <span style="font-size:14px">次</span>
-                                </el-col>
-                                <el-col :span="8" style="margin-top: 8px">
-                                  <span style="font-size:14px">考试费</span>
-                                  <el-tag type="danger">未缴</el-tag>
-                                  <el-tag type="success">已缴</el-tag>
-                                </el-col>
-                              </el-row>
-                            </div>
-                          </el-card>
-                        </el-col>
-                      </el-row>
-                      <el-row :gutter="20" style="padding-top: 10px;padding-bottom: 10px">
+                      <el-row :gutter="20" style="padding-bottom: 10px">
                         <el-col :span="6">
                           <a href="http://m.jxedt.com/km2_82_212/">
                             <el-card :body-style="{ padding: '0px' }">
@@ -344,6 +309,21 @@
                           </a>
                         </el-col>
                       </el-row>
+                      <el-row style="padding-bottom: 10px">
+                        <el-col>
+                          <el-card :body-style="{ padding: '0px' }">
+                            <div style="padding: 10px;">
+                              <el-row type="flex">
+                                <el-col :span="24" style="margin-top: 8px">
+                                  <span style="font-size:14px">当前科目考试费</span>
+                                  <el-tag type="danger">未缴</el-tag>
+                                  <el-tag type="success">已缴</el-tag>
+                                </el-col>
+                              </el-row>
+                            </div>
+                          </el-card>
+                        </el-col>
+                      </el-row>
                       <el-card shadow="never">
                         <div slot="header" class="clearfix">
                           <span>石羊湖考场</span>
@@ -406,7 +386,120 @@
                       <span class="title-name">科目三</span>
                       <span class="title-subname">道路驾驶技能考试</span>
                     </span>
-                    定时任务补偿</el-tab-pane>
+                    <div class="content">
+                      <el-row :gutter="20" style="padding-bottom: 10px">
+                        <el-col :span="6">
+                          <a href="http://m.jxedt.com/km3_607_608/">
+                            <el-card :body-style="{ padding: '0px' }">
+                              <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                              <div style="padding: 10px">
+                                <span>评判标准</span>
+                              </div>
+                            </el-card>
+                          </a>
+                        </el-col>
+                        <el-col :span="6">
+                          <a href="http://m.jxedt.com/km3/yyzl/">
+                            <el-card :body-style="{ padding: '0px' }">
+                              <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                              <div style="padding: 10px;">
+                                <span>语言指令</span>
+                              </div>
+                            </el-card>
+                          </a>
+                        </el-col>
+                        <el-col :span="6">
+                          <a href="http://m.jxedt.com/km3/dgcz/">
+                            <el-card :body-style="{ padding: '0px' }">
+                              <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                              <div style="padding: 10px;">
+                                <span>灯光操作</span>
+                              </div>
+                            </el-card>
+                          </a>
+                        </el-col>
+                        <el-col :span="6">
+                          <a href="http://m.jxedt.com/km3_607_627/">
+                            <el-card :body-style="{ padding: '0px' }">
+                              <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                              <div style="padding: 10px;">
+                                <span>考试口诀</span>
+                              </div>
+                            </el-card>
+                          </a>
+                        </el-col>
+                      </el-row>
+                      <el-row style="padding-bottom: 10px">
+                        <el-col>
+                          <el-card :body-style="{ padding: '0px' }">
+                            <div style="padding: 10px;">
+                              <el-row type="flex">
+                                <el-col :span="24" style="margin-top: 8px">
+                                  <span style="font-size:14px">当前科目考试费</span>
+                                  <el-tag type="danger">未缴</el-tag>
+                                  <el-tag type="success">已缴</el-tag>
+                                </el-col>
+                              </el-row>
+                            </div>
+                          </el-card>
+                        </el-col>
+                      </el-row>
+                      <el-card shadow="never">
+                        <div slot="header" class="clearfix">
+                          <span>石羊湖考场</span>
+                          <i class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px"></i>
+                        </div>
+                        <el-row type="flex" justify="space-around">
+                          <el-col :span="10">
+                            <el-row type="flex" style="text-align: center">
+                              <el-col :span="24" style="font-weight: bold;font-size: 14px">
+                                第一次成绩
+                              </el-col>
+                            </el-row>
+                            <div style="border: 1px solid #e9eaec"></div>
+                            <el-row type="flex">
+                              <el-col :span="24">
+                                2018年6月19日18:11:29
+                              </el-col>
+                            </el-row>
+                          </el-col>
+                          <el-col :span="12">
+                            <el-row type="flex">
+                              <el-col :span="24":offset="14">
+                                <el-badge value="合格" class="cjItem">
+                                  <el-button circle class="cjCircle">100</el-button>
+                                </el-badge>
+                              </el-col>
+                            </el-row>
+                          </el-col>
+                        </el-row>
+                        <el-row type="flex" justify="space-around" style="padding-top: 20px">
+                          <el-col :span="10">
+                            <el-row type="flex" style="text-align: center">
+                              <el-col :span="24" style="font-weight: bold;font-size: 14px">
+                                第二次成绩
+                              </el-col>
+                            </el-row>
+                            <div style="border: 1px solid #e9eaec"></div>
+                            <el-row type="flex">
+                              <el-col :span="24">
+                                2018年6月19日18:11:29
+                              </el-col>
+                            </el-row>
+                          </el-col>
+                          <el-col :span="12">
+                            <el-row type="flex">
+                              <el-col :span="24":offset="14">
+                                <el-badge value="合格" class="cjItem">
+                                  <el-button circle class="cjCircle">100</el-button>
+                                </el-badge>
+                              </el-col>
+                            </el-row>
+                          </el-col>
+                        </el-row>
+                      </el-card>
+                    </div>
+                  </el-tab-pane>
                   <el-tab-pane label="科目四" name="five">
                     <span slot="label">
                       <img :src="tabLabel[4].tabImg" width="120" />

@@ -44,6 +44,15 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
     }
     @Override
     public int save(BizKsSl entity) {
+        RuntimeCheck.ifBlank(entity.getCode(), "请选择机构");
+        RuntimeCheck.ifBlank(entity.getName(), "请确定机构名称");
+        RuntimeCheck.ifBlank(entity.getName(), "请确定机构名称");
+
+        RuntimeCheck.ifBlank(entity.getSlType(), "审核状态不能为空");
+        if (org.apache.commons.lang.StringUtils.containsNone(entity.getSlType(), new char[]{'1', '2', '3', '4'})) {
+            RuntimeCheck.ifTrue(true,"请输入正确审核状态");
+        }
+
         SysYh user=getCurrentUser();
         entity.setId(genId());
         entity.setCjr(user.getYhid());//操作人ID
