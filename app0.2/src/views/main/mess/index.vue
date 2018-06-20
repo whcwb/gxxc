@@ -6,7 +6,7 @@
     <!-- 教练员信息 -->
     <el-row type="flex" justify="center" class="jlyTitle">
       <el-col :span="22">
-        <el-card class="box-card">
+        <el-card class="box-card" @click.native="showCoachInfo">
           <!--<div style="float: right"><i class="el-icon-refresh"></i></div>-->
           <div class="titlefix">
             <el-button disabled icon="iconfont icon-user" circle class="headerIcon"></el-button>
@@ -197,11 +197,11 @@
                   </el-row>
                   <el-card shadow="never">
                     <div slot="header" class="clearfix">
-                      <span v-if="examInfo.length > 0">{{examInfo['0'].schoolName}}</span>
+                      <span v-if="examInfo['1']">{{examInfo['1'].schoolName}}</span>
                       <span v-else>未预约</span>
-                      <i class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px"></i>
+                      <i v-if="examInfo['1']" class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px" @click="showMap(examInfo['1'])"></i>
                     </div>
-                    <el-row v-if="examInfo.length > 0" type="flex" justify="space-around">
+                    <el-row v-if="examInfo['1']" type="flex" justify="space-around">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -211,21 +211,21 @@
                         <div style="border: 1px solid #e9eaec"></div>
                         <el-row type="flex">
                           <el-col :span="24">
-                            {{examInfo['0'].ykSj}}
+                            {{examInfo['1'].ykSj}}
                           </el-col>
                         </el-row>
                       </el-col>
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['0'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
-                              <el-button circle class="cjCircle">{{examInfo['0'].cj1}}</el-button>
+                            <el-badge :value="examInfo['1'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
+                              <el-button circle class="cjCircle">{{examInfo['1'].cj1}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row v-if="examInfo.length > 0"  type="flex" justify="space-around" style="padding-top: 20px">
+                    <el-row v-if="examInfo['1']"  type="flex" justify="space-around" style="padding-top: 20px">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -235,15 +235,15 @@
                         <div style="border: 1px solid #e9eaec"></div>
                         <el-row type="flex">
                           <el-col :span="24">
-                            {{examInfo['0'].ykSj}}
+                            {{examInfo['1'].ykSj}}
                           </el-col>
                         </el-row>
                       </el-col>
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['0'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
-                              <el-button circle class="cjCircle">{{examInfo['0'].cj2}}</el-button>
+                            <el-badge :value="examInfo['1'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
+                              <el-button circle class="cjCircle">{{examInfo['1'].cj2}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
@@ -341,11 +341,11 @@
                   </el-row>
                   <el-card shadow="never">
                     <div slot="header" class="clearfix">
-                      <span v-if="examInfo.length > 1">{{examInfo['1'].schoolName}}</span>
+                      <span v-if="examInfo['2']">{{examInfo['2'].schoolName}}</span>
                       <span v-else>未预约</span>
-                      <i class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px"></i>
+                      <i v-if="examInfo['2']"  class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px" @click="showMap(examInfo['2'])"></i>
                     </div>
-                    <el-row v-if="examInfo.length > 1" type="flex" justify="space-around">
+                    <el-row v-if="examInfo['2']" type="flex" justify="space-around">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -355,21 +355,21 @@
                         <div style="border: 1px solid #e9eaec"></div>
                         <el-row type="flex">
                           <el-col :span="24">
-                            {{examInfo['1'].ykSj}}
+                            {{examInfo['2'].ykSj}}
                           </el-col>
                         </el-row>
                       </el-col>
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['1'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
-                              <el-button circle class="cjCircle">{{examInfo['1'].cj1}}</el-button>
+                            <el-badge :value="examInfo['2'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
+                              <el-button circle class="cjCircle">{{examInfo['2'].cj1}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row v-if="examInfo.length > 1"  type="flex" justify="space-around" style="padding-top: 20px">
+                    <el-row v-if="examInfo['2']"  type="flex" justify="space-around" style="padding-top: 20px">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -379,15 +379,15 @@
                         <div style="border: 1px solid #e9eaec"></div>
                         <el-row type="flex">
                           <el-col :span="24">
-                            {{examInfo['1'].ykSj}}
+                            {{examInfo['2'].ykSj}}
                           </el-col>
                         </el-row>
                       </el-col>
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['1'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
-                              <el-button circle class="cjCircle">{{examInfo['1'].cj2}}</el-button>
+                            <el-badge :value="examInfo['2'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
+                              <el-button circle class="cjCircle">{{examInfo['2'].cj2}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
@@ -462,11 +462,11 @@
                   </el-row>
                   <el-card shadow="never">
                     <div slot="header" class="clearfix">
-                      <span v-if="examInfo.length > 2">{{examInfo['2'].schoolName}}</span>
+                      <span v-if="examInfo['3']">{{examInfo['3'].schoolName}}</span>
                       <span v-else>未预约</span>
-                      <i class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px"></i>
+                      <i  v-if="examInfo['3']" class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px" @click="showMap(examInfo['3'])"></i>
                     </div>
-                    <el-row v-if="examInfo.length > 2" type="flex" justify="space-around">
+                    <el-row v-if="examInfo['3']" type="flex" justify="space-around">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -476,21 +476,21 @@
                         <div style="border: 1px solid #e9eaec"></div>
                         <el-row type="flex">
                           <el-col :span="24">
-                            {{examInfo['2'].ykSj}}
+                            {{examInfo['3'].ykSj}}
                           </el-col>
                         </el-row>
                       </el-col>
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['2'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
-                              <el-button circle class="cjCircle">{{examInfo['2'].cj1}}</el-button>
+                            <el-badge :value="examInfo['3'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
+                              <el-button circle class="cjCircle">{{examInfo['3'].cj1}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row v-if="examInfo.length > 2"  type="flex" justify="space-around" style="padding-top: 20px">
+                    <el-row v-if="examInfo['3']"  type="flex" justify="space-around" style="padding-top: 20px">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -500,15 +500,15 @@
                         <div style="border: 1px solid #e9eaec"></div>
                         <el-row type="flex">
                           <el-col :span="24">
-                            {{examInfo['2'].ykSj}}
+                            {{examInfo['3'].ykSj}}
                           </el-col>
                         </el-row>
                       </el-col>
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['2'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
-                              <el-button circle class="cjCircle">{{examInfo['2'].cj2}}</el-button>
+                            <el-badge :value="examInfo['3'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
+                              <el-button circle class="cjCircle">{{examInfo['3'].cj2}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
@@ -583,11 +583,11 @@
                   </el-row>
                   <el-card shadow="never">
                     <div slot="header" class="clearfix">
-                      <span v-if="examInfo.length > 3">{{examInfo['3'].schoolName}}</span>
+                      <span v-if="examInfo['4']">{{examInfo['4'].schoolName}}</span>
                       <span v-else>未预约</span>
-                      <i class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px"></i>
+                      <i  v-if="examInfo['4']" class="el-icon-location-outline" style="float: right; padding: 3px 0;font-size: 18px" @click="showMap(examInfo['4'])"></i>
                     </div>
-                    <el-row v-if="examInfo.length > 3" type="flex" justify="space-around">
+                    <el-row v-if="examInfo['4']" type="flex" justify="space-around">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -597,21 +597,21 @@
                         <div style="border: 1px solid #e9eaec"></div>
                         <el-row type="flex">
                           <el-col :span="24">
-                            {{examInfo['3'].ykSj}}
+                            {{examInfo['4'].ykSj}}
                           </el-col>
                         </el-row>
                       </el-col>
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['3'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
-                              <el-button circle class="cjCircle">{{examInfo['3'].cj1}}</el-button>
+                            <el-badge :value="examInfo['4'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
+                              <el-button circle class="cjCircle">{{examInfo['4'].cj1}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row v-if="examInfo.length > 3"  type="flex" justify="space-around" style="padding-top: 20px">
+                    <el-row v-if="examInfo['4']"  type="flex" justify="space-around" style="padding-top: 20px">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -621,15 +621,15 @@
                         <div style="border: 1px solid #e9eaec"></div>
                         <el-row type="flex">
                           <el-col :span="24">
-                            {{examInfo['3'].ykSj}}
+                            {{examInfo['4'].ykSj}}
                           </el-col>
                         </el-row>
                       </el-col>
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['3'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
-                              <el-button circle class="cjCircle">{{examInfo['3'].cj2}}</el-button>
+                            <el-badge :value="examInfo['4'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
+                              <el-button circle class="cjCircle">{{examInfo['4'].cj2}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
@@ -643,11 +643,13 @@
         </el-card>
       </el-col>
     </el-row>
+    <div id="allmap"></div>
   </div>
 </template>
 
 <script>
 
+  import { Toast } from 'mint-ui';
   export default {
     name: "xueche",
     data() {
@@ -692,6 +694,7 @@
         this.$http.get(this.apis.getStudentCoach, {params: {yhId: this.user.id}}).then((res) => {
           if (res.code == 200 && res.result) {
             this.jly = res.result;
+            this.jly.jlPf = parseInt(this.jly.jlPf)
             this.getResionList();
           }
         })
@@ -714,9 +717,29 @@
         this.$http.get(this.apis.getHandleStatus, {params: {yhId: this.user.id}}).then((res)=>{
           if (res.code == 200){
             this.handleStatus = res.result;
-            console.log(this.handleStatus['3']);
           }
         })
+      },
+      showCoachInfo(){
+        this.$router.push({name:'coach',params:{coach:this.jly}})
+      },
+      showMap(exam){
+        if (!exam.examPlaceLat || !exam.examPlaceLng){
+            Toast('未设置经纬度')
+          return;
+        }
+        var map = new BMap.Map("allmap");
+        var geolocation = new BMap.Geolocation();
+        let lat = exam.examPlaceLat;
+        let lng = exam.examPlaceLng;
+        geolocation.getCurrentPosition(function(r){
+          if(this.getStatus() === BMAP_STATUS_SUCCESS){
+            location.href="http://api.map.baidu.com/direction?origin="+r.point.lat+","+r.point.lng+"&destination="+lat+","+lng+"&mode=driving&region=武汉&output=html";
+          }
+          else {
+            alert('failed'+this.getStatus());
+          }
+        },{enableHighAccuracy: true})
       },
       getResionList() {
         this.$http.get(this.apis.zdxmPager, {params: {typeCode: 'ZDCLK0060'}}).then((res) => {
