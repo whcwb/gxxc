@@ -99,7 +99,7 @@
 
         <div style="margin-top: 0.2rem">
           <mt-cell title="账单" value=""
-                   to="/myCenter-sfrz"
+                   to="/bill"
                    is-link style="border-bottom: 1px #e9eaec solid;">
             <i class="iconfont icon-xiaoxizhangdanfill"
                style="font-size: 20px;color: #2d8cf0;margin-left: 0.1rem"
@@ -109,7 +109,7 @@
                         <!--type="ios-checkmark"></Icon>&nbsp;&nbsp;{{usermess.yhZt | yhZt}}</span>-->
           </mt-cell>
           <mt-cell title="团队" value=""
-                   to="/myCenter-sfrz"
+                   to="/myTeam"
                    is-link style="border-bottom: 1px #e9eaec solid;">
             <i class="iconfont icon-tuandui"
                style="font-size: 20px;color: #2d8cf0;margin-left: 0.1rem"
