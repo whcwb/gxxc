@@ -14,6 +14,20 @@
         			<Row>
         				<form-items :parent="v"></form-items>
         			</Row>
+					<Row>
+						<Col span="12">
+							<label>第一次考试成绩</label>
+							<choose-img :parent="v"
+										:urls="formItem.cjd1"
+										@chooseImgFinish="chooseImgFinish1"></choose-img>
+						</Col>
+						<Col span="12">
+							<label>第二次考试成绩</label>
+							<choose-img :parent="v"
+										:urls="formItem.cjd2"
+										@chooseImgFinish="chooseImgFinish2"></choose-img>
+						</Col>
+					</Row>
         		</Form>
         	</div>
         	<div slot='footer'>
@@ -25,8 +39,12 @@
 </template>
 
 <script>
+	import chooseImg from '../../components/chooseImg'
 	export default {
 		name: 'ksYkForm',
+		components:{
+            chooseImg
+		},
 		data() {
 			return {
 			    v:this,
@@ -40,7 +58,9 @@
                     {label:'用户',prop:'yhId',type:'foreignKey'},
                     {label:'科目编码',prop:'kmCode',dict:'ZDCLK0067'},
                     {label:'考场名称',prop:'examPlaceId',type:'foreignKey'},
-                    {label:'预约考试时间',prop:'ykSj',type:'datetime'},
+                    {label:'预约考试时间',prop:'ykSj',type:'date'},
+                    {label:'第一次考试成绩',prop:'cj1',type:'number'},
+                    {label:'第二次考试成绩',prop:'cj2',type:'number'},
                 ],
                 ruleInline:{
 				},
@@ -51,9 +71,15 @@
 			}
 		},
 		created(){
-		    this.util.initFormModal(this);
+            this.util.initFormModal(this);
 		},
 		methods: {
+            chooseImgFinish1(paths){
+                this.formItem.cjd1 = paths;
+            },
+            chooseImgFinish2(paths){
+                this.formItem.cjd2 = paths;
+            }
 		}
 	}
 </script>

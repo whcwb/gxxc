@@ -37,17 +37,15 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'学员',prop:'yhId',type:'foreignKey'},
-                    {label:'驾校',prop:'schoolCode',type:'foreignKey'},
+                    {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
+                    {label:'驾校',prop:'code',type:'foreignKey'},
                     {label:'受理时间',prop:'slSj',type:'date'},
-                    {label:'受理流水',prop:'slLs'},
-                    {label:'受理车型',prop:'slCx',dict:'ZDCLK0069',type:'dict'},
-                    {label:'考试原因',prop:'slKsyy',dict:'ZDCLK0070',type:'dict'},
+                    {label:'考试原因',prop:'slType',dict:'ZDCLK0070',type:'dict'},
                 ],
                 ruleInline:{
 				},
                 foreignList:{
-                    schoolCode:{url:this.apis.school.QUERY,key:'schoolCode',val:'schoolName',items:[]},
+                    code:{url:this.apis.school.QUERY,key:'schoolCode',val:'schoolName',items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
                 }
 			}

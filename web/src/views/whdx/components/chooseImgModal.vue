@@ -1,5 +1,6 @@
 <template>
 	<div>
+	<Modal v-model="showModal" width='900' :closable="false" @on-cancel="close" @on-ok="ok" title="选取图片">
 	    <div class="demo-upload-list" v-for="item in uploadList">
 	        <template v-if="item.status === 'finished'">
 	            <img :src="item.url" style="width: 100%">
@@ -29,6 +30,7 @@
 	            <Icon type="camera" size="20"></Icon>
 	        </div>
 	    </Upload>
+	</Modal>
 	</div>
 </template>
 <script>
@@ -47,31 +49,12 @@
                 urlList:''
             }
         },
-		props:{
-    		parent:{
-    		    type:Object,
-				default:function(){
-				    return {}
-				}
-
-			},
-    		urls:{
-    		    type:String,
-				default:''
-			}
-		},
         created(){
-            console.log('created');
-            console.log('urls',this.urls);
+			if (this.$parent.$data.choosedImgs){
+                this.urlList = this.$parent.$data.choosedImgs;
+			}
+        	this.dataList()
         },
-		mounted(){
-            console.log('mounted');
-            console.log('urls',this.urls);
-            if (this.urls){
-                this.urlList = this.urls;
-            }
-            this.dataList()
-		},
         methods: {
         	dataList(){
         		let paths = this.urlList.split(',')
@@ -90,13 +73,8 @@
                 this.$emit('removeFile',file.url.replace(this.staticPath,'')+',')
             },
             handleSuccess (res, file,fileList) {
+                this.$emit('addImg',res.message);
                 file.url = this.staticPath + res.message;
-
-                let paths = '';
-                for (let r of this.uploadList){
-                    paths += r.response.message + ',';
-                }
-                this.$emit('chooseImgFinish',paths)
             },
             handleFormatError (file) {
                 this.$Notice.warning({
