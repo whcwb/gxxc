@@ -15,8 +15,8 @@
 
 <script>
 import formData from './formData'
-import chooseMapPoint from '../components/chooseMapPoint'
-import chooseImg from '../components/chooseImg'
+import chooseMapPoint from '../components/chooseMapPointModal'
+import chooseImg from '../components/chooseImgModal'
     export default {
         name: 'driversSchool',
         components:{formData,chooseMapPoint,chooseImg},

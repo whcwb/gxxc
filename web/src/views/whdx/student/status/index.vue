@@ -51,9 +51,6 @@
                                 this.util.buildButton(this,h,'success','card','约考',()=>{
                                     this.getYk(params.row.id);
                                 }),
-                                this.util.buildButton(this,h,'success','card','成绩',()=>{
-                                    this.getJg(params.row.id);
-                                }),
                             ]);
                         }
                     }
