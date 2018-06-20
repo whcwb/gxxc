@@ -290,32 +290,46 @@ public class AppMainController {
 	 * @param fileType	上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
 	 * @return
 	 */
-	@RequestMapping(value="/zjupload", method = RequestMethod.POST)
+	@RequestMapping(value="/zjupload")
 	@ResponseBody
-	public ApiResponse<Map<String,String>> uploadImg(@RequestParam("file") MultipartFile file,@RequestParam("fileType") String fileType) {
+		public ApiResponse<String> uploadImg(@RequestParam("file") MultipartFile file,@RequestParam("fileType") String fileType) {
 		Map<String,String > retMap= new HashMap<String,String>();//返回值
-		RuntimeCheck.ifNull(fileType,"您好，请确定图片类型");
-// TODO: 2018/6/19 这里需要重写 
 		String targetPath= DateUtils.getToday().replaceAll("-","");//生成目录
 		String fileName = file.getOriginalFilename();//获取上传的文件名
 		String suffix = fileName.substring(fileName.lastIndexOf("."));//获取后缀名
 		UUID uuid = UUID.randomUUID();
 		fileName = uuid.toString().replaceAll("-","") + suffix;//生成新的文件名
 
-		String filePath = credentialsPath+targetPath;//生成新的文件路径
-		String path = "/"+targetPath + fileName;//返回前台的地址
+		String filePath = credentialsPath+targetPath+"/";//生成新的文件路径
+		String path = "/"+targetPath +"/"+ fileName;//返回前台的地址
 		try {
 			FileUtil.uploadFile(file.getBytes(), filePath, fileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		retMap.put("path",path);
-
-		wjService.ocrRecognition (retMap,fileType,filePath+"/"+fileName);
-
-
-
-		return ApiResponse.success(retMap);
+		return ApiResponse.success(path);
+	}
+	/**
+	 * 证件识别
+	 * @param path  上传的文件地址
+	 * @param fileType	上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
+	 * @return
+	 */
+	@RequestMapping(value="/zjsb")
+	@ResponseBody
+	public ApiResponse<Map<String,String>> ocrRecognition(@RequestParam("path") String path,@RequestParam("fileType") String fileType) {
+		Map<String,String > retMap= new HashMap<String,String>();//返回值
+		RuntimeCheck.ifNull(fileType,"您好，请确定图片类型");
+		boolean retType=wjService.ocrRecognition (retMap,fileType,credentialsPath+path,path);
+		if(retType){
+			return ApiResponse.success(retMap);
+		}else{
+			ApiResponse<Map<String,String>> res = new ApiResponse<>();
+			res.setCode(500);
+			res.setMessage(retMap.get("image_message"));
+			res.setResult(retMap);
+			return res;
+		}
 	}
 
 

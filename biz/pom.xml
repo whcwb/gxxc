@@ -16,18 +16,25 @@
 			<artifactId>sys</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-	  <!--支付宝jar包-->
+	  <!--&lt;!&ndash;支付宝jar包&ndash;&gt;-->
+	  <!--<dependency>-->
+		  <!--<groupId>com.alipay.sdk</groupId>-->
+		  <!--<artifactId>alipay-sdk-java</artifactId>-->
+		  <!--<version>3.0.1</version>-->
+	  <!--</dependency>-->
+		<!--身份证识别-->
 	  <dependency>
-		  <groupId>com.alipay.sdk</groupId>
-		  <artifactId>alipay-sdk-java</artifactId>
-		  <version>3.0.1</version>
+		  <groupId>com.baidu.aip</groupId>
+		  <artifactId>java-sdk</artifactId>
+		  <version>4.4.0</version>
 	  </dependency>
-
+		<!--微信公众号-->
 	  <dependency>
 		  <groupId>com.github.binarywang</groupId>
 		  <artifactId>weixin-java-mp</artifactId>
 		  <version>3.0.0</version>
 	  </dependency>
+	  <!--微信支付-->
 	  <dependency>
 		  <groupId>com.github.binarywang</groupId>
 		  <artifactId>weixin-java-pay</artifactId>

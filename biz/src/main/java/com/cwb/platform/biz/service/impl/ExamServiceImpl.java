@@ -1,6 +1,5 @@
 package com.cwb.platform.biz.service.impl;
 
-import com.alipay.api.domain.SettleInfo;
 import com.cwb.platform.biz.mapper.BizExamPlaceMapper;
 import com.cwb.platform.biz.model.BizExamPlace;
 import com.cwb.platform.biz.service.ExamPlaceService;

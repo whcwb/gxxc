@@ -1,22 +1,35 @@
 package com.cwb.platform.biz.service.impl;
 
 
+import com.baidu.aip.ocr.AipOcr;
 import com.cwb.platform.biz.mapper.BizWjMapper;
 import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.model.BizPtyh;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> implements WjService{
     @Autowired
     private BizWjMapper entityMapper;
+    @Autowired
+    private StringRedisTemplate redisDao;
+    // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
+    private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
 
     //设置APPID/AK/SK
     public static final String APP_ID = "sE9HAgpK2XKsrKiuorzCoory";
@@ -40,10 +53,13 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
      * @param filePath  文件地址
      */
     @Override
-    public void ocrRecognition(Map<String, String> retMap, String fileType,String filePath){
-        String path=retMap.get("path");//文件地址
+    public boolean ocrRecognition(Map<String, String> retMap, String fileType,String filePath,String paths){
+        boolean retType=true;
+        BizPtyh user= getAppCurrentUser();
 // TODO: 2018/6/19 这里需要重写
         // 初始化一个AipOcr
+        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+
         //解析文件
         if(StringUtils.indexOf(fileType,"1")==0){//身份证识别
             HashMap<String, String> options = new HashMap<String, String>();
@@ -56,8 +72,101 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
                 idCardSide = "front";
             }
 
+            JSONObject res = client.idcard(filePath, idCardSide, options);
+            try {
+                String image_message="";
+                String error_code="";
+                try {
+                    Object object = res.get("error_code");
+                    if(object!=null){
+                        if (object instanceof String) {
+                            error_code =(String) object;
+                        }else if(object instanceof Integer ){
+                            error_code =object+"";
+                        }else {
+                            error_code="未知错误";
+                        }
+                    }
+                }catch (Exception e){}
+                if(StringUtils.equals(error_code,"216633")){
+                    retType=false;
+                    image_message="识别身份证错误-您上传了非身份证图片或您上传的身份证图片不完整";
+                }else if(StringUtils.isNotEmpty(error_code)){
+                    retType=false;
+                    image_message="识别身份证错误";
+                }
+
+                if(retType){
+                    String image_status=res.getString("image_status");
+                    if(StringUtils.equals(image_status,"reversed_side")){//
+                        image_message="未摆正身份证";
+                    }else if(StringUtils.equals(image_status,"non_idcard")){//
+                        image_message="上传的图片中不包含身份证";
+                    }else if(StringUtils.equals(image_status,"blurred")){//
+                        image_message="身份证模糊";
+                    }else if(StringUtils.equals(image_status,"over_exposure")){//
+                        image_message="身份证关键字段反光或过曝";
+                    }else if(StringUtils.equals(image_status,"unknown")){//
+                        image_message="证件识别失败-未知状态";
+                    }
+                    if(idCardSide.equals("front")){//身份证正面
+                        String xm="",xb="",mz="",csrq="",cfzh="",zz="";
+                        try {
+                            xm=res.getJSONObject("words_result").getJSONObject("姓名").getString("words");
+                        }catch (Exception e){}
+                        try {
+                            xb=res.getJSONObject("words_result").getJSONObject("性别").getString("words");
+                        }catch (Exception e){}
+                        try {
+                            mz=res.getJSONObject("words_result").getJSONObject("民族").getString("words");
+                        }catch (Exception e){}
+                        try {
+                            csrq=res.getJSONObject("words_result").getJSONObject("出生").getString("words");
+                        }catch (Exception e){}
+                        try {
+                            cfzh=res.getJSONObject("words_result").getJSONObject("公民身份号码").getString("words");
+                        }catch (Exception e){}
+                        try {
+                            zz=res.getJSONObject("words_result").getJSONObject("住址").getString("words");
+                        }catch (Exception e){}
+                        if(StringUtils.isEmpty(xm)||StringUtils.isEmpty(cfzh)){
+                            retType=false;
+                            retMap.put("image_message","未能识别出信息");
+                        }
+                        Map<String, String> redisMap=new HashMap<String, String>();
+                        redisMap.put("xm",xm);//姓名
+                        redisMap.put("xb",xb);//性别
+                        redisMap.put("mz",mz);//民族
+                        redisMap.put("csrq",csrq);//出生日期
+                        redisMap.put("cfzh",cfzh);//公民身份号码
+                        redisMap.put("zz",zz);//住址
+                        redisMap.put("filePath",paths);//文件地址
+
+                        retMap.put("xm",xm);//姓名
+                        retMap.put("cfzh",cfzh.replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));//公民身份号码
+
+                        redisDao.delete(user.getId()+"-ocrRecognition-map");
+                        //将解析报文保存到redis中进行组缓存
+                        redisDao.boundValueOps(user.getId()+"-ocrRecognition-map").set(mapper.writeValueAsString(redisMap), 1, TimeUnit.DAYS);
+                    }else{//身份证反面
+
+                    }
+
+                }
+                if(StringUtils.isNotEmpty(image_message)){
+                    retMap.put("image_message",image_message);
+                }
+                redisDao.delete(user.getId()+"-ocrRecognition-string");
+                redisDao.boundValueOps(user.getId()+"-ocrRecognition-string").set(mapper.writeValueAsString(res.toString(2)), 1, TimeUnit.DAYS);
+
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                retType=false;
+            }
+
         }else if(StringUtils.indexOf(fileType,"2")==0){//驾驶证识别
 
         }
+        return retType;
     }
 }

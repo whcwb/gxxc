@@ -67,4 +67,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> updateJz(BizPtyh entity);
 
     ApiResponse<String> validateCode(String code);
+
+    ApiResponse<Map<String,Object>> getUserSchoolCar();
 }

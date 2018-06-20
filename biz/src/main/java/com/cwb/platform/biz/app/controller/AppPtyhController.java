@@ -89,6 +89,7 @@ public class AppPtyhController extends AppUserBaseController {
      * imgTypeList 以,进行分隔
      *
      * @return
+     * @return
      */
     @RequestMapping(value="/updatesm", method={RequestMethod.POST})
     public ApiResponse<String> updateUserReal(BizPtyh entity){
@@ -146,6 +147,14 @@ public class AppPtyhController extends AppUserBaseController {
     @PostMapping("/updatesfyjz")
     public ApiResponse<String> updateJz(BizPtyh entity){
         return service.updateJz(entity);
+    }
+
+    /**
+     * 学员学车详情
+     */
+    @PostMapping("/getxc")
+    public ApiResponse<Map<String,Object>> getUserSchoolCar (){
+        return service.getUserSchoolCar();
     }
 
 
