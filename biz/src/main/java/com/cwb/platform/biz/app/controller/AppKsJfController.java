@@ -1,7 +1,7 @@
-package com.cwb.platform.biz.controller;
+package com.cwb.platform.biz.app.controller;
 
-import com.cwb.platform.biz.model.BizKsSl;
-import com.cwb.platform.biz.service.KsSlService;
+import com.cwb.platform.biz.model.BizKsJf;
+import com.cwb.platform.biz.service.KsjfService;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.base.QueryController;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -11,27 +11,33 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * 学员考试受理信息表
+ * 学员考试缴费记录表
  * Created by Administrator on 2018/6/19.
  */
 @RestController
-@RequestMapping("/api/kssl")
-public class KsSlController extends QueryController<BizKsSl,String> {
+@RequestMapping("/app/ksjf")
+public class AppKsJfController extends QueryController<BizKsJf,String> {
 
     @Autowired
-    private KsSlService service;
+    private KsjfService service;
 
     @Override
-    protected BaseService<BizKsSl, String> getBaseService() {
+    protected BaseService<BizKsJf, String> getBaseService() {
         return service;
     }
 
+
     @RequestMapping(value="/save", method={RequestMethod.POST})
-    public ApiResponse<String> save(BizKsSl entity){
+    public ApiResponse<String> save(BizKsJf entity){
         return service.validAndSave(entity);
     }
 
+    @RequestMapping("getPayInfo")
+    public ApiResponse<Map<String,String>> getPayInfo(String yhId){
+        return service.getPayInfo(yhId);
+    }
 
 }
