@@ -35,7 +35,9 @@
         </div>
         <div class="body" style="padding: 0 0.2rem">
           <Row :gutter="10">
-            <Col span="12" style="margin-bottom: 5px" v-for="(item,index) in xyMwss.markList">
+          	
+          	
+            <!--<Col span="12" style="margin-bottom: 5px" v-for="(item,index) in xyMwss.markList">
               <Card dis-hover>
                 <p slot="title">{{item.kmBm | km}}成绩单</p>
                 <div slot="extra">
@@ -52,7 +54,10 @@
                           @click=saveMes(index,item.kmBm,item.xyCj)>{{item.kmBm | km}}成绩单上传</Button>
                 </div>
               </Card>
-            </Col>
+            </Col>-->
+            
+            
+            
             <!--<Col span="12">-->
               <!--<Card dis-hover>-->
                 <!--<p slot="title">科目二成绩单</p>-->

@@ -1,7 +1,7 @@
 <template>
   <div class="saveName box_col">
     <div class="box-row"
-         style="height: 0.5rem;line-height: 0.8rem;
+         style="height: 0.5rem;
              border-bottom: #dedede 1px solid;
              color: #757575;
              line-height: 0.55rem;
@@ -24,11 +24,7 @@
       <div style="margin-top: 0.2rem">
         <el-button type="primary" @click="UPbm"
           style="width: 100%;padding: 0.15rem"
-        >主要按钮</el-button>
-        <!--<Button type="info" long-->
-                <!--@click="UPbm"-->
-                <!--style="padding:0.1rem;font-size: 0.35rem;font-weight: 700"-->
-        <!--&gt;确定</Button>-->
+        >确定</el-button>
       </div>
     </div>
   </div>

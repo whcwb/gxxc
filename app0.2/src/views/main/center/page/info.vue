@@ -12,12 +12,12 @@
       z-index: 100;
       .BMinput{
         width: 100%;
-        height: 0.55rem;
+        height: 0.5rem;
         outline:none;
         border: none;
         border-bottom: #2db7f5 0.06rem solid;
         color: #2db7f5;
-        font-size: 0.22rem;
+        font-size: 0.2rem;
         font-weight: 600;
       }
     }
@@ -49,10 +49,13 @@
               <div @click="compname='word'">
                 <mt-cell title="修改密码" value="****"></mt-cell>
               </div>
-              <span @click="goOut">
-                    <mt-cell title="退出登录"></mt-cell>
-              </span>
-              <div style="text-align: center;padding: 1rem 0 0 0;color: #949494">
+              <div @click="goOut" style="padding: 0.3rem 0.1rem">
+                <el-button type="danger" @click="UPbm"
+                           style="width: 100%;padding: 0.15rem"
+                >退出登录</el-button>
+              </div>
+              <div style="text-align: center;padding: 1rem 0 0 0;
+              font-size: 0.14rem;color: #949494">
                 <div>
                     Copyright@2017-2018
                 </div>
