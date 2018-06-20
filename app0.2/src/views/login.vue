@@ -68,8 +68,8 @@
           };
           return{
             loginForm: {
-              username: '18672922385',
-              password: ''
+              username: '13311111111',
+              password: '123456'
             },
             FormRules: {
               username: [
@@ -82,7 +82,7 @@
           };
         },
         created(){
-          this.util.auto
+          this.util.auto(window, document ,4)
         },
         methods:{
           submitForm(formName) {

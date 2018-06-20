@@ -55,7 +55,7 @@
     },
     methods: {
       handleSuccess (res, file) {
-        // console.log('文件上传成功')
+        console.log('文件上传成功')
         // console.log(res)
         // console.log(file)
         Indicator.close();
@@ -67,29 +67,29 @@
         console.log(res)
         console.log(file)
       },
-      handleFormatError (file) {
-        console.log({
-          title: 'The file format is incorrect',
-          desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
-        });
-      },
-      handleMaxSize (file) {
-        console.log('File  ' + file.name + ' 文件太大了 2M.');
-      },
       handleBeforeUpload (file) {//上传之前
+        var v = this
         Indicator.open({
           text: '文件上传中……',
           spinnerType: 'fading-circle'
         });
-        const isJPG = file.type === 'image/png';
+        console.log(file.type)
+        const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!');
+          v.colse()
         }
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!');
+          v.colse()
         }
-        // return isJPG && isLt2M;
+        return isJPG && isLt2M;
+      },
+      colse(){
+        setTimeout(function () {
+          Indicator.close();
+        },100)
       }
     }
   }

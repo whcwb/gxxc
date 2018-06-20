@@ -15,26 +15,59 @@
         <mt-button icon="back"></mt-button>
       </router-link>
     </mt-header>
-    <div class="box_col_auto">
+    <!--v-if="userMess.yhZt=='-1'"-->
+    <div class="box_col_auto" v-if="userMess.yhZt=='-1'">
       <div class="box-row">
         <div class="box_row_100" style="margin: 0.15rem">
           <imgup :demoImg="imgList.zm" fileType="10"
-                 @handleSuccess="(res)=>{handleSuccess(res,0)}"></imgup>
+                 @handleSuccess="(res)=>{handleSuccess(res,0,'10')}"></imgup>
           <!--<img src="static/home/id_03.png"-->
                <!--style="width: 100%"-->
                <!--alt="">-->
         </div>
         <div class="box_row_100" style="margin: 0.15rem">
-          <img src="static/home/id_05.png"
-               style="width: 100%"
-               alt="">
+          <imgup :demoImg="imgList.bm" fileType="11"
+                 @handleSuccess="(res)=>{handleSuccess(res,1,'11')}"></imgup>
+          <!--<img src="static/home/id_05.png"-->
+               <!--style="width: 100%"-->
+               <!--alt="">-->
         </div>
       </div>
       <div @click="" style="padding: 0.3rem 0.1rem">
-        <el-button type="primary" @click=""
+        <el-button type="primary" @click="uploadMess"
                    style="width: 100%;padding: 0.15rem"
         >提交</el-button>
       </div>
+    </div>
+    <div class="box_col_auto" v-else style="text-align: center;background-color: #fff">
+      <div v-if="userMess.yhZt=='0'">
+        <img src="static/zjsh/zjsh0.png" alt="">
+        <div>
+            审核中
+        </div>
+      </div>
+      <div v-else-if="userMess.yhZt=='1'">
+        <img src="static/zjsh/zjsh1.png"
+             alt="">
+        <div>
+           审核通过
+        </div>
+      </div>
+      <div v-else-if="userMess.yhZt=='2'">
+        <img src="static/zjsh/zjsh2.png" alt="">
+        <div>
+           审核驳回
+        </div>
+        <div>
+          {{userMess.yhZtMs}}
+        </div>
+        <div style="padding: 0.3rem 0.1rem">
+          <el-button type="danger" @click="gobak"
+                     style="width: 100%;padding: 0.15rem"
+          >重新提交</el-button>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -48,6 +81,10 @@
         },
         data(){
           return{
+            userMess:this.$store.state.app.userMess,
+            form:{
+              imgList:['-','-','-','-']
+            },
             imgList:{
               zm:'static/home/id_03.png',
               bm:'static/home/id_05.png'
@@ -55,16 +92,63 @@
           }
         },
         created(){
+          this.rz()
         },
         methods:{
-          handleSuccess(res,val){
+          gobak(){
+            this.userMess.yhZt='-1'
+          },
+          rz(){
+            var v =this
+            this.util.GetUserMess(v,(res)=>{
+              v.userMess = res
+              // 0审核中  1通过  2驳回（yhZtMs-驳回信息） -1未认证
+              if(v.userMess.yhZt=='-1'){
+                v.stepIndex = 0
+              }else if(v.userMess.yhZt!='-1'){
+                v.stepIndex = 2
+              }
+            })
+          },
+          handleSuccess(res,val,type){
             console.log('上传成功事件监听',res)
             console.log(val)
+            var v = this
             if(res.code==200){
-
+              if(val==0){
+                v.imgList.zm = 'static/zjsh/sfzzmok.png'
+                v.form.imgList[val]=res.message
+              }else if(val==1){
+                v.imgList.bm = 'static/zjsh/sfzfmok.png'
+                v.form.imgList[val]=res.message
+              }
+              v.zjsbImg(res.message,type)
             }
-            // this.UPTx('/'+res.message)
           },
+          //证件识别
+          zjsbImg(url,code){
+            console.log(code)
+            this.$http.post(this.apis.ZJSB,{path:url,fileType:code}).then((res)=>{
+              console.log(res)
+            }).catch((err)=>{
+
+            })
+          },
+
+
+
+          uploadMess(){
+            var v = this
+            this.$http.post(this.apis.IDRZ,{'imgList':v.form.imgList.join(',')}).then((res)=>{
+              console.log(res)
+              if(res.code==200){
+                // v.rz()
+              }
+            }).catch((err)=>{
+
+            })
+          }
+
         }
     }
 </script>

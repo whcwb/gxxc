@@ -50,7 +50,7 @@
                 <mt-cell title="修改密码" value="****"></mt-cell>
               </div>
               <div @click="goOut" style="padding: 0.3rem 0.1rem">
-                <el-button type="danger" @click="goOut"
+                <el-button type="danger"
                            style="width: 100%;padding: 0.15rem"
                 >退出登录</el-button>
               </div>
@@ -109,7 +109,7 @@
             }).catch((err)=>{
 
             })
-            this.$router.push({name:'login'})
+            this.$router.push({name:'Login'})
           },
           userMessF(){//获取个人信息
             var v = this
