@@ -117,8 +117,23 @@ export let appRouter = [
         children: [
             { path: 'artical-publish', title: '文章发布', name: 'artical-publish', icon: 'compose', component: () => import('@/views/form/article-publish/article-publish.vue') },
             { path: 'workflow', title: '工作流', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/form/work-flow/work-flow.vue') }
-
         ]
+    },
+    {
+        path: '/student',
+        icon: 'android-car',
+        name: 'student',
+        meta: {title: '学员管理'},
+        component: Main,
+        children: [
+            {
+                path: 'status',
+                icon: 'android-clipboard',
+                name: 'status',
+                meta: { title: '学习状态' },
+                component: () => import('@/views/whdx/student/status')
+            },
+		]
     },
 	{
 		path: '/platform',
@@ -128,39 +143,18 @@ export let appRouter = [
         component: Main,
         children: [
 			{
-				path: 'ksJf',
-				icon: 'android-clipboard',
-				name: 'ksJf',
-                meta: { title: '考试缴费管理' },
-				component: () => import('@/views/whdx/ksJf')
-			},
-			{
-				path: 'ksJg',
-				icon: 'android-clipboard',
-				name: 'ksJg',
-                meta: { title: '考试结果记录' },
-				component: () => import('@/views/whdx/ksJg')
-			},
-			{
-				path: 'ksSl',
-				icon: 'android-clipboard',
-				name: 'ksSl',
-                meta: { title: '考试受理信息' },
-				component: () => import('@/views/whdx/ksSl')
-			},
-			{
-				path: 'ksYk',
-				icon: 'android-clipboard',
-				name: 'ksYk',
-                meta: { title: '学员考试约考' },
-				component: () => import('@/views/whdx/ksYk')
-			},
-			{
 				path: 'school',
 				icon: 'android-clipboard',
 				name: 'school',
                 meta: { title: '驾校管理' },
 				component: () => import('@/views/whdx/school')
+			},
+			{
+				path: 'examPlace',
+				icon: 'android-clipboard',
+				name: 'examPlace',
+                meta: { title: '考场管理' },
+				component: () => import('@/views/whdx/examPlace')
 			},
 			{
 				path: 'trainPlace',

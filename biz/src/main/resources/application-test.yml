@@ -22,6 +22,7 @@ order_money: 2500
 logo_file_url: /opt/gxxc/logo.png
 
 qr_code_file_url: /opt/gxxc/nginx/
+credentialsPath:
 
 wechat:
   appId: wxb01394ea85904296
