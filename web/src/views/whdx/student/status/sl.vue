@@ -38,9 +38,9 @@
 				},
                 formInputs:[
                     {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
-                    {label:'驾校',prop:'code',type:'foreignKey'},
+                    {label:'单位名称',prop:'name'},
                     {label:'受理时间',prop:'slSj',type:'date'},
-                    {label:'考试原因',prop:'slType',dict:'ZDCLK0070',type:'dict'},
+                    {label:'受理类型',prop:'slType',dict:'ZDCLK0071',type:'dict'},
                 ],
                 ruleInline:{
 				},
