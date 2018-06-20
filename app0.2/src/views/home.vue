@@ -61,6 +61,9 @@
       }
     },
     created(){
+      //测试
+      this.footerNum = 1;
+      //
       this.compname = this.compnameList[this.footerNum]
       this.footerList.forEach((mes,val)=>{
         if(val==this.footerNum){
