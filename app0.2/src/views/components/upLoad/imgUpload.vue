@@ -1,10 +1,10 @@
 <style>
-  .ivu-upload{
+  .el-upload{
     height: 100%;
   }
 </style>
 <template>
-    <!--<div class="box">-->
+    <div class="box_col">
       <el-upload
         class="upload-demo"
         :action="apis.upImgUrl"
@@ -13,12 +13,13 @@
         :limit="1"
         :on-success="handleSuccess"
         :on-error="handleError"
-        :before-upload="handleBeforeUpload">
-          <div style="height: 100%;width:100%">
-            <img :src="demoImg" width="100%" height="100%">
+        :before-upload="handleBeforeUpload"
+        style="height: 100%;width:100%;">
+          <div style="height: 100%;width:100%;">
+            <img :src="demoImg" style="width: 100%;height: 100%">
           </div>
       </el-upload>
-
+    </div>
 </template>
 <script>
   import { Indicator } from 'mint-ui';
