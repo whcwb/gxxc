@@ -39,8 +39,6 @@
                     {label:'驾校名称',prop:'schoolName'},
                     {label:'驾校地址',prop:'schoolAddress'},
                     {label:'区域代码',prop:'regionCode',dict:'ZDCLK0060',type:'dict'},
-                    {label:'经度',prop:'lat'},
-                    {label:'纬度',prop:'lng'},
                     {label:'联系人',prop:'linkMan'},
                     {label:'联系电话',prop:'linkTel'},
                     {label:'可培训车型',prop:'trainableVehicleType'},
@@ -48,7 +46,6 @@
                     {label:'教练车总数',prop:'carTotal'},
                     {label:'教练场总面积',prop:'totalAreaJlc'},
                     {label:'备注',prop:'remark'},
-                    {label:'背景图片',prop:'bgFileId'},
                 ],
                 ruleInline:{
 				}
