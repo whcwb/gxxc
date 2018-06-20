@@ -50,7 +50,7 @@
                 <mt-cell title="修改密码" value="****"></mt-cell>
               </div>
               <div @click="goOut" style="padding: 0.3rem 0.1rem">
-                <el-button type="danger" @click="UPbm"
+                <el-button type="danger" @click="goOut"
                            style="width: 100%;padding: 0.15rem"
                 >退出登录</el-button>
               </div>
@@ -73,8 +73,6 @@
 </template>
 
 <script>
-    // import {Card, Row, Col, Avatar, Tag, Alert, Button, Icon  } from 'iview'
-    // import {  Cell, Header , Toast} from 'mint-ui';
     import bm from '../comp/bm'
     import word from  '../comp/upWorld'
     import imgup from '@/views/components/upLoad/imgUpload'

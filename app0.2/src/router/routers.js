@@ -43,5 +43,10 @@ module.exports = [
     path:'/myTeam',name:'myteam',
     meta:{title:'我的团队'},
     component:()=>import('@/views/main/myTeam')
+  },
+  {
+    path:'/smrz',name:'smrz',
+    meta:{title:'实名认证'},
+    component:()=>import('@/views/main/smrz')
   }
 ]

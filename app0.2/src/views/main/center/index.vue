@@ -121,7 +121,7 @@
         </div>
         <div style="margin-top: 0.2rem">
           <mt-cell title="实名认证" value="未认证"
-                   to="/myCenter-sfrz"
+                   to="/smrz"
                    is-link style="border-bottom: 1px #e9eaec solid;">
             <i class="iconfont icon-anquan"
                style="font-size: 20px;color: #2d8cf0;margin-left: 0.1rem"
@@ -130,10 +130,10 @@
             <!--<Icon v-if="usermess.yhZt=='1'"-->
             <!--type="ios-checkmark"></Icon>&nbsp;&nbsp;{{usermess.yhZt | yhZt}}</span>-->
           </mt-cell>
-          <mt-cell title="实名认证" value="未认证"
-                   to="/myCenter-sfrz"
+          <mt-cell title="我的学员" value="0人"
+                   to="/smrz"
                    is-link style="border-bottom: 1px #e9eaec solid;">
-            <i class="iconfont icon-anquan"
+            <i class="iconfont icon-zaixiaoxueyuan"
                style="font-size: 20px;color: #2d8cf0;margin-left: 0.1rem"
                slot="icon"></i>
             <!--<span :style="{color: usermess.yhZt=='1' ? '#19be6b' : '#888'}">-->
