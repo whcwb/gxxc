@@ -1,6 +1,7 @@
 package com.cwb.platform.biz.model;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 public class BizKsSl implements Serializable {
     @Id
     @Column(name = "ID")
+    @GeneratedValue(generator = "JDBC")
     private String id;
 
     /**
@@ -21,34 +23,28 @@ public class BizKsSl implements Serializable {
     private String yhId;
 
     /**
-     * 驾校代码 BIZ_DRIVERS_SCHOOL 表的主键
+     * 受理单位ID
      */
-    @Column(name = "SCHOOL_CODE")
-    private String schoolCode;
+    @Column(name = "CODE")
+    private String code;
+
+    /**
+     * 受理单位名称
+     */
+    @Column(name = "NAME")
+    private String name;
+
+    /**
+     * 受理类型(ZDCLK0071  1、医院体验 2、入网面签 3、档案采集 4、受理成功 )
+     */
+    @Column(name = "SL_TYPE")
+    private String slType;
 
     /**
      * 受理时间
      */
     @Column(name = "SL_SJ")
     private String slSj;
-
-    /**
-     * 受理流水
-     */
-    @Column(name = "SL_LS")
-    private String slLs;
-
-    /**
-     * 受理车型(车型字典项：ZDCLK0069  A1 A2……)
-     */
-    @Column(name = "SL_CX")
-    private String slCx;
-
-    /**
-     * 考试原因(考试原因 字典项：ZDCLK0070  1、初次申领  2、增驾申请)
-     */
-    @Column(name = "SL_KSYY")
-    private String slKsyy;
 
     /**
      * 用户姓名
@@ -109,21 +105,57 @@ public class BizKsSl implements Serializable {
     }
 
     /**
-     * 获取驾校代码 BIZ_DRIVERS_SCHOOL 表的主键
+     * 获取受理单位ID
      *
-     * @return SCHOOL_CODE - 驾校代码 BIZ_DRIVERS_SCHOOL 表的主键
+     * @return CODE - 受理单位ID
      */
-    public String getSchoolCode() {
-        return schoolCode;
+    public String getCode() {
+        return code;
     }
 
     /**
-     * 设置驾校代码 BIZ_DRIVERS_SCHOOL 表的主键
+     * 设置受理单位ID
      *
-     * @param schoolCode 驾校代码 BIZ_DRIVERS_SCHOOL 表的主键
+     * @param code 受理单位ID
      */
-    public void setSchoolCode(String schoolCode) {
-        this.schoolCode = schoolCode;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    /**
+     * 获取受理单位名称
+     *
+     * @return NAME - 受理单位名称
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置受理单位名称
+     *
+     * @param name 受理单位名称
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 获取受理类型(ZDCLK0071  1、医院体验 2、入网面签 3、档案采集 4、受理成功 )
+     *
+     * @return SL_TYPE - 受理类型(ZDCLK0071  1、医院体验 2、入网面签 3、档案采集 4、受理成功 )
+     */
+    public String getSlType() {
+        return slType;
+    }
+
+    /**
+     * 设置受理类型(ZDCLK0071  1、医院体验 2、入网面签 3、档案采集 4、受理成功 )
+     *
+     * @param slType 受理类型(ZDCLK0071  1、医院体验 2、入网面签 3、档案采集 4、受理成功 )
+     */
+    public void setSlType(String slType) {
+        this.slType = slType;
     }
 
     /**
@@ -142,60 +174,6 @@ public class BizKsSl implements Serializable {
      */
     public void setSlSj(String slSj) {
         this.slSj = slSj;
-    }
-
-    /**
-     * 获取受理流水
-     *
-     * @return SL_LS - 受理流水
-     */
-    public String getSlLs() {
-        return slLs;
-    }
-
-    /**
-     * 设置受理流水
-     *
-     * @param slLs 受理流水
-     */
-    public void setSlLs(String slLs) {
-        this.slLs = slLs;
-    }
-
-    /**
-     * 获取受理车型(车型字典项：ZDCLK0069  A1 A2……)
-     *
-     * @return SL_CX - 受理车型(车型字典项：ZDCLK0069  A1 A2……)
-     */
-    public String getSlCx() {
-        return slCx;
-    }
-
-    /**
-     * 设置受理车型(车型字典项：ZDCLK0069  A1 A2……)
-     *
-     * @param slCx 受理车型(车型字典项：ZDCLK0069  A1 A2……)
-     */
-    public void setSlCx(String slCx) {
-        this.slCx = slCx;
-    }
-
-    /**
-     * 获取考试原因(考试原因 字典项：ZDCLK0070  1、初次申领  2、增驾申请)
-     *
-     * @return SL_KSYY - 考试原因(考试原因 字典项：ZDCLK0070  1、初次申领  2、增驾申请)
-     */
-    public String getSlKsyy() {
-        return slKsyy;
-    }
-
-    /**
-     * 设置考试原因(考试原因 字典项：ZDCLK0070  1、初次申领  2、增驾申请)
-     *
-     * @param slKsyy 考试原因(考试原因 字典项：ZDCLK0070  1、初次申领  2、增驾申请)
-     */
-    public void setSlKsyy(String slKsyy) {
-        this.slKsyy = slKsyy;
     }
 
     /**
@@ -273,11 +251,10 @@ public class BizKsSl implements Serializable {
     public enum InnerColumn {
         id("ID"),
         yhId("YH_ID"),
-        schoolCode("SCHOOL_CODE"),
+        code("CODE"),
+        name("NAME"),
+        slType("SL_TYPE"),
         slSj("SL_SJ"),
-        slLs("SL_LS"),
-        slCx("SL_CX"),
-        slKsyy("SL_KSYY"),
         yhXm("YH_XM"),
         yhZjhm("YH_ZJHM"),
         cjr("CJR"),
