@@ -16,7 +16,7 @@
       </router-link>
     </mt-header>
     <!--v-if="userMess.yhZt=='-1'"-->
-    <div class="box_col_auto" >
+    <div class="box_col_auto" v-if="userMess.yhZt=='-1'">
       <div class="box-row">
         <div class="box_row_100" style="margin: 0.15rem">
           <imgup :demoImg="imgList.zm" fileType="10"
@@ -39,7 +39,7 @@
         >提交</el-button>
       </div>
     </div>
-    <div class="box_col_auto" v-if="false" style="text-align: center;background-color: #fff">
+    <div class="box_col_auto" v-else style="text-align: center;background-color: #fff">
       <div v-if="userMess.yhZt=='0'">
         <img src="static/zjsh/zjsh0.png" alt="">
         <div>

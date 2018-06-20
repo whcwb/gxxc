@@ -54,17 +54,25 @@
             <div>
               {{usermess.yhBm}}
             </div>
-            <div style="font-size: 0.14rem;margin-top: 0.15rem">
-              <el-tag type="danger"size="small"
-                      v-if="usermess.yhZt=='0'"
-              >未实名</el-tag>
-              <el-tag type="success" size="small"
-                      v-if="usermess.yhZt=='1'&&usermess.yhLx=='1'"
-              >学员</el-tag>
-              <el-tag type="success" size="small"
-                      v-if="usermess.yhZt=='1'&&usermess.yhLx=='2'"
-              >教练</el-tag>
+            <div class="box-row" style="margin-top: 0.15rem">
+              <div>
+                <i class="iconfont icon-dianhua"></i>
+              </div>
+              <div>
+                {{usermess.yhZh}}
+              </div>
             </div>
+            <!--<div style="font-size: 0.14rem;margin-top: 0.15rem">-->
+              <!--<el-tag type="danger"size="small"-->
+                      <!--v-if="usermess.yhZt=='0'"-->
+              <!--&gt;未实名</el-tag>-->
+              <!--<el-tag type="success" size="small"-->
+                      <!--v-if="usermess.yhZt=='1'&&usermess.yhLx=='1'"-->
+              <!--&gt;学员</el-tag>-->
+              <!--<el-tag type="success" size="small"-->
+                      <!--v-if="usermess.yhZt=='1'&&usermess.yhLx=='2'"-->
+              <!--&gt;教练</el-tag>-->
+            <!--</div>-->
           </div>
           <div class="ewCode" @click="showQrcode('ewm')">
             <i class="iconfont icon-erweima"
@@ -105,14 +113,14 @@
                   <!--&gt;缴费</el-button>-->
               </div>
               <div class="box_row_100" style="margin: 0.05rem">
+                             <!--v-if="usermess.ddSfjx=='1'"-->
                   <el-button type="success"
-                             v-if="usermess.ddSfjx=='1'"
                              @click="$router.push({name:'tx'})"
                   >提现</el-button>
-                  <el-button type="success"
-                             v-else
-                             @click="txyz"
-                  >提现</el-button>
+                  <!--<el-button type="success"-->
+                             <!--v-else-->
+                             <!--@click="txyz"-->
+                  <!--&gt;提现</el-button>-->
               </div>
             </div>
 

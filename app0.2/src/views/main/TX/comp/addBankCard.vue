@@ -16,19 +16,19 @@
 <template>
       <div id="bankCard" class="box">
         <div class="box-row"
-             style="height: 1.1rem;line-height: 1.1rem;
+             style="height: 1rem;line-height: 1rem;
              color: #fff;
              background-color: #00000000">
-          <div style="width: 1rem;text-align: center"
+          <div style="width: 1rem;text-align: center;line-height: 0.5rem"
                @click="$parent.compName='bankList'">
             <i class="iconfont icon-left1"></i>
           </div>
-          <div class="body" style="font-size: 0.45rem;font-weight: 700;line-height: 1.2rem">
+          <div class="body" style="font-size: 0.3rem;font-weight: 700;line-height: 1rem">
             添加银行卡
           </div>
         </div>
         <div class="body" style="padding: 0.3rem">
-          <div style="font-size: 0.45rem;padding: 0.1rem 0.2rem;color: #ffa000;font-weight: 600">
+          <div style="font-size: 0.36rem;padding: 0.1rem 0.2rem;color: #ffa000;font-weight: 600">
             请绑定持卡人本人的银行卡
           </div>
           <md-field>
@@ -37,6 +37,7 @@
               title="姓名"
               v-model="from.yhkXm"
               placeholder="请填写真实姓名"
+              readonly
               :maxlength="5"
             ></md-input-item>
             <md-input-item
@@ -54,10 +55,15 @@
               :maxlength="20"
             ></md-input-item>
           </md-field>
+          <div @click="yz" style="padding: 0.3rem 0.1rem;margin: 0.3rem 0">
+            <el-button type="warning"
+                       style="width: 100%;padding: 0.3rem 0;font-size: 0.3rem"
+            >提交</el-button>
+          </div>
           <div style="margin: 0.3rem 0">
-            <Button type="warning" long
-                    @click="yz"
-              style="font-size:0.6rem ">提交</Button>
+            <!--<Button type="warning" long-->
+                    <!--@click="yz"-->
+              <!--style="font-size:0.6rem ">提交</Button>-->
           </div>
         </div>
         <div class="tost" v-show="ToastMessShow">
@@ -68,11 +74,11 @@
 
 <script>
     import { InputItem, Field} from 'mand-mobile'
-    import { Button} from 'iview'
+    // import { Button} from 'iview'
     export default {
         name: "addBankCard",
         components:{
-            Button,
+            // Button,
             [Field.name]:Field,
             [InputItem.name]:InputItem
         },
@@ -98,8 +104,13 @@
             }
           }
         },
+        created(){
+          this.util.GetUserMess(this, (res) => {
+            this.from.yhkXm = res.yhXm
+          })
+        },
         mounted(){
-          this.util.auto(window, document,11)
+          this.util.auto(window, document,7.5)
         },
         methods:{
           yz(){

@@ -2,16 +2,15 @@
       <div id="bankList" class="box">
         <div class="box-row"
              style="height: 0.8rem;line-height: 0.8rem;
-             color: #fff;
-             background-color: #00000000">
-          <div style="width: 0.6rem;text-align: center"
+             color: #fff;background-color: #00000000">
+          <div style="width: 0.6rem;text-align: center;line-height: 0.4rem"
                @click="$parent.compName=''">
             <i class="iconfont icon-left1"></i>
           </div>
-          <div class="body" style="font-size: 0.3rem;font-weight: 700;line-height: 0.85rem">
+          <div class="box_row_100" style="font-size: 0.3rem;font-weight: 700;line-height: 0.85rem">
             我的银行卡
           </div>
-          <div style="width: 0.6rem;text-align: center"
+          <div style="width: 0.6rem;text-align: center;line-height: 0.4rem"
             @click="$parent.compName='addbankCard'">
             <i class="iconfont icon-add" style="font-size: 0.44rem"></i>
           </div>

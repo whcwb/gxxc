@@ -46,11 +46,11 @@
     </div>
     <div class="box_col_auto">
       <div style="background-color: #fff">
-        <div span="24">
+        <div>
           <div style="border: none">
             <div v-if="bankList.length==0"
                  @click="compName = 'addbankCard'"
-                 style="text-align: right;color: #eb873a;font-size: 0.28rem">
+                 style="text-align: right;color: #eb873a;font-size: 0.3rem;padding: 0.2rem 0">
               绑定银行卡后，才能提现！点
               <span style="color: #ff7100;font-size: 0.32rem;font-weight: 700">我</span>
               绑定银行卡！
@@ -58,9 +58,9 @@
 
             <div class="box-row" @click="compName='bankList'" v-else>
               <div>
-                <i class="iconfont icon-detail" style="font-size: 0.8rem"></i>
+                <i class="iconfont icon-detail" style="font-size: 0.8rem;color: #8c8c8c"></i>
               </div>
-              <div class="box_row_100" style="font-size: 0.3rem">
+              <div class="box_row_100" style="font-size: 0.3rem;color: #8c8c8c">
                 <div style="padding: 0.12rem">
                   {{bankList[bankListIndex].yhkSsyh}}
                 </div>
@@ -69,23 +69,40 @@
                 </div>
               </div>
               <div>
-                <i class="iconfont icon-right1" style="font-size: 0.6rem"></i>
+                <i class="iconfont icon-right1" style="font-size: 0.6rem;color: #8c8c8c"></i>
               </div>
-
-
-
-              <!--<div class="box_row_100">-->
-                <!--<mt-cell :title="bankList[bankListIndex].yhkSsyh"-->
-                         <!--:label="bankList[bankListIndex].yhkKh"-->
-                         <!--is-link style="border-bottom: 1px #e9eaec solid;">-->
-                <!--</mt-cell>-->
-              <!--</div>-->
             </div>
           </div>
         </div>
+
       </div>
 
-      <div style="margin-top: 0.3rem">
+      <div style="margin-top: 0.3rem;background-color: #fff;padding: 0 0.15rem">
+        <div style="font-size: 0.4rem;">
+          提现金额
+        </div>
+        <div class="box-row" style="height: 2rem">
+          <div>
+            <i class="iconfont icon-ico-money"
+               style=" font-weight: 600;font-size: 0.6rem;line-height: 1.5rem"></i>
+          </div>
+          <div class="box_row_100" @click="isKeyBoardShow=true">
+            <md-input-item
+              disabled
+              type="money"
+              style="border-bottom: #949494 2px solid"
+              v-model="number"
+              placeholder="提现金额"
+              autofocus="autofocus"
+              @focus="isKeyBoardShow=true"
+            ></md-input-item>
+            <!--@keydown="onInputKeydown"-->
+            <!--@change="onInputChange"-->
+            <div style="font-size: 0.25rem">
+              可提现余额{{zhYE.yhZhye/100}}元
+            </div>
+          </div>
+        </div>
         <!--<Card>-->
         <!--<div>-->
         <!--提现金额-->
@@ -137,17 +154,14 @@
 <script>
   import {Header, Cell, Toast} from 'mint-ui'
   import {ActionSheet, Dialog, InputItem, NumberKeyboard} from 'mand-mobile'
-  // import {Card ,Row, Col , Button} from 'iview'
-  // import bankList from './comp/bankCarList'
-  // import addbankCard from './comp/addBankCard'
+  import bankList from './comp/bankCarList'
+  import addbankCard from './comp/addBankCard'
   export default {
     name: "index",
     height: 500,
     components: {
-      // bankList,addbankCard,
-      // Card ,Row, Col,Button,
-      // [Header.name]:Header,
-      // [Cell.name]:Cell,
+      bankList,
+      addbankCard,
       [ActionSheet.name]: ActionSheet,
       [InputItem.name]: InputItem,
       [NumberKeyboard.name]: NumberKeyboard,
