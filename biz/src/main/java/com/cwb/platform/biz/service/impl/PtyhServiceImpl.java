@@ -3,6 +3,7 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.BizJl;
+import com.cwb.platform.biz.model.BizKsSl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.JlService;
@@ -1076,5 +1077,21 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if(!StringUtils.equals(bizPtyhsList.get(0).getDdSfjx(),"1")) return ApiResponse.fail("邀请码不存在!");
         if(!StringUtils.equals(bizPtyhsList.get(0).getYhSfsd(),"0")) return ApiResponse.fail("邀请码已经锁定，不能邀请您!");
         return ApiResponse.success("验证成功");
+    }
+
+    @Override
+    public ApiResponse<BizJl> getStudentCoach(String yhId) {
+        RuntimeCheck.ifBlank(yhId,"请选择用户");
+        List<BizUser> userList = userService.findEq(BizUser.InnerColumn.yhId,yhId);
+        if (userList.size() == 0){
+            return ApiResponse.success(new BizJl());
+        }
+
+
+        BizUser user = userList.get(0);
+        RuntimeCheck.ifBlank(user.getYhJlid(),"该用户暂未分配教练");
+        BizJl coach = jlService.findById(user.getYhJlid());
+        RuntimeCheck.ifNull(coach,"未找到教练");
+        return ApiResponse.success(coach);
     }
 }

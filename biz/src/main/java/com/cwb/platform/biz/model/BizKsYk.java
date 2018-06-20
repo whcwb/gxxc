@@ -3,6 +3,7 @@ package com.cwb.platform.biz.model;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -88,6 +89,27 @@ public class BizKsYk implements Serializable {
      */
     @Column(name = "CJSJ")
     private String cjsj;
+
+    @Column(name = "exam_place_lat")
+    private Double examPlaceLat;
+    @Column(name = "exam_place_lng")
+    private Double examPlaceLng;
+
+    public Double getExamlaceLat() {
+        return examPlaceLat;
+    }
+
+    public void setExamPlaceLat(Double examPlaceLat) {
+        this.examPlaceLat = examPlaceLat;
+    }
+
+    public Double getExamPlaceLng() {
+        return examPlaceLng;
+    }
+
+    public void setExamPlaceLng(Double examPlaceLng) {
+        this.examPlaceLng = examPlaceLng;
+    }
 
     public String getCjd1() {
         return cjd1;

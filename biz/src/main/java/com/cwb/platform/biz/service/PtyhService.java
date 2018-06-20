@@ -2,6 +2,7 @@ package com.cwb.platform.biz.service;
 
 
 import com.cwb.platform.biz.model.BizJl;
+import com.cwb.platform.biz.model.BizKsSl;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -67,4 +68,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> updateJz(BizPtyh entity);
 
     ApiResponse<String> validateCode(String code);
+
+    ApiResponse<BizJl> getStudentCoach(String yhId);
 }
