@@ -48,5 +48,27 @@ module.exports = [
     path:'/smrz',name:'smrz',
     meta:{title:'实名认证'},
     component:()=>import('@/views/main/smrz')
+  },{
+    path:'/myStudent',name:'myStudent',
+    meta:{title:'我的学员'},
+    component:()=>import('@/views/main/student')
+  },{
+    path:'/stuMess',name:'stuMess',
+    meta:{title:'学员信息'},
+    component:()=>import('@/views/main/stuMess')
+  },{
+    path: '/pay/payIndex',
+    name: 'pay',
+    meta:{
+      title:'缴费'
+    },
+    component:()=>import('@/views/main/pay')
+  },{
+    path: '/tx',
+    name: 'tx',
+    meta:{
+      title:'提现'
+    },
+    component:()=>import('@/views/main/TX')
   }
 ]

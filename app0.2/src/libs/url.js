@@ -14,6 +14,13 @@ module.exports = {
   getImgUrl:ajaxUrl+':8001/',//获取
   // upImgUrl:ajaxUrl+':8080/biz/upload',//上传
   upImgUrl:ajaxUrl+':9086/upload',//上传
+
+
+
+    // 证件识别
+  ZJSB:'/app/zjsb',
+
+
   LOGIN:'/app/login',//登录接口
   LOGOUT:'/app/logout',//退出用戶
   USERMESS:'/app/ptyh/get',//用户信息
