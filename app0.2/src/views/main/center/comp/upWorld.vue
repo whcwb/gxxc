@@ -1,7 +1,7 @@
 <template>
   <div class="updatePassword box" >
     <div class="box-row"
-         style="height: 0.8rem;line-height: 0.8rem;
+         style="height: 0.5rem;line-height: 0.8rem;
              border-bottom: #dedede 1px solid;
              color: #757575;
              background-color: #f1f1f1">
@@ -9,7 +9,7 @@
            @click="$parent.compname=''">
         <i class="iconfont icon-left1"></i>
       </div>
-      <div style="font-size: 0.3rem;font-weight: 700;line-height: 0.85rem">
+      <div style="font-size: 0.18rem;font-weight: 700;">
         密码修改
       </div>
     </div>

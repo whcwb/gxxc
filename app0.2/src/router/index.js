@@ -22,14 +22,14 @@ router.beforeEach((to, from, next) => {
   }else if (openid == null && to.path == '/index') {
     next();
   }else if (openid != null){
-    if(to.name=='Login'||to.name=='Reg'){
+    if(to.name=='login'||to.name=='Reg'){
       next()
-    }else if(to.name!='Login' && localStorage.getItem('userMess')){
+    }else if(to.name!='login' && localStorage.getItem('userMess')){
       next()
     }else{
       Toast('用户信息丢失，请重新登录！')
       next({
-        name: 'Login'
+        name: 'login'
       });
     }
     next();

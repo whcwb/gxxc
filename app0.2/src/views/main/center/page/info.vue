@@ -12,13 +12,12 @@
       z-index: 100;
       .BMinput{
         width: 100%;
-        height: 0.75rem;
+        height: 0.55rem;
         outline:none;
         border: none;
-        padding: 0 0.2rem;
-        border-bottom: #2db7f5 0.1rem solid;
+        border-bottom: #2db7f5 0.06rem solid;
         color: #2db7f5;
-        font-size: 0.36rem;
+        font-size: 0.22rem;
         font-weight: 600;
       }
     }
@@ -37,14 +36,14 @@
           <!-- 用户设置 -->
           <div style="padding-top: 30px;color: black;">
               <mt-cell title="头像" style="border-bottom: 1px #e9eaec solid;padding-bottom: 10px">
-                <div style="width: 0.8rem;height: 0.8rem;border-radius: 0.4rem;">
+                <div style="width: 0.6rem;height: 0.6rem;border-radius: 0.4rem;padding-top: 0.1rem">
                   <imgup :demoImg="userMess.yhTx"
                          @handleSuccess="handleSuccess">
                   </imgup>
                 </div>
               </mt-cell>
               <div @click="compname='bm'">
-                <mt-cell title="姓名" :value="userMess.yhBm"
+                <mt-cell title="昵称" :value="userMess.yhBm"
                          style="border-bottom: 1px #e9eaec solid;"></mt-cell>
               </div>
               <div @click="compname='word'">
@@ -83,8 +82,8 @@
           word,
           imgup,
         },
-      filters:{
-      },
+        filters:{
+        },
         data(){
           return{
             compname:'',
@@ -93,9 +92,9 @@
         },
         created(){
           var v = this
-          if(v.usermess===''){
+          if(v.userMess===''){
             this.util.GetUserMess(v, (res) => {
-              this.usermess = res
+              this.userMess = res
             })
           }
         },
@@ -131,7 +130,7 @@
             this.$http.post(this.apis.CHUSERMESS,{'yhTx':url}).then((res)=>{
               if(res.code==200){
                 // v.userMessF()
-                v.util.userMess(v,(mess)=>{
+                v.util.GetUserMess(v,(mess)=>{
                   v.userMess = mess
                 })
               }
