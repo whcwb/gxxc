@@ -31,4 +31,17 @@ module.exports = [
     },
     component:()=>import('@/views/main/center/page/info.vue'),
   },
+  {
+    path: '/bill',
+    name: 'bill',
+    meta:{
+      title:'账单'
+    },
+    component:()=>import('@/views/main/bill')
+  },
+  {
+    path:'/myTeam',name:'myteam',
+    meta:{title:'我的团队'},
+    component:()=>import('@/views/main/myTeam')
+  }
 ]
