@@ -2,14 +2,6 @@ package com.cwb.platform.biz.service.impl;
 
 
 import com.cwb.platform.biz.mapper.*;
-import com.cwb.platform.biz.model.BizJl;
-import com.cwb.platform.biz.model.BizKsSl;
-import com.cwb.platform.biz.model.BizUser;
-import com.cwb.platform.biz.model.BizWj;
-import com.cwb.platform.biz.service.JlService;
-import com.cwb.platform.biz.service.PtyhService;
-import com.cwb.platform.biz.service.UserService;
-import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -176,6 +168,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             if (StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && !StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
                 bizPtyh.setYhZsyqmImg(imgUrl + bizPtyh.getYhZsyqmImg());
             }
+            if (StringUtils.isNotBlank(bizPtyh.getYhZh())) {
+                bizPtyh.setYhZh(bizPtyh.getYhZh().replaceAll("(?<=[\\d]{3})\\d(?=[\\d]{4})", "*"));
+            }
+
             // 查询该用户是否有所属教练
             BizUser bizUser = userService.findById(bizPtyh.getId());
             if(!ObjectUtils.isEmpty(bizUser)){
@@ -394,6 +390,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             yhAlipayId = ""; // TODO: 2018/5/19 请求支付宝的ID
             RuntimeCheck.ifBlank(yhAlipayId, "支付宝唯一编号不能为空");
         }
+        if(StringUtils.isNotEmpty(entity.getYhOpenId())){
+            yhOpenId=entity.getYhOpenId();
+        }
 
         BizPtyh newEntity = new BizPtyh();
         newEntity.setId(genId());//获取ID
@@ -589,7 +588,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 //        如果有识别信息的情况下，走自动审核业务
         String ocrRecognitionJson = redisDao.boundValueOps(userRequest.getId()+"-ocrRecognition-map").get();
         if (StringUtils.isNotBlank(ocrRecognitionJson)){
-            return updateUserRealAuditing(entity,ocrRecognitionJson,userRequest);
+            return updateUserRealAuditing(entity,ocrRecognitionJson,user);
         }
 
         RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");

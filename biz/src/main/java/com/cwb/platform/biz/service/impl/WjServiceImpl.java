@@ -70,6 +70,8 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
             //10、 身份证正面 11、 身份证反面
             if(StringUtils.equals(fileType,"10")){
                 idCardSide = "front";
+            }else {
+                return true;
             }
 
             JSONObject res = client.idcard(filePath, idCardSide, options);

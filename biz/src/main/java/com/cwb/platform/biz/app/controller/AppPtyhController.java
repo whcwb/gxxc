@@ -12,6 +12,7 @@ import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,9 @@ public class AppPtyhController extends AppUserBaseController {
      * @return
      */
     @RequestMapping(value="/save", method={RequestMethod.POST})
-    public ApiResponse<String> save(BizPtyh entity){
+    public ApiResponse<String> save(BizPtyh entity,HttpServletRequest request){
+        String openId=request.getHeader("openid");
+        entity.setYhOpenId(openId);
         return service.userEnroll(entity);
     }
     /**
