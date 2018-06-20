@@ -47,18 +47,26 @@
 <template>
       <div id="myCenterHome" class="box_col">
         <div class="box_header box-row">
-          <div class="touxiang">
-            <img src="static/login/LOGO.png" alt="">
+          <div class="touxiang" @click="$router.push({name:'myCenterInfo'})">
+            <img :src="usermess.yhTx" alt="">
           </div>
           <div class="box_row_100 box_cen">
             <div>
-              周晓涵
+              {{usermess.yhBm}}
             </div>
-            <div style="font-size: 0.14rem">
-              学员
+            <div style="font-size: 0.14rem;margin-top: 0.15rem">
+              <el-tag type="danger"size="small"
+                      v-if="usermess.yhZt=='0'"
+              >未实名</el-tag>
+              <el-tag type="success" size="small"
+                      v-if="usermess.yhZt=='1'&&usermess.yhLx=='1'"
+              >学员</el-tag>
+              <el-tag type="success" size="small"
+                      v-if="usermess.yhZt=='1'&&usermess.yhLx=='2'"
+              >教练</el-tag>
             </div>
           </div>
-          <div class="ewCode">
+          <div class="ewCode" @click="showQrcode('ewm')">
             <i class="iconfont icon-erweima"
             style="font-size: 0.3rem"
             ></i>
@@ -67,14 +75,15 @@
         <div class="box_money box-row">
           <div class="box_row_100">
             <div class="num">
-              3000.00 <span class="ut">元</span>
+              {{zhYE.yhZhye/100 | yhZhye}} <span class="ut">元</span>
             </div>
             <div class="txt">
               账户余额
             </div>
           </div>
           <div class="box_row_100">
-            <div class="num">1500.00<span class="ut">元</span>
+            <div class="num">
+              {{zhYE.yhZhye/100 | yhZhye}}<span class="ut">元</span>
             </div>
             <div class="txt">邀请奖励
             </div>
@@ -140,13 +149,47 @@
         name: "index",
         components:{
         },
+        filters:{
+          yhZhye(val) {
+            if (val == '') {
+              return 0
+            }
+            return val
+          }
+        },
         data(){
           return{
-
+            usermess: this.$store.state.app.userMess,
+            //   {
+            //   yhTx: ''
+            // },
+            zhYE: {
+              yhZhye: 0
+            }
           }
         },
         created(){
+          var v = this
           this.util.auto(window, document ,4)
+          if(v.usermess===''){
+            this.util.GetUserMess(v, (res) => {
+              this.usermess = res
+            })
+          }
+        },
+        methods:{
+          showQrcode(val) {
+            var v = this
+            if (val == 'ewm') {
+              if (v.usermess.ddSfjx == '0') {
+                Toast('请先缴费')
+              } else {
+                this.$router.push({name: 'myCenterQrcode'});
+              }
+            } else if (val == 'td') {
+              this.$router.push({name: 'myteam'})
+            }
+          }
         }
     }
 </script>

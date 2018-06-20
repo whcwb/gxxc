@@ -33,6 +33,12 @@ public class BizKsYk implements Serializable {
     private String schoolName;
 
     /**
+     * 考场代码
+     */
+    @Column(name = "EXAM_PLACE_ID")
+    private String examPlaceId;
+
+    /**
      * 预约考试时间
      */
     @Column(name = "YK_SJ")
@@ -63,6 +69,14 @@ public class BizKsYk implements Serializable {
     private String cjsj;
 
     private static final long serialVersionUID = 1L;
+
+    public String getExamPlaceId() {
+        return examPlaceId;
+    }
+
+    public void setExamPlaceId(String examPlaceId) {
+        this.examPlaceId = examPlaceId;
+    }
 
     /**
      * @return ID

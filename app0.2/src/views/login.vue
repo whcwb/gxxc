@@ -22,7 +22,8 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="" prop="password">
-              <el-input v-model.number="loginForm.password"
+              <el-input type="password"
+                        v-model.number="loginForm.password"
                         placeholder="密码"
                         auto-complete="off"></el-input>
             </el-form-item>
@@ -49,14 +50,14 @@
     export default {
         name: "login",
         data(){
-          var zh = (rule, value, callback) => {
-            if (!value) {
+          var mm = (rule, value, callback) => {
+            if (value === '') {
               return callback(new Error('请输入密码！'));
             }else {
               callback();
             }
           };
-          var mm = (rule, value, callback) => {
+          var zh = (rule, value, callback) => {
             if (value === '') {
               callback(new Error('请输入帐号！'));
             }else if(value.length!=11){
@@ -67,7 +68,7 @@
           };
           return{
             loginForm: {
-              username: '',
+              username: '18672922385',
               password: ''
             },
             FormRules: {
@@ -87,7 +88,20 @@
           submitForm(formName) {
             this.$refs[formName].validate((valid) => {
               if (valid) {
-                alert('submit!');
+                var v = this
+                this.$http.post(this.apis.LOGIN,this.loginForm).then((res)=>{
+                  if(res.code==200){
+                    localStorage.setItem('token',JSON.stringify(res.result.accessToken))
+                    v.util.GetUserMess(v,(res)=>{
+                      v.$router.push({name:'Home'})
+                    })
+                  }else {
+                    Toast.failed(res.message)
+                  }
+                }).catch((err)=>{
+                  console.log(err)
+                  console.log('登录出错了！！！')
+                })
               } else {
                 console.log('error submit!!');
                 return false;

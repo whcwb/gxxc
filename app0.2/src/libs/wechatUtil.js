@@ -4,11 +4,13 @@ import urls from './url'
 let wechatUtil = {}
 
 wechatUtil.now = new Date();
+wechatUtil.appId = 'wxb01394ea85904296';
 wechatUtil.token = '';
 wechatUtil.sign = '';
 wechatUtil.code = '';
 wechatUtil.openid = '';
-wechatUtil.baseUrl = 'http://tzbtti.natappfree.cc';
+wechatUtil.baseUrl = 'http://xclm.xxpt123.com:8080/biz/';
+wechatUtil.authLoginUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+wechatUtil.appId+'&redirect_uri='+urls.url+'/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect';
 
 wechatUtil.getQueryString = function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -17,9 +19,9 @@ wechatUtil.getQueryString = function(name) {
 }
 
 wechatUtil.getCode = ()=>{
-    window.location.href = wechatUtil.baseUrl+urls.wechat.getCode;
+    window.location.href = wechatUtil.authLoginUrl;
 }
-wechatUtil.getOpenid = (code)=>{
+wechatUtil.getOpenid = (code,callback)=>{
     $.ajax({
         url:wechatUtil.baseUrl+urls.wechat.getOpenid+"?code="+code,
         type:'get',
@@ -27,15 +29,18 @@ wechatUtil.getOpenid = (code)=>{
             console.log(res);
             if (res.code == 200){
                 wechatUtil.openid = res.message;
+                // $.cookie('openid',res.message);
+                callback && callback(res.message)
+            }else {
+              alert('ID获取失败！！！')
             }
-            $.cookie('openid',openid);
         }
     })
 }
 
-wechatUtil.getAccessToken = ()=>{//生成token
+wechatUtil.getAccessToken = (openid)=>{//生成token
     $.ajax({
-        url:wechatUtil.baseUrl + urls.wechat.getAccessToken,
+        url:wechatUtil.baseUrl + urls.wechat.getAccessToken+'?openid='+openid,
         type:'get',
         success:function(res){
             if (res.code == 200){
@@ -48,8 +53,7 @@ wechatUtil.getAccessToken = ()=>{//生成token
 wechatUtil.getSign = (token)=>{
     let curl = location.href.split('#')[0];
     // let curl = 'http://tzbtti.natappfree.cc/';
-    let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?token="+token+"&timestamp="+wechatUtil.now.getTime()+"&url="+curl;
-    console.log(url);
+    let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?token="+token+"&timestamp="+parseInt(wechatUtil.now.getTime()/1000)+"&url="+encodeURIComponent(curl);
     $.ajax({
         url:url,
         type:'get',
@@ -62,20 +66,36 @@ wechatUtil.getSign = (token)=>{
     })
 }
 
-wechatUtil.config = ()=>{
-    console.log('config');
+wechatUtil.config = function(){
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-        appId: 'wxc79cfaa1daf98915', // 必填，公众号的唯一标识
-        timestamp: wechatUtil.now.getTime(), // 必填，生成签名的时间戳
+        appId: wechatUtil.appId, // 必填，公众号的唯一标识
+        timestamp: parseInt(wechatUtil.now.getTime()/1000), // 必填，生成签名的时间戳
         nonceStr: 'wechat123', // 必填，生成签名的随机串
         signature: wechatUtil.sign,// 必填，签名
-        jsApiList: ['scanQRCode','chooseImage','uploadImage'] // 必填，需要使用的JS接口列表
+        jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay'] // 必填，需要使用的JS接口列表
+    });
+}
+
+wechatUtil.pay = function(prepay,callback){
+    console.log('chooseWXPay');
+    wx.chooseWXPay({
+        appId:prepay.appId,
+        timestamp: prepay.timeStamp,// 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+        nonceStr: prepay.nonceStr, // 支付签名随机串，不长于 32 位
+        package: prepay.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+        signType: prepay.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+        paySign: prepay.paySign, // 支付签名
+        success: function (res) {
+          alert('res')
+          callback && callback(res)
+// 支付成功后的回调函数
+        }
     });
 }
 
 wx.ready(function(){
-    console.log('ready');
+    window.location.href = "/wx/";
     // chooseImage();
     // wechatUtil.qrScan();
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
@@ -100,7 +120,7 @@ wechatUtil.qrScan = (messtoback)=>{//打开微信扫码功能
         }
     });
 }
-wechatUtil.chooseImage = ()=>{
+wechatUtil.chooseImage = ()=>{//拍照或从手机相册中选图接口
     console.log('chooseImage');
     wx.chooseImage({
         count: 1, // 默认9
@@ -111,7 +131,13 @@ wechatUtil.chooseImage = ()=>{
         }
     });
 }
-wechatUtil.uploadImage = ()=>{
+wechatUtil.previewImage = ()=>{//预览图片接口
+  wx.previewImage({
+    current: '', // 当前显示图片的http链接
+    urls: [] // 需要预览的图片http链接列表
+  })
+},
+wechatUtil.uploadImage = ()=>{//下载图片接口
     wx.uploadImage({
         localId: '', // 需要上传的图片的本地ID，由chooseImage接口获得
         isShowProgressTips: 1, // 默认为1，显示进度提示

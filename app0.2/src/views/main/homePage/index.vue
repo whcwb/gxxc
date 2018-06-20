@@ -103,11 +103,12 @@
 <template>
       <div id="homePage" class="box_col">
         <div class="box_col_auto" style="margin-bottom: 0.1rem">
-          <div style="height: 1.4rem;background-color: bisque;text-align: center">
+          <div style="height: 1.5rem;text-align: center">
             <mt-swipe :auto="4000">
-              <mt-swipe-item>1</mt-swipe-item>
-              <mt-swipe-item>2</mt-swipe-item>
-              <mt-swipe-item>3</mt-swipe-item>
+              <mt-swipe-item v-for="(item,index) in SwiperImg">
+                <img :src="item.hdTpdz"
+                     style="width: 100%" alt="">
+              </mt-swipe-item>
             </mt-swipe>
           </div>
           <!--功能模块-->
@@ -275,15 +276,26 @@
       },
       data(){
           return{
-            selected:'1'
+            selected:'1',
+            SwiperImg:[]
           }
       },
       created(){
-
+        this.getSwiperImg()
       },
       methods:{
         goLook(){
           Toast('去看看');
+        },
+        getSwiperImg(){
+          this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{
+            if(res.code==200){
+              this.SwiperImg = res.page.list
+            }
+            console.log(res)
+          }).catch((err)=>{
+
+          })
         }
       }
     }
