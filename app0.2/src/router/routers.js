@@ -1,7 +1,7 @@
 module.exports = [
   {
     path: '/',
-    name: 'login',
+    name: 'Login',
     component:()=>import('@/views/login'),
     meta:{
       title:'登录'
