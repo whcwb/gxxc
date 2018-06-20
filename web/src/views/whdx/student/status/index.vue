@@ -32,7 +32,7 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "",  type: 'selection',width:60},
+                    {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '教练姓名',key:'jlXm'},
@@ -45,14 +45,11 @@
                                 this.util.buildButton(this,h,'success','card','受理',()=>{
                                     this.getSl(params.row.id);
                                 }),
-                                this.util.buildButton(this,h,'success','card','缴费',()=>{
+                                this.util.buildButton(this,h,'success','social-yen','缴费',()=>{
                                     this.getJf(params.row.id);
                                 }),
                                 this.util.buildButton(this,h,'success','card','约考',()=>{
                                     this.getYk(params.row.id);
-                                }),
-                                this.util.buildButton(this,h,'success','card','成绩',()=>{
-                                    this.getJg(params.row.id);
                                 }),
                             ]);
                         }

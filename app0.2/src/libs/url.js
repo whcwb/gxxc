@@ -1,5 +1,5 @@
 // let ajaxUrl = "http://xclm.xxpt123.com";
-let ajaxUrl = "http://192.168.31.228"
+let ajaxUrl = "http://127.0.0.1"
 module.exports = {
   url:ajaxUrl,
   wechat:{
@@ -44,4 +44,13 @@ module.exports = {
   //认证
   IDRZ:'/app/ptyh/updatesm',//身份认证 实名认证
   JLRZ:'app/ptyh/updatelx',//教练员认证
+
+  zdxmPager:'app/zdxm/getzdxm',
+
+  getStudentCoach:'/app/ptyh/getStudentCoach', // 获取学员教练信息
+
+  getHandleStatus:'app/kssl/getHandleStatus', // 获取受理状态信息
+
+  getExamInfo:'app/ksyk/getUserExamInfo', // 考试信息
+  getPayInfo:'app/ksjf/getPayInfo' // 缴费信息
 }

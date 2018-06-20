@@ -28,6 +28,14 @@ public class AppPtyhController extends AppUserBaseController {
     @Autowired
     private AppUserService userService;
 
+
+
+    @RequestMapping("getStudentCoach")
+    public ApiResponse<BizJl> getStudentCoach(String yhId){
+        return service.getStudentCoach(yhId);
+    }
+
+
     /**
      * 用户注册
      * @param entity

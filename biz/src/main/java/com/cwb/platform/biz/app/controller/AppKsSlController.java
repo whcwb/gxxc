@@ -1,4 +1,4 @@
-package com.cwb.platform.biz.controller;
+package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.model.BizKsSl;
 import com.cwb.platform.biz.service.KsSlService;
@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 学员考试受理信息表
  * Created by Administrator on 2018/6/19.
  */
 @RestController
-@RequestMapping("/api/kssl")
-public class KsSlController extends QueryController<BizKsSl,String> {
+@RequestMapping("/app/kssl")
+public class AppKsSlController extends QueryController<BizKsSl,String> {
 
     @Autowired
     private KsSlService service;
@@ -28,10 +29,10 @@ public class KsSlController extends QueryController<BizKsSl,String> {
         return service;
     }
 
-    @RequestMapping(value="/save", method={RequestMethod.POST})
-    public ApiResponse<String> save(BizKsSl entity){
-        return service.validAndSave(entity);
-    }
 
+    @RequestMapping("getHandleStatus")
+    public ApiResponse<Map<String,BizKsSl>> getHandleStatus(String yhId){
+        return service.getHandleStatus(yhId);
+    }
 
 }

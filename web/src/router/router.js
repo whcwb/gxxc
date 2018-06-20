@@ -123,15 +123,96 @@ export let appRouter = [
         path: '/student',
         icon: 'android-car',
         name: 'student',
+        meta: {title: '基础数据'},
+        component: Main,
+        children: [
+            {
+                path: 'school',
+                icon: 'android-clipboard',
+                name: 'school',
+                meta: { title: '驾校管理' },
+                component: () => import('@/views/whdx/school')
+            },
+            {
+                path: 'examPlace',
+                icon: 'android-clipboard',
+                name: 'examPlace',
+                meta: { title: '考场管理' },
+                component: () => import('@/views/whdx/examPlace')
+            },
+            {
+                path: 'trainPlace',
+                icon: 'android-clipboard',
+                name: 'trainPlace',
+                meta: { title: '训练场管理' },
+                component: () => import('@/views/whdx/trainPlace')
+            },
+            {
+                path: 'news',
+                icon: 'android-clipboard',
+                name: 'news',
+                meta: { title: '新闻资讯' },
+                component: () => import('@/views/whdx/hd/list.vue')
+            },
+            {
+                path: 'create_news',
+                icon: 'android-clipboard',
+                name: 'create_news',
+                meta: { title: '新建资讯' },
+                component: () => import('@/views/whdx/hd/create.vue')
+            },
+		]
+    },
+    {
+        path: '/student',
+        icon: 'android-car',
+        name: 'student',
         meta: {title: '学员管理'},
         component: Main,
         children: [
             {
+                path: 'student-list',
+                icon: 'android-clipboard',
+                name: 'student-list',
+                meta: { title: '学员列表' },
+                component: () => import('@/views/whdx/student/list')
+            },
+            {
+                path: 'student-verify',
+                icon: 'android-clipboard',
+                name: 'student-verify',
+                meta: { title: '学员认证' },
+                component: () => import('@/views/whdx/student/verify')
+            },
+            {
                 path: 'status',
                 icon: 'android-clipboard',
                 name: 'status',
-                meta: { title: '学习状态' },
+                meta: { title: '学习进度' },
                 component: () => import('@/views/whdx/student/status')
+            },
+		]
+    },
+    {
+        path: '/coach',
+        icon: 'android-car',
+        name: 'coach',
+        meta: {title: '教练管理'},
+        component: Main,
+        children: [
+            {
+                path: 'teacher-list',
+                icon: 'android-clipboard',
+                name: 'teacher-list',
+                meta: { title: '教练列表' },
+                component: () => import('@/views/whdx/teacher/list')
+            },
+            {
+                path: 'teacher-verify',
+                icon: 'android-clipboard',
+                name: 'teacher-verify',
+                meta: { title: '教练审核' },
+                component: () => import('@/views/whdx/teacher/verify')
             },
 		]
     },
@@ -139,85 +220,22 @@ export let appRouter = [
 		path: '/platform',
         icon: 'android-car',
         name: 'platform',
-        meta: { title: '平台管理' },
+        meta: { title: '财务管理' },
         component: Main,
         children: [
-			{
-				path: 'school',
-				icon: 'android-clipboard',
-				name: 'school',
-                meta: { title: '驾校管理' },
-				component: () => import('@/views/whdx/school')
-			},
-			{
-				path: 'examPlace',
-				icon: 'android-clipboard',
-				name: 'examPlace',
-                meta: { title: '考场管理' },
-				component: () => import('@/views/whdx/examPlace')
-			},
-			{
-				path: 'trainPlace',
-				icon: 'android-clipboard',
-				name: 'trainPlace',
-                meta: { title: '训练场管理' },
-				component: () => import('@/views/whdx/trainPlace')
-			},
-			{
-				path: 'student-list',
-				icon: 'android-clipboard',
-				name: 'student-list',
-                meta: { title: '学员列表' },
-				component: () => import('@/views/whdx/student/list')
-			},
-			{
-				path: 'student-verify',
-				icon: 'android-clipboard',
-				name: 'student-verify',
-                meta: { title: '学员认证' },
-				component: () => import('@/views/whdx/student/verify')
-			},
-			{
-				path: 'teacher-list',
-				icon: 'android-clipboard',
-				name: 'teacher-list',
-                meta: { title: '教练列表' },
-				component: () => import('@/views/whdx/teacher/list')
-			},
-			{
-				path: 'teacher-verify',
-				icon: 'android-clipboard',
-				name: 'teacher-verify',
-                meta: { title: '教练审核' },
-				component: () => import('@/views/whdx/teacher/verify')
-			},
-			{
-				path: 'hd-jx',
-				icon: 'android-clipboard',
-				name: 'hd-jx',
-                meta: { title: '驾校资料' },
-				component: () => import('@/views/whdx/hd/jx')
-			},
+            {
+                path: 'product',
+                icon: 'android-clipboard',
+                name: 'product',
+                meta: { title: '费用管理' },
+                component: () => import('@/views/whdx/cp')
+            },
 			{
 				path: 'order-list',
 				icon: 'android-clipboard',
 				name: 'order-list',
                 meta: { title: '订单列表' },
 				component: () => import('@/views/whdx/order')
-			},
-			{
-				path: 'news',
-				icon: 'android-clipboard',
-				name: 'news',
-                meta: { title: '新闻资讯' },
-				component: () => import('@/views/whdx/hd/list.vue')
-			},
-			{
-				path: 'create_news',
-				icon: 'android-clipboard',
-				name: 'create_news',
-                meta: { title: '新建资讯' },
-				component: () => import('@/views/whdx/hd/create.vue')
 			},
 			{
 				path: 'tx',

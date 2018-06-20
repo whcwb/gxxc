@@ -3,6 +3,7 @@ package com.cwb.platform.biz.model;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -43,6 +44,26 @@ public class BizKsYk implements Serializable {
      */
     @Column(name = "YK_SJ")
     private String ykSj;
+    /**
+     * 第一次考试成绩
+     */
+    @Column(name = "CJ1")
+    private Integer cj1;
+    /**
+     * 第二次考试成绩
+     */
+    @Column(name = "CJ2")
+    private Integer cj2;
+    /**
+     * 第一次考试成绩单
+     */
+    @Column(name = "CJD1")
+    private String cjd1;
+    /**
+     * 第二次考试成绩单
+     */
+    @Column(name = "CJD2")
+    private String cjd2;
 
     /**
      * 用户姓名
@@ -56,6 +77,7 @@ public class BizKsYk implements Serializable {
     @Column(name = "YH_ZJHM")
     private String yhZjhm;
 
+
     /**
      * 创建人
      */
@@ -68,6 +90,43 @@ public class BizKsYk implements Serializable {
     @Column(name = "CJSJ")
     private String cjsj;
 
+    @Column(name = "exam_place_lat")
+    private Double examPlaceLat;
+    @Column(name = "exam_place_lng")
+    private Double examPlaceLng;
+
+    public Double getExamlaceLat() {
+        return examPlaceLat;
+    }
+
+    public void setExamPlaceLat(Double examPlaceLat) {
+        this.examPlaceLat = examPlaceLat;
+    }
+
+    public Double getExamPlaceLng() {
+        return examPlaceLng;
+    }
+
+    public void setExamPlaceLng(Double examPlaceLng) {
+        this.examPlaceLng = examPlaceLng;
+    }
+
+    public String getCjd1() {
+        return cjd1;
+    }
+
+    public void setCjd1(String cjd1) {
+        this.cjd1 = cjd1;
+    }
+
+    public String getCjd2() {
+        return cjd2;
+    }
+
+    public void setCjd2(String cjd2) {
+        this.cjd2 = cjd2;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public String getExamPlaceId() {
@@ -76,6 +135,22 @@ public class BizKsYk implements Serializable {
 
     public void setExamPlaceId(String examPlaceId) {
         this.examPlaceId = examPlaceId;
+    }
+
+    public Integer getCj1() {
+        return cj1;
+    }
+
+    public void setCj1(Integer cj1) {
+        this.cj1 = cj1;
+    }
+
+    public Integer getCj2() {
+        return cj2;
+    }
+
+    public void setCj2(Integer cj2) {
+        this.cj2 = cj2;
     }
 
     /**
