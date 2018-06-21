@@ -1,7 +1,7 @@
 <style lang="less">
   #reg {
     font-size: 0.2rem;
-    background: url('/static/reg/regBack.png') no-repeat top;
+    background: url('/static/login/backImg.png') no-repeat top;
     background-size: 100%;
     .mar_bot{
       margin-bottom: 0.16rem;
@@ -11,14 +11,14 @@
 <template>
   <div id="reg" class="box_col">
     <div style="padding: 0.1rem;color: #f2f2f2;font-weight: 700"
-          @click="$router.back()">
+         @click="$router.back()">
       登录
     </div>
-    <div style="height: 2.2rem">
-    </div>
-    <div style="color: #fff;font-size: 0.3rem;padding-left:20% ">
-      欢迎加入我们
-    </div>
+    <!--<div style="height: 2.2rem">-->
+    <!--</div>-->
+    <!--<div style="color: #fff;font-size: 0.3rem;padding-left:20% ">-->
+      <!--欢迎加入我们-->
+    <!--</div>-->
     <div class="box_col_100" style="padding: 0.3rem">
       <div class="mar_bot">
         <el-input v-model="form.yhZh"
@@ -37,12 +37,11 @@
         <div style="margin-left: 0.15rem">
           <el-button
             v-show="!soltTimeShow"
-            style="background-color: #f2b121"
-            type="warning" @click="getPhoneCode">获取验证码</el-button>
+            type="primary" @click="getPhoneCode">获取验证码</el-button>
           <el-button
             v-show="soltTimeShow"
             style="background-color: #f2b121;width: 1.12rem;margin-left: 0"
-            type="warning">{{soltTime}}s</el-button>
+            type="primary">{{soltTime}}s</el-button>
         </div>
       </div>
 
@@ -77,16 +76,12 @@
         form:{
           yhZh:'',
           yhMm:'',
-          yhYyyqm:localStorage.getItem('yqm'),
-          yhLx:'1',
-          addType:'3',
         },
       }
     },
     watch:{
     },
     created(){
-      localStorage.setItem('yqm',123456789)
     },
     methods:{
       changeCode(value){
@@ -95,7 +90,7 @@
       //获取短信验证码
       getPhoneCode(){
         var v = this
-        this.$http.post(this.apis.PHINECODE,{'zh':v.form.yhZh,'yyyqm':localStorage.getItem('yqm')}).then((res)=>{
+        this.$http.post(this.apis.PHINECODE,{'zh':v.form.yhZh}).then((res)=>{
           if(res.code==200){
             v.countDown()
           }else {
@@ -114,13 +109,13 @@
       interval(){
         var v = this
         var interval = setInterval(function () {
-            if(v.soltTime==0){
-              clearInterval(interval)
-              v.soltTimeShow = !v.soltTimeShow
-              v.soltTime=10
-            }else {
-              v.soltTime -= 1
-            }
+          if(v.soltTime==0){
+            clearInterval(interval)
+            v.soltTimeShow = !v.soltTimeShow
+            v.soltTime=10
+          }else {
+            v.soltTime -= 1
+          }
         },1000)
       },
       regYZ(){
@@ -135,34 +130,16 @@
           Toast('请设置帐号密码!')
           return
         }else {
-          v.vaildCodeNext()
+          v.reg()
         }
-      },
-      vaildCodeNext(){//验证短信是否有效
-        //请求接口判断验证码是否正确
-        var v = this
-        this.$http.post(this.apis.YZDX,{zh:v.form.yhZh,yyyqm:v.code,type:1}).then((res)=>{
-          if(res.code==200){
-            console.log(res);
-            v.reg()
-          }else {
-            Toast(res.message)
-          }
-        }).catch((err)=> {
-          console.log('报错了');
-        });
-
       },
       reg(){
         //请求接口进行注册操作
         var v = this
         this.$http.post(this.apis.USERSAVE,{
-          yhZh:v.form.yhZh,
-          yhMm:v.form.yhMm,
-          yhYyyqm:localStorage.getItem('yqm'),
-          yhLx:'1',
-          addType:'3',
-          telIdentifying:this.code
+          tel:v.form.yhZh,
+          newPwd:v.form.yhMm,
+          code:this.code
         }).then((res)=>{
           console.log(res);
           // Toast.info('注册成功');
@@ -172,10 +149,7 @@
               iconClass: 'icon icon-success'
             });
             setTimeout(()=>{
-              // this.util.userMess(v,()=>{
-              //   this.$router.push({name:'Home'});
-              // })
-              v.login()
+              v.$router.back()
             }, 1000);
           }else {
             console.log(res.message)
@@ -184,24 +158,7 @@
           console.log('报错了');
         });
       },
-      login(){
-        var v = this
-        this.$http.post(this.apis.LOGIN,{'username':this.form.yhZh,'password':this.form.yhMm}).then((res)=>{
-          if(res.code==200){
-            localStorage.setItem('token',JSON.stringify(res.result.accessToken))
-            this.util.GetUserMess(v,()=>{
-              v.$router.push({name:'Home'})
-            })
-          }else {
-            Toast.failed(res.message)
-          }
-        }).catch((err)=>{
-          console.log(err)
-          console.log('登录出错了！！！')
-        })
-      },
     }
-
   }
 </script>
 

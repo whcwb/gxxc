@@ -5,7 +5,7 @@ module.exports = [
     meta:{
       title:'学车联盟'
     },
-    component:()=>import('@/views/index')
+    component:()=>import('@/views/index'),
   },
   {
     path: '/',
@@ -19,6 +19,14 @@ module.exports = [
     path: '/reg',
     name: 'reg',
     component:()=>import('@/views/reg'),
+    meta:{
+      title:'注册'
+    }
+  },
+  {
+    path: '/forget',
+    name: 'forget',
+    component:()=>import('@/views/forgetPassword'),
     meta:{
       title:'注册'
     }
