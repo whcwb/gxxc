@@ -66,4 +66,6 @@ module.exports = {
   //忘记密码  找回密码
   GET_FORGET_code:'/app/sendSMScz',//获取短信验证码
   GET_FORGET_RESETPWD:'/app/resetpwd',//重置密码
+
+  XLC:'/app/cd/xlcpager',//训练场列表
 }

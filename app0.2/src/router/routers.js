@@ -98,5 +98,12 @@ module.exports = [
       title:'提现'
     },
     component:()=>import('@/views/main/TX')
+  },{
+    path: '/xlc',
+    name: 'xlc',
+    meta:{
+      title:'训练场'
+    },
+    component:()=>import('@/views/main/homePage/page/xlcMess')
   }
 ]
