@@ -85,12 +85,12 @@
         },
         created(){
           this.util.auto(window, document ,4)
-          let openid = localStorage.getItem("openid");
-          console.log(openid)
-          if(!openid){
-            console.log(openid)
-            this.$router.push({name:'index'})
-          }
+          // let openid = localStorage.getItem("openid");
+          // console.log(openid)
+          // if(!openid){
+          //   console.log(openid)
+          //   this.$router.push({name:'index'})
+          // }
           let ISLOGIN = sessionStorage.getItem("ISLOGIN");
           if(ISLOGIN == null){
             let openid = localStorage.getItem("openid");
