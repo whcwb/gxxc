@@ -23,6 +23,9 @@ logo_file_url: /opt/gxxc/logo.png
 
 qr_code_file_url: /opt/gxxc/nginx/
 credentialsPath:
+wxDomain: http://xclm.xxpt123.com/wx
+wxMsgTemplate:
+  handle: 0jqcQ-ucdPPfGl3WlyquqhaqOSaj1_8wc7jvZTqXh-I
 
 wechat:
   appId: wxb01394ea85904296

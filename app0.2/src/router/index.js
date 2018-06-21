@@ -10,11 +10,12 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   Util.title(to.meta.title);
-  // let openid = localStorage.getItem("openid");
-  let openid = "123123";
+  let openid = localStorage.getItem("openid");
+  let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+  // let openid = "123123";
   //   console.log(openicd);
   // 如果没有openid，则需要获取
-  /*if (openid == null && to.path != '/index') {
+  if (ISLOGIN == null && to.path != '/index') {
     next({
       name: 'index'
     });
@@ -22,19 +23,20 @@ router.beforeEach((to, from, next) => {
   }else if (openid == null && to.path == '/index') {
     next();
   }else if (openid != null){
-    if(to.name=='login'||to.name=='Reg'){
+    if(to.name=='Login'||to.name=='reg'||to.name=='forget'){
       next()
-    }else if(to.name!='login' && localStorage.getItem('userMess')){
+      return
+    }else if(to.name!='Login' && localStorage.getItem('userMess')){
       next()
     }else{
       Toast('用户信息丢失，请重新登录！')
       next({
-        name: 'login'
+        name: 'Login'
       });
     }
     next();
-  }*/
-  next();
+  }
+  // next();
 })
 
 
