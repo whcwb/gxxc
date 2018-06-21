@@ -57,6 +57,10 @@ module.exports = [
     meta:{title:'学员信息'},
     component:()=>import('@/views/main/stuMess')
   },{
+    path:'/coach',name:'coach',
+    meta:{title:'教练信息'},
+    component:()=>import('@/views/main/mess/coach')
+  },{
     path: '/pay/payIndex',
     name: 'pay',
     meta:{
