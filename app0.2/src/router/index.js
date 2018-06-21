@@ -15,8 +15,9 @@ router.beforeEach((to, from, next) => {
   let ISLOGIN = sessionStorage.getItem("ISLOGIN");
   //   console.log(openicd);
   // 如果没有openid，则需要获取
-  // ISLOGIN == null
-  if (openid == null && to.path != '/index') {
+  // openid == null ||
+  // ISLOGIN == null&&
+  if (openid == null &&  to.path != '/index') {
     next({
       name: 'index'
     });

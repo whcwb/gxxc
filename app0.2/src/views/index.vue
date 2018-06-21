@@ -20,6 +20,12 @@
                 sessionStorage.setItem("ISLOGIN",true);
 
                 this.wechatUtil.getAccessToken();
+                let usermess = localStorage.getItem('userMess')
+                if(usermess){
+                  this.$router.push({path:'/Home'})
+                }else {
+                  this.$router.push({path:'/'})
+                }
             });
         }
 
