@@ -8,6 +8,14 @@ module.exports = [
     }
   },
   {
+    path: '/reg',
+    name: 'reg',
+    component:()=>import('@/views/reg'),
+    meta:{
+      title:'注册'
+    }
+  },
+  {
     path: '/Home',
     name: 'Home',
     component:()=>import('@/views/home'),
