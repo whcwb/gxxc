@@ -2,9 +2,9 @@
   @import "./login";
 </style>
 <template>
-      <div id="login" class="box_col">
+      <div id="login" class="box_col" style="background-image: url('static/login/backImg.png')">
         <div class="login_Logo">
-          <img src="/static/login/LOGO.png" style="width: 1.1rem;" alt="">
+          <img src="static/login/LOGO.png" style="width: 1.1rem;" alt="">
         </div>
         <div class="login_tit">
           学车联盟
@@ -28,13 +28,14 @@
                         auto-complete="off"></el-input>
             </el-form-item>
             <div style="text-align: right;font-size: 0.15rem;color: #fff;">
-              <span style="border-bottom: solid 1px #fff">
+              <span style="border-bottom: solid 1px #fff"
+              @click="$router.push({name:'forget'})">
                忘记密码
               </span>
             </div>
             <el-form-item>
               <el-button style="width: 100%;color:#409eff;font-weight: 700;margin-top: 0.2rem"
-                         @click="submitForm('loginForm')">提交</el-button>
+                         @click="submitForm('loginForm')">登录</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+    import { Toast } from 'mint-ui';
     export default {
         name: "login",
         data(){
@@ -68,7 +70,7 @@
           };
           return{
             loginForm: {
-              username: '13311111111',
+              username: '18672922385',
               password: '123456'
             },
             FormRules: {
@@ -83,6 +85,13 @@
         },
         created(){
           this.util.auto(window, document ,4)
+
+          let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+          if(ISLOGIN == null){
+            let openid = localStorage.getItem("openid");
+            this.wechatUtil.getAccessToken(openid);
+            sessionStorage.setItem("ISLOGIN",true);
+          }
         },
         methods:{
           submitForm(formName) {
@@ -96,7 +105,7 @@
                       v.$router.push({name:'Home'})
                     })
                   }else {
-                    Toast.failed(res.message)
+                    Toast(res.message)
                   }
                 }).catch((err)=>{
                   console.log(err)
@@ -126,7 +135,7 @@
                 localStorage.setItem('yqm',val)
                 v.$router.push("/reg");
               }else {
-                Toast.info(res.message)
+                Toast(res.message)
               }
             }).catch((err)=>{
               alert('失败'+err)

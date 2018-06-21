@@ -1,6 +1,6 @@
-// let ajaxUrl = "http://xclm.xxpt123.com";
+let ajaxUrl = "http://xclm.xxpt123.com";
 // let ajaxUrl = "http://127.0.0.1"
-  let ajaxUrl = "http://192.168.31.228"
+//   let ajaxUrl = "http://192.168.31.228"
 module.exports = {
   url:ajaxUrl,
   wechat:{
@@ -60,5 +60,10 @@ module.exports = {
   getHandleStatus:'app/kssl/getHandleStatus', // 获取受理状态信息
 
   getExamInfo:'app/ksyk/getUserExamInfo', // 考试信息
-  getPayInfo:'app/ksjf/getPayInfo' // 缴费信息
+  getPayInfo:'app/ksjf/getPayInfo', // 缴费信息
+
+
+  //忘记密码  找回密码
+  GET_FORGET_code:'/app/sendSMScz',//获取短信验证码
+  GET_FORGET_RESETPWD:'/app/resetpwd',//重置密码
 }

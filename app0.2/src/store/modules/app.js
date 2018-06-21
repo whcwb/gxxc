@@ -1,6 +1,6 @@
 const app = {
     state: {
-      tabId:2,
+      tabId:0,
       userMess:'',
     },
     mutations: {
