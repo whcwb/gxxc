@@ -39,7 +39,7 @@
           </el-form>
         </div>
         <div class="box_col_auto" style="font-size: 0.23rem;color: #fff;text-align: center;">
-          <div>
+          <div @click="reg">
             创建帐号
           </div>
         </div>
@@ -107,7 +107,31 @@
                 return false;
               }
             });
-          }
+          },
+          reg(){
+            var v = this
+            v.$router.push("/reg")
+            // this.wechatUtil.qrScan((messtoback)=>{
+              // alert('微信'+messtoback)
+              // Toast.succeed('微信'+messtoback);
+              // v.codeyz(messtoback)
+              // v.codeyz(v.yqm)
+            // })
+          },
+          codeyz(val){
+            var v = this
+            // alert(val)
+            this.$http.post(this.apis.CODEYZ,{'code':val}).then((res)=>{
+              if(res.code==200){
+                localStorage.setItem('yqm',val)
+                v.$router.push("/reg");
+              }else {
+                Toast.info(res.message)
+              }
+            }).catch((err)=>{
+              alert('失败'+err)
+            })
+          },
         }
     }
 </script>
