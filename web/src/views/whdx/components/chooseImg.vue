@@ -23,7 +23,7 @@
                 :before-upload="handleBeforeUpload"
                 multiple
                 type="drag"
-                :action="uploadUrl+'?targetPath=schoolFile'"
+                :action="uploadApi+'?targetPath=schoolFile'"
                 style="display: inline-block;width:58px;">
             <div style="width: 58px;height:58px;line-height: 58px;">
                 <Icon type="camera" size="20"></Icon>
@@ -44,6 +44,7 @@
                 fileList: [],
                 staticPath: this.apis.getImgUrl,
                 urlList: '',
+                uploadApi:this.apis.UPLOAD
             }
         },
         props: {
@@ -61,8 +62,8 @@
             }
         },
         created(){
-            if (this.uploadUrl == ''){
-                this.uploadUrl = this.apis.UPLOAD
+            if (this.uploadUrl !== ''){
+                this.uploadApi = this.uploadUrl
             }
             this.init()
         },

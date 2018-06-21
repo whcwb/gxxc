@@ -2,6 +2,7 @@ package com.cwb.platform.biz.util;
 
 import com.cwb.platform.util.commonUtil.JsonUtil;
 import com.cwb.platform.util.redis.RedisTemplateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by chenwei on 16/9/5.
  */
+@Slf4j
 @Component
 public class WechatUtils {
 
@@ -85,6 +87,7 @@ public class WechatUtils {
 
     public String getJsapiTicket(String token){
         String ticketRes = HttpUtil.get("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+token+"&type=jsapi");
+        log.info("getticket: ",ticketRes);
         Map<?, ?> map = JsonUtil.toBean(ticketRes, Map.class);
         String ticket = map.get("ticket").toString();
         return ticket;
