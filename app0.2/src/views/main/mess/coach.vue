@@ -91,8 +91,8 @@
       <div class="NEWPF box-row">
         <div class="box_col_100">
             <el-rate
-              v-model="coach.jlPf"
-              :disabled="false"
+              v-model="pf"
+              :disabled="pf_disabled"
               show-score
               text-color="#ff9900"
               score-template="{value}">
@@ -100,6 +100,7 @@
         </div>
         <div style="font-size: 0.1rem;line-height: 0.5rem">
           <el-button type="success" size="mini"
+                     v-show="!pf_disabled"
                      icon="el-icon-check" circle></el-button>
         </div>
       </div>
@@ -137,11 +138,21 @@
     data() {
       return {
         coach: {},
+        pf:0,
+        pf_disabled:false
       }
     },
     created() {
       this.util.auto(window, document , 4)
-      this.coach = this.$route.params.coach;
+      if(this.$route.params.coach){
+        this.coach = this.$route.params.coach;
+        if(this.coach.jlPf){
+
+        }
+        console.log(this.coach)
+      }else {
+        this.$router.push('/Home')
+      }
     },
     mounted() {
     },
