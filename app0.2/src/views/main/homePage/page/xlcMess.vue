@@ -151,23 +151,18 @@
           </mt-tab-container>
         </div>
         <div id="getmap" style="height: 3rem;background-color: #2b85e4">
-
+          <mapCode :mapcenter="{'lng':xlcmess.latitude,'lat':xlcmess.longitude}"></mapCode>
         </div>
       </div>
 </template>
 
 <script>
+  import mapCode from '../../../components/map/showCode'
   import { Toast } from 'mint-ui';
   export default {
         name: "index",
         components:{
-          // [Swipe.name]: Swipe,
-          // [Button.name]: Button,
-          // [SwipeItem.name]: SwipeItem,
-          // [Navbar.name]: Navbar,
-          // [TabItem.name]: TabItem,
-          // [TabContainer.name]: TabContainer,
-          // [TabContainerItem.name]: TabContainerItem,
+          mapCode
         },
         data(){
           return{
