@@ -110,8 +110,21 @@ public class BizJl implements Serializable {
      */
     @Transient
     private String imgList;
+    /**
+     * 用户密码
+     */
+    @Transient
+    private String yhMm;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhMm() {
+        return yhMm;
+    }
+
+    public void setYhMm(String yhMm) {
+        this.yhMm = yhMm;
+    }
 
     public String getImgList() {
         return imgList;
