@@ -363,8 +363,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.containsNone(entity.getYhLx(), new char[]{'1', '2'})) {
             return ApiResponse.fail("请输入正确用户类型");
         }
-
-
         String yhEncrypt = "";
         yhEncrypt = EncryptUtil.encryptUserPwd(entity.getYhMm());
         RuntimeCheck.ifBlank(yhEncrypt, "用户密码加密失败，用户注册失败");
@@ -392,6 +390,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         }
         if(StringUtils.isNotEmpty(entity.getYhOpenId())){
             yhOpenId=entity.getYhOpenId();
+        }
+        //没有填写别名的时候，将手机码后四位填写到别名中去
+        if(StringUtils.isEmpty(entity.getYhBm())){
+            String yhbm=entity.getYhZh();
+            if(StringUtils.isNotEmpty(yhbm)&&yhbm.length()>4){
+                yhbm=yhbm.substring(yhbm.length()-4);
+            }
+            entity.setYhBm(yhbm);
         }
 
         BizPtyh newEntity = new BizPtyh();
