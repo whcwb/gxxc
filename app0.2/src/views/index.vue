@@ -19,7 +19,7 @@
                 localStorage.setItem("openid",res);
                 sessionStorage.setItem("ISLOGIN",true);
 
-                this.wechatUtil.getAccessToken();
+                this.wechatUtil.getAccessToken(res);
             });
         }
 
