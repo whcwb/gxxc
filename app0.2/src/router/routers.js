@@ -40,6 +40,14 @@ module.exports = [
     }
   },
   {
+    path: '/coachList',
+    name: 'coachList',
+    component:()=>import('@/views/main/coach/list.vue'),
+    meta:{
+      title:'教练列表'
+    }
+  },
+  {
     path: '/myCenter-qrcode',
     name: 'myCenterQrcode',
     meta:{
