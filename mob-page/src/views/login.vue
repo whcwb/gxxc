@@ -1,5 +1,11 @@
 <template>
   <div id="login">
+    <!--<md-button @click="imgCS" type="ghost-primary" style="width:100%;font-size: 26px;color:white;border-bottom-color:#19be6b">测试</md-button>-->
+    <!--<div>-->
+      <!--{{wxmess}}-->
+      <!--<img :src="wxmess.serverId" alt="">-->
+    <!--</div>-->
+
       <!-- logo区域 -->
       <div id="logo">
         <img src="static/icon/LOGO.png" width="120">
@@ -77,6 +83,7 @@
     },
     data(){
       return{
+        wxmess:'',
         from:{
           username:'',
           password:''
@@ -87,10 +94,12 @@
     created(){
         let ISLOGIN = sessionStorage.getItem("ISLOGIN");
         if(ISLOGIN == null){
-          this.wechatUtil.getAccessToken();
+          let openid = localStorage.getItem("openid");
+          this.wechatUtil.getAccessToken(openid);
           sessionStorage.setItem("ISLOGIN",true);
         }
         this.$store.commit('M_tabId', 'tab-home')
+        // this.getUrlCode()
     },
     methods: {
       fet(){
@@ -135,9 +144,13 @@
             // v.codeyz(v.yqm)
         })
       },
+      getUrlCode(){
+        // let urlCode = this.$route.jquery.wxCode
+        alert(urlCode)
+      },
       codeyz(val){
         var v = this
-        alert(val)
+        // alert(val)
         this.$http.post(this.apis.CODEYZ,{'code':val}).then((res)=>{
           if(res.code==200){
             localStorage.setItem('yqm',val)
@@ -148,7 +161,22 @@
         }).catch((err)=>{
           alert('失败'+err)
         })
-
+      },
+      imgCS(){
+        var v = this
+        this.wechatUtil.chooseImage((res)=>{
+          console.log('本地图片获取参数返回',res)
+          // v.wechatUtil.getLocalImgData(res,(val)=>{
+          //   alert(val)
+          //   v.wxmess=val
+          //   console.log(val)
+          // })
+          v.wechatUtil.uploadImage(res,(val)=>{
+            alert('uploadImage')
+            alert(val)
+            v.wxmess=val
+          })
+        })
       }
     }
   }

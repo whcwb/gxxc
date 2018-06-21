@@ -334,7 +334,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
     public static BizPtyh getAppCurrentUser(Boolean require){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         BizPtyh userInfo = (BizPtyh)request.getAttribute("appUserInfo");
-        RuntimeCheck.ifNull(require && userInfo == null,"当前登录用户未空！");
+        RuntimeCheck.ifTrue(require && userInfo == null,"当前登录用户未空！");
         return userInfo;
     }
     /**

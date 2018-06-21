@@ -3,26 +3,33 @@ package com.cwb.platform.biz.service.impl;
 import com.cwb.platform.biz.mapper.BizJlMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.mapper.BizUserMapper;
+import com.cwb.platform.biz.mapper.BizWjMapper;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
+import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.JlService;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.UserService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.EncryptUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlService {
+    @Autowired
+    private BizWjMapper wjMapper;
 
     @Autowired
     private BizJlMapper entityMapper;
@@ -33,6 +40,8 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
 
     @Autowired
     private PtyhService ptyhService;
+    @Autowired
+    private UserService userService;
     @Override
     protected Mapper<BizJl> getBaseMapper() {
         return entityMapper;
@@ -140,5 +149,134 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
            this.update(jl);
        }
         return i==1?ApiResponse.success():ApiResponse.fail("审核失败");
+    }
+
+
+
+    @Override
+    public ApiResponse<String> validAndSave(BizJl entity) {
+        SysYh user=getCurrentUser();
+        RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");
+        RuntimeCheck.ifBlank(entity.getYhZjhm(), "用户身份证号不能为空");
+        RuntimeCheck.ifBlank(entity.getYhSjhm(), "用户手机号不能为空");
+        RuntimeCheck.ifBlank(entity.getJlJl(), "用户教练驾龄不能为空");
+        RuntimeCheck.ifBlank(entity.getJlQu(), "用户教练所属区域不能为空");
+        RuntimeCheck.ifBlank(entity.getJlZml(), "教练证明人不能为空");
+        RuntimeCheck.ifBlank(entity.getJlJjlxr(), "教练紧急联系人不能为空");
+        RuntimeCheck.ifBlank(entity.getJlJjlxrdh(), "教练紧急联系人电话不能为空");
+        RuntimeCheck.ifBlank(entity.getJlZz(), "教练住地址不能为空");
+        RuntimeCheck.ifBlank(entity.getImgList(), "请上传用户头像");
+
+        //设置用户密码 默认用户密码为123456
+        String yhMmEncrypt = "4DA3BB20330A34F4";
+        if(StringUtils.isNotEmpty(entity.getYhMm())){
+            yhMmEncrypt = EncryptUtil.encryptUserPwd(entity.getYhMm());
+            RuntimeCheck.ifBlank(yhMmEncrypt, "用户密码加密失败，用户注册失败");
+        }
+//        1、检查手机号码是否已经注册过
+        BizPtyh newEntity = new BizPtyh();
+        newEntity.setYhZh(entity.getYhSjhm());
+        int dnCount=bizPtyhMapper.selectCount(newEntity);
+        RuntimeCheck.ifTrue(dnCount>0,"该手机号码已经注册过，不能再次注册");
+//        2、检查用户的证件号码是不是注册过
+        newEntity = new BizPtyh();
+        newEntity.setYhZjhm(entity.getYhZjhm());
+        dnCount=bizPtyhMapper.selectCount(newEntity);
+        RuntimeCheck.ifTrue(dnCount>0,"该证件号码已经注册过，不能再次注册");
+
+//        3、组装平台用户对象进行入库操作
+        newEntity = new BizPtyh();
+        newEntity.setId(genId());
+        newEntity.setYhZh(entity.getYhSjhm());//用户手机号码
+        newEntity.setYhMm(yhMmEncrypt);//用户加密的密码
+        newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
+        newEntity.setYhCjr(user.getYhid());//用户ID
+        newEntity.setCjsj(DateUtils.getNowTime());//创建时间
+        newEntity.setYhXm(entity.getYhXm());//用户姓名
+        newEntity.setYhLx("2");//类型 ZDCLK0041(2、教练、1、学员)
+
+        //通过证件号码识别用户性别
+        String CardCode=entity.getYhZjhm();
+        String sex;//获取性别 ZDCLK0042(1、男;2、女)
+        if (Integer.parseInt(CardCode.substring(16).substring(0, 1)) % 2 == 0) {// 判断性别
+            sex = "2";
+        } else {
+            sex = "1";
+        }
+        newEntity.setYhXb(sex);//性别 ZDCLK0042(1、男;2、女)
+        newEntity.setYhZt("1");//认证状态 ZDCLK0043(0 未认证、1 已认证)
+        newEntity.setDdSfjx("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
+        newEntity.setYhTx(entity.getJlImg());//用户头像
+        newEntity.setYhBm(entity.getYhXm());//用户别名
+        newEntity.setYhIxySffp("0");//学员是否已分配 ZDCLK0046 (0 否  1 是)
+        newEntity.setYhSfyjz("1");//是否有驾照 ZDCLK0046 (0 否  1 是)
+        newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
+        newEntity.setYhJlsh("1");//教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+
+        int i=ptyhService.save(newEntity);
+        if(i==0){
+            return ApiResponse.fail("保存失败，请重新操作");
+        }
+//        4、组装用户附属表
+        BizUser bizUser = new BizUser();
+        bizUser.setYhId(newEntity.getId());//用户ID
+        bizUser.setYhZjhm(newEntity.getYhZjhm());//用户证件号码
+        bizUser.setYhSjhm(newEntity.getYhZh());//用户账户
+        bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+        bizUser.setYhXm(newEntity.getYhXm());//姓名
+        bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+        i=userService.save(bizUser);
+        RuntimeCheck.ifTrue(i==0, "教练住地址不能为空");
+//        5、教练表入库
+        entity.setYhId(newEntity.getId());
+        entity.setJlShZt("1");
+        entityMapper.insertSelective(entity);
+
+        String[] imgList = StringUtils.split(entity.getImgList(), ",");
+        String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
+
+        List<BizWj> wjList = new ArrayList<BizWj>();
+        List<String> wjSxList=new ArrayList<String>();
+        if (imgList != null&&imgList.length>0) {
+            if(StringUtils.trimToNull(imgList[2])!=null  && !StringUtils.equals(imgList[2],"-")){
+                yhSfyjz="1";
+            }
+            for (int k = 0; k < imgList.length; k++) {
+                if(StringUtils.trimToNull(imgList[k])!=null  && !StringUtils.equals(imgList[k],"-")) {
+                    BizWj wj = new BizWj();
+                    wj.setId(genId());
+                    wj.setYhId(newEntity.getId());//
+                    wj.setWjTpdz(imgList[k]);//
+
+                    //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                    switch (k) {
+                        case 0:
+                            wj.setWjSx("10");
+                            break;
+                        case 1:
+                            wj.setWjSx("11");
+                            break;
+                        case 2:
+                            wj.setWjSx("20");
+                            break;
+                        case 3:
+                            wj.setWjSx("21");
+                            break;
+                    }
+                    wj.setWjSbzt("0");
+                    wj.setCjsj(DateUtils.getNowTime());
+                    wj.setWjSfyx("1");
+                    wjList.add(wj);
+                    wjSxList.add(wj.getWjSx());
+                }
+            }
+        }
+        //
+        if (wjList.size() > 0) {
+            wjMapper.deleteBatch(newEntity.getId(),wjSxList);
+            wjMapper.insertBatch(wjList);
+        }
+
+        return ApiResponse.success();
     }
 }

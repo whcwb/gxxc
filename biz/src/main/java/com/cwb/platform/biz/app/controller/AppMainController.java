@@ -1,28 +1,33 @@
 package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.WjService;
+import com.cwb.platform.biz.util.DloadImgUtil;
+import com.cwb.platform.biz.util.WechatUtils;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.bean.UserPassCredential;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
-import com.cwb.platform.util.commonUtil.Des;
-import com.cwb.platform.util.commonUtil.JwtUtil;
-import com.cwb.platform.util.commonUtil.StringDivUtils;
+import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,11 +38,25 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/app")
 public class AppMainController {
+	Logger log = LoggerFactory.getLogger("access_info");
+
+	@Value("${staticPath:/}")
+	private String staticPath;
+	//证件上传地址
+	@Value("${credentialsPath}")
+	private String credentialsPath;
+
 	@Value("${appSendSMSRegister:app_sendSMS_register}")
 	private String appSendSMSRegister;
 
 	@Autowired
 	private PtyhService ptyhService;
+
+	@Autowired
+	private WechatUtils wechatUtils;
+
+	@Autowired
+	private WjService wjService;
 
     @Autowired
 	private StringRedisTemplate redisDao;
@@ -236,5 +255,82 @@ public class AppMainController {
 	public ApiResponse<String> validateCode( String code){
 		return ptyhService.validateCode(code);
 	}
+
+	/**
+	 * 从微信端下载图片到本地
+	 * 微信在获取到图片地址后，要将serverId 这个值的内容传到code中去。openid也不能为空。让后台来
+	 */
+	@PostMapping("/getWxFile")
+	public ApiResponse<String> downloadMedia( String code,HttpServletRequest request){
+		String openId=request.getHeader("openid");
+		openId="oRPNG0uKqXvvKg23RtAxZZyiuqBI"; // TODO: 2018/6/19 这里的open_id是假的。
+		RuntimeCheck.ifTrue(StringUtils.isEmpty(openId),"OPEN_ID不能为空");
+		RuntimeCheck.ifTrue(StringUtils.isEmpty(code),"微信文件ID不能为空");
+		String savePath=staticPath;
+		if (!savePath.endsWith("/")) {
+			savePath += "/";
+		}
+		savePath+="temp";
+
+		String accessToken =wechatUtils.getToken(openId);
+		log.debug("1、获取到accessToken："+accessToken);
+		String fileUrl=DloadImgUtil.downloadMedia(code,savePath,accessToken);
+		if(StringUtils.isNotEmpty(fileUrl)){
+			fileUrl=fileUrl.replace(staticPath,"");
+		}
+		return ApiResponse.success(fileUrl);
+	}
+
+	//用户上传证件照片时，进行实名认证，并返回结果
+	//处理文件上传
+
+	/**
+	 *
+	 * @param file  上传的文件
+	 * @param fileType	上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
+	 * @return
+	 */
+	@RequestMapping(value="/zjupload")
+	@ResponseBody
+		public ApiResponse<String> uploadImg(@RequestParam("file") MultipartFile file,@RequestParam("fileType") String fileType) {
+		Map<String,String > retMap= new HashMap<String,String>();//返回值
+		String targetPath= DateUtils.getToday().replaceAll("-","");//生成目录
+		String fileName = file.getOriginalFilename();//获取上传的文件名
+		String suffix = fileName.substring(fileName.lastIndexOf("."));//获取后缀名
+		UUID uuid = UUID.randomUUID();
+		fileName = uuid.toString().replaceAll("-","") + suffix;//生成新的文件名
+
+		String filePath = credentialsPath+targetPath+"/";//生成新的文件路径
+		String path = "/"+targetPath +"/"+ fileName;//返回前台的地址
+		try {
+			FileUtil.uploadFile(file.getBytes(), filePath, fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ApiResponse.success(path);
+	}
+	/**
+	 * 证件识别
+	 * @param path  上传的文件地址
+	 * @param fileType	上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
+	 * @return
+	 */
+	@RequestMapping(value="/zjsb")
+	@ResponseBody
+	public ApiResponse<Map<String,String>> ocrRecognition(@RequestParam("path") String path,@RequestParam("fileType") String fileType) {
+		Map<String,String > retMap= new HashMap<String,String>();//返回值
+		RuntimeCheck.ifNull(fileType,"您好，请确定图片类型");
+		boolean retType=wjService.ocrRecognition (retMap,fileType,credentialsPath+path,path);
+		if(retType){
+			return ApiResponse.success(retMap);
+		}else{
+			ApiResponse<Map<String,String>> res = new ApiResponse<>();
+			res.setCode(500);
+			res.setMessage(retMap.get("image_message"));
+			res.setResult(retMap);
+			return res;
+		}
+	}
+
 
 }

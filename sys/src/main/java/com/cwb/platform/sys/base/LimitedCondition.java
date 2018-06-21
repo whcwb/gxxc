@@ -1,11 +1,6 @@
 package com.cwb.platform.sys.base;
 
-import com.cwb.platform.util.exception.RuntimeCheck;
 import com.cwb.platform.util.bean.SimpleCondition;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +15,7 @@ public class LimitedCondition extends SimpleCondition {
     /**
      * 有些对象在查询的时候并不需要做机构权限处理
      */
-    private static final List<String> excludeEntityName = Arrays.asList("SysZdlm","SysFw","SysGn","SysYjfk","SysRz","ClZdgl","ClZnzp","ClLsdw","ClLsc","ClDzwlCl","ClSbyxsjjl","SysHsgs");
+    private static final List<String> excludeEntityName = Arrays.asList("SysZdlm","SysFw","SysGn","SysRz","BizDriverSchool","BizTrainPlace");
 
     public LimitedCondition(Class<?> entityClass) {
         super(entityClass);

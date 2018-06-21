@@ -79,7 +79,13 @@
                   </Col>
                   <Col span="6">
                     <Button type="primary" shape="circle"
+                            v-if="usermess.ddSfjx=='1'"
                             @click="$router.push({name:'tx'})"
+                            style="font-size: 13px;width:60px">提现
+                    </Button>
+                    <Button type="primary" shape="circle"
+                            v-else
+                            @click="txyz"
                             style="font-size: 13px;width:60px">提现
                     </Button>
                   </Col>
@@ -192,6 +198,7 @@
       var v = this
       this.util.userMess(v, (res) => {
         this.usermess = res
+        console.log(res)
       })
       console.log('***---***', this.usermess)
       this.getZhye()
@@ -215,22 +222,46 @@
       },
       showQrcode(val) {
         var v = this
-        if (this.usermess.yhZsyqmImg) {
-          if (val == 'ewm') {
-            this.$router.push(
-              {
-                name: 'myCenterQrcode',
-                params: v.usermess
-              });
-          } else if (val == 'td') {
-            this.$router.push({name: 'myteam'})
+        if (val == 'ewm') {
+          if(v.usermess.ddSfjx=='0'){
+            Toast('请先缴费')
+          }else {
+              this.$router.push(
+                {
+                  name: 'myCenterQrcode',
+                  params: v.usermess
+                });
           }
-        } else {
-          Toast('请先缴费')
+        } else if (val == 'td') {
+          this.$router.push({name: 'myteam'})
         }
+
+
+
+
+
+
+
+
+        // if (this.usermess.yhZsyqmImg) {
+        //   if (val == 'ewm') {
+        //     this.$router.push(
+        //       {
+        //         name: 'myCenterQrcode',
+        //         params: v.usermess
+        //       });
+        //   } else if (val == 'td') {
+        //     this.$router.push({name: 'myteam'})
+        //   }
+        // } else {
+        //   Toast('请先缴费')
+        // }
       },
       okjf() {
         Toast('您已缴费')
+      },
+      txyz(){
+        Toast('请先完成缴费')
       }
     }
   }

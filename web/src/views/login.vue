@@ -4,10 +4,13 @@
 	.loginForm{
 		width: 400px;
 		position:absolute;
-		top:200px;
+		top:250px;
 		right: 290px;
 		float: right;
 		display: inline-block;
+		background-image: url('/static/login-card.jpg');
+		background-size: cover;
+		padding: 16px;
 	}
 	.loginBg{
 		position: absolute;
@@ -21,8 +24,11 @@
 		background:rgba(0,0,0,0.5);
 	}
 
+	.login-top{
+		text-align: center;
+	}
 	.loginImg{
-		width: 100%;
+		width: 50%;
 	}
 	.login{
 		background-color: rgba(0,0,0,0.5);
@@ -44,7 +50,7 @@
 
 	    	}
 	    	.fromList{
-	    		padding-top: 20px;
+	    		padding-top: 10px;
 	    	}
 	    }
 
@@ -53,12 +59,10 @@
 
 <template>
     <div class="login" @keydown.enter="handleSubmit" >
-		<div class="loginBg">
-
-		</div>
-		<Card class="loginForm">
+		<div class="loginForm">
 			<Row>
-				<div class="body-O">
+				<div class="login-top">
+					<h2 style="color: white">用户登录</h2><br>
 					<img class="loginImg" src="/static/login-left.png" alt="" />
 				</div>
 			</Row>
@@ -67,7 +71,7 @@
 					<Form ref="loginForm" :model="form" :rules="rules">
 						<div class="fromList">
 							<FormItem prop="username">
-								<Input v-model="form.username" placeholder="请输入用户名">
+								<Input v-model="form.username" placeholder="请输入用户名"  >
 								<span slot="prepend">
 		                                    <Icon :size="16" type="person"></Icon>
 		                                </span>
@@ -76,7 +80,7 @@
 						</div>
 						<div class="fromList">
 							<FormItem prop="password">
-								<Input type="password" v-model="form.password" placeholder="请输入密码">
+								<Input type="password" v-model="form.password" placeholder="请输入密码"  >
 								<span slot="prepend">
 		                                    <Icon :size="14" type="locked"></Icon>
 		                                </span>
@@ -89,7 +93,7 @@
 					</Form>
 				</div>
 			</Row>
-		</Card>
+		</div>
     </div>
 </template>
 

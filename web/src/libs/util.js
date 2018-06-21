@@ -218,7 +218,6 @@ util.initPageSize = (v)=>{
  * 根据formInputs设置的字段 自动添加字段验证规则
  */
 util.initFormModal = (v)=>{
-    v.apiRoot = v.$parent.apiRoot;
     if (v.$parent.choosedItem){
         // 深复制，避免数据联动
         v.formItem = JSON.parse(JSON.stringify(v.$parent.choosedItem));

@@ -32,25 +32,28 @@
                   <Card dis-hover>
                     <Row type="flex" justify="start" align="middle">
                       <Col span="4">
-                        <Avatar shape="square" icon="person" size="large" style="width: 50px;height: 50px;line-height: 50px"/>
+                        <!--<Avatar shape="square" icon="person" size="large" style="width: 50px;height: 50px;line-height: 50px"/>-->
+                        <img :src="usermess.yhTx"
+                             style="width: 1rem;height: 1rem;border-radius: 0.5rem"
+                             alt="">
                       </Col>
                       <Col span="8">
-                        <span style="font-size:16px">用户姓名</span>
+                        <span style="font-size:16px"> {{usermess.yhXm}}</span>
                       </Col>
                     </Row>
-                    <Row type="flex" justify="start" align="middle">
+                    <Row type="flex" justify="start" align="middle" v-if="ewm">
                       <Col span="24" style="text-align: center">
-                        <!--<i class="iconfont icon-qrcode" style="font-size: 200px"></i>-->
                         <div style="padding: 0.2rem">
                             <img :src="ewm" style="width: 100%" alt="">
                         </div>
+                        <div style="text-align: center;">扫一扫上面的二维码图案，加入我们吧</div>
                       </Col>
                     </Row>
-                    <Row type="flex" justify="start" align="middle">
-                      <Col span="24" style="text-align: center;color: ">
-                        <span>扫一扫上面的二维码图案，加入我们吧</span>
-                      </Col>
-                    </Row>
+                    <div v-else
+                    style="text-align: center;font-size: 0.3rem;font-weight: 700;line-height: 1.5rem">
+                      邀请码生成中……
+                      请稍候
+                    </div>
                   </Card>
                 </Col>
               </Row>
@@ -73,6 +76,7 @@
         },
         data(){
           return{
+            usermess:this.$route.params,
             ewm:this.$route.params.yhZsyqmImg
           }
         },

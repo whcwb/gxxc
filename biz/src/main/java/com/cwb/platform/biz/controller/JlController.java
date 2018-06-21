@@ -46,4 +46,10 @@ public class JlController extends QueryController<BizJl,String> {
     public ApiResponse<List<BizJl>> query(BizJl entity){
         return ApiResponse.success(service.query(entity));
     }
+
+    @RequestMapping(value="/save", method={RequestMethod.POST})
+    public ApiResponse<String> save(BizJl entity){
+
+        return service.validAndSave(entity);
+    }
 }

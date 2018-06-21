@@ -24,10 +24,10 @@
             <div class="body-O" style="padding: 0.6rem 0 0 0.2rem">
               <div class="box-row">
                 <div class="body-O">
-                    姓名：小明
+                    姓名：{{xyMwss.yhxm}}
                 </div>
                 <div class="body-O">
-                  电话： <a :href="'tel:'+ tell">{{tell}}</a>
+                  电话： <a :href="'tel:'+ xyMwss.yhzh">{{xyMwss.yhzh}}</a>
                 </div>
               </div>
             </div>
@@ -153,6 +153,7 @@
                 'xyCj':cj
               }).then((res)=>{
                 if (res.code==200){
+                  Toast(res.message)
                   v.getXYmess()
                 }
               }).catch((err)=>{

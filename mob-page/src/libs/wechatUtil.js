@@ -38,9 +38,9 @@ wechatUtil.getOpenid = (code,callback)=>{
     })
 }
 
-wechatUtil.getAccessToken = ()=>{//生成token
+wechatUtil.getAccessToken = (openid)=>{//生成token
     $.ajax({
-        url:wechatUtil.baseUrl + urls.wechat.getAccessToken,
+        url:wechatUtil.baseUrl + urls.wechat.getAccessToken+'?openid='+openid,
         type:'get',
         success:function(res){
             if (res.code == 200){
@@ -73,13 +73,14 @@ wechatUtil.config = function(){
         timestamp: parseInt(wechatUtil.now.getTime()/1000), // 必填，生成签名的时间戳
         nonceStr: 'wechat123', // 必填，生成签名的随机串
         signature: wechatUtil.sign,// 必填，签名
-        jsApiList: ['scanQRCode','chooseImage','uploadImage','chooseWXPay'] // 必填，需要使用的JS接口列表
+        jsApiList: ['scanQRCode',
+          'chooseImage','getLocalImgData','uploadImage','previewImage',
+          'chooseWXPay'] // 必填，需要使用的JS接口列表
     });
 }
 
 wechatUtil.pay = function(prepay,callback){
     console.log('chooseWXPay');
-
     wx.chooseWXPay({
         appId:prepay.appId,
         timestamp: prepay.timeStamp,// 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -121,22 +122,44 @@ wechatUtil.qrScan = (messtoback)=>{//打开微信扫码功能
         }
     });
 }
-wechatUtil.chooseImage = ()=>{
+wechatUtil.chooseImage = (callback)=>{//拍照或从手机相册中选图接口
     console.log('chooseImage');
     wx.chooseImage({
         count: 1, // 默认9
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
+            callback && callback(res)
             var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
         }
     });
 }
-wechatUtil.uploadImage = ()=>{
+wechatUtil.getLocalImgData=(val,callback)=>{//获取本地图片接口
+  console.log('getLocalImgData')
+  wx.getLocalImgData({
+    localId: val[0], // 图片的localID
+    success: function (res) {
+      callback && callback(res)
+      var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+    }
+  });
+}
+
+wechatUtil.previewImage = ()=>{//预览图片接口
+  wx.previewImage({
+    current: '', // 当前显示图片的http链接
+    urls: [] // 需要预览的图片http链接列表
+  })
+},
+wechatUtil.uploadImage = (val,callback)=>{//下载图片接口
+  console.log('uploadImage')
+  console.log(val);
+  console.log(val.localIds[0])
     wx.uploadImage({
-        localId: '', // 需要上传的图片的本地ID，由chooseImage接口获得
+        localId: val.localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
         isShowProgressTips: 1, // 默认为1，显示进度提示
         success: function (res) {
+            callback && callback(res)
             var serverId = res.serverId; // 返回图片的服务器端ID
         }
     });
