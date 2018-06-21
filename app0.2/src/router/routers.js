@@ -1,5 +1,13 @@
 module.exports = [
   {
+    path: '/index',
+    name: 'index',
+    meta:{
+      title:'学车联盟'
+    },
+    component:()=>import('@/views/index')
+  },
+  {
     path: '/',
     name: 'Login',
     component:()=>import('@/views/login'),

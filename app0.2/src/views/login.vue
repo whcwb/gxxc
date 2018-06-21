@@ -83,6 +83,12 @@
         },
         created(){
           this.util.auto(window, document ,4)
+          let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+          if(ISLOGIN == null){
+            let openid = localStorage.getItem("openid");
+            this.wechatUtil.getAccessToken(openid);
+            sessionStorage.setItem("ISLOGIN",true);
+          }
         },
         methods:{
           submitForm(formName) {
@@ -110,13 +116,13 @@
           },
           reg(){
             var v = this
-            v.$router.push("/reg")
-            // this.wechatUtil.qrScan((messtoback)=>{
+            // v.$router.push("/reg")
+            this.wechatUtil.qrScan((messtoback)=>{
               // alert('微信'+messtoback)
               // Toast.succeed('微信'+messtoback);
-              // v.codeyz(messtoback)
+              v.codeyz(messtoback)
               // v.codeyz(v.yqm)
-            // })
+            })
           },
           codeyz(val){
             var v = this

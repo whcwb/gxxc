@@ -14,7 +14,7 @@ router.beforeEach((to, from, next) => {
   let openid = "123123";
   //   console.log(openicd);
   // 如果没有openid，则需要获取
-  /*if (openid == null && to.path != '/index') {
+  if (openid == null && to.path != '/index') {
     next({
       name: 'index'
     });
@@ -33,8 +33,8 @@ router.beforeEach((to, from, next) => {
       });
     }
     next();
-  }*/
-  next();
+  }
+  // next();
 })
 
 
