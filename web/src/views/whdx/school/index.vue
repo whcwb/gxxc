@@ -77,7 +77,6 @@ import chooseImg from '../components/chooseImgModal'
         },
         methods: {
             choosePoint(point){
-                console.log(point);
                 this.updatePoint(point);
             },
             chooseImgFinish(uploadList){
@@ -106,6 +105,7 @@ import chooseImg from '../components/chooseImgModal'
                 this.$http.post(this.apis.school.CHANGE,param).then((res)=>{
                     if (res.code === 200){
                         this.$Message.success(res.message);
+                        this.util.getPageData(this);
                     }else{
                         this.$Message.error(res.message);
                     }
