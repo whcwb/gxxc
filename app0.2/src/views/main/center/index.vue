@@ -10,6 +10,8 @@
         position: relative;
         img{
           width: 0.6rem;
+          height: 0.6rem;
+          border-radius: 0.3rem;
           position: absolute;
           top: 50%;
           left: 50%;

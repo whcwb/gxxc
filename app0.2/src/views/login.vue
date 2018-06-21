@@ -2,9 +2,9 @@
   @import "./login";
 </style>
 <template>
-      <div id="login" class="box_col">
+      <div id="login" class="box_col" style="background-image: url('static/login/backImg.png')">
         <div class="login_Logo">
-          <img src="/static/login/LOGO.png" style="width: 1.1rem;" alt="">
+          <img src="static/login/LOGO.png" style="width: 1.1rem;" alt="">
         </div>
         <div class="login_tit">
           学车联盟
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+    import { Toast } from 'mint-ui';
     export default {
         name: "login",
         data(){
@@ -68,7 +69,7 @@
           };
           return{
             loginForm: {
-              username: '13311111111',
+              username: '18672922385',
               password: '123456'
             },
             FormRules: {
@@ -102,7 +103,7 @@
                       v.$router.push({name:'Home'})
                     })
                   }else {
-                    Toast.failed(res.message)
+                    Toast(res.message)
                   }
                 }).catch((err)=>{
                   console.log(err)
@@ -132,7 +133,7 @@
                 localStorage.setItem('yqm',val)
                 v.$router.push("/reg");
               }else {
-                Toast.info(res.message)
+                Toast(res.message)
               }
             }).catch((err)=>{
               alert('失败'+err)
