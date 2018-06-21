@@ -1,7 +1,7 @@
 <style lang="less">
   #reg {
     font-size: 0.2rem;
-    background: url('/static/login/backImg.png') no-repeat top;
+    background:no-repeat top;
     background-size: 100%;
     .mar_bot{
       margin-bottom: 0.16rem;
@@ -9,7 +9,7 @@
   }
 </style>
 <template>
-  <div id="reg" class="box_col">
+  <div id="reg" class="box_col" style="background-image: url('static/login/backImg.png')">
     <div style="padding: 0.1rem;color: #f2f2f2;font-weight: 700"
          @click="$router.back()">
       登录
