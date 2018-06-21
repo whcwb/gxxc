@@ -2,7 +2,9 @@ package com.cwb.platform.biz.service.impl;
 
 
 import com.cwb.platform.biz.mapper.*;
-import com.cwb.platform.biz.model.*;
+import com.cwb.platform.biz.model.BizJl;
+import com.cwb.platform.biz.model.BizUser;
+import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.*;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
@@ -1230,7 +1232,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public ApiResponse<BizJl> getStudentCoach(String yhId) {
-        RuntimeCheck.ifBlank(yhId,"请选择用户");
+        BizPtyh users=getAppCurrentUser();
+        yhId=users.getId();
         List<BizUser> userList = userService.findEq(BizUser.InnerColumn.yhId,yhId);
         if (userList.size() == 0){
             return ApiResponse.success(new BizJl());
@@ -1242,59 +1245,5 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizJl coach = jlService.findById(user.getYhJlid());
         RuntimeCheck.ifNull(coach,"未找到教练");
         return ApiResponse.success(coach);
-    }
-
-    /**
-     * 1、教练员信息
-     * 2、受理信息列表
-     * 3、约考列表
-     * 4、缴费列表
-     * 5、成绩列表
-     * @return
-     */
-    @Override
-    public ApiResponse<Map<String,Object>> getUserSchoolCar(){
-        Map<String,Object> map =new HashMap<String,Object>();
-        BizPtyh bizPtyh = getAppCurrentUser();
-        BizJl bizJl =null;//教练信息表
-        List<BizKsSl> ksSlList;//考试受理列表
-        List<BizKsYk> ksYkList;//考试约考列表
-        List<BizKsJf> ksJfList;//考试缴费列表
-        List<BizKsJg> ksJgList;//考试结果列表
-        // 查询该用户是否有所属教练
-        BizUser bizUser = userService.findById(bizPtyh.getId());
-        if(!ObjectUtils.isEmpty(bizUser)){
-            // 通过用户实名表查询教练属性
-            bizJl = jlService.findById(bizUser.getYhJlid());
-        }
-
-//        考试受理列表
-        SimpleCondition newCondition = new SimpleCondition(BizKsSl.class);
-        newCondition.eq(BizKsSl.InnerColumn.yhId.name(), bizPtyh.getId());
-        newCondition.setOrderByClause(BizKsSl.InnerColumn.slType.asc());//排序
-        ksSlList=ksSlService.findByCondition(newCondition);
-//        约考列表
-        newCondition = new SimpleCondition(BizKsYk.class);
-        newCondition.eq(BizKsYk.InnerColumn.yhId.name(), bizPtyh.getId());
-        newCondition.setOrderByClause(BizKsYk.InnerColumn.ykSj.desc());//排序
-        ksYkList=ksYkService.findByCondition(newCondition);
-//        缴费列表
-        newCondition = new SimpleCondition(BizKsJf.class);
-        newCondition.eq(BizKsJf.InnerColumn.yhId.name(), bizPtyh.getId());
-        newCondition.setOrderByClause(BizKsJf.InnerColumn.cjsj.desc());//排序
-        ksJfList=ksjfService.findByCondition(newCondition);
-
-        newCondition = new SimpleCondition(BizKsJg.class);
-        newCondition.eq(BizKsJg.InnerColumn.yhId.name(), bizPtyh.getId());
-        newCondition.setOrderByClause(BizKsJg.InnerColumn.cjsj.desc());//排序
-        ksJgList=ksjgService.findByCondition(newCondition);
-
-        map.put("bizjl",bizJl);//教练信息表
-        map.put("kssl",ksSlList);//受理信息列表
-        map.put("ksyk",ksYkList);//约考列表
-        map.put("ksjf",ksJfList);//缴费列表
-        map.put("kscj",ksJgList);//成绩列表`
-
-        return ApiResponse.success(map);
     }
 }

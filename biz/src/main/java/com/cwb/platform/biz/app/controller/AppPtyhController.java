@@ -160,13 +160,4 @@ public class AppPtyhController extends AppUserBaseController {
         return service.updateJz(entity);
     }
 
-    /**
-     * 学员学车详情
-     */
-    @PostMapping("/getxc")
-    public ApiResponse<Map<String,Object>> getUserSchoolCar (){
-        return service.getUserSchoolCar();
-    }
-
-
 }

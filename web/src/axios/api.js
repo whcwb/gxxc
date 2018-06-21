@@ -25,6 +25,14 @@ module.exports = {
         FINDBYPID:'/api/files/findByPId',//根据主ID查询文件信息
         UPLOAD:BASE_URL + '/api/files/upload',//根据主ID查询文件信息
     },
+    USER:{
+        QUERY:'/api/yh/pager',//用户管理
+        ADD:'/api/yh/save',
+        CHANGE:'/api/yh/update',
+        GIVE:'/api/js/modifyUserRoles',
+        DELE:'/api/yh/removeIds',
+        SEARCHSOME:'/api/yh/query',//用户管理
+    },
     examPlace:{
         QUERY:'/api/examPlace/pager',//考场
         ADD:'/api/examPlace/save',
