@@ -1,28 +1,33 @@
-<style>
-  .header_up{
+<style scoped>
+  .header_up {
     height: 60px;
     background-color: #26a2ff;
   }
-  .header_down{
+
+  .header_down {
     height: 60px;
     text-align: center;
   }
-  ._headerIcon{
+
+  ._headerIcon {
     position: relative;
     height: 0.8rem;
     width: 0.8rem;
     top: -0.8rem;
   }
-  .coach_name{
+
+  .coach_name {
     text-align: center;
     font-size: 16px;
     padding: 16px;
   }
-  ._separator{
+
+  ._separator {
     height: 30px;
-    background-color: rgba(240,245,248,1);
+    background-color: rgba(240, 245, 248, 1);
   }
-  ._title{
+
+  ._title {
     font-size: 18px;
   }
 </style>
@@ -69,6 +74,19 @@
       </div>
     </div>
     <div class="_separator"></div>
+    <div class="detail" style="padding: 16px;">
+      <span class="_title">学员评价</span>
+      <div class="inner_div" style="background-color: rgb(247,247,247);border-radius: 14px;padding: 16px;">
+        <el-rate
+          v-model="coach.jlPf"
+          :disabled="true"
+          show-score
+          text-color="#ff9900"
+          score-template="{value}">
+        </el-rate>
+      </div>
+    </div>
+    <div class="_separator"></div>
     <div style="text-align: center">
       <el-button type="success" round>报名咨询</el-button>
     </div>
@@ -76,20 +94,33 @@
 </template>
 
 <script>
-    export default {
-        name: "coach",
-      data(){
-        return {
-          coach:{},
-        }
-      },
-      created(){
-        console.log(this.$route.params.coach);
-        this.coach = this.$route.params.coach;
-      },
-      mounted(){
+  import {Toast} from 'mint-ui';
+
+  export default {
+    name: "coach",
+    data() {
+      return {
+        coach: {},
+      }
+    },
+    created() {
+      this.coach = this.$route.params.coach;
+    },
+    mounted() {
+    },
+    methods: {
+      getEvaluate() {
+        this.$http.get(this.apis.student.getUserCoachEvaluate, {params: {}}).then((res) => {
+          console.log(res);
+          if (res.code == 200) {
+
+          } else {
+            Toast(res.message);
+          }
+        })
       }
     }
+  }
 </script>
 
 <style scoped>
