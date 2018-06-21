@@ -120,45 +120,45 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         switch (dqks.getKmCode()){
             case "1":
                 if (dqks.getCj1()==null){
-                    first +="您已经成功预约了"+time+km+","+dqks.getSchoolName()+"的考试，请按时前往！";
+                    first +="您已经成功预约了"+time+km+"，"+dqks.getSchoolName()+"的考试，请按时前往！";
                 }else{
                     if (dqks.getCj1()>=90||dqks.getCj2()>=90){
                         first +="恭喜您已经成功通过科目一的考试，现在您可以准备下一科目的学习了！";
                     }else {
-                        first +="很遗憾,您的这次考试失败,请再接再厉,加油！";
+                        first +="很遗憾，您的这次考试失败,请再接再厉，加油！";
                     }
                 }
                 break;
             case "2":
                 if (dqks.getCj1()==null){
-                    first +="您已经成功预约了"+time+km+","+dqks.getSchoolName()+"的考试，请按时前往！";
+                    first +="您已经成功预约了"+time+km+"，"+dqks.getSchoolName()+"的考试，请按时前往！";
                 }else{
                     if (dqks.getCj1()>=90||dqks.getCj2()>=90){
                         first +="恭喜您已经成功通过科目二的考试，现在您可以准备下一科目的学习了！";
                     }else {
-                        first +="很遗憾,您的这次考试失败,请再接再厉,加油！";
+                        first +="很遗憾，您的这次考试失败，请再接再厉，加油！";
                     }
                 }
                 break;
             case "3":
                 if (dqks.getCj1()==null){
-                    first +="您已经成功预约了"+time+km+","+dqks.getSchoolName()+"的考试，请按时前往！";
+                    first +="您已经成功预约了"+time+km+"，"+dqks.getSchoolName()+"的考试，请按时前往！";
                 }else{
                     if (dqks.getCj1()>=90||dqks.getCj2()>=90){
                         first +="恭喜您已经成功通过科目三的考试，现在您可以准备下一科目的学习了！";
                     }else {
-                        first +="很遗憾,您的这次考试失败,请再接再厉,加油！";
+                        first +="很遗憾，您的这次考试失败，请再接再厉，加油！";
                     }
                 }
                 break;
             case "4":
                 if (dqks.getCj1()==null){
-                    first +="您已经成功预约了"+time+km+","+dqks.getSchoolName()+"的考试，请按时前往！";
+                    first +="您已经成功预约了"+time+km+"，"+dqks.getSchoolName()+"的考试，请按时前往！";
                 }else{
                     if (dqks.getCj1()>=90||dqks.getCj2()>=90){
                         first +="恭喜您已经成功通过科目四的考试，走向你的老司机之路吧！";
                     }else {
-                        first +="很遗憾,您的这次考试失败，请再接再厉，加油！";
+                        first +="很遗憾，您的这次考试失败，请再接再厉，加油！";
                     }
                 }
                 break;
@@ -172,8 +172,7 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         data.add(new WxMpTemplateData("keyword2",dqks.getSchoolName()));
         data.add(new WxMpTemplateData("remark", "考试科目："+km,"#ff0000"));
         WxMpTemplateMessage msg = new WxMpTemplateMessage();
-       // todo 测试代码
-        msg.setToUser("oRPNG0szqc5TSxefIxyYG_1Z88gk");
+        msg.setToUser(ptyh.getYhOpenId());
         msg.setTemplateId(examMsgId);
         msg.setUrl(wxDomain);
         msg.setData(data);

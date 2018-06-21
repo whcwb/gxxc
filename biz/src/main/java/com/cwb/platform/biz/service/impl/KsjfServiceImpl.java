@@ -182,7 +182,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         }
 
         String km = getKm(dqjf.getKmId());
-        String first  = "您于" + time +  ",通过" +dqjf.getJfFs()+ "，缴纳了"+km+"的考试费用"+dqjf.getJfJl()+"元";
+        String first  = "您于" + time +  "，通过" +dqjf.getJfFs()+ "，缴纳了"+km+"的考试费用"+dqjf.getJfJl()+"元";
 
         // 您于xx时间，通过xx方式，缴纳了科目X的考试费用XX元！
 
@@ -194,8 +194,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         data.add(new WxMpTemplateData("keyword3",time));
         data.add(new WxMpTemplateData("remark", "点击查看"));
         WxMpTemplateMessage msg = new WxMpTemplateMessage();
-        // todo 测试代码
-        msg.setToUser("oRPNG0szqc5TSxefIxyYG_1Z88gk");
+        msg.setToUser(ptyh.getYhOpenId());
         msg.setTemplateId(examMsgId);
         msg.setUrl(wxDomain);
         msg.setData(data);
