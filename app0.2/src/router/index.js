@@ -10,8 +10,8 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   Util.title(to.meta.title);
-  // let openid = localStorage.getItem("openid");
-  let openid = "123123";
+  let openid = localStorage.getItem("openid");
+  // let openid = "123123";
   let ISLOGIN = sessionStorage.getItem("ISLOGIN");
   //   console.log(openicd);
   // 如果没有openid，则需要获取
