@@ -86,7 +86,7 @@
     watch:{
     },
     created(){
-      localStorage.setItem('yqm',123456789)
+      // localStorage.setItem('yqm',123456789)
     },
     methods:{
       changeCode(value){
@@ -172,9 +172,6 @@
               iconClass: 'icon icon-success'
             });
             setTimeout(()=>{
-              // this.util.userMess(v,()=>{
-              //   this.$router.push({name:'Home'});
-              // })
               v.login()
             }, 1000);
           }else {
@@ -190,7 +187,7 @@
           if(res.code==200){
             localStorage.setItem('token',JSON.stringify(res.result.accessToken))
             this.util.GetUserMess(v,()=>{
-              v.$router.push({name:'Home'})
+              v.$router.push({path:'/Home'})
             })
           }else {
             Toast.failed(res.message)
@@ -204,7 +201,3 @@
 
   }
 </script>
-
-<style scoped>
-
-</style>
