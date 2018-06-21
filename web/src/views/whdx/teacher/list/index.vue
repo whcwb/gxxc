@@ -2,7 +2,7 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-				<search-items :parent="v" :label-with="100"></search-items>
+				<search-items :parent="v" :label-with="100" :showCreateButton="true"></search-items>
 				<Button type="info" @click="exportData">
 					<Icon type="ios-download-outline"></Icon>
 				</Button>
@@ -22,10 +22,11 @@
     import allotList from './allotList.vue'
     import allot from './allot.vue'
     import formData from './formData.vue'
+    import show from './show.vue'
 
     export default {
         name: 'byxxTable',
-        components: {allotList,sublist,allot,formData},
+        components: {allotList,sublist,allot,formData,show},
         data() {
             return {
                 v:this,
@@ -50,7 +51,7 @@
                             return h('div', [
                                 this.util.buildButton(this,h,'success','card','详情',()=>{
                                     this.choosedItem = params.row;
-                                    this.componentName = 'formData'
+                                    this.componentName = 'show'
                                 }),
                                 this.util.buildButton(this,h,'success','person','已分配学员',()=>{
                                     this.choosedItem = params.row;

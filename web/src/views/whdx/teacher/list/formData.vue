@@ -24,43 +24,55 @@
 					<Row>
 						<Col span="12">
 							<label>身份证正面</label>
-							<img v-if="files.cardFront != ''" class="docImg" :src="staticPath+files.cardFront"/>
-							<img v-else class="docImg" src="static/card_front.png"/>
+							<choose-img :upload-url="uploadPrivatePath" @imgChange="imgChange" :type="'cardFront'" :path="files.cardFront"></choose-img>
 						</Col>
 						<Col span="12">
 							<label>身份证反面</label>
-							<img v-if="files.cardBack != ''" class="docImg" :src="staticPath+files.cardBack"/>
-							<img v-else class="docImg" src="static/card_back.png"/>
+							<choose-img :upload-url="uploadPrivatePath" @imgChange="imgChange" :type="'cardBack'" :path="files.cardBack" ></choose-img>
 						</Col>
-						<Col v-if="files.licenceFront != ''" span="12">
+						<Col  span="12">
 							<label>驾驶证正本</label>
-							<img v-if="files.licenceFront != ''" class="docImg" :src="staticPath+files.licenceFront"/>
-							<img v-else class="docImg" src="static/jszzb.jpg"/>
+							<choose-img :upload-url="uploadPrivatePath" @imgChange="imgChange" :type="'licenceFront'" :path="files.licenceFront"></choose-img>
 						</Col>
-						<Col v-if="files.licenceBack != ''" span="12">
+						<Col  span="12">
 							<label>驾驶证副本</label>
-							<img v-if="files.licenceBack != ''" class="docImg" :src="staticPath+files.licenceBack"/>
-							<img v-else class="docImg" src="static/jsz.jpg"/>
+							<choose-img :upload-url="uploadPrivatePath" @imgChange="imgChange" :type="'licenceBack'" :path="files.licenceBack"></choose-img>
+						</Col>
+					</Row>
+					<Row>
+						<Col span="12">
+							<label>用户头像</label>
+							<choose-img :type="'cardFront'" :path="files.cardFront" @imgChange="imgChange"></choose-img>
+						</Col>
+						<Col span="12">
+							<label>用户素材</label>
+							<choose-img :type="'cardFront'" :path="files.cardFront" @imgChange="imgChange"></choose-img>
 						</Col>
 					</Row>
 				</Form>
 			</div>
 			<div slot='footer'>
-				<Button type="ghost" @click="v.util.closeDialog(v)">确定</Button>
+				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
+				<Button type="primary" @click="v.util.save(v)">确定</Button>
 			</div>
 		</Modal>
 	</div>
 </template>
 
 <script>
+	import chooseImg from '../../components/chooseImg'
 	export default {
 		name: 'byxxForm',
+		components:{
+		    chooseImg
+		},
 		data() {
 			return {
 			    v:this,
                 operate:'教练员',
 				saveUrl:this.apis.teacher.ADD,
                 staticPath:this.apis.getImgUrl,
+				uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
 				showModal: true,
 				readonly: false,
                 files:{
@@ -70,49 +82,54 @@
                     licenceBack:''
                 },
 				formItem: {
+
 				},
                 formInputs:[
                     {label:'账号',prop:'yhZh',readonly:true},
+                    {label:'密码',prop:'yhMm'},
                     {label:'姓名',prop:'yhXm'},
                     {label:'身份证号码',prop:'yhZjhm'},
-                    {label:'类型',prop:'yhLx',type:'dict',dict:'ZDCLK0041'},
-                    {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042'},
-                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt'},
-                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
+                    {label:'手机号码',prop:'yhSjhm'},
+                    {label:'教龄',prop:'jlJl'},
+                    {label:'区域',prop:'jlQu',dict:'ZDCLK0060'},
+                    {label:'证明人',prop:'jlZml'},
+                    {label:'紧急联系人',prop:'jlJjlxr'},
+                    {label:'联系电话',prop:'jlJjlxrdh'},
+                    {label:'教练地址',prop:'jlZz'},
+                    {label:'头像',prop:'jlImg'},
+                    {label:'教练简界',prop:'jlMs'},
+                    {label:'用户素材',prop:'imgList'},
                 ],
                 ruleInline:{
 				}
 			}
 		},
+        /**
+		 * yhXm:姓名
+         yhZjhm:320333333333333333
+         yhSjhm:18672922222
+         jlJl:11
+         jlQu:10
+         jlZml:证明人
+         jlJjlxr:紧急联系人
+         jlJjlxrdh:联系电话
+         jlZz:教练地址
+         jlImg:/aaa.jpg
+         jlMs:教练简界
+         imgList:./aaa.jpg,./bbb.jpg,-,-
+         yhMm:
+         */
 		created(){
 		    this.util.initFormModal(this);
-		    this.getImages();
 		},
 		methods: {
-            getImages(){
-                let v = this;
-                this.$http.post(this.apis.wj.getByCondition,{yhId:this.formItem.yhId}).then((res)=>{
-                    if (res.code === 200 && res.result){
-                        for (let r of res.result){
-                            switch(r.wjSx){
-                                case '10':
-                                    v.files.cardFront = r.wjTpdz;
-                                    break;
-                                case '11':
-                                    v.files.cardBack = r.wjTpdz;
-                                    break;
-                                case '20':
-                                    v.files.licenceFront = r.wjTpdz;
-                                    break;
-                                case '21':
-                                    v.files.licenceBack = r.wjTpdz;
-                                    break;
-                                default:
-                            }
-                        }
-                        console.log(v.files);
-                    }
-                })
+		    beforeSave(){
+		        this.formItem.yhLx = "1";
+            },
+            imgChange(o){
+                console.log('form data imgChange');
+                console.log(o.path);
+                console.log(o.type);
             }
 		}
 	}

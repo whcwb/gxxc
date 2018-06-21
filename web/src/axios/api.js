@@ -7,6 +7,7 @@ module.exports = {
     url: BASE_URL,
     //图片上传地址
     UPLOAD: 'http://xclm.xxpt123.com:8080/biz' + '/upload',
+    UPLOAD_PRIVATE: 'http://xclm.xxpt123.com:8080/biz' + '/app/zjupload',
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
     exportData:BASE_URL+'/pub/export',
