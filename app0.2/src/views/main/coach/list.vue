@@ -38,7 +38,7 @@
     </div>
 
   </div>
-</template>w
+</template>
 
 <script>
   import { DropMenu } from 'mand-mobile'
