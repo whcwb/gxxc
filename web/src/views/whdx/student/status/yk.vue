@@ -59,8 +59,8 @@
                     {label:'科目编码',prop:'kmCode',dict:'ZDCLK0067'},
                     {label:'考场名称',prop:'examPlaceId',type:'foreignKey'},
                     {label:'预约考试时间',prop:'ykSj',type:'date'},
-                    {label:'第一次考试成绩',prop:'cj1',type:'number'},
-                    {label:'第二次考试成绩',prop:'cj2',type:'number'},
+                    {label:'第一次考试成绩',prop:'cj1',type:''},
+                    {label:'第二次考试成绩',prop:'cj2',type:''},
                 ],
                 ruleInline:{
 				},
