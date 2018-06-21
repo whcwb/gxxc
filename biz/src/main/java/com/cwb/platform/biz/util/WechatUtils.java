@@ -79,7 +79,7 @@ public class WechatUtils {
         Map<?, ?> map = JsonUtil.toBean(token, Map.class);
         if (map == null)return "";
         String accessToken = map.get("access_token").toString();
-        redisTemplateUtil.opsForValue().set("accessToken-"+openid,accessToken,1,TimeUnit.DAYS);
+        redisTemplateUtil.opsForValue().set("accessToken-"+openid,accessToken,1,TimeUnit.HOURS);
         return accessToken;
     }
 
