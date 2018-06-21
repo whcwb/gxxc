@@ -9,15 +9,16 @@
         <Row class="margin-top-10 pageSty">
 			<pager :parent="v"></pager>
         </Row>
-        <component :is="componentName"></component>
+        <component :is="componentName" @choosePoint="choosePoint"></component>
 	</div>
 </template>
 
 <script>
 
     import formData from './formData'
+    import chooseMapPoint from '../components/chooseMapPointModal'
     export default {
-        components:{formData},
+        components:{formData,chooseMapPoint},
         name: 'trainPlace',
         data() {
             return {
@@ -42,6 +43,11 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
+                                this.util.buildButton(this,h,'success','ios-location','地理位置',()=>{
+                                    this.choosedItem = params.row;
+                                    this.choosedPoint = {lat:params.row.latitude,lng:params.row.longitude};
+                                    this.componentName = 'chooseMapPoint'
+                                }),
                                 this.util.buildEditButton(this,h,params),
                                 this.util.buildDeleteButton(this,h,params.row.id),
                             ]);
@@ -60,6 +66,24 @@
             this.util.initTable(this)
         },
         methods: {
+            choosePoint(point){
+                this.updatePoint(point);
+            },
+            updatePoint(point){
+                let param = {
+                    placeId:this.choosedItem.placeId,
+                    latitude:point.lat,
+                    longitude:point.lng
+                }
+                this.$http.post(this.apis.trainPlace.CHANGE,param).then((res)=>{
+                    if (res.code === 200){
+                        this.util.getPageData(this);
+                        this.$Message.success(res.message);
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
+            },
         }
     }
 </script>

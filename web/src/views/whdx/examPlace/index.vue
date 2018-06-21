@@ -9,16 +9,17 @@
         <Row class="margin-top-10 pageSty">
 			<pager :parent="v"></pager>
         </Row>
-        <component :is="componentName"></component>
+        <component :is="componentName" @choosePoint="choosePoint"></component>
 	</div>
 </template>
 
 <script>
     import formData from './formData.vue'
 
+    import chooseMapPoint from '../components/chooseMapPointModal'
     export default {
         name: 'examPlace',
-        components: {formData},
+        components: {formData,chooseMapPoint},
         data() {
             return {
                 v:this,
@@ -27,6 +28,7 @@
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
+                choosedPoint:{},
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'名称',key:'name'},
@@ -39,6 +41,11 @@
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
+                                this.util.buildButton(this,h,'success','ios-location','地理位置',()=>{
+                                    this.choosedItem = params.row;
+                                    this.choosedPoint = {lat:params.row.lat,lng:params.row.lng};
+                                    this.componentName = 'chooseMapPoint'
+                                }),
                                 this.util.buildEditButton(this,h,params),
                                 this.util.buildDeleteButton(this,h,params.row.id),
                             ]);
@@ -57,6 +64,24 @@
             this.util.initTable(this)
         },
         methods: {
+            choosePoint(point){
+                this.updatePoint(point);
+            },
+            updatePoint(point){
+                let param = {
+                    id:this.choosedItem.id,
+                    lat:point.lat,
+                    lng:point.lng
+                }
+                this.$http.post(this.apis.examPlace.CHANGE,param).then((res)=>{
+                    if (res.code === 200){
+                        this.util.getPageData(this);
+                        this.$Message.success(res.message);
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
+            },
         }
     }
 </script>

@@ -59,7 +59,6 @@
             this.showModal = true;
             if (this.$parent.choosedPoint){
                 this.point = this.$parent.choosedPoint;
-                console.log(this.point);
             }
 			this.Buildmap()
 		},

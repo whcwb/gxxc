@@ -49,7 +49,7 @@
         props: {
             uploadUrl: {
                 type: String,
-                default: this.apis.UPLOAD
+                default: ''
             },
             path: {
                 type: String,
@@ -61,6 +61,9 @@
             }
         },
         created(){
+            if (this.uploadUrl == ''){
+                this.uploadUrl = this.apis.UPLOAD
+            }
             this.init()
         },
         mounted() {
