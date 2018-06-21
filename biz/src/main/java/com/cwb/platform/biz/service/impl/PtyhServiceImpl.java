@@ -2,14 +2,8 @@ package com.cwb.platform.biz.service.impl;
 
 
 import com.cwb.platform.biz.mapper.*;
-import com.cwb.platform.biz.model.BizJl;
-import com.cwb.platform.biz.model.BizKsSl;
-import com.cwb.platform.biz.model.BizUser;
-import com.cwb.platform.biz.model.BizWj;
-import com.cwb.platform.biz.service.JlService;
-import com.cwb.platform.biz.service.PtyhService;
-import com.cwb.platform.biz.service.UserService;
-import com.cwb.platform.biz.service.WjService;
+import com.cwb.platform.biz.model.*;
+import com.cwb.platform.biz.service.*;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
@@ -26,6 +20,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -69,12 +64,18 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private UserService userService;
     @Autowired
     private BizUserMapper userMapper;
-    @Autowired
-    private WjService wjService;
 
     @Autowired
     private BizOrderMapper orderMapper;
 
+    @Autowired
+    private KsjfService ksjfService;
+    @Autowired
+    private KsjgService ksjgService;
+    @Autowired
+    private KsSlService ksSlService;
+    @Autowired
+    private KsYkService ksYkService;
 
     //
     @Value("${appSendSMSRegister:app_sendSMS_register}")
@@ -167,6 +168,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             if (StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && !StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
                 bizPtyh.setYhZsyqmImg(imgUrl + bizPtyh.getYhZsyqmImg());
             }
+            if (StringUtils.isNotBlank(bizPtyh.getYhZh())) {
+                bizPtyh.setYhZh(bizPtyh.getYhZh().replaceAll("(?<=[\\d]{3})\\d(?=[\\d]{4})", "*"));
+            }
+
             // 查询该用户是否有所属教练
             BizUser bizUser = userService.findById(bizPtyh.getId());
             if(!ObjectUtils.isEmpty(bizUser)){
@@ -385,6 +390,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             yhAlipayId = ""; // TODO: 2018/5/19 请求支付宝的ID
             RuntimeCheck.ifBlank(yhAlipayId, "支付宝唯一编号不能为空");
         }
+        if(StringUtils.isNotEmpty(entity.getYhOpenId())){
+            yhOpenId=entity.getYhOpenId();
+        }
 
         BizPtyh newEntity = new BizPtyh();
         newEntity.setId(genId());//获取ID
@@ -563,17 +571,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizPtyh userRequest = getAppCurrentUser();
         if (userRequest == null) return ApiResponse.fail("用户不存在");
 
-        RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");
-        RuntimeCheck.ifBlank(entity.getYhZjhm(), "用户证件号码不能为空");
-        String CardCode=entity.getYhZjhm();
-        String sex;//获取性别 ZDCLK0042(1、男;2、女)
-        if (Integer.parseInt(CardCode.substring(16).substring(0, 1)) % 2 == 0) {// 判断性别
-            sex = "2";
-        } else {
-            sex = "1";
-        }
-        entity.setYhXb(sex);
-
         BizPtyh user = entityMapper.selectByPrimaryKey(userRequest.getId());
         if (user == null) {
             return ApiResponse.fail("用户不存在");
@@ -587,6 +584,24 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.isEmpty(entity.getImgList())) {
             return ApiResponse.fail("请上传证件照片");
         }
+
+//        如果有识别信息的情况下，走自动审核业务
+        String ocrRecognitionJson = redisDao.boundValueOps(userRequest.getId()+"-ocrRecognition-map").get();
+        if (StringUtils.isNotBlank(ocrRecognitionJson)){
+            return updateUserRealAuditing(entity,ocrRecognitionJson,user);
+        }
+
+        RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");
+        RuntimeCheck.ifBlank(entity.getYhZjhm(), "用户证件号码不能为空");
+        String CardCode=entity.getYhZjhm();
+        String sex;//获取性别 ZDCLK0042(1、男;2、女)
+        if (Integer.parseInt(CardCode.substring(16).substring(0, 1)) % 2 == 0) {// 判断性别
+            sex = "2";
+        } else {
+            sex = "1";
+        }
+        entity.setYhXb(sex);
+
 
         String yhzjhm = entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
@@ -664,6 +679,134 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             bizUser.setCjsj(DateUtils.getNowTime());//创建时间
             i = userMapper.insert(bizUser);
         }
+        return i == 1 ? ApiResponse.success() : ApiResponse.fail();
+    }
+
+    /**
+     * 用ocr识别的用户，直接进行审核
+     * @param entity
+     * @param ocrRecognitionJson    识别出来的文本
+     * @param user  用户的登录信息
+     * @return
+     */
+    private ApiResponse<String> updateUserRealAuditing(BizPtyh entity, String ocrRecognitionJson, BizPtyh user) {
+//        1、解析识别出来的报文
+        Map<String,String> map=new HashMap<>();
+        JSONObject jsonObject = new JSONObject(ocrRecognitionJson);
+        String xm=jsonObject.getString("xm");
+        String xb=jsonObject.getString("xb");
+        String cfzh=jsonObject.getString("cfzh");
+        String filePath=jsonObject.getString("filePath");
+//        2、处理性别
+        String sex="2";//获取性别 ZDCLK0042(1、男;2、女)
+        if (StringUtils.equals(xb,"男")) {// 判断性别
+            sex = "1";
+        }
+        entity.setYhXb(sex);
+        entity.setYhXm(xm);
+        entity.setYhZjhm(cfzh);
+
+//        3、检查证件和手机号码是否有绑定
+        String yhzjhm = entity.getYhZjhm();
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhZjhm.name(), yhzjhm);
+        condition.and().andNotEqualTo(BizPtyh.InnerColumn.id.name(), user.getId());
+        List<BizPtyh> listCount = this.findByCondition(condition);
+        if (listCount != null && listCount.size() > 0) {
+            RuntimeCheck.ifTrue(true, "该证件号已与手机号" + listCount.get(0).getYhZh() + "关联，请更换新的证件号！");
+        }
+//        4、回写文件表
+        String[] imgList = StringUtils.split(entity.getImgList(), ",");
+        String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
+
+        List<BizWj> wjList = new ArrayList<BizWj>();
+        List<String> wjSxList=new ArrayList<String>();
+        String zjFilePath="";
+        if (imgList != null&&imgList.length>0) {
+            if(StringUtils.trimToNull(imgList[2])!=null && !StringUtils.equals(imgList[2],"-")){
+                yhSfyjz="1";
+            }
+            for (int i = 0; i < imgList.length; i++) {
+                if(StringUtils.trimToNull(imgList[i])!=null  && !StringUtils.equals(imgList[i],"-")){
+                    BizWj wj = new BizWj();
+                    wj.setId(genId());
+                    wj.setYhId(user.getId());//
+                    wj.setWjTpdz(imgList[i]);//
+
+                    //ZDCLK0050 (0 10、 身份证正面 1 11、 身份证反面  2 20、 驾照正面 3 21、 驾照背面…………)
+                    switch (i) {
+                        case 0:
+                            wj.setWjSx("10");
+                            wj.setWjSbzt("1");
+                            wj.setWjBw(ocrRecognitionJson);
+                            zjFilePath=imgList[i];
+                            break;
+                        case 1:
+                            wj.setWjSx("11");
+                            break;
+                        case 2:
+                            wj.setWjSx("20");
+                            break;
+                        case 3:
+                            wj.setWjSx("21");
+                            break;
+                    }
+                    wj.setWjSbzt("0");
+                    wj.setCjsj(DateUtils.getNowTime());
+                    wj.setWjSfyx("1");
+                    wjList.add(wj);
+                    wjSxList.add(wj.getWjSx());
+                }
+            }
+        }
+
+        RuntimeCheck.ifFalse(StringUtils.equals(filePath,zjFilePath), "提交的文件名称不符，请重新上传！");
+        //
+        if (wjList.size() > 0) {
+            wjMapper.deleteBatch(user.getId(),wjSxList);
+            wjMapper.insertBatch(wjList);
+        }
+//        5、新增实名表
+        String yhSjid = "";//设置上级ID
+        String yhSsjid = "";//上上级ID
+
+        String yhYyyqm = user.getYhYyyqm();//该用户的父级ID
+        SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), yhYyyqm);
+        List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
+        if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+        if (bizPtyhsList.size() != 1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+        String pUserId = bizPtyhsList.get(0).getId();//获取出父级ID
+        yhSjid = pUserId;
+        BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
+        if (pBizUser != null) {
+            yhSsjid = pBizUser.getYhSjid();
+        }
+
+        //修改用户实名表  biz_user
+        BizUser bizUser = new BizUser();
+        bizUser.setYhId(user.getId());//用户ID
+        bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
+        bizUser.setYhSjhm(user.getYhZh());//用户账户
+        bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+        bizUser.setYhXm(user.getYhXm());//姓名
+        bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+        bizUser.setYhSjid(yhSjid);//设置上级ID
+        bizUser.setYhSsjid(yhSsjid);//上上级ID
+        int i = userMapper.updateByPrimaryKey(bizUser);
+        RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
+
+//        6、修改用户主表
+        BizPtyh newEntity = new BizPtyh();
+        newEntity.setId(user.getId());
+        newEntity.setYhXm(entity.getYhXm());//用户姓名
+        newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
+        newEntity.setYhXb(entity.getYhXb());//用户性别
+        newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
+        newEntity.setYhZt("1");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
+
+        i = update(newEntity);
+
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
@@ -1093,5 +1236,59 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizJl coach = jlService.findById(user.getYhJlid());
         RuntimeCheck.ifNull(coach,"未找到教练");
         return ApiResponse.success(coach);
+    }
+
+    /**
+     * 1、教练员信息
+     * 2、受理信息列表
+     * 3、约考列表
+     * 4、缴费列表
+     * 5、成绩列表
+     * @return
+     */
+    @Override
+    public ApiResponse<Map<String,Object>> getUserSchoolCar(){
+        Map<String,Object> map =new HashMap<String,Object>();
+        BizPtyh bizPtyh = getAppCurrentUser();
+        BizJl bizJl =null;//教练信息表
+        List<BizKsSl> ksSlList;//考试受理列表
+        List<BizKsYk> ksYkList;//考试约考列表
+        List<BizKsJf> ksJfList;//考试缴费列表
+        List<BizKsJg> ksJgList;//考试结果列表
+        // 查询该用户是否有所属教练
+        BizUser bizUser = userService.findById(bizPtyh.getId());
+        if(!ObjectUtils.isEmpty(bizUser)){
+            // 通过用户实名表查询教练属性
+            bizJl = jlService.findById(bizUser.getYhJlid());
+        }
+
+//        考试受理列表
+        SimpleCondition newCondition = new SimpleCondition(BizKsSl.class);
+        newCondition.eq(BizKsSl.InnerColumn.yhId.name(), bizPtyh.getId());
+        newCondition.setOrderByClause(BizKsSl.InnerColumn.slType.asc());//排序
+        ksSlList=ksSlService.findByCondition(newCondition);
+//        约考列表
+        newCondition = new SimpleCondition(BizKsYk.class);
+        newCondition.eq(BizKsYk.InnerColumn.yhId.name(), bizPtyh.getId());
+        newCondition.setOrderByClause(BizKsYk.InnerColumn.ykSj.desc());//排序
+        ksYkList=ksYkService.findByCondition(newCondition);
+//        缴费列表
+        newCondition = new SimpleCondition(BizKsJf.class);
+        newCondition.eq(BizKsJf.InnerColumn.yhId.name(), bizPtyh.getId());
+        newCondition.setOrderByClause(BizKsJf.InnerColumn.cjsj.desc());//排序
+        ksJfList=ksjfService.findByCondition(newCondition);
+
+        newCondition = new SimpleCondition(BizKsJg.class);
+        newCondition.eq(BizKsJg.InnerColumn.yhId.name(), bizPtyh.getId());
+        newCondition.setOrderByClause(BizKsJg.InnerColumn.cjsj.desc());//排序
+        ksJgList=ksjgService.findByCondition(newCondition);
+
+        map.put("bizjl",bizJl);//教练信息表
+        map.put("kssl",ksSlList);//受理信息列表
+        map.put("ksyk",ksYkList);//约考列表
+        map.put("ksjf",ksJfList);//缴费列表
+        map.put("kscj",ksJgList);//成绩列表`
+
+        return ApiResponse.success(map);
     }
 }

@@ -8,5 +8,5 @@ import java.util.Map;
 
 public interface WjService extends BaseService<BizWj,java.lang.String>{
 
-    void ocrRecognition(Map<String, String> retMap, String fileType,String filePath);
+    boolean ocrRecognition(Map<String, String> retMap, String fileType,String filePath,String path);
 }

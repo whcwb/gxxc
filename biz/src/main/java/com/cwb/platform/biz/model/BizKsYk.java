@@ -95,7 +95,7 @@ public class BizKsYk implements Serializable {
     @Column(name = "exam_place_lng")
     private Double examPlaceLng;
 
-    public Double getExamlaceLat() {
+    public Double getExamPlaceLat() {
         return examPlaceLat;
     }
 
