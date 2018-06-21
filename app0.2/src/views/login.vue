@@ -2,9 +2,9 @@
   @import "./login";
 </style>
 <template>
-      <div id="login" class="box_col">
+      <div id="login" class="box_col" style="background-image: url('static/login/backImg.png')">
         <div class="login_Logo">
-          <img src="/static/login/LOGO.png" style="width: 1.1rem;" alt="">
+          <img src="static/login/LOGO.png" style="width: 1.1rem;" alt="">
         </div>
         <div class="login_tit">
           学车联盟

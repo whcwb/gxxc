@@ -9,8 +9,7 @@ module.exports = [
   },
   {
     path: '/',
-    name: '' +
-    '',
+    name: 'Login',
     component:()=>import('@/views/login'),
     meta:{
       title:'登录'
