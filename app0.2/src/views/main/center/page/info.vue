@@ -109,7 +109,7 @@
             }).catch((err)=>{
 
             })
-            this.$router.push({name:'Login'})
+            this.$router.push({path:'/'})
           },
           userMessF(){//获取个人信息
             var v = this

@@ -29,7 +29,7 @@
             </el-form-item>
             <div style="text-align: right;font-size: 0.15rem;color: #fff;">
               <span style="border-bottom: solid 1px #fff"
-              @click="$router.push({name:'forget'})">
+              @click="$router.push({path:'/forget'})">
                忘记密码
               </span>
             </div>
@@ -102,7 +102,7 @@
                   if(res.code==200){
                     localStorage.setItem('token',JSON.stringify(res.result.accessToken))
                     v.util.GetUserMess(v,(res)=>{
-                      v.$router.push({name:'Home'})
+                      v.$router.push({path:'/Home'})
                     })
                   }else {
                     Toast(res.message)
@@ -119,13 +119,13 @@
           },
           reg(){
             var v = this
-            v.$router.push("/reg")
-            // this.wechatUtil.qrScan((messtoback)=>{
+            // v.$router.push("/reg")
+            this.wechatUtil.qrScan((messtoback)=>{
               // alert('微信'+messtoback)
               // Toast.succeed('微信'+messtoback);
-              // v.codeyz(messtoback)
+              v.codeyz(messtoback)
               // v.codeyz(v.yqm)
-            // })
+            })
           },
           codeyz(val){
             var v = this

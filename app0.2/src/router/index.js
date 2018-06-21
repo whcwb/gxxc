@@ -15,7 +15,8 @@ router.beforeEach((to, from, next) => {
   // let openid = "123123";
   //   console.log(openicd);
   // 如果没有openid，则需要获取
-  if (ISLOGIN == null && to.path != '/index') {
+  // ISLOGIN == null
+  if (openid == null && to.path != '/index') {
     next({
       name: 'index'
     });
@@ -25,7 +26,6 @@ router.beforeEach((to, from, next) => {
   }else if (openid != null){
     if(to.name=='Login'||to.name=='reg'||to.name=='forget'){
       next()
-      return
     }else if(to.name!='Login' && localStorage.getItem('userMess')){
       next()
     }else{
