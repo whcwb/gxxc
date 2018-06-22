@@ -229,6 +229,9 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         if (list4.size() != 0) {
             examMap.put("4", list4.get(0));
         }
-        return ApiResponse.success(examMap);
+        ApiResponse<Map<String,BizKsYk>> result = new ApiResponse<>();
+        result.setMessage(""+examMap.size());
+        result.setResult(examMap);
+        return result;
     }
 }

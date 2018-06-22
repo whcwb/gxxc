@@ -131,19 +131,16 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
 
         try {
             for (Map.Entry<String, BizKsYk> entry : examMap.entrySet()) {
-                BizKsJf payInfo = payMap.get(entry.getKey());
-                if (payInfo == null) {
-                    map.put(entry.getKey(), "未缴");
+                // 判断考试是否通过，如果考试通过，则已缴费；如果考试未通过，则判断缴费时间
+                BizKsYk exam = entry.getValue();
+                int stand = (exam.getKmCode().equals("2") || exam.getKmCode().equals("3")) ? 80 : 90;
+                if (exam.getCj1() >= stand || exam.getCj2() >= stand) {
+                    map.put(entry.getKey(), "已缴");
                 } else {
-                    // 如果有缴费记录，判断考试是否通过，如果考试通过，则已缴费；如果考试未通过，则判断缴费时间
-                    BizKsYk exam = entry.getValue();
-                    int stand = 90;
-                    if (exam.getKmCode().equals("2") || exam.getKmCode().equals("3")){
-                        stand = 80;
-                    }
-                    if (exam.getCj1() >= stand || exam.getCj2() >= stand) {
-                        map.put(entry.getKey(), "已缴");
-                    } else {
+                    BizKsJf payInfo = payMap.get(entry.getKey());
+                    if (payInfo == null) {
+                        map.put(entry.getKey(), "未缴");
+                    }else{
                         Date yksj = DateUtils.getDate(exam.getYkSj(), "yyyy-MM-dd");
                         Date jfsj = DateUtils.getDate(exam.getYkSj(), "yyyy-MM-dd");
                         if (yksj.getTime() > jfsj.getTime()) {

@@ -43,7 +43,7 @@
         <el-card class="card-body" shadow="never">
           <div>
             <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-              <el-tab-pane name="first">
+              <el-tab-pane name="step1">
                     <span slot="label">
                       <img :src="tabLabel[0].tabImg" width="120"/>
                       <span class="title-name">受理进度</span>
@@ -141,7 +141,7 @@
                   </el-row>
                 </div>
               </el-tab-pane>
-              <el-tab-pane name="second">
+              <el-tab-pane name="step2">
                     <span slot="label">
                       <img :src="tabLabel[1].tabImg" width="120"/>
                       <span class="title-name">科目一</span>
@@ -252,7 +252,7 @@
                   </el-card>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="科目二" name="third">
+              <el-tab-pane label="科目二" name="step3">
                     <span slot="label">
                       <img :src="tabLabel[2].tabImg" width="120"/>
                       <span class="title-name">科目二</span>
@@ -396,7 +396,7 @@
                   </el-card>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="科目三" name="fourth">
+              <el-tab-pane label="科目三" name="step4">
                     <span slot="label">
                       <img :src="tabLabel[3].tabImg" width="120"/>
                       <span class="title-name">科目三</span>
@@ -517,7 +517,7 @@
                   </el-card>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="科目四" name="five">
+              <el-tab-pane label="科目四" name="step5">
                     <span slot="label">
                       <img :src="tabLabel[4].tabImg" width="120"/>
                       <span class="title-name">科目四</span>
@@ -662,9 +662,9 @@
           {tabImg: 'static/png/tab-default.png'},
           {tabImg: 'static/png/tab-default.png'}
         ],
-        activeName2: 'first',
+        activeName2: 'setp1',
         jly: {
-          yhXm: '-',
+          yhXm: '未绑定教练',
           jlQu: '-',
           jlPf: 0,
           qymc: ''
@@ -673,6 +673,7 @@
         user:{},
         handleStatus:'',
         handleSteps:0,
+          allSteps:1,
         examInfo:[],
         payInfo:[],
       }
@@ -701,9 +702,16 @@
         })
       },
       getExamInfo() {
+          let v = this;
         this.$http.get(this.apis.getExamInfo, {params: {yhId: this.user.id}}).then((res) => {
           if (res.code == 200 && res.result) {
             this.examInfo = res.result;
+            let s = parseInt(res.message)+1
+            this.activeName2 = 'step'+s;
+              for (let item of v.tabLabel) {
+                  item.tabImg = "static/png/tab-default.png";
+              }
+              this.tabLabel[s-1].tabImg = "static/png/tab-selected.png";
           }
         })
       },
