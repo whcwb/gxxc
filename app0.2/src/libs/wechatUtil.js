@@ -31,7 +31,6 @@ wechatUtil.getOpenid = (code,callback)=>{
             console.log(res);
             if (res.code == 200){
                 wechatUtil.openid = res.message;
-                // $.cookie('openid',res.message);
                 callback && callback(res.message)
             }else {
               alert('ID获取失败！！！')
@@ -42,43 +41,13 @@ wechatUtil.getOpenid = (code,callback)=>{
 
 wechatUtil.getAccessToken = (openid)=>{//生成token
   alert('已经不需要getAccessToken 方法了，请去掉此方法的调用')
-    // $.ajax({
-    //     url:wechatUtil.baseUrl + urls.wechat.getAccessToken+'?openid='+openid,
-    //     type:'get',
-    //     success:function(res){
-    //         if (res.code == 200){
-    //             wechatUtil.token = res.message;
-    //             wechatUtil.getSign(res.message);
-    //         }
-    //     },
-    //     error:function (a,b) {
-    //       Toast('getAccessToken 请求失败')
-    //       router.push({path:'/'})
-    //
-    //     }
-    // })
 }
 wechatUtil.getSign = ()=>{
   console.log('getSign deplicate');
-  // let curl = location.href.split('#')[0];
-    // let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+parseInt(wechatUtil.now.getTime()/1000)+"&url="+encodeURIComponent(curl);
-    // $.ajax({
-    //     url:url,
-    //     type:'get',
-    //     success:function(res){
-    //         if (res.code == 200){
-    //             wechatUtil.sign = res.message;
-    //             wechatUtil.config();
-    //         }
-    //     }
-    // })
 }
 
 wechatUtil.initConfig = ()=>{
-  console.log('timestamp',wechatUtil.timestamp);
-  console.log(location.href);
   let curl = location.href.split('#')[0];
-  console.log(curl);
   let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl);
   $.ajax({
     url:url,
@@ -86,7 +55,6 @@ wechatUtil.initConfig = ()=>{
     success:function(res){
       if (res.code == 200){
         wechatUtil.sign = res.message;
-        console.log('sign res',wechatUtil.sign);
         wechatUtil.config();
       }
     }
@@ -95,11 +63,6 @@ wechatUtil.initConfig = ()=>{
 
 
 wechatUtil.config = function(){
-  console.log('timestamp',wechatUtil.timestamp);
-  console.log('sign',wechatUtil.sign);
-  console.log(location.href);
-  let curl = location.href.split('#')[0];
-  console.log(curl);
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: wechatUtil.appId, // 必填，公众号的唯一标识
@@ -111,7 +74,6 @@ wechatUtil.config = function(){
 }
 
 wechatUtil.pay = function(prepay,callback){
-    console.log('chooseWXPay');
     wx.chooseWXPay({
         appId:prepay.appId,
         timestamp: prepay.timeStamp,// 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -120,7 +82,6 @@ wechatUtil.pay = function(prepay,callback){
         signType: prepay.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
         paySign: prepay.paySign, // 支付签名
         success: function (res) {
-          alert('res')
           callback && callback(res)
 // 支付成功后的回调函数
         }
@@ -158,9 +119,8 @@ wechatUtil.qrScan = (callback)=>{//打开微信扫码功能
         scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
         success: function (res) {
           alert(res)
-          console.log(res);
           var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-            console.log(result);
+            alert(result);
           callback && callback(result);
         }
     });
