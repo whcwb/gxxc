@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import urls from './url'
-
+import {Toast} from 'mint-ui';
+import router from '@/router'
 let wechatUtil = {}
 
 wechatUtil.now = new Date();
@@ -47,6 +48,11 @@ wechatUtil.getAccessToken = (openid)=>{//生成token
                 wechatUtil.token = res.message;
                 wechatUtil.getSign(res.message);
             }
+        },
+        error:function (a,b) {
+          Toast('getAccessToken 请求失败')
+          router.push({path:'/'})
+
         }
     })
 }
@@ -68,7 +74,7 @@ wechatUtil.getSign = (token)=>{
 
 wechatUtil.config = function(){
     wx.config({
-        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: wechatUtil.appId, // 必填，公众号的唯一标识
         timestamp: parseInt(wechatUtil.now.getTime()/1000), // 必填，生成签名的时间戳
         nonceStr: 'wechat123', // 必填，生成签名的随机串

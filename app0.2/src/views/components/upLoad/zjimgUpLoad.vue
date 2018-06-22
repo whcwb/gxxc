@@ -9,7 +9,7 @@
   <div class="box_col">
     <el-upload
       class="upload-demo"
-      :action="'http://192.168.31.228:9086/app/zjupload'+'?fileType='+fileType"
+      :action="'http://xclm.xxpt123.com:8080/biz/app/zjupload'+'?fileType='+fileType"
       :multiple="false"
       :show-file-list="false"
       :limit="1"
@@ -75,16 +75,16 @@
         });
         console.log(file.type)
         const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        // const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!');
           v.colse()
         }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-          v.colse()
-        }
-        return isJPG && isLt2M;
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过 2MB!');
+        //   v.colse()
+        // }
+        return isJPG;
       },
       colse(){
         setTimeout(function () {

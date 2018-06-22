@@ -63,7 +63,8 @@ API.ajax.interceptors.request.use(config=> {
 }, error=> {
   Indicator.close();
   setTimeout(() => {
-    // Toast.failed(API.NETWORK_ERR)
+    Toast('数据请求超时')
+    router.push({path:'/'})
   }, 100);
   return Promise.reject(error);
 });
