@@ -14,7 +14,7 @@ server:
   port: 9086
 
 #测试调试 1 进行调试  0 正式  正式环境里不需要配置这个参数
-debug_test: 0
+debug_test: 1
 
 #学费类型的产品金额不能低于该值，如果低于该值，将无法插入。
 order_money: 2500
@@ -22,12 +22,18 @@ order_money: 2500
 logo_file_url: /opt/gxxc/logo.png
 
 qr_code_file_url: /opt/gxxc/nginx/
-credentialsPath:
+
+credentialsPath: /opt/gxxc/certificate/
+
 wxDomain: http://xclm.xxpt123.com/wx
+# 接收到第三方支付成功的消息后，支付回调操作
+wxPayBackDomain: http://xclm.xxpt123.com/wx
+
 wxMsgTemplate:
   handle: 0jqcQ-ucdPPfGl3WlyquqhaqOSaj1_8wc7jvZTqXh-I
   exam: QyJLmqWBdoJfvRvvWGuWTpdt6-0r2-nGKJXhNTD4sT4
   pay: RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o
+  payBack: RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o
 
 wechat:
   appId: wxb01394ea85904296

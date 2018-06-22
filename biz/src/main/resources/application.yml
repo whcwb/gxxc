@@ -55,7 +55,7 @@ server:
 
 staticPath: /opt/gxxc/nginx/
 #证件照片上传的地址 必须要心/结尾
-credentialsPath: d:/2004/
+credentialsPath: /opt/gxxc/certificate/
 
 img_url: http://47.96.101.240:8001/
 
