@@ -2,11 +2,13 @@ package com.cwb.platform.biz.wxpkg.controller;
 
 import com.cwb.platform.biz.util.WechatUtils;
 import com.cwb.platform.util.bean.ApiResponse;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +35,6 @@ import java.util.concurrent.TimeUnit;
 public class WxChatController {
 
 	private final Logger logger = LoggerFactory.getLogger("access_info");
-	@Autowired
-	private WechatUtils wechatUtils;
 
 
 	@Autowired
@@ -46,30 +46,25 @@ public class WxChatController {
 	@Value("${wechat.domain}")
 	private String domainUrl;
 
-	@RequestMapping("getCode")
-	public String getCode(){
-		return wechatUtils.getCode();
-	}
-
-	@RequestMapping("getOpenid")
-	@ResponseBody
-	public ApiResponse<String> getOpenid(String code){
-		return ApiResponse.success(wechatUtils.getOpenid(code));
-	}
-
-
-
-	@RequestMapping("getAccessToken")
-	@ResponseBody
-	public ApiResponse<String> getAccessToken(String openid){
-		return ApiResponse.success(wechatUtils.getToken(openid));
-	}
 
 
 	@RequestMapping("getJsApiSign")
 	@ResponseBody
-	public ApiResponse<String> getJsApiSign(String url,String token,String timestamp){
-		return ApiResponse.success(wechatUtils.getJsApiSign(url,token,timestamp));
+	public ApiResponse<String> getJsApiSign(String url,String timestamp){
+		try {
+			String ticket = wxService.getJsapiTicket();
+			String params = "jsapi_ticket=" +ticket +
+					"&noncestr=wechat123" +
+					"&timestamp="+ timestamp +
+					"&url="+url;
+			System.out.println(params);
+			String sign = DigestUtils.shaHex(params);
+			System.out.println(sign);
+			return ApiResponse.success(sign);
+		} catch (WxErrorException e) {
+			e.printStackTrace();
+		}
+		return ApiResponse.fail("getJsApiSign error");
 	}
 
 	/**

@@ -13,6 +13,8 @@ import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,10 +55,12 @@ public class AppMainController {
 	private PtyhService ptyhService;
 
 	@Autowired
-	private WechatUtils wechatUtils;
+	private WjService wjService;
+
+
 
 	@Autowired
-	private WjService wjService;
+	private WxMpService wxService;
 
     @Autowired
 	private StringRedisTemplate redisDao;
@@ -262,9 +266,6 @@ public class AppMainController {
 	 */
 	@PostMapping("/getWxFile")
 	public ApiResponse<String> downloadMedia( String code,HttpServletRequest request){
-		String openId=request.getHeader("openid");
-		openId="oRPNG0uKqXvvKg23RtAxZZyiuqBI"; // TODO: 2018/6/19 这里的open_id是假的。
-		RuntimeCheck.ifTrue(StringUtils.isEmpty(openId),"OPEN_ID不能为空");
 		RuntimeCheck.ifTrue(StringUtils.isEmpty(code),"微信文件ID不能为空");
 		String savePath=staticPath;
 		if (!savePath.endsWith("/")) {
@@ -272,7 +273,13 @@ public class AppMainController {
 		}
 		savePath+="temp";
 
-		String accessToken =wechatUtils.getToken(openId);
+		String accessToken = null;
+		try {
+			accessToken = wxService.getAccessToken();
+		} catch (WxErrorException e) {
+			log.error("获取accesstoken 失败",e);
+			return ApiResponse.fail("获取accesstoken 失败");
+		}
 		log.debug("1、获取到accessToken："+accessToken);
 		String fileUrl=DloadImgUtil.downloadMedia(code,savePath,accessToken);
 		if(StringUtils.isNotEmpty(fileUrl)){

@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chenwei on 16/9/5.
@@ -32,41 +33,17 @@ public class WechatUtils {
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
 
+    private static final String WECHAT_TOKEN = "wechat_token";
 
-    public String getCode(){
-        String redirectUrl = "";
-        try {
-            redirectUrl = "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri="
-                    + domain +"&response_type=code&scope=snsapi_base&state=" + URLEncoder.encode("debug",Charset.defaultCharset().name()) + "#wechat_redirect?";
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return redirectUrl;
-    }
 
     public static void main(String[] args) {
         String s = URLEncoder.encode("http://mmm.lufengtech.com/wx");
         System.out.println(s);
     }
 
-    public String getOpenid(String code){
-        String result = HttpUtil
-                .get("https://api.weixin.qq.com/sns/oauth2/access_token?appid="
-                        + appId
-                        + "&secret="
-                        + secret
-                        + "&code="
-                        + code
-                        + "&grant_type=authorization_code");
-        Map<?, ?> bean = JsonUtil.toBean(result, Map.class);
-        if(bean.get("openid") == null){
-            return null;
-        }
-        return bean.get("openid").toString();
-    }
 
-    public String getToken(String openid){
-        String val = (String) redisTemplateUtil.opsForValue().get("accessToken-token");
+    public String getToken(){
+        String val = (String) redisTemplateUtil.opsForValue().get(WECHAT_TOKEN);
         if (StringUtils.isNotEmpty(val)){
             return val;
         }
@@ -78,35 +55,10 @@ public class WechatUtils {
         Map<?, ?> map = JsonUtil.toBean(token, Map.class);
         if (map == null)return "";
         String accessToken = map.get("access_token").toString();
-
-            return accessToken;
-    }
-
-    public String getJsapiTicket(String token){
-        String ticketRes = HttpUtil.get("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+token+"&type=jsapi");
-        log.info("getticket: ",ticketRes);
-        Map<?, ?> map = JsonUtil.toBean(ticketRes, Map.class);
-        String ticket = map.get("ticket").toString();
-        return ticket;
-    }
-
-    public String getUserInfo(String accessToken,String openid){
-        return HttpUtil
-                .get("https://api.weixin.qq.com/cgi-bin/user/info?access_token="
-                        + accessToken + "&openid=" + openid);
+        redisTemplateUtil.opsForValue().set(WECHAT_TOKEN,accessToken,1,TimeUnit.HOURS);
+        return accessToken;
     }
 
 
-    public String getJsApiSign(String url,String token,String timestamp) {
-        String ticket = getJsapiTicket(token);
-        String params = "jsapi_ticket=" +ticket +
-                "&noncestr=wechat123" +
-                "&timestamp="+ timestamp +
-                "&url="+url;
-        System.out.println(params);
-        String sign = DigestUtils.shaHex(params);
-        System.out.println(sign);
-        return sign;
-    }
 
 }
