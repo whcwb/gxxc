@@ -40,6 +40,14 @@ module.exports = [
     }
   },
   {
+    path: '/coachList',
+    name: 'coachList',
+    component:()=>import('@/views/main/coach/list.vue'),
+    meta:{
+      title:'教练列表'
+    }
+  },
+  {
     path: '/myCenter-qrcode',
     name: 'myCenterQrcode',
     meta:{
@@ -98,5 +106,12 @@ module.exports = [
       title:'提现'
     },
     component:()=>import('@/views/main/TX')
+  },{
+    path: '/xlc',
+    name: 'xlc',
+    meta:{
+      title:'训练场'
+    },
+    component:()=>import('@/views/main/homePage/page/xlcMess')
   }
 ]

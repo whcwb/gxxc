@@ -27,6 +27,8 @@
             if (this.$parent.choosedImgs){
     	        this.model.path = this.$parent.choosedImgs;
                 this.loadComponent = true;
+			}else{
+                this.loadComponent = true;
 			}
         },
         methods: {

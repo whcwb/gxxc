@@ -5,9 +5,6 @@
     .mint-tab-item-label{
       font-size: 0.16rem!important;
     }
-    /*.mint-navbar .mint-tab-item.is-selected{*/
-      /*border-bottom: 0.06rem solid #26a2ff;*/
-    /*}*/
     /*功能模块*/
     .gnmk{
       background-color: #fff;
@@ -67,11 +64,14 @@
     .xlcList{
       padding: 0 0.15rem;
       .list{
+        border-bottom: solid 1px #999999;
+        padding-bottom: 0.1rem;
+        margin-bottom: 0.05rem;
         .iconfont{
           color:#029ded ;
         }
         .xlcMess{
-          font-size: 0.18rem;
+          font-size: 0.15rem;
           .name{
           }
           .money{
@@ -84,7 +84,7 @@
             margin-right: 0.1rem;
           }
           .mess{
-            font-size: 0.16rem;
+            font-size: 0.14rem;
           }
 
         }
@@ -112,7 +112,7 @@
             </mt-swipe>
           </div>
           <!--功能模块-->
-          <div class="box-row gnmk">
+          <div class="box-row gnmk" v-show="false">
             <div class="box_row_100">
               <i class="iconfont icon-fenlei"></i>
               <div class="text">
@@ -139,7 +139,7 @@
             </div>
           </div>
           <!--考试秘籍-->
-          <div class="ksmj moSty">
+          <div class="ksmj moSty" v-show="false">
             <div>
               Hi,周周
             </div>
@@ -160,7 +160,7 @@
             </div>
           </div>
           <!--优惠-->
-          <div class="ksyh moSty">
+          <div class="ksyh moSty" v-show="false">
             <div class="box-row"
                  style="border-left: #62adfe 0.04rem solid;padding-left: 0.1rem;
                  margin-top: 0.15rem;font-size: 0.16rem">
@@ -228,7 +228,9 @@
               </mt-navbar>
             </div>
             <div class="xlcList" style="margin-top: 0.1rem">
-                <div class="list box-row">
+                <div class="list box-row"
+                     v-for="(item,index) in xlcList"
+                      @click="$router.push({name:'xlc',params:item})">
                     <div style="width: 1.2rem">
                       <img src="static/home/car0000.png"
                            style="width: 100%"
@@ -237,7 +239,8 @@
                     <div class="box_row_100" style="padding-left: 0.1rem">
                         <div class="box-row xlcMess">
                            <div class="box_row_100 name">
-                            ***驾校训练厂
+                            <!--***驾校训练厂-->
+                             {{item.schoolName}}
                            </div>
                            <div class="money">
                             ￥25000.00
@@ -248,7 +251,7 @@
                             <i class="iconfont icon-dingwei"></i>
                           </div>
                           <div class="box_row_100 mess">
-                            光谷大道光谷一路52号
+                            {{item.address}}
                           </div>
                         </div>
                         <div class="box-row xlcBus">
@@ -277,11 +280,14 @@
       data(){
           return{
             selected:'1',
-            SwiperImg:[]
+            SwiperImg:[],
+            xlcList:[]
           }
       },
       created(){
         this.getSwiperImg()
+        this.XLC()
+
       },
       methods:{
         goLook(){
@@ -291,6 +297,17 @@
           this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{
             if(res.code==200){
               this.SwiperImg = res.page.list
+            }
+            console.log(res)
+          }).catch((err)=>{
+
+          })
+        },
+        XLC(){
+          var v = this
+          this.$http.post(this.apis.XLC).then((res)=>{
+            if(res.code==200){
+              v.xlcList = res.page.list
             }
             console.log(res)
           }).catch((err)=>{

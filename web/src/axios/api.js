@@ -1,6 +1,6 @@
 //网络请求地址前缀
 // let BASE_URL = 'http://xclm.xxpt123.com:8080/biz/';
-let BASE_URL = 'http://127.0.0.1:8080';
+let BASE_URL = 'http://127.0.0.1:9086';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
 module.exports = {
     getImgUrl:'http://xclm.xxpt123.com:8001/',
@@ -32,6 +32,7 @@ module.exports = {
         GIVE:'/api/js/modifyUserRoles',
         DELE:'/api/yh/removeIds',
         SEARCHSOME:'/api/yh/query',//用户管理
+
     },
     examPlace:{
         QUERY:'/api/examPlace/pager',//考场
@@ -94,6 +95,7 @@ module.exports = {
         assignStudents:'/api/ptyh/assignStudents', // 分配学员接口
         updateyhrz:'/api/ptyh/updateyhrz', // 更新用户认证状态
         updateSfsd:'/api/ptyh/updateSfsd',//用户管理
+        getUserCoachEvaluate:'/api/ptyh/updateSfsd',//获取用户对教练的评分
     },
     teacher:{
         QUERY:'/api/jl/pager',//平台用户管理

@@ -26,6 +26,8 @@ credentialsPath:
 wxDomain: http://xclm.xxpt123.com/wx
 wxMsgTemplate:
   handle: 0jqcQ-ucdPPfGl3WlyquqhaqOSaj1_8wc7jvZTqXh-I
+  exam: QyJLmqWBdoJfvRvvWGuWTpdt6-0r2-nGKJXhNTD4sT4
+  pay: RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o
 
 wechat:
   appId: wxb01394ea85904296

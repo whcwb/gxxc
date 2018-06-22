@@ -17,15 +17,11 @@
 					<Row>
 						<Col span="12">
 							<label>第一次考试成绩</label>
-							<choose-img :parent="v"
-										:urls="formItem.cjd1"
-										@chooseImgFinish="chooseImgFinish1"></choose-img>
+							<choose-img :type="'cjd1'" :path="formItem.cjd1" @imgChange="imgChange1"></choose-img>
 						</Col>
 						<Col span="12">
 							<label>第二次考试成绩</label>
-							<choose-img :parent="v"
-										:urls="formItem.cjd2"
-										@chooseImgFinish="chooseImgFinish2"></choose-img>
+							<choose-img :type="'cjd2'" :path="formItem.cjd2" @imgChange="imgChange2"></choose-img>
 						</Col>
 					</Row>
         		</Form>
@@ -59,26 +55,26 @@
                     {label:'科目编码',prop:'kmCode',dict:'ZDCLK0067'},
                     {label:'考场名称',prop:'examPlaceId',type:'foreignKey'},
                     {label:'预约考试时间',prop:'ykSj',type:'date'},
-                    {label:'第一次考试成绩',prop:'cj1',type:'number'},
-                    {label:'第二次考试成绩',prop:'cj2',type:'number'},
+                    {label:'第一次考试成绩',prop:'cj1',type:''},
+                    {label:'第二次考试成绩',prop:'cj2',type:''},
                 ],
                 ruleInline:{
 				},
                 foreignList:{
                     examPlaceId:{url:this.apis.examPlace.QUERY,key:'id',val:'name',items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
-                }
+                },
 			}
 		},
 		created(){
             this.util.initFormModal(this);
 		},
 		methods: {
-            chooseImgFinish1(paths){
-                this.formItem.cjd1 = paths;
+            imgChange1(o){
+                this.formItem.cjd1 = o.path;
             },
-            chooseImgFinish2(paths){
-                this.formItem.cjd2 = paths;
+            imgChange2(o){
+                this.formItem.cjd2 = o.path;
             }
 		}
 	}

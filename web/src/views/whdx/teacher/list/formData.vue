@@ -72,7 +72,8 @@
                 operate:'教练员',
 				saveUrl:this.apis.teacher.ADD,
                 staticPath:this.apis.getImgUrl,
-				uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
+				// uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
+				uploadPrivatePath:this.apis.UPLOAD,
 				showModal: true,
 				readonly: false,
                 files:{
@@ -127,10 +128,46 @@
 		        this.formItem.yhLx = "1";
             },
             imgChange(o){
-                console.log('form data imgChange');
-                console.log(o.path);
-                console.log(o.type);
-            }
+		        let type = o.type;
+		        this.files[type] = o.path;
+		        this.addImg(type,path);
+            },
+			addImg(type,path){
+		        let t = "cardFront";
+		        switch(type){
+					case "cardFront": t = "10";break;
+					case "cardBack": t = "11";break;
+					case "licenceFront": t = "20";break;
+					case "licenceBack": t = "21";break;
+				}
+		        let params = {
+                    yhId:this.formItem.yhId,
+                    wjTpdz:path,
+                    wjSx:t
+				}
+                this.$http.post(this.apis.wj.ADD,params).then((res)=>{
+                    if (res.code === 200 && res.result){
+                        for (let r of res.result){
+                            switch(r.wjSx){
+                                case '10':
+                                    v.files.cardFront = r.wjTpdz;
+                                    break;
+                                case '11':
+                                    v.files.cardBack = r.wjTpdz;
+                                    break;
+                                case '20':
+                                    v.files.licenceFront = r.wjTpdz;
+                                    break;
+                                case '21':
+                                    v.files.licenceBack = r.wjTpdz;
+                                    break;
+                                default:
+                            }
+                        }
+                        console.log(v.files);
+                    }
+                })
+			}
 		}
 	}
 </script>
