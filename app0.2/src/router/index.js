@@ -10,14 +10,14 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   Util.title(to.meta.title);
-  let openid = localStorage.getItem("openid");
-  // let openid = "123123";
-  let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+  // let openid = localStorage.getItem("openid");
+  let openid = "123123";
+  // let ISLOGIN = sessionStorage.getItem("ISLOGIN");
 
   let userToken = localStorage.getItem("userMess");
-  if(openid && userToken){
-    ISLOGIN=true;
-  }
+  // if(openid && userToken){
+   let ISLOGIN=true;
+  // }
 
 
   //   console.log(openicd);
