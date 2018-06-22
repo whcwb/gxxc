@@ -16,6 +16,8 @@ wechatUtil.baseUrl = 'http://xclm.xxpt123.com:8080/biz/';
 wechatUtil.authLoginUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+wechatUtil.appId+'&redirect_uri='+urls.url+'/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect';
 
 wechatUtil.afterReady = null;
+//存储Vue对象，用来在微信方法中，可以调用vue内容
+wechatUtil.vueParent = null;
 wechatUtil.getQueryString = function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
@@ -42,7 +44,6 @@ wechatUtil.getOpenid = (code,callback)=>{
 }
 
 wechatUtil.initConfig = ()=>{
-    alert('initConfig');
     let curl = location.href.split('#')[0];
   let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl)+'&nonceStr='+wechatUtil.nonceStr;
   $.ajax({
@@ -102,8 +103,12 @@ wx.ready(function(){
         wechatUtil.afterReady();
         return;
     }
-  wechatUtil.checkJsApi();
-    window.location.href = "/wx/";
+    if (wechatUtil.vueParent){
+      wechatUtil.vueParent.$router.push("/Home");
+      return;
+    }
+    wechatUtil.checkJsApi();
+    //window.location.href = "/wx/";
     // chooseImage();
     // wechatUtil.qrScan();
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
