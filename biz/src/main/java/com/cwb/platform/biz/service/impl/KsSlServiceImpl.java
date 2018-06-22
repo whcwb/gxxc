@@ -2,7 +2,6 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.BizKsSlMapper;
 import com.cwb.platform.biz.model.BizKsSl;
-import com.cwb.platform.biz.model.BizKsYk;
 import com.cwb.platform.biz.service.KsSlService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
@@ -71,8 +70,7 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
     }
     @Override
     public int save(BizKsSl entity) {
-        RuntimeCheck.ifBlank(entity.getCode(), "请选择机构");
-        RuntimeCheck.ifBlank(entity.getName(), "请确定机构名称");
+//        RuntimeCheck.ifBlank(entity.getCode(), "请选择机构");
         RuntimeCheck.ifBlank(entity.getName(), "请确定机构名称");
 
         RuntimeCheck.ifBlank(entity.getSlType(), "审核状态不能为空");

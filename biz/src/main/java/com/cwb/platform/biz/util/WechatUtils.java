@@ -4,7 +4,6 @@ import com.cwb.platform.util.commonUtil.JsonUtil;
 import com.cwb.platform.util.redis.RedisTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chenwei on 16/9/5.
@@ -69,7 +66,7 @@ public class WechatUtils {
     }
 
     public String getToken(String openid){
-        String val = (String) redisTemplateUtil.opsForValue().get("accessToken-"+openid);
+        String val = (String) redisTemplateUtil.opsForValue().get("accessToken-token");
         if (StringUtils.isNotEmpty(val)){
             return val;
         }
@@ -81,8 +78,8 @@ public class WechatUtils {
         Map<?, ?> map = JsonUtil.toBean(token, Map.class);
         if (map == null)return "";
         String accessToken = map.get("access_token").toString();
-        redisTemplateUtil.opsForValue().set("accessToken-"+openid,accessToken,1,TimeUnit.HOURS);
-        return accessToken;
+
+            return accessToken;
     }
 
     public String getJsapiTicket(String token){

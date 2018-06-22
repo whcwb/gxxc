@@ -26,6 +26,12 @@ public class AppYhpfController extends AppUserBaseController {
         return yhpfService.validAndSave(entity);
     }
 
+//    query(entity)
+
+    @RequestMapping(value="/getjlpf", method={RequestMethod.POST})
+    public ApiResponse<BizYhpf> getUserCoach(){
+        return yhpfService.getUserCoach();
+    }
 
 
     @RequestMapping(value="/pager", method={RequestMethod.POST, RequestMethod.GET})
