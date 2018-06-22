@@ -28,12 +28,18 @@ credentialsPath: /opt/gxxc/certificate/
 wxDomain: http://xclm.xxpt123.com/wx
 # 接收到第三方支付成功的消息后，支付回调操作
 wxPayBackDomain: http://xclm.xxpt123.com/wx
+#分配学员学员链接地址
+wxassignXyDomain: http://xclm.xxpt123.com/wx
+#分配学员教练链接地址
+wxassignJlDomain: http://xclm.xxpt123.com/wx
 
 wxMsgTemplate:
   handle: 0jqcQ-ucdPPfGl3WlyquqhaqOSaj1_8wc7jvZTqXh-I
   exam: QyJLmqWBdoJfvRvvWGuWTpdt6-0r2-nGKJXhNTD4sT4
   pay: RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o
   payBack: RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o
+  assignXy: JjeCO5HE0TnA1bj9HWCIlkMNjm2mxO-1PgmM10xens0
+  assignJl: JjeCO5HE0TnA1bj9HWCIlkMNjm2mxO-1PgmM10xens0
 
 wechat:
   appId: wxb01394ea85904296

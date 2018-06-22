@@ -131,8 +131,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             yhZsyqm = genId();
             yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
             String userName="";
-            userName="";
-
+            userName=order.getYhXm();
             this.asynchronousOperate(yhZsyqm,yhZsyqmImg,userName,order);
         }
 
