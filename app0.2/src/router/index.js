@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
   }else if ((ISLOGIN == null || openid == null) && to.path == '/index') {
     next();
   }else if (ISLOGIN != null && openid != null){
-    if(to.name=='Login'||to.name=='reg'||to.name=='forget'){
+    if(to.name=='Login'||to.name=='reg'||to.name=='forget'||to.name =='index'){
       next()
     }else if(to.name!='Login' && localStorage.getItem('userMess')){
       next()

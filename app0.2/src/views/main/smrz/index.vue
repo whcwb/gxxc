@@ -15,22 +15,15 @@
         <mt-button icon="back"></mt-button>
       </router-link>
     </mt-header>
-    <!--v-if="userMess.yhZt=='-1'"-->
     <div class="box_col_auto" v-if="userMess.yhZt=='-1'">
       <div class="box-row">
         <div class="box_row_100" style="margin: 0.15rem">
           <imgup :demoImg="imgList.zm" fileType="10"
                  @handleSuccess="(res)=>{handleSuccess(res,0,'10')}"></imgup>
-          <!--<img src="static/home/id_03.png"-->
-               <!--style="width: 100%"-->
-               <!--alt="">-->
         </div>
         <div class="box_row_100" style="margin: 0.15rem">
           <imgup :demoImg="imgList.bm" fileType="11"
                  @handleSuccess="(res)=>{handleSuccess(res,1,'11')}"></imgup>
-          <!--<img src="static/home/id_05.png"-->
-               <!--style="width: 100%"-->
-               <!--alt="">-->
         </div>
       </div>
       <div @click="" style="padding: 0.3rem 0.1rem">
@@ -51,6 +44,15 @@
              alt="">
         <div>
            审核通过
+        </div>
+        <div class="box-row">
+          <div class="box_row_100">
+            <el-button round @click="$router.push({path:'/Home'})">返回</el-button>
+          </div>
+          <div class="box_row_100">
+            <el-button type="success" round
+                       @click="$router.push({path:'/pay/payIndex'})">缴费</el-button>
+          </div>
         </div>
       </div>
       <div v-else-if="userMess.yhZt=='2'">
@@ -93,6 +95,7 @@
           }
         },
         created(){
+          this.util.auto(window, document,4)
           this.rz()
         },
         methods:{

@@ -27,7 +27,7 @@
           <div style="height: 1rem;width: 1rem;
           line-height: 0.6rem;
           text-align: center;color: #ededed"
-          @click="$router.back()">
+          @click="$router.push({path:'/Home'})">
             <i class="iconfont icon-left1"></i>
           </div>
           <div class="box_row_100" style="font-weight: 700;font-size: 0.3rem;color: #fff">
