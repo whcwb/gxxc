@@ -93,8 +93,6 @@
           // }
           let ISLOGIN = sessionStorage.getItem("ISLOGIN");
           if(ISLOGIN == null){
-            let openid = localStorage.getItem("openid");
-            this.wechatUtil.getAccessToken(openid);
             sessionStorage.setItem("ISLOGIN",true);
           }
         },

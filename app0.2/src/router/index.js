@@ -9,15 +9,17 @@ const router = new Router({
   routes: routers
 })
 router.beforeEach((to, from, next) => {
+  console.log('去',to)
+  console.log('来',from)
   Util.title(to.meta.title);
-  // let openid = localStorage.getItem("openid");
-  let openid = "123123";
-  // let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+  let openid = localStorage.getItem("openid");
+  // let openid = "123123";
+  let ISLOGIN = sessionStorage.getItem("ISLOGIN");
 
   let userToken = localStorage.getItem("userMess");
-  // if(openid && userToken){
-   let ISLOGIN=true;
-  // }
+  if(openid && userToken){
+    ISLOGIN=true;
+  }
 
 
   //   console.log(openicd);
@@ -35,15 +37,18 @@ router.beforeEach((to, from, next) => {
       next()
     }else if(to.name!='Login' && localStorage.getItem('userMess')){
       next()
+    }else if(to.name=='indexName' && !localStorage.getItem('userMess')){
+      next({
+        name: 'Login'
+      });
+      return;
     }else{
       Toast('用户信息丢失，请重新登录！')
       next({
         name: 'Login'
       });
     }
-    //next();
   }
-  // next();
 })
 
 
