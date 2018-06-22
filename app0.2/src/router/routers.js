@@ -8,7 +8,7 @@ module.exports = [
     component:()=>import('@/views/index'),
   },
   {
-    path: '/',
+    path: '/Login',
     name: 'Login',
     component:()=>import('@/views/login'),
     meta:{
@@ -34,6 +34,13 @@ module.exports = [
   {
     path: '/Home',
     name: 'Home',
+    component:()=>import('@/views/home'),
+    meta:{
+      title:'学车联盟'
+    }
+  },
+  {
+    path: '/',
     component:()=>import('@/views/home'),
     meta:{
       title:'学车联盟'

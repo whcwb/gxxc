@@ -40,8 +40,8 @@
           </el-form>
         </div>
         <div class="box_col_auto" style="font-size: 0.23rem;color: #fff;text-align: center;">
-          <div @click="reg">
-            创建帐号
+          <div>
+            <el-button  @click="reg" round>创建帐号</el-button>
           </div>
         </div>
       </div>
@@ -124,8 +124,9 @@
           },
           reg(){
             var v = this
-            // v.$router.push("/reg")
+            alert('1')
             this.wechatUtil.qrScan((messtoback)=>{
+              alert('2')
               // alert('微信'+messtoback)
               // Toast.succeed('微信'+messtoback);
               v.codeyz(messtoback)
@@ -134,7 +135,7 @@
           },
           codeyz(val){
             var v = this
-            // alert(val)
+            alert(val)
             this.$http.post(this.apis.CODEYZ,{'code':val}).then((res)=>{
               if(res.code==200){
                 localStorage.setItem('yqm',val)

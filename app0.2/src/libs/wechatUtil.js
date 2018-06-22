@@ -51,7 +51,7 @@ wechatUtil.getAccessToken = (openid)=>{//生成token
         },
         error:function (a,b) {
           Toast('getAccessToken 请求失败')
-          router.push({path:'/'})
+          router.push({path:'/Lon'})
 
         }
     })
