@@ -37,7 +37,7 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'学员用户',prop:'yhId',type:'foreignKey'},
+                    {label:'学员用户',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'成绩单图片地址',prop:'cjdImg'},
                     {label:'科目编码',prop:'kmCode',dict:'ZDCLK0067'},
                     {label:'考试成绩',prop:'ksCj'},

@@ -74,7 +74,7 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         entity.setId(genId());
         entity.setCjr(user.getYhid());//操作人ID
         entity.setCjsj(DateUtils.getNowTime());//创建时间
-        BizPtyh ptyh = ptyhService.findByIdSelect(entity.getYhId());
+        BizPtyh ptyh = ptyhService.findById(entity.getYhId());
         RuntimeCheck.ifTrue(ptyh == null, "用户资料有误！");
 
         RuntimeCheck.ifBlank(entity.getExamPlaceId(), "请选择考场");

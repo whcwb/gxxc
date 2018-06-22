@@ -37,7 +37,7 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'学员',prop:'yhId',type:'foreignKey'},
+                    {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'学员缴费时间',prop:'jfSj',type:"date"},
                     {label:'缴费渠道',prop:'jfFs'},
                     {label:'科目编码',prop:'kmId',dict:'ZDCLK0067'},
