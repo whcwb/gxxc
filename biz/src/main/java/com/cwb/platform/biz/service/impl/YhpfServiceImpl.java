@@ -99,7 +99,7 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
             entity.setJlId(userMessage.getYhJlid());
         }
 
-        List<BizYhpf> ret=this.query(entity);
+        List<BizYhpf> ret=this.findByEntity(entity);
         if(ret!=null&&ret.size()>0){
             return ApiResponse.success(ret.get(0));
         }else {

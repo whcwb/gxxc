@@ -522,10 +522,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     @Override
     public ApiResponse<Map<String, Object>> wxlogin(String openId) {
-        // TODO: 2018/5/19 调试模式。
-        if(debugTest!=null&&debugTest.equals("1")) {//调试
-            openId = "aaaaaaa";
-        }
 
         Example condition = new Example(BizPtyh.class);
         condition.and().andEqualTo(BizPtyh.InnerColumn.yhOpenId.name(), openId);
