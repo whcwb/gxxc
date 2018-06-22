@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2018/6/21.
  */
@@ -79,13 +81,32 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         yhpf.setYhPl(entity.getYhPl());
         yhpf.setYhBm(user.getYhBm());
         yhpf.setJlXm(jlMessage.getYhXm());
+        yhpf.setAuditType(1);
+
         entityMapper.insertSelective(yhpf);
 
 //        3、更新教练表的平均分
         jlMapper.updateJlPf(yhpf.getJlId());
         return ApiResponse.success();
     }
+    @Override
+    public  ApiResponse<BizYhpf> getUserCoach(){
+        BizPtyh user=getAppCurrentUser();
+        BizYhpf entity=new BizYhpf();
+        entity.setYhId(user.getId());
+        BizUser userMessage=userService.findById(user.getId());
+        if(userMessage!=null){
+            entity.setJlId(userMessage.getYhJlid());
+        }
 
+        List<BizYhpf> ret=this.query(entity);
+        if(ret!=null&&ret.size()>0){
+            return ApiResponse.success(ret.get(0));
+        }else {
+            return ApiResponse.success(new BizYhpf());
+        }
+//        ret.sort(comparing(BizYhpf::getId));//对列表进行排序
+    }
 
 
 }

@@ -183,6 +183,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 if(!ObjectUtils.isEmpty(bizJl)) {
                     bizPtyh.setJlXm(bizJl.getYhXm()); // 教练姓名
                     bizPtyh.setSjhm(bizJl.getYhSjhm()); // 手机号码
+                    bizPtyh.setJlId(bizJl.getYhId());//教练员ID
+
                 }
             }
 
