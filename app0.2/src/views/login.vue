@@ -123,13 +123,8 @@
           reg(){
             var v = this
               this.wechatUtil.qrScan((res)=>{
-                  alert(res)
-                  // alert('微信'+messtoback)
-                  // Toast.succeed('微信'+messtoback);
                   v.codeyz(res)
-                  // v.codeyz(v.yqm)
               })
-              // this.wechatUtil.initConfig();
           },
           codeyz(val){
             var v = this

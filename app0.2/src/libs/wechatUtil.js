@@ -42,8 +42,9 @@ wechatUtil.getOpenid = (code,callback)=>{
 }
 
 wechatUtil.initConfig = ()=>{
-  let curl = location.href.split('#')[0];
-  let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl);
+    alert('initConfig');
+    let curl = location.href.split('#')[0];
+  let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl)+'&nonceStr='+wechatUtil.nonceStr;
   $.ajax({
     url:url,
     type:'get',
@@ -59,13 +60,17 @@ wechatUtil.initConfig = ()=>{
 
 wechatUtil.config = function(){
     wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: wechatUtil.appId, // 必填，公众号的唯一标识
         timestamp: wechatUtil.timestamp, // 必填，生成签名的时间戳
         nonceStr: wechatUtil.nonceStr, // 必填，生成签名的随机串
         signature: wechatUtil.sign,// 必填，签名
         jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay'] // 必填，需要使用的JS接口列表
     });
+    wechatUtil.refreshNonceStr();
+}
+wechatUtil.refreshNonceStr = ()=>{
+    wechatUtil.nonceStr = randomString(16);
 }
 
 wechatUtil.pay = function(prepay,callback){
