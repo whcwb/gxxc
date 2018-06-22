@@ -40,37 +40,54 @@ wechatUtil.getOpenid = (code,callback)=>{
 }
 
 wechatUtil.getAccessToken = (openid)=>{//生成token
-    $.ajax({
-        url:wechatUtil.baseUrl + urls.wechat.getAccessToken+'?openid='+openid,
-        type:'get',
-        success:function(res){
-            if (res.code == 200){
-                wechatUtil.token = res.message;
-                wechatUtil.getSign(res.message);
-            }
-        },
-        error:function (a,b) {
-          Toast('getAccessToken 请求失败')
-          router.push({path:'/Lon'})
+  alert('已经不需要getAccessToken 方法了，请去掉此方法的调用')
+    // $.ajax({
+    //     url:wechatUtil.baseUrl + urls.wechat.getAccessToken+'?openid='+openid,
+    //     type:'get',
+    //     success:function(res){
+    //         if (res.code == 200){
+    //             wechatUtil.token = res.message;
+    //             wechatUtil.getSign(res.message);
+    //         }
+    //     },
+    //     error:function (a,b) {
+    //       Toast('getAccessToken 请求失败')
+    //       router.push({path:'/'})
+    //
+    //     }
+    // })
+}
+wechatUtil.getSign = ()=>{
+  console.log('getSign deplicate');
+  // let curl = location.href.split('#')[0];
+    // let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+parseInt(wechatUtil.now.getTime()/1000)+"&url="+encodeURIComponent(curl);
+    // $.ajax({
+    //     url:url,
+    //     type:'get',
+    //     success:function(res){
+    //         if (res.code == 200){
+    //             wechatUtil.sign = res.message;
+    //             wechatUtil.config();
+    //         }
+    //     }
+    // })
+}
 
-        }
-    })
+wechatUtil.initConfig = ()=>{
+  let curl = location.href.split('#')[0];
+  let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+parseInt(wechatUtil.now.getTime()/1000)+"&url="+encodeURIComponent(curl);
+  $.ajax({
+    url:url,
+    type:'get',
+    success:function(res){
+      if (res.code == 200){
+        wechatUtil.sign = res.message;
+        wechatUtil.config();
+      }
+    }
+  })
 }
-wechatUtil.getSign = (token)=>{
-    let curl = location.href.split('#')[0];
-    // let curl = 'http://tzbtti.natappfree.cc/';
-    let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?token="+token+"&timestamp="+parseInt(wechatUtil.now.getTime()/1000)+"&url="+encodeURIComponent(curl);
-    $.ajax({
-        url:url,
-        type:'get',
-        success:function(res){
-            if (res.code == 200){
-                wechatUtil.sign = res.message;
-                wechatUtil.config();
-            }
-        }
-    })
-}
+
 
 wechatUtil.config = function(){
     wx.config({

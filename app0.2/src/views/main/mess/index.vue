@@ -664,14 +664,15 @@
         ],
         activeName2: 'first',
         jly: {
-          yhXm: '教练员',
-          jlQu: '江夏区',
-          jlPf: 4.0,
+          yhXm: '-',
+          jlQu: '-',
+          jlPf: 0,
           qymc: ''
         },
         regions: [],
         user:{},
-        handleStatus:[],
+        handleStatus:'',
+        handleSteps:0,
         examInfo:[],
         payInfo:[],
       }
@@ -694,7 +695,7 @@
         this.$http.get(this.apis.getStudentCoach, {params: {yhId: this.user.id}}).then((res) => {
           if (res.code == 200 && res.result) {
             this.jly = res.result;
-            this.jly.jlPf = parseInt(this.jly.jlPf)
+            this.jly.jlPf = isNaN(this.jly.jlPf) ? 0 : parseInt(this.jly.jlPf);
             this.getResionList();
           }
         })
@@ -717,6 +718,7 @@
         this.$http.get(this.apis.getHandleStatus, {params: {yhId: this.user.id}}).then((res)=>{
           if (res.code == 200){
             this.handleStatus = res.result;
+            this.handleSteps = parseInt(res.message);
           }
         })
       },

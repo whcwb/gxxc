@@ -195,6 +195,9 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         if (list4.size() != 0){
             map.put("4",list4.get(0));
         }
-        return ApiResponse.success(map);
+        ApiResponse<Map<String,BizKsSl>> result = new ApiResponse<>();
+        result.setResult(map);
+        result.setMessage(""+map.size());
+        return result;
     }
 }

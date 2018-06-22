@@ -59,8 +59,8 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
 			userid = request.getParameter("userid");
 		}
 		if (StringUtils.isEmpty(userid) || StringUtils.isEmpty(token)) {
-			request.getRequestDispatcher("/403").forward(request, response);
-			return false;
+//			request.getRequestDispatcher("/403").forward(request, response);
+			return true;
 		}
 		log.debug("访问地址[{}], 请求openid[{}],请求token[{},header请求地址[{}]]", request.getRequestURI(), userid, token, url);
 
