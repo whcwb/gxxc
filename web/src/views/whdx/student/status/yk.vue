@@ -51,7 +51,7 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'用户',prop:'yhId',type:'foreignKey'},
+                    {label:'用户',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'科目编码',prop:'kmCode',dict:'ZDCLK0067'},
                     {label:'考场名称',prop:'examPlaceId',type:'foreignKey'},
                     {label:'预约考试时间',prop:'ykSj',type:'date'},
