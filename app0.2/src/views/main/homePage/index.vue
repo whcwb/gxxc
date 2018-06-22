@@ -196,7 +196,7 @@
             <div class="yqhy_mess box-row">
               <div class="box_row_100">
                 <div class="num">
-                  1500元
+                  {{zhYE.yhZhye/100 | yhZhye}}元
                 </div>
                 <div class="txt">
                   累计奖励
@@ -204,13 +204,15 @@
               </div>
               <div class="box_row_100">
                 <div class="num">
-                  3人
+                  0人
                 </div>
                 <div class="txt">
                   已邀请
                 </div>
               </div>
-              <div class="" style="padding: 0.08rem 0.05rem 0 0 ">
+              <div class=""
+                   @click="showQrcode('ewm')"
+                   style="padding: 0.08rem 0.05rem 0 0 ">
                 <i class="iconfont icon-erweima"
                    style="font-size: 0.3rem;color: #f2f2f2"
                 ></i>
@@ -277,21 +279,57 @@
       components:{
 
       },
+      filters: {
+        yhZhye(val) {
+          if (val == '') {
+            return 0
+          }
+          return val
+        },
+      },
       data(){
           return{
             selected:'1',
             SwiperImg:[],
-            xlcList:[]
+            xlcList:[],
+            usermess: this.$store.state.app.userMess,
+            zhYE: {
+              yhZhye: 0
+            },
           }
       },
       created(){
+        var v = this
         this.getSwiperImg()
         this.XLC()
-
+        this.util.GetUserMess(v, (res) => {
+          v.usermess = res
+        })
+        this.getYE()
       },
       methods:{
         goLook(){
           Toast('去看看');
+        },
+        showQrcode(val) {
+          var v = this
+          if (v.usermess.ddSfjx == '0') {
+            Toast('请先缴费')
+          } else {
+            this.$router.push({name: 'myCenterQrcode'});
+          }
+        },
+        getYE(){
+          var v = this
+          this.$http.post(this.apis.USERZH).then((res)=>{
+            if(res.code){
+              v.zhYE.yhZhye = res.result.yhZhye
+            }else{
+              Toast(res.message)
+            }
+          }).catch((err)=>{
+            Toast('账户余额获取失败')
+          })
         },
         getSwiperImg(){
           this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{

@@ -116,13 +116,6 @@
             console.log(val)
             var v = this
             if(res.code==200){
-              // if(val==0){
-              //   v.imgList.zm = 'static/zjsh/sfzzmok.png'
-              //   v.form.imgList[val]=res.message
-              // }else if(val==1){
-              //   v.imgList.bm = 'static/zjsh/sfzfmok.png'
-              //   v.form.imgList[val]=res.message
-              // }
               v.zjsbImg(res.message,val,type)
             }
           },

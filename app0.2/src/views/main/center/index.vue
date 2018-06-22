@@ -218,6 +218,7 @@
               this.usermess = res
             })
           // }
+          this.getYE()
         },
         methods:{
           showQrcode(val) {
@@ -231,6 +232,18 @@
             } else if (val == 'td') {
               this.$router.push({name: 'myteam'})
             }
+          },
+          getYE(){
+            var v = this
+            this.$http.post(this.apis.USERZH).then((res)=>{
+              if(res.code){
+                v.zhYE.yhZhye = res.result.yhZhye
+              }else{
+                Toast(res.message)
+              }
+            }).catch((err)=>{
+              Toast('账户余额获取失败')
+            })
           },
           tost() {
             Toast('请实名认证')
