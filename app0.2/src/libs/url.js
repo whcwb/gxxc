@@ -62,6 +62,9 @@ module.exports = {
   getExamInfo:'app/ksyk/getUserExamInfo', // 考试信息
   getPayInfo:'app/ksjf/getPayInfo', // 缴费信息
 
+  PF_TEACHER:'/app/pf/save',//学员为教练员评分
+  GET_PF:'/app/pf/getjlpf',//获取评分信息
+
 
   //忘记密码  找回密码
   GET_FORGET_code:'/app/sendSMScz',//获取短信验证码
