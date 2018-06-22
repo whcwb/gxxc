@@ -15,6 +15,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.Page;
@@ -423,6 +424,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
 
         int i = entityMapper.insertSelective(newEntity);
+        String bizptyhlog="";
+        try {
+            bizptyhlog=mapper.writeValueAsString(newEntity);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         //      获取用户父级ID
         String yhSjid = "";//设置上级ID

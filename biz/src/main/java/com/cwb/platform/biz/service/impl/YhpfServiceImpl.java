@@ -56,7 +56,7 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
     @Override
     public ApiResponse<String> validAndSave(BizYhpf entity) {
         RuntimeCheck.ifFalse(entity.getYhFz()!=null, "评分的分值不能为空");
-        RuntimeCheck.ifFalse(entity.getYhPl()!=null, "评论不能为空");
+//        RuntimeCheck.ifFalse(entity.getYhPl()!=null, "评论不能为空");
         RuntimeCheck.ifFalse(entity.getYhFz()>=0&& entity.getYhFz()<=5,"评分的分值因该在[0-5]之间");
 
         BizPtyh user=getAppCurrentUser();
