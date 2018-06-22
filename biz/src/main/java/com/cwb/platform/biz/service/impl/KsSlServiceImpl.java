@@ -186,7 +186,7 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         if (list1.size() != 0){
             map.put("1",list1.get(0));
         }
-        if (map.size() != 0){
+        if (list2.size() != 0){
             map.put("2",list2.get(0));
         }
         if (list3.size() != 0){

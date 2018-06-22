@@ -54,7 +54,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_2/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/bm.jpg" class="image">
                           <div style="padding: 10px">
                             <span>报名条件</span>
                           </div>
@@ -64,7 +64,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_4/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/fy.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>学车费用</span>
                           </div>
@@ -74,7 +74,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_6/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/tj.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>体检事项</span>
                           </div>
@@ -84,7 +84,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_8/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/xclc.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>学车流程</span>
                           </div>
@@ -98,7 +98,7 @@
                         <div slot="header" class="title">
                           <span>受理进度</span>
                         </div>
-                        <el-steps direction="vertical" :active="Object.getOwnPropertyNames(handleStatus).length">
+                        <el-steps direction="vertical" :active="handleSteps - 1">
                           <el-step title="医院体检">
                                 <span v-if="handleStatus['1']" slot="description">
                                   {{handleStatus['1'].name}}<br>
@@ -152,7 +152,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/sxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/sxlx.jpg" class="image">
                           <div style="padding: 10px">
                             <span>顺序练习</span>
                           </div>
@@ -162,7 +162,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/zjlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/zjlx.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>章节练习</span>
                           </div>
@@ -172,7 +172,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/zxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/zxlx.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>专项练习</span>
                           </div>
@@ -218,14 +218,14 @@
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['1'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
+                            <el-badge :value="examInfo['1'].cj1 >= 90 ? '合格' : '不合格'" class="cjItem">
                               <el-button circle class="cjCircle">{{examInfo['1'].cj1}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row v-if="examInfo['1']"  type="flex" justify="space-around" style="padding-top: 20px">
+                    <el-row v-if="examInfo['1'] && examInfo['1'].cj1 < 90"  type="flex" justify="space-around" style="padding-top: 20px">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -242,7 +242,7 @@
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['1'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
+                            <el-badge :value="examInfo['1'].cj2 >=90 ? '合格' : '不合格'" class="cjItem">
                               <el-button circle class="cjCircle">{{examInfo['1'].cj2}}</el-button>
                             </el-badge>
                           </el-col>
@@ -263,7 +263,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_212/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/hgbz.jpg" class="image">
                           <div style="padding: 10px">
                             <span>合格标准</span>
                           </div>
@@ -273,7 +273,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_603/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/cftc.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>侧方停车</span>
                           </div>
@@ -283,7 +283,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_604/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/qxxs.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>曲线行驶</span>
                           </div>
@@ -293,7 +293,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_605/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/zjzw.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>直角转弯</span>
                           </div>
@@ -305,7 +305,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_602/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/spqb.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>上坡起步</span>
                           </div>
@@ -316,7 +316,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_606/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/dcrk.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>倒车入库</span>
                           </div>
@@ -362,14 +362,14 @@
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['2'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
+                            <el-badge :value="examInfo['2'].cj1 >=80 ? '合格' : '不合格'" class="cjItem">
                               <el-button circle class="cjCircle">{{examInfo['2'].cj1}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row v-if="examInfo['2']"  type="flex" justify="space-around" style="padding-top: 20px">
+                    <el-row v-if="examInfo['2'] && examInfo['2'].cj1 < 80"  type="flex" justify="space-around" style="padding-top: 20px">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -386,7 +386,7 @@
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['2'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
+                            <el-badge :value="examInfo['2'].cj2 >=80 ? '合格' : '不合格'" class="cjItem">
                               <el-button circle class="cjCircle">{{examInfo['2'].cj2}}</el-button>
                             </el-badge>
                           </el-col>
@@ -407,7 +407,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_608/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/hgbz.jpg" class="image">
                           <div style="padding: 10px">
                             <span>评判标准</span>
                           </div>
@@ -417,7 +417,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/yyzl/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/yyzl.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>语言指令</span>
                           </div>
@@ -427,7 +427,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/dgcz/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/dg.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>灯光操作</span>
                           </div>
@@ -437,7 +437,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_627/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/kskj.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>考试口诀</span>
                           </div>
@@ -483,14 +483,14 @@
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['3'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
+                            <el-badge :value="examInfo['3'].cj1 >=80 ? '合格' : '不合格'" class="cjItem">
                               <el-button circle class="cjCircle">{{examInfo['3'].cj1}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row v-if="examInfo['3']"  type="flex" justify="space-around" style="padding-top: 20px">
+                    <el-row v-if="examInfo['3'] && examInfo['3'].cj1 < 80"  type="flex" justify="space-around" style="padding-top: 20px">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -507,7 +507,7 @@
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['3'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
+                            <el-badge :value="examInfo['3'].cj2 >=80 ? '合格' : '不合格'" class="cjItem">
                               <el-button circle class="cjCircle">{{examInfo['3'].cj2}}</el-button>
                             </el-badge>
                           </el-col>
@@ -528,7 +528,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_608/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/hgbz.jpg" class="image">
                           <div style="padding: 10px">
                             <span>评判标准</span>
                           </div>
@@ -538,7 +538,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/yyzl/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/yyzl.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>语言指令</span>
                           </div>
@@ -548,7 +548,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/dgcz/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/dg.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>灯光操作</span>
                           </div>
@@ -558,7 +558,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_627/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="//j2.58cdn.com.cn/jxedt/m/kaoshi/images/bmxz_2.png" class="image">
+                          <img src="/static/jpg/kskj.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>考试口诀</span>
                           </div>
@@ -604,14 +604,14 @@
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['4'].cj1 > 90 ? '合格' : '不合格'" class="cjItem">
+                            <el-badge :value="examInfo['4'].cj1 >=90 ? '合格' : '不合格'" class="cjItem">
                               <el-button circle class="cjCircle">{{examInfo['4'].cj1}}</el-button>
                             </el-badge>
                           </el-col>
                         </el-row>
                       </el-col>
                     </el-row>
-                    <el-row v-if="examInfo['4']"  type="flex" justify="space-around" style="padding-top: 20px">
+                    <el-row v-if="examInfo['4'] && examInfo['4'].cj1 < 90"  type="flex" justify="space-around" style="padding-top: 20px">
                       <el-col :span="10">
                         <el-row type="flex" style="text-align: center">
                           <el-col :span="24" style="font-weight: bold;font-size: 14px">
@@ -628,7 +628,7 @@
                       <el-col :span="12">
                         <el-row type="flex">
                           <el-col :span="24" :offset="14">
-                            <el-badge :value="examInfo['4'].cj2 > 90 ? '合格' : '不合格'" class="cjItem">
+                            <el-badge :value="examInfo['4'].cj2 >=90 ? '合格' : '不合格'" class="cjItem">
                               <el-button circle class="cjCircle">{{examInfo['4'].cj2}}</el-button>
                             </el-badge>
                           </el-col>
