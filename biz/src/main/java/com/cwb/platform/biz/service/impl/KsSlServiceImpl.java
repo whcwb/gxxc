@@ -84,7 +84,7 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         entity.setId(genId());
         entity.setCjr(user.getYhid());//操作人ID
         entity.setCjsj(DateUtils.getNowTime());//创建时间
-        BizPtyh ptyh=ptyhService.findByIdSelect(entity.getYhId());
+        BizPtyh ptyh=ptyhService.findById(entity.getYhId());
         RuntimeCheck.ifTrue(ptyh == null, "用户资料有误！");
         entity.setYhZjhm(ptyh.getYhZjhm());//用户证件号码
         entity.setYhXm(ptyh.getYhXm());//用户姓名
@@ -106,6 +106,10 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
     }
 
     private String sendMsg(BizKsSl sl,BizPtyh ptyh){
+        if (StringUtils.isEmpty(ptyh.getYhOpenId())){
+            log.error("发送微信消息失败，用户openid为空");
+            return "openid is empty";
+        }
         List<WxMpTemplateData> data = new ArrayList<>();
         String slType = getSlType(sl.getSlType());
         String time = "";
