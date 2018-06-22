@@ -1,4 +1,7 @@
 <template>
+  <div style="font-size: 0.3rem">
+    文件配置中……
+  </div>
 </template>
 
 <script>

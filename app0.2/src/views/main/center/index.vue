@@ -102,27 +102,27 @@
             <div class="box-row">
               <div class="box_row_100" style="margin: 0.05rem">
                   <el-button type="primary"
+                             v-if="usermess.ddSfjx=='0'&&usermess.yhZt=='1'"
                              @click="$router.push({name:'pay'})"
                   >缴费</el-button>
-                             <!--v-if="usermess.ddSfjx=='0'&&usermess.yhZt=='1'"-->
-                  <!--<el-button type="primary"-->
-                             <!--v-else-if="usermess.ddSfjx=='1'"-->
-                             <!--@click="okjf"-->
-                  <!--&gt;已缴费</el-button>-->
-                  <!--<el-button type="primary"-->
-                             <!--v-else-->
-                             <!--@click="tost"-->
-                  <!--&gt;缴费</el-button>-->
+                  <el-button type="primary"
+                             v-else-if="usermess.ddSfjx=='1'"
+                             @click="okjf"
+                  >已缴费</el-button>
+                  <el-button type="primary"
+                             v-else
+                             @click="tost"
+                  >缴费</el-button>
               </div>
               <div class="box_row_100" style="margin: 0.05rem">
-                             <!--v-if="usermess.ddSfjx=='1'"-->
                   <el-button type="success"
+                             v-if="usermess.ddSfjx=='1'"
                              @click="$router.push({name:'tx'})"
                   >提现</el-button>
-                  <!--<el-button type="success"-->
-                             <!--v-else-->
-                             <!--@click="txyz"-->
-                  <!--&gt;提现</el-button>-->
+                  <el-button type="success"
+                             v-else
+                             @click="txyz"
+                  >提现</el-button>
               </div>
             </div>
 
@@ -213,11 +213,11 @@
         },
         created(){
           var v = this
-          if(v.usermess===''){
+          // if(v.usermess===''){
             this.util.GetUserMess(v, (res) => {
               this.usermess = res
             })
-          }
+          // }
         },
         methods:{
           showQrcode(val) {

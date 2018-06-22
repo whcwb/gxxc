@@ -90,7 +90,7 @@
       //获取短信验证码
       getPhoneCode(){
         var v = this
-        this.$http.post(this.apis.PHINECODE,{'zh':v.form.yhZh}).then((res)=>{
+        this.$http.post(this.apis.GET_FORGET_code,{'zh':v.form.yhZh}).then((res)=>{
           if(res.code==200){
             v.countDown()
           }else {
@@ -134,9 +134,9 @@
         }
       },
       reg(){
-        //请求接口进行注册操作
+        //重置密码
         var v = this
-        this.$http.post(this.apis.USERSAVE,{
+        this.$http.post(this.apis.GET_FORGET_RESETPWD,{
           tel:v.form.yhZh,
           newPwd:v.form.yhMm,
           code:this.code

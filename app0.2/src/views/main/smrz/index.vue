@@ -74,6 +74,7 @@
 
 <script>
     import imgup from '@/views/components/upLoad/zjimgUpload'
+    import {Toast} from 'mint-ui';
     export default {
         name: "smrz",
         components:{
@@ -115,20 +116,33 @@
             console.log(val)
             var v = this
             if(res.code==200){
-              if(val==0){
-                v.imgList.zm = 'static/zjsh/sfzzmok.png'
-                v.form.imgList[val]=res.message
-              }else if(val==1){
-                v.imgList.bm = 'static/zjsh/sfzfmok.png'
-                v.form.imgList[val]=res.message
-              }
-              v.zjsbImg(res.message,type)
+              // if(val==0){
+              //   v.imgList.zm = 'static/zjsh/sfzzmok.png'
+              //   v.form.imgList[val]=res.message
+              // }else if(val==1){
+              //   v.imgList.bm = 'static/zjsh/sfzfmok.png'
+              //   v.form.imgList[val]=res.message
+              // }
+              v.zjsbImg(res.message,val,type)
             }
           },
           //证件识别
-          zjsbImg(url,code){
+          zjsbImg(url,val,code){
             console.log(code)
+            var v =this
             this.$http.post(this.apis.ZJSB,{path:url,fileType:code}).then((res)=>{
+              if(res.code==200){
+                if(val==0){
+                  v.imgList.zm = 'static/zjsh/sfzzmok.png'
+                  v.form.imgList[val]=url
+                }else if(val==1){
+                  v.imgList.bm = 'static/zjsh/sfzfmok.png'
+                  v.form.imgList[val]=url
+                }
+              }else {
+                Toast(res.message)
+
+              }
               console.log(res)
             }).catch((err)=>{
 
@@ -142,7 +156,9 @@
             this.$http.post(this.apis.IDRZ,{'imgList':v.form.imgList.join(',')}).then((res)=>{
               console.log(res)
               if(res.code==200){
-                // v.rz()
+                v.rz()
+              }else {
+                Toast(res.message)
               }
             }).catch((err)=>{
 

@@ -28,7 +28,7 @@ module.exports = [
     name: 'forget',
     component:()=>import('@/views/forgetPassword'),
     meta:{
-      title:'注册'
+      title:'密码找回'
     }
   },
   {

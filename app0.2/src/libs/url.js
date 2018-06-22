@@ -13,8 +13,8 @@ module.exports = {
 
 
   getImgUrl:ajaxUrl+':8001/',//获取
-  // upImgUrl:ajaxUrl+':8080/biz/upload',//上传
-  upImgUrl:ajaxUrl+':9086/upload',//上传
+  upImgUrl:ajaxUrl+':8080/biz/upload',//上传
+  // upImgUrl:ajaxUrl+':9086/upload',//上传
 
 
 

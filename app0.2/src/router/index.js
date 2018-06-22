@@ -17,14 +17,14 @@ router.beforeEach((to, from, next) => {
   // 如果没有openid，则需要获取
   // openid == null ||
   // ISLOGIN == null&&
-  if (openid == null &&  to.path != '/index') {
+  if (ISLOGIN == null &&  to.path != '/index') {
     next({
       name: 'index'
     });
     return;
-  }else if (openid == null && to.path == '/index') {
+  }else if (ISLOGIN == null && to.path == '/index') {
     next();
-  }else if (openid != null){
+  }else if (ISLOGIN != null){
     if(to.name=='Login'||to.name=='reg'||to.name=='forget'){
       next()
     }else if(to.name!='Login' && localStorage.getItem('userMess')){
@@ -35,7 +35,7 @@ router.beforeEach((to, from, next) => {
         name: 'Login'
       });
     }
-    next();
+    //next();
   }
   // next();
 })
