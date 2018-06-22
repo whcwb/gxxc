@@ -48,18 +48,16 @@
         name: "myCenter",
         data(){
           return{
-            usermess: this.$store.state.app.userMess,
+            usermess: '',
             ewm:this.$store.state.app.userMess.yhZsyqmImg,
           }
         },
         created(){
           var v = this
-          if(v.usermess===''){
-            this.util.GetUserMess(v, (res) => {
-              this.usermess = res
-              this.ewm = res.yhZsyqmImg
-            })
-          }
+          this.util.GetUserMess(v, (res) => {
+            this.usermess = res
+            this.ewm = res.yhZsyqmImg
+          })
         },
         methods:{
             goback(){

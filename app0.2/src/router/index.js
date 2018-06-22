@@ -13,18 +13,24 @@ router.beforeEach((to, from, next) => {
   let openid = localStorage.getItem("openid");
   // let openid = "123123";
   let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+
+  let userToken = localStorage.getItem("userMess");
+  if(openid && userToken){
+    ISLOGIN=true;
+  }
+
+
   //   console.log(openicd);
+  //
   // 如果没有openid，则需要获取
-  // openid == null ||
-  // ISLOGIN == null&&
-  if (ISLOGIN == null &&  to.path != '/index') {
+  if ((ISLOGIN == null || openid == null) &&  to.path != '/index') {
     next({
       name: 'index'
     });
     return;
-  }else if (ISLOGIN == null && to.path == '/index') {
+  }else if ((ISLOGIN == null || openid == null) && to.path == '/index') {
     next();
-  }else if (ISLOGIN != null){
+  }else if (ISLOGIN != null && openid != null){
     if(to.name=='Login'||to.name=='reg'||to.name=='forget'){
       next()
     }else if(to.name!='Login' && localStorage.getItem('userMess')){

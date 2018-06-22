@@ -1,5 +1,5 @@
 <template>
-  <div style="font-size: 0.3rem">
+  <div class="box_col" style="background-image: url('static/login/backImg.png');font-size: 0.3rem">
     文件配置中……
   </div>
 </template>

@@ -33,7 +33,7 @@
     },
     data(){
       return{
-        compname:'',
+        compname:'homePage',
         compnameList:['homePage','mess','Homecenter'],
         footerNum:this.$store.state.app.tabId,
         footerList:[
@@ -61,11 +61,19 @@
       }
     },
     created(){
+      if(this.$route.jquery.type){
+        alert('this.$route.jquery.type')
+        this.$store.commit('M_tabId',1)
+      }else {
+          this.compname = this.compnameList[this.footerNum]
+      }
+
+
+
       // //测试
       // this.footerNum = 1;
       //
       this.util.auto(window, document ,4)
-      this.compname = this.compnameList[this.footerNum]
       this.footerList.forEach((mes,val)=>{
         if(val==this.footerNum){
           mes.now = true

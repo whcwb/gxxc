@@ -57,7 +57,7 @@
         <el-button
           @click="regYZ"
           style="background: linear-gradient(to top, #f3b222 , #fbdb48);width: 70%;"
-          type="warning">立即注冊</el-button>
+          type="warning">提交</el-button>
       </div>
     </div>
   </div>
@@ -149,7 +149,7 @@
               iconClass: 'icon icon-success'
             });
             setTimeout(()=>{
-              v.$router.back()
+              v.$router.push({path:'/Login'})
             }, 1000);
           }else {
             console.log(res.message)
