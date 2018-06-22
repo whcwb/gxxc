@@ -41,6 +41,7 @@ module.exports = [
   },
   {
     path: '/',
+    name:'indexName',
     component:()=>import('@/views/home'),
     meta:{
       title:'学车联盟'
