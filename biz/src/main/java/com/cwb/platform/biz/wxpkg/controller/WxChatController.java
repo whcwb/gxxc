@@ -57,6 +57,25 @@ public class WxChatController {
 	}
 
 
+	@RequestMapping("getJsApiSign")
+	@ResponseBody
+	public ApiResponse<String> getJsApiSign(String url,String timestamp){
+		try {
+			String ticket = wxService.getJsapiTicket();
+			String params = "jsapi_ticket=" +ticket +
+					"&noncestr=wechat123" +
+					"&timestamp="+ timestamp +
+					"&url="+url;
+			System.out.println(params);
+			String sign = DigestUtils.shaHex(params);
+			System.out.println(sign);
+			return ApiResponse.success(sign);
+		} catch (WxErrorException e) {
+			logger.error("getJsApiSign error",e);
+			e.printStackTrace();
+		}
+		return ApiResponse.fail("getJsApiSign error");
+	}
 
 	/**
 	 * 微信服务器认证

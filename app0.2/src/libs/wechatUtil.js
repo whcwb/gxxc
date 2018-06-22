@@ -5,6 +5,7 @@ import router from '@/router'
 let wechatUtil = {}
 
 wechatUtil.now = new Date();
+wechatUtil.timestamp = parseInt(wechatUtil.now.getTime()/1000);
 wechatUtil.appId = 'wxb01394ea85904296';
 wechatUtil.token = '';
 wechatUtil.sign = '';
@@ -74,14 +75,16 @@ wechatUtil.getSign = ()=>{
 }
 
 wechatUtil.initConfig = ()=>{
+  console.log('timestamp',wechatUtil.timestamp);
   let curl = location.href.split('#')[0];
-  let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+parseInt(wechatUtil.now.getTime()/1000)+"&url="+encodeURIComponent(curl);
+  let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl);
   $.ajax({
     url:url,
     type:'get',
     success:function(res){
       if (res.code == 200){
         wechatUtil.sign = res.message;
+        console.log('sign res',wechatUtil.sign);
         wechatUtil.config();
       }
     }
@@ -90,10 +93,12 @@ wechatUtil.initConfig = ()=>{
 
 
 wechatUtil.config = function(){
+  console.log('timestamp',wechatUtil.timestamp);
+  console.log('sign',wechatUtil.sign);
     wx.config({
         debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: wechatUtil.appId, // 必填，公众号的唯一标识
-        timestamp: parseInt(wechatUtil.now.getTime()/1000), // 必填，生成签名的时间戳
+        timestamp: wechatUtil.timestamp, // 必填，生成签名的时间戳
         nonceStr: 'wechat123', // 必填，生成签名的随机串
         signature: wechatUtil.sign,// 必填，签名
         jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay'] // 必填，需要使用的JS接口列表
@@ -131,15 +136,17 @@ wx.error(function(res){
 //--------------------------------------------------------------------------
 //以上功能方法 是调用微信开发功能的前期准备*******调用wechatUtil.getAccessToken()
 //---------------------------------------------------------------------------
-wechatUtil.qrScan = (messtoback)=>{//打开微信扫码功能
-    console.log('qrScan');
+wechatUtil.qrScan = (callback)=>{//打开微信扫码功能
+    alert('qrScan');
     wx.scanQRCode({
         needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
         scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
         success: function (res) {
-            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+          alert(res)
+          console.log(res);
+          var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
             console.log(result);
-            messtoback(result);
+          callback && callback(result);
         }
     });
 }
