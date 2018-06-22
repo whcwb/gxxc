@@ -2,6 +2,14 @@
   #homePage{
     font-size: 0.2rem;
     background-color:#f2f2f2;
+    .select{
+      /*width: 100%;*/
+      /*height: 100%;*/
+      background-color: #fff;
+      text-align: center;
+      font-size: 0.14rem;
+      border: none;
+    }
     .mint-tab-item-label{
       font-size: 0.16rem!important;
     }
@@ -225,7 +233,14 @@
             <div class="moSty" style="padding: 0;margin: 0 0.15rem">
               <mt-navbar v-model="selected">
                 <mt-tab-item id="1">推荐</mt-tab-item>
-                <mt-tab-item id="2">区域</mt-tab-item>
+                <mt-tab-item id="2">
+                  <select class="select" name="" id="">
+                    <option value="" selected>全部</option>
+                    <option v-for="(item,index) in qulist"
+                      :value="index"
+                    >{{item.name}}</option>
+                  </select>
+                </mt-tab-item>
                 <mt-tab-item id="3">价格</mt-tab-item>
               </mt-navbar>
             </div>
@@ -264,6 +279,9 @@
                             566、567、568
                           </div>
                         </div>
+                        <div style="font-size: 0.12rem;text-align: right;color: #949494">
+                          >100米
+                        </div>
                     </div>
                 </div>
             </div>
@@ -296,6 +314,21 @@
             zhYE: {
               yhZhye: 0
             },
+            qulist:[
+              {name:'江岸区'},
+              {name:'江汉区'},
+              {name:'硚口区'},
+              {name:'汉阳区'},
+              {name:'武昌区'},
+              {name:'青山区'},
+              {name:'洪山区'},
+              {name:'东西湖区'},
+              {name:'汉南区'},
+              {name:'蔡甸区'},
+              {name:'江夏区'},
+              {name:'黄陂区'},
+              {name:'新洲区'},
+            ]
           }
       },
       created(){

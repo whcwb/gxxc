@@ -59,11 +59,11 @@ public class WxChatController {
 
 	@RequestMapping("getJsApiSign")
 	@ResponseBody
-	public ApiResponse<String> getJsApiSign(String url,String timestamp){
+	public ApiResponse<String> getJsApiSign(String url,String timestamp,String nonceStr){
 		try {
 			String ticket = wxService.getJsapiTicket();
 			String params = "jsapi_ticket=" +ticket +
-					"&noncestr=wechat123" +
+					"&noncestr=" + nonceStr +
 					"&timestamp="+ timestamp +
 					"&url="+url;
 			System.out.println(params);

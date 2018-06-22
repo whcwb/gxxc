@@ -122,14 +122,9 @@
           },
           reg(){
             var v = this
-            alert('1')
-            this.wechatUtil.qrScan((res)=>{
-              alert('2')
-              // alert('微信'+messtoback)
-              // Toast.succeed('微信'+messtoback);
-              v.codeyz(res)
-              // v.codeyz(v.yqm)
-            })
+              this.wechatUtil.qrScan((res)=>{
+                  v.codeyz(res)
+              })
           },
           codeyz(val){
             var v = this
