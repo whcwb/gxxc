@@ -103,6 +103,7 @@ wx.ready(function(){
         wechatUtil.afterReady();
         return;
     }
+    //微信jsapi使用，不允许页面切换，所以这里使用router来做页面跳转，不再使用location强制跳页面
     if (wechatUtil.vueParent){
       wechatUtil.vueParent.$router.push("/Home");
       return;
