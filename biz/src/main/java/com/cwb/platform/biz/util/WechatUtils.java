@@ -30,35 +30,22 @@ public class WechatUtils {
 
     @Value("${wechat.domain}")
     private String domain;
-    @Autowired
-    private RedisTemplateUtil redisTemplateUtil;
-
-    private static final String WECHAT_TOKEN = "wechat_token";
 
 
-    public static void main(String[] args) {
-        String s = URLEncoder.encode("http://mmm.lufengtech.com/wx");
-        System.out.println(s);
-    }
-
-
-    public String getToken(){
-        String val = (String) redisTemplateUtil.opsForValue().get(WECHAT_TOKEN);
-        if (StringUtils.isNotEmpty(val)){
-            return val;
-        }
-        String token = HttpUtil
-                .get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="
+    public String getOpenid(String code){
+        String result = HttpUtil
+                .get("https://api.weixin.qq.com/sns/oauth2/access_token?appid="
                         + appId
                         + "&secret="
-                        + secret + "");
-        Map<?, ?> map = JsonUtil.toBean(token, Map.class);
-        if (map == null)return "";
-        String accessToken = map.get("access_token").toString();
-        redisTemplateUtil.opsForValue().set(WECHAT_TOKEN,accessToken,1,TimeUnit.HOURS);
-        return accessToken;
+                        + secret
+                        + "&code="
+                        + code
+                        + "&grant_type=authorization_code");
+        Map<?, ?> bean = JsonUtil.toBean(result, Map.class);
+        if(bean.get("openid") == null){
+            return null;
+        }
+        return bean.get("openid").toString();
     }
-
-
 
 }

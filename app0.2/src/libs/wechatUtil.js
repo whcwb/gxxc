@@ -6,7 +6,6 @@ let wechatUtil = {}
 
 wechatUtil.now = new Date();
 wechatUtil.appId = 'wxb01394ea85904296';
-wechatUtil.secret = '1357c923084a743e10131df166796303';
 wechatUtil.token = '';
 wechatUtil.sign = '';
 wechatUtil.code = '';
@@ -24,22 +23,6 @@ wechatUtil.getCode = ()=>{
     window.location.href = wechatUtil.authLoginUrl;
 }
 wechatUtil.getOpenid = (code,callback)=>{
-  let url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='+wechatUtil.appId+'&secret'+wechatUtil.secret+'&code='+code+'&grant_type=authorization_code'
-    $.ajax({
-        url:url,
-        type:'get',
-        success:function(res){
-            console.log(res);
-            if (res.openid){
-                wechatUtil.openid = res.openid;
-                callback && callback(res.openid)
-            }else {
-              alert('ID获取失败！！！')
-            }
-        }
-    })
-}
-wechatUtil.getOpenid1 = (code,callback)=>{
     $.ajax({
         url:wechatUtil.baseUrl+urls.wechat.getOpenid+"?code="+code,
         type:'get',
@@ -90,7 +73,7 @@ wechatUtil.getSign = ()=>{
     // })
 }
 
-wechatutil.initConfig = ()=>{
+wechatUtil.initConfig = ()=>{
   let curl = location.href.split('#')[0];
   let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+parseInt(wechatUtil.now.getTime()/1000)+"&url="+encodeURIComponent(curl);
   $.ajax({

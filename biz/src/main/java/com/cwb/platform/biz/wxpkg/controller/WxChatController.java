@@ -43,29 +43,20 @@ public class WxChatController {
 	@Autowired
 	private WxMpMessageRouter router;
 
+	@Autowired
+	private WechatUtils wechatUtils;
+
 	@Value("${wechat.domain}")
 	private String domainUrl;
 
 
-
-	@RequestMapping("getJsApiSign")
+	@RequestMapping("getOpenid")
 	@ResponseBody
-	public ApiResponse<String> getJsApiSign(String url,String timestamp){
-		try {
-			String ticket = wxService.getJsapiTicket();
-			String params = "jsapi_ticket=" +ticket +
-					"&noncestr=wechat123" +
-					"&timestamp="+ timestamp +
-					"&url="+url;
-			System.out.println(params);
-			String sign = DigestUtils.shaHex(params);
-			System.out.println(sign);
-			return ApiResponse.success(sign);
-		} catch (WxErrorException e) {
-			e.printStackTrace();
-		}
-		return ApiResponse.fail("getJsApiSign error");
+	public ApiResponse<String> getOpenid(String code){
+		return ApiResponse.success(wechatUtils.getOpenid(code));
 	}
+
+
 
 	/**
 	 * 微信服务器认证
