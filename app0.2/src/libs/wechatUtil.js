@@ -114,6 +114,11 @@ wechatUtil.qrScan = (callback)=>{//打开微信扫码功能
           var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
             alert(result);
           callback && callback(result);
+        },
+        fail : function(res) {
+          console.log(res)
+          alert(JSON.stringify(res));
+
         }
     });
 }
