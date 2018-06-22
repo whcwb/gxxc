@@ -39,13 +39,6 @@ wechatUtil.getOpenid = (code,callback)=>{
     })
 }
 
-wechatUtil.getAccessToken = (openid)=>{//生成token
-  alert('已经不需要getAccessToken 方法了，请去掉此方法的调用')
-}
-wechatUtil.getSign = ()=>{
-  console.log('getSign deplicate');
-}
-
 wechatUtil.initConfig = ()=>{
   let curl = location.href.split('#')[0];
   let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl);
@@ -113,7 +106,6 @@ wx.error(function(res){
 //以上功能方法 是调用微信开发功能的前期准备*******调用wechatUtil.getAccessToken()
 //---------------------------------------------------------------------------
 wechatUtil.qrScan = (callback)=>{//打开微信扫码功能
-    alert('qrScan');
     wx.scanQRCode({
         needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
         scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
