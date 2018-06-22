@@ -103,7 +103,7 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     }
 
     /**
-     * 分配学员接口
+     * 教练-分配学员接口
      * 1
      */
     @PostMapping("/assignStudents")

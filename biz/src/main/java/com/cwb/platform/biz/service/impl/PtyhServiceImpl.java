@@ -1,11 +1,17 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.cwb.platform.biz.mapper.*;
+import com.cwb.platform.biz.mapper.BizJlMapper;
+import com.cwb.platform.biz.mapper.BizPtyhMapper;
+import com.cwb.platform.biz.mapper.BizUserMapper;
+import com.cwb.platform.biz.mapper.BizWjMapper;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
-import com.cwb.platform.biz.service.*;
+import com.cwb.platform.biz.service.JlService;
+import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.UserService;
+import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
@@ -21,12 +27,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -41,6 +52,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> implements PtyhService {
+    Logger payInfo = LoggerFactory.getLogger("access_info");
+
 
     @Autowired
     private StringRedisTemplate redisDao;
@@ -68,18 +81,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Autowired
     private BizUserMapper userMapper;
 
-    @Autowired
-    private BizOrderMapper orderMapper;
-
-    @Autowired
-    private KsjfService ksjfService;
-    @Autowired
-    private KsjgService ksjgService;
-    @Autowired
-    private KsSlService ksSlService;
-    @Autowired
-    private KsYkService ksYkService;
-
     //
     @Value("${appSendSMSRegister:app_sendSMS_register}")
     private String appSendSMSRegister;
@@ -87,7 +88,21 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Value("${appSendSMSResetting:app_sendSMS_resetting}")
     private String appSendSMSResetting ;
 
+    //分配学员的微信消息模板
+    @Value("${wxMsgTemplate.assignXy}")
+    private String examMsgIdXy;
+    //分配教练的微信消息模板
+    @Value("${wxMsgTemplate.assignJl}")
+    private String examMsgIdJl;
+//分配学员学员链接地址
+    @Value("${wxassignXyDomain}")
+    private String wxXyDomain;
+//分配学员教练链接地址
+    @Value("${wxassignJlDomain}")
+    private String wxJlDomain;
 
+    @Autowired
+    private WechatService wechatService;
 
 
     @Override
@@ -1022,7 +1037,67 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             entityMapper.updateJlFp(ids,"该学员于："+DateUtils.getNowTime()+" 分配给教练员："+users.getYhXm()+"");
         }
 
+        this.wxSendMessage(ids,jlId);
         return ApiResponse.success(ids);
+    }
+
+    /**
+     * 分配学员-下发微信消息
+     * @param ids
+     * @param jlId
+     */
+    @Async
+    public void wxSendMessage(List<String> ids,String jlId){
+        SysYh user=getCurrentUser();
+        String jlMessage="教练您好，为您分配了"+ids.size()+"位学员。请您及时联系！";//给教练下发的记录
+        payInfo.debug("下发消息--------------------");
+        try {
+            BizJl jlMsage=jlService.findById(jlId);
+            BizPtyh appJlUser=ptyhService.findById(jlId);
+            payInfo.debug("appJlUser.getYhOpenId():"+appJlUser.getYhOpenId());
+
+            List<WxMpTemplateData> data = new ArrayList<>();
+            data.add(new WxMpTemplateData("first", "教练您好，已为您分配到了新的学员"));
+            data.add(new WxMpTemplateData("keyword1", jlMsage.getYhXm()));
+            data.add(new WxMpTemplateData("keyword2", jlMsage.getYhSjhm()));//教练电话
+            data.add(new WxMpTemplateData("keyword3",user.getXm()));
+            data.add(new WxMpTemplateData("remark", jlMessage));
+            WxMpTemplateMessage msg = new WxMpTemplateMessage();
+            msg.setToUser(appJlUser.getYhOpenId());
+            msg.setTemplateId(examMsgIdJl);
+            msg.setUrl(wxJlDomain);
+            msg.setData(data);
+            String res = "";
+            try {
+                res = wechatService.sendTemplateMsg(msg);
+            }catch (Exception e){}
+            payInfo.debug("sendMsg result :", res);
+            SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+            condition.in(BizPtyh.InnerColumn.id.name(),ids);
+            List<BizPtyh> userList = entityMapper.selectByExample(condition);
+
+            Map<String,String > xbMap=new HashMap<>();
+            xbMap.put("1","男");
+            xbMap.put("2","女");
+            for(BizPtyh u:userList){
+                data = new ArrayList<>();
+                data.add(new WxMpTemplateData("first", "教练分配成功"));
+                data.add(new WxMpTemplateData("keyword1", jlMsage.getYhXm()));
+                data.add(new WxMpTemplateData("keyword2", jlMsage.getYhSjhm()));//教练电话
+                data.add(new WxMpTemplateData("keyword3",user.getXm()));
+                data.add(new WxMpTemplateData("remark", "学员"+u.getYhXm()+"您好，教练分配成功。教练"+jlMsage.getYhXm()+"，性别"+xbMap.get(appJlUser.getYhXb())+"驾龄"+jlMsage.getJlJl()));
+                payInfo.debug("u.getYhOpenId():"+u.getYhOpenId());
+                msg = new WxMpTemplateMessage();
+                msg.setToUser(u.getYhOpenId());
+                msg.setTemplateId(examMsgIdXy);
+                msg.setUrl(wxXyDomain);
+                msg.setData(data);
+                try {
+                    res = wechatService.sendTemplateMsg(msg);
+                }catch (Exception e){}
+                payInfo.debug("sendMsg result :", res);
+            }
+        }catch (Exception e){}
     }
     /**
      * 下发短信
