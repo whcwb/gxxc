@@ -7,6 +7,7 @@
 
     }
   }
+  /*http://xclm.xxpt123.com:8001/20180623/39231d79d0ee4b7692783b71ee220aab.jpg*/
 </style>
 <template>
   <div id="smrz" class="box_col">
@@ -129,10 +130,12 @@
             this.$http.post(this.apis.ZJSB,{path:url,fileType:code}).then((res)=>{
               if(res.code==200){
                 if(val==0){
-                  v.imgList.zm = 'static/zjsh/sfzzmok.png'
+                  // v.imgList.zm = 'static/zjsh/sfzzmok.png'
+                  v.imgList.zm = v.apis.getImgUrl+url
                   v.form.imgList[val]=url
                 }else if(val==1){
                   v.imgList.bm = 'static/zjsh/sfzfmok.png'
+                  v.imgList.bm = v.apis.getImgUrl+url
                   v.form.imgList[val]=url
                 }
               }else {
