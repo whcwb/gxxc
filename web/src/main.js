@@ -60,9 +60,9 @@ new Vue({
     }
 });
 // 注册全局组件
-Vue.component('pager',pager)
-Vue.component('formItems',formItems)
-Vue.component('searchItems',searchItems)
+Vue.component('pager',pager) // 分页组件
+Vue.component('formItems',formItems) // 表单组件
+Vue.component('searchItems',searchItems) // 搜索栏组件
 
 Date.prototype.format = function(format)
 {

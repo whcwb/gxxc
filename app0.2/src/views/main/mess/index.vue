@@ -525,60 +525,35 @@
                     </span>
                 <div class="content">
                   <el-row :gutter="20" style="padding-bottom: 10px">
-                    <el-col :span="6">
-                      <a href="http://m.jxedt.com/km3_607_608/">
+                    <el-col :span="8">
+                      <a href="http://m.jxedt.com/mnks/ckm1/sxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/hgbz.jpg" class="image">
+                          <img src="/wx/static/jpg/sxlx.jpg" class="image">
                           <div style="padding: 10px">
-                            <span>评判标准</span>
+                            <span>顺序练习</span>
                           </div>
                         </el-card>
                       </a>
                     </el-col>
-                    <el-col :span="6">
-                      <a href="http://m.jxedt.com/km3/yyzl/">
+                    <el-col :span="8">
+                      <a href="http://m.jxedt.com/mnks/ckm1/zjlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/yyzl.jpg" class="image">
+                          <img src="/wx/static/jpg/zjlx.jpg" class="image">
                           <div style="padding: 10px;">
-                            <span>语言指令</span>
+                            <span>章节练习</span>
                           </div>
                         </el-card>
                       </a>
                     </el-col>
-                    <el-col :span="6">
-                      <a href="http://m.jxedt.com/km3/dgcz/">
+                    <el-col :span="8">
+                      <a href="http://m.jxedt.com/mnks/ckm1/zxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/dg.jpg" class="image">
+                          <img src="/wx/static/jpg/zxlx.jpg" class="image">
                           <div style="padding: 10px;">
-                            <span>灯光操作</span>
+                            <span>专项练习</span>
                           </div>
                         </el-card>
                       </a>
-                    </el-col>
-                    <el-col :span="6">
-                      <a href="http://m.jxedt.com/km3_607_627/">
-                        <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/kskj.jpg" class="image">
-                          <div style="padding: 10px;">
-                            <span>考试口诀</span>
-                          </div>
-                        </el-card>
-                      </a>
-                    </el-col>
-                  </el-row>
-                  <el-row style="padding-bottom: 10px">
-                    <el-col>
-                      <el-card :body-style="{ padding: '0px' }">
-                        <div style="padding: 10px;">
-                          <el-row type="flex">
-                            <el-col :span="24" style="margin-top: 8px">
-                              <span style="font-size:14px">当前科目考试费</span>
-                              <el-tag v-if="payInfo['4'] == '已缴'" type="success">已缴</el-tag>
-                              <el-tag v-else type="danger">未缴</el-tag>
-                            </el-col>
-                          </el-row>
-                        </div>
-                      </el-card>
                     </el-col>
                   </el-row>
                   <el-card shadow="never">

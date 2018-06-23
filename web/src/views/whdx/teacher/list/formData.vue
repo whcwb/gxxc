@@ -99,7 +99,6 @@
                     {label:'教练地址',prop:'jlZz'},
                     {label:'头像',prop:'jlImg'},
                     {label:'教练简界',prop:'jlMs'},
-                    {label:'用户素材',prop:'imgList'},
                 ],
                 ruleInline:{
 				}

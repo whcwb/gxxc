@@ -115,7 +115,7 @@
 
     <div class="_separator"></div>
     <!--<div style="text-align: center">-->
-      <el-button type="success" round style="width: 60%;margin:0.1rem auto">报名咨询</el-button>
+      <!--<el-button type="success" round style="width: 60%;margin:0.1rem auto">报名咨询</el-button>-->
     <!--</div>-->
   </div>
 </template>

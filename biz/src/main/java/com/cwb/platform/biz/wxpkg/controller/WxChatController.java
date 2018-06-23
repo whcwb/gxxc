@@ -85,7 +85,7 @@ public class WxChatController {
 	 * @param echostr
 	 * @return
 	 */
-	@GetMapping(produces = "text/plain;charset=utf-8", value="auth")
+	@GetMapping(produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public String authGet(@RequestParam(name = "signature", required = false) String signature,
 			@RequestParam(name = "timestamp", required = false) String timestamp,
