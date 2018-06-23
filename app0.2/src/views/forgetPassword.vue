@@ -72,7 +72,7 @@
       return{
         code:'',
         soltTimeShow:false,
-        soltTime:10,
+        soltTime:120,
         form:{
           yhZh:'',
           yhMm:'',

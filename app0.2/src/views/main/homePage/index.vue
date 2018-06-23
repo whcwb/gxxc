@@ -308,7 +308,7 @@
                              {{item.schoolName}}
                            </div>
                            <div class="money">
-                            ￥25000.00
+                            ￥2500.00
                            </div>
                         </div>
                         <div class="box-row xlcmap">

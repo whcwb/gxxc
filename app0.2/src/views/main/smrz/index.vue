@@ -46,12 +46,15 @@
         <div>
            审核通过
         </div>
-        <div class="box-row">
-          <div class="box_row_100">
-            <el-button round @click="$router.push({path:'/Home'})">返回</el-button>
+        <div class="box-row" style="margin-top: 0.25rem">
+          <div class="box_row_100" style="margin: 0.2rem">
+            <el-button round
+                       style="width: 100%"
+                       @click="$router.push({path:'/Home'})">返回</el-button>
           </div>
-          <div class="box_row_100">
+          <div class="box_row_100"style="margin: 0.2rem">
             <el-button type="success" round
+                       style="width: 100%"
                        @click="$router.push({path:'/pay/payIndex'})">缴费</el-button>
           </div>
         </div>

@@ -22,7 +22,7 @@ API.title = function (title) {
 
 API.ajax = axios.create({
   baseURL: ajaxUrl,
-  timeout: 30000,
+  timeout: 1000*10,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
   }
