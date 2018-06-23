@@ -360,7 +360,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<String> userEnroll(BizPtyh entity) {
+    public ApiResponse<String> userEnroll(BizPtyh entity,HttpServletRequest request) {
         RuntimeCheck.ifBlank(entity.getYhZh(), "用户账户不能为空");
 
         String telIdentifying = entity.getTelIdentifying();//短信验证码
@@ -399,7 +399,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("请输入正确注册类型");
         }
         // TODO: 2018/5/19 一定要确定，注册来源
-        String yhOpenId = "";//微信OPEN_ID
+        String yhOpenId = entity.getYhOpenId();//微信OPEN_ID
         String yhAlipayId = "";//支付宝ID
         if (StringUtils.equals(addType, "1")) {
             yhOpenId = ""; // TODO: 2018/5/19 请求微信的OPEN_ID
@@ -408,9 +408,28 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             yhAlipayId = ""; // TODO: 2018/5/19 请求支付宝的ID
             RuntimeCheck.ifBlank(yhAlipayId, "支付宝唯一编号不能为空");
         }
-        if(StringUtils.isNotEmpty(entity.getYhOpenId())){
-            yhOpenId=entity.getYhOpenId();
+        if(StringUtils.isEmpty(yhOpenId)){
+            yhOpenId=request.getHeader("openid");
         }
+        Map<String,String> requestMap=new HashMap<>();
+        //遍历 header 头部信息
+
+        Enumeration headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String key = (String) headerNames.nextElement();
+            String value = request.getHeader(key);
+            requestMap.put(key,value);
+        }
+        String headerString="";
+        try {
+            headerString=mapper.writeValueAsString(requestMap);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        payInfo.debug("------ptyhService.openid="+yhOpenId);
+        payInfo.debug("------request.getHeader(\"openid\")="+request.getHeader("openid"));
+        payInfo.debug("------request.getHeader(\"openId\")="+request.getHeader("openId"));
+        payInfo.debug("------request.getHeader="+headerString);
         //没有填写别名的时候，将手机码后四位填写到别名中去
         if(StringUtils.isEmpty(entity.getYhBm())){
             String yhbm=entity.getYhZh();
@@ -613,6 +632,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return ApiResponse.fail("请上传证件照片");
         }
 
+
 //        如果有识别信息的情况下，走自动审核业务
         String ocrRecognitionJson = redisDao.boundValueOps(userRequest.getId()+"-ocrRecognition-map").get();
         if (StringUtils.isNotBlank(ocrRecognitionJson)){
@@ -629,7 +649,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             sex = "1";
         }
         entity.setYhXb(sex);
-
+        if(StringUtils.indexOf(user.getYhZh(),user.getYhBm())>-1){
+            entity.setYhBm(entity.getYhXm());
+        }
 
         String yhzjhm = entity.getYhZjhm();
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
@@ -733,6 +755,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         entity.setYhXb(sex);
         entity.setYhXm(xm);
         entity.setYhZjhm(cfzh);
+
+        //默认将姓名填充到别名中去
+        if(StringUtils.indexOf(user.getYhZh(),user.getYhBm())>-1){
+            entity.setYhBm(xm);
+        }
+
 
 //        3、检查证件和手机号码是否有绑定
         String yhzjhm = entity.getYhZjhm();

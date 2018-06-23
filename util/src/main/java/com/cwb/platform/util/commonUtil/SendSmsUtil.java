@@ -60,7 +60,7 @@ public class SendSmsUtil {
 //        request.setPhoneNumbers("18672922385");
         request.setPhoneNumbers(requestMap.get("phoneNumbers"));//phoneNumbers
         //必填:短信签名-可在短信控制台中找到
-        request.setSignName("阿里云短信测试专用");
+        request.setSignName("520共享学车");//阿里云短信测试专用
         //必填:短信模板-可在短信控制台中找到
 //        request.setTemplateCode("SMS_136430180");
         request.setTemplateCode(requestMap.get("templateCode"));//templateCode

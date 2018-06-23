@@ -7,6 +7,7 @@ import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     BizPtyh findByIdSelect(String userid);
 
-    ApiResponse<String> userEnroll (BizPtyh entity);
+    ApiResponse<String> userEnroll (BizPtyh entity,HttpServletRequest request);
 
     ApiResponse<String> mdfPwd(String userId, String oldPwd, String newPwd);
 

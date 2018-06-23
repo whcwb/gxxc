@@ -44,9 +44,9 @@ public class AppPtyhController extends AppUserBaseController {
      */
     @RequestMapping(value="/save", method={RequestMethod.POST})
     public ApiResponse<String> save(BizPtyh entity,HttpServletRequest request){
-        String openId=request.getHeader("openid");
-        entity.setYhOpenId(openId);
-        return service.userEnroll(entity);
+//        String openId=request.getHeader("openid");
+//        entity.setYhOpenId(openId);
+        return service.userEnroll(entity,request);
     }
     /**
      * 修改登录密码
