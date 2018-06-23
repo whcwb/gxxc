@@ -710,6 +710,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
         newEntity.setYhXm(entity.getYhXm());//用户姓名
+        newEntity.setYhBm(entity.getYhBm());//用户别名
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhXb(entity.getYhXb());//用户性别
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
@@ -860,7 +861,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhXb(entity.getYhXb());//用户性别
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
         newEntity.setYhZt("1");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
-
+        newEntity.setYhBm(entity.getYhBm());//用户别名
         i = update(newEntity);
 
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
