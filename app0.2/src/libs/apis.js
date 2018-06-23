@@ -76,6 +76,7 @@ API.ajax.interceptors.response.use(response=> {
 
   if(response.data.code===403){
     Toast('权限丢失，请重新登录')
+    localStorage.clear();
     setTimeout(function () {
       window.location.href = "/wx/";
       // router.push({name:'Login'})
