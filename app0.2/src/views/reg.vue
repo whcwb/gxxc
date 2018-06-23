@@ -38,7 +38,7 @@
           <el-button
             v-show="!soltTimeShow"
             style="background-color: #f2b121"
-            type="warning" @click="getPhoneCode">获取验证码</el-button>
+            type="success" @click="getPhoneCode">获取验证码</el-button>
           <el-button
             v-show="soltTimeShow"
             style="background-color: #f2b121;width: 1.12rem;margin-left: 0"
@@ -73,7 +73,7 @@
       return{
         code:'',
         soltTimeShow:false,
-        soltTime:10,
+        soltTime:120,
         form:{
           yhZh:'',
           yhMm:'',

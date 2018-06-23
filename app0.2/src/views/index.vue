@@ -29,9 +29,9 @@
                     margin-top: 1rem;
                     margin:auto;font-size: 0.2rem"> 重新加载</el-button>
 
-        <div @click="$router.push('/')">
+        <!--<div @click="$router.push('/')">
             index
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -52,6 +52,7 @@
       if (!authCode){
           this.wechatUtil.getCode();
       }else{
+          this.wechatUtil.vueParent = this;
           this.wechatUtil.getOpenid(authCode,(res)=>{
               localStorage.setItem("openid",res);
               sessionStorage.setItem("ISLOGIN",true);

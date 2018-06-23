@@ -22,7 +22,7 @@ API.title = function (title) {
 
 API.ajax = axios.create({
   baseURL: ajaxUrl,
-  timeout: 30000,
+  timeout: 1000*10,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
   }
@@ -54,8 +54,9 @@ API.ajax.interceptors.request.use(config=> {
       let jsonObject = JSON.parse(accessTokenStr);
       config.headers.common['userId'] = jsonObject.userId;
       config.headers.common['token'] = jsonObject.token;
-      config.headers.common['openid'] = localStorage.getItem('openid')
     }
+
+    config.headers.common['openid'] = localStorage.getItem('openid')
   }catch(e){
   }
 
@@ -75,8 +76,10 @@ API.ajax.interceptors.response.use(response=> {
 
   if(response.data.code===403){
     Toast('权限丢失，请重新登录')
+    localStorage.clear();
     setTimeout(function () {
-      router.push({name:'Login'})
+      window.location.href = "/wx/";
+      // router.push({name:'Login'})
     },100)
   }
 

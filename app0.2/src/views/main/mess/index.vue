@@ -45,7 +45,7 @@
             <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
               <el-tab-pane name="step1">
                     <span slot="label">
-                      <img :src="tabLabel[0].tabImg" width="120"/>
+                      <img :src="tabLabel[0].tabImg" width="200" height="60"/>
                       <span class="title-name">受理进度</span>
                       <span class="title-subname">受理成功可考试</span>
                     </span>
@@ -54,7 +54,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_2/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/bm.jpg" class="image">
+                          <img src="/wx/static/jpg/bm.jpg" class="image">
                           <div style="padding: 10px">
                             <span>报名条件</span>
                           </div>
@@ -64,7 +64,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_4/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/fy.jpg" class="image">
+                          <img src="/wx/static/jpg/fy.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>学车费用</span>
                           </div>
@@ -74,7 +74,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_6/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/tj.jpg" class="image">
+                          <img src="/wx/static/jpg/tj.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>体检事项</span>
                           </div>
@@ -84,7 +84,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_8/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/xclc.jpg" class="image">
+                          <img src="/wx/static/jpg/xclc.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>学车流程</span>
                           </div>
@@ -143,7 +143,7 @@
               </el-tab-pane>
               <el-tab-pane name="step2">
                     <span slot="label">
-                      <img :src="tabLabel[1].tabImg" width="120"/>
+                      <img :src="tabLabel[1].tabImg" width="200" height="60"/>
                       <span class="title-name">科目一</span>
                       <span class="title-subname">基础理论知识考试</span>
                     </span>
@@ -152,7 +152,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/sxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/sxlx.jpg" class="image">
+                          <img src="/wx/static/jpg/sxlx.jpg" class="image">
                           <div style="padding: 10px">
                             <span>顺序练习</span>
                           </div>
@@ -162,7 +162,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/zjlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/zjlx.jpg" class="image">
+                          <img src="/wx/static/jpg/zjlx.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>章节练习</span>
                           </div>
@@ -172,7 +172,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/zxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/zxlx.jpg" class="image">
+                          <img src="/wx/static/jpg/zxlx.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>专项练习</span>
                           </div>
@@ -254,7 +254,7 @@
               </el-tab-pane>
               <el-tab-pane label="科目二" name="step3">
                     <span slot="label">
-                      <img :src="tabLabel[2].tabImg" width="120"/>
+                      <img :src="tabLabel[2].tabImg" width="200" height="60"/>
                       <span class="title-name">科目二</span>
                       <span class="title-subname">场地驾驶技能考试</span>
                     </span>
@@ -263,7 +263,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_212/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/hgbz.jpg" class="image">
+                          <img src="/wx/static/jpg/hgbz.jpg" class="image">
                           <div style="padding: 10px">
                             <span>合格标准</span>
                           </div>
@@ -273,7 +273,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_603/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/cftc.jpg" class="image">
+                          <img src="/wx/static/jpg/cftc.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>侧方停车</span>
                           </div>
@@ -283,7 +283,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_604/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/qxxs.jpg" class="image">
+                          <img src="/wx/static/jpg/qxxs.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>曲线行驶</span>
                           </div>
@@ -293,7 +293,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_605/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/zjzw.jpg" class="image">
+                          <img src="/wx/static/jpg/zjzw.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>直角转弯</span>
                           </div>
@@ -305,7 +305,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_602/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/spqb.jpg" class="image">
+                          <img src="/wx/static/jpg/spqb.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>上坡起步</span>
                           </div>
@@ -316,7 +316,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_606/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/dcrk.jpg" class="image">
+                          <img src="/wx/static/jpg/dcrk.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>倒车入库</span>
                           </div>
@@ -398,7 +398,7 @@
               </el-tab-pane>
               <el-tab-pane label="科目三" name="step4">
                     <span slot="label">
-                      <img :src="tabLabel[3].tabImg" width="120"/>
+                      <img :src="tabLabel[3].tabImg" width="200" height="60"/>
                       <span class="title-name">科目三</span>
                       <span class="title-subname">道路驾驶技能考试</span>
                     </span>
@@ -407,7 +407,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_608/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/hgbz.jpg" class="image">
+                          <img src="/wx/static/jpg/hgbz.jpg" class="image">
                           <div style="padding: 10px">
                             <span>评判标准</span>
                           </div>
@@ -417,7 +417,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/yyzl/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/yyzl.jpg" class="image">
+                          <img src="/wx/static/jpg/yyzl.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>语言指令</span>
                           </div>
@@ -427,7 +427,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/dgcz/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/dg.jpg" class="image">
+                          <img src="/wx/static/jpg/dg.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>灯光操作</span>
                           </div>
@@ -437,7 +437,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_627/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/kskj.jpg" class="image">
+                          <img src="/wx/static/jpg/kskj.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>考试口诀</span>
                           </div>
@@ -519,7 +519,7 @@
               </el-tab-pane>
               <el-tab-pane label="科目四" name="step5">
                     <span slot="label">
-                      <img :src="tabLabel[4].tabImg" width="120"/>
+                      <img :src="tabLabel[4].tabImg" width="200" height="60"/>
                       <span class="title-name">科目四</span>
                       <span class="title-subname">安全文明驾驶常识</span>
                     </span>
@@ -528,7 +528,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_608/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/hgbz.jpg" class="image">
+                          <img src="/wx/static/jpg/hgbz.jpg" class="image">
                           <div style="padding: 10px">
                             <span>评判标准</span>
                           </div>
@@ -538,7 +538,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/yyzl/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/yyzl.jpg" class="image">
+                          <img src="/wx/static/jpg/yyzl.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>语言指令</span>
                           </div>
@@ -548,7 +548,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/dgcz/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/dg.jpg" class="image">
+                          <img src="/wx/static/jpg/dg.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>灯光操作</span>
                           </div>
@@ -558,7 +558,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_627/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/static/jpg/kskj.jpg" class="image">
+                          <img src="/wx/static/jpg/kskj.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>考试口诀</span>
                           </div>

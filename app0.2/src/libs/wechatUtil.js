@@ -16,6 +16,8 @@ wechatUtil.baseUrl = 'http://xclm.xxpt123.com:8080/biz/';
 wechatUtil.authLoginUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+wechatUtil.appId+'&redirect_uri='+urls.url+'/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect';
 
 wechatUtil.afterReady = null;
+//存储Vue对象，用来在微信方法中，可以调用vue内容
+wechatUtil.vueParent = null;
 wechatUtil.getQueryString = function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
@@ -42,7 +44,6 @@ wechatUtil.getOpenid = (code,callback)=>{
 }
 
 wechatUtil.initConfig = ()=>{
-    alert('initConfig');
     let curl = location.href.split('#')[0];
   let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl)+'&nonceStr='+wechatUtil.nonceStr;
   $.ajax({
@@ -102,8 +103,13 @@ wx.ready(function(){
         wechatUtil.afterReady();
         return;
     }
-  wechatUtil.checkJsApi();
-    window.location.href = "/wx/";
+    //微信jsapi使用，不允许页面切换，所以这里使用router来做页面跳转，不再使用location强制跳页面
+    if (wechatUtil.vueParent){
+      wechatUtil.vueParent.$router.push({name:'indexName'});
+      return;
+    }
+    wechatUtil.checkJsApi();
+    //window.location.href = "/wx/";
     // chooseImage();
     // wechatUtil.qrScan();
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
@@ -121,14 +127,14 @@ wechatUtil.qrScan = (callback)=>{//打开微信扫码功能
         needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
         scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
         success: function (res) {
-            alert(res)
+            // alert(res)
             var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-            alert(result);
+            // alert(result);
             callback && callback(result);
         },
         fail : function(res) {
             console.log(res)
-            alert(JSON.stringify(res));
+            // alert(JSON.stringify(res));
         }
     });
 }

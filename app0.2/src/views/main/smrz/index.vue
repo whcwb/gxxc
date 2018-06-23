@@ -7,6 +7,7 @@
 
     }
   }
+  /*http://xclm.xxpt123.com:8001/20180623/39231d79d0ee4b7692783b71ee220aab.jpg*/
 </style>
 <template>
   <div id="smrz" class="box_col">
@@ -45,12 +46,15 @@
         <div>
            审核通过
         </div>
-        <div class="box-row">
-          <div class="box_row_100">
-            <el-button round @click="$router.push({path:'/Home'})">返回</el-button>
+        <div class="box-row" style="margin-top: 0.25rem">
+          <div class="box_row_100" style="margin: 0.2rem">
+            <el-button round
+                       style="width: 100%"
+                       @click="$router.push({path:'/Home'})">返回</el-button>
           </div>
-          <div class="box_row_100">
+          <div class="box_row_100"style="margin: 0.2rem">
             <el-button type="success" round
+                       style="width: 100%"
                        @click="$router.push({path:'/pay/payIndex'})">缴费</el-button>
           </div>
         </div>
@@ -129,10 +133,12 @@
             this.$http.post(this.apis.ZJSB,{path:url,fileType:code}).then((res)=>{
               if(res.code==200){
                 if(val==0){
-                  v.imgList.zm = 'static/zjsh/sfzzmok.png'
+                  // v.imgList.zm = 'static/zjsh/sfzzmok.png'
+                  v.imgList.zm = v.apis.getImgUrl+url
                   v.form.imgList[val]=url
                 }else if(val==1){
                   v.imgList.bm = 'static/zjsh/sfzfmok.png'
+                  v.imgList.bm = v.apis.getImgUrl+url
                   v.form.imgList[val]=url
                 }
               }else {

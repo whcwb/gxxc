@@ -12,7 +12,44 @@
     }
     .mint-tab-item-label{
       font-size: 0.16rem!important;
+      color: #3ca0e6;
     }
+    /*mandMobile_________star*/
+    .md-popup.with-mask{
+      z-index: 9999;
+    }
+    .md-drop-menu{
+      position: relative!important;
+      z-index: 100!important;
+      font-size: 0.16rem;
+      height: 0.18rem;
+      color: #000;
+      background:#ffffff00!important;
+      border-bottom: none!important;
+    }
+    .md-drop-menu .md-drop-menu-list{
+      padding-top: 0!important;
+      font-size: 0.16rem;
+    }
+    .md-radio .md-field .md-field-item{
+      padding: 0.15rem 0.3rem;
+    }
+    .md-radio .md-field .md-field-item .md-field-item-content.left{
+      font-size: 0.16rem;
+    }
+    .md-drop-menu .md-drop-menu-bar{
+      /*background-color: red;*/
+      background:#ffffff00!important;
+      border-bottom: none!important;
+    }
+    .md-drop-menu .md-drop-menu-bar::before{
+      background:#ffffff00!important;
+    }
+    /*.md-drop-menu .md-drop-menu-bar .bar-item:last-of-type{*/
+      /*background-color: red;*/
+    /*}*/
+    /*mandMobile_________end*/
+
     /*功能模块*/
     .gnmk{
       background-color: #fff;
@@ -234,12 +271,23 @@
               <mt-navbar v-model="selected">
                 <mt-tab-item id="1">推荐</mt-tab-item>
                 <mt-tab-item id="2">
-                  <select class="select" name="" id="">
-                    <option value="" selected>全部</option>
-                    <option v-for="(item,index) in qulist"
-                      :value="index"
-                    >{{item.name}}</option>
-                  </select>
+                  <!--<select class="select" name="" id="">-->
+                    <!--<option value="" selected>全部</option>-->
+                    <!--<option v-for="(item,index) in qulist"-->
+                      <!--:value="index"-->
+                    <!--&gt;{{item.name}}</option>-->
+                  <!--</select>-->
+
+                  <md-drop-menu
+                    ref="dropMenu0"
+                    v-model="dropTxt"
+                    :default-value="['武汉市']"
+                    :data="data"
+                    @change="getSelectedValue"
+                  ></md-drop-menu>
+
+
+
                 </mt-tab-item>
                 <mt-tab-item id="3">价格</mt-tab-item>
               </mt-navbar>
@@ -260,7 +308,7 @@
                              {{item.schoolName}}
                            </div>
                            <div class="money">
-                            ￥25000.00
+                            ￥2500.00
                            </div>
                         </div>
                         <div class="box-row xlcmap">
@@ -280,7 +328,7 @@
                           </div>
                         </div>
                         <div style="font-size: 0.12rem;text-align: right;color: #949494">
-                          >100米
+                          >3000米
                         </div>
                     </div>
                 </div>
@@ -292,10 +340,12 @@
 
 <script>
     import {Toast} from 'mint-ui'
+    import { DropMenu } from 'mand-mobile'
+
     export default {
       name: "index",
       components:{
-
+        [DropMenu.name]:DropMenu
       },
       filters: {
         yhZhye(val) {
@@ -304,6 +354,19 @@
           }
           return val
         },
+      },
+      watch:{
+        dropTxt:function (n,o) {
+          console.log(n)
+          console.log(o)
+          this.xlcList.forEach((item ,index)=>{
+            item.address = n + '训练场'
+          })
+        },
+        selected:function (n,o) {
+          console.log(n)
+          console.log(o)
+        }
       },
       data(){
           return{
@@ -314,20 +377,43 @@
             zhYE: {
               yhZhye: 0
             },
+            dropTxt:'',
+            data: [
+              {
+                text: '一级选项1',
+                options: [
+                  {text:'武汉市'},
+                  {text:'江岸区'},
+                  {text:'江汉区'},
+                  {text:'硚口区'},
+                  {text:'汉阳区'},
+                  {text:'武昌区'},
+                  {text:'青山区'},
+                  {text:'洪山区'},
+                  {text:'东西湖区'},
+                  {text:'汉南区'},
+                  {text:'蔡甸区'},
+                  {text:'江夏区'},
+                  {text:'黄陂区'},
+                  {text:'新洲区'},
+                ],
+              },
+            ],
+
             qulist:[
-              {name:'江岸区'},
-              {name:'江汉区'},
-              {name:'硚口区'},
-              {name:'汉阳区'},
-              {name:'武昌区'},
-              {name:'青山区'},
-              {name:'洪山区'},
-              {name:'东西湖区'},
-              {name:'汉南区'},
-              {name:'蔡甸区'},
-              {name:'江夏区'},
-              {name:'黄陂区'},
-              {name:'新洲区'},
+              {text:'江岸区'},
+              {text:'江汉区'},
+              {text:'硚口区'},
+              {text:'汉阳区'},
+              {text:'武昌区'},
+              {text:'青山区'},
+              {text:'洪山区'},
+              {text:'东西湖区'},
+              {text:'汉南区'},
+              {text:'蔡甸区'},
+              {text:'江夏区'},
+              {text:'黄陂区'},
+              {text:'新洲区'},
             ]
           }
       },
@@ -341,6 +427,10 @@
         this.getYE()
       },
       methods:{
+        getSelectedValue(val,item){
+          console.log(item);
+          this.dropTxt = item.text
+        },
         goLook(){
           Toast('去看看');
         },
