@@ -45,7 +45,7 @@
             <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
               <el-tab-pane name="step1">
                     <span slot="label">
-                      <img :src="tabLabel[0].tabImg" width="120"/>
+                      <img :src="tabLabel[0].tabImg" width="200" height="60"/>
                       <span class="title-name">受理进度</span>
                       <span class="title-subname">受理成功可考试</span>
                     </span>
@@ -143,7 +143,7 @@
               </el-tab-pane>
               <el-tab-pane name="step2">
                     <span slot="label">
-                      <img :src="tabLabel[1].tabImg" width="120"/>
+                      <img :src="tabLabel[1].tabImg" width="200" height="60"/>
                       <span class="title-name">科目一</span>
                       <span class="title-subname">基础理论知识考试</span>
                     </span>
@@ -254,7 +254,7 @@
               </el-tab-pane>
               <el-tab-pane label="科目二" name="step3">
                     <span slot="label">
-                      <img :src="tabLabel[2].tabImg" width="120"/>
+                      <img :src="tabLabel[2].tabImg" width="200" height="60"/>
                       <span class="title-name">科目二</span>
                       <span class="title-subname">场地驾驶技能考试</span>
                     </span>
@@ -398,7 +398,7 @@
               </el-tab-pane>
               <el-tab-pane label="科目三" name="step4">
                     <span slot="label">
-                      <img :src="tabLabel[3].tabImg" width="120"/>
+                      <img :src="tabLabel[3].tabImg" width="200" height="60"/>
                       <span class="title-name">科目三</span>
                       <span class="title-subname">道路驾驶技能考试</span>
                     </span>
@@ -519,7 +519,7 @@
               </el-tab-pane>
               <el-tab-pane label="科目四" name="step5">
                     <span slot="label">
-                      <img :src="tabLabel[4].tabImg" width="120"/>
+                      <img :src="tabLabel[4].tabImg" width="200" height="60"/>
                       <span class="title-name">科目四</span>
                       <span class="title-subname">安全文明驾驶常识</span>
                     </span>

@@ -54,8 +54,9 @@ API.ajax.interceptors.request.use(config=> {
       let jsonObject = JSON.parse(accessTokenStr);
       config.headers.common['userId'] = jsonObject.userId;
       config.headers.common['token'] = jsonObject.token;
-      config.headers.common['openid'] = localStorage.getItem('openid')
     }
+
+    config.headers.common['openid'] = localStorage.getItem('openid')
   }catch(e){
   }
 
