@@ -7,6 +7,7 @@ import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,11 +118,14 @@ public class AppPtyhController extends AppUserBaseController {
         BizPtyh users = service.findByIdSelect(user.getId());
         if(user!=null){
             //查询该记录邀请的用户总数
-            BizUser userDetail=new BizUser();
-            userDetail.setYhSjid(user.getId());
+//            BizUser userDetail=new BizUser();
+//            userDetail.setYhSjid(user.getId());
+
+            SimpleCondition condition = new SimpleCondition(BizUser.class);
+            condition.and().andCondition(" ( YH_SJID='"+user.getId()+"' OR YH_SSJID='"+user.getId()+"') ");
             long userInviteCount=0;
-            userInviteCount=userService.countByEntity(userDetail);
-            user.setUserInviteCount(userInviteCount);
+            userInviteCount=userService.countByCondition(condition);
+            users.setUserInviteCount(userInviteCount);
         }
         return ApiResponse.success(users);
     }
