@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.wxpkg.handler;
 
+import com.cwb.platform.biz.wxpkg.budiler.ImageBuilder;
 import com.cwb.platform.biz.wxpkg.budiler.TextBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,18 +39,20 @@ public class MsgHandler extends AbstractHandler {
 //
 //		WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
 //		item.setDescription("description");
-//		item.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529838597564&di=315b4a41d85819536f135758457c3ed2&imgtype=0&src=http%3A%2F%2Fpic1.16pic.com%2F00%2F07%2F66%2F16pic_766152_b.jpg");
+//		item.setPicUrl("http://xclm.xxpt123.com:8001/123456789.png");
 //		item.setTitle("title");
 //		item.setUrl("http://xclm.xxpt123.com/wx");
 //
 //		WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
-//				.fromUser(wxMessage.getFromUser())
-//				.toUser(wxMessage.getToUser())
+//				.fromUser("oRPNG0uKqXvvKg23RtAxZZyiuqBI")
+//				.toUser("oRPNG0uKqXvvKg23RtAxZZyiuqBI")
 //				.addArticle(item)
 //				.build();
 //
 //		return m;
 
+//		return new ImageBuilder().build("http://xclm.xxpt123.com:8001/123456789.png",wxMessage,weixinService);
+//
 		return new TextBuilder().build("敬请期待", wxMessage, weixinService);
 
 	}
