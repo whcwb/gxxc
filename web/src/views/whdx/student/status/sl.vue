@@ -14,6 +14,11 @@
         			<Row>
         				<form-items :parent="v"></form-items>
         			</Row>
+					<Row>
+						<Steps :current="currentStep" size="small">
+							<Step  :title="item.title" :content="item.content" v-for="(item,index) in steps"></Step>
+						</Steps>
+					</Row>
         		</Form>
         	</div>
         	<div slot='footer'>
@@ -47,13 +52,35 @@
                 foreignList:{
                     code:{url:this.apis.school.QUERY,key:'schoolCode',val:'schoolName',items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
-                }
+                },
+				steps:[],
+				currentStep:0,
+                handleStatus:'',
+                handleSteps:0,
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
+            this.getHandleStatus();
+		},
+		mounted(){
 		},
 		methods: {
+            getHandleStatus(){
+                this.$http.get(this.apis.getHandleStatus, {params: {yhId: this.formItem.yhId}}).then((res)=>{
+                    if (res.code == 200){
+                        this.handleStatus = res.result;
+                        this.handleSteps = parseInt(res.message);
+                        for (let k in this.handleStatus){
+                            this.steps.push({title:this.dictUtil.getValByCode(this,'ZDCLK0071',k),content:this.handleStatus[k].name})
+						}
+                        console.log(this.steps);
+                        this.currentStep = this.steps.length;
+                    }
+                })
+            },
+
+
 		}
 	}
 </script>

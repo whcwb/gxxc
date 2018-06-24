@@ -12,6 +12,8 @@ module.exports = {
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
     exportData:BASE_URL+'/pub/export',
+
+    getHandleStatus:'api/kssl/getHandleStatus', // 获取受理状态信息
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
         GET_MENU_TREE:'/api/gn/getMenuTree',

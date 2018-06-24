@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * 学员考试缴费记录表
  * Created by Administrator on 2018/6/19.
@@ -30,6 +32,10 @@ public class KsJfController extends QueryController<BizKsJf,String> {
     @RequestMapping(value="/save", method={RequestMethod.POST})
     public ApiResponse<String> save(BizKsJf entity){
         return service.validAndSave(entity);
+    }
+    @RequestMapping("getPayInfo")
+    public ApiResponse<Map<String,String>> getPayInfo(String yhId){
+        return service.getPayInfo(yhId);
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 学员考试受理信息表
@@ -31,6 +32,11 @@ public class KsSlController extends QueryController<BizKsSl,String> {
     @RequestMapping(value="/save", method={RequestMethod.POST})
     public ApiResponse<String> save(BizKsSl entity){
         return service.validAndSave(entity);
+    }
+
+    @RequestMapping("getHandleStatus")
+    public ApiResponse<Map<String,BizKsSl>> getHandleStatus(String yhId){
+        return service.getHandleStatus(yhId);
     }
 
 
