@@ -98,7 +98,7 @@
                         <div slot="header" class="title">
                           <span>受理进度</span>
                         </div>
-                        <el-steps direction="vertical" :active="handleSteps - 1">
+                        <el-steps direction="horizontal" :active="handleSteps - 1">
                           <el-step title="医院体检">
                                 <span v-if="handleStatus['1']" slot="description">
                                   {{handleStatus['1'].name}}<br>
