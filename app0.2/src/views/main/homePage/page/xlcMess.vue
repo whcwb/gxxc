@@ -50,13 +50,14 @@
         <i class="iconfont icon-leftsquare"
             @click="$router.back()"></i>
         <div class="swipe">
-          <!--<mt-swipe :auto="4000">-->
-            <!--<mt-swipe-item>-->
-              <!--<img src="static/images/jx1.jpg"-->
-                   <!--style="height: 100%;width: 100%"-->
-                   <!--alt="">-->
-            <!--</mt-swipe-item>-->
-          <!--</mt-swipe>-->
+          <!--static/home/car0000.png-->
+          <mt-swipe :auto="4000">
+            <mt-swipe-item v-for="item in [,,]">
+              <img src="static/home/car0000.png"
+                   style="height: 100%;width: 100%"
+                   alt="">
+            </mt-swipe-item>
+          </mt-swipe>
         </div>
         <div style="padding: 0.15rem 0.2rem;border-bottom: solid 0.3rem #e5e5e5">
             <span style="font-size: 0.25rem;font-weight: 600">
