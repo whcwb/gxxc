@@ -8,12 +8,10 @@ import com.cwb.platform.biz.model.BizOrder;
 import com.cwb.platform.biz.model.BizYjmx;
 import com.cwb.platform.biz.service.*;
 import com.cwb.platform.sys.base.BaseServiceImpl;
-import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
-import com.cwb.platform.util.commonUtil.ZXingCode;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -211,50 +208,52 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                     }
 
                     if(retType){
-                        //插入两条支付信息插入流水表
-                        BizYjmx newBizYjmx1 = new BizYjmx();
-                        newBizYjmx1.setId(genId());
-                        newBizYjmx1.setZjId(l.getDdId());
-                        newBizYjmx1.setYhId(l.getYhId());//消费的用户
-                        newBizYjmx1.setZjJe(MathUtil.stringToDouble( l.getPayMoney()));//支付的金额
-                        newBizYjmx1.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
-                        newBizYjmx1.setCjsj(DateUtils.getNowTime());
-                        newBizYjmx1.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
-                        newBizYjmx1.setMxlx("1");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
-                        yjmxService.save(newBizYjmx1);
 
-                        newBizYjmx1.setId(genId());
-                        newBizYjmx1.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
-                        newBizYjmx1.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
-                        yjmxService.save(newBizYjmx1);
+//                        //插入两条支付信息插入流水表
+//                        BizYjmx newBizYjmx1 = new BizYjmx();
+//                        newBizYjmx1.setId(genId());
+//                        newBizYjmx1.setZjId(l.getDdId());
+//                        newBizYjmx1.setYhId(l.getYhId());//消费的用户
+//                        newBizYjmx1.setZjJe(MathUtil.stringToDouble( l.getPayMoney()));//支付的金额
+//                        newBizYjmx1.setZjFs("1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
+//                        newBizYjmx1.setCjsj(DateUtils.getNowTime());
+//                        newBizYjmx1.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
+//                        newBizYjmx1.setMxlx("1");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+//                        yjmxService.save(newBizYjmx1);
+//
+//                        newBizYjmx1.setId(genId());
+//                        newBizYjmx1.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
+//                        newBizYjmx1.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+//                        yjmxService.save(newBizYjmx1);
+//
+//                        // 判断订单产品是否属于学费，只有学费才生成邀请码
+//                        if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
+//                            BizPtyh bizPtyh=pyhtService.findById(l.getYhId());
+//                            if(StringUtils.isEmpty(bizPtyh.getYhZsyqm())){//如果该用户已有邀请码，就不再给该用户创建邀请码
+//                                String yhZsyqm = genId();
+//
+//                                File logoFile = new File(logoFileUrl);
+//                                String yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
+//
+//                                File file=new File(qrCodeFileUrl + yhZsyqmImg);
+//                                if (!file.exists()  && !file.isDirectory()){
+//                                    file.mkdirs();
+//                                }
+//
+//                                String note = "您的好友：" + l.getYhXm() + " 邀请您";
+//                                note="";//经理说，生成的图片不需要增加文件。所以这行去掉
+//                                ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg+yhZsyqm + ".png"), yhZsyqm, note);
+//                                log.debug("3、用户：" + l.getYhXm() + "。生成邀请码成功");
+//
+//                                BizPtyh user = new BizPtyh();
+//                                user.setId(l.getYhId());
+//                                user.setYhZsyqm(yhZsyqm);//用户自己邀请码
+//                                user.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
+//                                userMapper.updateByPrimaryKeySelective(user);
+//
+//                            }
+//                        }
 
-                        // 判断订单产品是否属于学费，只有学费才生成邀请码
-                        if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
-                            BizPtyh bizPtyh=pyhtService.findById(l.getYhId());
-                            if(StringUtils.isEmpty(bizPtyh.getYhZsyqm())){//如果该用户已有邀请码，就不再给该用户创建邀请码
-                                String yhZsyqm = genId();
-
-                                File logoFile = new File(logoFileUrl);
-                                String yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
-
-                                File file=new File(qrCodeFileUrl + yhZsyqmImg);
-                                if (!file.exists()  && !file.isDirectory()){
-                                    file.mkdirs();
-                                }
-
-                                String note = "您的好友：" + l.getYhXm() + " 邀请您";
-                                note="";//经理说，生成的图片不需要增加文件。所以这行去掉
-                                ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg+yhZsyqm + ".png"), yhZsyqm, note);
-                                log.debug("3、用户：" + l.getYhXm() + "。生成邀请码成功");
-
-                                BizPtyh user = new BizPtyh();
-                                user.setId(l.getYhId());
-                                user.setYhZsyqm(yhZsyqm);//用户自己邀请码
-                                user.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
-                                userMapper.updateByPrimaryKeySelective(user);
-
-                            }
-                        }
                         newBizOrder.setJobType("1");// 定时任务操作成功
 
                     }
