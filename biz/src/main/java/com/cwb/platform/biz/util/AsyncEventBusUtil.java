@@ -1,20 +1,28 @@
 package com.cwb.platform.biz.util;
 
 import com.google.common.eventbus.AsyncEventBus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.Executors;
 
+@Component
 public class AsyncEventBusUtil {
 
-    private static AsyncEventBus asyncEventBus = null;
+    @Autowired
+    private EventHandler eventHandler;
 
-    public static AsyncEventBus getInstance(){
-        if (asyncEventBus == null){
-            asyncEventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
-        }
-        return asyncEventBus;
-    }
-    private AsyncEventBusUtil(){
+    private AsyncEventBus asyncEventBus;
 
+    @PostConstruct
+    private void init(){
+        asyncEventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
+        asyncEventBus.register(eventHandler);
     }
+
+    public void post(Object o){
+        asyncEventBus.post(o);
+    }
+
 }

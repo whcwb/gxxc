@@ -4,6 +4,9 @@ import com.cwb.platform.biz.mapper.BizKsSlMapper;
 import com.cwb.platform.biz.model.BizKsSl;
 import com.cwb.platform.biz.service.KsSlService;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.util.AsyncEventBusUtil;
+import com.cwb.platform.biz.util.EventHandler;
+import com.cwb.platform.biz.util.SendWechatMsgEvent;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -14,6 +17,8 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
@@ -27,6 +32,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.Executors;
 
 /**
  * 学员考试受理信息表
@@ -42,9 +48,6 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
     private PtyhService ptyhService;
 
     @Autowired
-    private WechatService wechatService;
-
-    @Autowired
     private ZdxmService zdxmService;
 
     @Value("${wxMsgTemplate.handle}")
@@ -52,6 +55,9 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
 
     @Value("${wxDomain}")
     private String wxDomain;
+
+    @Autowired
+    private AsyncEventBusUtil asyncEventBusUtil;
 
     @Override
     protected Mapper<BizKsSl> getBaseMapper() {
@@ -144,14 +150,8 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         msg.setTemplateId(handleMsgId);
         msg.setUrl(wxDomain);
         msg.setData(data);
-        try {
-            String res = wechatService.sendTemplateMsg(msg);
-            log.info("sendMsg result :",res);
-            return res;
-        } catch (WxErrorException e) {
-            log.error("发送微信模板消息异常",e);
-        }
-        return "未知错误";
+        asyncEventBusUtil.post(new SendWechatMsgEvent(msg));
+        return "发送成功";
     }
 
     @Override
