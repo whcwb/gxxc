@@ -52,10 +52,11 @@ public class SubscribeHandler extends AbstractHandler {
 			List<WxMenuButton> wxButtons = new ArrayList<WxMenuButton>();
 			WxMenuButton wodefuwu = new WxMenuButton();
 			wodefuwu.setKey("wodefuwu");
-			wodefuwu.setName("我的服务");
-			wodefuwu.setType(WxConsts.MenuButtonType.CLICK);
+			wodefuwu.setName("我要学车");
+			wodefuwu.setType(WxConsts.MenuButtonType.VIEW);
+			wodefuwu.setUrl("http://xclm.xxpt123.com/wx");
 			wxButtons.add(wodefuwu);
-			
+
 			wxMenu.setButtons(wxButtons);
 			// 设置菜单
 			weixinService.getMenuService().menuCreate(wxMenu);
