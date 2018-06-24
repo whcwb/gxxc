@@ -10,17 +10,17 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   console.log('去',to)
-  console.log('来',from)
+  // console.log('来',from)
   Util.title(to.meta.title);
+  // debugger
   let openid = localStorage.getItem("openid");
   // let openid = "123123";
   let ISLOGIN = sessionStorage.getItem("ISLOGIN");
 
   let userToken = localStorage.getItem("userMess");
-  if(openid && userToken){
+  /*if(openid!=null && userToken){
     ISLOGIN=true;
-  }
-
+  }*/
 
   //   console.log(openicd);
   //
