@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * 学员考试约考表
  * Created by Administrator on 2018/6/19.
@@ -29,5 +31,10 @@ public class KsYkController extends QueryController<BizKsYk,String> {
     @RequestMapping(value="/save", method={RequestMethod.POST})
     public ApiResponse<String> save(BizKsYk entity){
         return service.validAndSave(entity);
+    }
+
+    @RequestMapping("getUserExamInfo")
+    public ApiResponse<Map<String,BizKsYk>> getUserExamInfo(String yhId){
+        return service.getUserExamInfo(yhId);
     }
 }
