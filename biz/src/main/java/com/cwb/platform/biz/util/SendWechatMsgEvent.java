@@ -6,8 +6,7 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 
 @Getter
 @Setter
-public class SendWechatMsgEvent extends EventModel {
-    private String type = "SendWechatMsgEvent";
+public class SendWechatMsgEvent {
     private WxMpTemplateMessage data;
 
     public SendWechatMsgEvent(WxMpTemplateMessage data){
