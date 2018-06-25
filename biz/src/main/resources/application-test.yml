@@ -21,17 +21,17 @@ order_money: 2500
 
 logo_file_url: /opt/gxxc/logo.png
 
-qr_code_file_url: /opt/gxxc/nginx/
+qr_code_file_url: d:/2003/
 
-credentialsPath: /opt/gxxc/certificate/
+credentialsPath: d:/2004/
 
-wxDomain: http://xclm.xxpt123.com/wx
+wxDomain: http://www.520xclm.com/wx
 # 接收到第三方支付成功的消息后，支付回调操作
-wxPayBackDomain: http://xclm.xxpt123.com/wx
+wxPayBackDomain: http://www.520xclm.com/wx
 #分配学员学员链接地址
-wxassignXyDomain: http://xclm.xxpt123.com/wx
+wxassignXyDomain: http://www.520xclm.com/wx
 #分配学员教练链接地址
-wxassignJlDomain: http://xclm.xxpt123.com/wx
+wxassignJlDomain: http://www.520xclm.com/wx
 
 wxMsgTemplate:
   handle: 0jqcQ-ucdPPfGl3WlyquqhaqOSaj1_8wc7jvZTqXh-I
@@ -57,7 +57,7 @@ wechat:
     subAppId:
     subMchId:
     keyPath:
-    domain: http://xclm.xxpt123.com
+    domain: http://www.520xclm.com
     trade_type: JSAPI
-    notify_url: http://xclm.xxpt123.com:8080/biz/wxPay/notifyCallback
+    notify_url: http://www.520xclm.com:8080/biz/wxPay/notifyCallback
 

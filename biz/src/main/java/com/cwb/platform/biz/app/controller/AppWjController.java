@@ -9,10 +9,17 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +32,9 @@ public class AppWjController extends AppUserBaseController {
     private WjService service;
     @Autowired
     private PtyhService ptyhService;
+    //证件上传地址
+    @Value("${credentialsPath}")
+    private String credentialsPath;
 
     /**
      * 根据对象字段值查询数据
@@ -78,4 +88,53 @@ public class AppWjController extends AppUserBaseController {
         }
         return ApiResponse.success(retlise);
     }
+
+    @RequestMapping("zjck")
+    public void fileDownload(HttpServletResponse response,@RequestParam(name = "fileType") String fileType){
+        BizPtyh bizPtyh= getAppCurrentUser();
+
+        BizWj bizWj=new BizWj();
+        bizWj.setYhId(bizPtyh.getId());
+        bizWj.setWjSx(fileType);
+        List<BizWj> list=service.findByEntity(bizWj);
+        String path = "";
+        if(list!=null&&list.size()>0){
+            path=credentialsPath+list.get(0).getWjTpdz();
+        }
+        //获取网站部署路径(通过ServletContext对象)，用于确定下载文件位置，从而实现下载
+        if(StringUtils.isNotEmpty(path)){
+            ServletOutputStream out=null;
+            FileInputStream inputStream=null;
+            //通过文件路径获得File对象(假如此路径中有一个 zms.jpg 文件)
+            File file = new File(path );
+            try {
+                inputStream  = new FileInputStream(file);
+                //3.通过response获取ServletOutputStream对象(out)
+                out = response.getOutputStream();
+                int b = 0;
+                byte[] buffer = new byte[512];
+                while (b != -1){
+                    b = inputStream.read(buffer);
+                    if(b != -1){
+                        out.write(buffer,0,b);//4.写到输出流(out)中
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally{
+                try{
+                    if(inputStream!=null){
+                        inputStream.close();
+                    }
+                    if(out!=null){
+                        out.close();
+                        out.flush();
+                    }
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
