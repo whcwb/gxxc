@@ -118,13 +118,15 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     @PostMapping("/creatorUserQRCode")
     public ApiResponse<String> creatorUserQRCode(String userId){
         return service.creatorUserQRCode(userId);
-
     }
 
     /**
      * 删除APP用户
      */
-
+    @PostMapping("/removeUserInfo")
+    public ApiResponse<String> removeUserInfo(String userId){
+        return service.removeUserInfo(userId);
+    }
 
 
 
