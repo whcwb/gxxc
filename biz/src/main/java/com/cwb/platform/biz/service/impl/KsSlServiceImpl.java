@@ -142,13 +142,19 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
 
         }
         data.add(new WxMpTemplateData("first",first));
+
         data.add(new WxMpTemplateData("keyword1",slType,"#ff0000"));
         data.add(new WxMpTemplateData("keyword2",time));
-        data.add(new WxMpTemplateData("remark","点击查看"));
+        if (sl.getSlType().equals("4")){
+            data.add(new WxMpTemplateData("remark","流水号码："+sl.getLsh()));
+        }else{
+            data.add(new WxMpTemplateData("remark","点击查看"));
+        }
+
         WxMpTemplateMessage msg = new WxMpTemplateMessage();
         msg.setToUser(ptyh.getYhOpenId());
         msg.setTemplateId(handleMsgId);
-        msg.setUrl(wxDomain);
+        msg.setUrl(wxDomain+"?type=123");
         msg.setData(data);
         asyncEventBusUtil.post(new SendWechatMsgEvent(msg));
         return "发送成功";

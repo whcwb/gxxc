@@ -5,6 +5,8 @@ import com.cwb.platform.biz.mapper.BizKsYkMapper;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.KsYkService;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.util.AsyncEventBusUtil;
+import com.cwb.platform.biz.util.SendWechatMsgEvent;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -14,6 +16,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.google.common.eventbus.AsyncEventBus;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
@@ -51,7 +54,8 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
     @Autowired
     private WechatService wechatService;
 
-
+    @Autowired
+    private  AsyncEventBusUtil asyncEventBusUtil;
     @Override
     protected Mapper<BizKsYk> getBaseMapper() {
         return entityMapper;
@@ -174,16 +178,12 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         WxMpTemplateMessage msg = new WxMpTemplateMessage();
         msg.setToUser(ptyh.getYhOpenId());
         msg.setTemplateId(examMsgId);
-        msg.setUrl(wxDomain);
+        msg.setUrl(wxDomain+"?type=123");
         msg.setData(data);
-        try {
-            String res = wechatService.sendTemplateMsg(msg);
-            log.info("sendMsg result :", res);
-            return res;
-        } catch (WxErrorException e) {
-            log.error("发送微信模板消息异常", e);
-        }
-        return "未知错误";
+        asyncEventBusUtil.post(new SendWechatMsgEvent(msg));
+//        eventBus.post(new SendWechatMsgEvent(msg));
+
+        return "发送成功";
     }
 
 

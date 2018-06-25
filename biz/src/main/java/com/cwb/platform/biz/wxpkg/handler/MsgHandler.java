@@ -36,24 +36,22 @@ public class MsgHandler extends AbstractHandler {
 		} catch (JsonProcessingException e) {
 			
 		}
-//
-//		WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
-//		item.setDescription("description");
-//		item.setPicUrl("http://xclm.xxpt123.com:8001/123456789.png");
-//		item.setTitle("title");
-//		item.setUrl("http://xclm.xxpt123.com/wx");
-//
-//		WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
-//				.fromUser("oRPNG0uKqXvvKg23RtAxZZyiuqBI")
-//				.toUser("oRPNG0uKqXvvKg23RtAxZZyiuqBI")
-//				.addArticle(item)
-//				.build();
-//
-//		return m;
+		WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
+		item.setDescription("");
+		item.setPicUrl("http://www.520xclm.com:8001/wechatImg.gif");
+		item.setTitle("点击查看");
+		item.setUrl("http://www.520xclm.com/wx");
+
+		WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
+				.fromUser(wxMessage.getToUser())
+				.toUser(wxMessage.getFromUser())
+				.addArticle(item)
+				.build();
+		return m;
 
 //		return new ImageBuilder().build("http://xclm.xxpt123.com:8001/123456789.png",wxMessage,weixinService);
 //
-		return new TextBuilder().build("敬请期待", wxMessage, weixinService);
+//		return new TextBuilder().build("敬请期待", wxMessage, weixinService);
 
 	}
 

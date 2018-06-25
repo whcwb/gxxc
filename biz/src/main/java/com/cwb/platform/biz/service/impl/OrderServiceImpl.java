@@ -16,6 +16,8 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.commonUtil.ZXingCode;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.Subscribe;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
@@ -24,12 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.Executors;
 
 @Service
 public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String> implements OrderService{
@@ -47,6 +49,11 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
     private CpService cpService;
     @Autowired
     private WechatService wechatService;
+
+    AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
+    public OrderServiceImpl() {
+        eventBus.register(this);
+    }
 
 
     @Value("${logo_file_url}")
@@ -132,10 +139,21 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
             String userName="";
             userName=order.getYhXm();
-            this.asynchronousOperate(yhZsyqm,yhZsyqmImg,userName,order);
+            Map<String,Object> sendMap=new HashMap<String,Object>();
+            sendMap.put("type","1");
+            sendMap.put("yhZsyqm",yhZsyqm);
+            sendMap.put("yhZsyqmImg",yhZsyqmImg);
+            sendMap.put("userName",userName);
+            eventBus.post(sendMap);
+//            this.asynchronousOperate(yhZsyqm,yhZsyqmImg,userName,order);
         }
+        Map<String,Object> sendMap=new HashMap<String,Object>();
+        sendMap.put("type","2");
+        sendMap.put("order",order);
+        sendMap.put("cpMc",bizCp.getCpMc());
+        eventBus.post(sendMap);
 
-        this.asynchronousSendMessage(order,bizCp.getCpMc());
+//        this.asynchronousSendMessage(order,bizCp.getCpMc());
 
 
 
@@ -150,12 +168,30 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
         return ApiResponse.success();
     }
-
+    @Subscribe
+    public  void sendObject(Map<String,Object> map){
+        payInfo.debug("进入异步通知开始 Async begin---");
+        try {
+            String type= (String) map.get("type");
+            if("2".equals(type)){
+                payInfo.debug("异步通知进入异步下发消息---");
+                BizOrder order= (BizOrder) map.get("order");
+                String cpMc = (String) map.get("cpMc");
+                this.asynchronousSendMessage(order,cpMc);
+            }else  if("1".equals(type)){
+                payInfo.debug("异步通知进入生成邀请号码---");
+                String yhZsyqm= (String) map.get("yhZsyqm");
+                String yhZsyqmImg= (String) map.get("yhZsyqmImg");
+                String userName= (String) map.get("userName");
+                this.asynchronousOperate(yhZsyqm,yhZsyqmImg,userName,null);
+            }
+        }catch (Exception e){}
+        payInfo.debug("进入异步通知开始 Async END---");
+    }
     /**
      * 异步下发消息
      * @param order
      */
-    @Async
     public void asynchronousSendMessage(BizOrder order,String cpMc){
         payInfo.debug("邀请码生成成功，下发微信通知---");
         try {
@@ -192,12 +228,11 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
     /**
      * 异步生成邀请号码
-     * @param yhZsyqm
-     * @param yhZsyqmImg
-     * @param userName
-     * @param order
+     * @param yhZsyqm   邀请码
+     * @param yhZsyqmImg    邀请码生成的图片地址
+     * @param userName      用户名称
+     * @param order         这个字段不需要，直接传null
      */
-    @Async
     public void asynchronousOperate(String yhZsyqm, String yhZsyqmImg, String userName,BizOrder order){
         try {
 

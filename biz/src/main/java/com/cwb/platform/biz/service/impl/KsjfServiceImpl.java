@@ -8,6 +8,8 @@ import com.cwb.platform.biz.model.BizKsYk;
 import com.cwb.platform.biz.service.KsYkService;
 import com.cwb.platform.biz.service.KsjfService;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.util.AsyncEventBusUtil;
+import com.cwb.platform.biz.util.SendWechatMsgEvent;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -50,7 +52,8 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
     private String wxDomain;
     @Autowired
     private WechatService wechatService;
-
+   @Autowired
+    private AsyncEventBusUtil asyncEventBusUtil;
     @Override
     protected Mapper<BizKsJf> getBaseMapper() {
         return entityMapper;
@@ -199,6 +202,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         msg.setTemplateId(examMsgId);
         msg.setUrl(wxDomain);
         msg.setData(data);
+        asyncEventBusUtil.post(new SendWechatMsgEvent(msg));
         try {
             String res = wechatService.sendTemplateMsg(msg);
             log.info("sendMsg result :", res);

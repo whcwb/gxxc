@@ -27,6 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.Subscribe;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
@@ -47,6 +49,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -81,6 +84,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Autowired
     private BizUserMapper userMapper;
 
+    AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
+    public PtyhServiceImpl() {
+        eventBus.register(this);
+    }
     //
     @Value("${appSendSMSRegister:app_sendSMS_register}")
     private String appSendSMSRegister;
@@ -713,6 +720,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhBm(entity.getYhBm());//用户别名
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhXb(entity.getYhXb());//用户性别
+        yhSfyjz="0";
+        if(StringUtils.isNotEmpty(entity.getYhSfyjz())){
+            yhSfyjz=entity.getYhSfyjz();
+        }
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
         newEntity.setYhZt("0");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhZtMs("");//用户驾照状态不能为空
@@ -1061,11 +1072,22 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             userService.updateJlId(ids, jlId);
             entityMapper.updateJlFp(ids,"该学员于："+DateUtils.getNowTime()+" 分配给教练员："+users.getYhXm()+"");
         }
-
-        this.wxSendMessage(ids,jlId);
+        Map<String,Object>map =new HashMap<>();
+        map.put("ids",ids);
+        map.put("jlId",jlId);
+        eventBus.post(map);
         return ApiResponse.success(ids);
     }
-
+    @Subscribe
+    public  void sendObject(Map<String,Object> map){
+        payInfo.debug("进入异步通知开始 Async begin---");
+        try {
+            List<String> ids= (List<String>) map.get("ids");
+            String jlId= (String) map.get("jlId");
+            this.wxSendMessage(ids,jlId);
+        }catch (Exception e){}
+        payInfo.debug("进入异步通知开始 Async END---");
+    }
     /**
      * 分配学员-下发微信消息
      * @param ids
@@ -1075,7 +1097,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     public void wxSendMessage(List<String> ids,String jlId){
         SysYh user=getCurrentUser();
         String jlMessage="教练您好，为您分配了"+ids.size()+"位学员。请您及时联系！";//给教练下发的记录
-        payInfo.debug("下发消息--------------------");
+        payInfo.debug("分配学员-下发消息--------------------");
         try {
             BizJl jlMsage=jlService.findById(jlId);
             BizPtyh appJlUser=ptyhService.findById(jlId);
@@ -1122,7 +1144,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 }catch (Exception e){}
                 payInfo.debug("sendMsg result :", res);
             }
-        }catch (Exception e){}
+        }catch (Exception e){
+            payInfo.debug(String.valueOf(e));
+        }
+        payInfo.debug("分配学员-下发消息 END--------------------");
     }
     /**
      * 下发短信

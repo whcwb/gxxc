@@ -13,4 +13,11 @@ public class SendWechatMsgEvent {
         this.data = data;
     }
 
+    public WxMpTemplateMessage getData() {
+        return data;
+    }
+
+    public void setData(WxMpTemplateMessage data) {
+        this.data = data;
+    }
 }

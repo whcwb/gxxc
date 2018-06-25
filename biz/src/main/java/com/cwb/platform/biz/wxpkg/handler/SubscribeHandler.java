@@ -2,6 +2,7 @@ package com.cwb.platform.biz.wxpkg.handler;
 
 import com.cwb.platform.biz.wxpkg.budiler.ImageBuilder;
 import com.cwb.platform.biz.wxpkg.budiler.TextBuilder;
+import com.cwb.platform.sys.service.ZdxmService;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
@@ -56,27 +57,25 @@ public class SubscribeHandler extends AbstractHandler {
 			wodefuwu.setKey("wodefuwu");
 			wodefuwu.setName("我要学车");
 			wodefuwu.setType(WxConsts.MenuButtonType.VIEW);
-			wodefuwu.setUrl("http://xclm.xxpt123.com/wx");
+			wodefuwu.setUrl("http://www.520xclm.com/wx");
 			wxButtons.add(wodefuwu);
 
 			wxMenu.setButtons(wxButtons);
 			// 设置菜单
 			weixinService.getMenuService().menuCreate(wxMenu);
-//
-//			WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
-//			item.setDescription("description");
-//			item.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529838597564&di=315b4a41d85819536f135758457c3ed2&imgtype=0&src=http%3A%2F%2Fpic1.16pic.com%2F00%2F07%2F66%2F16pic_766152_b.jpg");
-//			item.setTitle("title");
-//			item.setUrl("http://xclm.xxpt123.com/wx");
-//
-//			WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
-//					.fromUser(wxMessage.getToUser())
-//					.toUser(wxMessage.getFromUser())
-//					.addArticle(item)
-//					.build();
 
+			WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
+			item.setDescription("您已成为520学车联盟的学员，您的培训流程已启动，请注意接听客服电话。我们会及时安排您的培训流程！");
+			item.setPicUrl("http://www.520xclm.com:8001/wechatImg.gif");
+			item.setTitle("感谢关注");
+			item.setUrl("http://www.520xclm.com/wx");
 
-			return new TextBuilder().build("感谢关注", wxMessage, weixinService);
+			WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
+					.fromUser(wxMessage.getToUser())
+					.toUser(wxMessage.getFromUser())
+					.addArticle(item)
+					.build();
+			return m;
 		} catch (Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}

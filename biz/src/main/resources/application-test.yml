@@ -48,7 +48,7 @@ wechat:
   token: xclmToken
   #设置微信公众号的EncodingAESKey
   aesKey: FaCUOuOXFk2l80CMkrtALclKwFVaFxa4UOzKpBOFNlk
-  domain: http://xclm.xxpt123.com
+  domain: http://www.520xclm.com
   tradeType: JSAPI
   pay:
     appId: wxb01394ea85904296
