@@ -15,8 +15,10 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
+import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysYhJs;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
@@ -27,6 +29,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.Subscribe;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
@@ -46,7 +50,9 @@ import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -63,6 +69,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Value("${debug_test}")
     private String debugTest;
+
+
+    @Value("${logo_file_url}")
+    private String logoFileUrl;
+    @Value("${qr_code_file_url}")
+    private String qrCodeFileUrl;
+
 
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
     private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -81,6 +94,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Autowired
     private BizUserMapper userMapper;
 
+    @Autowired
+    private SysYhJsMapper userRoleMapper;
+
+
+    AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
+    public PtyhServiceImpl() {
+        eventBus.register(this);
+    }
     //
     @Value("${appSendSMSRegister:app_sendSMS_register}")
     private String appSendSMSRegister;
@@ -713,7 +734,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhBm(entity.getYhBm());//用户别名
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhXb(entity.getYhXb());//用户性别
-        newEntity.setYhSfyjz(entity.getYhSfyjz());//用户驾照状态不能为空
+        yhSfyjz="0";
+        if(StringUtils.isNotEmpty(entity.getYhSfyjz())){
+            yhSfyjz=entity.getYhSfyjz();
+        }
+        newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
         newEntity.setYhZt("0");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhZtMs("");//用户驾照状态不能为空
 
@@ -1061,11 +1086,22 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             userService.updateJlId(ids, jlId);
             entityMapper.updateJlFp(ids,"该学员于："+DateUtils.getNowTime()+" 分配给教练员："+users.getYhXm()+"");
         }
-
-        this.wxSendMessage(ids,jlId);
+        Map<String,Object>map =new HashMap<>();
+        map.put("ids",ids);
+        map.put("jlId",jlId);
+        eventBus.post(map);
         return ApiResponse.success(ids);
     }
-
+    @Subscribe
+    public  void sendObject(Map<String,Object> map){
+        payInfo.debug("进入异步通知开始 Async begin---");
+        try {
+            List<String> ids= (List<String>) map.get("ids");
+            String jlId= (String) map.get("jlId");
+            this.wxSendMessage(ids,jlId);
+        }catch (Exception e){}
+        payInfo.debug("进入异步通知开始 Async END---");
+    }
     /**
      * 分配学员-下发微信消息
      * @param ids
@@ -1075,7 +1111,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     public void wxSendMessage(List<String> ids,String jlId){
         SysYh user=getCurrentUser();
         String jlMessage="教练您好，为您分配了"+ids.size()+"位学员。请您及时联系！";//给教练下发的记录
-        payInfo.debug("下发消息--------------------");
+        payInfo.debug("分配学员-下发消息--------------------");
         try {
             BizJl jlMsage=jlService.findById(jlId);
             BizPtyh appJlUser=ptyhService.findById(jlId);
@@ -1122,7 +1158,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 }catch (Exception e){}
                 payInfo.debug("sendMsg result :", res);
             }
-        }catch (Exception e){}
+        }catch (Exception e){
+            payInfo.debug(String.valueOf(e));
+        }
+        payInfo.debug("分配学员-下发消息 END--------------------");
     }
     /**
      * 下发短信
@@ -1354,5 +1393,77 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizJl coach = jlService.findById(user.getYhJlid());
         RuntimeCheck.ifNull(coach,"未找到教练");
         return ApiResponse.success(coach);
+    }
+
+    /**
+     * 管理员给用户创建二维码
+     * @param userId
+     * @return
+     */
+    public ApiResponse<String> creatorUserQRCode(String userId){
+        SysYh sysUser=getCurrentUser();
+        //检查本人是否有权限操作此接口
+        SysYhJs yhJs=new SysYhJs();
+        yhJs.setYhId(sysUser.getYhid());
+        List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
+        RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
+        List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+        RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+
+        RuntimeCheck.ifBlank(userId,"请选择用户");
+        BizPtyh ptyh=entityMapper.selectByPrimaryKey(userId);
+        if (ptyh == null) return ApiResponse.fail("学员不存在!");
+        String yhZsyqm=ptyh.getYhZsyqm();
+        String yhZsyqmImg=ptyh.getYhZsyqmImg();
+        String userName=ptyh.getYhXm();
+        if(StringUtils.isEmpty(yhZsyqm)){
+            yhZsyqm=genId();
+        }
+        if(StringUtils.isEmpty(yhZsyqmImg)){
+            yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/"+yhZsyqm + ".png";
+        }
+        try {
+            payInfo.debug("手工生成邀请码，手工生成邀请图片---");
+            File logoFile = new File(logoFileUrl);
+
+            File file=new File(qrCodeFileUrl + yhZsyqmImg);
+            if (!file.exists()  && !file.isDirectory()){
+                file.mkdirs();
+            }
+            String note = "您的好友：" + userName + " 邀请您";
+            note="";//经理说，生成的图片不需要增加文件。所以这行去掉
+            ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg), yhZsyqm, note);
+            payInfo.debug("用户：" + userName + "。生成邀请码成功。异步---");
+        }catch (Exception e){return ApiResponse.fail();}
+
+        return ApiResponse.success();
+
+    }
+    public ApiResponse<String> removeUserInfo(String userId){
+        SysYh sysUser=getCurrentUser();
+        //检查本人是否有权限操作此接口
+        SysYhJs yhJs=new SysYhJs();
+        yhJs.setYhId(sysUser.getYhid());
+        List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
+        RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
+        List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+        RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+
+        RuntimeCheck.ifBlank(userId,"请选择用户");
+        BizPtyh ptyh=entityMapper.selectByPrimaryKey(userId);
+        if (ptyh == null) return ApiResponse.fail("学员不存在!");
+        RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getDdSfjx(),"1"),"用户已缴费，不能进行此操作");
+
+        BizWj wj=new BizWj();
+        wj.setYhId(userId);
+        wjMapper.delete(wj);
+
+        BizUser bizUser=new BizUser();
+        bizUser.setYhId(userId);
+        userMapper.delete(bizUser);
+
+        entityMapper.deleteByPrimaryKey(userId);
+
+        return ApiResponse.success();
     }
 }

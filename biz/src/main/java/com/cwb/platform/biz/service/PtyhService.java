@@ -70,4 +70,8 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> validateCode(String code);
 
     ApiResponse<BizJl> getStudentCoach(String yhId);
+
+    ApiResponse<String> creatorUserQRCode(String userId);
+
+    ApiResponse<String> removeUserInfo(String userId);
 }

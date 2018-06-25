@@ -112,6 +112,23 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
 
     }
 
+    /**
+     * 手工创建生成邀请码
+     */
+    @PostMapping("/creatorUserQRCode")
+    public ApiResponse<String> creatorUserQRCode(String userId){
+        return service.creatorUserQRCode(userId);
+    }
+
+    /**
+     * 删除APP用户
+     */
+    @PostMapping("/removeUserInfo")
+    public ApiResponse<String> removeUserInfo(String userId){
+        return service.removeUserInfo(userId);
+    }
+
+
 
 
 
