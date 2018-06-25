@@ -5,6 +5,14 @@
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
         	<search-items :parent="v"></search-items>
+            <Button type="info" @click="exportData">
+                <Icon type="ios-download-outline"></Icon>
+            </Button>
+            <Tooltip content="批量导入" placement="top">
+                <Button type="success" @click="componentName='batchImport'">
+                    <Icon type="arrow-return-left"></Icon>
+                </Button>
+            </Tooltip>
         </Row>
         <Row style="position: relative;">
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -19,10 +27,11 @@
 <script>
 	import audit from './audit'
 	import confirm from './confirm'
+    import batchImport from './batchImport'
 
     export default {
         name: 'tx',
-        components: {confirm,audit},
+        components: {confirm,audit,batchImport},
         data() {
             return {
                 v:this,
@@ -84,6 +93,14 @@
             this.util.initTable(this)
         },
         methods: {
+            exportData(){
+                let params = {
+                    exportType:'ptyh',
+                    cols:'用户名称,提现方式,提现金额,提现时间,提现状态,银行卡号,开户行,提现姓名',
+                    keys:'yhMc,ttFs,ttJe,ttSj,ttZt,ttYhkh,ttKhh,ttXm'
+                }
+                window.open(this.apis.exportData+"?exportType=tx&cols="+params.cols+"&keys="+params.keys);
+            }
         }
     }
 </script>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -43,6 +44,12 @@ public ApiResponse<List<BizTx>> pager(BizTx entity, Page<BizTx> pager){
        return service.updateTxzt(bizTx);
    }
 
-
+    /**
+     * 上传excel文件，批量导入体现
+     */
+    @PostMapping("/batchImport")
+    public ApiResponse<List<String>> batchImport(String filePath) throws IOException {
+        return service.batchImport(filePath);
+    }
 
 }
