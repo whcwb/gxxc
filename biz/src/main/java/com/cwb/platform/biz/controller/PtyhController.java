@@ -104,13 +104,30 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
 
     /**
      * 教练-分配学员接口
-     * 1
+     * jlType  0、受理专员 1、科目一受理专员 2、科目二受理专员 3、科目一受理专员
      */
     @PostMapping("/assignStudents")
-    public ApiResponse<List<String>> assignStudents(@RequestParam(name = "yhIds") String yhIds,@RequestParam(name = "jlid") String jlId){
-        return service.assignStudents(yhIds, jlId);
+    public ApiResponse<List<String>> assignStudents(@RequestParam(name = "yhIds") String yhIds,@RequestParam(name = "jlid") String jlId,@RequestParam(name = "jlType") String jlType){
+        return service.assignStudents(yhIds, jlId,jlType);
 
     }
+
+    /**
+     * 手工创建生成邀请码
+     */
+    @PostMapping("/creatorUserQRCode")
+    public ApiResponse<String> creatorUserQRCode(String userId){
+        return service.creatorUserQRCode(userId);
+    }
+
+    /**
+     * 删除APP用户
+     */
+    @PostMapping("/removeUserInfo")
+    public ApiResponse<String> removeUserInfo(String userId){
+        return service.removeUserInfo(userId);
+    }
+
 
 
 

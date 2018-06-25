@@ -13,17 +13,27 @@ import com.cwb.platform.biz.service.ZhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
+import com.cwb.platform.sys.model.SysZdlm;
+import com.cwb.platform.sys.model.SysZdxm;
+import com.cwb.platform.sys.service.ZdlmService;
+import com.cwb.platform.sys.service.ZdxmService;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.ExcelParams;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.ExcelUtil;
+import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> implements TxService{
@@ -37,8 +47,45 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     private ZhService zhService;
     @Autowired
     private YhkService yhkService;
+    @Autowired
+    private ZdxmService zdxmService;
+    @Value("${staticPath}")
+    private String staticPath;
+
+    @Override
+    public List<String> getSpecialCols() {
+        return Arrays.asList("ttFs","ttJe","ttZt","ttShzt");
+    }
 
 
+
+    @Override
+    public List<Map<String, String>> getSpecialVals(List<BizTx> list) {
+        List<Map<String,SysZdxm>> mapList = new ArrayList<>(3);
+        String[] codes = new String[]{"ZDCLK0047","ZDCLK0048","ZDCLK0049"};
+        for (String code : codes) {
+            List<SysZdxm> txFsList = zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm,code);
+            RuntimeCheck.ifEmpty(txFsList,"未找到字典");
+            Map<String,SysZdxm> map = txFsList.stream().collect(Collectors.toMap(SysZdxm::getZddm,p->p));
+            mapList.add(map);
+        }
+
+        List<Map<String,String>> data = new ArrayList<>();
+        for (BizTx tx : list) {
+            Map<String,String> map = new HashMap<>();
+            SysZdxm txFs = mapList.get(0).get(tx.getTtFs());
+            SysZdxm txZt = mapList.get(1).get(tx.getTtZt());
+            SysZdxm txShZt = mapList.get(2).get(tx.getTtShzt());
+            Double txJe = MathUtil.div(tx.getTtJe(),100);
+
+            map.put("ttFs",txFs == null ? "" : (txFs.getZdmc() == null ? "-" : txFs.getZdmc()));
+            map.put("ttZt",txZt == null ? "" : (txZt.getZdmc() == null ? "-" : txZt.getZdmc()));
+            map.put("ttShzt",txShZt == null ? "" : (txShZt.getZdmc() == null ? "-" : txShZt.getZdmc()));
+            map.put("ttJe",txJe.toString());
+            data.add(map);
+        }
+        return data;
+    }
 
     @Override
     protected Mapper<BizTx> getBaseMapper() {
@@ -228,6 +275,38 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         return ApiResponse.success();
     }
 
+    @Override
+    public ApiResponse<List<String>> batchImport(String filePath) {
+        ApiResponse<List<String>> result = new ApiResponse<>();
+        List<List<String>> data = ExcelUtil.getData(staticPath+filePath);
+        if (data.size() < 2){
+            result.setMessage("文件格式有误，请重新上传");
+            result.setCode(100);
+            return result;
+        }
+
+
+//        List<String> head = data.get(0);
+
+//        List<BizTx> txList = new ArrayList<>(data.size());
+        data = data.subList(1,data.size());
+        String now = DateUtils.getNowTime(); // 当前时间 2018-06-25 00:00:00
+        for (List<String> d : data) {
+            String yhmc = d.get(0); // 用户名称
+            String txje = d.get(1); // 体现金额
+            String yhkh =d.get(2); // 卡号
+            String yhkhh = d.get(3); //开户行
+            BizTx tx = new BizTx();
+            tx.setYhMc(yhmc);
+            tx.setTtJe(MathUtil.mul(new Double(txje),100));
+            tx.setId(genId());
+            tx.setTtSj(now);
+            tx.setTtYhkh(yhkh);
+            tx.setTtKhh(yhkhh);
+            entityMapper.insertSelective(tx);
+        }
+        return result;
+    }
 
 
 }

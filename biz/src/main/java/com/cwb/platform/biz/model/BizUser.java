@@ -87,13 +87,51 @@ public class BizUser implements Serializable {
     @Column(name = "XY_ZT")
     private String xyZt;
 
+    /**
+     * 科目一
+     */
+    @Column(name = "YH_JLID1")
+    private String yhJlid1;
+    /**
+     * 科目二
+     */
+    @Column(name = "YH_JLID2")
+    private String yhJlid2;
 
-
+    /**
+     * 科目三
+     */
+    @Column(name = "YH_JLID3")
+    private String yhJlid3;
 
     @Transient
     private Map<String,Object> map;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhJlid1() {
+        return yhJlid1;
+    }
+
+    public void setYhJlid1(String yhJlid1) {
+        this.yhJlid1 = yhJlid1;
+    }
+
+    public String getYhJlid2() {
+        return yhJlid2;
+    }
+
+    public void setYhJlid2(String yhJlid2) {
+        this.yhJlid2 = yhJlid2;
+    }
+
+    public String getYhJlid3() {
+        return yhJlid3;
+    }
+
+    public void setYhJlid3(String yhJlid3) {
+        this.yhJlid3 = yhJlid3;
+    }
 
     public Map<String, Object> getMap() {
         return map;

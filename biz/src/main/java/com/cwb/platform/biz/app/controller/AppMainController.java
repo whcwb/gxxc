@@ -298,7 +298,7 @@ public class AppMainController {
 	 */
 	@RequestMapping(value="/zjupload")
 	@ResponseBody
-		public ApiResponse<String> uploadImg(@RequestParam("file") MultipartFile file,@RequestParam("fileType") String fileType) {
+		public ApiResponse<String> uploadImg(@RequestParam("file") MultipartFile file,@RequestParam("fileType") String fileType,@RequestParam("userId") String userId) {
 		Map<String,String > retMap= new HashMap<String,String>();//返回值
 		String targetPath= DateUtils.getToday().replaceAll("-","");//生成目录
 		String fileName = file.getOriginalFilename();//获取上传的文件名
@@ -314,6 +314,7 @@ public class AppMainController {
 			e.printStackTrace();
 		}
 		wjService.tailorSubjectImg(filePath+fileName);
+		redisDao.boundValueOps("zjupload_"+userId+"_"+fileType).set(path, 1, TimeUnit.DAYS);
 		return ApiResponse.success(path);
 	}
 	/**
