@@ -146,7 +146,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         }
         if(entity.getDdZftd().equals(("2"))){
             String openId=request.getHeader("openid");
-            RuntimeCheck.ifTrue(StringUtils.isEmpty(openId),"OPEN_ID不能为空");
+            RuntimeCheck.ifTrue(StringUtils.isEmpty(openId),"支付创建失败，请稍后尝试");
             entity.setOpenId(openId);
         }
         //验证产品Id，是否有效
