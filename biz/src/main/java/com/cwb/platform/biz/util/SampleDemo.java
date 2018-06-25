@@ -121,7 +121,6 @@ public class SampleDemo {
      * @return
      */
     public static Boolean tailorSubjectImg(String imgUrl){
-
         Boolean ret=false;
         if(StringUtils.isEmpty(imgUrl)){
             return ret;
@@ -162,7 +161,6 @@ public class SampleDemo {
 
         bufferedimage=ImgUtils.cropImage(bufferedimage, Math.toIntExact(map.get("left")),Math.toIntExact(map.get("top")),
                 Math.toIntExact(map.get("left"))+Math.toIntExact(map.get("width")),Math.toIntExact(map.get("top"))+Math.toIntExact(map.get("height")));
-
         try {
             ImageIO.write(bufferedimage, "jpg", new File(imgUrl));    //输出裁剪图片
         } catch (IOException e) {
