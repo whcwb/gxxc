@@ -15,8 +15,10 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
+import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysYhJs;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
@@ -48,6 +50,7 @@ import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +70,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Value("${debug_test}")
     private String debugTest;
 
+
+    @Value("${logo_file_url}")
+    private String logoFileUrl;
+    @Value("${qr_code_file_url}")
+    private String qrCodeFileUrl;
+
+
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
     private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     @Autowired
@@ -83,6 +93,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private UserService userService;
     @Autowired
     private BizUserMapper userMapper;
+
+    @Autowired
+    private SysYhJsMapper userRoleMapper;
+
 
     AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
     public PtyhServiceImpl() {
@@ -1379,5 +1393,50 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizJl coach = jlService.findById(user.getYhJlid());
         RuntimeCheck.ifNull(coach,"未找到教练");
         return ApiResponse.success(coach);
+    }
+
+    /**
+     * 管理员给用户创建二维码
+     * @param userId
+     * @return
+     */
+    public ApiResponse<String> creatorUserQRCode(String userId){
+        SysYh sysUser=getCurrentUser();
+        //检查本人是否有权限操作此接口
+        SysYhJs yhJs=new SysYhJs();
+        yhJs.setYhId(sysUser.getYhid());
+        List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
+        RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
+        List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+        RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+
+        RuntimeCheck.ifBlank(userId,"请选择用户");
+        BizPtyh ptyh=entityMapper.selectByPrimaryKey(userId);
+        if (ptyh == null) return ApiResponse.fail("学员不存在!");
+        String yhZsyqm=ptyh.getYhZsyqm();
+        String yhZsyqmImg=ptyh.getYhZsyqmImg();
+        String userName=ptyh.getYhXm();
+        if(StringUtils.isEmpty(yhZsyqm)){
+            yhZsyqm=genId();
+        }
+        if(StringUtils.isEmpty(yhZsyqmImg)){
+            yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/"+yhZsyqm + ".png";
+        }
+        try {
+            payInfo.debug("手工生成邀请码，手工生成邀请图片---");
+            File logoFile = new File(logoFileUrl);
+
+            File file=new File(qrCodeFileUrl + yhZsyqmImg);
+            if (!file.exists()  && !file.isDirectory()){
+                file.mkdirs();
+            }
+            String note = "您的好友：" + userName + " 邀请您";
+            note="";//经理说，生成的图片不需要增加文件。所以这行去掉
+            ZXingCode.drawLogoQRCode(logoFile, new File(qrCodeFileUrl + yhZsyqmImg), yhZsyqm, note);
+            payInfo.debug("用户：" + userName + "。生成邀请码成功。异步---");
+        }catch (Exception e){return ApiResponse.fail();}
+
+        return ApiResponse.success();
+
     }
 }
