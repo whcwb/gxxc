@@ -7,6 +7,8 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 
+import java.util.List;
+
 public interface TxService extends BaseService<BizTx,java.lang.String>{
     /**
      * 更新审核状态
@@ -18,4 +20,6 @@ public interface TxService extends BaseService<BizTx,java.lang.String>{
     ApiResponse<String> updateTxzt(BizTx bizTx);
 
     ApiResponse<String> saveUserDraw(Double ttJe, String yhkid, BizYhk bizYhk, BizPtyh user);
+
+    ApiResponse<List<String>> batchImport(String filePath);
 }

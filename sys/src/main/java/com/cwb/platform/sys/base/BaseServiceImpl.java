@@ -280,7 +280,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
 
     public List<List<String>> getSheetData(ExcelParams params) {
         LimitedCondition example = getQueryCondition();
-        fillCondition(example);
+        fillPagerCondition(example);
         List<T> list = findByCondition(example);
         return getSheetData(list,params);
     }
