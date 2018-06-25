@@ -12,7 +12,7 @@ wechatUtil.sign = '';
 wechatUtil.code = '';
 wechatUtil.openid = '';
 wechatUtil.nonceStr = randomString(16);
-wechatUtil.baseUrl = 'http://xclm.xxpt123.com:8080/biz/';
+wechatUtil.baseUrl = urls.url+':8080/biz/';
 wechatUtil.authLoginUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+wechatUtil.appId+'&redirect_uri='+urls.url+'/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect';
 
 wechatUtil.afterReady = null;
@@ -29,7 +29,8 @@ wechatUtil.getCode = ()=>{
 }
 wechatUtil.getOpenid = (code,callback)=>{
     $.ajax({
-        url:wechatUtil.baseUrl+urls.wechat.getOpenid+"?code="+code,
+        // url:wechatUtil.baseUrl+urls.wechat.getOpenid+"?code="+code,
+        url:urls.url+':8080/biz'+urls.wechat.getOpenid+"?code="+code,
         type:'get',
         success:function(res){
             console.log(res);
@@ -45,7 +46,8 @@ wechatUtil.getOpenid = (code,callback)=>{
 
 wechatUtil.initConfig = ()=>{
     let curl = location.href.split('#')[0];
-  let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl)+'&nonceStr='+wechatUtil.nonceStr;
+  // let url = wechatUtil.baseUrl+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl)+'&nonceStr='+wechatUtil.nonceStr;
+  let url = urls.url+':8080/biz'+urls.wechat.getJsApiSign+"?&timestamp="+wechatUtil.timestamp+"&url="+encodeURIComponent(curl)+'&nonceStr='+wechatUtil.nonceStr;
   $.ajax({
     url:url,
     type:'get',

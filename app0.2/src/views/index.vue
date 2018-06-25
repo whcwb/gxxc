@@ -43,22 +43,41 @@
     name: "index-page",
     data(){
         return{
-          loadShow:true
+          loadShow:true,
+          timer:-1,
+          loading : this.$loading({
+            lock: true,
+            text: 'Loading',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+          })
         }
     },
     created(){
-      this.openFullScreen2()
-      let authCode = this.wechatUtil.getQueryString("code");
-      if (!authCode){
-          this.wechatUtil.getCode();
-      }else{
-          this.wechatUtil.vueParent = this;
-          this.wechatUtil.getOpenid(authCode,(res)=>{
-              localStorage.setItem("openid",res);
-              sessionStorage.setItem("ISLOGIN",true);
-              this.wechatUtil.initConfig();
-          });
-      }
+      var v = this
+      v.loading
+
+      // let authCode = this.wechatUtil.getQueryString("code");
+      // if (!authCode){
+      //     this.wechatUtil.getCode();
+      //
+      //
+      //     v.loadColse(true)
+      // }else{
+      //     this.wechatUtil.vueParent = this;
+      //     this.wechatUtil.getOpenid(authCode,(res)=>{
+      //         localStorage.setItem("openid",res);
+      //         sessionStorage.setItem("ISLOGIN",true);
+      //         this.wechatUtil.initConfig();
+      //
+      //         v.loadColse(false)
+      //     });
+      // }
+
+      this.timer =  setTimeout(() => {
+        v.loading.close();
+        v.loadShow=false;
+      }, 1000*1.5);
     },
     methods:{
       loca(){
@@ -72,10 +91,17 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         });
-        setTimeout(() => {
+        this.timer =  setTimeout(() => {
           loading.close();
           v.loadShow=false;
         }, 1000*2.5);
+      },
+      loadColse(typ){
+        if(typ){
+          this.loadShow=false;
+        }
+        clearTimeout(this.timer);
+        this.loading.close();
       }
     }
   }

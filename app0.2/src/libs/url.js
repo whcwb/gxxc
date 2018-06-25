@@ -1,4 +1,4 @@
-let ajaxUrl = "http://xclm.xxpt123.com";
+let ajaxUrl = "http://www.520xclm.com";
 // let ajaxUrl = "http://127.0.0.1"
 //   let ajaxUrl = "http://192.168.31.228"
 module.exports = {
