@@ -37,7 +37,7 @@
         <div style="margin-left: 0.15rem">
           <el-button
             v-show="!soltTimeShow"
-            style="background-color: #f2b121"
+            style=""
             type="success" @click="getPhoneCode">获取验证码</el-button>
           <el-button
             v-show="soltTimeShow"
@@ -117,7 +117,7 @@
             if(v.soltTime==0){
               clearInterval(interval)
               v.soltTimeShow = !v.soltTimeShow
-              v.soltTime=10
+              v.soltTime=120
             }else {
               v.soltTime -= 1
             }
