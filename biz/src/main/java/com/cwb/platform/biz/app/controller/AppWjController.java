@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,12 +93,13 @@ public class AppWjController extends AppUserBaseController {
         return ApiResponse.success(retlise);
     }
 
-    @RequestMapping("zjck")
+    @RequestMapping(value="zjck", method={RequestMethod.GET}, produces={MediaType.IMAGE_JPEG_VALUE})
     public void fileDownload(HttpServletResponse response,@RequestParam(name = "fileType") String fileType){
         BizPtyh bizPtyh= getAppCurrentUser();
         String path = "";
         if(!StringUtils.equals(bizPtyh.getYhZt(),"1")){
-            path =  redisDao.boundValueOps("zjupload_"+bizPtyh.getId()+"_"+fileType).get();
+            path =  credentialsPath+redisDao.boundValueOps("zjupload_"+bizPtyh.getId()+"_"+fileType).get();
+            path=path.replaceAll("//","/");
         }else{
             BizWj bizWj=new BizWj();
             bizWj.setYhId(bizPtyh.getId());
@@ -107,7 +109,7 @@ public class AppWjController extends AppUserBaseController {
                 path=credentialsPath+list.get(0).getWjTpdz();
             }
         }
-
+        System.out.println("path:"+path);
 
         //获取网站部署路径(通过ServletContext对象)，用于确定下载文件位置，从而实现下载
         if(StringUtils.isNotEmpty(path)){

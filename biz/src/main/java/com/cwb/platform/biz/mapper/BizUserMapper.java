@@ -28,5 +28,29 @@ public interface BizUserMapper extends Mapper<BizUser> {
             "</foreach>" +
             "</script>")
     List<String> getYhIds(@Param("list") List<String> ids);
+    @Update("<script>" +
+            " UPDATE BIZ_USER SET YH_JLID1 = #{jlId}" +
+            " where YH_ID IN " +
+            " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
+            " #{item} " +
+            "</foreach>" +
+            "</script>")
+    void updateJlid1(List<String> list, String jlId);
+    @Update("<script>" +
+            " UPDATE BIZ_USER SET YH_JLID2 = #{jlId}" +
+            " where YH_ID IN " +
+            " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
+            " #{item} " +
+            "</foreach>" +
+            "</script>")
+    void updateJlid2(List<String> list, String jlId);
 
+    @Update("<script>" +
+            " UPDATE BIZ_USER SET YH_JLID3 = #{jlId}" +
+            " where YH_ID IN " +
+            " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
+            " #{item} " +
+            "</foreach>" +
+            "</script>")
+    void updateJlid3(List<String> list, String jlId);
 }

@@ -314,7 +314,7 @@ public class AppMainController {
 			e.printStackTrace();
 		}
 		wjService.tailorSubjectImg(filePath+fileName);
-		redisDao.boundValueOps("zjupload_"+userId+"_"+fileType).set(filePath+fileName, 1, TimeUnit.DAYS);
+		redisDao.boundValueOps("zjupload_"+userId+"_"+fileType).set(path, 1, TimeUnit.DAYS);
 		return ApiResponse.success(path);
 	}
 	/**
