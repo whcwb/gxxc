@@ -54,7 +54,7 @@
                     {title:'提现审核状态',key:'ttShzt',dict:'ZDCLK0049'},
                     {title:'银行卡号',key:'ttYhkh'},
                     {title:'开户行',key:'ttKhh'},
-                    {title:'提现姓名',key:'ttXm'},
+                    {title:'提现姓名',key:'txXm'},
                     {
                         title: '操作',
                         key: 'action',
@@ -97,7 +97,7 @@
                 let params = {
                     exportType:'ptyh',
                     cols:'用户名称,提现方式,提现金额,提现时间,提现状态,银行卡号,开户行,提现姓名',
-                    keys:'yhMc,ttFs,ttJe,ttSj,ttZt,ttYhkh,ttKhh,ttXm'
+                    keys:'yhMc,ttFs,ttJe,ttSj,ttZt,ttYhkh,ttKhh,txXm'
                 }
                 window.open(this.apis.exportData+"?exportType=tx&cols="+params.cols+"&keys="+params.keys);
             }
