@@ -2,6 +2,7 @@ package com.cwb.platform.biz.wxpkg.handler;
 
 import com.cwb.platform.biz.wxpkg.budiler.ImageBuilder;
 import com.cwb.platform.biz.wxpkg.budiler.TextBuilder;
+import com.cwb.platform.sys.service.ZdxmService;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
@@ -62,7 +63,6 @@ public class SubscribeHandler extends AbstractHandler {
 			wxMenu.setButtons(wxButtons);
 			// 设置菜单
 			weixinService.getMenuService().menuCreate(wxMenu);
-
 
 			WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
 			item.setDescription("点击查看");
