@@ -291,13 +291,16 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
 
 //        List<BizTx> txList = new ArrayList<>(data.size());
         data = data.subList(1,data.size());
+        String now = DateUtils.getNowTime(); // 当前时间 2018-06-25 00:00:00
         for (List<String> d : data) {
-            String yhmc = d.get(0);
-            String txje = d.get(1);
+            String yhmc = d.get(0); // 用户名称
+            String txje = d.get(1); // 体现金额
+            String yhkh =d.get(2);
             BizTx tx = new BizTx();
             tx.setYhMc(yhmc);
             tx.setTtJe(new Double(txje));
             tx.setId(genId());
+            tx.setTtSj(now);
             entityMapper.insertSelective(tx);
         }
         return result;

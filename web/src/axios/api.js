@@ -7,7 +7,7 @@ module.exports = {
     getImgUrl:'http://www.520xclm.com:8001/',
     url: BASE_URL,
     //图片上传地址
-    UPLOAD: 'http://www.520xclm:8080/biz' + '/upload',
+    UPLOAD: 'http://192.168.31.35:9086' + '/upload',
     UPLOAD_PRIVATE: 'http://www.520xclm.com:8080/biz' + '/app/zjupload',
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
