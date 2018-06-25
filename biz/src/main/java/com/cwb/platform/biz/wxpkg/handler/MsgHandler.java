@@ -37,9 +37,9 @@ public class MsgHandler extends AbstractHandler {
 			
 		}
 		WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
-		item.setDescription("点击查看");
+		item.setDescription("");
 		item.setPicUrl("http://www.520xclm.com:8001/wechatImg.gif");
-		item.setTitle("感谢关注");
+		item.setTitle("点击查看");
 		item.setUrl("http://www.520xclm.com/wx");
 
 		WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
