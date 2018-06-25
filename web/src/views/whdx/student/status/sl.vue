@@ -13,6 +13,9 @@
         						:styles="{top: '20px'}">
         			<Row>
         				<form-items :parent="v"></form-items>
+						<Col span="12">
+							<Input v-if="formItem.slType == '4'"  v-model="formItem.lsh" placeholder="请输入流水号"></Input>
+						</Col>
         			</Row>
 					<Row>
 						<Steps :current="currentStep" size="small">

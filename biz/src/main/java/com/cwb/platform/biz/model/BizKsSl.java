@@ -69,8 +69,21 @@ public class BizKsSl implements Serializable {
      */
     @Column(name = "CJSJ")
     private String cjsj;
+    /**
+     * 流水号
+     */
+    @Column(name = "LSH")
+    private String lsh;
 
     private static final long serialVersionUID = 1L;
+
+    public String getLsh() {
+        return lsh;
+    }
+
+    public void setLsh(String lsh) {
+        this.lsh = lsh;
+    }
 
     /**
      * @return ID
