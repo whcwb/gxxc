@@ -713,7 +713,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhBm(entity.getYhBm());//用户别名
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhXb(entity.getYhXb());//用户性别
-        newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
+        newEntity.setYhSfyjz(entity.getYhSfyjz());//用户驾照状态不能为空
         newEntity.setYhZt("0");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhZtMs("");//用户驾照状态不能为空
 

@@ -1,17 +1,19 @@
 //网络请求地址前缀
-// let BASE_URL = 'http://xclm.xxpt123.com:8080/biz/';
-let BASE_URL = 'http://127.0.0.1:9086';
+// let BASE_URL = 'http://www.520xclm.com:8080/biz/';
+let BASE_URL = 'http://192.168.31.35:9086';
 // let BASE_URL = 'http://192.168.31.35:9086';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
 module.exports = {
-    getImgUrl:'http://xclm.xxpt123.com:8001/',
+    getImgUrl:'http://www.520xclm.com:8001/',
     url: BASE_URL,
     //图片上传地址
-    UPLOAD: 'http://xclm.xxpt123.com:8080/biz' + '/upload',
-    UPLOAD_PRIVATE: 'http://xclm.xxpt123.com:8080/biz' + '/app/zjupload',
+    UPLOAD: 'http://www.520xclm:8080/biz' + '/upload',
+    UPLOAD_PRIVATE: 'http://www.520xclm.com:8080/biz' + '/app/zjupload',
     STATIC_PATH: BASE_URL + ':8765/server/',
     VIDEO_PATH:'',
     exportData:BASE_URL+'/pub/export',
+
+    getHandleStatus:'api/kssl/getHandleStatus', // 获取受理状态信息
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
         GET_MENU_TREE:'/api/gn/getMenuTree',

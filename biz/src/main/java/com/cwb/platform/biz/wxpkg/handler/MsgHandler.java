@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.wxpkg.handler;
 
+import com.cwb.platform.biz.wxpkg.budiler.ImageBuilder;
 import com.cwb.platform.biz.wxpkg.budiler.TextBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,21 +36,21 @@ public class MsgHandler extends AbstractHandler {
 		} catch (JsonProcessingException e) {
 			
 		}
-//
 //		WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
 //		item.setDescription("description");
-//		item.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529838597564&di=315b4a41d85819536f135758457c3ed2&imgtype=0&src=http%3A%2F%2Fpic1.16pic.com%2F00%2F07%2F66%2F16pic_766152_b.jpg");
+//		item.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529906813742&di=d79fc4654e119c6d2ce6422f8348932f&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01867c57fca5c3a84a0e282b666b41.gif");
 //		item.setTitle("title");
-//		item.setUrl("http://xclm.xxpt123.com/wx");
+//		item.setUrl("http://www.520xclm.com/wx");
 //
 //		WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
-//				.fromUser(wxMessage.getFromUser())
-//				.toUser(wxMessage.getToUser())
+//				.fromUser(wxMessage.getToUser())
+//				.toUser(wxMessage.getFromUser())
 //				.addArticle(item)
 //				.build();
-//
 //		return m;
 
+//		return new ImageBuilder().build("http://xclm.xxpt123.com:8001/123456789.png",wxMessage,weixinService);
+//
 		return new TextBuilder().build("敬请期待", wxMessage, weixinService);
 
 	}

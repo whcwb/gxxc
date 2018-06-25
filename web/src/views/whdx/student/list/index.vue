@@ -80,6 +80,7 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
                                 }),
+                                this.util.buildDeleteButton(this,h,params.row.id),
                             ]);
                         }
                     }

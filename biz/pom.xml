@@ -22,7 +22,7 @@
 		  <!--<artifactId>alipay-sdk-java</artifactId>-->
 		  <!--<version>3.0.1</version>-->
 	  <!--</dependency>-->
-		<!--身份证识别-->
+		<!--身份证识别  主体识别-->
 	  <dependency>
 		  <groupId>com.baidu.aip</groupId>
 		  <artifactId>java-sdk</artifactId>

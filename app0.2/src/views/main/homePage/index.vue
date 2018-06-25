@@ -249,7 +249,7 @@
               </div>
               <div class="box_row_100">
                 <div class="num">
-                  0人
+                  {{usermess.userInviteCount | userInviteCount}} 人
                 </div>
                 <div class="txt">
                   已邀请
@@ -354,6 +354,12 @@
           }
           return val
         },
+        userInviteCount(val){
+          if (val) {
+            return val
+          }
+            return 0
+        }
       },
       watch:{
         dropTxt:function (n,o) {

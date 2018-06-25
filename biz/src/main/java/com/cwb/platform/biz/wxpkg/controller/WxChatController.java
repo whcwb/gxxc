@@ -7,6 +7,7 @@ import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +49,31 @@ public class WxChatController {
 
 	@Value("${wechat.domain}")
 	private String domainUrl;
+
+	@RequestMapping("testImg")
+	@ResponseBody
+	public String testImg(){
+		this.logger.info("\n接收微信请求：[signature=[{}], timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ");
+
+		WxMpXmlOutMessage m = WxMpXmlOutMessage.TEXT().content("test").fromUser("gh_bfffc815b286")
+				.toUser("oRPNG0uKqXvvKg23RtAxZZyiuqBI").build();
+
+//		WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
+//		item.setDescription("description");
+//		item.setPicUrl("http://xclm.xxpt123.com:8001/123456789.png");
+//		item.setTitle("title");
+//		item.setUrl("http://xclm.xxpt123.com/wx");
+//
+//		WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
+//				.fromUser("oRPNG0uKqXvvKg23RtAxZZyiuqBI")
+//				.toUser("gh_bfffc815b286")
+//				.addArticle(item)
+//				.build();
+//		this.logger.debug("\n发送内容明文：\n{} ", m.toString());
+		String out = m.toEncryptedXml(this.wxService.getWxMpConfigStorage());
+		this.logger.debug("\n组装回复信息：{}", out);
+		return out;
+	}
 
 
 	@RequestMapping("getOpenid")
