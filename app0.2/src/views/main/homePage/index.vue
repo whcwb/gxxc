@@ -289,7 +289,7 @@
 
 
                 </mt-tab-item>
-                <mt-tab-item id="3">价格</mt-tab-item>
+                <!--<mt-tab-item id="3">价格</mt-tab-item>-->
               </mt-navbar>
             </div>
             <div class="xlcList" style="margin-top: 0.1rem">

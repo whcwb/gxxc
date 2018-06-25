@@ -71,4 +71,6 @@ module.exports = {
   GET_FORGET_RESETPWD:'/app/resetpwd',//重置密码
 
   XLC:'/app/cd/xlcpager',//训练场列表
+
+  JSZZP:'/app/ptyh/updatesfyjz',//驾驶证
 }

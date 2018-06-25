@@ -1,5 +1,34 @@
 <style lang="less">
   #payMoney{
+    position: relative;
+    #agree{
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #ffffffc2;
+      z-index: 100;
+      /*padding:0.2rem;*/
+      .agreeMess{
+        background-color: #fff;
+        .tit{
+          color: #f75d42;
+          font-size: 0.65rem;
+          padding-top: 0.3rem;
+          font-weight: 700;
+        }
+        .fonttit{
+          font-weight: 700;
+          font-size: 0.35rem;
+        }
+        .fontsty{
+          font-size: 0.25rem;
+          text-indent:0.3rem;
+          margin-top: 0.1rem;
+        }
+      }
+    }
     .md-popup-title-bar{
       height: 1rem;
     }
@@ -21,9 +50,52 @@
   }
 </style>
 <template>
-  <div class="box">
-    <div class="box-row"style="background-color: #2d8cf0;
-    height: 1rem;;line-height: 1.1rem;text-align: center">
+  <div class="box_col" id="payMoney">
+    <div id="agree" v-show="agreeShow">
+      <div class="agreeMess box_col">
+        <div style="text-align: center;position: relative">
+          <div class="tit">用户缴费协议</div>
+        </div>
+        <div class="box_col_auto" style="padding: 0.35rem 0.5rem;">
+            <div>
+              <div class="fonttit">缴费协议</div>
+              <div class="fontsty">
+                00 本协议的订立、执行和解释及争议的解决均应适用中华人民共和国法律。
+              </div>
+              <div class="fontsty">
+                00 如本协议中的任何条款无论因何种原因完全或部分无效或不具有执行力，本协议的其余条款仍应有效并且有约束力。
+              </div>
+              <div class="fontsty">
+                00 本协议解释权及修订权归天弘腾创科技有限公司所有。
+              </div>
+            </div>
+
+
+            <!--<div style="text-align: center;padding: 0.15rem">-->
+              <!--<input type="checkbox" v-model="checkboxVal">-->
+              <!--<span style="font-size: 0.35rem">-->
+                  <!--我已阅读并同意《<span style="color: red">缴费协议</span>》-->
+              <!--</span>-->
+            <!--</div>-->
+        </div>
+        <div class="box-row">
+          <div class="box_row_100" style="padding: 0.2rem">
+            <el-button type="success" round
+                       @click="checkboxVal = true"
+              style="width: 100%;font-size: 0.4rem"
+            >同意</el-button>
+          </div>
+          <div class="box_row_100" style="padding: 0.2rem">
+            <el-button type="info" round
+                       @click="$router.push({name:'Home'})"
+                       style="width: 100%;font-size: 0.4rem"
+            >拒绝</el-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-row"style="background-color: #2d8cf0;height: 1rem;;line-height: 1.1rem;text-align: center">
           <div style="height: 1rem;width: 1rem;
           line-height: 0.6rem;
           text-align: center;color: #ededed"
@@ -83,13 +155,14 @@
 
 <script>
   import {Button, Radio, Field, FieldItem, InputItem, Switch, Cashier} from 'mand-mobile'
-  import { Toast } from 'mint-ui';
+  import { Toast ,Checklist } from 'mint-ui';
   export default {
     name: 'cashier-demo',
     /* DELETE */
     height: 100,
     /* DELETE */
     components: {
+      [Checklist.name]: Checklist,
       [Button.name]: Button,
       [Radio.name]: Radio,
       [Field.name]: Field,
@@ -143,7 +216,16 @@
           //   value: '005',
           // },
         ],
-        payMess:{}
+        payMess:{},
+        agreeShow:true,
+        checkboxVal:false
+      }
+    },
+    watch:{
+      checkboxVal:function (n,o) {
+        if(n){
+          this.agreeShow = false
+        }
       }
     },
     created(){

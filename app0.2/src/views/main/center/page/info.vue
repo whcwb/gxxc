@@ -46,6 +46,19 @@
                 <mt-cell title="昵称" :value="userMess.yhBm"
                          style="border-bottom: 1px #e9eaec solid;"></mt-cell>
               </div>
+              <div @click="">
+                <mt-cell title="驾驶证" :value="userMess.yhBm"
+                         style="border-bottom: 1px #e9eaec solid;">
+                  {{userMess.yhSfyjz | yhSfyjz}}
+                  <!--<el-switch-->
+                    <!--v-model="switchVal"-->
+                    <!--active-color="#13ce66"-->
+                    <!--active-value="开"-->
+                    <!--inactive-color="#ff4949"-->
+                    <!--inactive-value="关">-->
+                  <!--</el-switch>-->
+                </mt-cell>
+              </div>
               <div @click="compname='word'">
                 <mt-cell title="修改密码" value="****"></mt-cell>
               </div>
@@ -84,11 +97,25 @@
           imgup,
         },
         filters:{
+          yhSfyjz(val){
+            switch (val) {
+              case '0':
+                return '无驾驶证';
+                break;
+              case '1':
+                return '有驾驶证';
+                break;
+              default:
+                return "无驾驶证";
+                break;
+            }
+          }
         },
         data(){
           return{
             compname:'',
             userMess:this.$store.state.app.userMess,
+            switchVal:''
           }
         },
         created(){

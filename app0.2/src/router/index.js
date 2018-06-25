@@ -18,10 +18,8 @@ router.beforeEach((to, from, next) => {
   let ISLOGIN = sessionStorage.getItem("ISLOGIN");
 
   let userToken = localStorage.getItem("userMess");
-  //if(openid!=null && userToken){
-    // ISLOGIN=true;
-  // }
-
+  //if(openid!=null && userToken){ ISLOGIN=true;}
+  // ISLOGIN=true;
   //   console.log(openicd);
   //
   // 如果没有openid，则需要获取

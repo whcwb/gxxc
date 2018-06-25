@@ -9,7 +9,7 @@
   <div class="box_col">
     <el-upload
       class="upload-demo"
-      :action="'http://xclm.xxpt123.com:8080/biz/app/zjupload'+'?fileType='+fileType"
+      :action="apis.url+':8080/biz/app/zjupload'+'?fileType='+fileType +'&&userId='+$store.state.app.userMess.id"
       :multiple="false"
       :show-file-list="false"
       :limit="1"
