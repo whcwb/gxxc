@@ -209,13 +209,15 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
 
     public String getFilePath(String userId, String fileType){
         SysYh sysUser=getCurrentUser();
-        //检查本人是否有权限操作此接口
-        SysYhJs yhJs=new SysYhJs();
-        yhJs.setYhId(sysUser.getYhid());
-        List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
-        RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
-        List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
-        RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+        if(!StringUtils.equals(sysUser.getLx(),"su")){
+            //检查本人是否有权限操作此接口
+            SysYhJs yhJs=new SysYhJs();
+            yhJs.setYhId(sysUser.getYhid());
+            List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
+            RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
+            List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+            RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+        }
 
         BizWj bizWj=new BizWj();
         bizWj.setYhId(userId);

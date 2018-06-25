@@ -1402,13 +1402,15 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      */
     public ApiResponse<String> creatorUserQRCode(String userId){
         SysYh sysUser=getCurrentUser();
-        //检查本人是否有权限操作此接口
-        SysYhJs yhJs=new SysYhJs();
-        yhJs.setYhId(sysUser.getYhid());
-        List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
-        RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
-        List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
-        RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+        if(StringUtils.equals(sysUser.getLx(),"su")){
+            //检查本人是否有权限操作此接口
+            SysYhJs yhJs=new SysYhJs();
+            yhJs.setYhId(sysUser.getYhid());
+            List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
+            RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
+            List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+            RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+        }
 
         RuntimeCheck.ifBlank(userId,"请选择用户");
         BizPtyh ptyh=entityMapper.selectByPrimaryKey(userId);
@@ -1441,13 +1443,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
     public ApiResponse<String> removeUserInfo(String userId){
         SysYh sysUser=getCurrentUser();
-        //检查本人是否有权限操作此接口
-        SysYhJs yhJs=new SysYhJs();
-        yhJs.setYhId(sysUser.getYhid());
-        List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
-        RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
-        List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
-        RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+        if(!StringUtils.equals(sysUser.getLx(),"su")){
+            //检查本人是否有权限操作此接口
+            SysYhJs yhJs=new SysYhJs();
+            yhJs.setYhId(sysUser.getYhid());
+            List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
+            RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
+            List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+            RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+        }
+
 
         RuntimeCheck.ifBlank(userId,"请选择用户");
         BizPtyh ptyh=entityMapper.selectByPrimaryKey(userId);
