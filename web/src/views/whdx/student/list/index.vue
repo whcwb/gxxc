@@ -36,6 +36,7 @@
                 v:this,
                 SpinShow: true,
                 apiRoot:this.apis.student,
+                deleteUrl:this.apis.removeUserInfo,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -80,7 +81,18 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
                                 }),
-                                this.util.buildDeleteButton(this,h,params.row.id),
+                                this.util.buildButton(this,h,'info','close','删除',()=>{
+                                    swal({
+                                        title: "是否删除数据?",
+                                        text: "",
+                                        icon: "warning",
+                                        buttons:['取消','确认'],
+                                    }).then((willDelete) => {
+                                        if (willDelete) {
+                                            this.deleteUser(params.row.id);
+                                        }
+                                    });
+								}),
                             ]);
                         }
                     }
@@ -102,6 +114,16 @@
         methods: {
             selectionChange(e){
 				this.choosedData = e;
+			},
+			deleteUser(id){
+				this.$http.post(this.apis.removeUserInfo,{userId:id}).then((res)=>{
+				    if (res.code == 200){
+				        this.$Message.success(res.message);
+				        this.util.getPageData(this);
+					}else{
+				        this.$Message.error(res.message);
+					}
+				})
 			},
             allot(){
                 if (this.choosedData.length == 0){

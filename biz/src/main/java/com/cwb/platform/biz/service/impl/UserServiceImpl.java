@@ -48,9 +48,16 @@ public class UserServiceImpl extends BaseServiceImpl<BizUser,java.lang.String> i
     private PtyhServiceImpl ptyhService;
 
     @Override
-    public void updateJlId(List<String> list, String jlId) {
-
-        entityMapper.updateJlid(list, jlId);
+    public void updateJlId(List<String> list, String jlId,String jlType) {
+        if(StringUtils.equals("0",jlType)){
+            entityMapper.updateJlid(list, jlId);
+        }else if(StringUtils.equals("1",jlType)){
+            entityMapper.updateJlid1(list, jlId);
+        }else if(StringUtils.equals("2",jlType)){
+            entityMapper.updateJlid2(list, jlId);
+        }else if(StringUtils.equals("3",jlType)){
+            entityMapper.updateJlid3(list, jlId);
+        }
 
     }
 

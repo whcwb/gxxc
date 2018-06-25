@@ -11,4 +11,6 @@ public interface WjService extends BaseService<BizWj,java.lang.String>{
     boolean ocrRecognition(Map<String, String> retMap, String fileType,String filePath,String path);
 
     void tailorSubjectImg(String s);
+
+    String getFilePath(String userId, String fileType);
 }

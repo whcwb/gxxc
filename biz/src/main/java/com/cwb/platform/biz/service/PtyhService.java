@@ -48,7 +48,7 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     ApiResponse<List<BizPtyh>> getCoaches(String name, String phone, String area, int pageNum, int pageSize);
 
-    ApiResponse<List<String>> assignStudents(String yhId, String jlId);
+    ApiResponse<List<String>> assignStudents(String yhId, String jlId,String jlType);
 
     ApiResponse<List<BizPtyh>> getBizPtyhList(Page<BizPtyh> ptyhPage);
 

@@ -4,10 +4,10 @@ let ajaxUrl = "http://www.520xclm.com";
 module.exports = {
   url:ajaxUrl,
   wechat:{
-      getCode:'/wechat/getCode',
-      getOpenid:'/wechat/getOpenid',
-      getAccessToken:'/wechat/getAccessToken',
-      getJsApiSign:'/wechat/getJsApiSign',
+      getCode:'/wechat/message/getCode',
+      getOpenid:'/wechat/message/getOpenid',
+      getAccessToken:'/wechat/message/getAccessToken',
+      getJsApiSign:'/wechat/message/getJsApiSign',
   },
   ajaxUrl: ajaxUrl + ':',
 

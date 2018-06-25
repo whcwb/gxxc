@@ -7,7 +7,11 @@ import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.biz.util.SampleDemo;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
+import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.util.exception.RuntimeCheck;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,19 +20,30 @@ import com.google.common.eventbus.Subscribe;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> implements WjService{
     @Autowired
     private BizWjMapper entityMapper;
+    @Autowired
+    private SysYhJsMapper userRoleMapper;
+
+    //证件上传地址
+    @Value("${credentialsPath}")
+    private String credentialsPath;
+
+
     @Autowired
     private StringRedisTemplate redisDao;
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
@@ -189,5 +204,29 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
     @Subscribe
     public  void sendGps(String imgUrl){
         SampleDemo.tailorSubjectImg(imgUrl);
+    }
+
+
+    public String getFilePath(String userId, String fileType){
+        SysYh sysUser=getCurrentUser();
+        if(!StringUtils.equals(sysUser.getLx(),"su")){
+            //检查本人是否有权限操作此接口
+            SysYhJs yhJs=new SysYhJs();
+            yhJs.setYhId(sysUser.getYhid());
+            List<SysYhJs> userJsList=userRoleMapper.select(yhJs);
+            RuntimeCheck.ifNull(userJsList,"本人无限制进行此操作");
+            List<String> userJsLis = userJsList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+            RuntimeCheck.ifFalse(userJsLis.contains("000000"),"本人无限制进行此操作");
+        }
+
+        BizWj bizWj=new BizWj();
+        bizWj.setYhId(userId);
+        bizWj.setWjSx(fileType);
+        List<BizWj> list=this.findByEntity(bizWj);
+        String path = "";
+        if(list!=null&&list.size()>0){
+            path=credentialsPath+list.get(0).getWjTpdz();
+        }
+        return path;
     }
 }

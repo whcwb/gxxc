@@ -78,12 +78,11 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
             SysZdxm txShZt = mapList.get(2).get(tx.getTtShzt());
             Double txJe = MathUtil.div(tx.getTtJe(),100);
 
-            map.put("ttFs",txFs.getZdmc() == null ? "-" : txFs.getZdmc());
-            map.put("ttZt",txZt.getZdmc() == null ? "-" : txZt.getZdmc());
-            map.put("ttShzt",txShZt.getZdmc() == null ? "-" : txShZt.getZdmc());
+            map.put("ttFs",txFs == null ? "" : (txFs.getZdmc() == null ? "-" : txFs.getZdmc()));
+            map.put("ttZt",txZt == null ? "" : (txZt.getZdmc() == null ? "-" : txZt.getZdmc()));
+            map.put("ttShzt",txShZt == null ? "" : (txShZt.getZdmc() == null ? "-" : txShZt.getZdmc()));
             map.put("ttJe",txJe.toString());
             data.add(map);
-
         }
         return data;
     }

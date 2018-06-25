@@ -175,6 +175,13 @@ public class BizPtyh implements Serializable {
      */
     @Column(name = "YH_JLSH")
     private String yhJlsh;
+
+    /**
+     * 学员状态
+     */
+    @Column(name = "YH_XY_TYPE")
+    private String yhxytype;
+
     /**
      * 手机验证码
      */
@@ -226,6 +233,14 @@ public class BizPtyh implements Serializable {
     private long userInviteCount;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhxytype() {
+        return yhxytype;
+    }
+
+    public void setYhxytype(String yhxytype) {
+        this.yhxytype = yhxytype;
+    }
 
     public String getJlId() {
         return jlId;

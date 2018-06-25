@@ -13,7 +13,7 @@ public interface UserService extends BaseService<BizUser,java.lang.String>{
 
 
 
-    void updateJlId(List<String> list, String jlId);
+    void updateJlId(List<String> list, String jlId,String jlType);
 
     List<String> getYhIds(List<String> ids);
 
