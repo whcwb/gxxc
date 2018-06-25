@@ -5,11 +5,14 @@ import com.baidu.aip.ocr.AipOcr;
 import com.cwb.platform.biz.mapper.BizWjMapper;
 import com.cwb.platform.biz.model.BizWj;
 import com.cwb.platform.biz.service.WjService;
+import com.cwb.platform.biz.util.SampleDemo;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.Subscribe;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -30,6 +34,10 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
     private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+    AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
+    public WjServiceImpl() {
+        eventBus.register(this);
+    }
 
     //设置APPID/AK/SK
     public static final String APP_ID = "sE9HAgpK2XKsrKiuorzCoory";
@@ -170,5 +178,16 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
 
         }
         return retType;
+    }
+
+    public void tailorSubjectImg(String imgUrl){
+
+        if (StringUtils.isNotEmpty(imgUrl)){
+            eventBus.post(imgUrl);
+        }
+    }
+    @Subscribe
+    public  void sendGps(String imgUrl){
+        SampleDemo.tailorSubjectImg(imgUrl);
     }
 }

@@ -3,7 +3,6 @@ package com.cwb.platform.biz.app.controller;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.biz.util.DloadImgUtil;
-import com.cwb.platform.biz.util.WechatUtils;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.bean.UserPassCredential;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -314,6 +313,7 @@ public class AppMainController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		wjService.tailorSubjectImg(filePath+fileName);
 		return ApiResponse.success(path);
 	}
 	/**
