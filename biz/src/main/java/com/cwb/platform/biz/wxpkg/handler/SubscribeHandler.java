@@ -66,7 +66,7 @@ public class SubscribeHandler extends AbstractHandler {
 
 			WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
 			item.setDescription("点击查看");
-			item.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1529906813742&di=d79fc4654e119c6d2ce6422f8348932f&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01867c57fca5c3a84a0e282b666b41.gif");
+			item.setPicUrl("http://www.520xclm.com:8001/wechatImg.gif");
 			item.setTitle("感谢关注");
 			item.setUrl("http://www.520xclm.com/wx");
 
