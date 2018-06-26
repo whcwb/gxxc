@@ -61,9 +61,18 @@
                        @click="$router.push({path:'/Home'})">返回</el-button>
           </div>
           <div class="box_row_100"style="margin: 0.2rem">
-            <el-button type="success" round
-                       style="width: 100%"
-                       @click="$router.push({path:'/pay/payIndex'})">缴费</el-button>
+            <el-button type="primary" round
+                       v-if="userMess.ddSfjx=='0'&&usermess.yhZt=='1'"
+                       @click="$router.push({name:'pay'})"
+            >缴费</el-button>
+            <el-button  type="success" round
+                        style="width: 100%"
+                       v-else-if="userMess.ddSfjx=='1'"
+                       @click="okjf"
+            >已缴费</el-button>
+            <!--<el-button type="success" round-->
+                       <!--style="width: 100%"-->
+                       <!--@click="$router.push({path:'/pay/payIndex'})">缴费</el-button>-->
           </div>
         </div>
       </div>
@@ -186,7 +195,9 @@
 
             })
           },
-
+          okjf() {
+            Toast('您已缴费')
+          },
 
 
           uploadMess(){

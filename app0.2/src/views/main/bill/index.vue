@@ -84,46 +84,9 @@
                   style="width: 100%"
                   src="static/img/bill.png" alt="">
               </div>
-              <div class="box_row_100"
-                   style="border-bottom: #949494 solid 1px;
-                          margin-right: 0.2rem">
-                  <!--<div class="box-row" style="padding-top: 0.25rem;-->
-                          <!--color: #505050;-->
-                          <!--font-size: 0.2rem;-->
-                          <!--font-weight: 700">-->
-                    <!--<div class="box_row_100">-->
-                      <!--{{item.mxlx | mxlx}}-->
-                    <!--</div>-->
-                    <!--<div>-->
-                      <!--{{item.zjFs | zjFs}}-->
-                      <!--{{item.zjJe/100}}-->
-                    <!--</div>-->
-                  <!--</div>-->
-
-
-                  <!--<div class="box-row"-->
-                    <!--style="padding-top: 0.15rem;font-size: 0.2rem;-->
-                    <!--color: #949494;-->
-                    <!--font-weight: 600">-->
-                    <!--<div class="box_row_100">-->
-                        <!--{{item.cjsj}}-->
-                    <!--</div>-->
-                    <!--<div style="text-align: right">-->
-                      <!--<div v-show="item.zjZt!=0">-->
-                        <!--<div>{{item.zjZt | zjZt}}</div>-->
-                        <!--<div v-show="item.zjZt==2">{{item.zjBz}}</div>-->
-                      <!--</div>-->
-                      <!--<div v-show="item.zjZt==0">-->
-                        <!--<div>{{item.txShZt | txShZt}}</div>-->
-                        <!--<div v-show="item.txShZt==2">{{item.zjBz}}</div>-->
-                      <!--</div>-->
-                    <!--</div>-->
-                  <!--</div>-->
-
-              </div>
             </div>
           </div>
-          <div v-show="pageList==0" style="font-size: 0.6rem;font-weight: 700;color: #999999;text-align: center;line-height: 2.8rem">
+          <div v-show="pageList.length==0" style="font-size: 0.6rem;font-weight: 700;color: #999999;text-align: center;line-height: 2.8rem">
             暂无账单数据
           </div>
         </div>

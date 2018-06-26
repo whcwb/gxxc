@@ -89,6 +89,11 @@
               </div>
             </div>
           </div>
+          <div v-if="list.length==0" style="text-align: center">
+            <span style="font-size: 0.25rem;font-weight: 700">
+              无团队信息
+            </span>
+          </div>
       </div>
 </template>
 

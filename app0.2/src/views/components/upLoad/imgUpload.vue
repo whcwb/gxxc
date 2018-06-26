@@ -76,15 +76,19 @@
           text: '文件上传中……',
           spinnerType: 'fading-circle'
         });
-        const isJPG = file.type === 'image/png';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        let isJPG = false
+        if((file.type === 'image/jpeg') || (file.type === 'image/png')){
+          isJPG = true
+        }
+        // const isJPG = file.type === 'image/png';
+        // const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isJPG) {
           this.$message.error('上传头像图片只能是 JPG 格式!');
         }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        // return isJPG && isLt2M;
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过 2MB!');
+        // }
+        return isJPG;
       }
     }
   }
