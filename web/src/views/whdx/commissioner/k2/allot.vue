@@ -53,10 +53,7 @@
                 apiRoot:this.apis.student,
 				readonly: false,
                 form: {
-                    yhZt:'1',
-                    yhLx:"2",
-                    zt:'',
-                    byBysjInRange:'',
+                    yhLx:"k2",
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

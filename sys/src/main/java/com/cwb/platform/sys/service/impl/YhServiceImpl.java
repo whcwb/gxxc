@@ -185,11 +185,11 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 	public ApiResponse<String> updateEntity(SysYh user) {
 		RuntimeCheck.ifBlank(user.getZh(),"账号不能为空");
 		RuntimeCheck.ifBlank(user.getXm(),"姓名不能为空");
-		RuntimeCheck.ifBlank(user.getJgdm(),"请选择机构");
+//		RuntimeCheck.ifBlank(user.getJgdm(),"请选择机构");
 		RuntimeCheck.ifBlank(user.getSjh(),"手机号不能为空");
 		RuntimeCheck.ifFalse(StringUtils.isAlphanumeric(user.getZh()),"登陆名只能是数字和字母组成！");
-		SysJg org = jgService.findByOrgCode(user.getJgdm());
-		RuntimeCheck.ifNull(org,"机构不存在");
+//		SysJg org = jgService.findByOrgCode(user.getJgdm());
+//		RuntimeCheck.ifNull(org,"机构不存在");
 
 		LimitedCondition condition= new LimitedCondition(SysYh.class);
 		condition.eq(SysYh.InnerColumn.zh, user.getZh());

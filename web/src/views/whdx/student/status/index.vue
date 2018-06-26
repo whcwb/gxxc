@@ -35,8 +35,6 @@
                     {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '教练姓名',key:'jlXm'},
-                    {title: '教练电话',key:'sjhm'},
                     {
                         title: '操作',
                         key: 'action',
@@ -71,12 +69,11 @@
                 pageData: [],
 				choosedData:[],
                 form: {
-                    ddSfjx:'1',
-                    yhLx:"1",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
+                    zylx:'1'
                 },
 				userType:''
             }

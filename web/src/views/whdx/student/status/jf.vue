@@ -54,6 +54,13 @@
 		},
 		created(){
 		    this.util.initFormModal(this);
+            let userInfo = sessionStorage.getItem('userInfo');
+            this.userType = JSON.parse(userInfo).type;
+            if (this.userType == 'k1' || this.userType == 'k2' || this.userType == 'k3' || this.userType == 'k4'){
+                let km = this.userType.charAt(1);
+                this.formItem.kmId = km;
+                this.formInputs[3].disabled = true;
+            }
 		},
 		methods: {
 		}
