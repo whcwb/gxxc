@@ -2,7 +2,8 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.BizExamPlaceMapper;
 import com.cwb.platform.biz.mapper.BizKsYkMapper;
-import com.cwb.platform.biz.model.*;
+import com.cwb.platform.biz.model.BizExamPlace;
+import com.cwb.platform.biz.model.BizKsYk;
 import com.cwb.platform.biz.service.KsYkService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.util.AsyncEventBusUtil;
@@ -11,17 +12,13 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
-import com.cwb.platform.sys.model.SysZdxm;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
-import com.google.common.eventbus.AsyncEventBus;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
-import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -89,6 +86,12 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         entity.setExamPlaceLng(examPlace.getLng());
         entity.setYhZjhm(ptyh.getYhZjhm());//用户证件号码
         entity.setYhXm(ptyh.getYhXm());//用户姓名
+
+        BizPtyh newPtyh=new BizPtyh();
+        newPtyh.setId(entity.getYhId());
+        newPtyh.setYhXyYkType(entity.getKmCode());
+        ptyhService.update(newPtyh);
+
         sendMsg(entity,ptyh);
         return entityMapper.insertSelective(entity);
     }
