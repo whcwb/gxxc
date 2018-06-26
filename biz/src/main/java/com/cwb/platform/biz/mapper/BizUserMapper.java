@@ -35,7 +35,7 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " #{item} " +
             "</foreach>" +
             "</script>")
-    void updateJlid1(List<String> list, String jlId);
+    void updateJlid1(@Param("list")  List<String> list, @Param("jlId") String jlId);
     @Update("<script>" +
             " UPDATE BIZ_USER SET YH_JLID2 = #{jlId}" +
             " where YH_ID IN " +
@@ -43,7 +43,7 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " #{item} " +
             "</foreach>" +
             "</script>")
-    void updateJlid2(List<String> list, String jlId);
+    void updateJlid2(@Param("list") List<String> list, @Param("jlId") String jlId);
 
     @Update("<script>" +
             " UPDATE BIZ_USER SET YH_JLID3 = #{jlId}" +
@@ -52,5 +52,5 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " #{item} " +
             "</foreach>" +
             "</script>")
-    void updateJlid3(List<String> list, String jlId);
+    void updateJlid3(@Param("list") List<String> list, @Param("jlId") String jlId);
 }
