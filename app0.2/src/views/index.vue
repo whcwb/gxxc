@@ -57,22 +57,22 @@
       var v = this
       v.loading
 
-      // let authCode = this.wechatUtil.getQueryString("code");
-      // if (!authCode){
-      //     this.wechatUtil.getCode();
-      //
-      //
-      //     v.loadColse(true)
-      // }else{
-      //     this.wechatUtil.vueParent = this;
-      //     this.wechatUtil.getOpenid(authCode,(res)=>{
-      //         localStorage.setItem("openid",res);
-      //         sessionStorage.setItem("ISLOGIN",true);
-      //         this.wechatUtil.initConfig();
-      //
-      //         v.loadColse(false)
-      //     });
-      // }
+      let authCode = this.wechatUtil.getQueryString("code");
+      if (!authCode){
+          this.wechatUtil.getCode();
+
+
+          v.loadColse(true)
+      }else{
+          this.wechatUtil.vueParent = this;
+          this.wechatUtil.getOpenid(authCode,(res)=>{
+              localStorage.setItem("openid",res);
+              sessionStorage.setItem("ISLOGIN",true);
+              this.wechatUtil.initConfig();
+
+              v.loadColse(false)
+          });
+      }
 
       this.timer =  setTimeout(() => {
         v.loading.close();

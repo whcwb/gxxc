@@ -27,6 +27,14 @@
                  @handleSuccess="(res)=>{handleSuccess(res,1,'11')}"></imgup>
         </div>
       </div>
+      <div style="text-align: center;padding-top: 0.5rem">
+        <el-switch
+          v-model="switchVal"
+          style="font-size: 0.5rem"
+          active-text="有驾照"
+          inactive-text="无驾照">
+        </el-switch>
+      </div>
       <div @click="" style="padding: 0.3rem 0.1rem">
         <el-button type="primary" @click="uploadMess"
                    style="width: 100%;padding: 0.15rem"
@@ -96,11 +104,37 @@
               zm:'static/home/id_03.png',
               bm:'static/home/id_05.png'
             },
+            switchVal:''
+          }
+        },
+        watch:{
+          switchVal:function (n,o) {
+            if(o==''){
+              return
+            }
+            let a = 0
+            if (n) {
+              a=1
+            }
+            this.$http.post(this.apis.JSZZP,{yhSfyjz:a}).then((res)=>{
+              Toast(res.message)
+            }).catch((err)=>{
+              console.log('');
+            })
+            console.log(n)
           }
         },
         created(){
           this.util.auto(window, document,4)
           this.rz()
+
+        },
+        mounted(){
+          if (this.userMess.yhSfyjz==0){
+            this.switchVal = false
+          }else if(this.userMess.yhSfyjz==1){
+            this.switchVal = true
+          }
         },
         methods:{
           gobak(){
@@ -134,11 +168,13 @@
               if(res.code==200){
                 if(val==0){
                   // v.imgList.zm = 'static/zjsh/sfzzmok.png'
-                  v.imgList.zm = v.apis.getImgUrl+url
+                  // v.imgList.zm = v.apis.getImgUrl+url
+                  v.imgList.zm =v.apis.url +  ":8080/biz/app/wj/zjck?fileType=10"
                   v.form.imgList[val]=url
                 }else if(val==1){
-                  v.imgList.bm = 'static/zjsh/sfzfmok.png'
-                  v.imgList.bm = v.apis.getImgUrl+url
+                  // v.imgList.bm = 'static/zjsh/sfzfmok.png'
+                  // v.imgList.bm = v.apis.getImgUrl+url
+                  v.imgList.bm = v.apis.url +  ":8080/biz/app/wj/zjck?fileType=11"
                   v.form.imgList[val]=url
                 }
               }else {

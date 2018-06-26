@@ -294,12 +294,15 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         for (List<String> d : data) {
             String yhmc = d.get(0); // 用户名称
             String txje = d.get(1); // 体现金额
-            String yhkh =d.get(2);
+            String yhkh =d.get(2); // 卡号
+            String yhkhh = d.get(3); //开户行
             BizTx tx = new BizTx();
             tx.setYhMc(yhmc);
-            tx.setTtJe(new Double(txje));
+            tx.setTtJe(MathUtil.mul(new Double(txje),100));
             tx.setId(genId());
             tx.setTtSj(now);
+            tx.setTtYhkh(yhkh);
+            tx.setTtKhh(yhkhh);
             entityMapper.insertSelective(tx);
         }
         return result;

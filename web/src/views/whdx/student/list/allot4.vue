@@ -10,36 +10,38 @@
 </style>
 <template>
 	<div>
-		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
-				<Tabs>
-					<Tab-pane label="一级" icon="ios-download-outline">
-						<allot1 :item="item"></allot1>
-					</Tab-pane>
-					<Tab-pane label="二级" icon="ios-upload-outline">
-						<allot2 :item="item"></allot2>
-					</Tab-pane>
-					<Tab-pane label="三级" icon="ios-upload-outline">
-						<allot3 :item="item"></allot3>
-					</Tab-pane>
-					<Tab-pane label="四级" icon="ios-upload-outline">
-						<allot4 :item="item"></allot4>
-					</Tab-pane>
-				</Tabs>
+                <Row style="padding-bottom: 16px;">
+                    <search-items :parent="v" :label-with="100"></search-items>
+                </Row>
+                <Row style="position: relative;">
+                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+                </Row>
+                <Row class="margin-top-10 pageSty">
+                    <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
+                          @on-change='pageChange'></Page>
+                </Row>
 			</div>
-		</Modal>
+			<div slot='footer'>
+				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
+				<Button type="primary" @click="confirm">确定</Button>
+			</div>
 	</div>
 </template>
 
 <script>
-    import allot1 from './allot1'
-    import allot2 from './allot2'
-    import allot3 from './allot3'
-    import allot4 from './allot4'
+    import fromData from '../../teacher/list/formData'
 	export default {
 		name: 'byxxForm',
-		components:{allot1,allot2,allot3,allot4},
+		components:{fromData},
+        props:{
+            item:{
+                type:Object,
+                default:function(){
+                    return {};
+                }
+            }
+        },
 		data() {
 			return {
 			    v:this,
@@ -76,14 +78,14 @@
                 pageData: [],
                 ruleInline:{
 				},
-                item:{
+                formItem:{
 
                 },
 			}
 		},
 		created(){
             this.util.initTable(this)
-		    this.item = this.$parent.choosedItem
+		    this.formItem = this.item
 		},
 		methods: {
             pageChange(event) {
