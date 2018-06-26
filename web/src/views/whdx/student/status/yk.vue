@@ -52,7 +52,7 @@
 				},
                 formInputs:[
                     {label:'用户',prop:'yhId',type:'foreignKey',disabled:true},
-                    {label:'科目编码',prop:'kmCode',dict:'ZDCLK0067'},
+                    {label:'科目编码',prop:'kmCode',dict:'ZDCLK0067',excludeDict:excludeKmDict},
                     {label:'考场名称',prop:'examPlaceId',type:'foreignKey'},
                     {label:'预约考试时间',prop:'ykSj',type:'date'},
                     {label:'第一次考试成绩',prop:'cj1',type:''},
@@ -64,9 +64,18 @@
                     examPlaceId:{url:this.apis.examPlace.QUERY,key:'id',val:'name',items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
                 },
+                userType:'',
+                excludeKmDict:['1','2','3','4'],
 			}
 		},
 		created(){
+            let userInfo = sessionStorage.getItem('userInfo');
+            this.userType = JSON.parse(userInfo).type;
+            if (this.userType == 'k1' || this.userType == 'k2' || this.userType == 'k3' || this.userType == 'k4'){
+                let km = this.userType.charAt(1);
+                let index = this.excludeKmDict.indexOf(km);
+			}
+            this.excludeKmDict.splice(index,index + 1,1);
             this.util.initFormModal(this);
 		},
 		methods: {

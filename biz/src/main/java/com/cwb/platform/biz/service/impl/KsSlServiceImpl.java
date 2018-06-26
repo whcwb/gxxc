@@ -5,9 +5,7 @@ import com.cwb.platform.biz.model.BizKsSl;
 import com.cwb.platform.biz.service.KsSlService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.util.AsyncEventBusUtil;
-import com.cwb.platform.biz.util.EventHandler;
 import com.cwb.platform.biz.util.SendWechatMsgEvent;
-import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
@@ -17,10 +15,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
-import com.google.common.eventbus.AsyncEventBus;
-import com.google.common.eventbus.Subscribe;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.lang.StringUtils;
@@ -29,10 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.entity.Example;
 
 import java.text.ParseException;
 import java.util.*;
-import java.util.concurrent.Executors;
 
 /**
  * 学员考试受理信息表
@@ -79,10 +74,11 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
 //        RuntimeCheck.ifBlank(entity.getCode(), "请选择机构");
         RuntimeCheck.ifBlank(entity.getName(), "请确定机构名称");
 
-        RuntimeCheck.ifBlank(entity.getSlType(), "审核状态不能为空");
-        if (org.apache.commons.lang.StringUtils.containsNone(entity.getSlType(), new char[]{'1', '2', '3', '4'})) {
-            RuntimeCheck.ifTrue(true,"请输入正确审核状态");
-        }
+//        RuntimeCheck.ifBlank(entity.getSlType(), "审核状态不能为空");
+//        if (org.apache.commons.lang.StringUtils.containsNone(entity.getSlType(), new char[]{'1', '2', '3', '4'})) {
+//            RuntimeCheck.ifTrue(true,"请输入正确审核状态");
+//        }
+
 
         SysYh user=getCurrentUser();
         entity.setId(genId());
@@ -93,22 +89,52 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         entity.setYhZjhm(ptyh.getYhZjhm());//用户证件号码
         entity.setYhXm(ptyh.getYhXm());//用户姓名
 
+//        确认受理状态
+        Example condition = new Example(BizKsSl.class);
+        condition.and().andEqualTo(BizKsSl.InnerColumn.yhId.name(), entity.getYhId());
+        condition.setOrderByClause(BizKsSl.InnerColumn.slType.desc());
+        List<BizKsSl> list = this.findByCondition(condition);
+        if(list.isEmpty()){
+            entity.setSlType("1");
+        }else if(list.size()>0){
+            String slType=list.get(0).getSlType();
+            if(StringUtils.equals(slType,"1")){
+                slType="2";
+            }else if(StringUtils.equals(slType,"2")){
+                slType="3";
+            }else if(StringUtils.equals(slType,"3")){
+                slType="4";
+            }else if(StringUtils.equals(slType,"4")){
+                RuntimeCheck.ifTrue(true, "该用户已完成受理全流程，不需要再进行此操作");
+            }else{
+                //该用户的受理状态不是1,2,3,4,中的任意一条，所以该数据是错误的数据，不存在的数据。
+                RuntimeCheck.ifTrue(true, "该用户受理数据异常，请联系管理员");
+            }
+            entity.setSlType(slType);
+        }
+        BizPtyh newPtyh=new BizPtyh();
+        newPtyh.setId(entity.getYhId());
+        newPtyh.setYhXySlType(entity.getSlType());
+        ptyhService.update(newPtyh);
+
         // 向微信用户发送消息
         sendMsg(entity,ptyh);
         return entityMapper.insertSelective(entity);
     }
 
+
     private String getSlType(String code){
         if (StringUtils.isEmpty(code))return "";
-        List<SysZdxm> zdxmList = zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm,"ZDCLK0071");
-        for (SysZdxm zdxm : zdxmList) {
-            if (code.equals(zdxm.getZddm())){
-                return zdxm.getZdmc();
-            }
+        Example condition = new Example(SysZdxm.class);
+        condition.and().andEqualTo(SysZdxm.InnerColumn.zddm.name(), code);
+        condition.and().andEqualTo(SysZdxm.InnerColumn.zdlmdm.name(), "ZDCLK0071");
+        List<SysZdxm> zdxmList = zdxmService.findByCondition(condition);
+        if(zdxmList==null||zdxmList.size()==0){
+            return "";
+        }else{
+            return zdxmList.get(0).getZdmc();
         }
-        return "";
     }
-
     private String sendMsg(BizKsSl sl,BizPtyh ptyh){
         if (StringUtils.isEmpty(ptyh.getYhOpenId())){
             log.error("发送微信消息失败，用户openid为空");

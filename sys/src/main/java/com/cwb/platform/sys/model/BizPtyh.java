@@ -177,10 +177,26 @@ public class BizPtyh implements Serializable {
     private String yhJlsh;
 
     /**
-     * 学员状态
+     * 学员受理状态
      */
-    @Column(name = "YH_XY_TYPE")
-    private String yhxytype;
+    @Column(name = "YH_XY_SL_TYPE")
+    private String yhXySlType;
+    /**
+     * 学员约考状态
+     */
+    @Column(name = "YH_XY_YK_TYPE")
+    private String yhXyYkType;
+    /**
+     * 学员分配专员情况
+     0未分配
+     1已分配受理专员
+     2已分配科目一专员
+     3已分配科目二专员
+     4已分配科目三专员
+     */
+    @Column(name = "YH_XY_FPZY_TYPE")
+    private String yhXyFpzyType;
+
 
     /**
      * 手机验证码
@@ -234,12 +250,28 @@ public class BizPtyh implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String getYhxytype() {
-        return yhxytype;
+    public String getYhXyFpzyType() {
+        return yhXyFpzyType;
     }
 
-    public void setYhxytype(String yhxytype) {
-        this.yhxytype = yhxytype;
+    public void setYhXyFpzyType(String yhXyFpzyType) {
+        this.yhXyFpzyType = yhXyFpzyType;
+    }
+
+    public String getYhXySlType() {
+        return yhXySlType;
+    }
+
+    public void setYhXySlType(String yhXySlType) {
+        this.yhXySlType = yhXySlType;
+    }
+
+    public String getYhXyYkType() {
+        return yhXyYkType;
+    }
+
+    public void setYhXyYkType(String yhXyYkType) {
+        this.yhXyYkType = yhXyYkType;
     }
 
     public String getJlId() {

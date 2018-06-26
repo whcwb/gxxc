@@ -49,14 +49,22 @@ public class UserServiceImpl extends BaseServiceImpl<BizUser,java.lang.String> i
 
     @Override
     public void updateJlId(List<String> list, String jlId,String jlType) {
-        if(StringUtils.equals("0",jlType)){
-            entityMapper.updateJlid(list, jlId);
-        }else if(StringUtils.equals("1",jlType)){
-            entityMapper.updateJlid1(list, jlId);
-        }else if(StringUtils.equals("2",jlType)){
-            entityMapper.updateJlid2(list, jlId);
-        }else if(StringUtils.equals("3",jlType)){
-            entityMapper.updateJlid3(list, jlId);
+        if(list!=null&&list.size()>0){
+            if(StringUtils.equals("0",jlType)){
+                entityMapper.updateJlid(list, jlId);
+                ptyhMapper.updateXyfpType(list, "1");
+
+            }else if(StringUtils.equals("1",jlType)){
+                entityMapper.updateJlid1(list, jlId);
+                ptyhMapper.updateXyfpType(list, "2");
+
+            }else if(StringUtils.equals("2",jlType)){
+                entityMapper.updateJlid2(list, jlId);
+                ptyhMapper.updateXyfpType(list, "3");
+            }else if(StringUtils.equals("3",jlType)){
+                entityMapper.updateJlid3(list, jlId);
+                ptyhMapper.updateXyfpType(list, "4");
+            }
         }
 
     }

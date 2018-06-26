@@ -42,4 +42,12 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
             " SELECT IFNULL(SUM(ZJ_JE*ZJ_FS),0) as fymoney FROM BIZ_YJMX WHERE MX_LX='2' AND ZJ_ID=#{ddId} " +
             "</script>")
     String fyMoney(@Param("ddId")  String ddId);
+    @Update("<script>" +
+            " UPDATE BIZ_PTYH SET YH_IXY_SFFP = '1' , YH_XY_FPZY_TYPE = #{type} " +
+            " where ID IN " +
+            " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
+            " #{item} " +
+            "</foreach>" +
+            "</script>")
+    void updateXyfpType(@Param("list")  List<String> list, @Param("type") String type);
 }

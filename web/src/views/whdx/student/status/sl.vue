@@ -13,8 +13,10 @@
         						:styles="{top: '20px'}">
         			<Row>
         				<form-items :parent="v"></form-items>
-						<Col span="12">
-							<Input v-if="formItem.slType == '4'"  v-model="formItem.lsh" placeholder="请输入流水号"></Input>
+						<Col span="12" v-if="currentStep == '3'" >
+							<FormItem prop='lsh' label='流水号'>
+								<Input v-model="formItem.lsh" placeholder="请输入流水号"></Input>
+							</FormItem>
 						</Col>
         			</Row>
 					<Row>
@@ -48,7 +50,7 @@
                     {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'单位名称',prop:'name'},
                     {label:'受理时间',prop:'slSj',type:'date'},
-                    {label:'受理类型',prop:'slType',dict:'ZDCLK0071',type:'dict'},
+                    // {label:'受理类型',prop:'slType',dict:'ZDCLK0071',type:'dict'},
                 ],
                 ruleInline:{
 				},

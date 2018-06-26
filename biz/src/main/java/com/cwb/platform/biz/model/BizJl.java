@@ -116,6 +116,20 @@ public class BizJl implements Serializable {
     @Transient
     private String yhMm;
 
+    /**
+     * 角色id
+     */
+    @Transient
+    private String jsId;
+
+    public String getJsId() {
+        return jsId;
+    }
+
+    public void setJsId(String jsId) {
+        this.jsId = jsId;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public String getYhMm() {

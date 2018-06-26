@@ -118,7 +118,8 @@
                 }
                 let params = {
                     yhIds:yhIds,
-                    jlid:id
+                    jlid:id,
+                    jlType:0
                 }
                 let v = this;
                 this.$http.post(this.apis.student.assignStudents,params).then((res)=>{

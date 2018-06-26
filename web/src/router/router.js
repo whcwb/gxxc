@@ -194,6 +194,60 @@ export let appRouter = [
 		]
     },
     {
+        path: '/commissioner',
+        icon: 'android-car',
+        name: 'commissioner',
+        meta: {title: '专员管理'},
+        component: Main,
+        children: [
+            {
+                path: 'commissioner-list',
+                icon: 'android-clipboard',
+                name: 'commissioner-list',
+                meta: { title: '专员列表' },
+                component: () => import('@/views/whdx/commissioner/list')
+            },
+            // {
+            //     path: '/commissioner-asign',
+            //     icon: 'android-car',
+            //     name: 'commissioner-asign',
+            //     meta: {title: '专员管理'},
+            //     component: Main,
+            //     children: [
+                    {
+                        path: 'commissioner-handle',
+                        icon: 'android-clipboard',
+                        name: 'commissioner-handle',
+                        meta: { title: '受理专员' },
+                        component: () => import('@/views/whdx/commissioner/handle')
+                    },
+                    {
+                        path: 'commissioner-k1',
+                        icon: 'android-clipboard',
+                        name: 'commissioner-k1',
+                        meta: { title: '科一专员' },
+                        component: () => import('@/views/whdx/commissioner/k1')
+                    },
+                    {
+                        path: 'commissioner-k2',
+                        icon: 'android-clipboard',
+                        name: 'commissioner-k2',
+                        meta: { title: '科二专员' },
+                        component: () => import('@/views/whdx/commissioner/k2')
+                    },
+                    {
+                        path: 'commissioner-k3',
+                        icon: 'android-clipboard',
+                        name: 'commissioner-k3',
+                        meta: { title: '科三专员' },
+                        component: () => import('@/views/whdx/commissioner/k3')
+                    },
+                // ]
+            // },
+
+		]
+    },
+    {
         path: '/coach',
         icon: 'android-car',
         name: 'coach',

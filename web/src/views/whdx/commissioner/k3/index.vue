@@ -1,6 +1,3 @@
-<style lang="less">
-	@import '../../../../styles/common.less';
-</style>
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
@@ -23,14 +20,11 @@
 </template>
 
 <script>
-    import formData from './formData.vue'
-    import sublist from './sublist.vue'
-    import audit from './audit.vue'
     import allot from './allot.vue'
 
     export default {
         name: 'byxxTable',
-        components: {formData,sublist,allot,audit},
+        components: {allot},
         data() {
             return {
                 v:this,
@@ -100,6 +94,8 @@
                 pageData: [],
 				choosedData:[],
                 form: {
+                    yhXySlType:'4',
+                    yhXyYkType :"2",
                     yhLx:"1",
                     byBysjInRange:'',
                     total: 0,
@@ -126,7 +122,6 @@
 				})
 			},
             allot(){
-                console.log('allot');
                 if (this.choosedData.length == 0){
                     this.$Message.error("请选择学员")
 					return;
@@ -141,7 +136,6 @@
                         return;
 					}
 				}
-                console.log('componentName');
 				this.componentName = "allot";
 			},
             pageChange(event) {

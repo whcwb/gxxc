@@ -13,17 +13,14 @@ import com.cwb.platform.biz.service.ZhService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
-import com.cwb.platform.sys.model.SysZdlm;
 import com.cwb.platform.sys.model.SysZdxm;
-import com.cwb.platform.sys.service.ZdlmService;
 import com.cwb.platform.sys.service.ZdxmService;
 import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.util.bean.ExcelParams;
-import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.ExcelUtil;
 import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +29,6 @@ import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -279,32 +275,55 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     public ApiResponse<List<String>> batchImport(String filePath) {
         ApiResponse<List<String>> result = new ApiResponse<>();
         List<List<String>> data = ExcelUtil.getData(staticPath+filePath);
-        if (data.size() < 2){
+
+        List<String> resp  = new ArrayList<>();
+
+        if (CollectionUtils.size(data) < 2){
             result.setMessage("文件格式有误，请重新上传");
             result.setCode(100);
             return result;
         }
-
 
 //        List<String> head = data.get(0);
 
 //        List<BizTx> txList = new ArrayList<>(data.size());
         data = data.subList(1,data.size());
         String now = DateUtils.getNowTime(); // 当前时间 2018-06-25 00:00:00
+
+        int row = 2;  // 初始行为 2
+        int total = data.size();
+        int success = 0;
+        int fail = 0;
+
         for (List<String> d : data) {
-            String yhmc = d.get(0); // 用户名称
-            String txje = d.get(1); // 体现金额
-            String yhkh =d.get(2); // 卡号
-            String yhkhh = d.get(3); //开户行
+            String id = d.get(0); // 提现id
+            String zt = d.get(1); // 提现状态
+            String bz =d.get(2); // 备注
+//            String yhkhh = d.get(3); //开户行
             BizTx tx = new BizTx();
-            tx.setYhMc(yhmc);
-            tx.setTtJe(MathUtil.mul(new Double(txje),100));
-            tx.setId(genId());
-            tx.setTtSj(now);
-            tx.setTtYhkh(yhkh);
-            tx.setTtKhh(yhkhh);
-            entityMapper.insertSelective(tx);
+
+            tx.setId(id);
+            tx.setTtZt(zt);
+            tx.setTtBz(bz);
+
+//            tx.setYhMc(yhmc);
+//            tx.setTtJe(MathUtil.mul(new Double(txje),100));
+//            tx.setId(genId());
+//            tx.setTtSj(now);
+//            tx.setTtYhkh(yhkh);
+//            tx.setTtKhh(yhkhh);
+            ApiResponse<String> response = updateTxzt(tx);
+            if(response.getCode() == 200){  // 更新状态成功
+                success++;
+            }else{
+                fail ++;
+                resp.add("第" + row + "行 ： " + response.getMessage());
+            }
+            row++;
+            result.setResult(resp);
+//            entityMapper.insertSelective(tx);
         }
+        result.setMessage("总共" + total + "行 ， 成功总数 ：" + success + " , 失败总数 ：" + fail);
         return result;
     }
 

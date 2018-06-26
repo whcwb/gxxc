@@ -16,6 +16,7 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
             " #{item} " +
             "</foreach>" +
+            " AND YH_JLID IS NULL" +
             "</script>")
     void updateJlid(@Param("list") List<String> list,@Param("jlId") String jlId);
 
@@ -34,16 +35,18 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
             " #{item} " +
             "</foreach>" +
+            " AND YH_JLID1 IS NULL" +
             "</script>")
-    void updateJlid1(List<String> list, String jlId);
+    void updateJlid1(@Param("list")  List<String> list, @Param("jlId") String jlId);
     @Update("<script>" +
             " UPDATE BIZ_USER SET YH_JLID2 = #{jlId}" +
             " where YH_ID IN " +
             " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
             " #{item} " +
             "</foreach>" +
+            " AND YH_JLID2 IS NULL" +
             "</script>")
-    void updateJlid2(List<String> list, String jlId);
+    void updateJlid2(@Param("list") List<String> list, @Param("jlId") String jlId);
 
     @Update("<script>" +
             " UPDATE BIZ_USER SET YH_JLID3 = #{jlId}" +
@@ -51,6 +54,7 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
             " #{item} " +
             "</foreach>" +
+            " AND YH_JLID3 IS NULL" +
             "</script>")
-    void updateJlid3(List<String> list, String jlId);
+    void updateJlid3(@Param("list") List<String> list, @Param("jlId") String jlId);
 }
