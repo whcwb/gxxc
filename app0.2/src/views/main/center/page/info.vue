@@ -130,12 +130,16 @@
           goOut(){
             this.$http.get(this.apis.LOGOUT).then((res)=>{
               if(res.code==200){
-                localStorage.clear()
+                // localStorage.clear()
+                localStorage.removeItem("token");
+                localStorage.removeItem("userMess");
+                this.$store.commit('M_tabId',0)
               }
 
             }).catch((err)=>{
 
             })
+            // window.location.href = "/wx/";
             this.$router.push({path:'/Login'})
           },
           userMessF(){//获取个人信息
