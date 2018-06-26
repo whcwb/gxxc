@@ -177,10 +177,15 @@ public class BizPtyh implements Serializable {
     private String yhJlsh;
 
     /**
-     * 学员状态
+     * 学员受理状态
      */
-    @Column(name = "YH_XY_TYPE")
-    private String yhxytype;
+    @Column(name = "YH_XY_SL_TYPE")
+    private String yhXySlType;
+    /**
+     * 学员约考状态
+     */
+    @Column(name = "YH_XY_YK_TYPE")
+    private String yhXyYkType;
 
     /**
      * 手机验证码
@@ -234,12 +239,20 @@ public class BizPtyh implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String getYhxytype() {
-        return yhxytype;
+    public String getYhXySlType() {
+        return yhXySlType;
     }
 
-    public void setYhxytype(String yhxytype) {
-        this.yhxytype = yhxytype;
+    public void setYhXySlType(String yhXySlType) {
+        this.yhXySlType = yhXySlType;
+    }
+
+    public String getYhXyYkType() {
+        return yhXyYkType;
+    }
+
+    public void setYhXyYkType(String yhXyYkType) {
+        this.yhXyYkType = yhXyYkType;
     }
 
     public String getJlId() {
