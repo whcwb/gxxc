@@ -73,4 +73,7 @@ module.exports = {
   XLC:'/app/cd/xlcpager',//训练场列表
 
   JSZZP:'/app/ptyh/updatesfyjz',//驾驶证
+
+
+  WXIMGUP:'/app/getWxFile'
 }

@@ -21,7 +21,7 @@
 
   .el-carousel__item:nth-child(2n) {
     background-color: #fff;
-    background-image: url("/wx/static/png/tab-default.png");
+    /*background-image: url("/wx/static/png/tab-default.png");*/
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -29,7 +29,7 @@
 
   .el-carousel__item:nth-child(2n+1) {
     background-color: #fff;
-    background-image: url("/wx/static/png/tab-selected.png");
+    /*background-image: url("/wx/static/png/tab-selected.png");*/
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -37,7 +37,7 @@
 </style>
 <template>
   <div id="xueche" style="height:800px;overflow: auto">
-    <!-- 教练员信息 -->
+    <!-- 专员员信息 -->
     <el-row type="flex" justify="center" class="jlyTitle">
       <el-col :span="22">
         <el-card class="box-card" @click.native="showCoachInfo">
@@ -78,31 +78,31 @@
                    :initial-index="initialIndex"
                    indicator-position="none"
                    arrow="never" height="0.8rem">
-        <el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[0].tabImg+')'}">
           <div class="carousel">
             <div class="clTIT">受理进度</div>
             <div class="clMESS">受理成功可考试</div>
           </div>
         </el-carousel-item>
-        <el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[1].tabImg+')'}">
           <div class="carousel">
             <div class="clTIT">科目一</div>
             <div class="clMESS">基础理论知识考试</div>
           </div>
         </el-carousel-item>
-        <el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[2].tabImg+')'}">
           <div class="carousel">
             <div class="clTIT">科目二</div>
             <div class="clMESS">场地驾驶技能考试</div>
           </div>
         </el-carousel-item>
-        <el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[3].tabImg+')'}">
           <div class="carousel">
             <div class="clTIT">科目三</div>
             <div class="clMESS">道路驾驶技能考试</div>
           </div>
         </el-carousel-item>
-        <el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[4].tabImg+')'}">
           <div class="carousel">
             <div class="clTIT">科目四</div>
             <div class="clMESS">安全文明驾驶常识</div>
@@ -692,7 +692,7 @@
         ],
         activeName2: 'setp1',
         jly: {
-          yhXm: '未绑定教练',
+          yhXm: '未绑定专员',
           jlQu: '-',
           jlPf: 0,
           qymc: ''
@@ -704,7 +704,7 @@
           allSteps:1,
         examInfo:[],
         payInfo:[],
-        initialIndex:2
+        initialIndex:0
       }
     },
     created() {
@@ -713,20 +713,20 @@
       this.getHandleStatus();
       this.getExamInfo();
       this.getPayInfo();
+      this.swipeClick(this.initialIndex)
     },
     methods: {
       swipeClick(index){
         var v = this
         console.log(index);
         v.initialIndex = index
-        console.log(v.initialIndex);
-        // this.tabLabel.forEach((item,val)=>{
-        //   if(val==index){
-        //     item.tabImg= "static/png/tab-selected.png"
-        //   }else {
-        //     item.tabImg=  "static/png/tab-default.png"
-        //   }
-        // })
+        this.tabLabel.forEach((item,val)=>{
+          if(val==index){
+            item.tabImg= "static/png/tab-selected.png"
+          }else {
+            item.tabImg=  "static/png/tab-default.png"
+          }
+        })
       },
 
 

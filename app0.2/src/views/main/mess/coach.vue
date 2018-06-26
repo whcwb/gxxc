@@ -45,7 +45,7 @@
 </style>
 <template>
   <div id="codch" class="box_col">
-    <mt-header title="教练详情">
+    <mt-header title="专员详情">
       <router-link to="/Home" slot="left">
         <mt-button icon="back"></mt-button>
       </router-link>
@@ -75,12 +75,12 @@
       </div>
       <div class="_separator"></div>
       <div class="detail" style="padding: 16px;">
-        <div class="_title" style="padding: 0 0 0.1rem 0">教练详情</div>
+        <div class="_title" style="padding: 0 0 0.1rem 0">专员详情</div>
         <div class="inner_div" style="background-color: rgb(247,247,247);border-radius: 14px;padding: 16px;">
           <div style="font-size: 18px;color: rgba(253,150,41,1);padding:0 0 0.1rem 0">{{coach.yhXm}}</div>
           <div style="color:rgba(165,165,165,1);font-size: 14px;">
+            <span>区域：</span><span>{{coach.jlQu}}</span><br>
             <span>性别：</span><span>男</span><br>
-            <span>教龄：</span><span>{{coach.jlJl}}</span><br>
             <span>电话：</span><span>{{coach.yhSjhm}}</span><br>
             <span>报价：</span><span>2500元/全部</span><br>
           </div>

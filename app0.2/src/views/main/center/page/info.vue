@@ -36,10 +36,11 @@
           <!-- 用户设置 -->
           <div style="padding-top: 30px;color: black;">
               <mt-cell title="头像" style="border-bottom: 1px #e9eaec solid;padding-bottom: 10px">
-                <div style="width: 0.6rem;height: 0.6rem;border-radius: 0.4rem;padding-top: 0.1rem">
-                  <imgup :demoImg="userMess.yhTx"
-                         @handleSuccess="handleSuccess">
-                  </imgup>
+                <div @click="getImg" style="width: 0.6rem;height: 0.6rem;border-radius: 0.4rem;padding-top: 0.1rem">
+                  <!--<imgup :demoImg="userMess.yhTx"-->
+                         <!--@handleSuccess="handleSuccess">-->
+                  <!--</imgup>-->
+                  <img :src="wxupimg" style="width: 100%">
                 </div>
               </mt-cell>
               <div @click="compname='bm'">
@@ -115,7 +116,8 @@
           return{
             compname:'',
             userMess:this.$store.state.app.userMess,
-            switchVal:''
+            switchVal:'',
+            wxupimg:''
           }
         },
         created(){
@@ -125,8 +127,26 @@
               this.userMess = res
             })
           }
+          v.wxupimg = v.userMess.yhTx
         },
         methods:{
+          getImg(){
+            var v = this
+            this.wechatUtil.chooseImage((imgID)=>{
+              v.wechatUtil.uploadImage(imgID[0],(httpID)=>{
+                v.UPIMG(httpID.serverId)
+              })
+            })
+          },
+          UPIMG(id){
+            var v = this
+            this.$http.post(this.apis.WXIMGUP,{code:id,fileType:'-'}).then((res)=>{
+              console.log('图片返回参数',res)
+              v.wxupimg =v.apis.getImgUrl + res.result.filePath
+            }).catch((err)=>{
+              console.log('图片FUCk',err);
+            })
+          },
           goOut(){
             this.$http.get(this.apis.LOGOUT).then((res)=>{
               if(res.code==200){
