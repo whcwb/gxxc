@@ -23,7 +23,7 @@
                 </Row>
 			</div>
 			<div slot='footer'>
-				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
+				<Button type="ghost" @click="v.util.closeDialog(parent)">取消</Button>
 				<Button type="primary" @click="confirm">确定</Button>
 			</div>
 	</div>
@@ -36,6 +36,12 @@
 		components:{fromData},
         props:{
             item:{
+                type:Object,
+                default:function(){
+                    return {};
+                }
+            },
+            parent:{
                 type:Object,
                 default:function(){
                     return {};
@@ -118,8 +124,8 @@
                 this.$http.post(this.apis.student.assignStudents,params).then((res)=>{
                     if (res.code === 200){
                         this.$Message.success(res.message);
-                        v.util.closeDialog(v);
-                        v.util.getPageData(v.$parent)
+                        v.util.closeDialog(parent);
+                        v.util.getPageData(parent.$parent)
                     }
                 })
             }
