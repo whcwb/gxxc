@@ -28,10 +28,6 @@
                     style="border: #f2f2f2 solid 0.05rem;padding:0.15rem 0.3rem;
                     margin-top: 1rem;
                     margin:auto;font-size: 0.2rem"> 重新加载</el-button>
-
-        <!--<div @click="$router.push('/')">
-            index
-        </div>-->
       </div>
     </div>
   </div>

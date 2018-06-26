@@ -168,13 +168,13 @@
               if(res.code==200){
                 if(val==0){
                   // v.imgList.zm = 'static/zjsh/sfzzmok.png'
-                  // v.imgList.zm = v.apis.getImgUrl+url
-                  v.imgList.zm =v.apis.url +  ":8080/biz/app/wj/zjck?fileType=10"
+                  v.imgList.zm = v.apis.getImgUrl+url
+                  // v.imgList.zm =v.apis.url +  ":8080/biz/app/wj/zjck?fileType=10"
                   v.form.imgList[val]=url
                 }else if(val==1){
                   // v.imgList.bm = 'static/zjsh/sfzfmok.png'
-                  // v.imgList.bm = v.apis.getImgUrl+url
-                  v.imgList.bm = v.apis.url +  ":8080/biz/app/wj/zjck?fileType=11"
+                  v.imgList.bm = v.apis.getImgUrl+url
+                  // v.imgList.bm = v.apis.url +  ":8080/biz/app/wj/zjck?fileType=11"
                   v.form.imgList[val]=url
                 }
               }else {
