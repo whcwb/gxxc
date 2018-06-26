@@ -220,10 +220,10 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
 // ------------新操作
         SysYh sysYh = new SysYh();
         // 用户密码
-        if(StringUtils.isNotBlank(entity.getYhMm())){
-            yhMmEncrypt = EncryptUtil.encryptUserPwd(entity.getYhMm());
-            RuntimeCheck.ifBlank(yhMmEncrypt, "用户密码加密失败，用户注册失败");
-        }
+//        if(StringUtils.isNotBlank(entity.getYhMm())){
+//            yhMmEncrypt = EncryptUtil.encryptUserPwd(entity.getYhMm());
+//            RuntimeCheck.ifBlank(yhMmEncrypt, "用户密码加密失败，用户注册失败");
+//        }
         // 检查手机号码是否已经注册过
         sysYh = new SysYh();
         sysYh.setZh(entity.getYhSjhm());

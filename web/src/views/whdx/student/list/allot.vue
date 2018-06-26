@@ -14,17 +14,17 @@
 			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
 				<Tabs>
-					<Tab-pane label="一级" icon="ios-download-outline">
-						<allot1 :item="item"></allot1>
+					<Tab-pane v-if="state == 0" label="受理专员" icon="ios-download-outline">
+						<allot1 :item="item" :parent="v"></allot1>
 					</Tab-pane>
-					<Tab-pane label="二级" icon="ios-upload-outline">
-						<allot2 :item="item"></allot2>
+					<Tab-pane v-if="state == 1" label="科一专员" icon="ios-upload-outline">
+						<allot2 :item="item" :parent="v"></allot2>
 					</Tab-pane>
-					<Tab-pane label="三级" icon="ios-upload-outline">
-						<allot3 :item="item"></allot3>
+					<Tab-pane v-if="state == 2" label="科二专员" icon="ios-upload-outline">
+						<allot3 :item="item" :parent="v"></allot3>
 					</Tab-pane>
-					<Tab-pane label="四级" icon="ios-upload-outline">
-						<allot4 :item="item"></allot4>
+					<Tab-pane v-if="state == 3" label="科三专员" icon="ios-upload-outline">
+						<allot4 :item="item" :parent="v"></allot4>
 					</Tab-pane>
 				</Tabs>
 			</div>
@@ -56,6 +56,7 @@
                     pageNum: 1,
                     pageSize: 8,
                 },
+				choosedData:[],
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
@@ -79,48 +80,23 @@
                 item:{
 
                 },
+				state:0,
 			}
 		},
 		created(){
+            console.log('created');
             this.util.initTable(this)
-		    this.item = this.$parent.choosedItem
+		    this.choosedData = this.$parent.choosedData
+			this.getState();
 		},
+		mounted(){
+            console.log('mounted');
+        },
 		methods: {
-            pageChange(event) {
-                this.util.pageChange(this, event);
-            },
-            confirm(id){
-                swal({
-                    title: "确认分配?",
-                    text: "",
-                    icon: "warning",
-                    buttons:['取消','确认'],
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        this.save(id);
-                    } else {
-                    }
-                });
-			},
-            save(id){
-                let userList = this.$parent.choosedData;
-                let yhIds = '';
-                for (let r of userList){
-                    yhIds += r.id+',';
-                }
-                let params = {
-                    yhIds:yhIds,
-                    jlid:id
-                }
-                let v = this;
-                this.$http.post(this.apis.student.assignStudents,params).then((res)=>{
-                    if (res.code === 200){
-                        this.$Message.success(res.message);
-                        v.util.closeDialog(v);
-                        v.util.getPageData(v.$parent)
-                    }
-                })
-            }
+		    getState(){
+
+		        this.state = 0;
+			}
 		}
 	}
 </script>
