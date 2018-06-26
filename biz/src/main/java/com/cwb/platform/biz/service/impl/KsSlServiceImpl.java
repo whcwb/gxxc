@@ -93,11 +93,11 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         Example condition = new Example(BizKsSl.class);
         condition.and().andEqualTo(BizKsSl.InnerColumn.yhId.name(), entity.getYhId());
         condition.orderBy(BizKsSl.InnerColumn.slType.desc());
-        List<BizKsSl> zdxmList = this.findByCondition(condition);
-        if(zdxmList.isEmpty()){
+        List<BizKsSl> list = this.findByCondition(condition);
+        if(list.isEmpty()){
             entity.setSlType("1");
-        }else if(zdxmList.size()>0){
-            String slType=zdxmList.get(0).getSlType();
+        }else if(list.size()>0){
+            String slType=list.get(0).getSlType();
             if(StringUtils.equals(slType,"1")){
                 slType="2";
             }else if(StringUtils.equals(slType,"2")){
@@ -122,18 +122,19 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         return entityMapper.insertSelective(entity);
     }
 
-    // TODO: 2018/6/26 这一段代码需要修改！yangx
+
     private String getSlType(String code){
         if (StringUtils.isEmpty(code))return "";
-        List<SysZdxm> zdxmList = zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm,"ZDCLK0071");
-        for (SysZdxm zdxm : zdxmList) {
-            if (code.equals(zdxm.getZddm())){
-                return zdxm.getZdmc();
-            }
+        Example condition = new Example(SysZdxm.class);
+        condition.and().andEqualTo(SysZdxm.InnerColumn.zddm.name(), code);
+        condition.and().andEqualTo(SysZdxm.InnerColumn.zdlmdm.name(), "ZDCLK0071");
+        List<SysZdxm> zdxmList = zdxmService.findByCondition(condition);
+        if(zdxmList==null||zdxmList.size()==0){
+            return "";
+        }else{
+            return zdxmList.get(0).getZdmc();
         }
-        return "";
     }
-
     private String sendMsg(BizKsSl sl,BizPtyh ptyh){
         if (StringUtils.isEmpty(ptyh.getYhOpenId())){
             log.error("发送微信消息失败，用户openid为空");
