@@ -92,7 +92,7 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
 //        确认受理状态
         Example condition = new Example(BizKsSl.class);
         condition.and().andEqualTo(BizKsSl.InnerColumn.yhId.name(), entity.getYhId());
-        condition.orderBy(BizKsSl.InnerColumn.slType.desc());
+        condition.setOrderByClause(BizKsSl.InnerColumn.slType.desc());
         List<BizKsSl> list = this.findByCondition(condition);
         if(list.isEmpty()){
             entity.setSlType("1");

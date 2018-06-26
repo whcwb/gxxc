@@ -194,6 +194,39 @@ export let appRouter = [
 		]
     },
     {
+        path: '/commissioner',
+        icon: 'android-car',
+        name: 'commissioner',
+        meta: {title: '专员管理'},
+        component: Main,
+        children: [
+            {
+                path: 'commissioner-list',
+                icon: 'android-clipboard',
+                name: 'commissioner-list',
+                meta: { title: '专员列表' },
+                component: () => import('@/views/whdx/commissioner')
+            },
+            {
+                path: '/commissioner-asign',
+                icon: 'android-car',
+                name: 'commissioner-asign',
+                meta: {title: '专员管理'},
+                component: Main,
+                children: [
+                    {
+                        path: 'commissioner-handle',
+                        icon: 'android-clipboard',
+                        name: 'commissioner-handle',
+                        meta: { title: '受理专员' },
+                        component: () => import('@/views/whdx/commissioner/handle')
+                    },
+                ]
+            },
+
+		]
+    },
+    {
         path: '/coach',
         icon: 'android-car',
         name: 'coach',
