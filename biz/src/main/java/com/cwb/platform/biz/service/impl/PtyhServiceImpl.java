@@ -864,14 +864,19 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (pBizUser != null) {
             yhSsjid = pBizUser.getYhSjid();
         }
+        yhSfyjz="0";
+        if(StringUtils.isNotEmpty(entity.getYhSfyjz())){
+            yhSfyjz=entity.getYhSfyjz();
+        }
+
 
         //修改用户实名表  biz_user
         BizUser bizUser = new BizUser();
         bizUser.setYhId(user.getId());//用户ID
-        bizUser.setYhZjhm(user.getYhZjhm());//用户证件号码
-        bizUser.setYhSjhm(user.getYhZh());//用户账户
-        bizUser.setYhSfjsz(user.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
-        bizUser.setYhXm(user.getYhXm());//姓名
+        bizUser.setYhZjhm(entity.getYhZjhm());//用户证件号码
+        bizUser.setYhSjhm(entity.getYhZh());//用户账户
+        bizUser.setYhSfjsz(yhSfyjz);//设置是否有驾驶证(1:有 2:没有)
+        bizUser.setYhXm(entity.getYhXm());//姓名
         bizUser.setCjsj(DateUtils.getNowTime());//创建时间
         bizUser.setYhSjid(yhSjid);//设置上级ID
         bizUser.setYhSsjid(yhSsjid);//上上级ID
