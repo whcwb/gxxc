@@ -104,11 +104,14 @@
               zm:'static/home/id_03.png',
               bm:'static/home/id_05.png'
             },
-            switchVal:false
+            switchVal:''
           }
         },
         watch:{
           switchVal:function (n,o) {
+            if(o==''){
+              return
+            }
             let a = 0
             if (n) {
               a=1
