@@ -176,13 +176,8 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");
         RuntimeCheck.ifBlank(entity.getYhZjhm(), "用户身份证号不能为空");
         RuntimeCheck.ifBlank(entity.getYhSjhm(), "用户手机号不能为空");
-        RuntimeCheck.ifBlank(entity.getJlJl(), "用户教练驾龄不能为空");
         RuntimeCheck.ifBlank(entity.getJlQu(), "用户教练所属区域不能为空");
-        RuntimeCheck.ifBlank(entity.getJlZml(), "教练证明人不能为空");
-        RuntimeCheck.ifBlank(entity.getJlJjlxr(), "教练紧急联系人不能为空");
-        RuntimeCheck.ifBlank(entity.getJlJjlxrdh(), "教练紧急联系人电话不能为空");
         RuntimeCheck.ifBlank(entity.getJlZz(), "教练住地址不能为空");
-        RuntimeCheck.ifBlank(entity.getImgList(), "请上传用户头像");
         RuntimeCheck.ifBlank(entity.getJsId(), "角色id 不能为空");
 
 
@@ -212,7 +207,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         newEntity.setYhCjr(user.getYhid());//用户ID
         newEntity.setCjsj(DateUtils.getNowTime());//创建时间
         newEntity.setYhXm(entity.getYhXm());//用户姓名
-        newEntity.setYhLx("2");//类型 ZDCLK0041(2、教练、1、学员)
+        newEntity.setYhLx(entity.getJsId());
 
 
 
@@ -259,7 +254,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         sysYh.setCjsj(DateUtils.getNowTime());
         sysYh.setZt("01");
         sysYh.setXm(entity.getYhXm());
-        sysYh.setLx("10");
+        sysYh.setLx(entity.getJsId());
         sysYh.setXb(sex);
         sysYh.setZjhm(entity.getYhZjhm());
 

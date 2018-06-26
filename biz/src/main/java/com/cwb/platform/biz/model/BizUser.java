@@ -337,7 +337,10 @@ public class BizUser implements Serializable {
         yhSjid("YH_SJID"),
         yhSsjid("YH_SSJID"),
         xyZt("XY_ZT"),
-        yhJlid("YH_JLID");
+        yhJlid("YH_JLID"),
+        yhJlid1("YH_JLID1"),
+        yhJlid2("YH_JLID2"),
+        yhJlid3("YH_JLID3");
 
         private final String column;
 

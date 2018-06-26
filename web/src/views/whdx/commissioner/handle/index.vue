@@ -2,9 +2,6 @@
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
 				<search-items :parent="v" :label-with="100"></search-items>
-				<Button type="info" @click="exportData">
-					<Icon type="ios-download-outline"></Icon>
-				</Button>
 				<Button type="info" @click="allot">
 					<Icon type="person"></Icon>
 				</Button>
@@ -21,10 +18,10 @@
 
 <script>
     import allot from './allot.vue'
-
+    import formData from './formData'
     export default {
         name: 'byxxTable',
-        components: {allot},
+        components: {allot,formData},
         data() {
             return {
                 v:this,
@@ -56,7 +53,7 @@
                 pageData: [],
 				choosedData:[],
                 form: {
-                    yhXyYkType :"0",
+                    yhXyFpzyType:'0',
                     yhLx:"1",
                     yhZt:'1',
                     ddSfjx:'1',
@@ -88,16 +85,6 @@
                 if (this.choosedData.length == 0){
                     this.$Message.error("请选择学员")
 					return;
-				}
-				for (let r of this.choosedData){
-                    if (r.yhIxySffp == '1'){
-                        this.$Message.error("请选择未分配的学员")
-                        return;
-					}
-                    if (r.ddSfjx != '1'){
-                        this.$Message.error("请选择已缴费的学员")
-                        return;
-					}
 				}
 				this.componentName = "allot";
 			},
