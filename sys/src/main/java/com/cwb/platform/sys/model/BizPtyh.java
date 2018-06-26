@@ -186,6 +186,17 @@ public class BizPtyh implements Serializable {
      */
     @Column(name = "YH_XY_YK_TYPE")
     private String yhXyYkType;
+    /**
+     * 学员分配专员情况
+     0未分配
+     1已分配受理专员
+     2已分配科目一专员
+     3已分配科目二专员
+     4已分配科目三专员
+     */
+    @Column(name = "YH_XY_FPZY_TYPE")
+    private String yhXyFpzyType;
+
 
     /**
      * 手机验证码
@@ -238,6 +249,14 @@ public class BizPtyh implements Serializable {
     private long userInviteCount;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhXyFpzyType() {
+        return yhXyFpzyType;
+    }
+
+    public void setYhXyFpzyType(String yhXyFpzyType) {
+        this.yhXyFpzyType = yhXyFpzyType;
+    }
 
     public String getYhXySlType() {
         return yhXySlType;
