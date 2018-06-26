@@ -10,6 +10,8 @@
 </style>
 <template>
 	<div>
+        <Modal v-model="showModal" width='900' :closable='false'
+               :mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
                 <Row style="padding-bottom: 16px;">
                     <search-items :parent="v" :label-with="100"></search-items>
@@ -23,9 +25,10 @@
                 </Row>
 			</div>
 			<div slot='footer'>
-				<Button type="ghost" @click="v.util.closeDialog(parent)">取消</Button>
+				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
 				<Button type="primary" @click="confirm">确定</Button>
 			</div>
+        </Modal>
 	</div>
 </template>
 
@@ -41,12 +44,6 @@
                     return {};
                 }
             },
-            parent:{
-                type:Object,
-                default:function(){
-                    return {};
-                }
-            }
         },
 		data() {
 			return {
@@ -119,14 +116,14 @@
                 let params = {
                     yhIds:yhIds,
                     jlid:id,
-                    jlType:0
+                    jlType:2
                 }
                 let v = this;
                 this.$http.post(this.apis.student.assignStudents,params).then((res)=>{
                     if (res.code === 200){
                         this.$Message.success(res.message);
-                        v.util.closeDialog(parent);
-                        v.util.getPageData(parent.$parent)
+                        v.util.closeDialog(v);
+                        v.util.getPageData(v.$parent)
                     }
                 })
             }

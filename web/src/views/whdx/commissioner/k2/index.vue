@@ -94,7 +94,8 @@
                 pageData: [],
 				choosedData:[],
                 form: {
-                    yhXyYkType :"0",
+                    yhXySlType:'4',
+                    yhXyYkType :"1",
                     yhLx:"1",
                     byBysjInRange:'',
                     total: 0,

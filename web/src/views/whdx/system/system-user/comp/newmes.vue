@@ -28,6 +28,14 @@
 							</FormItem>
 						</Col>
 						<Col span="12">
+							<FormItem prop="lx" label='用户类型：'>
+								<Select filterable clearable  v-model="addmess.lx">
+									<Option v-for = '(item,index) in yhlxDict' :value="item.key" :key="item.key">{{item.val}}</Option>
+								</Select>
+								<span>*默认：123456</span>
+							</FormItem>
+						</Col>
+						<Col span="12">
 							<FormItem prop="xm" label='姓名：'>
 								<Input type="text" v-model="addmess.xm" placeholder="请输入姓名">
 								</Input>
@@ -99,9 +107,6 @@
                   	zh: [
                       	{ required: true, message: '请输入用户名', trigger: 'blur' }
                   	],
-                  	xm: [
-                      	{ required: true, message: '请输入姓名', trigger: 'blur' }
-                  	],
                   	sjh:[
                       	{ required: true,message: '请输入手机号码', trigger: 'blur' }
                   	],
@@ -110,7 +115,7 @@
 					]
               	},
                 yhlxDict:[],
-                yhlxDictCode:'ZDCLK0003',
+                yhlxDictCode:'ZDCLK0041',
 				orgList:[],
                 zjcxListCode:'ZJCX',
 				zjcxList:[]
@@ -151,6 +156,7 @@
 			}
 
             this.zjcxList = this.dictUtil.getByCode(this,this.zjcxListCode);
+            this.yhlxDict = this.dictUtil.getByCode(this,this.yhlxDictCode);
 			//this.getOrgList();
         },
 		methods:{
