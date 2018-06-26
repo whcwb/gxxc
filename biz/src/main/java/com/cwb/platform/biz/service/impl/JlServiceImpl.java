@@ -11,8 +11,13 @@ import com.cwb.platform.biz.service.JlService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.UserService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.mapper.SysClkPtjsMapper;
+import com.cwb.platform.sys.mapper.SysClkPtyhMapper;
+import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
+import com.cwb.platform.sys.model.SysJs;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysYhJs;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -21,6 +26,7 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.ArrayList;
@@ -42,6 +48,17 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
     private PtyhService ptyhService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private SysClkPtyhMapper sysClkPtyhMapper;
+    @Autowired
+    private SysClkPtjsMapper sysClkPtjsMapper;
+    @Autowired
+    private SysYhJsMapper sysYhJsMapper;
+
+
+
+
+
     @Override
     protected Mapper<BizJl> getBaseMapper() {
         return entityMapper;
@@ -166,6 +183,8 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         RuntimeCheck.ifBlank(entity.getJlJjlxrdh(), "教练紧急联系人电话不能为空");
         RuntimeCheck.ifBlank(entity.getJlZz(), "教练住地址不能为空");
         RuntimeCheck.ifBlank(entity.getImgList(), "请上传用户头像");
+        RuntimeCheck.ifBlank(entity.getJsId(), "角色id 不能为空");
+
 
         //设置用户密码 默认用户密码为123456
         String yhMmEncrypt = "4DA3BB20330A34F4";
@@ -188,12 +207,37 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         newEntity = new BizPtyh();
         newEntity.setId(genId());
         newEntity.setYhZh(entity.getYhSjhm());//用户手机号码
-        newEntity.setYhMm(yhMmEncrypt);//用户加密的密码
+       // newEntity.setYhMm(yhMmEncrypt);//用户加密的密码
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhCjr(user.getYhid());//用户ID
         newEntity.setCjsj(DateUtils.getNowTime());//创建时间
         newEntity.setYhXm(entity.getYhXm());//用户姓名
         newEntity.setYhLx("2");//类型 ZDCLK0041(2、教练、1、学员)
+
+
+
+
+// ------------新操作
+        SysYh sysYh = new SysYh();
+        // 用户密码
+        if(StringUtils.isNotBlank(entity.getYhMm())){
+            yhMmEncrypt = EncryptUtil.encryptUserPwd(entity.getYhMm());
+            RuntimeCheck.ifBlank(yhMmEncrypt, "用户密码加密失败，用户注册失败");
+        }
+        // 检查手机号码是否已经注册过
+        sysYh = new SysYh();
+        sysYh.setZh(entity.getYhSjhm());
+        int yhCount = sysClkPtyhMapper.selectCount(sysYh);
+        RuntimeCheck.ifTrue(yhCount > 0 , "该手机号码已经注册过，不能再次注册" );
+        // 检查用户的证件号码是不是注册过
+        sysYh = new SysYh();
+        sysYh.setZjhm(entity.getYhZjhm());
+        yhCount = sysClkPtyhMapper.selectCount(sysYh);
+        RuntimeCheck.ifTrue(yhCount > 0 , "该证件号码已经注册过，不能再次注册");
+        // 检查角色信息是否存在
+        SysJs sysJs = sysClkPtjsMapper.selectByPrimaryKey(entity.getJsId());
+        RuntimeCheck.ifTrue(ObjectUtils.isEmpty(sysJs) , "用户角色信息不存在， 请重新选取角色");
+
 
         //通过证件号码识别用户性别
         String CardCode=entity.getYhZjhm();
@@ -203,6 +247,40 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         } else {
             sex = "1";
         }
+
+
+        // 组装平台用户
+        sysYh = new SysYh();
+        sysYh.setYhid(newEntity.getId());
+        sysYh.setZh(entity.getYhSjhm());
+        sysYh.setMm(yhMmEncrypt);
+        sysYh.setSjh(entity.getYhSjhm());
+        sysYh.setCjr(user.getYhid());
+        sysYh.setCjsj(DateUtils.getNowTime());
+        sysYh.setZt("01");
+        sysYh.setXm(entity.getYhXm());
+        sysYh.setLx("10");
+        sysYh.setXb(sex);
+        sysYh.setZjhm(entity.getYhZjhm());
+
+        int i = sysClkPtyhMapper.insertSelective(sysYh);
+        if( i == 0){
+            return ApiResponse.fail("保存失败，请重新操作");
+        }
+
+
+        // 保存用户角色
+
+        SysYhJs sysYhJs = new SysYhJs();
+        sysYhJs.setYhjsId(genId());
+        sysYhJs.setYhId(sysYh.getYhid());
+        sysYhJs.setJsId(entity.getJsId());
+        sysYhJs.setCjr(user.getYhid());
+        sysYhJs.setCjsj(DateUtils.getNowTime());
+        sysYhJsMapper.insertSelective(sysYhJs);
+
+// ------------------------------------------------------------------
+
         newEntity.setYhXb(sex);//性别 ZDCLK0042(1、男;2、女)
         newEntity.setYhZt("1");//认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setDdSfjx("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
@@ -213,7 +291,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
         newEntity.setYhJlsh("1");//教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
 
-        int i=ptyhService.save(newEntity);
+        i=ptyhService.save(newEntity);
         if(i==0){
             return ApiResponse.fail("保存失败，请重新操作");
         }
