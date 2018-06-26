@@ -99,7 +99,7 @@
             <!--@keydown="onInputKeydown"-->
             <!--@change="onInputChange"-->
             <div style="font-size: 0.25rem">
-              可提现余额{{zhYE.yhZhye/100}}元
+              可提现余额{{zhYE}}元
             </div>
           </div>
         </div>
@@ -185,7 +185,7 @@
       zhye() {
         this.$http.post(this.apis.USERZH).then((res) => {
           if (res.code == 200) {
-            this.zhYE = res.result
+            this.zhYE = parseInt(res.result.yhZhye)/100
           }
           console.log(res)
         }).catch((err) => {
@@ -196,9 +196,16 @@
         var v = this
         this.number += val;
 
-        console.log(this.number)
 
-        if (parseInt(this.number) > parseInt(this.zhYE.yhZhye)) {
+        debugger
+        console.log(this.number)
+        console.log(parseFloat(this.number));
+        console.log(parseFloat(this.zhYE));
+        let a = parseFloat(this.number)*100
+        let b = parseFloat(this.zhYE)
+        console.log(a > b);
+
+        if (parseInt(this.number) > parseInt(this.zhYE)) {
           Toast('提取金额不能大于您的余额')
           v.onNumberDelete()
         }

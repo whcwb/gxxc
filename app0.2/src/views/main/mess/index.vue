@@ -21,7 +21,7 @@
 
   .el-carousel__item:nth-child(2n) {
     background-color: #fff;
-    background-image: url("/static/png/tab-default.png");
+    background-image: url("/wx/static/png/tab-default.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -29,7 +29,7 @@
 
   .el-carousel__item:nth-child(2n+1) {
     background-color: #fff;
-    background-image: url("/static/png/tab-selected.png");
+    background-image: url("/wx/static/png/tab-selected.png");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
