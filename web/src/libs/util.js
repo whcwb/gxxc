@@ -163,7 +163,10 @@ util.initForeignKeys = (v)=>{
     if (!v.foreignList)return;
     for (let k in v.foreignList){
         let r = v.foreignList[k];
-        if (r.url.indexOf("/pager") > 0)r.url+="?pageSize=10000"
+        if (r.url.indexOf("/pager") > -1){
+            let t = r.url.indexOf('?') > -1 ? '&' : '?';
+            r.url+= t + "pageSize=10000"
+        }
         v.$http.get(r.url).then((res) =>{
             if(res.code===200){
                 let list = [];
