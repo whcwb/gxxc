@@ -92,7 +92,7 @@
                 pageData: [],
 				choosedData:[],
                 form: {
-                    yhLx:"1",
+                    yhLxIn:"slzy,k1,k2,k3",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,

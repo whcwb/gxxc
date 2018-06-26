@@ -39,28 +39,6 @@
                     {title: "",  type: 'selection',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
-                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
-                    {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
-                    {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
-                    {title: '教练姓名',key:'jlXm'},
-                    {title: '教练电话',key:'sjhm'},
-                    {title: '锁定',key:'yhSfsd',
-                        render:(h,p)=>{
-                            return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
-                                let rzt = value ? '1':'0'
-                                let v = this;
-                                this.$http.post(this.apis.student.updateSfsd,{'id':p.row.id,'yhSfsd':rzt}).then((res) =>{
-                                    if(res.code==200){
-                                        this.$Message.success(res.message);
-                                    }else{
-                                        this.$Message.error(res.message);
-                                    }
-                                    v.util.getPageData(v)
-                                })
-                            })
-                        }
-                    },
                     {
                         title: '操作',
                         key: 'action',
@@ -71,22 +49,6 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),
-                                this.util.buildButton(this,h,'info','network','查看下线',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'sublist'
-                                }),
-                                this.util.buildButton(this,h,'info','close','删除',()=>{
-                                    swal({
-                                        title: "是否删除数据?",
-                                        text: "",
-                                        icon: "warning",
-                                        buttons:['取消','确认'],
-                                    }).then((willDelete) => {
-                                        if (willDelete) {
-                                            this.deleteUser(params.row.id);
-                                        }
-                                    });
-								}),
                             ]);
                         }
                     }
@@ -97,6 +59,8 @@
                     yhXySlType:'4',
                     yhXyYkType :"2",
                     yhLx:"1",
+                    yhZt:'1',
+                    ddSfjx:'1',
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
