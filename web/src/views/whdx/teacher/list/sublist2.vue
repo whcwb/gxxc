@@ -40,7 +40,7 @@
                     {title: '类型',key:'yhLx'},
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt'},
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz'},
-                    {title: '认证状态',key:'yhZt',dict:'rzzt'},
+                    {title: '认证状态',key:'yhZt',dict:'ZDCLK0043'},
                     {
                         title: '操作',
                         key: 'action',

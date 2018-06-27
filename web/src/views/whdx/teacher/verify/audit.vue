@@ -88,7 +88,7 @@
                     {label:'身份证号码',prop:'yhZjhm',disabled:true},
                     {label: '手机号',prop:'yhSjhm',disabled:true},
                     {label: '所属区域',prop:'jlQu',dict:'ZDCLK0060',type:'dict',disabled:true},
-                    {label: '教练驾龄',prop:'jlJl',disabled:true},
+                    {label: '专员驾龄',prop:'jlJl',disabled:true},
                     {label: '紧急联系人',prop:'jlJjlxr',disabled:true},
                     {label: '紧急联系人电话',prop:'jlJjlxrdh',disabled:true},
                 ],

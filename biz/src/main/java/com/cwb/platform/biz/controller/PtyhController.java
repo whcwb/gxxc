@@ -26,11 +26,6 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return null;
     }
 
-    @RequestMapping(value = "/update", method = {RequestMethod.POST})
-    public ApiResponse<String> update(BizPtyh entity) {
-        return null;
-    }
-
     @RequestMapping(value = "/remove/{pkid}", method = {RequestMethod.POST})
     public ApiResponse<String> remove(@PathVariable("pkid") String id) {
         return null;

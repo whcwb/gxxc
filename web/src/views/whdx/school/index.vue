@@ -38,9 +38,9 @@ import chooseImg from '../components/chooseImgModal'
                     {title:'联系人',key:'linkMan'},
                     {title:'联系电话',key:'linkTel'},
                     {title:'可培训车型',key:'trainableVehicleType'},
-                    {title:'教练员总数',key:'coachTotal'},
-                    {title:'教练车总数',key:'carTotal'},
-                    {title:'教练场总面积',key:'totalAreaJlc'},
+                    {title:'专员总数',key:'coachTotal'},
+                    {title:'专员车总数',key:'carTotal'},
+                    {title:'专员场总面积',key:'totalAreaJlc'},
                     {title:'备注',key:'remark'},
                     {
                         title: '操作',

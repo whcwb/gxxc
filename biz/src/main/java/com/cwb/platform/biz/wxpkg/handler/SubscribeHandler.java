@@ -77,6 +77,8 @@ public class SubscribeHandler extends AbstractHandler {
 
 			wxMenu.setButtons(wxButtons);
 			// 设置菜单
+
+			this.logger.info("设置菜单: " + wxButtons.size());
 			weixinService.getMenuService().menuCreate(wxMenu);
 
 			WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();

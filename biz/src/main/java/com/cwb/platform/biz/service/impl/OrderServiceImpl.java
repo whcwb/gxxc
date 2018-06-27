@@ -19,6 +19,8 @@ import com.cwb.platform.util.commonUtil.ZXingCode;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.Subscribe;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.lang.StringUtils;
@@ -50,6 +52,9 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
     @Autowired
     private WechatService wechatService;
 
+    @Autowired
+    private WxMpService wxMpService;
+
     AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
     public OrderServiceImpl() {
         eventBus.register(this);
@@ -66,6 +71,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
     @Value("${wxPayBackDomain}")
     private String wxDomain;
+
 
     @Override
     protected Mapper<BizOrder> getBaseMapper() {
@@ -193,11 +199,10 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
      * @param order
      */
     public void asynchronousSendMessage(BizOrder order,String cpMc){
-        payInfo.debug("邀请码生成成功，下发微信通知---");
+        payInfo.debug("下发微信通知---");
+        String yhId=order.getYhId();
+        BizPtyh ptyh=ptyhService.findById(yhId);
         try {
-            String yhId=order.getYhId();
-            BizPtyh ptyh=ptyhService.findById(yhId);
-
             String time =  DateUtils.getDateStr(new Date(), "yyyy年MM月dd日");
             Map<String,String > map=new HashMap<>();
             map.put("1","支付宝");
@@ -221,6 +226,14 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
             String res = wechatService.sendTemplateMsg(msg);
             payInfo.info("sendMsg result :", res);
+
+        } catch (WxErrorException e) {
+            payInfo.error("发送微信模板消息异常", e);
+        }
+        try {
+            // 缴费成功发送微信消息
+            WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已注册成功，请留意接听客服电话，关注您的培训流程！").build();
+            wxMpService.getKefuService().sendKefuMessage(message);
         } catch (WxErrorException e) {
             payInfo.error("发送微信模板消息异常", e);
         }

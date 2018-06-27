@@ -35,6 +35,8 @@
                     {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
+                    {title: '约考状态',key:'yhXyYkType',dict:'ZDCLK0067'},
                     {
                         title: '操作',
                         key: 'action',
@@ -111,7 +113,7 @@
 			exportData(){
                 let params = {
                     exportType:'ptyh',
-                    cols:'姓名,账号,是否有驾驶证,认证状态,教练姓名,教练电话',
+                    cols:'姓名,账号,是否有驾驶证,认证状态,专员姓名,专员电话',
 					keys:'yhXm,yhZh,yhSfyjz,yhZt,jlxm,jldh'
 				}
 				window.open(this.apis.exportData+'?ddSfjx=1&exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);

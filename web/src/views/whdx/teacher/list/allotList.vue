@@ -65,7 +65,7 @@
                             return h('span',s)
                         }
                     },
-                    {title: '认证状态',key:'yhZt',dict:'rzzt',
+                    {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',
                         render:(h,p)=>{
                             let s = this.dictUtil.getValByCode(this,'ZDCLK0043',p.row.userDetail.yhZt)
                             return h('span',s)
