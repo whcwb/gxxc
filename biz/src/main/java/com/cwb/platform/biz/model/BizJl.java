@@ -122,6 +122,20 @@ public class BizJl implements Serializable {
     @Transient
     private String jsId;
 
+    /**
+     * 专员评分
+     */
+    @Transient
+    private Integer yhFz;
+
+    public Integer getYhFz() {
+        return yhFz;
+    }
+
+    public void setYhFz(Integer yhFz) {
+        this.yhFz = yhFz;
+    }
+
     public String getJsId() {
         return jsId;
     }
