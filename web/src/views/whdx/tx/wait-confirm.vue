@@ -43,15 +43,11 @@
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'用户名称',key:'yhMc',searchKey:'yhMcLike'},
-                    {title:'佣金明细',key:'yjId'},
-                    {title:'提现方式',key:'ttFs',dict:'ZDCLK0047',searchType:'dict'},
                     {title:'提现金额',key:'ttJe',render:(h,p)=>{
                             return h('div',parseFloat(p.row.ttJe/100)+'元')
                         }},
                     {title:'提现时间',key:'ttSj'},
-                    {title:'提现状态',key:'ttZt',dict:'ZDCLK0048',searchType:'dict'},
                     {title:'审核人',key:'ttShr'},
-                    {title:'提现审核状态',key:'ttShzt',dict:'ZDCLK0049'},
                     {title:'银行卡号',key:'ttYhkh'},
                     {title:'开户行',key:'ttKhh'},
                     {title:'提现姓名',key:'txXm'},
