@@ -46,6 +46,8 @@
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
+                    {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
+                    {title: '约考状态',key:'yhXyYkType',dict:'ZDCLK0067'},
                     {title: '锁定',key:'yhSfsd',
                         render:(h,p)=>{
                             return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{

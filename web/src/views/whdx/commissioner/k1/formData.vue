@@ -76,7 +76,7 @@
                     {label:'姓名',prop:'yhXm'},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
                     {label:'身份证号码',prop:'yhZjhm'},
-                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt',disabled:true},
+                    {label:'状态',prop:'yhZt',type:'dict',dict:'ZDCLK0043',disabled:true},
                     {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045',disabled:true},
                     {label: '专员姓名',prop:'jlXm',disabled:true},
                     {label: '专员电话',prop:'sjhm',disabled:true},

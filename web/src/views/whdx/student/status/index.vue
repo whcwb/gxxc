@@ -35,6 +35,8 @@
                     {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
+                    {title: '约考状态',key:'yhXyYkType',dict:'ZDCLK0067'},
                     {
                         title: '操作',
                         key: 'action',

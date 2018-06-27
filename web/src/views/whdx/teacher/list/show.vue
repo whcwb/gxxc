@@ -77,7 +77,7 @@
                     {label:'身份证号码',prop:'yhZjhm'},
                     {label:'类型',prop:'yhLx',type:'dict',dict:'ZDCLK0041'},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042'},
-                    {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt'},
+                    {label:'状态',prop:'yhZt',type:'dict',dict:'ZDCLK0043'},
                     {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
                 ],
                 ruleInline:{
