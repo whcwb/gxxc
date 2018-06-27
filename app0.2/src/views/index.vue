@@ -57,7 +57,6 @@
       if (!authCode){
           this.wechatUtil.getCode();
 
-
           v.loadColse(true)
       }else{
           this.wechatUtil.vueParent = this;
