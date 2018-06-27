@@ -74,4 +74,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> creatorUserQRCode(String userId);
 
     ApiResponse<String> removeUserInfo(String userId);
+
+    ApiResponse<List<BizJl>> getJls();
 }

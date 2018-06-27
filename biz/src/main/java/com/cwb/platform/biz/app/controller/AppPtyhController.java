@@ -164,4 +164,16 @@ public class AppPtyhController extends AppUserBaseController {
         return service.updateJz(entity);
     }
 
+    /**
+     * 查询用户受理专员列表
+     */
+    @PostMapping("/getJls")
+    public ApiResponse<List<BizJl>> getJls(){
+        return service.getJls();
+    }
+
+
+
+
+
 }

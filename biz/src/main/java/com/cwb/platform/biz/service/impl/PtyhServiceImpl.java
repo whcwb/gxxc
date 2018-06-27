@@ -8,9 +8,11 @@ import com.cwb.platform.biz.mapper.BizWjMapper;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
+import com.cwb.platform.biz.model.BizYhpf;
 import com.cwb.platform.biz.service.JlService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.UserService;
+import com.cwb.platform.biz.service.YhpfService;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
@@ -93,6 +95,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private UserService userService;
     @Autowired
     private BizUserMapper userMapper;
+    @Autowired
+    private YhpfService yhpfService;
 
     @Autowired
     private SysYhJsMapper userRoleMapper;
@@ -1433,7 +1437,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 
         BizUser user = userList.get(0);
-        RuntimeCheck.ifBlank(user.getYhJlid(),"该用户暂未分配教练");
+        RuntimeCheck.ifBlank(user.getYhJlid(),"专员暂未分配");
         BizJl coach = jlService.findById(user.getYhJlid());
         RuntimeCheck.ifNull(coach,"未找到教练");
         return ApiResponse.success(coach);
@@ -1515,4 +1519,87 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         return ApiResponse.success();
     }
+
+    @Override
+    public ApiResponse<List<BizJl>> getJls() {
+
+
+        BizPtyh currentUser = getAppCurrentUser();
+
+        List<BizJl> bizJls = new ArrayList<>();
+
+        Map<String,BizJl> bizJlMap = new HashMap<>();
+
+//        RuntimeCheck.ifBlank(yhId , "用户 id 不能为空");
+
+        BizUser bizUser = userService.findById(currentUser.getId());
+        BizYhpf yhpf = new BizYhpf();
+        if(StringUtils.isNotBlank(bizUser.getYhJlid())){ // 受理专员
+            BizJl bizJl = jlService.findById(bizUser.getYhJlid());
+            yhpf.setJlId(bizJl.getYhId());
+            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
+            if(CollectionUtils.isNotEmpty(entity)){
+                bizJl.setYhFz(entity.get(0).getYhFz());
+            }
+            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
+           // bizJlMap.put("0" ,  bizJl);
+
+            bizJls.add(bizJl);
+
+
+        }else {
+           // bizJlMap.put("0" , null);
+            bizJls.add(null);
+        }
+        if(StringUtils.isNotBlank(bizUser.getYhJlid1())){ // 科目一专员
+            BizJl bizJl = jlService.findById(bizUser.getYhJlid1());
+            yhpf.setJlId(bizJl.getYhId());
+            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
+            if(CollectionUtils.isNotEmpty(entity)){
+                bizJl.setYhFz(entity.get(0).getYhFz());
+            }
+            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
+           // bizJlMap.put("1", bizJl);3
+            bizJls.add(bizJl);
+        }else{
+           // bizJlMap.put("1" , null);
+            bizJls.add(null);
+        }
+        if(StringUtils.isNotBlank(bizUser.getYhJlid2())){ // 科目二专员
+            BizJl bizJl = jlService.findById(bizUser.getYhJlid2());
+            yhpf.setJlId(bizJl.getYhId());
+            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
+            if(CollectionUtils.isNotEmpty(entity)){
+                bizJl.setYhFz(entity.get(0).getYhFz());
+            }
+            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
+           /* bizJlMap.put("2", bizJl);*/
+            bizJls.add(bizJl);
+        }else{
+           // bizJlMap.put("2" , null);
+            bizJls.add(null);
+        }
+        if(StringUtils.isNotBlank(bizUser.getYhJlid3())) { //科目三专员
+            BizJl bizJl = jlService.findById(bizUser.getYhJlid3());
+            yhpf.setJlId(bizJl.getYhId());
+            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
+            if(CollectionUtils.isNotEmpty(entity)){
+                bizJl.setYhFz(entity.get(0).getYhFz());
+            }
+            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
+            /*bizJlMap.put("3" , bizJl);
+            bizJlMap.put("4" , bizJl);*/
+            bizJls.add(bizJl);
+            bizJls.add(bizJl);
+        }else {
+            /*bizJlMap.put("3" , null);
+            bizJlMap.put("4" , null);*/
+            bizJls.add(null);
+            bizJls.add(null);
+        }
+
+        return ApiResponse.success(bizJls);
+    }
+
+
 }
