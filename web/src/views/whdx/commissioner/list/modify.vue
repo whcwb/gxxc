@@ -13,16 +13,6 @@
 						:styles="{top: '20px'}">
 					<Row>
 						<form-items :parent="v"></form-items>
-						<Col span="12">
-							<FormItem label="专员类型" prop="jsId">
-								<Select v-model="formItem.jsId">
-									<Option value="slzy">受理专员</Option>
-									<Option value="k1">一阶段</Option>
-									<Option value="k2">二阶段</Option>
-									<Option value="k3">三阶段</Option>
-								</Select>
-							</FormItem>
-						</Col>
 					</Row>
 				</Form>
 			</div>
@@ -61,14 +51,12 @@
 
 				},
                 formInputs:[
-                    {label:'账号',prop:'yhZh',readonly:true},
-                    {label:'密码',prop:'yhMm'},
                     {label:'姓名',prop:'yhXm'},
                     {label:'身份证号码',prop:'yhZjhm'},
-                    {label:'手机号码',prop:'yhSjhm'},
+                    {label:'手机号码',prop:'yhSjhm',disables:true},
                     {label:'区域',prop:'jlQu',dict:'ZDCLK0060'},
                     {label:'联系电话',prop:'jlJjlxrdh'},
-                    {label:'教练地址',prop:'jlZz'},
+                    {label:'地址',prop:'jlZz'},
 
                 ],
                 ruleInline:{
@@ -93,15 +81,16 @@
          */
 		created(){
 		    this.util.initFormModal(this);
-		    this.yhLx = this.formItem.jsId;
-		    this.getData(this.formItem.id);
 		},
 		methods: {
 		    getData(id){
 		      this.$http.get(this.apis.teacher.getById+id).then((res)=>{
-		          if (res.code ==200 && res.result){
+		          if (res.code == 200 && res.result){
 		              this.formItem.jlQu = res.result.jlQu
                       console.log(this.formItem);
+                      this.util.initFormRule(this);
+                      this.util.initForeignKeys(this);
+                      this.util.initDict(this)
                   }
               })
 			},
