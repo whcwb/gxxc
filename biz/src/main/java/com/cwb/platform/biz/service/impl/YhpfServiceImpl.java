@@ -104,13 +104,17 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
 
 
     @Override
-    public  ApiResponse<BizYhpf> getUserCoach(){
+    public  ApiResponse<BizYhpf> getUserCoach(String yhId){
+        RuntimeCheck.ifBlank(yhId,"用戶id不能为空");
         BizPtyh user=getAppCurrentUser();
         BizYhpf entity=new BizYhpf();
         entity.setYhId(user.getId());
         BizUser userMessage=userService.findById(user.getId());
+
+
         if(userMessage!=null){
-            entity.setJlId(userMessage.getYhJlid());
+            entity.setJlId(yhId);
+           //entity.setJlId(userMessage.getYhJlid());
         }
 
         List<BizYhpf> ret=this.findByEntity(entity);
