@@ -20,6 +20,7 @@ import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.ibatis.session.RowBounds;
