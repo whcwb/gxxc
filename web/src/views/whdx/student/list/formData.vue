@@ -78,8 +78,6 @@
                     {label:'身份证号码',prop:'yhZjhm'},
                     {label:'状态',prop:'yhZt',type:'dict',dict:'rzzt',disabled:true},
                     {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045',disabled:true},
-                    {label: '教练姓名',prop:'jlXm',disabled:true},
-                    {label: '教练电话',prop:'sjhm',disabled:true},
                 ],
                 ruleInline:{
 				}
