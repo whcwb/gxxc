@@ -59,6 +59,18 @@ public class SubscribeHandler extends AbstractHandler {
 			wodefuwu.setType(WxConsts.MenuButtonType.VIEW);
 			wodefuwu.setUrl("http://www.520xclm.com/wx");
 			wxButtons.add(wodefuwu);
+			WxMenuButton wodefuwu1 = new WxMenuButton();
+			wodefuwu1.setKey("wodefuwu1");
+			wodefuwu1.setName("关于我们");
+			wodefuwu1.setType(WxConsts.MenuButtonType.VIEW);
+			wodefuwu1.setUrl("http://www.520xclm.com");
+			wxButtons.add(wodefuwu1);
+			WxMenuButton wodefuwu2 = new WxMenuButton();
+			wodefuwu2.setKey("appdown");
+			wodefuwu2.setName("APP下载");
+			wodefuwu2.setType(WxConsts.MenuButtonType.CLICK);
+			wxButtons.add(wodefuwu2);
+			
 
 			wxMenu.setButtons(wxButtons);
 			// 设置菜单

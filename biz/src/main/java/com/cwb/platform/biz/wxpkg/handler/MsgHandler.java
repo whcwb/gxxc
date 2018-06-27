@@ -31,8 +31,9 @@ public class MsgHandler extends AbstractHandler {
 
 		if (StringUtils.isNotEmpty(wxMessage.getMsgType())){
 			switch (wxMessage.getMsgType()){
-				case "app download":
-					break;
+				case "appdown":
+						return new TextBuilder().build("敬请期待", wxMessage, weixinService);
+					default:
 			}
 		}
 
