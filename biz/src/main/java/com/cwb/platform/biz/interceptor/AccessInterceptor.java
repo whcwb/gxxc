@@ -35,7 +35,10 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 	private StringRedisTemplate redisDao;
 
 	// 只要登录的用户都能访问
-	private List<String> whiteList = Arrays.asList("/api/gn/getMenuTree","/api/jg/pager","/api/zd/pager","/api/jg/getTree","/api/gn/getMenuTree","/api/jg/pager","/api/jg/getOrgTree","/api/jg/getOrgTree","/api/clsbyxsjjl/history","/api/clsbyxsjjl/history");
+	private List<String> whiteList = Arrays.asList(
+			"/api/gn/getMenuTree","/api/jg/pager","/api/zd/pager","/api/jg/getTree","/api/gn/getMenuTree","/api/jg/pager","/api/jg/getOrgTree","/api/jg/getOrgTree","/api/clsbyxsjjl/history","/api/clsbyxsjjl/history",
+			"/biz/api/gn/getMenuTree","/biz/api/jg/pager","/biz/api/zd/pager","/biz/api/jg/getTree","/biz/api/gn/getMenuTree","/biz/api/jg/pager","/biz/api/jg/getOrgTree","/biz/api/jg/getOrgTree","/biz/api/clsbyxsjjl/history","/biz/api/clsbyxsjjl/history"
+	);
 
 	public AccessInterceptor() {
 	}
