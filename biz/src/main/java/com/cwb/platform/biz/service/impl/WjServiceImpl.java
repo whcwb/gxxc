@@ -74,11 +74,14 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
      * @param retMap
      * @param fileType  上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
      * @param filePath  文件地址
+     * @param user
      */
     @Override
-    public boolean ocrRecognition(Map<String, String> retMap, String fileType,String filePath,String paths){
+    public boolean ocrRecognition(Map<String, String> retMap, String fileType, String filePath, String paths, BizPtyh user){
         boolean retType=true;
-        BizPtyh user= getAppCurrentUser();
+        if(user==null){
+            user= getAppCurrentUser();
+        }
 // TODO: 2018/6/19 这里需要重写
         // 初始化一个AipOcr
         AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
@@ -94,6 +97,7 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
             if(StringUtils.equals(fileType,"10")){
                 idCardSide = "front";
             }else {
+                retMap.put("filePath",paths);//文件地址
                 return true;
             }
 
@@ -169,6 +173,7 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
 
                         retMap.put("xm",xm);//姓名
                         retMap.put("cfzh",cfzh.replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));//公民身份号码
+                        retMap.put("filePath",paths);//公民身份号码
 
                         redisDao.delete(user.getId()+"-ocrRecognition-map");
                         //将解析报文保存到redis中进行组缓存

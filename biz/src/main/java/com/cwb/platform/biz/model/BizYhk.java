@@ -50,6 +50,15 @@ public class BizYhk implements Serializable {
      */
     @Column(name = "YHK_SCSYSJ")
     private String yhkScsysj;
+
+
+    /**
+     * 银行卡LOGO
+     */
+    @Column(name = "YHK_LOGO")
+    private String yhkLogo;
+
+
     /**
      * 手机号码
      */
@@ -66,6 +75,13 @@ public class BizYhk implements Serializable {
         this.dn = dn;
     }
 
+    public String getYhkLogo() {
+        return yhkLogo;
+    }
+
+    public void setYhkLogo(String yhkLogo) {
+        this.yhkLogo = yhkLogo;
+    }
     /**
      * 获取主键id
      *

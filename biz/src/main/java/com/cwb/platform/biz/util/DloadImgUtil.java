@@ -1,6 +1,9 @@
 package com.cwb.platform.biz.util;
 
+import com.cwb.platform.util.commonUtil.FileUtil;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedInputStream;
@@ -8,11 +11,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.UUID;
 
 /**
  * 从服务器端下载文件
  */
 public class DloadImgUtil {
+    Logger log = LoggerFactory.getLogger("access_info");
+
     @Autowired
     private WechatUtils wechatUtils;
 
@@ -66,8 +72,12 @@ public class DloadImgUtil {
             if(StringUtils.isEmpty(fileExt)){
                 return null;
             }
+            FileUtil.fileExistsDir(savePath);
+
             // 将mediaId作为文件名
-            filePath = savePath + mediaId + fileExt;
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid.toString().replaceAll("-","");
+            filePath = savePath + fileName + fileExt;
             BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
             FileOutputStream fos = new FileOutputStream(new File(filePath));
             byte[] buf = new byte[8096];
