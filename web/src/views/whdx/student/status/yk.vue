@@ -60,6 +60,7 @@
                 ],
                 ruleInline:{
 				},
+                km:'',
                 foreignList:{
                     examPlaceId:{url:this.apis.examPlace.QUERY,key:'id',val:'name',items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
@@ -67,7 +68,19 @@
 			}
 		},
 		created(){
-            this.util.initFormModal(this);
+            let userInfo = sessionStorage.getItem('userInfo');
+            let userType = JSON.parse(userInfo).type;
+            if (userType === 'k1' || userType === 'k2' || userType === 'k3' || userType === 'k4'){
+                this.km = userType.charAt(1);
+                this.foreignList.examPlaceId.url += '?kskm='+this.km;
+                this.formInputs[1].disabled = true;
+            }
+            this.util.initFormModal(this)
+            if (this.km !== ''){
+                this.formItem.kmCode = this.km;
+            }
+		},
+		mounted(){
 		},
 		methods: {
             imgChange1(o){

@@ -1,9 +1,43 @@
 <style lang="less">
   @import "./xueche";
+  .carousel{
+    color: #fff;
+    text-align: center;
+    .clTIT{
+      font-size: 0.16rem;
+      font-weight: 700;
+      margin-top: 0.12rem;
+    }
+    .clMESS{
+      margin-top: 0.06rem;
+      font-size: 0.14rem;
+    }
+  }
+  .el-carousel__item carousel{
+    color: #475669;
+    opacity: 0.75;
+    margin: 0;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #fff;
+    /*background-image: url("/wx/static/png/tab-default.png");*/
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #fff;
+    /*background-image: url("/wx/static/png/tab-selected.png");*/
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 </style>
 <template>
   <div id="xueche" style="height:800px;overflow: auto">
-    <!-- 教练员信息 -->
+    <!-- 专员员信息 -->
     <el-row type="flex" justify="center" class="jlyTitle">
       <el-col :span="22">
         <el-card class="box-card" @click.native="showCoachInfo">
@@ -38,23 +72,55 @@
       </el-col>
     </el-row>
     <!-- 学车进度信息 -->
+    <div style="padding: 0 0.1rem">
+      <el-carousel :interval="0" type="card"
+                   @change="swipeClick"
+                   :initial-index="initialIndex"
+                   indicator-position="none"
+                   arrow="never" height="0.8rem">
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[0].tabImg+')'}">
+          <div class="carousel">
+            <div class="clTIT">受理进度</div>
+            <div class="clMESS">受理成功可考试</div>
+          </div>
+        </el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[1].tabImg+')'}">
+          <div class="carousel">
+            <div class="clTIT">科目一</div>
+            <div class="clMESS">基础理论知识考试</div>
+          </div>
+        </el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[2].tabImg+')'}">
+          <div class="carousel">
+            <div class="clTIT">科目二</div>
+            <div class="clMESS">场地驾驶技能考试</div>
+          </div>
+        </el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[3].tabImg+')'}">
+          <div class="carousel">
+            <div class="clTIT">科目三</div>
+            <div class="clMESS">道路驾驶技能考试</div>
+          </div>
+        </el-carousel-item>
+        <el-carousel-item :style="{backgroundImage:'url('+tabLabel[4].tabImg+')'}">
+          <div class="carousel">
+            <div class="clTIT">科目四</div>
+            <div class="clMESS">安全文明驾驶常识</div>
+          </div>
+        </el-carousel-item>
+      </el-carousel>
+    </div>
+
     <el-row type="flex">
       <el-col :span="24">
         <el-card class="card-body" shadow="never">
-          <div>
-            <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-              <el-tab-pane name="step1">
-                    <span slot="label">
-                      <img :src="tabLabel[0].tabImg" width="200" height="60"/>
-                      <span class="title-name">受理进度</span>
-                      <span class="title-subname">受理成功可考试</span>
-                    </span>
+              <div v-if="initialIndex==0">
                 <div class="content">
                   <el-row :gutter="20">
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_2/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/bm.jpg" class="image">
+                          <img src="static/jpg/bm.jpg" class="image">
                           <div style="padding: 10px">
                             <span>报名条件</span>
                           </div>
@@ -64,7 +130,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_4/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/fy.jpg" class="image">
+                          <img src="static/jpg/fy.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>学车费用</span>
                           </div>
@@ -74,7 +140,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_6/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/tj.jpg" class="image">
+                          <img src="static/jpg/tj.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>体检事项</span>
                           </div>
@@ -84,7 +150,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/info_1_8/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/xclc.jpg" class="image">
+                          <img src="static/jpg/xclc.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>学车流程</span>
                           </div>
@@ -140,19 +206,14 @@
                     </el-col>
                   </el-row>
                 </div>
-              </el-tab-pane>
-              <el-tab-pane name="step2">
-                    <span slot="label">
-                      <img :src="tabLabel[1].tabImg" width="200" height="60"/>
-                      <span class="title-name">科目一</span>
-                      <span class="title-subname">基础理论知识考试</span>
-                    </span>
+              </div>
+              <div v-else-if="initialIndex==1">
                 <div class="content">
                   <el-row :gutter="20" style="padding-bottom: 10px">
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/sxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/sxlx.jpg" class="image">
+                          <img src="static/jpg/sxlx.jpg" class="image">
                           <div style="padding: 10px">
                             <span>顺序练习</span>
                           </div>
@@ -162,7 +223,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/zjlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/zjlx.jpg" class="image">
+                          <img src="static/jpg/zjlx.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>章节练习</span>
                           </div>
@@ -172,7 +233,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/zxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/zxlx.jpg" class="image">
+                          <img src="static/jpg/zxlx.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>专项练习</span>
                           </div>
@@ -251,19 +312,14 @@
                     </el-row>
                   </el-card>
                 </div>
-              </el-tab-pane>
-              <el-tab-pane label="科目二" name="step3">
-                    <span slot="label">
-                      <img :src="tabLabel[2].tabImg" width="200" height="60"/>
-                      <span class="title-name">科目二</span>
-                      <span class="title-subname">场地驾驶技能考试</span>
-                    </span>
+              </div>
+              <div v-else-if="initialIndex==2" label="科目二" name="step3">
                 <div class="content">
                   <el-row :gutter="20" style="padding-bottom: 10px">
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_212/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/hgbz.jpg" class="image">
+                          <img src="static/jpg/hgbz.jpg" class="image">
                           <div style="padding: 10px">
                             <span>合格标准</span>
                           </div>
@@ -273,7 +329,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_603/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/cftc.jpg" class="image">
+                          <img src="static/jpg/cftc.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>侧方停车</span>
                           </div>
@@ -283,7 +339,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_604/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/qxxs.jpg" class="image">
+                          <img src="static/jpg/qxxs.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>曲线行驶</span>
                           </div>
@@ -293,7 +349,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_605/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/zjzw.jpg" class="image">
+                          <img src="static/jpg/zjzw.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>直角转弯</span>
                           </div>
@@ -305,7 +361,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_602/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/spqb.jpg" class="image">
+                          <img src="static/jpg/spqb.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>上坡起步</span>
                           </div>
@@ -316,7 +372,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km2_82_606/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/dcrk.jpg" class="image">
+                          <img src="static/jpg/dcrk.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>倒车入库</span>
                           </div>
@@ -395,19 +451,19 @@
                     </el-row>
                   </el-card>
                 </div>
-              </el-tab-pane>
-              <el-tab-pane label="科目三" name="step4">
-                    <span slot="label">
-                      <img :src="tabLabel[3].tabImg" width="200" height="60"/>
-                      <span class="title-name">科目三</span>
-                      <span class="title-subname">道路驾驶技能考试</span>
-                    </span>
+              </div>
+              <div v-else-if="initialIndex==3" label="科目三" name="step4">
+                    <!--<span slot="label">-->
+                      <!--<img :src="tabLabel[3].tabImg" width="200" height="60"/>-->
+                      <!--<span class="title-name">科目三</span>-->
+                      <!--<span class="title-subname">道路驾驶技能考试</span>-->
+                    <!--</span>-->
                 <div class="content">
                   <el-row :gutter="20" style="padding-bottom: 10px">
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_608/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/hgbz.jpg" class="image">
+                          <img src="static/jpg/hgbz.jpg" class="image">
                           <div style="padding: 10px">
                             <span>评判标准</span>
                           </div>
@@ -417,7 +473,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/yyzl/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/yyzl.jpg" class="image">
+                          <img src="static/jpg/yyzl.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>语言指令</span>
                           </div>
@@ -427,7 +483,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3/dgcz/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/dg.jpg" class="image">
+                          <img src="static/jpg/dg.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>灯光操作</span>
                           </div>
@@ -437,7 +493,7 @@
                     <el-col :span="6">
                       <a href="http://m.jxedt.com/km3_607_627/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/kskj.jpg" class="image">
+                          <img src="static/jpg/kskj.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>考试口诀</span>
                           </div>
@@ -516,19 +572,14 @@
                     </el-row>
                   </el-card>
                 </div>
-              </el-tab-pane>
-              <el-tab-pane label="科目四" name="step5">
-                    <span slot="label">
-                      <img :src="tabLabel[4].tabImg" width="200" height="60"/>
-                      <span class="title-name">科目四</span>
-                      <span class="title-subname">安全文明驾驶常识</span>
-                    </span>
+              </div>
+              <div v-else-if="initialIndex==4" label="科目四" name="step5">
                 <div class="content">
                   <el-row :gutter="20" style="padding-bottom: 10px">
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/sxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/sxlx.jpg" class="image">
+                          <img src="static/jpg/sxlx.jpg" class="image">
                           <div style="padding: 10px">
                             <span>顺序练习</span>
                           </div>
@@ -538,7 +589,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/zjlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/zjlx.jpg" class="image">
+                          <img src="static/jpg/zjlx.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>章节练习</span>
                           </div>
@@ -548,7 +599,7 @@
                     <el-col :span="8">
                       <a href="http://m.jxedt.com/mnks/ckm1/zxlx/">
                         <el-card :body-style="{ padding: '0px' }">
-                          <img src="/wx/static/jpg/zxlx.jpg" class="image">
+                          <img src="static/jpg/zxlx.jpg" class="image">
                           <div style="padding: 10px;">
                             <span>专项练习</span>
                           </div>
@@ -612,9 +663,7 @@
                     </el-row>
                   </el-card>
                 </div>
-              </el-tab-pane>
-            </el-tabs>
-          </div>
+              </div>
         </el-card>
       </el-col>
     </el-row>
@@ -624,9 +673,13 @@
 
 <script>
 
-  import { Toast } from 'mint-ui';
+  import { Toast,Swipe, SwipeItem} from 'mint-ui';
   export default {
     name: "xueche",
+    components:{
+      [Swipe.name]:Swipe,
+      [SwipeItem.name]: SwipeItem
+    },
     data() {
       return {
         scroll: null,
@@ -639,7 +692,7 @@
         ],
         activeName2: 'setp1',
         jly: {
-          yhXm: '未绑定教练',
+          yhXm: '未绑定专员',
           jlQu: '-',
           jlPf: 0,
           qymc: ''
@@ -651,6 +704,7 @@
           allSteps:1,
         examInfo:[],
         payInfo:[],
+        initialIndex:0
       }
     },
     created() {
@@ -659,8 +713,23 @@
       this.getHandleStatus();
       this.getExamInfo();
       this.getPayInfo();
+      this.swipeClick(this.initialIndex)
     },
     methods: {
+      swipeClick(index){
+        var v = this
+        console.log(index);
+        v.initialIndex = index
+        this.tabLabel.forEach((item,val)=>{
+          if(val==index){
+            item.tabImg= "static/png/tab-selected.png"
+          }else {
+            item.tabImg=  "static/png/tab-default.png"
+          }
+        })
+      },
+
+
       handleClick(tab, event) {
         for (var item of this.tabLabel) {
           item.tabImg = "static/png/tab-default.png";

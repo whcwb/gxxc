@@ -10,6 +10,7 @@
 </style>
 <template>
 	<div>
+
         <Modal v-model="showModal" width='900' :closable='false'
                :mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
@@ -59,7 +60,7 @@
                 apiRoot:this.apis.student,
 				readonly: false,
                 form: {
-                    yhLx:"slzy",
+                    yhLx:"k1",
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -119,7 +120,7 @@
                 let params = {
                     yhIds:yhIds,
                     jlid:id,
-                    jlType:0
+                    jlType:1
                 }
                 let v = this;
                 this.$http.post(this.apis.student.assignStudents,params).then((res)=>{

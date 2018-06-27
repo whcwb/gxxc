@@ -166,8 +166,35 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String rz = request.getParameter("rz");
+        String zylx = request.getParameter("zylx");
         if(StringUtils.isNotBlank(rz)){ // 若不为空则为学员认证列表
             condition.and().andIsNotNull("yhZjhm");
+        }
+
+        if (StringUtils.isNotEmpty(zylx)){
+            SysYh user = getCurrentUser();
+            String type = user.getLx();
+            SimpleCondition condition1 = new SimpleCondition(BizUser.class);
+            switch (type){
+                case "slzy":
+                    condition1.eq(BizUser.InnerColumn.yhJlid,user.getYhid());
+                    break;
+                case "k1":
+                    condition1.eq(BizUser.InnerColumn.yhJlid1,user.getYhid());
+                    break;
+                case "k2":
+                    condition1.eq(BizUser.InnerColumn.yhJlid2,user.getYhid());
+                    break;
+                case "k3":
+                    condition1.eq(BizUser.InnerColumn.yhJlid3,user.getYhid());
+                    break;
+            }
+            List<BizUser> userList = userMapper.selectByExample(condition1);
+            if (userList.size() == 0){
+                return false;
+            }
+            List<String> yhIds = userList.stream().map(BizUser::getYhId).collect(Collectors.toList());
+            condition.in(BizPtyh.InnerColumn.id,yhIds);
         }
 
 
@@ -1078,13 +1105,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizPtyh users=this.findById(jlId);
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
 
-        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
-        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhJlsh(),"1"),"该教练未进行实名认证");
+//        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
+//        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhJlsh(),"1"),"该教练未进行实名认证");
 
         // 将多个学员id 分开
-        List<String> sIds = Arrays.asList(yhId.split(","));
+        List<String> ids = Arrays.asList(yhId.split(","));
         // 可以分配的用户 id
-        List<String> ids = userService.getYhIds(sIds);
+//        List<String> ids = userService.getYhIds(sIds);
 
         // 进行分配操作
         if(CollectionUtils.isNotEmpty(ids)) {

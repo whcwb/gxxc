@@ -99,43 +99,18 @@
             <!--@keydown="onInputKeydown"-->
             <!--@change="onInputChange"-->
             <div style="font-size: 0.25rem">
-              可提现余额{{zhYE.yhZhye/100}}元
+              可提现余额{{zhYE}}元
             </div>
           </div>
         </div>
-        <!--<Card>-->
-        <!--<div>-->
-        <!--提现金额-->
-        <!--</div>-->
-        <!--<div class="box-row" style="height: 2rem">-->
-        <!--<div>-->
-        <!--<i class="iconfont icon-ico-money"-->
-        <!--style=" font-weight: 600;font-size: 0.6rem;line-height: 1.5rem"></i>-->
-        <!--</div>-->
-        <!--<div class="body-O" @click="isKeyBoardShow=true">-->
-        <!--<md-input-item-->
-        <!--disabled-->
-        <!--type="money"-->
-        <!--style="border-bottom: #949494 2px solid"-->
-        <!--v-model="number"-->
-        <!--placeholder="提现金额"-->
-        <!--autofocus="autofocus"-->
-        <!--@focus="isKeyBoardShow=true"-->
-        <!--&gt;</md-input-item>-->
-        <!--&lt;!&ndash;@keydown="onInputKeydown"&ndash;&gt;-->
-        <!--&lt;!&ndash;@change="onInputChange"&ndash;&gt;-->
-        <!--<div>-->
-        <!--可提现余额{{zhYE.yhZhye/100}}元-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</Card>-->
       </div>
-
-      <div style="margin-top: 0.3rem ;padding: 0  0.3rem">
-        <!--<Button type="primary" shape="circle" long-->
-        <!--@click="TX()"-->
-        <!--style="padding: 0.15rem;font-size: 0.4rem">提现</Button>-->
+      <div v-show="maxmoney" style="font-size: 0.3rem;color: red;text-align: center">
+        提取金额不能大于您的余额
+      </div>
+      <div style="margin-top: 0.3rem ;padding: 0  0.3rem;text-align: center">
+        <el-button type="warning" round
+        @click="TX()"
+        style="padding: 0.15rem;font-size: 0.4rem;width: 100%">提现</el-button>
       </div>
     </div>
     <div id="JP" class="">
@@ -173,7 +148,9 @@
         zhYE: '',//账户余额
         compName: '',
         bankListIndex: 0,
-        bankList: []
+        bankList: [],
+        maxmoney:false
+
       }
     },
     created() {
@@ -185,7 +162,7 @@
       zhye() {
         this.$http.post(this.apis.USERZH).then((res) => {
           if (res.code == 200) {
-            this.zhYE = res.result
+            this.zhYE = parseInt(res.result.yhZhye)/100
           }
           console.log(res)
         }).catch((err) => {
@@ -196,10 +173,8 @@
         var v = this
         this.number += val;
 
-        console.log(this.number)
-
-        if (parseInt(this.number) > parseInt(this.zhYE.yhZhye)) {
-          Toast('提取金额不能大于您的余额')
+        if (parseInt(this.number) > parseInt(this.zhYE)) {
+          v.maxmoney=true
           v.onNumberDelete()
         }
       },

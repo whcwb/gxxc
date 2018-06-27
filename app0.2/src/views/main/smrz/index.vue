@@ -18,13 +18,18 @@
     </mt-header>
     <div class="box_col_auto" v-if="userMess.yhZt=='-1'">
       <div class="box-row">
-        <div class="box_row_100" style="margin: 0.15rem">
-          <imgup :demoImg="imgList.zm" fileType="10"
-                 @handleSuccess="(res)=>{handleSuccess(res,0,'10')}"></imgup>
+        <div class="box_row_100" style="margin: 0.15rem" @click="getImg(0,10)">
+          <!--<imgup :demoImg="imgList.zm" fileType="10"-->
+                 <!--@handleSuccess="(res)=>{handleSuccess(res,0,'10')}"></imgup>-->
+          <img :src="imgList.zm" style="width: 100%">
+          {{imgList.zm}}
         </div>
-        <div class="box_row_100" style="margin: 0.15rem">
-          <imgup :demoImg="imgList.bm" fileType="11"
-                 @handleSuccess="(res)=>{handleSuccess(res,1,'11')}"></imgup>
+        <div class="box_row_100" style="margin: 0.15rem" @click="getImg(1,11)">
+          <img :src="imgList.bm" style="width: 100%">
+          {{imgList.bm}}
+
+          <!--<imgup :demoImg="imgList.bm" fileType="11"-->
+                 <!--@handleSuccess="(res)=>{handleSuccess(res,1,'11')}"></imgup>-->
         </div>
       </div>
       <div style="text-align: center;padding-top: 0.5rem">
@@ -61,9 +66,18 @@
                        @click="$router.push({path:'/Home'})">返回</el-button>
           </div>
           <div class="box_row_100"style="margin: 0.2rem">
-            <el-button type="success" round
-                       style="width: 100%"
-                       @click="$router.push({path:'/pay/payIndex'})">缴费</el-button>
+            <el-button type="primary" round
+                       v-if="userMess.ddSfjx=='0'&&usermess.yhZt=='1'"
+                       @click="$router.push({name:'pay'})"
+            >缴费</el-button>
+            <el-button  type="success" round
+                        style="width: 100%"
+                       v-else-if="userMess.ddSfjx=='1'"
+                       @click="okjf"
+            >已缴费</el-button>
+            <!--<el-button type="success" round-->
+                       <!--style="width: 100%"-->
+                       <!--@click="$router.push({path:'/pay/payIndex'})">缴费</el-button>-->
           </div>
         </div>
       </div>
@@ -137,6 +151,26 @@
           }
         },
         methods:{
+          getImg(val,fileType){
+            var v = this
+            this.wechatUtil.chooseImage((imgID)=>{
+              v.wechatUtil.uploadImage(imgID[0],(httpID)=>{
+                v.UPIMG(httpID.serverId,val,fileType)
+              })
+            })
+          },
+          UPIMG(id,val,Type){
+            var v = this
+            this.$http.post(this.apis.WXIMGUP,{code:id,fileType:'-'}).then((res)=>{
+              console.log('图片返回参数',res)
+              // v.wxupimg =v.apis.getImgUrl + res.result.filePath
+              if (res.code==200){
+                v.zjsbImg(res.result.filePath,val,Type)
+              }
+            }).catch((err)=>{
+              console.log('图片FUCk',err);
+            })
+          },
           gobak(){
             this.userMess.yhZt='-1'
           },
@@ -161,20 +195,20 @@
             }
           },
           //证件识别
-          zjsbImg(url,val,code){
+          zjsbImg(url,val,code){//地址  索引  fileType
             console.log(code)
             var v =this
             this.$http.post(this.apis.ZJSB,{path:url,fileType:code}).then((res)=>{
               if(res.code==200){
                 if(val==0){
                   // v.imgList.zm = 'static/zjsh/sfzzmok.png'
-                  // v.imgList.zm = v.apis.getImgUrl+url
-                  v.imgList.zm =v.apis.url +  ":8080/biz/app/wj/zjck?fileType=10"
+                  v.imgList.zm = v.apis.getImgUrl+url
+                  // v.imgList.zm =v.apis.url +  ":8080/biz/app/wj/zjck?fileType=10"
                   v.form.imgList[val]=url
                 }else if(val==1){
                   // v.imgList.bm = 'static/zjsh/sfzfmok.png'
-                  // v.imgList.bm = v.apis.getImgUrl+url
-                  v.imgList.bm = v.apis.url +  ":8080/biz/app/wj/zjck?fileType=11"
+                  v.imgList.bm = v.apis.getImgUrl+url
+                  // v.imgList.bm = v.apis.url +  ":8080/biz/app/wj/zjck?fileType=11"
                   v.form.imgList[val]=url
                 }
               }else {
@@ -186,7 +220,9 @@
 
             })
           },
-
+          okjf() {
+            Toast('您已缴费')
+          },
 
 
           uploadMess(){

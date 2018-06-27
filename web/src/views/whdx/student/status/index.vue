@@ -35,39 +35,53 @@
                     {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '教练姓名',key:'jlXm'},
-                    {title: '教练电话',key:'sjhm'},
                     {
                         title: '操作',
                         key: 'action',
                         render: (h, params) => {
-                            return h('div', [
-                                this.util.buildButton(this,h,'success','card','受理',()=>{
+                            let buttons = [];
+                            if (this.userType == 'su'){
+                                buttons.push(this.util.buildButton(this,h,'success','card','受理',()=>{
                                     this.getSl(params.row.id);
-                                }),
-                                this.util.buildButton(this,h,'success','social-yen','缴费',()=>{
+                                }));
+                                buttons.push(this.util.buildButton(this,h,'success','social-yen','缴费',()=>{
                                     this.getJf(params.row.id);
-                                }),
-                                this.util.buildButton(this,h,'success','card','约考',()=>{
+                                }));
+                                buttons.push(this.util.buildButton(this,h,'success','card','约考',()=>{
                                     this.getYk(params.row.id);
-                                }),
-                            ]);
+                                }));
+							}else if (this.userType == 'slzy'){
+                                buttons.push(this.util.buildButton(this,h,'success','card','受理',()=>{
+                                    this.getSl(params.row.id);
+                                }));
+							}else if (this.userType == 'k1' || this.userType == 'k2' ||this.userType == 'k3' ){
+                                buttons.push(this.util.buildButton(this,h,'success','social-yen','缴费',()=>{
+                                    this.getJf(params.row.id);
+                                }));
+                                buttons.push(this.util.buildButton(this,h,'success','card','约考',()=>{
+                                    this.getYk(params.row.id);
+                                }));
+							}
+                            return h('div', buttons);
                         }
                     }
                 ],
                 pageData: [],
 				choosedData:[],
                 form: {
-                    ddSfjx:'1',
                     yhLx:"1",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
+                    zylx:'1'
                 },
+				userType:''
             }
         },
         created() {
+            let userInfo = sessionStorage.getItem('userInfo');
+            this.userType = JSON.parse(userInfo).type;
             this.util.initTable(this)
         },
         methods: {

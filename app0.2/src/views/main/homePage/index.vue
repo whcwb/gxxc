@@ -238,7 +238,7 @@
                 听说邀请好友还有现金，速速围观
               </div>
             </div>
-            <div class="yqhy_mess box-row">
+            <div class="yqhy_mess box-row" @click="$router.push({path:'/bill'})">
               <div class="box_row_100">
                 <div class="num">
                   {{zhYE.yhZhye/100 | yhZhye}}元
@@ -247,7 +247,7 @@
                   累计奖励
                 </div>
               </div>
-              <div class="box_row_100">
+              <div class="box_row_100" @click="$router.push({path:'/myTeam'})">
                 <div class="num">
                   {{usermess.userInviteCount | userInviteCount}} 人
                 </div>

@@ -130,14 +130,14 @@
         </div>
 
         <div style="margin-top: 0.2rem">
-          <mt-cell title="账单" value=""
+          <mt-cell title="我的账单" value=""
                    to="/bill"
                    is-link style="border-bottom: 1px #e9eaec solid;">
             <i class="iconfont icon-xiaoxizhangdanfill"
                style="font-size: 20px;color: #2d8cf0;margin-left: 0.1rem"
                slot="icon"></i>
           </mt-cell>
-          <mt-cell title="团队" value=""
+          <mt-cell title="我的团队" value=""
                    to="/myTeam"
                    is-link style="border-bottom: 1px #e9eaec solid;">
             <i class="iconfont icon-tuandui"
