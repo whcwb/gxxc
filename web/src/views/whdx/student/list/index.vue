@@ -46,6 +46,8 @@
                     {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
+                    {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
+                    {title: '约考状态',key:'yhXyYkType',dict:'ZDCLK0067'},
                     {title: '锁定',key:'yhSfsd',
                         render:(h,p)=>{
                             return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
@@ -145,7 +147,7 @@
 			exportData(){
                 let params = {
                     exportType:'ptyh',
-                    cols:'姓名,账号,是否有驾驶证,认证状态,教练姓名,教练电话',
+                    cols:'姓名,账号,是否有驾驶证,认证状态,专员姓名,专员电话',
 					keys:'yhXm,yhZh,yhSfyjz,yhZt,jlxm,jldh'
 				}
 				window.open(this.apis.exportData+'?ddSfjx=1&exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);

@@ -8,7 +8,7 @@
                               模版下载：
                         </div>
                         <div class="body-O">
-                              <a :href="staticPath+'批量新增终端模板.xls'">批量导入终端模版</a>
+                              <a :href="staticPath+'提现模板.slsx'">批量导入提现模版</a>
                         </div>
                   </div>
                   <div class="box-row" style="height: 55px;font-size: 16px">

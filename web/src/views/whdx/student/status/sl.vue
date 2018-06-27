@@ -13,6 +13,11 @@
         						:styles="{top: '20px'}">
         			<Row>
         				<form-items :parent="v"></form-items>
+						<Col span="12">
+							<FormItem prop='name' :label='unitName'>
+								<Input v-model="formItem.name" :placeholder="'请输入'+unitName"></Input>
+							</FormItem>
+						</Col>
 						<Col span="12" v-if="currentStep == '3'" >
 							<FormItem prop='lsh' label='流水号'>
 								<Input v-model="formItem.lsh" placeholder="请输入流水号"></Input>
@@ -20,15 +25,15 @@
 						</Col>
         			</Row>
 					<Row>
-						<Steps :current="currentStep" size="small">
-							<Step  :title="item.title" :content="item.content" v-for="(item,index) in steps"></Step>
+						<Steps v-if="showSteps" :current="currentStep" size="small">
+							<Step v-for="(item,index) in steps"  :title="item.title" :content="item.content"></Step>
 						</Steps>
 					</Row>
         		</Form>
         	</div>
         	<div slot='footer'>
         		<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-        		<Button type="primary" @click="v.util.save(v)">确定</Button>
+        		<Button type="primary" v-if="showConfirm" @click="v.util.save(v)">确定</Button>
         	</div>
         </Modal>
 	</div>
@@ -44,11 +49,11 @@
 				saveUrl:this.apis.kssl.ADD,
 				showModal: true,
 				readonly: false,
+                showSteps:false,
 				formItem: {
 				},
                 formInputs:[
                     {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
-                    {label:'单位名称',prop:'name'},
                     {label:'受理时间',prop:'slSj',type:'date'},
                     // {label:'受理类型',prop:'slType',dict:'ZDCLK0071',type:'dict'},
                 ],
@@ -58,34 +63,53 @@
                     code:{url:this.apis.school.QUERY,key:'schoolCode',val:'schoolName',items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
                 },
-				steps:[],
+				steps:[
+					{title:'医院体验',content:'待完成'},
+					{title:'入网面签',content:'待完成'},
+					{title:'档案采集',content:'待完成'},
+					{title:'受理成功',content:'待完成'},
+				],
 				currentStep:0,
                 handleStatus:'',
                 handleSteps:0,
+				unitName:'',
+                showConfirm:false,
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
+		    let yhId = this.formItem.yhId;
+		    this.formItem = {};
+		    this.formItem.yhId = yhId;
             this.getHandleStatus();
 		},
 		mounted(){
 		},
 		methods: {
+		    getUnitName(state){
+                return state === -1 ? '医院名称' : '驾校名称';
+			},
             getHandleStatus(){
                 this.$http.get(this.apis.getHandleStatus, {params: {yhId: this.formItem.yhId}}).then((res)=>{
                     if (res.code == 200){
                         this.handleStatus = res.result;
                         this.handleSteps = parseInt(res.message);
+                        let c = 0;
                         for (let k in this.handleStatus){
-                            this.steps.push({title:this.dictUtil.getValByCode(this,'ZDCLK0071',k),content:this.handleStatus[k].name})
+                            c ++;
+                            let unitName = this.handleStatus[k].cjsj + ' '+this.handleStatus[k].name;
+                            if (k == '4'){
+                                unitName += ':'+this.handleStatus[k].lsh
+							}
+                            this.steps[parseInt(k) - 1] = {title:this.dictUtil.getValByCode(this,'ZDCLK0071',k),content:unitName};
 						}
-                        console.log(this.steps);
-                        this.currentStep = this.steps.length;
+                        this.currentStep = c - 1;
+                        this.showSteps = true;
+                        this.unitName = this.getUnitName(c - 1);
+                        this.showConfirm = c != 4;
                     }
                 })
             },
-
-
 		}
 	}
 </script>

@@ -131,7 +131,7 @@
 										<Icon type="ios-cloud-upload" size="80" style="color: #3399ff"></Icon>
 									</div>
 								</Upload>
-								<h3>教练证</h3>
+								<h3>专员证</h3>
 							</div>
 						</Col>
 					</Row>
@@ -249,7 +249,7 @@
                 jszzmFile:null,
                 //驾驶证副本
                 jszfmFile:null,
-                //教练证
+                //专员证
                 jlzzmFile:null,
             }
         },

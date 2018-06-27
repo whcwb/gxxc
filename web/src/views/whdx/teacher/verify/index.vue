@@ -39,7 +39,7 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '手机号',key:'yhSjhm',searchKey:'yhSjhmLike'},
                     {title: '所属区域',key:'jlQu',dict:'ZDCLK0060',searchType:'dict'},
-                    {title: '教练驾龄',key:'jlJl',append:'年'},
+                    {title: '专员驾龄',key:'jlJl',append:'年'},
                     {
                         title: '操作',
                         key: 'action',
