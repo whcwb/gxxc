@@ -52,13 +52,28 @@ public class SubscribeHandler extends AbstractHandler {
 
 		try {
 			WxMenu wxMenu = new WxMenu();
-			List<WxMenuButton> wxButtons = new ArrayList<WxMenuButton>();
-			WxMenuButton wodefuwu = new WxMenuButton();
-			wodefuwu.setKey("wodefuwu");
-			wodefuwu.setName("我要学车");
-			wodefuwu.setType(WxConsts.MenuButtonType.VIEW);
-			wodefuwu.setUrl("http://www.520xclm.com/wx");
-			wxButtons.add(wodefuwu);
+			List<WxMenuButton> wxButtons = new ArrayList<>();
+
+			WxMenuButton button1 = new WxMenuButton();
+			button1.setKey("button1");
+			button1.setName("我要学车");
+			button1.setType(WxConsts.MenuButtonType.VIEW);
+			button1.setUrl("http://www.520xclm.com/wx");
+
+			WxMenuButton button2 = new WxMenuButton();
+			button2.setKey("button2");
+			button2.setName("关于我们");
+			button2.setType(WxConsts.MenuButtonType.VIEW);
+			button2.setUrl("http://www.520xclm.com");
+
+			WxMenuButton button3 = new WxMenuButton();
+			button3.setKey("appdown");
+			button3.setName("APP下载");
+			button3.setType(WxConsts.MenuButtonType.CLICK);
+
+			wxButtons.add(button1);
+			wxButtons.add(button2);
+			wxButtons.add(button3);
 
 			wxMenu.setButtons(wxButtons);
 			// 设置菜单

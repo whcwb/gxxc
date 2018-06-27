@@ -352,4 +352,9 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
 
         return ApiResponse.success();
     }
+
+   public ApiResponse<String> updateEntity(BizJl entity){
+       entityMapper.updateByPrimaryKey(entity);
+        return ApiResponse.success();
+   }
 }

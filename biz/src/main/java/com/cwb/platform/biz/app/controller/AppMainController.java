@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.app.controller;
 
+import com.cwb.platform.biz.app.AppUserBaseController;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.biz.util.DloadImgUtil;
@@ -38,7 +39,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("/app")
-public class AppMainController {
+public class AppMainController extends AppUserBaseController {
 	Logger log = LoggerFactory.getLogger("access_info");
 
 	@Value("${staticPath:/}")
@@ -262,29 +263,72 @@ public class AppMainController {
 	/**
 	 * 从微信端下载图片到本地
 	 * 微信在获取到图片地址后，要将serverId 这个值的内容传到code中去。openid也不能为空。让后台来
+	 *
+	 *  fileType    上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
 	 */
 	@PostMapping("/getWxFile")
-	public ApiResponse<String> downloadMedia( String code,HttpServletRequest request){
+	public ApiResponse<Map<String,String>> downloadMedia(@RequestParam("code") String code,@RequestParam("fileType") String fileType){
+		Map<String,String>retMap=new HashMap<>();
+		boolean credentialsType=false;//是否是证件
+		log.debug("getWxFile------------1、获取到微信："+code);
 		RuntimeCheck.ifTrue(StringUtils.isEmpty(code),"微信文件ID不能为空");
 		String savePath=staticPath;
 		if (!savePath.endsWith("/")) {
 			savePath += "/";
 		}
+		BizPtyh user = getAppCurrentUser(false);
+		log.debug("getWxFile------------2、获取用户登录："+user==null?"未登录":"已登录");
 		savePath+="temp";
-
+		log.debug("getWxFile------------3、文件存放地址："+savePath);
+		if(StringUtils.isNotEmpty(fileType)){
+			if(StringUtils.indexOf("10 11 20 21 ", fileType)>-1){
+				savePath = credentialsPath+DateUtils.getToday().replaceAll("-","")+"/";//生成新的文件路径
+				credentialsType=true;
+			}
+		}
+		log.debug("getWxFile------------4、文件新的存放地址："+savePath);
 		String accessToken = null;
 		try {
 			accessToken = wxService.getAccessToken();
 		} catch (WxErrorException e) {
+			log.debug("getWxFile*******5、获取accesstoken：失败");
+			ApiResponse<Map<String,String>> res = new ApiResponse<>();
+			res.setCode(500);
+			res.setMessage("获取accesstoken 失败");
+			res.setResult(retMap);
+
 			log.error("获取accesstoken 失败",e);
-			return ApiResponse.fail("获取accesstoken 失败");
+			return res;
 		}
-		log.debug("1、获取到accessToken："+accessToken);
+		log.debug("getWxFile------------5、获取accesstoken："+accessToken);
 		String fileUrl=DloadImgUtil.downloadMedia(code,savePath,accessToken);
-		if(StringUtils.isNotEmpty(fileUrl)){
-			fileUrl=fileUrl.replace(staticPath,"");
+		log.debug("getWxFile------------6、完整的路径："+fileUrl);
+
+		if(credentialsType){
+			log.debug("getWxFile------------7、进入证件上传类型");
+//			1、识别
+			RuntimeCheck.ifNull(fileType,"您好，请确定图片类型");
+			boolean retType=wjService.ocrRecognition (retMap,fileType,fileUrl,fileUrl.replaceAll(credentialsPath,""));
+			log.debug("getWxFile------------7-1、处理状态"+retType);
+			if(!retType){
+				ApiResponse<Map<String,String>> res = new ApiResponse<>();
+				res.setCode(500);
+				res.setMessage(retMap.get("image_message"));
+				res.setResult(retMap);
+				return res;
+			}
+
+			log.debug("getWxFile------------7-2、截图操作"+fileUrl);
+//			2、  切图
+			wjService.tailorSubjectImg(fileUrl);
+		}else{
+			if(StringUtils.isNotEmpty(fileUrl)){
+				fileUrl=fileUrl.replace(staticPath,"");
+			}
+			retMap.put("filePath",fileUrl);
 		}
-		return ApiResponse.success(fileUrl);
+		log.debug("getWxFile------------100、结束");
+		return ApiResponse.success(retMap);
 	}
 
 	//用户上传证件照片时，进行实名认证，并返回结果

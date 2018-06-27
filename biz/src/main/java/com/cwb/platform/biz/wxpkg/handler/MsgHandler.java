@@ -10,6 +10,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -26,6 +27,14 @@ public class MsgHandler extends AbstractHandler {
 
 		if (!wxMessage.getMsgType().equals(WxConsts.XmlMsgType.EVENT)) {
 			// TODO 可以选择将消息保存到本地
+		}
+
+		if (StringUtils.isNotEmpty(wxMessage.getMsgType())){
+			switch (wxMessage.getMsgType()){
+				case "appdown":
+						return new TextBuilder().build("敬请期待", wxMessage, weixinService);
+					default:
+			}
 		}
 
 		ObjectMapper mapper = new ObjectMapper();

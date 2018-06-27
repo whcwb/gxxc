@@ -52,4 +52,14 @@ public class JlController extends QueryController<BizJl,String> {
 
         return service.validAndSave(entity);
     }
+
+    /**
+     * 修改
+     * @param entity
+     * @return
+     */
+    @RequestMapping(value="/update", method={RequestMethod.POST})
+    public ApiResponse<String> update(BizJl entity){
+        return service.updateEntity(entity);
+    }
 }
