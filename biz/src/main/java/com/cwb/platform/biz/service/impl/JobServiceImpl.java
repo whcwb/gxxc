@@ -92,6 +92,41 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
 
     }
 
+
+    /**
+     * 订单处理定时任务
+     */
+    @Override
+    public void orderFulfilJob(){
+        final List<BizOrder> list = orderFulfil();
+        for(BizOrder l:list){
+            String value = redisDao.boundValueOps("order_"+l.getDdId()).get();
+            if(StringUtils.isEmpty(value)){
+                try {
+                    ApiResponse<String> ret=updateOrderFulfilDispose(l);
+                    if(!ret.isSuccess()){
+                        log.debug(ret.getMessage());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    log.debug("订单："+l.getDdId()+"处理异常"); // TODO: 2018/6/8 数据库异常，需要回写到定时任务中
+                }
+                finally {
+                    redisDao.delete("order_"+l.getDdId());
+                }
+
+            }else{
+                log.debug("订单编号："+l.getDdId()+"已被其它应用于"+value+"处理。系统跳过处理");
+            }
+        }
+
+
+    }
+
+
+
+
+
     /**
      * 单个订单的处理
      *

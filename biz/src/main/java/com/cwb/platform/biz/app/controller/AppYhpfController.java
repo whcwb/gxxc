@@ -8,6 +8,7 @@ import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class AppYhpfController extends AppUserBaseController {
 //    query(entity)
 
     @RequestMapping(value="/getjlpf", method={RequestMethod.POST})
-    public ApiResponse<BizYhpf> getUserCoach(){
-        return yhpfService.getUserCoach();
+    public ApiResponse<BizYhpf> getUserCoach(@RequestParam("yhid") String yhId){
+        return yhpfService.getUserCoach(yhId);
     }
 
 
