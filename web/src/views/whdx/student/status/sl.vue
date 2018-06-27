@@ -87,7 +87,7 @@
 		},
 		methods: {
 		    getUnitName(state){
-                return state === -1 ? '医院名称' : '驾校名称';
+                return state === 0 ? '医院名称' : '驾校名称';
 			},
             getHandleStatus(){
                 this.$http.get(this.apis.getHandleStatus, {params: {yhId: this.formItem.yhId}}).then((res)=>{
@@ -103,9 +103,9 @@
 							}
                             this.steps[parseInt(k) - 1] = {title:this.dictUtil.getValByCode(this,'ZDCLK0071',k),content:unitName};
 						}
-                        this.currentStep = c - 1;
+                        this.currentStep = c;
                         this.showSteps = true;
-                        this.unitName = this.getUnitName(c - 1);
+                        this.unitName = this.getUnitName(c);
                         this.showConfirm = c != 4;
                     }
                 })
