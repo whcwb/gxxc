@@ -72,7 +72,7 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
     /**
      * 图片识别
      * @param retMap
-     * @param fileType  上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
+     * @param fileType  上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面  30、银行卡…………)
      * @param filePath  文件地址
      * @param user
      */
@@ -195,6 +195,66 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
             }
 
         }else if(StringUtils.indexOf(fileType,"2")==0){//驾驶证识别
+
+        }else if(StringUtils.indexOf(fileType,"3")==0){//银行卡识别
+            // 传入可选参数调用接口
+            HashMap<String, String> options = new HashMap<String, String>();
+
+            JSONObject res = client.bankcard(filePath, options);
+            System.out.println(res.toString(2));
+
+            String image_message="";
+            String error_code="";
+            try {
+                Object object = res.get("error_code");
+                if(object!=null){
+                    if (object instanceof String) {
+                        error_code =(String) object;
+                    }else if(object instanceof Integer ){
+                        error_code =object+"";
+                    }else {
+                        error_code="未知错误";
+                    }
+                }
+            }catch (Exception e){}
+
+            if(StringUtils.isNotEmpty(error_code)){
+                retType=false;
+                image_message="识别银行卡错误";
+            }
+
+            if(retType){
+                String bank_card_number="",bank_name="",bank_card_type="";
+                try {
+                    bank_card_number=res.getJSONObject("result").getString("bank_card_number");
+                }catch (Exception e){}
+                try {
+                    bank_name=res.getJSONObject("result").getString("bank_name");
+                }catch (Exception e){}
+                try {
+                    bank_card_type=res.getJSONObject("result").getString("bank_card_type");
+                }catch (Exception e){}
+//                try {
+//                    csrq=res.getJSONObject("words_result").getJSONObject("出生").getString("words");
+//                }catch (Exception e){}
+//                try {
+//                    cfzh=res.getJSONObject("words_result").getJSONObject("公民身份号码").getString("words");
+//                }catch (Exception e){}
+//                try {
+//                    zz=res.getJSONObject("words_result").getJSONObject("住址").getString("words");
+//                }catch (Exception e){}
+                if(StringUtils.isEmpty(bank_card_number)){
+                    retType=false;
+                    retMap.put("image_message","未能识别出信息");
+                }
+                retMap.put("bank_card_number",bank_card_number);//银行卡卡号
+                retMap.put("bank_name",bank_name);//银行名，不能识别时为空
+                retMap.put("bank_card_type",bank_card_type);//	银行卡类型，0:不能识别; 1: 借记卡; 2: 信用卡
+            }
+            if(StringUtils.isNotEmpty(image_message)){
+                retMap.put("image_message",image_message);
+            }
+
 
         }
         return retType;
