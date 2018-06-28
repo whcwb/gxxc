@@ -2,8 +2,6 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.BizKsJfMapper;
 import com.cwb.platform.biz.model.BizKsJf;
-import com.cwb.platform.biz.model.BizKsJf;
-import com.cwb.platform.biz.model.BizKsSl;
 import com.cwb.platform.biz.model.BizKsYk;
 import com.cwb.platform.biz.service.KsYkService;
 import com.cwb.platform.biz.service.KsjfService;
@@ -20,9 +18,9 @@ import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,6 +65,17 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
 
     @Override
     public ApiResponse<String> validAndSave(BizKsJf entity) {
+        RuntimeCheck.ifBlank(entity.getYhId(), "用户id不能为空");
+        RuntimeCheck.ifBlank(entity.getKmId(), "用户的缴费科目不能为空");
+        // 根据 yhid 和 科目编码 判断该用户是否已经缴费
+        SimpleCondition condition = new SimpleCondition(BizKsJf.class);
+        condition.eq(BizKsJf.InnerColumn.yhId.name(),entity.getYhId());
+        condition.eq(BizKsJf.InnerColumn.kmId.name(), entity.getKmId());
+        List<BizKsJf> ksJfList = findByCondition(condition);
+
+        if(CollectionUtils.size(ksJfList) >= 1 ){
+            return ApiResponse.fail("用户已经缴过当前科目的费用");
+        }
         int i = save(entity);
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }

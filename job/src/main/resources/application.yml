@@ -1,0 +1,15 @@
+
+spring:
+  thread:
+    pool:
+      corePoolSize: 10
+      maxPoolSize: 100
+      keepAliveSeconds: 120
+      queueCapacity: 200
+      waitForTasksToCompleteOnShutdown: true
+      awaitTerminationSeconds: 30
+logging:
+  config: classpath:log4j2.xml
+server:
+  port: 81
+

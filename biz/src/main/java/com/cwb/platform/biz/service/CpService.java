@@ -9,4 +9,6 @@ public interface CpService extends BaseService<BizCp,String>{
     ApiResponse<BizCp> getCpTyetList(String cpType);
 
     ApiResponse<String> saveCp(BizCp entity);
+
+    ApiResponse<String> updateYj(BizCp bizCp);
 }
