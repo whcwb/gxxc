@@ -158,9 +158,9 @@
           </mt-cell>
         </div>
 
-        <div style="position: fixed;z-index: 1000">
-          <sign-canvas></sign-canvas>
-        </div>
+        <!--<div style="position: fixed;z-index: 1000">-->
+          <!--<sign-canvas @saveResult="saveResult"></sign-canvas>-->
+        <!--</div>-->
       </div>
 </template>
 
@@ -226,6 +226,9 @@
           this.getYE()
         },
         methods:{
+          saveResult(mes){
+            alert('传递'+mes)
+          },
           showQrcode(val) {
             var v = this
             if (val == 'ewm') {

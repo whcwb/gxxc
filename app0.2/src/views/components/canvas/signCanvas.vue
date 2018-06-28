@@ -8,6 +8,7 @@
 <script>
     import VueSignCanvas from 'vue-sign-canvas'
     require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
+    import { Toast } from 'mint-ui'
     export default {
         name: "signCanvas",
         components:{
@@ -20,10 +21,10 @@
               brushWidth: 10,
               brushType: 'marker',
               width: 500,
-              height: 500,
+              height: 800,
               shadowEnable: false,
               shadowWidth: 10,
-              canvasBackgroundColor: '#fff0',
+              canvasBackgroundColor: '#fff',
             }
           }
         },
@@ -32,6 +33,16 @@
             // let mess = parseJSON(data)
               console.log('VueSignCanvas*****-----',data)
             console.log('-----',data.substring(22))
+            this.$http.post(this.apis.SIGN,{base64Data:data.substring(22)}).then((res)=>{
+              if(res.code==200){
+                Toast('签名成功，请缴费')
+                this.$emit('saveResult',res.message)
+              }else {
+                Toast(res.message)
+              }
+            }).catch((err)=>{
+
+            })
           },
           clear () {
             console.log('clear');
