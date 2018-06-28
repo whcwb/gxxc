@@ -224,10 +224,11 @@
     methods: {
       GETstudentPF(){
         var v = this
-        this.$http.post(this.apis.GET_PF).then((res) => {
+        this.$http.post(this.apis.GET_PF,{jlId:v.zymess.yhId}).then((res) => {
           console.log('频分信息',res);
           if (res.code == 200) {
             if(res.result.id){
+              v.zymess.jlPf = res.result.jlPjf
               v.pf=res.result.yhFz
               v.pf_disabled = true
             }
