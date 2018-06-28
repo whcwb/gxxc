@@ -101,6 +101,7 @@ module.exports = {
         updateyhrz:'/api/ptyh/updateyhrz', // 更新用户认证状态
         updateSfsd:'/api/ptyh/updateSfsd',//用户管理
         getUserCoachEvaluate:'/api/ptyh/updateSfsd',//获取用户对教练的评分
+        getPaymentRecord:'/api/ptyh/getPaymentRecord',//获取用户进度信息
     },
     teacher:{
         QUERY:'/api/jl/pager',//平台用户管理

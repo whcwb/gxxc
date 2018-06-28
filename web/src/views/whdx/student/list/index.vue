@@ -22,12 +22,13 @@
 <script>
     import formData from './formData.vue'
     import sublist from './sublist.vue'
+    import status from './status.vue'
     import audit from './audit.vue'
     import allot from './allot.vue'
 
     export default {
         name: 'byxxTable',
-        components: {formData,sublist,allot,audit},
+        components: {formData,sublist,allot,audit,status},
         data() {
             return {
                 v:this,
@@ -73,6 +74,10 @@
                                 this.util.buildButton(this,h,'success','card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
+                                }),
+                                this.util.buildButton(this,h,'success','card','学习进度',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'status'
                                 }),
                                 this.util.buildButton(this,h,'info','network','查看下线',()=>{
                                     this.choosedItem = params.row;

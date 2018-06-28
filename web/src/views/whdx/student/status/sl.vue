@@ -13,9 +13,16 @@
         						:styles="{top: '20px'}">
         			<Row>
         				<form-items :parent="v"></form-items>
-						<Col span="12">
-							<FormItem prop='name' :label='unitName'>
-								<Input v-model="formItem.name" :placeholder="'请输入'+unitName"></Input>
+						<Col v-if="currentStep == 0" span="12">
+							<FormItem prop='name' label='医院名称'>
+								<Input v-model="formItem.name" placeholder="请输入医院名称"></Input>
+							</FormItem>
+						</Col>
+						<Col v-if="currentStep != 0" span="12">
+							<FormItem prop='name' label='驾校名称'>
+								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校...'">
+									<Option v-for = '(item,index) in schoolList' :value="item.schoolShortName" :key="item.schoolCode">{{item.schoolShortName}}</Option>
+								</Select>
 							</FormItem>
 						</Col>
 						<Col span="12" v-if="currentStep == '3'" >
@@ -26,7 +33,7 @@
         			</Row>
 					<Row>
 						<Steps v-if="showSteps" :current="currentStep" size="small">
-							<Step v-for="(item,index) in steps"  :title="item.title" :content="item.content"></Step>
+							<Step v-for="(item,index) in steps"  :title="item.title" :content="item.content" @click.native="clickStep(index)"></Step>
 						</Steps>
 					</Row>
         		</Form>
@@ -74,6 +81,7 @@
                 handleSteps:0,
 				unitName:'',
                 showConfirm:false,
+				schoolList:[],
 			}
 		},
 		created(){
@@ -82,10 +90,21 @@
 		    this.formItem = {};
 		    this.formItem.yhId = yhId;
             this.getHandleStatus();
+            this.getSchoolList();
 		},
 		mounted(){
 		},
 		methods: {
+            clickStep(index){
+                alert(index);
+            },
+		    getSchoolList(){
+		        this.$http.get(this.apis.school.QUERY,{params:{pageSize:10000}}).then((res)=>{
+		            if (res.code == 200 && res.page.list){
+		                this.schoolList = res.page.list;
+					}
+				})
+			},
 		    getUnitName(state){
                 return state === 0 ? '医院名称' : '驾校名称';
 			},

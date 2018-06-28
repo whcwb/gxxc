@@ -242,6 +242,13 @@ export let appRouter = [
                         meta: { title: '科三专员' },
                         component: () => import('@/views/whdx/commissioner/k3')
                     },
+                    {
+                        path: 'commissioner-k4',
+                        icon: 'android-clipboard',
+                        name: 'commissioner-k4',
+                        meta: { title: '四阶段' },
+                        component: () => import('@/views/whdx/commissioner/k4')
+                    },
                 // ]
             // },
 
