@@ -58,7 +58,12 @@
               placeholder="xxxx xxxx xxxx xxxx"
               :maxlength="20"
               @focus="yhkYz = true"
-            ></md-input-item>
+            >
+              <div slot="right" style="position: relative;width: 100%;height: 100%;color: #ffa7007d!important;" @click="getBankCrdNumber">
+                <i class="iconfont icon-xiangji"
+                    style="position: absolute;top: 0;top: 12px;font-size: 0.5rem;color: #ffa7007d!important;"></i>
+              </div>
+            </md-input-item>
               <!--@blur="(name)=>{losesfocus(name,from.yhkKh)}"-->
           </md-field>
           <div v-show="yhkYz" @click="losesfocus" style="padding: 0.1rem 0.1rem;margin: 0.3rem 0">
@@ -168,7 +173,27 @@
             }).catch((err)=>{
 
             })
-          }
+          },
+          getBankCrdNumber(){
+              var v = this
+              this.wechatUtil.chooseImage((imgID)=>{
+                v.wechatUtil.uploadImage(imgID[0],(httpID)=>{
+                  v.UPIMG(httpID.serverId)
+                })
+              })
+          },
+          UPIMG(id){
+            var v = this
+            this.$http.post(this.apis.WXIMGUP,{code:id,fileType:'30'}).then((res)=>{
+              console.log('图片返回参数',res)
+              // alert(JSON.stringify(res))
+              if(res.code == 200){
+                v.from.yhkKh = res.result.bank_card_number
+              }
+            }).catch((err)=>{
+              console.log('银行卡FUCk',err);
+            })
+          },
         }
     }
 </script>

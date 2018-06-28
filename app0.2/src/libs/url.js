@@ -84,4 +84,5 @@ module.exports = {
   WXIMGUP:'/app/getWxFile',//微信 图片
 
   YZYHK:'/app/yhk/yhkyz',//验证银行卡
+  BANKCARDDELE:'/app/yhk/remove/'
 }
