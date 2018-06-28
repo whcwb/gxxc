@@ -1,6 +1,8 @@
 let ajaxUrl = "http://www.520xclm.com";
 // let ajaxUrl = "http://127.0.0.1"
 //   let ajaxUrl = "http://192.168.31.228"
+// let ajaxUrl = "http://192.168.31.92"
+
 module.exports = {
   url:ajaxUrl,
   wechat:{
@@ -57,6 +59,10 @@ module.exports = {
 
   getStudentCoach:'/app/ptyh/getStudentCoach', // 获取学员教练信息
 
+
+  getZYmess:'/app/ptyh/getJls',//获取专员信息
+
+
   getHandleStatus:'app/kssl/getHandleStatus', // 获取受理状态信息
 
   getExamInfo:'app/ksyk/getUserExamInfo', // 考试信息
@@ -75,5 +81,7 @@ module.exports = {
   JSZZP:'/app/ptyh/updatesfyjz',//驾驶证
 
 
-  WXIMGUP:'/app/getWxFile'
+  WXIMGUP:'/app/getWxFile',//微信 图片
+
+  YZYHK:'/app/yhk/yhkyz',//验证银行卡
 }

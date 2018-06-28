@@ -33,19 +33,23 @@
           </div>
           <md-field>
             <md-input-item
-              ref="input0"
               title="姓名"
               v-model="from.yhkXm"
               placeholder="请填写真实姓名"
               readonly
               :maxlength="5"
             ></md-input-item>
+            <!--<md-input-item-->
+              <!--title="所属银行"-->
+              <!--v-model="from.yhkSsyh"-->
+              <!--placeholder="请填写所属银行"-->
+              <!--:maxlength="5"-->
+            <!--&gt;</md-input-item>-->
             <md-input-item
-              ref="input0"
-              title="所属银行"
-              v-model="from.yhkSsyh"
-              placeholder="请填写所属银行"
-              :maxlength="5"
+              title="手机号码"
+              v-model="from.dn"
+              placeholder="请输入银行预留手机号"
+              :maxlength="11"
             ></md-input-item>
             <md-input-item
               title="银行卡"
@@ -53,12 +57,22 @@
               v-model="from.yhkKh"
               placeholder="xxxx xxxx xxxx xxxx"
               :maxlength="20"
+              @focus="yhkYz = true"
             ></md-input-item>
+              <!--@blur="(name)=>{losesfocus(name,from.yhkKh)}"-->
           </md-field>
-          <div @click="yz" style="padding: 0.3rem 0.1rem;margin: 0.3rem 0">
+          <div v-show="yhkYz" @click="losesfocus" style="padding: 0.1rem 0.1rem;margin: 0.3rem 0">
             <el-button type="warning"
                        style="width: 100%;padding: 0.3rem 0;font-size: 0.3rem"
+            >银行卡验证</el-button>
+          </div>
+          <div v-show="!yhkYz" @click="yz" style="padding: 0.3rem 0.1rem;margin: 0.3rem 0">
+            <el-button type="primary"
+                       style="width: 100%;padding: 0.3rem 0;font-size: 0.3rem"
             >提交</el-button>
+          </div>
+          <div style="color: #e23636;font-size: 0.4rem;padding: 0.3rem 0;margin: 0 0.25rem">
+            {{errMess}}
           </div>
           <div style="margin: 0.3rem 0">
             <!--<Button type="warning" long-->
@@ -74,7 +88,6 @@
 
 <script>
     import { InputItem, Field} from 'mand-mobile'
-    // import { Button} from 'iview'
     export default {
         name: "addBankCard",
         components:{
@@ -84,13 +97,16 @@
         },
         data(){
           return{
+            yhkYz:true,
               from:{
                 yhkXm:'',
-                yhkSsyh:'',
-                yhkKh:''
+                // yhkSsyh:'',
+                yhkKh:'',
+                dn:localStorage.getItem('phone')
               },
               ToastMessShow:false,
               ToastMess:'友情提示',
+              errMess:''
           }
         },
         watch:{
@@ -113,9 +129,26 @@
           this.util.auto(window, document,7.5)
         },
         methods:{
+          losesfocus(){
+            var v = this
+            this.$http.post(this.apis.YZYHK,{yhkKh:v.from.yhkKh,dn:localStorage.getItem('phone')}).then((res)=>{
+              console.log('一行卡',res)
+              if(res.code==200){
+                v.yhkYz = false
+                v.errMess = res.result.bank_name + res.result.card_type +'验证通过'
+              }else {
+                v.errMess = res.message+'请将信息填写完整'
+              }
+            }).catch((err)=>{
+              console.log('出错了');
+            })
+          },
+
+
+
           yz(){
             var v = this
-            if(v.from.yhkXm==''|| v.from.yhkKh=='' || v.from.yhkSsyh==''){
+            if(v.from.yhkXm==''|| v.from.yhkKh=='' || v.from.dn==''){
               v.ToastMessShow = true
               v.ToastMess = '请将填写完整！'
             }else {

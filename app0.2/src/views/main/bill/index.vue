@@ -70,23 +70,7 @@
 
             </div>
           </div>
-        </div>
-
-
-
-
-
-        <div class="box_col_auto" v-show="false">
-          <div class="billList" v-for="(item,index) in pageList">
-            <div class="box-row">
-              <div style="width: 0.6rem;padding: 0.2rem">
-                <img
-                  style="width: 100%"
-                  src="static/img/bill.png" alt="">
-              </div>
-            </div>
-          </div>
-          <div v-show="pageList.length==0" style="font-size: 0.6rem;font-weight: 700;color: #999999;text-align: center;line-height: 2.8rem">
+          <div v-show="pageList.length==0" style="font-size: 0.5rem;font-weight: 700;color: #999999;text-align: center;line-height: 2.8rem">
             暂无账单数据
           </div>
         </div>
@@ -161,6 +145,7 @@
           }
         },
         created(){
+          this.util.auto(window, document, 4)
           // this.zdListType()
           this.getList()
         },

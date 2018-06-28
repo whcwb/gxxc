@@ -54,7 +54,7 @@
           </div>
           <div class="box_row_100 box_cen">
             <div>
-              {{usermess.yhBm}}
+              {{usermess.yhXm | yhXm}}
             </div>
             <div class="box-row" style="margin-top: 0.15rem">
               <div>
@@ -174,7 +174,13 @@
         components:{
         },
         filters:{
-          yhZhye(val) {
+          yhXm:(val)=>{
+            if(val){
+              return val
+            }
+            return '未实名'
+    },
+          yhZhye(val){
             if (val == '') {
               return 0
             }
