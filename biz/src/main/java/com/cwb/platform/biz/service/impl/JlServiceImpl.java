@@ -153,7 +153,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
 
             }
             newEntity.setYhZt(obd.getYhJlsh());
-            newEntity.setYhLx("2");//设置类型 ZDCLK0041(2、教练、1、学员)
+//            newEntity.setYhLx("2");//设置类型 ZDCLK0041(2、教练、1、学员)
         }
         newEntity.setYhJlsh(obd.getYhJlsh());
         newEntity.setYhJlMs(yhZtMs);
@@ -285,6 +285,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         newEntity.setYhSfyjz("1");//是否有驾照 ZDCLK0046 (0 否  1 是)
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
         newEntity.setYhJlsh("1");//教练认证状态 ZDCLK0043(0 未认证、1 已认证 2、认证失败)
+//        newEntity.setYhLx("2");//设置类型 ZDCLK0041(2、教练、1、学员)
 
         i=ptyhService.save(newEntity);
         if(i==0){
@@ -352,4 +353,9 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
 
         return ApiResponse.success();
     }
+
+   public ApiResponse<String> updateEntity(BizJl entity){
+       entityMapper.updateByPrimaryKey(entity);
+        return ApiResponse.success();
+   }
 }

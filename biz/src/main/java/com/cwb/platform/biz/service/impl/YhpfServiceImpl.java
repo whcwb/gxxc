@@ -13,11 +13,13 @@ import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -57,24 +59,33 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
 
     @Override
     public ApiResponse<String> validAndSave(BizYhpf entity) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String jlid = request.getParameter("jlid");
+        RuntimeCheck.ifBlank(jlid, "专员id不能为空");
+
         RuntimeCheck.ifFalse(entity.getYhFz()!=null, "评分的分值不能为空");
 //        RuntimeCheck.ifFalse(entity.getYhPl()!=null, "评论不能为空");
         RuntimeCheck.ifFalse(entity.getYhFz()>=0&& entity.getYhFz()<=5,"评分的分值因该在[0-5]之间");
 
         BizPtyh user=getAppCurrentUser();
         BizUser userMessage=userService.findById(user.getId());
-        RuntimeCheck.ifFalse(userMessage!=null,"您好，您还不能对教练进行评分");
-        String jlId=userMessage.getYhJlid();
-        RuntimeCheck.ifTrue(StringUtils.isEmpty(jlId),"您好，您还未分配教练不能对教练进行评分");
-        BizJl jlMessage=jlService.findById(jlId);
-        RuntimeCheck.ifFalse(jlMessage!=null,"您好，您还未分配教练不能对教练进行评分");
+        RuntimeCheck.ifFalse(userMessage!=null,"您好，您还不能对专员进行评分");
 
+        if(!jlid.equals(userMessage.getYhJlid()) && !jlid.equals(userMessage.getYhJlid()) && !jlid.equals(userMessage.getYhJlid()) && !jlid.equals(userMessage.getYhJlid())){
+            return ApiResponse.fail("您好，您不能对该专员评分");
+        }
+
+
+        // RuntimeCheck.ifTrue(StringUtils.isEmpty(jlId),"您好，您还未分配教练不能对教练进行评分");
+        BizJl jlMessage=jlService.findById(jlid);
+         // RuntimeCheck.ifFalse(jlMessage!=null,"您好，您还未分配教练不能对教练进行评分");
+        RuntimeCheck.ifFalse(jlMessage!=null,"您好，您不能对该专员评分");
 //        1、检查是否已经评论过，如果已经评论过就不许再评论
         BizYhpf yhpf=new BizYhpf();
         yhpf.setYhId(user.getId());
-        yhpf.setJlId(jlId);
+        yhpf.setJlId(jlid);
         int selecCount=entityMapper.selectCount(yhpf);
-        RuntimeCheck.ifTrue(selecCount>0,"您好，您已对教练："+jlMessage.getYhXm()+"做出过评价，感谢您的评价");
+        RuntimeCheck.ifTrue(selecCount>0,"您好，您已对专员："+jlMessage.getYhXm()+"做出过评价，感谢您的评价");
 //        2、进行评论操作
         yhpf.setId(genId());
         yhpf.setYhFz(entity.getYhFz());
@@ -89,14 +100,21 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         jlMapper.updateJlPf(yhpf.getJlId());
         return ApiResponse.success();
     }
+
+
+
     @Override
-    public  ApiResponse<BizYhpf> getUserCoach(){
+    public  ApiResponse<BizYhpf> getUserCoach(String yhId){
+        RuntimeCheck.ifBlank(yhId,"用戶id不能为空");
         BizPtyh user=getAppCurrentUser();
         BizYhpf entity=new BizYhpf();
         entity.setYhId(user.getId());
         BizUser userMessage=userService.findById(user.getId());
+
+
         if(userMessage!=null){
-            entity.setJlId(userMessage.getYhJlid());
+            entity.setJlId(yhId);
+           //entity.setJlId(userMessage.getYhJlid());
         }
 
         List<BizYhpf> ret=this.findByEntity(entity);
@@ -105,6 +123,9 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         }else {
             return ApiResponse.success(new BizYhpf());
         }
+
+
+
 //        ret.sort(comparing(BizYhpf::getId));//对列表进行排序
     }
 

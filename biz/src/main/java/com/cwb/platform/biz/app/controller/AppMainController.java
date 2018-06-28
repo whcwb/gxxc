@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.app.controller;
 
+import com.cwb.platform.biz.app.AppUserBaseController;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.biz.util.DloadImgUtil;
@@ -10,6 +11,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -38,7 +40,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("/app")
-public class AppMainController {
+public class AppMainController extends AppUserBaseController {
 	Logger log = LoggerFactory.getLogger("access_info");
 
 	@Value("${staticPath:/}")
@@ -262,29 +264,137 @@ public class AppMainController {
 	/**
 	 * 从微信端下载图片到本地
 	 * 微信在获取到图片地址后，要将serverId 这个值的内容传到code中去。openid也不能为空。让后台来
+	 *
+	 *  fileType    上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
 	 */
 	@PostMapping("/getWxFile")
-	public ApiResponse<String> downloadMedia( String code,HttpServletRequest request){
+	public ApiResponse<Map<String,String>> downloadMedia(@RequestParam("code") String code,@RequestParam("fileType") String fileType,HttpServletRequest request){
+		Map<String,String>retMap=new HashMap<>();
+		boolean credentialsType=false;//是否是证件
+		log.debug("getWxFile------------1、获取到微信："+code);
 		RuntimeCheck.ifTrue(StringUtils.isEmpty(code),"微信文件ID不能为空");
 		String savePath=staticPath;
 		if (!savePath.endsWith("/")) {
 			savePath += "/";
 		}
-		savePath+="temp";
+		BizPtyh user = getAppCurrentUser(false);
+		//重新验证登录
+		String userid = request.getHeader("userid");
+		String token = request.getHeader("token");
+		String url = request.getHeader("url");
+		log.debug("openid=" + request.getHeader("openid")+"---------------------------------------------------");
+		if (token == null){
+			token = request.getParameter("token");
+		}
+		if (userid == null){
+			userid = request.getParameter("userid");
+		}
+		if (StringUtils.isEmpty(userid) || StringUtils.isEmpty(token)) {
+			user=null;
+		}else{
+			try {
+				//1、验证访问者是否合法
+				String userId = JwtUtil.getClaimAsString(token, "userId");
+				log.debug("userId=" + userId);
+				if (!userid.equals(userId)) {
+					user=null;
+				}else {
+					//2、验证用户状态
+					user = ptyhService.findByIdSelect(userid);
+					if ("1".equals(user.getYhSfsd())) {
+						user = null;
+					} else {
+						String value = redisDao.boundValueOps(userid).get();
+						log.debug("value=" + value);
+						log.debug("token=" + token);
+						if (StringUtils.isEmpty(value) || !value.equals(token)) {
+							user = null;
+						}else{
+							String userInfoJson = redisDao.boundValueOps(userid + "-appUserInfo").get();
+							log.debug("boundValueOps");
+							ObjectMapper mapper = new ObjectMapper();
+							user = mapper.readValue(userInfoJson, BizPtyh.class);
+							log.debug("userInfoJson:" + userInfoJson);
+							if (StringUtils.isEmpty(userInfoJson)) {
+								user = null;
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				user=null;
+			}
+		}
 
+
+		log.debug("getWxFile------------2、获取用户登录："+user==null?"未登录":"已登录");
+		savePath+="temp";
+		log.debug("getWxFile------------3、文件存放地址："+savePath);
+		if(StringUtils.isNotEmpty(fileType)){
+			if(StringUtils.indexOf("10 11 20 21 ", fileType)>-1){
+				savePath = credentialsPath+DateUtils.getToday().replaceAll("-","")+"/";//生成新的文件路径
+				credentialsType=true;
+			}
+		}
+		log.debug("getWxFile------------4、文件新的存放地址："+savePath);
 		String accessToken = null;
 		try {
 			accessToken = wxService.getAccessToken();
 		} catch (WxErrorException e) {
+			log.debug("getWxFile*******5、获取accesstoken：失败");
+			ApiResponse<Map<String,String>> res = new ApiResponse<>();
+			res.setCode(500);
+			res.setMessage("获取accesstoken 失败");
+			res.setResult(retMap);
+
 			log.error("获取accesstoken 失败",e);
-			return ApiResponse.fail("获取accesstoken 失败");
+			return res;
 		}
-		log.debug("1、获取到accessToken："+accessToken);
+		log.debug("getWxFile------------5、获取accesstoken："+accessToken);
 		String fileUrl=DloadImgUtil.downloadMedia(code,savePath,accessToken);
-		if(StringUtils.isNotEmpty(fileUrl)){
-			fileUrl=fileUrl.replace(staticPath,"");
+		log.debug("getWxFile------------6、完整的路径："+fileUrl);
+
+		if(credentialsType){
+			log.debug("getWxFile------------7、进入证件上传类型");
+			if(fileUrl != null && StringUtils.isNotEmpty(fileUrl)){
+	//			1、识别
+				RuntimeCheck.ifNull(fileType,"您好，请确定图片类型");
+				boolean retType=wjService.ocrRecognition (retMap,fileType,fileUrl,fileUrl.replaceAll(credentialsPath,""),user);
+				log.debug("getWxFile------------7-1、处理状态"+retType);
+				if(!retType){
+					ApiResponse<Map<String,String>> res = new ApiResponse<>();
+					res.setCode(500);
+					res.setMessage(retMap.get("image_message"));
+					res.setResult(retMap);
+					return res;
+				}
+				log.debug("getWxFile------------7-2、截图操作"+fileUrl);
+	//			2、  切图
+				wjService.tailorSubjectImg(fileUrl);
+			}
+		}else{
+			if(StringUtils.isNotEmpty(fileUrl)){
+				fileUrl=fileUrl.replace(staticPath,"");
+			}
+			retMap.put("filePath",fileUrl);
 		}
-		return ApiResponse.success(fileUrl);
+		String filePath=retMap.get("filePath");
+		if(StringUtils.isNotEmpty(filePath)){
+//			if(!StringUtils.equals(filePath.substring(0,1),"/")){
+//				filePath="/"+filePath;
+//				retMap.put("filePath",filePath);
+//			}
+		}else{
+			retMap.put("filePath","");
+		}
+		try {
+			log.debug("getWxFile------------100、结束"+mapper.writeValueAsString(retMap));
+		} catch (JsonProcessingException e) {
+			log.debug("getWxFile------------100、结束");
+			e.printStackTrace();
+		}
+
+		return ApiResponse.success(retMap);
 	}
 
 	//用户上传证件照片时，进行实名认证，并返回结果
@@ -317,28 +427,28 @@ public class AppMainController {
 		redisDao.boundValueOps("zjupload_"+userId+"_"+fileType).set(path, 1, TimeUnit.DAYS);
 		return ApiResponse.success(path);
 	}
-	/**
-	 * 证件识别
-	 * @param path  上传的文件地址
-	 * @param fileType	上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
-	 * @return
-	 */
-	@RequestMapping(value="/zjsb")
-	@ResponseBody
-	public ApiResponse<Map<String,String>> ocrRecognition(@RequestParam("path") String path,@RequestParam("fileType") String fileType) {
-		Map<String,String > retMap= new HashMap<String,String>();//返回值
-		RuntimeCheck.ifNull(fileType,"您好，请确定图片类型");
-		boolean retType=wjService.ocrRecognition (retMap,fileType,credentialsPath+path,path);
-		if(retType){
-			return ApiResponse.success(retMap);
-		}else{
-			ApiResponse<Map<String,String>> res = new ApiResponse<>();
-			res.setCode(500);
-			res.setMessage(retMap.get("image_message"));
-			res.setResult(retMap);
-			return res;
-		}
-	}
+//	/**
+//	 * 证件识别
+//	 * @param path  上传的文件地址
+//	 * @param fileType	上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
+//	 * @return
+//	 */
+//	@RequestMapping(value="/zjsb")
+//	@ResponseBody
+//	public ApiResponse<Map<String,String>> ocrRecognition(@RequestParam("path") String path,@RequestParam("fileType") String fileType) {
+//		Map<String,String > retMap= new HashMap<String,String>();//返回值
+//		RuntimeCheck.ifNull(fileType,"您好，请确定图片类型");
+//		boolean retType=wjService.ocrRecognition (retMap,fileType,credentialsPath+path,path, user);
+//		if(retType){
+//			return ApiResponse.success(retMap);
+//		}else{
+//			ApiResponse<Map<String,String>> res = new ApiResponse<>();
+//			res.setCode(500);
+//			res.setMessage(retMap.get("image_message"));
+//			res.setResult(retMap);
+//			return res;
+//		}
+//	}
 
 
 }

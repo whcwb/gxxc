@@ -3,6 +3,7 @@ package com.cwb.platform.biz.model;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Table(name = "biz_yhk")
@@ -50,8 +51,37 @@ public class BizYhk implements Serializable {
     @Column(name = "YHK_SCSYSJ")
     private String yhkScsysj;
 
+
+    /**
+     * 银行卡LOGO
+     */
+    @Column(name = "YHK_LOGO")
+    private String yhkLogo;
+
+
+    /**
+     * 手机号码
+     */
+    @Transient
+    private String dn;
+
     private static final long serialVersionUID = 1L;
 
+    public String getDn() {
+        return dn;
+    }
+
+    public void setDn(String dn) {
+        this.dn = dn;
+    }
+
+    public String getYhkLogo() {
+        return yhkLogo;
+    }
+
+    public void setYhkLogo(String yhkLogo) {
+        this.yhkLogo = yhkLogo;
+    }
     /**
      * 获取主键id
      *

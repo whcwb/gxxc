@@ -51,7 +51,7 @@
 		data() {
 			return {
 			    v:this,
-                operate:'教练员',
+                operate:'专员',
 				saveUrl:this.apis.teacher.ADD,
                 staticPath:this.apis.getImgUrl,
 				// uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
@@ -75,7 +75,7 @@
                     {label:'手机号码',prop:'yhSjhm'},
                     {label:'区域',prop:'jlQu',dict:'ZDCLK0060'},
                     {label:'联系电话',prop:'jlJjlxrdh'},
-                    {label:'教练地址',prop:'jlZz'},
+                    {label:'专员地址',prop:'jlZz'},
 
                 ],
                 ruleInline:{
@@ -91,9 +91,9 @@
          jlZml:证明人
          jlJjlxr:紧急联系人
          jlJjlxrdh:联系电话
-         jlZz:教练地址
+         jlZz:专员地址
          jlImg:/aaa.jpg
-         jlMs:教练简界
+         jlMs:专员简界
          imgList:./aaa.jpg,./bbb.jpg,-,-
          yhMm:
          */

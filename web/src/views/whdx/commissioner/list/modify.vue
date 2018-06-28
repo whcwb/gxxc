@@ -1,10 +1,3 @@
-<style lang="less">
-	@import '../../../../styles/common.less';
-	.docImg{
-		width: 100%;
-		padding: 10px;
-	}
-</style>
 <style type="text/css">
 
 </style>
@@ -20,34 +13,6 @@
 						:styles="{top: '20px'}">
 					<Row>
 						<form-items :parent="v"></form-items>
-					</Row>
-					<Row>
-						<Col span="12">
-							<label>身份证正面</label>
-							<choose-img :upload-url="uploadPrivatePath" @imgChange="imgChange" :type="'cardFront'" :path="files.cardFront"></choose-img>
-						</Col>
-						<Col span="12">
-							<label>身份证反面</label>
-							<choose-img :upload-url="uploadPrivatePath" @imgChange="imgChange" :type="'cardBack'" :path="files.cardBack" ></choose-img>
-						</Col>
-						<Col  span="12">
-							<label>驾驶证正本</label>
-							<choose-img :upload-url="uploadPrivatePath" @imgChange="imgChange" :type="'licenceFront'" :path="files.licenceFront"></choose-img>
-						</Col>
-						<Col  span="12">
-							<label>驾驶证副本</label>
-							<choose-img :upload-url="uploadPrivatePath" @imgChange="imgChange" :type="'licenceBack'" :path="files.licenceBack"></choose-img>
-						</Col>
-					</Row>
-					<Row>
-						<Col span="12">
-							<label>用户头像</label>
-							<choose-img :type="'cardFront'" :path="files.cardFront" @imgChange="imgChange"></choose-img>
-						</Col>
-						<Col span="12">
-							<label>用户素材</label>
-							<choose-img :type="'cardFront'" :path="files.cardFront" @imgChange="imgChange"></choose-img>
-						</Col>
 					</Row>
 				</Form>
 			</div>
@@ -70,7 +35,7 @@
 			return {
 			    v:this,
                 operate:'专员',
-				saveUrl:this.apis.teacher.ADD,
+				saveUrl:this.apis.teacher.CHANGE,
                 staticPath:this.apis.getImgUrl,
 				// uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
 				uploadPrivatePath:this.apis.UPLOAD,
@@ -86,22 +51,17 @@
 
 				},
                 formInputs:[
-                    {label:'账号',prop:'yhZh',readonly:true},
-                    {label:'密码',prop:'yhMm'},
                     {label:'姓名',prop:'yhXm'},
                     {label:'身份证号码',prop:'yhZjhm'},
-                    {label:'手机号码',prop:'yhSjhm'},
-                    {label:'教龄',prop:'jlJl'},
+                    {label:'手机号码',prop:'yhSjhm',disables:true},
                     {label:'区域',prop:'jlQu',dict:'ZDCLK0060'},
-                    {label:'证明人',prop:'jlZml'},
-                    {label:'紧急联系人',prop:'jlJjlxr'},
                     {label:'联系电话',prop:'jlJjlxrdh'},
-                    {label:'专员地址',prop:'jlZz'},
-                    {label:'头像',prop:'jlImg'},
-                    {label:'专员简界',prop:'jlMs'},
+                    {label:'地址',prop:'jlZz'},
+
                 ],
                 ruleInline:{
-				}
+				},
+				yhLx:'',
 			}
 		},
         /**
@@ -123,8 +83,18 @@
 		    this.util.initFormModal(this);
 		},
 		methods: {
+		    getData(id){
+		      this.$http.get(this.apis.teacher.getById+id).then((res)=>{
+		          if (res.code == 200 && res.result){
+		              this.formItem.jlQu = res.result.jlQu
+                      console.log(this.formItem);
+                      this.util.initFormRule(this);
+                      this.util.initForeignKeys(this);
+                      this.util.initDict(this)
+                  }
+              })
+			},
 		    beforeSave(){
-		        this.formItem.yhLx = "1";
             },
             imgChange(o){
 		        let type = o.type;

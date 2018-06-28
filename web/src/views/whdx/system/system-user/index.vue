@@ -95,7 +95,7 @@
                             if (params.row.lx === '20'){
                                 val = '工作人员';
 							}else if (params.row.lx === '30'){
-                                val = '教练员';
+                                val = '专员';
                             }else{
                                 val = '管理员';
 							}

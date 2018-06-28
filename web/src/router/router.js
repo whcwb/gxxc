@@ -298,6 +298,20 @@ export let appRouter = [
                 meta: { title: '提现管理' },
 				component: () => import('@/views/whdx/tx/index.vue')
 			},
+			{
+				path: 'wait-tx',
+				icon: 'android-clipboard',
+				name: 'wait-tx',
+                meta: { title: '待提现' },
+				component: () => import('@/views/whdx/tx/wait-tx.vue')
+			},
+			{
+				path: 'wait-confirm',
+				icon: 'android-clipboard',
+				name: 'wait-confirm',
+                meta: { title: '待确认' },
+				component: () => import('@/views/whdx/tx/wait-confirm.vue')
+			},
 		]
 	},
     {

@@ -242,6 +242,8 @@ public class BizPtyh implements Serializable {
     @Transient
     private String jlId;
 
+
+
     /**
      * 用户邀请人数
      */
