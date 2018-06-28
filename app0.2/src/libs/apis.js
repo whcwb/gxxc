@@ -32,7 +32,7 @@ API.ajax = axios.create({
 API.ajax.interceptors.request.use(config=> {
   //网络请求加载动画
   Indicator.open({
-    text: '数据加载中……',
+    text: '数据加载中',
     spinnerType: 'fading-circle'
   });
 
@@ -71,9 +71,9 @@ API.ajax.interceptors.request.use(config=> {
 });
 
 API.ajax.interceptors.response.use(response=> {
+  // console.log('网络拦截信息返回',response);
   //网络请求加载动画
   Indicator.close();
-
   if(response.data.code===403){
     Toast('权限丢失，请重新登录')
     localStorage.clear();
@@ -83,6 +83,9 @@ API.ajax.interceptors.response.use(response=> {
     },100)
   }
 
+  if(response.data.code!=200 && response.data.code!=403){
+    Toast(response.data.message)
+  }
   return response.data;
 }, error=> {
   Indicator.close();

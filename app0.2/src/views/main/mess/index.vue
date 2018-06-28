@@ -21,7 +21,6 @@
 
   .el-carousel__item:nth-child(2n) {
     background-color: #fff;
-    /*background-image: url("/wx/static/png/tab-default.png");*/
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -29,7 +28,6 @@
 
   .el-carousel__item:nth-child(2n+1) {
     background-color: #fff;
-    /*background-image: url("/wx/static/png/tab-selected.png");*/
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -38,19 +36,19 @@
 <template>
   <div id="xueche" style="height:800px;overflow: auto">
     <!-- 专员员信息 -->
-    <el-row type="flex" justify="center" class="jlyTitle">
+    <el-row type="flex" justify="center" class="jlyTitle" style="background-image: url('static/png/title-bg.png')">
       <el-col :span="22">
-        <el-card class="box-card" @click.native="showCoachInfo">
+        <el-card class="box-card" @click.native="showCoachInfo" style="background-image: url('static/png/card-bg.png')">
           <!--<div style="float: right"><i class="el-icon-refresh"></i></div>-->
           <div class="titlefix">
             <el-button disabled icon="iconfont icon-user" circle class="headerIcon"></el-button>
             <div>
-              <el-tag type="danger" size="mini" class="headerSubName">{{jly.qymc}}</el-tag>
+              <el-tag type="danger" size="mini" class="headerSubName">{{zyMwssList[initialIndex].jlQu | jlQu}}</el-tag>
             </div>
-            <div class="headerName">{{jly.yhXm}}</div>
+            <div class="headerName">{{zyMwssList[initialIndex].yhXm | yhXm}}</div>
             <div>
               <el-rate
-                v-model="jly.jlPf"
+                v-model="zyMwssList[initialIndex].jlPf"
                 disabled
                 show-score
                 text-color="#ff9900"
@@ -680,6 +678,63 @@
       [Swipe.name]:Swipe,
       [SwipeItem.name]: SwipeItem
     },
+    filters:{
+      jlQu:(val)=>{
+        switch (val) {
+          case "430014":
+            return '江岸区'
+            break;
+          case "4300001":
+            return '江汉区'
+            break;
+          case "4300002":
+            return '硚口区'
+            break;
+          case "430050":
+            return '汉阳区'
+            break;
+          case "4300003":
+            return '武昌区'
+            break;
+          case "430080":
+            return '武昌区'
+            break;
+          case "430080":
+            return '青山区'
+            break;
+          case "430070":
+            return '洪山区'
+            break;
+          case "430040":
+            return '东西湖区'
+            break;
+          case "430090":
+            return '汉南区'
+            break;
+          case "430100":
+            return '蔡甸区'
+            break;
+          case "430200":
+            return '蔡甸区'
+            break;
+          case "432200":
+            return '黄陂区'
+            break;
+          case "431400":
+            return '新洲区'
+            break;
+          default:
+            return '***'
+            break;
+        }
+      },
+      yhXm:(val)=>{
+        if (val){
+          return val
+        }
+        return '暂未分配专员'
+      }
+    },
     data() {
       return {
         scroll: null,
@@ -692,8 +747,8 @@
         ],
         activeName2: 'setp1',
         jly: {
-          yhXm: '未绑定专员',
-          jlQu: '-',
+          yhXm: '',
+          jlQu: '',
           jlPf: 0,
           qymc: ''
         },
@@ -704,22 +759,55 @@
           allSteps:1,
         examInfo:[],
         payInfo:[],
-        initialIndex:0
+        initialIndex:0,
+        zyMwss:{
+        },
+        zyMwssList:[
+          {qymc:''}
+        ]
       }
     },
     created() {
       this.user = this.$store.state.app.userMess;
-      this.getCoachInfo();
+      // this.getCoachInfo();
+      this.getResionList();
       this.getHandleStatus();
       this.getExamInfo();
       this.getPayInfo();
       this.swipeClick(this.initialIndex)
+
+      this.getZYmess()
     },
     methods: {
+      getZYmess(){
+        var v = this
+        this.$http.post(this.apis.getZYmess).then((res)=>{
+          console.log('钻元信息',res);
+          res.result.forEach((item,index)=>{
+            if(item.jlPf){
+              item.jlPf = parseInt(item.jlPf)
+            }
+          })
+          if(res.code==200 && res.result){
+            v.zyMwssList= []
+            v.zyMwssList = res.result
+          }
+        }).catch((err)=>{
+
+        })
+      },
+
+
+
+
       swipeClick(index){
         var v = this
-        console.log(index);
+        // console.log(index);
         v.initialIndex = index
+
+        // if(!v.zyMwssList[index].yhId){
+        //   Toast('暂未分配专员')
+        // }
         this.tabLabel.forEach((item,val)=>{
           if(val==index){
             item.tabImg= "static/png/tab-selected.png"
@@ -739,8 +827,8 @@
       getCoachInfo() {
         this.$http.get(this.apis.getStudentCoach, {params: {yhId: this.user.id}}).then((res) => {
           if (res.code == 200 && res.result) {
-            this.jly = res.result;
-            this.jly.jlPf = isNaN(this.jly.jlPf) ? 0 : parseInt(this.jly.jlPf);
+            // this.jly = res.result;
+            // this.jly.jlPf = isNaN(this.jly.jlPf) ? 0 : parseInt(this.jly.jlPf);
             this.getResionList();
           }
         })
@@ -775,7 +863,7 @@
         })
       },
       showCoachInfo(){
-        this.$router.push({name:'coach',params:{coach:this.jly}})
+        this.$router.push({name:'coach',params:{coach:this.zyMwssList[this.initialIndex],type:this.initialIndex}})
       },
       showMap(exam){
         if (!exam.examPlaceLat || !exam.examPlaceLng){

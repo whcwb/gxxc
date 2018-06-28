@@ -57,7 +57,6 @@
       if (!authCode){
           this.wechatUtil.getCode();
 
-          v.loadColse(true)
       }else{
           this.wechatUtil.vueParent = this;
           this.wechatUtil.getOpenid(authCode,(res)=>{
@@ -73,6 +72,14 @@
         v.loading.close();
         v.loadShow=false;
       }, 1000*1.5);
+    },
+    mounted(){
+      let openid = localStorage.getItem("openid");
+      let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+      let userToken = localStorage.getItem("userMess");
+      if (openid && ISLOGIN && userToken) {
+        this.$router.push({path:'/Home'})
+      }
     },
     methods:{
       loca(){

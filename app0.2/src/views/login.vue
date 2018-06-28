@@ -104,6 +104,7 @@
                 this.$http.post(this.apis.LOGIN,this.loginForm).then((res)=>{
                   if(res.code==200){
                     localStorage.setItem('token',JSON.stringify(res.result.accessToken))
+                    localStorage.setItem('phone',v.loginForm.username)
                     v.util.GetUserMess(v,(res)=>{
                       v.$router.push({path:'/Home'})
                     })

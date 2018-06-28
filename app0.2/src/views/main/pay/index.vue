@@ -197,7 +197,7 @@
             </div>
           </div>
         </div>
-        <div class="box-row" style="padding: 0.05rem 0.3rem">
+        <div class="box-row" style="padding: 0.15rem 0.3rem">
           <div class="" style="margin-right: 0.2rem">
             <div>
               甲方代表:<span class="decoration">{{usermess.yhXm}}</span>
@@ -209,7 +209,12 @@
               时间：{{getdateStr(0)}}
             </div>
           </div>
-          <div class="box_row_100">
+          <div class="box_row_100" style="position: relative">
+            <img src="static/gz/thtc.png" style="width: 1.6rem;
+                  position: absolute;
+                  top: -0.5rem;
+                  right: 0.5rem;
+                  transform: rotate(-60deg);">
               <div>
                 乙方代表:<span class="decoration">武汉天弘腾创科技有限公司</span>
               </div>

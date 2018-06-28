@@ -57,14 +57,15 @@
             </div>
 
             <div class="box-row" @click="compName='bankList'" v-else>
-              <div>
-                <i class="iconfont icon-detail" style="font-size: 0.8rem;color: #8c8c8c"></i>
-              </div>
+              <!--<div>-->
+                <!--<i class="iconfont icon-detail" style="font-size: 0.8rem;color: #8c8c8c"></i>-->
+              <!--</div>-->
               <div class="box_row_100" style="font-size: 0.3rem;color: #8c8c8c">
                 <div style="padding: 0.12rem">
-                  {{bankList[bankListIndex].yhkSsyh}}
+                  <!--{{bankList[bankListIndex].yhkSsyh}}-->
+                  <img :src="bankList[bankListIndex].yhkLogo" alt="">
                 </div>
-                <div style="padding: 0 0.1rem">
+                <div style="padding: 0.15rem 0.3rem;font-size: 0.33rem">
                   {{bankList[bankListIndex].yhkKh}}
                 </div>
               </div>
@@ -78,7 +79,7 @@
       </div>
 
       <div style="margin-top: 0.3rem;background-color: #fff;padding: 0 0.15rem">
-        <div style="font-size: 0.4rem;">
+        <div style="font-size: 0.4rem;padding: 0.2rem 0 0 0">
           提现金额
         </div>
         <div class="box-row" style="height: 2rem">

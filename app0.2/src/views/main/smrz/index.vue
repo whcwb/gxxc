@@ -21,13 +21,14 @@
         <div class="box_row_100" style="margin: 0.15rem" @click="getImg(0,10)">
           <!--<imgup :demoImg="imgList.zm" fileType="10"-->
                  <!--@handleSuccess="(res)=>{handleSuccess(res,0,'10')}"></imgup>-->
-          <img :src="imgList.zm" style="width: 100%">
-          {{imgList.zm}}
+          <div>
+            <img :src="imgList.zm" style="width: 100%">
+          </div>
         </div>
         <div class="box_row_100" style="margin: 0.15rem" @click="getImg(1,11)">
-          <img :src="imgList.bm" style="width: 100%">
-          {{imgList.bm}}
-
+          <div>
+            <img :src="imgList.bm" style="width: 100%">
+          </div>
           <!--<imgup :demoImg="imgList.bm" fileType="11"-->
                  <!--@handleSuccess="(res)=>{handleSuccess(res,1,'11')}"></imgup>-->
         </div>
@@ -46,6 +47,7 @@
         >提交</el-button>
       </div>
     </div>
+
     <div class="box_col_auto" v-else style="text-align: center;background-color: #fff">
       <div v-if="userMess.yhZt=='0'">
         <img src="static/zjsh/zjsh0.png" alt="">
@@ -67,7 +69,8 @@
           </div>
           <div class="box_row_100"style="margin: 0.2rem">
             <el-button type="primary" round
-                       v-if="userMess.ddSfjx=='0'&&usermess.yhZt=='1'"
+                       style="width: 100%"
+                       v-if="userMess.ddSfjx=='0'&&userMess.yhZt=='1'"
                        @click="$router.push({name:'pay'})"
             >缴费</el-button>
             <el-button  type="success" round
@@ -118,7 +121,7 @@
               zm:'static/home/id_03.png',
               bm:'static/home/id_05.png'
             },
-            switchVal:''
+            switchVal:'',
           }
         },
         watch:{
@@ -161,11 +164,19 @@
           },
           UPIMG(id,val,Type){
             var v = this
-            this.$http.post(this.apis.WXIMGUP,{code:id,fileType:'-'}).then((res)=>{
+            this.$http.post(this.apis.WXIMGUP,{code:id,fileType:Type}).then((res)=>{
               console.log('图片返回参数',res)
+              v.imgRES = res
               // v.wxupimg =v.apis.getImgUrl + res.result.filePath
               if (res.code==200){
-                v.zjsbImg(res.result.filePath,val,Type)
+                if(val==0){
+                  v.imgList.zm = v.apis.getImgUrl+res.result.filePath
+                  v.form.imgList[val]=res.result.filePath
+                }else if(val==1){
+                  v.imgList.bm = v.apis.getImgUrl+res.result.filePath
+                  v.form.imgList[val]=res.result.filePath
+                }
+
               }
             }).catch((err)=>{
               console.log('图片FUCk',err);

@@ -33,6 +33,7 @@ myFunction.auto=function (window, document , num) {
 myFunction.GetUserMess = function(v,callback){//获取个人信息
   Apis.ajax.post(apis.USERMESS).then((res)=>{
     if(res.code==200){
+      console.log('用户信息',res)
       if(res.result.yhTx == ''){
         res.result.yhTx ='static/login/LOGO.png'
       }

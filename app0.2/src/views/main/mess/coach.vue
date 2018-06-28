@@ -57,12 +57,15 @@
           <el-button disabled icon="iconfont icon-user" circle class="_headerIcon"></el-button>
         </div>
       </div>
+      <div style="text-align: center;font-size: 0.2rem">
+        {{zyType | getType}}
+      </div>
       <div class="coach_name">
-        <span>{{coach.yhXm}}</span>
+        <span>{{zymess.yhXm}}</span>
         <i class="el-icon-circle-check-outline" style="color: #00a854"></i>
         <div>
           <el-rate
-            v-model="coach.jlPf"
+            v-model="zymess.jlPf"
             disabled
             show-score
             text-color="#ff9900"
@@ -70,19 +73,18 @@
           </el-rate>
         </div>
         <div>
-          <span style="color: rgba(165,165,165,1)">{{coach.qymc}}</span>
+          <!--<span style="color: rgba(165,165,165,1)">{{coach.qymc}}</span>-->
         </div>
       </div>
       <div class="_separator"></div>
       <div class="detail" style="padding: 16px;">
         <div class="_title" style="padding: 0 0 0.1rem 0">专员详情</div>
         <div class="inner_div" style="background-color: rgb(247,247,247);border-radius: 14px;padding: 16px;">
-          <div style="font-size: 18px;color: rgba(253,150,41,1);padding:0 0 0.1rem 0">{{coach.yhXm}}</div>
+          <!--<div style="font-size: 18px;color: rgba(253,150,41,1);padding:0 0 0.1rem 0">{{coach.yhXm}}</div>-->
           <div style="color:rgba(165,165,165,1);font-size: 14px;">
-            <span>区域：</span><span>{{coach.jlQu}}</span><br>
+            <span>区域：</span><span>{{zymess.jlQu | jlQu}}</span><br>
             <span>性别：</span><span>男</span><br>
-            <span>电话：</span><span>{{coach.yhSjhm}}</span><br>
-            <span>报价：</span><span>2500元/全部</span><br>
+            <span>电话：</span><span>{{zymess.yhSjhm}}</span><br>
           </div>
         </div>
       </div>
@@ -106,12 +108,8 @@
                        icon="el-icon-check" circle></el-button>
           </div>
         </div>
-
       </div>
     </div>
-
-
-
 
     <div class="_separator"></div>
     <!--<div style="text-align: center">-->
@@ -125,25 +123,100 @@
 
   export default {
     name: "coach",
+    filters:{
+      jlQu:(val)=>{
+        switch (val) {
+          case "430014":
+            return '江岸区'
+            break;
+          case "4300001":
+            return '江汉区'
+            break;
+          case "4300002":
+            return '硚口区'
+            break;
+          case "430050":
+            return '汉阳区'
+            break;
+          case "4300003":
+            return '武昌区'
+            break;
+          case "430080":
+            return '武昌区'
+            break;
+          case "430080":
+            return '青山区'
+            break;
+          case "430070":
+            return '洪山区'
+            break;
+          case "430040":
+            return '东西湖区'
+            break;
+          case "430090":
+            return '汉南区'
+            break;
+          case "430100":
+            return '蔡甸区'
+            break;
+          case "430200":
+            return '蔡甸区'
+            break;
+          case "432200":
+            return '黄陂区'
+            break;
+          case "431400":
+            return '新洲区'
+            break;
+          default:
+            return '***'
+            break;
+        }
+      },
+      getType:(val)=>{
+        switch (val){
+          case 0:
+            return '受理专员'
+          break;
+          case 1:
+            return '科目一专员'
+            break;
+          case 2:
+            return '科目二专员'
+          break;
+          case 3:
+            return '科目三专员'
+          break;
+          case 4:
+            return '科目四专员'
+          break;
+        }
+      }
+    },
     data() {
       return {
         coach: {},
         pf:0,
-        pf_disabled:false
+        pf_disabled:false,
+        zymess:{},
+        zyType:0
       }
     },
     created() {
+      var v = this
       this.util.auto(window, document , 4)
       if(this.$route.params.coach){
         console.log(this.$route.params)
-        this.coach = this.$route.params.coach;
-        this.GETstudentPF()
-        if(this.coach.jlPf){
-
+        this.zymess= this.$route.params.coach
+        this.zyType = this.$route.params.type
+        if(this.$route.params.coach.yhFz!=''){
+          v.pf_disabled = true
+          v.pf = this.$route.params.coach.yhFz
         }
+
         console.log(this.coach)
       }else {
-        this.$router.push('/Home')
+        // this.$router.push('/Home')
       }
     },
     mounted() {
@@ -165,7 +238,7 @@
       },
       studentPF() {
         var v = this
-        this.$http.post(this.apis.PF_TEACHER,{yhFz:v.pf,yhPl:'文字评论'}).then((res) => {
+        this.$http.post(this.apis.PF_TEACHER,{yhFz:v.pf,yhPl:'文字评论',jlid:v.zymess.yhId}).then((res) => {
           console.log(res);
           if (res.code == 200) {
             v.GETstudentPF()
