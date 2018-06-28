@@ -76,4 +76,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> removeUserInfo(String userId);
 
     ApiResponse<List<BizJl>> getJls();
+
+    ApiResponse<List<List>> getPaymentRecord(String yhId);
 }

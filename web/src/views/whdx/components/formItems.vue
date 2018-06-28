@@ -14,8 +14,8 @@
                     <span v-if="i.prepend" slot="prepend">{{i.prepend}}</span>
                     <span v-if="i.append" slot="append">{{i.append}}</span>
                 </InputNumber>
-                <DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="parent.readonly && i.readonly"  :disabled="parent.readonly && i.disabled"></DatePicker>
-                <DatePicker v-else-if="i.type == 'datetime'"  :value="formItem[i.prop]" type="datetime" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled"></DatePicker>
+                <DatePicker v-else-if="i.type == 'date'"  :value="formItem[i.prop] == null || formItem[i.prop] == '' ? today : formItem[i.prop]" type="date" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="parent.readonly && i.readonly"  :disabled="parent.readonly && i.disabled"></DatePicker>
+                <DatePicker v-else-if="i.type == 'datetime'"  :value="formItem[i.prop] || formItem[i.prop] == '' ? now : formItem[i.prop]" type="datetime" placeholder="请选择日期" @on-change="(date)=>{formItem[i.prop] = date}"  :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled"></DatePicker>
                 <Select v-else-if="i.type === 'foreignKey'" :disabled="parent.readonly && i.disabled" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'">
                     <Option v-for = '(item,index) in foreignList[i.prop].items' :value="item.key" :key="item.key">{{item.val}}</Option>
                 </Select>
@@ -58,9 +58,13 @@
               foreignList:[],
               formInputs:[],
               formItem:{},
+              today:'',
+              now:''
           }
         },
         created(){
+            this.today = new Date().format("yyyy-MM-dd");
+            this.now = new Date().format("yyyy-MM-dd HH:mm:SS");
             if (this.parent.foreignList){
                 this.foreignList = this.parent.foreignList;
             }
