@@ -36,6 +36,9 @@
 							<Step v-for="(item,index) in steps"  :title="item.title" :content="item.content" @click.native="clickStep(index)"></Step>
 						</Steps>
 					</Row>
+					<Row>
+						<sl-list :parent="v"></sl-list>
+					</Row>
         		</Form>
         	</div>
         	<div slot='footer'>
@@ -47,8 +50,10 @@
 </template>
 
 <script>
+	import slList from './slList'
 	export default {
 		name: 'ksSlForm',
+		components:{slList},
 		data() {
 			return {
 			    v:this,
@@ -86,9 +91,9 @@
 		},
 		created(){
 		    this.util.initFormModal(this);
-		    let yhId = this.formItem.yhId;
-		    this.formItem = {};
-		    this.formItem.yhId = yhId;
+		    this.formItem.slSj = new Date().format('yyyy-MM-dd');
+		    this.formItem.name = '';
+		    this.formItem.code = '';
             this.getHandleStatus();
             this.getSchoolList();
 		},

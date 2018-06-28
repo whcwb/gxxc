@@ -14,6 +14,9 @@
         			<Row>
         				<form-items :parent="v"></form-items>
         			</Row>
+					<Row>
+						<jf-list :parent="v"></jf-list>
+					</Row>
         		</Form>
         	</div>
         	<div slot='footer'>
@@ -25,8 +28,10 @@
 </template>
 
 <script>
+	import jfList from './jfList'
 	export default {
 		name: 'ksJfForm',
+		components:{jfList},
 		data() {
 			return {
 			    v:this,
@@ -61,6 +66,7 @@
                 this.formItem.kmId = km;
                 this.formInputs[3].disabled = true;
             }
+            this.formItem.jfSj = new Date().format('yyyy-MM-dd');
 		},
 		methods: {
 		}

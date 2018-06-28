@@ -31,6 +31,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 学员考试缴费记录表
@@ -159,6 +160,32 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             e.printStackTrace();
         }
         return ApiResponse.success(map);
+    }
+
+    @Override
+    public ApiResponse<List<BizPtyh>> waitPaymentList(Integer km) {
+        // 受理成功，未交科目一，则为科目一待缴费
+        // 科目一考试通过，未交科目二，则为科目二待缴费
+        // 科目二考试通过，未交科目三，则为科目三待缴费
+        ApiResponse<List<BizPtyh>> res = new ApiResponse<>();
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.k3jfzt,0);
+        condition.eq(BizPtyh.InnerColumn.yhXySlType,"4");
+        List<BizPtyh> userList = ptyhService.findByCondition(condition);
+        if (userList.size() == 0){
+            res.setResult(new ArrayList<>());
+            return res;
+        }
+
+        List<String> userIds = userList.stream().map(BizPtyh::getId).collect(Collectors.toList());
+        condition = new SimpleCondition(BizKsJf.class);
+        condition.eq(BizKsJf.InnerColumn.kmId,km.toString());
+        condition.in(BizKsJf.InnerColumn.yhId,userIds);
+        List<BizKsJf> payedList = entityMapper.selectByExample(condition);
+        List<String> payedUserIds = payedList.stream().map(BizKsJf::getYhId).collect(Collectors.toList());
+        userList.removeIf(p->payedUserIds.contains(p.getId()));
+        res.setResult(userList);
+        return res;
     }
 
     private String getKm(String code) {

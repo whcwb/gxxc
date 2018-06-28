@@ -1,32 +1,32 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-				<search-items :parent="v" :label-with="100"></search-items>
+			<search-items :parent="v" :label-with="100"></search-items>
+			<Button type="info" @click="exportData">
+				<Icon type="ios-download-outline"></Icon>
+			</Button>
+			<Tooltip content="批量导入" placement="top">
+				<Button type="success" @click="componentName='batchImport'">
+					<Icon type="arrow-return-left"></Icon>
+				</Button>
+			</Tooltip>
 		</Row>
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
-		</Row>
-		<Row class="margin-top-10 pageSty">
-			<pager :parent="v"></pager>
 		</Row>
 		<component :is="componentName"></component>
 	</div>
 </template>
 
 <script>
-	import jf from './jf'
-	import jg from './jg'
-	import sl from './sl'
-	import yk from './yk'
 
     export default {
         name: 'byxxTable',
-        components: {jf,jg,sl,yk},
         data() {
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.student,
+                pagerUrl:this.apis.ksJf.DJF,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -34,49 +34,16 @@
                 tableColumns: [
                     {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071',searchType:'dict'},
-                    {title: '约考状态',key:'yhXyYkType',dict:'ZDCLK0067',searchType:'dict'},
-                    {
-                        title: '操作',
-                        key: 'action',
-                        render: (h, params) => {
-                            let buttons = [];
-                            if (this.userType == 'su'){
-                                buttons.push(this.util.buildButton(this,h,'success','card','受理',()=>{
-                                    this.getSl(params.row.id);
-                                }));
-                                buttons.push(this.util.buildButton(this,h,'success','social-yen','缴费',()=>{
-                                    this.getJf(params.row.id);
-                                }));
-                                buttons.push(this.util.buildButton(this,h,'success','card','约考',()=>{
-                                    this.getYk(params.row.id);
-                                }));
-							}else if (this.userType == 'slzy'){
-                                buttons.push(this.util.buildButton(this,h,'success','card','受理',()=>{
-                                    this.getSl(params.row.id);
-                                }));
-							}else if (this.userType == 'k1' || this.userType == 'k2' ||this.userType == 'k3' ){
-                                buttons.push(this.util.buildButton(this,h,'success','social-yen','缴费',()=>{
-                                    this.getJf(params.row.id);
-                                }));
-                                buttons.push(this.util.buildButton(this,h,'success','card','约考',()=>{
-                                    this.getYk(params.row.id);
-                                }));
-							}
-                            return h('div', buttons);
-                        }
-                    }
+                    {title: '身份证号码',key:'yhZjhm',searchKey:'yhZhLike'},
+                    {title: '手机号',key:'yhZh',searchKey:'yhZh'},
                 ],
                 pageData: [],
 				choosedData:[],
                 form: {
-                    yhLx:"1",
-                    byBysjInRange:'',
+                    km:1,
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
-                    zylx:'1'
                 },
 				userType:''
             }
@@ -113,10 +80,10 @@
 			exportData(){
                 let params = {
                     exportType:'ptyh',
-                    cols:'姓名,账号,是否有驾驶证,认证状态,专员姓名,专员电话',
-					keys:'yhXm,yhZh,yhSfyjz,yhZt,jlxm,jldh'
+                    cols:'姓名,身份证号码,手机号,科目',
+					keys:'yhXm,yhZjhm,yhZh,km'
 				}
-				window.open(this.apis.exportData+'?ddSfjx=1&exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);
+				window.open(this.apis.exportData+'?km=1&exportType=ksjf&cols='+params.cols+'&keys='+params.keys);
 			},
 			getData(api,yhId,componentName){
                 this.$http.get(api,{params:{yhId:yhId,pageSize:1,orderBy:'cjsj desc'}}).then((res)=>{
