@@ -1607,14 +1607,25 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             /*bizJlMap.put("3" , bizJl);
             bizJlMap.put("4" , bizJl);*/
             bizJls.add(bizJl);
-            bizJls.add(bizJl);
         } else {
             /*bizJlMap.put("3" , null);
             bizJlMap.put("4" , null);*/
             bizJls.add(null);
-            bizJls.add(null);
-        }
 
+        }
+        if (StringUtils.isNotBlank(bizUser.getYhJlid4())) { //科目4专员
+            BizJl bizJl = jlService.findById(bizUser.getYhJlid4());
+            yhpf.setJlId(bizJl.getYhId());
+            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
+            if (CollectionUtils.isNotEmpty(entity)) {
+                bizJl.setYhFz(entity.get(0).getYhFz());
+            }
+            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
+            bizJls.add(bizJl);
+        } else {
+            bizJls.add(null);
+
+        }
         return ApiResponse.success(bizJls);
     }
 

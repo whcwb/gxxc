@@ -196,7 +196,11 @@ public class BizPtyh implements Serializable {
      */
     @Column(name = "YH_XY_FPZY_TYPE")
     private String yhXyFpzyType;
-
+    /**
+     * 用户签名
+     */
+    @Column(name = "YH_AUTOGRAPH")
+    private String yhAutograph;
 
     /**
      * 手机验证码
@@ -251,6 +255,14 @@ public class BizPtyh implements Serializable {
     private long userInviteCount;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhAutograph() {
+        return yhAutograph;
+    }
+
+    public void setYhAutograph(String yhAutograph) {
+        this.yhAutograph = yhAutograph;
+    }
 
     public String getYhXyFpzyType() {
         return yhXyFpzyType;
