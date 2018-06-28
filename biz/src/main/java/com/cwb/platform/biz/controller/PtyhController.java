@@ -123,6 +123,18 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.removeUserInfo(userId);
     }
 
+    /**
+     * 查询学员缴费历史记录
+     *
+     */
+    @PostMapping("/getPaymentRecord")
+    public ApiResponse<List<List>> getPaymentRecord(@RequestParam("yhid") String yhId){
+
+        return service.getPaymentRecord(yhId);
+
+
+    }
+
 
 
 
