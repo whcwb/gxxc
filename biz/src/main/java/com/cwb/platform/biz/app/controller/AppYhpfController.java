@@ -30,8 +30,8 @@ public class AppYhpfController extends AppUserBaseController {
 //    query(entity)
 
     @RequestMapping(value="/getjlpf", method={RequestMethod.POST})
-    public ApiResponse<BizYhpf> getUserCoach(@RequestParam("yhid") String yhId){
-        return yhpfService.getUserCoach(yhId);
+    public ApiResponse<BizYhpf> getUserCoach(@RequestParam("jlId") String jlId){
+        return yhpfService.getUserCoach(jlId);
     }
 
 

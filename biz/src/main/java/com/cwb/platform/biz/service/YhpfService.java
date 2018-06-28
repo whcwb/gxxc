@@ -8,5 +8,5 @@ import com.cwb.platform.util.bean.ApiResponse;
 public interface YhpfService extends BaseService<BizYhpf, String> {
 
 
-    ApiResponse<BizYhpf> getUserCoach(String yhId);
+    ApiResponse<BizYhpf> getUserCoach(String jlId);
 }

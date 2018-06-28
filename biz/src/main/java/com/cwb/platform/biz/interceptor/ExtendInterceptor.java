@@ -26,7 +26,6 @@ public class ExtendInterceptor extends BaseWebConfigure {
 						,"/app/cd/xlcpager"
 						,"/app/cd/kcpager"
 						,"/app/cd/jxcpager"
-						,"/app/getWxFile"
 						,"/app/zdxm/getzdxm"
 						,"/app/validateSms"
 						,"/app/resetpwd");//白名单  (前台登录、用户注册、微信登录、下发手机验证码)
