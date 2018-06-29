@@ -166,6 +166,9 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         BizPtyh bizPtyh=new BizPtyh();
         bizPtyh.setId(order.getYhId());
         bizPtyh.setDdSfjx("1");
+        if(StringUtils.equals(bizCp.getCpType(),"3")){
+            bizPtyh.setYhLx("3");
+        }
         if(StringUtils.isNotEmpty(yhZsyqm)){
             bizPtyh.setYhZsyqm(yhZsyqm);//用户自己邀请码
             bizPtyh.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
