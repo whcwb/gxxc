@@ -70,6 +70,13 @@ public class BizCp implements Serializable {
      */
     @Column(name = "CJR")
     private String cjr;
+
+    /**
+     * 产品信息
+     */
+    @Column(name = "CP_XX")
+    private String cpXx;
+
 //
 //    /**
 //     * 审核人
@@ -325,6 +332,14 @@ public class BizCp implements Serializable {
 //        this.cpSh = cpSh;
 //    }
 
+    public String getCpXx() {
+        return cpXx;
+    }
+
+    public void setCpXx(String cpXx) {
+        this.cpXx = cpXx;
+    }
+
     public enum InnerColumn {
         id("ID"),
         cpMc("CP_MC"),
@@ -338,7 +353,8 @@ public class BizCp implements Serializable {
         cjr("CJR"),
         shr("SHR"),
         shsj("SHSJ"),
-        cpSh("CP_SH");
+        cpSh("CP_SH"),
+        cpXx("CP_XX");
 
         private final String column;
 

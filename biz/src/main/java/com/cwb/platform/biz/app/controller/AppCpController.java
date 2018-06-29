@@ -19,8 +19,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/app/cp")
 public class AppCpController extends AppUserBaseController{
+
     @Autowired
     private CpService service;
+
+
+
 
     /**
      * 获取产品类型
@@ -38,12 +42,11 @@ public class AppCpController extends AppUserBaseController{
 
     /**
      * 获取产品类型
-     * @param cpType  产品类型（1、学费  2、补考费）必填
      *  1、通过产品类型，查询出有效的产品
      * @return
      */
     @RequestMapping(value="/getcplist", method={RequestMethod.POST, RequestMethod.GET})
-    private ApiResponse<List<BizCp>> getCpTyetList(){
+    public ApiResponse<List<BizCp>> getCpTyetList(){
         return service.getCpTyetList();
     }
 

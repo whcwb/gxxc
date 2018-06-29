@@ -110,10 +110,10 @@ public class BizUser implements Serializable {
     private String yhJlid4;
 
     /**
-     * 科目四 受理专员
+     * 用户当前状态
      */
-    @Column(name = "YH_JLID4")
-    private String yhJlid4;
+    @Transient
+    private String yhDqzt;
 
 
 
@@ -122,12 +122,12 @@ public class BizUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String getYhJlid4() {
-        return yhJlid4;
+    public String getYhDqzt() {
+        return yhDqzt;
     }
 
-    public void setYhJlid4(String yhJlid4) {
-        this.yhJlid4 = yhJlid4;
+    public void setYhDqzt(String yhDqzt) {
+        this.yhDqzt = yhDqzt;
     }
 
     public String getYhJlid1() {

@@ -36,7 +36,7 @@ public class OrderFulfillJob implements Job {
 
         Map<String,String> map  = new HashMap<>();
         try {
-            map.put("entity",MD5Util.MD5Encode("123456789" + format , null ));
+            map.put("key",MD5Util.MD5Encode("123456789" + format , null ));
             String post = HttpUtil.post("http://xclm.xxpt123.com:8080/biz/job/orderFulfil",map);
             //String post = HttpUtil.post("http://localhost:9086/job/orderFulfil",map);
             logger.debug(post);

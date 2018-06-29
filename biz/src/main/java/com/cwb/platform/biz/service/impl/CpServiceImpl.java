@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
-
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -67,15 +66,16 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
      * @return
      */
     public ApiResponse<String> saveCp(BizCp entity){
-//        1、参数验证
+    //1、参数验证
         SysYh sysYh = getCurrentUser();
         RuntimeCheck.ifBlank(entity.getCpMc(),"费用名称不能为空");
         RuntimeCheck.ifBlank(entity.getCpType(),"收费类型不能为空");
         RuntimeCheck.ifBlank(entity.getCpYj(),"请确定该产品分佣状态");
-
         Double cpJl=  MathUtil.stringToDouble(entity.getCpJl());//产品金额
         RuntimeCheck.ifFalse(cpJl>0,"收费金额不能小于0");
-        RuntimeCheck.ifFalse((cpJl/100)>= MathUtil.stringToDouble(orderMoney) ,"收费金额不能低于系统配置的最低价："+orderMoney);
+        if(entity.getCpType().equals("1")) {
+            RuntimeCheck.ifFalse((cpJl / 100) >= MathUtil.stringToDouble(orderMoney), "收费金额不能低于系统配置的最低价：" + orderMoney);
+        }
         Double cpYjyjs=0.00;
         Double cpRjyjs=0.00;
         if(StringUtils.equals(entity.getCpYj(),"1")){
@@ -85,9 +85,9 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
             cpYjyjs=cpYjyj;
             cpRjyjs=cpRjyj;
         }
-//2、将该类型所有产品设置为无效
+    //2、将该类型所有产品设置为无效
         entityMapper.updateTypeDelete(entity.getCpType());//更新类型为无效
-//        3、将新记录插入表中
+    //3、将新记录插入表中
         BizCp newBizCp=new BizCp();
         newBizCp.setId(genId());
         newBizCp.setCpMc(entity.getCpMc());//设置产品名称
@@ -104,7 +104,6 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
 
         return ApiResponse.success();
     }
-
 
     /**
      * 修改产品佣金
@@ -141,9 +140,5 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
 
         return ApiResponse.success(cp.getId());
     }
-
-
-
-
 
 }
