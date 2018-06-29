@@ -17,8 +17,7 @@
       <div id="bankCard" class="box">
         <div class="box-row"
              style="height: 1rem;line-height: 1rem;
-             color: #fff;
-             background-color: #00000000">
+             color: #fff;background-color: #0676d8">
           <div style="width: 1rem;text-align: center;line-height: 0.5rem"
                @click="$parent.compName='bankList'">
             <i class="iconfont icon-left1"></i>
@@ -27,8 +26,8 @@
             添加银行卡
           </div>
         </div>
-        <div class="body" style="padding: 0.3rem">
-          <div style="font-size: 0.36rem;padding: 0.1rem 0.2rem;color: #ffa000;font-weight: 600">
+        <div class="body" style="padding: 0.3rem 0">
+          <div style="font-size: 0.36rem;padding: 0.1rem 0.2rem;color:#424242;">
             请绑定持卡人本人的银行卡
           </div>
           <md-field>
@@ -36,8 +35,6 @@
               title="姓名"
               v-model="from.yhkXm"
               placeholder="请填写真实姓名"
-              readonly
-              :maxlength="5"
             ></md-input-item>
             <!--<md-input-item-->
               <!--title="所属银行"-->
@@ -66,23 +63,18 @@
             </md-input-item>
               <!--@blur="(name)=>{losesfocus(name,from.yhkKh)}"-->
           </md-field>
-          <div v-show="yhkYz" @click="losesfocus" style="padding: 0.1rem 0.1rem;margin: 0.3rem 0">
+          <div v-show="yhkYz" @click="losesfocus" style="padding: 0.1rem 0.6rem;margin: 0.3rem 0">
             <el-button type="warning"
                        style="width: 100%;padding: 0.3rem 0;font-size: 0.3rem"
             >银行卡验证</el-button>
           </div>
-          <div v-show="!yhkYz" @click="yz" style="padding: 0.3rem 0.1rem;margin: 0.3rem 0">
+          <div v-show="!yhkYz" @click="yz" style="padding: 0.3rem 0.6rem;margin: 0.3rem 0">
             <el-button type="primary"
                        style="width: 100%;padding: 0.3rem 0;font-size: 0.3rem"
             >提交</el-button>
           </div>
-          <div style="color: #e23636;font-size: 0.4rem;padding: 0.3rem 0;margin: 0 0.25rem">
+          <div style="color: #da0808;font-size: 0.4rem;padding: 0.3rem 0.6rem;margin: 0 0.25rem">
             {{errMess}}
-          </div>
-          <div style="margin: 0.3rem 0">
-            <!--<Button type="warning" long-->
-                    <!--@click="yz"-->
-              <!--style="font-size:0.6rem ">提交</Button>-->
           </div>
         </div>
         <div class="tost" v-show="ToastMessShow">
@@ -117,7 +109,6 @@
         watch:{
           ToastMessShow:function (n,o) {
             var v = this
-            // console.log(n+'------'+o)
             if(n==true){
               setTimeout(function () {
                 v.ToastMessShow = false
@@ -154,8 +145,8 @@
           yz(){
             var v = this
             if(v.from.yhkXm==''|| v.from.yhkKh=='' || v.from.dn==''){
-              v.ToastMessShow = true
               v.ToastMess = '请将填写完整！'
+              v.ToastMessShow = true
             }else {
               v.addBanh()
             }

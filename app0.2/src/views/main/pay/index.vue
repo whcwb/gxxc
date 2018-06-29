@@ -212,7 +212,11 @@
               甲方代表:<span class="decoration">{{usermess.yhXm}}</span>
             </div>
             <div>
-              甲方（签章）
+              甲方（签章）:
+              <el-button v-if="sign" type="primary" icon="el-icon-edit" circle
+                         @click="signShow=!signShow"
+              ></el-button>
+              <el-button v-else type="success" icon="el-icon-check" circle></el-button>
             </div>
             <div>
               时间：{{getdateStr(0)}}
@@ -238,7 +242,7 @@
         <div class="box-row">
           <div class="box_row_100" style="padding: 0.2rem">
             <el-button type="success" round
-                       @click="signShow=!signShow"
+              @click="agreeShowOk"
               style="width: 100%;font-size: 0.4rem"
             >同意</el-button>
           </div>
@@ -263,14 +267,14 @@
         请签名..
       </div>
     </div>
-    <div class="box-row"style="background-color: #2d8cf0;height: 1rem;;line-height: 1.1rem;text-align: center">
-          <div style="height: 1rem;width: 1rem;
-          line-height: 0.6rem;
+    <div class="box-row"style="background-color: #2d8cf0;height: 0.8rem;;line-height: 0.8rem;text-align: center">
+          <div style="height: 0.8rem;width: 1rem;
+          line-height: 0.8rem;
           text-align: center;color: #ededed"
           @click="$router.push({path:'/Home'})">
             <i class="iconfont icon-left1"></i>
           </div>
-          <div class="box_row_100" style="font-weight: 700;font-size: 0.3rem;color: #fff">
+          <div class="box_row_100" style="font-weight: 700;font-size: 0.28rem;color: #fff">
             缴费
 
           </div>
@@ -322,8 +326,7 @@
 </template>
 
 <script>
-  import {Button, Radio, Field, FieldItem, InputItem, Switch, Cashier} from 'mand-mobile'
-  import { Toast ,Checklist } from 'mint-ui';
+  import {Toast, Button, Radio, Field, FieldItem, InputItem, Switch, Cashier} from 'mand-mobile'
   import signCanvas from '../../components/canvas/signCanvas'
   export default {
     name: 'cashier-demo',
@@ -332,7 +335,6 @@
     /* DELETE */
     components: {
       signCanvas,
-      [Checklist.name]: Checklist,
       [Button.name]: Button,
       [Radio.name]: Radio,
       [Field.name]: Field,
@@ -343,6 +345,7 @@
     },
     data() {
       return {
+        sign:true,
         signShow:false,
         usermess: this.$store.state.app.userMess,
         isCashierhow: false,
@@ -402,7 +405,15 @@
     },
     created(){
       this.util.auto(window, document ,7.5)
-      this.getCPlist()
+      console.log(this.$route.params);
+      if(this.$route.params.cpJl){
+        this.cp = this.$route.params
+        this.cashierAmount ="'" + parseInt(this.$route.params.cpJl)/100 +"'"
+      }else {
+        this.$router.back()
+      }
+
+      // this.getCPlist()
 
     },
     computed: {
@@ -412,8 +423,16 @@
     },
     methods: {
       saveResult(mes){
-        this.checkboxVal = true
+        // this.checkboxVal = true
+        this.sign = false
         this.signShow = false
+      },
+      agreeShowOk(){
+        if(this.sign){
+          Toast.info('请签字')
+        }else {
+          this.checkboxVal = true
+        }
       },
       //获取当前时间
       getdateStr(Y){
@@ -513,7 +532,7 @@
               v.doPay()
             }else if(res.err_msg=='get_brand_wcpay_request:cancel'){
               v.isCashierhow = !v.isCashierhow
-              Toast('支付取消')
+              Toast.info('支付取消')
             }
             // if(res.err_msg == "get_brand_wcpay_request:ok" ) {
             //
@@ -553,7 +572,7 @@
             v.payMess = res.result
             this.isCashierhow = !this.isCashierhow
           }else {
-            Toast(res.message)
+            Toast.info(res.message)
           }
         }).catch((err)=>{
 

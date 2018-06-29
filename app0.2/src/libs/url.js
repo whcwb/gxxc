@@ -1,10 +1,12 @@
 let ajaxUrl = "http://www.520xclm.com";
 // let ajaxUrl = "http://127.0.0.1"
 //   let ajaxUrl = "http://192.168.31.228"
-// let ajaxUrl = "http://192.168.31.92"
+// let ajaxUrl = "http://192.168.31.92"//宋
 
 module.exports = {
   url:ajaxUrl,
+  // port:'9086',
+  port:'8080/biz',
   wechat:{
       getCode:'/wechat/message/getCode',
       getOpenid:'/wechat/message/getOpenid',
@@ -37,9 +39,16 @@ module.exports = {
   SWIPER:'/app/hd/pager ',//轮播图
   TX:'/app/tx/save',//资金提现
   TEAM:'/app/user/pager',//我的团队
+
+  TEAMMESS:'/app/user/myteam',//团队学员信息
+
   CHUSERMESS:'/app/ptyh/update',//昵称 头像修改
   UPWORLD:'app/ptyh/mdfPwd',//密码修改
   CPTYPE:'/app/cp/getcplx',//产品类别
+  CPLIST:'/app/cp/getcplist',//产品列表
+
+
+
   CPPAY:'/app/order/save',//产品支付
   ADDBANK:'/app/yhk/save',//新增銀行卡
   BANKLIST:'/app/yhk/getCondition',//银行卡列表

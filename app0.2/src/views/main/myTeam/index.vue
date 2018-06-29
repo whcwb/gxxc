@@ -1,13 +1,14 @@
 <style lang="less">
   .timeList{
-    padding: 0.25rem;
+    padding: 0.15rem 0;
     font-size: 0.26rem;
       .list{
         background-color: #fff;
         margin-bottom: 0.2rem;
         border-bottom:solid 2px #949494;
-        padding: 0.16rem 0.05rem 0;
+        padding: 0.1rem 0.05rem;
         .ddsty{
+          /*background-color: #eb873a;*/
           .box_row_100{
             padding-left: 0.2rem;
             text-align: right;
@@ -76,9 +77,12 @@
                       </div>
                     </div>
                     <div class="box-row">
-                        <div class="money box_row_100"
+                        <div class="money"
                              :style="{color:item.userDetail.ddSfjx=='1'?'#00b65f':'#ff8800'}">
                           {{item.userDetail.ddSfjx | ddSfjx}}
+                        </div>
+                        <div class="typ box_row_100">
+                          {{item.userDetail.yhLx | yhLx}}
                         </div>
                         <div class="typ box_row_100">
                           {{item.userGrade | userGrade}}
@@ -119,6 +123,13 @@
           }
         },
       filters:{
+        yhLx:(val)=>{
+          if(val==1){
+            return '学员'
+          }else if(val==3){
+            return '会员'
+          }
+        },
         yhXm:(val)=>{
           if(val){
             return val

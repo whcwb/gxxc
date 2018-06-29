@@ -103,7 +103,7 @@
               <div class="box_row_100" style="margin: 0.05rem">
                   <el-button type="primary"
                              v-if="usermess.ddSfjx=='0'&&usermess.yhZt=='1'"
-                             @click="$router.push({name:'pay'})"
+                             @click="$router.push({name:'productList'})"
                   >缴费</el-button>
                   <el-button type="primary"
                              v-else-if="usermess.ddSfjx=='1'"
@@ -157,7 +157,6 @@
             ></span>&nbsp;&nbsp;{{usermess.yhZt | yhZt}}</span>
           </mt-cell>
         </div>
-
         <!--<div style="position: fixed;z-index: 1000">-->
           <!--<sign-canvas @saveResult="saveResult"></sign-canvas>-->
         <!--</div>-->

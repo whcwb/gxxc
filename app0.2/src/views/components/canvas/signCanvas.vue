@@ -35,7 +35,7 @@
             console.log('-----',data.substring(22))
             this.$http.post(this.apis.SIGN,{base64Data:data.substring(22)}).then((res)=>{
               if(res.code==200){
-                Toast('签名成功，请缴费')
+                // Toast('签名成功，请缴费')
                 this.$emit('saveResult',res.message)
               }else {
                 Toast(res.message)
