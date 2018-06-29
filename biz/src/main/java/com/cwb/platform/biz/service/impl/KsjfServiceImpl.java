@@ -16,6 +16,7 @@ import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.ExcelUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -23,6 +24,7 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.bouncycastle.util.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,8 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
 
     @Value("${wxMsgTemplate.pay}")
     private String examMsgId;
-
+    @Value("${staticPath}")
+    private String staticPath;
     @Value("${wxDomain}")
     private String wxDomain;
     @Autowired
@@ -205,6 +208,19 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
 
     @Override
     public ApiResponse<String> batchImport(String filePath) {
+        List<List<String>> data = ExcelUtil.getData(staticPath+filePath);
+        data = data.subList(1,data.size());
+        for (List<String> stringList : data) {
+            if (!stringList.get(3).equals("是")) {
+                continue;
+            }
+                BizKsJf jf = new BizKsJf();
+                jf.setYhXm(stringList.get(0));
+                jf.setYhZjhm(stringList.get(1));
+                jf.setKmId(stringList.get(2));
+                save(jf);
+
+        }
         return null;
     }
 
