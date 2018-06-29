@@ -1,6 +1,6 @@
 //网络请求地址前缀
-let BASE_URL = 'http://www.520xclm.com:8080/biz/';
-// let BASE_URL = 'http://127.0.0.1:9086';
+// let BASE_URL = 'http://www.520xclm.com:8080/biz/';
+let BASE_URL = 'http://127.0.0.1:9086';
 // let BASE_URL = 'http://192.168.31.35:9086';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
 module.exports = {

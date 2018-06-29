@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ptyh")
@@ -133,6 +134,11 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.getPaymentRecord(yhId);
 
 
+    }
+
+    @RequestMapping("status-query")
+    public ApiResponse<List<Map<String,Object>>> statusQuery(){
+        return service.statusQuery();
     }
 
 
