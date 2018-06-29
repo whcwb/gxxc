@@ -208,6 +208,8 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             km = 1;
         }
         ApiResponse<List<BizPtyh>> res = waitPaymentList(km);
+        int je = 150;
+        if (km == 2 || km == 3)je = 230;
         List<List<String>> data = new ArrayList<>(res.getResult().size());
         for (BizPtyh user : res.getResult()) {
             List<String> row = new ArrayList<>();
@@ -215,6 +217,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             row.add(user.getYhZjhm());
             row.add(km.toString());
             row.add("");
+            row.add(""+je);
             row.add("");
             data.add(row);
         }
@@ -225,18 +228,28 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
     public ApiResponse<String> batchImport(String filePath) {
         List<List<String>> data = ExcelUtil.getData(staticPath+filePath);
         data = data.subList(1,data.size());
+        String now = DateUtils.getNowTime();
         for (List<String> stringList : data) {
             if (!stringList.get(3).equals("是")) {
                 continue;
             }
-                BizKsJf jf = new BizKsJf();
-                jf.setYhXm(stringList.get(0));
-                jf.setYhZjhm(stringList.get(1));
-                jf.setKmId(stringList.get(2));
-                save(jf);
+            String zjhm = stringList.get(1);
+            BizKsJf jf = new BizKsJf();
+            jf.setYhXm(stringList.get(0));
+            jf.setYhZjhm(zjhm);
+            jf.setKmId(stringList.get(2));
+            jf.setJfSj(now);
+            jf.setJfJl(stringList.get(4));
 
+            List<BizPtyh> userList = ptyhService.findEq(BizPtyh.InnerColumn.yhZjhm,zjhm);
+            if (userList.size() != 0){
+                BizPtyh user = userList.get(0);
+                jf.setYhId(user.getId());
+                jf.setYhXm(user.getYhXm());
+            }
+            save(jf);
         }
-        return null;
+        return ApiResponse.success();
     }
 
     private String getKm(String code) {

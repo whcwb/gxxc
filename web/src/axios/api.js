@@ -22,10 +22,6 @@ module.exports = {
     ksyk:{
         QUERY:'/api/ksyk/pager',
     },
-    ksjf:{
-        QUERY:'/api/ksjf/pager',
-        EXPORT:'/pub/ksjf/export',
-    },
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
         GET_MENU_TREE:'/api/gn/getMenuTree',
@@ -61,6 +57,8 @@ module.exports = {
         CHANGE:'/api/ksjf/update',
         DELE:'/api/ksjf/removeIds',
         DJF:'/api/ksjf/waitPaymentList',
+        batchImport:'/api/ksjf/batchImport',
+        EXPORT:'/pub/ksjf/export',
     },
     ksjg:{
         QUERY:'/api/ksjg/pager',//考试结果记录

@@ -26,7 +26,7 @@ import java.util.Map;
  * 学员考试缴费记录表
  * Created by Administrator on 2018/6/19.
  */
-@Controller
+@RestController
 @RequestMapping("/api/ksjf")
 public class KsJfController extends QueryController<BizKsJf,String> {
 
@@ -40,18 +40,15 @@ public class KsJfController extends QueryController<BizKsJf,String> {
 
 
     @RequestMapping(value="/save", method={RequestMethod.POST})
-    @ResponseBody
     public ApiResponse<String> save(BizKsJf entity){
         return service.validAndSave(entity);
     }
     @RequestMapping("getPayInfo")
-    @ResponseBody
     public ApiResponse<Map<String,String>> getPayInfo(String yhId){
         return service.getPayInfo(yhId);
     }
 
     @RequestMapping("waitPaymentList")
-    @ResponseBody
     public ApiResponse<List<BizPtyh>> waitPaymentList(Integer km){
         return service.waitPaymentList(km);
     }

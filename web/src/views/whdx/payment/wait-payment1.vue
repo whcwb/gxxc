@@ -20,8 +20,10 @@
 
 <script>
 
+    import batchImport from './batchImport'
     export default {
         name: 'byxxTable',
+		components:{batchImport},
         data() {
             return {
                 v:this,
@@ -67,7 +69,7 @@
                 console.log(this.pageData);
             },
 			exportData(){
-				window.open(this.apis.ksjf.EXPORT);
+				window.open(this.apis.url + this.apis.ksJf.EXPORT);
 			},
         }
     }
