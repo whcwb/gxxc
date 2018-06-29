@@ -103,6 +103,11 @@ public class BizUser implements Serializable {
      */
     @Column(name = "YH_JLID3")
     private String yhJlid3;
+    /**
+     * 科目三
+     */
+    @Column(name = "YH_JLID4")
+    private String yhJlid4;
 
     /**
      * 科目四 受理专员
@@ -116,6 +121,14 @@ public class BizUser implements Serializable {
     private Map<String,Object> map;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhJlid4() {
+        return yhJlid4;
+    }
+
+    public void setYhJlid4(String yhJlid4) {
+        this.yhJlid4 = yhJlid4;
+    }
 
     public String getYhJlid1() {
         return yhJlid1;

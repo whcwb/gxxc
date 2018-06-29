@@ -156,22 +156,21 @@
             <span v-if="usermess.yhZt=='1'"
             ></span>&nbsp;&nbsp;{{usermess.yhZt | yhZt}}</span>
           </mt-cell>
-          <!--<mt-cell title="我的学员" value="0人"-->
-                   <!--to="/myStudent"-->
-                   <!--is-link style="border-bottom: 1px #e9eaec solid;">-->
-            <!--<i class="iconfont icon-zaixiaoxueyuan"-->
-               <!--style="font-size: 20px;color: #2d8cf0;margin-left: 0.1rem"-->
-               <!--slot="icon"></i>-->
-          <!--</mt-cell>-->
         </div>
+
+        <!--<div style="position: fixed;z-index: 1000">-->
+          <!--<sign-canvas @saveResult="saveResult"></sign-canvas>-->
+        <!--</div>-->
       </div>
 </template>
 
 <script>
     import { Toast } from 'mint-ui';
+    import signCanvas from '../../components/canvas/signCanvas'
     export default {
         name: "index",
         components:{
+          signCanvas
         },
         filters:{
           yhXm:(val)=>{
@@ -227,6 +226,9 @@
           this.getYE()
         },
         methods:{
+          saveResult(mes){
+            alert('传递'+mes)
+          },
           showQrcode(val) {
             var v = this
             if (val == 'ewm') {

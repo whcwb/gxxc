@@ -4,12 +4,14 @@ import com.cwb.platform.biz.model.BizKsJf;
 import com.cwb.platform.biz.service.KsjfService;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.base.QueryController;
+import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +38,11 @@ public class KsJfController extends QueryController<BizKsJf,String> {
     @RequestMapping("getPayInfo")
     public ApiResponse<Map<String,String>> getPayInfo(String yhId){
         return service.getPayInfo(yhId);
+    }
+
+    @RequestMapping("waitPaymentList")
+    public ApiResponse<List<BizPtyh>> waitPaymentList(Integer km){
+        return service.waitPaymentList(km);
     }
 
 }

@@ -265,7 +265,7 @@ public class AppMainController extends AppUserBaseController {
 	 * 从微信端下载图片到本地
 	 * 微信在获取到图片地址后，要将serverId 这个值的内容传到code中去。openid也不能为空。让后台来
 	 *
-	 *  fileType    上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)
+	 *  fileType    上传的文件属性  文件属性 ZDCLK0050 (10、 身份证正面 11、 身份证反面  20、 驾照正面 21、 驾照背面…………)  - 头像上传  30、银行卡上传识别
 	 */
 	@PostMapping("/getWxFile")
 	public ApiResponse<Map<String,String>> downloadMedia(@RequestParam("code") String code,@RequestParam("fileType") String fileType,HttpServletRequest request){
@@ -277,55 +277,54 @@ public class AppMainController extends AppUserBaseController {
 		if (!savePath.endsWith("/")) {
 			savePath += "/";
 		}
-		BizPtyh user = getAppCurrentUser(false);
-		//重新验证登录
-		String userid = request.getHeader("userid");
-		String token = request.getHeader("token");
-		String url = request.getHeader("url");
-		log.debug("openid=" + request.getHeader("openid")+"---------------------------------------------------");
-		if (token == null){
-			token = request.getParameter("token");
-		}
-		if (userid == null){
-			userid = request.getParameter("userid");
-		}
-		if (StringUtils.isEmpty(userid) || StringUtils.isEmpty(token)) {
-			user=null;
-		}else{
-			try {
-				//1、验证访问者是否合法
-				String userId = JwtUtil.getClaimAsString(token, "userId");
-				log.debug("userId=" + userId);
-				if (!userid.equals(userId)) {
-					user=null;
-				}else {
-					//2、验证用户状态
-					user = ptyhService.findByIdSelect(userid);
-					if ("1".equals(user.getYhSfsd())) {
-						user = null;
-					} else {
-						String value = redisDao.boundValueOps(userid).get();
-						log.debug("value=" + value);
-						log.debug("token=" + token);
-						if (StringUtils.isEmpty(value) || !value.equals(token)) {
-							user = null;
-						}else{
-							String userInfoJson = redisDao.boundValueOps(userid + "-appUserInfo").get();
-							log.debug("boundValueOps");
-							ObjectMapper mapper = new ObjectMapper();
-							user = mapper.readValue(userInfoJson, BizPtyh.class);
-							log.debug("userInfoJson:" + userInfoJson);
-							if (StringUtils.isEmpty(userInfoJson)) {
-								user = null;
-							}
-						}
-					}
-				}
-			} catch (Exception e) {
-				user=null;
-			}
-		}
-
+		BizPtyh user = getAppCurrentUser();
+//		//重新验证登录
+//		String userid = request.getHeader("userid");
+//		String token = request.getHeader("token");
+//		String url = request.getHeader("url");
+//		log.debug("openid=" + request.getHeader("openid")+"---------------------------------------------------");
+//		if (token == null){
+//			token = request.getParameter("token");
+//		}
+//		if (userid == null){
+//			userid = request.getParameter("userid");
+//		}
+//		if (StringUtils.isEmpty(userid) || StringUtils.isEmpty(token)) {
+//			user=null;
+//		}else{
+//			try {
+//				//1、验证访问者是否合法
+//				String userId = JwtUtil.getClaimAsString(token, "userId");
+//				log.debug("userId=" + userId);
+//				if (!userid.equals(userId)) {
+//					user=null;
+//				}else {
+//					//2、验证用户状态
+//					user = ptyhService.findByIdSelect(userid);
+//					if ("1".equals(user.getYhSfsd())) {
+//						user = null;
+//					} else {
+//						String value = redisDao.boundValueOps(userid).get();
+//						log.debug("value=" + value);
+//						log.debug("token=" + token);
+//						if (StringUtils.isEmpty(value) || !value.equals(token)) {
+//							user = null;
+//						}else{
+//							String userInfoJson = redisDao.boundValueOps(userid + "-appUserInfo").get();
+//							log.debug("boundValueOps");
+//							ObjectMapper mapper = new ObjectMapper();
+//							user = mapper.readValue(userInfoJson, BizPtyh.class);
+//							log.debug("userInfoJson:" + userInfoJson);
+//							if (StringUtils.isEmpty(userInfoJson)) {
+//								user = null;
+//							}
+//						}
+//					}
+//				}
+//			} catch (Exception e) {
+//				user=null;
+//			}
+//		}
 
 		log.debug("getWxFile------------2、获取用户登录："+user==null?"未登录":"已登录");
 		savePath+="temp";
@@ -373,10 +372,34 @@ public class AppMainController extends AppUserBaseController {
 				wjService.tailorSubjectImg(fileUrl);
 			}
 		}else{
+			String yhYhkCode="";
 			if(StringUtils.isNotEmpty(fileUrl)){
 				fileUrl=fileUrl.replace(staticPath,"");
 			}
+			if(StringUtils.equals("-",fileType)){//头像上传
+				//直接修改用户头像
+				BizPtyh bizPtyh=new BizPtyh();
+				bizPtyh.setYhTx(fileUrl);
+				bizPtyh.setId(user.getId());
+				ptyhService.update(bizPtyh);
+			}else if(StringUtils.equals("30",fileType)){//驾驶证号码提取
+				boolean retType=wjService.ocrRecognition (retMap,fileType,staticPath+fileUrl,fileUrl.replaceAll(staticPath,""),user);
+				if(!retType){
+					ApiResponse<Map<String,String>> res = new ApiResponse<>();
+					res.setCode(500);
+
+					retMap.put("bank_card_number","");
+					retMap.put("bank_name","");
+					retMap.put("bank_card_type","");
+					res.setMessage(retMap.get("image_message"));
+					res.setResult(retMap);
+					return res;
+				}
+			}
 			retMap.put("filePath",fileUrl);
+			if(StringUtils.isNotEmpty(yhYhkCode)){
+				retMap.put("userBankCard ",yhYhkCode);
+			}
 		}
 		String filePath=retMap.get("filePath");
 		if(StringUtils.isNotEmpty(filePath)){

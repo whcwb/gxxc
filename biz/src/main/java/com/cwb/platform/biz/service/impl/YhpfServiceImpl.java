@@ -20,6 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -104,29 +105,37 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
 
 
     @Override
-    public  ApiResponse<BizYhpf> getUserCoach(String yhId){
-        RuntimeCheck.ifBlank(yhId,"用戶id不能为空");
+    public  ApiResponse<BizYhpf> getUserCoach(String jlId){
+        RuntimeCheck.ifBlank(jlId,"教练id不能为空");
         BizPtyh user=getAppCurrentUser();
         BizYhpf entity=new BizYhpf();
         entity.setYhId(user.getId());
         BizUser userMessage=userService.findById(user.getId());
-
-
-        if(userMessage!=null){
-            entity.setJlId(yhId);
-           //entity.setJlId(userMessage.getYhJlid());
+        String jlPf="5";
+        BizJl jlMessage=jlService.findById(jlId);
+        if(jlMessage!=null){
+            jlPf=jlMessage.getJlPf();
         }
 
-        List<BizYhpf> ret=this.findByEntity(entity);
-        if(ret!=null&&ret.size()>0){
-            return ApiResponse.success(ret.get(0));
-        }else {
+        if(userMessage!=null){
+            entity.setJlId(jlId);
+            entity.setAuditType(1);
+           //entity.setJlId(userMessage.getYhJlid());
+        }else{
             return ApiResponse.success(new BizYhpf());
         }
 
+        List<BizYhpf> ret=this.findByEntity(entity);
+        ret.sort(Comparator.comparing(BizYhpf::getId));//对列表进行排序
 
 
-//        ret.sort(comparing(BizYhpf::getId));//对列表进行排序
+        if(ret!=null&&ret.size()>0){
+            BizYhpf yhpf= ret.get(0);
+            yhpf.setJlPjf(jlPf);
+            return ApiResponse.success(yhpf);
+        }else {
+            return ApiResponse.success(new BizYhpf());
+        }
     }
 
 

@@ -24,6 +24,9 @@
 							<choose-img :type="'cjd2'" :path="formItem.cjd2" @imgChange="imgChange2"></choose-img>
 						</Col>
 					</Row>
+					<Row>
+						<yk-list :parent="v"></yk-list>
+					</Row>
         		</Form>
         	</div>
         	<div slot='footer'>
@@ -36,10 +39,11 @@
 
 <script>
 	import chooseImg from '../../components/chooseImg'
+	import ykList from './ykList'
 	export default {
 		name: 'ksYkForm',
 		components:{
-            chooseImg
+            chooseImg,ykList
 		},
 		data() {
 			return {
@@ -79,6 +83,7 @@
             if (this.km !== ''){
                 this.formItem.kmCode = this.km;
             }
+            this.formItem.ykSj = new Date().format('yyyy-MM-dd');
 		},
 		mounted(){
 		},

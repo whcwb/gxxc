@@ -219,6 +219,8 @@
           if (res.code == 200 && res.result) {
             this.bankList = res.result
           } else {
+            this.bankList = []
+            this.compName = ''
 
           }
         }).catch((err) => {

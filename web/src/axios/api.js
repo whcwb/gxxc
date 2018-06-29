@@ -16,6 +16,15 @@ module.exports = {
     removeUserInfo:'/api/ptyh/removeUserInfo',
 
     getHandleStatus:'api/kssl/getHandleStatus', // 获取受理状态信息
+    kssl:{
+        QUERY:'/api/kssl/pager',
+    },
+    ksyk:{
+        QUERY:'/api/ksyk/pager',
+    },
+    ksjf:{
+        QUERY:'/api/ksjf/pager',
+    },
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
         GET_MENU_TREE:'/api/gn/getMenuTree',
@@ -50,6 +59,7 @@ module.exports = {
         ADD:'/api/ksjf/save',
         CHANGE:'/api/ksjf/update',
         DELE:'/api/ksjf/removeIds',
+        DJF:'/api/ksjf/waitPaymentList',
     },
     ksjg:{
         QUERY:'/api/ksjg/pager',//考试结果记录
@@ -101,6 +111,7 @@ module.exports = {
         updateyhrz:'/api/ptyh/updateyhrz', // 更新用户认证状态
         updateSfsd:'/api/ptyh/updateSfsd',//用户管理
         getUserCoachEvaluate:'/api/ptyh/updateSfsd',//获取用户对教练的评分
+        getPaymentRecord:'/api/ptyh/getPaymentRecord',//获取用户进度信息
     },
     teacher:{
         QUERY:'/api/jl/pager',//平台用户管理

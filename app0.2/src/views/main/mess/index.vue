@@ -769,14 +769,15 @@
     },
     created() {
       this.user = this.$store.state.app.userMess;
+      this.getZYmess()
+
       // this.getCoachInfo();
+
       this.getResionList();
       this.getHandleStatus();
       this.getExamInfo();
       this.getPayInfo();
       this.swipeClick(this.initialIndex)
-
-      this.getZYmess()
     },
     methods: {
       getZYmess(){
@@ -856,14 +857,18 @@
       },
       getHandleStatus(){
         this.$http.get(this.apis.getHandleStatus, {params: {yhId: this.user.id}}).then((res)=>{
-          if (res.code == 200){
+          if (res.code == 200 && res.result){
             this.handleStatus = res.result;
             this.handleSteps = parseInt(res.message);
           }
         })
       },
       showCoachInfo(){
-        this.$router.push({name:'coach',params:{coach:this.zyMwssList[this.initialIndex],type:this.initialIndex}})
+        if(this.zyMwssList[this.initialIndex]){
+          this.$router.push({name:'coach',params:{coach:this.zyMwssList[this.initialIndex],type:this.initialIndex}})
+        }else {
+          Toast('暂未分配负责专员')
+        }
       },
       showMap(exam){
         if (!exam.examPlaceLat || !exam.examPlaceLng){

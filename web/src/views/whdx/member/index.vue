@@ -1,5 +1,4 @@
 <style lang="less">
-	@import '../../../../styles/common.less';
 </style>
 <template>
 	<div class="boxbackborder">
@@ -22,13 +21,10 @@
 <script>
     import formData from './formData.vue'
     import sublist from './sublist.vue'
-    import status from './status.vue'
-    import audit from './audit.vue'
-    import allot from './allot.vue'
 
     export default {
         name: 'byxxTable',
-        components: {formData,sublist,allot,audit,status},
+        components: {formData,sublist},
         data() {
             return {
                 v:this,
@@ -44,11 +40,7 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
-                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
-                    {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
-                    {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
-                    {title: '约考状态',key:'yhXyYkType',dict:'ZDCLK0067'},
                     {title: '锁定',key:'yhSfsd',
                         render:(h,p)=>{
                             return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
@@ -75,10 +67,6 @@
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),
-                                this.util.buildButton(this,h,'success','card','学习进度',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'status'
-                                }),
                                 this.util.buildButton(this,h,'info','network','查看下线',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
@@ -102,7 +90,7 @@
                 pageData: [],
 				choosedData:[],
                 form: {
-                    yhLx:"1",
+                    yhLx:"member",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,

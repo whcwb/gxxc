@@ -1,9 +1,6 @@
 package com.cwb.platform.biz.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Table(name = "biz_yhpf")
@@ -67,7 +64,22 @@ public class BizYhpf implements Serializable {
     @Column(name = "JL_XM")
     private String jlXm;
 
+    /**
+     * 教练平均分
+     */
+    @Transient
+    private String jlPjf;
+
+
     private static final long serialVersionUID = 1L;
+
+    public String getJlPjf() {
+        return jlPjf;
+    }
+
+    public void setJlPjf(String jlPjf) {
+        this.jlPjf = jlPjf;
+    }
 
     /**
      * @return ID

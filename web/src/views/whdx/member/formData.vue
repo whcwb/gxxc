@@ -1,5 +1,4 @@
 <style lang="less">
-	@import '../../../../styles/common.less';
 	.docImg{
 		width: 100%;
 		padding: 10px;

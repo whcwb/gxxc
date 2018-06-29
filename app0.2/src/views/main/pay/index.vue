@@ -33,6 +33,15 @@
         }
       }
     }
+    #sign{
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #ffffff;
+      z-index: 200;
+    }
     .md-popup-title-bar{
       height: 1rem;
     }
@@ -229,7 +238,7 @@
         <div class="box-row">
           <div class="box_row_100" style="padding: 0.2rem">
             <el-button type="success" round
-                       @click="checkboxVal = true"
+                       @click="signShow=!signShow"
               style="width: 100%;font-size: 0.4rem"
             >同意</el-button>
           </div>
@@ -242,7 +251,18 @@
         </div>
       </div>
     </div>
-
+    <div id="sign" v-show="signShow">
+      <sign-canvas @saveResult="saveResult"></sign-canvas>
+      <span style="position: absolute;top: 0;z-index: 300;right: 0;
+      padding: 0.2rem;font-size: 0.35rem;font-weight: 600;color: #868686"
+      @click="signShow=!signShow">
+        关闭
+      </span>
+      <div style="position: absolute;top: 0;z-index: 300;left: 0;
+      padding: 0.2rem;font-size: 0.25rem;color: #fb5f00">
+        请签名..
+      </div>
+    </div>
     <div class="box-row"style="background-color: #2d8cf0;height: 1rem;;line-height: 1.1rem;text-align: center">
           <div style="height: 1rem;width: 1rem;
           line-height: 0.6rem;
@@ -304,12 +324,14 @@
 <script>
   import {Button, Radio, Field, FieldItem, InputItem, Switch, Cashier} from 'mand-mobile'
   import { Toast ,Checklist } from 'mint-ui';
+  import signCanvas from '../../components/canvas/signCanvas'
   export default {
     name: 'cashier-demo',
     /* DELETE */
     height: 100,
     /* DELETE */
     components: {
+      signCanvas,
       [Checklist.name]: Checklist,
       [Button.name]: Button,
       [Radio.name]: Radio,
@@ -321,6 +343,7 @@
     },
     data() {
       return {
+        signShow:false,
         usermess: this.$store.state.app.userMess,
         isCashierhow: false,
         isCashierCaptcha: false,//非否发送验证码
@@ -388,6 +411,10 @@
       },
     },
     methods: {
+      saveResult(mes){
+        this.checkboxVal = true
+        this.signShow = false
+      },
       //获取当前时间
       getdateStr(Y){
         var NowDate = new Date

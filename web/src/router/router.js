@@ -194,6 +194,59 @@ export let appRouter = [
 		]
     },
     {
+        path: '/member',
+        icon: 'android-car',
+        name: 'member',
+        meta: {title: '会员管理'},
+        component: Main,
+        children: [
+            {
+                path: 'member-list',
+                icon: 'android-clipboard',
+                name: 'member-list',
+                meta: { title: '学员列表' },
+                component: () => import('@/views/whdx/member')
+            },
+		]
+    },
+    {
+        path: '/payment',
+        icon: 'android-car',
+        name: 'payment',
+        meta: {title: '缴费管理'},
+        component: Main,
+        children: [
+            {
+                path: 'payment-list',
+                icon: 'android-clipboard',
+                name: 'payment-list',
+                meta: { title: '学员列表' },
+                component: () => import('@/views/whdx/payment/payment-list.vue')
+            },
+            {
+                path: 'wait-payment1',
+                icon: 'android-clipboard',
+                name: 'wait-payment1',
+                meta: { title: '科一待缴费' },
+                component: () => import('@/views/whdx/payment/wait-payment1.vue')
+            },
+            {
+                path: 'wait-payment2',
+                icon: 'android-clipboard',
+                name: 'wait-payment2',
+                meta: { title: '科二待缴费' },
+                component: () => import('@/views/whdx/payment/wait-payment2.vue')
+            },
+            {
+                path: 'wait-payment3',
+                icon: 'android-clipboard',
+                name: 'wait-payment3',
+                meta: { title: '科三待缴费' },
+                component: () => import('@/views/whdx/payment/wait-payment3.vue')
+            },
+		]
+    },
+    {
         path: '/commissioner',
         icon: 'android-car',
         name: 'commissioner',
@@ -241,6 +294,13 @@ export let appRouter = [
                         name: 'commissioner-k3',
                         meta: { title: '科三专员' },
                         component: () => import('@/views/whdx/commissioner/k3')
+                    },
+                    {
+                        path: 'commissioner-k4',
+                        icon: 'android-clipboard',
+                        name: 'commissioner-k4',
+                        meta: { title: '四阶段' },
+                        component: () => import('@/views/whdx/commissioner/k4')
                     },
                 // ]
             // },

@@ -61,7 +61,6 @@
 			    v:this,
                 operate:'保养',
                 staticPath:this.apis.getImgUrl,
-				saveUrl:this.apis.student.CHANGE,
 				showModal: true,
 				readonly: false,
                 files:{
@@ -77,31 +76,20 @@
                     {label:'姓名',prop:'yhXm'},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
                     {label:'身份证号码',prop:'yhZjhm'},
-                    {label:'状态',prop:'yhZt',type:'dict',dict:'ZDCLK0043'},
-                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
-                    {label:'受理状态',prop:'yhXySlType',type:'dict',dict:'ZDCLK0071'},
-                    {label:'约考状态',prop:'yhXyYkType',type:'dict',dict:'ZDCLK0067'},
+                    {label:'状态',prop:'yhZt',type:'dict',dict:'ZDCLK0043',disabled:true},
+                    {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045',disabled:true},
+                    {label: '专员姓名',prop:'jlXm',disabled:true},
+                    {label: '专员电话',prop:'sjhm',disabled:true},
                 ],
                 ruleInline:{
-				},
-				status:[],
+				}
 			}
 		},
 		created(){
 		    this.util.initFormModal(this);
 		    this.getImages();
-		    this.getImages();
 		},
 		methods: {
-		    getStatus(){
-		        this.$http.get().then((res)=>{
-                    console.log(res);
-                    if (res.code == 200 && res.result){
-                        this.status == res.result;
-                    }
-				})
-
-			},
             getImages(){
                 let v = this;
                 this.$http.post(this.apis.wj.getByCondition,{yhId:this.formItem.id}).then((res)=>{
