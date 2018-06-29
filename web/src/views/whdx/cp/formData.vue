@@ -18,7 +18,7 @@
         	</div>
         	<div slot='footer'>
         		<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-        		<Button type="primary" @click="v.util.save(v)">确定</Button>
+        		<Button type="primary" @click="v.save()">确定</Button>
         	</div>
         </Modal>
 	</div>
@@ -36,6 +36,10 @@
 				showModal: true,
 				readonly: false,
 				formItem: {
+                    cpJl:0,
+                    cpYjyj:0,
+                    cpRjyj:0,
+
 				},
                 formInputs:[
                     {label:'费用名称',prop:'cpMc'},
@@ -44,16 +48,34 @@
                     {label:'是否分佣',prop:'cpYj',dict:'ZDCLK0064'},
                     {label:'一级佣金',prop:'cpYjyj',type:'number',append:'元'},
                     {label:'二级佣金',prop:'cpRjyj',type:'number',append:'元'},
-                    {label:'费用是否有效',prop:'cpYx',dict:'ZDCLK0065'},
                 ],
                 ruleInline:{
 				}
 			}
 		},
 		created(){
-		    this.util.initFormModal(this);
+            this.util.initFormModal(this);
+            this.formItem.cpJl = parseFloat(this.formItem.cpJl) / 100;
+            this.formItem.cpYjyj = parseFloat(this.formItem.cpYjyj) / 100;
+            this.formItem.cpRjyj = parseFloat(this.formItem.cpRjyj) / 100;
 		},
 		methods: {
+            save(){
+                let v= this;
+                let p = JSON.parse(JSON.stringify(this.formItem));
+                p.cpJl = parseFloat(p.cpJl) * 100;
+                p.cpYjyj = parseFloat(p.cpYjyj) * 100;
+                p.cpRjyj = parseFloat(p.cpRjyj) * 100;
+                this.$http.post(this.apis.cp.ADD,p).then((res)=>{
+                    if (res.code === 200){
+                        v.$Message.success(res.message);
+                        v.util.getPageData(v.$parent)
+                        v.$parent.componentName = ''
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
+            },
 		}
 	}
 </script>

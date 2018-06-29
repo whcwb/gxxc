@@ -171,6 +171,13 @@ export let appRouter = [
         component: Main,
         children: [
             {
+                path: 'status-query',
+                icon: 'android-clipboard',
+                name: 'status-query',
+                meta: { title: '综合查询' },
+                component: () => import('@/views/whdx/student/status-query')
+            },
+            {
                 path: 'student-list',
                 icon: 'android-clipboard',
                 name: 'student-list',

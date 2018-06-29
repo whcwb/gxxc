@@ -15,4 +15,8 @@ public interface KsjfService extends BaseService<BizKsJf,String> {
     ApiResponse<Map<String,String>> getPayInfo(String yhId);
 
     ApiResponse<List<BizPtyh>> waitPaymentList(Integer km);
+
+    List<List<String>> export(Integer km);
+
+    ApiResponse<String> batchImport(String filePath);
 }

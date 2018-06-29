@@ -12,7 +12,10 @@
 			</Tooltip>
 		</Row>
 		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
+			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
+		</Row>
+		<Row>
+			<h2 style="color: red">合计：{{totalMoney}}元</h2>
 		</Row>
 		<component :is="componentName"></component>
 	</div>
@@ -20,8 +23,10 @@
 
 <script>
 
+    import batchImport from './batchImport'
     export default {
         name: 'byxxTable',
+		components:{batchImport},
         data() {
             return {
                 v:this,
@@ -36,6 +41,12 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '身份证号码',key:'yhZjhm',searchKey:'yhZhLike'},
                     {title: '手机号',key:'yhZh',searchKey:'yhZh'},
+                    {title: '科目',key:'km',render:(h,p)=>{
+                        return h('div','1')
+						}},
+                    {title: '金额',key:'money',render:(h,p)=>{
+                        return h('div','120元')
+						}},
                 ],
                 pageData: [],
 				choosedData:[],
@@ -45,7 +56,8 @@
                     pageNum: 1,
                     pageSize: 8,
                 },
-				userType:''
+				userType:'',
+                totalMoney:0,
             }
         },
         created() {
@@ -54,59 +66,12 @@
             this.util.initTable(this)
         },
         methods: {
-            selectionChange(e){
-				this.choosedData = e;
-			},
-            allot(){
-                if (this.choosedData.length == 0){
-                    this.$Message.error("请选择学员")
-					return;
-				}
-				for (let r of this.choosedData){
-                    if (r.yhIxySffp == '1'){
-                        this.$Message.error("请选择未分配的学员")
-                        return;
-					}
-                    if (r.ddSfjx != '1'){
-                        this.$Message.error("请选择已缴费的学员")
-                        return;
-					}
-				}
-				this.componentName = allot;
-			},
-            pageChange(event) {
-                this.util.pageChange(this, event);
+            onGetPageData(){
+                this.totalMoney = this.pageData.length * 120;
             },
 			exportData(){
-                let params = {
-                    exportType:'ptyh',
-                    cols:'姓名,身份证号码,手机号,科目',
-					keys:'yhXm,yhZjhm,yhZh,km'
-				}
-				window.open(this.apis.exportData+'?km=1&exportType=ksjf&cols='+params.cols+'&keys='+params.keys);
+				window.open(this.apis.url + this.apis.ksJf.EXPORT+'?km=1');
 			},
-			getData(api,yhId,componentName){
-                this.$http.get(api,{params:{yhId:yhId,pageSize:1,orderBy:'cjsj desc'}}).then((res)=>{
-                    if (res.code === 200 && res.page.list && res.page.list.length > 0){
-                        this.choosedItem = res.page.list[0];
-                    }else{
-                        this.choosedItem = {yhId:yhId};
-					}
-                    this.componentName = componentName
-                })
-			},
-            getSl(yhId){
-                this.getData(this.apis.kssl.QUERY,yhId,'sl');
-            },
-            getJf(yhId){
-                this.getData(this.apis.ksJf.QUERY,yhId,'jf');
-            },
-            getYk(yhId){
-                this.getData(this.apis.ksyk.QUERY,yhId,'yk');
-            },
-            getJg(yhId){
-                this.getData(this.apis.ksjg.QUERY,yhId,'jg');
-            },
         }
     }
 </script>

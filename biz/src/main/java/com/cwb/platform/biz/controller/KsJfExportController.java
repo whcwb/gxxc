@@ -6,19 +6,20 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.base.QueryController;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.util.bean.ExcelParams;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.ExcelUtil;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +27,9 @@ import java.util.Map;
  * 学员考试缴费记录表
  * Created by Administrator on 2018/6/19.
  */
-@RestController
-@RequestMapping("/api/ksjf")
-public class KsJfController extends QueryController<BizKsJf,String> {
+@Controller
+@RequestMapping("/pub/ksjf")
+public class KsJfExportController extends QueryController<BizKsJf,String> {
 
     @Autowired
     private KsjfService service;
@@ -39,22 +40,23 @@ public class KsJfController extends QueryController<BizKsJf,String> {
     }
 
 
-    @RequestMapping(value="/save", method={RequestMethod.POST})
-    public ApiResponse<String> save(BizKsJf entity){
-        return service.validAndSave(entity);
-    }
-    @RequestMapping("getPayInfo")
-    public ApiResponse<Map<String,String>> getPayInfo(String yhId){
-        return service.getPayInfo(yhId);
-    }
-
-    @RequestMapping("waitPaymentList")
-    public ApiResponse<List<BizPtyh>> waitPaymentList(Integer km){
-        return service.waitPaymentList(km);
+    private String getFileName(){
+        try {
+            return java.net.URLEncoder.encode(DateFormatUtils.format(new Date(),"yyyyMMddHHmmss") + ".xls","UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
-    @RequestMapping("batchImport")
-    public ApiResponse<String> batchImport(String filePath){
-        return service.batchImport(filePath);
+    @RequestMapping("export")
+    public void export(Integer km, HttpServletResponse response) throws IOException {
+        response.setContentType("application/msexcel");
+        response.setHeader("pragma", "no-cache");
+        response.addHeader("Content-Disposition","attachment; filename="+getFileName());
+        OutputStream out = response.getOutputStream();
+        String[] heads = new String[]{"姓名","身份证号","科目","是否缴费","缴费金额","缴费方式"};
+        ExcelUtil.createSheet(out,"统计",heads,service.export(km));
     }
+
 }

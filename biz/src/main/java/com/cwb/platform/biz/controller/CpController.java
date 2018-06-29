@@ -6,11 +6,14 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.base.QueryController;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 /**
@@ -19,14 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/cp")
-public class CpController extends QueryController<BizCp,String> {
+public class CpController  {
     @Autowired
     private CpService service;
 
-    @Override
-    protected BaseService<BizCp, String> getBaseService() {
-        return service;
+
+
+
+    @RequestMapping(value="/pager", method={RequestMethod.POST, RequestMethod.GET})
+    public ApiResponse<List<BizCp>> pager(BizCp entity, Page<BizCp> pager){
+        return service.pager(pager);
     }
+
     /**
      * 新增产品
      * @param entity

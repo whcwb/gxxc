@@ -78,4 +78,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<List<BizJl>> getJls();
 
     ApiResponse<List<List>> getPaymentRecord(String yhId);
+
+    ApiResponse<List<Map<String,Object>>> statusQuery();
 }

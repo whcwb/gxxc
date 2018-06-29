@@ -122,7 +122,6 @@ function getdateParaD(val){//时间转换
     }
     var newDate = new Date();
     newDate.setTime(val)
-    console.log(typeof newDate);
     let Year = val.getFullYear()
     let Month = val.getMonth()+1
     let Day = val.getDate()
@@ -391,6 +390,9 @@ util.getPageData = function(v) {
                         v.form.total = response.page.total;
                     }else if (response.result){
                         v.pageData = response.result;
+                    }
+                    if (typeof v.onGetPageData == 'function'){
+                        v.onGetPageData();
                     }
                 }
             }, (error) => {

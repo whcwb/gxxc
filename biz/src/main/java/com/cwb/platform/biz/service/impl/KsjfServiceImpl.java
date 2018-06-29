@@ -12,16 +12,20 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.ExcelUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.bouncycastle.util.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -47,7 +51,8 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
 
     @Value("${wxMsgTemplate.pay}")
     private String examMsgId;
-
+    @Value("${staticPath}")
+    private String staticPath;
     @Value("${wxDomain}")
     private String wxDomain;
     @Autowired
@@ -195,6 +200,57 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         userList.removeIf(p->payedUserIds.contains(p.getId()));
         res.setResult(userList);
         return res;
+    }
+
+    @Override
+    public List<List<String>> export(Integer km) {
+        if (km == null){
+            km = 1;
+        }
+        ApiResponse<List<BizPtyh>> res = waitPaymentList(km);
+        int je = 120;
+        if (km == 2)je = 152;
+        if (km == 3)je = 230;
+        List<List<String>> data = new ArrayList<>(res.getResult().size());
+        for (BizPtyh user : res.getResult()) {
+            List<String> row = new ArrayList<>();
+            row.add(user.getYhXm());
+            row.add(user.getYhZjhm());
+            row.add(km.toString());
+            row.add("");
+            row.add(""+je);
+            row.add("");
+            data.add(row);
+        }
+        return data;
+    }
+
+    @Override
+    public ApiResponse<String> batchImport(String filePath) {
+        List<List<String>> data = ExcelUtil.getData(staticPath+filePath);
+        data = data.subList(1,data.size());
+        String now = DateUtils.getNowTime();
+        for (List<String> stringList : data) {
+            if (!stringList.get(3).equals("是")) {
+                continue;
+            }
+            String zjhm = stringList.get(1);
+            BizKsJf jf = new BizKsJf();
+            jf.setYhZjhm(zjhm);
+            jf.setKmId(stringList.get(2));
+            jf.setJfSj(now);
+            jf.setJfJl(stringList.get(4));
+            jf.setJfFs(stringList.get(5));
+
+            List<BizPtyh> userList = ptyhService.findEq(BizPtyh.InnerColumn.yhZjhm,zjhm);
+            if (userList.size() != 0){
+                BizPtyh user = userList.get(0);
+                jf.setYhId(user.getId());
+                jf.setYhXm(user.getYhXm());
+            }
+            save(jf);
+        }
+        return ApiResponse.success();
     }
 
     private String getKm(String code) {
