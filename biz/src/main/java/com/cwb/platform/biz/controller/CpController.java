@@ -37,10 +37,10 @@ public class CpController{
      * @return
      */
     @RequestMapping(value="/getcplx", method={RequestMethod.POST, RequestMethod.GET})
-    public ApiResponse<BizCp> getCpTyetList(String cpType){
+    public ApiResponse<BizCp> getCpTyet(String cpType){
         //产品类型（1、学费  2、补考费）必填
         RuntimeCheck.ifBlank(cpType,"您好，请确定产品类型");
-        return service.getCpTyetList(cpType);
+        return service.getCpTyet(cpType);
     }
 
 
