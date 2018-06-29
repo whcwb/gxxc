@@ -9,14 +9,18 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
+import com.cwb.platform.util.commonUtil.StringDivUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpService {
@@ -25,6 +29,9 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
 
     @Autowired
     private BizCpMapper entityMapper;
+    @Autowired
+    private StringRedisTemplate redisDao;
+
 
     @Override
     protected Mapper<BizCp> getBaseMapper() {
@@ -97,5 +104,46 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
 
         return ApiResponse.success();
     }
+
+
+    /**
+     * 修改产品佣金
+     * @param bizCp
+     * @return
+     */
+    @Override
+    public ApiResponse<String> updateYj(BizCp bizCp) {
+        SysYh user = getCurrentUser();
+        RuntimeCheck.ifBlank(bizCp.getId() , "产品id不能为空");
+        RuntimeCheck.ifNull(bizCp.getCpYjyj(),"一级佣金不能为空");
+        RuntimeCheck.ifNull(bizCp.getCpRjyj(), "二级佣金不能为空");
+
+
+        // 将更新的cp插入表中， 设置为无效 ， 等待确认验证码
+        BizCp cp = new BizCp();
+        BizCp cp1 = findById(bizCp.getId());
+
+        cp.setId(genId());
+        cp.setCpYjyj(bizCp.getCpYjyj());
+        cp.setCpRjyj(bizCp.getCpRjyj());
+        cp.setCpYx("0");
+
+        int i = save(cp);
+        if(i == 1){ // 保存成功 ， 生成验证码
+           String code1 =  StringDivUtils.getSix();
+           String code2 = StringDivUtils.getSix();
+           redisDao.boundValueOps(cp.getId()).set(code1 + "," + code2,1,TimeUnit.DAYS);
+           // 调用短信发送接口
+           /* SendSmsUtil.sendSmsMap();*/
+        }else{
+            return ApiResponse.fail("修改失败，请重新操作");
+        }
+
+        return ApiResponse.success(cp.getId());
+    }
+
+
+
+
 
 }

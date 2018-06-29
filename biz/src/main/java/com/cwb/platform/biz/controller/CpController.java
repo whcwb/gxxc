@@ -5,6 +5,7 @@ import com.cwb.platform.biz.service.CpService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,4 +42,20 @@ public class CpController{
         RuntimeCheck.ifBlank(cpType,"您好，请确定产品类型");
         return service.getCpTyetList(cpType);
     }
+
+
+    /**
+     * 修改产品分佣费用 (需要生成短信验证码)
+     */
+    @PostMapping("/updateYj")
+    public ApiResponse<String> updateYj(BizCp bizCp){
+        return service.updateYj(bizCp);
+
+    }
+
+
+
+
+
+
 }
