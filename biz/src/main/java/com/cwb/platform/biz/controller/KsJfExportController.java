@@ -55,7 +55,7 @@ public class KsJfExportController extends QueryController<BizKsJf,String> {
         response.setHeader("pragma", "no-cache");
         response.addHeader("Content-Disposition","attachment; filename="+getFileName());
         OutputStream out = response.getOutputStream();
-        String[] heads = new String[]{"姓名","身份证号","科目","是否缴费","缴费金额","备注"};
+        String[] heads = new String[]{"姓名","身份证号","科目","是否缴费","缴费金额","缴费方式"};
         ExcelUtil.createSheet(out,"统计",heads,service.export(km));
     }
 

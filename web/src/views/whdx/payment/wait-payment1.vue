@@ -14,6 +14,9 @@
 		<Row style="position: relative;">
 			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
 		</Row>
+		<Row>
+			<h2 style="color: red">合计：{{totalMoney}}元</h2>
+		</Row>
 		<component :is="componentName"></component>
 	</div>
 </template>
@@ -42,7 +45,7 @@
                         return h('div','1')
 						}},
                     {title: '金额',key:'money',render:(h,p)=>{
-                        return h('div','150元')
+                        return h('div','120元')
 						}},
                 ],
                 pageData: [],
@@ -53,7 +56,8 @@
                     pageNum: 1,
                     pageSize: 8,
                 },
-				userType:''
+				userType:'',
+                totalMoney:0,
             }
         },
         created() {
@@ -63,13 +67,10 @@
         },
         methods: {
             onGetPageData(){
-              let totalMoney = this.pageData.length * 150;
-              let totalRow = {yhXm:'合计'};
-              this.pageData.push(totalRow);
-                console.log(this.pageData);
+                this.totalMoney = this.pageData.length * 120;
             },
 			exportData(){
-				window.open(this.apis.url + this.apis.ksJf.EXPORT);
+				window.open(this.apis.url + this.apis.ksJf.EXPORT+'?km=1');
 			},
         }
     }

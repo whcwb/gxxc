@@ -208,8 +208,9 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             km = 1;
         }
         ApiResponse<List<BizPtyh>> res = waitPaymentList(km);
-        int je = 150;
-        if (km == 2 || km == 3)je = 230;
+        int je = 120;
+        if (km == 2)je = 152;
+        if (km == 3)je = 230;
         List<List<String>> data = new ArrayList<>(res.getResult().size());
         for (BizPtyh user : res.getResult()) {
             List<String> row = new ArrayList<>();
@@ -235,11 +236,11 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             }
             String zjhm = stringList.get(1);
             BizKsJf jf = new BizKsJf();
-            jf.setYhXm(stringList.get(0));
             jf.setYhZjhm(zjhm);
             jf.setKmId(stringList.get(2));
             jf.setJfSj(now);
             jf.setJfJl(stringList.get(4));
+            jf.setJfFs(stringList.get(5));
 
             List<BizPtyh> userList = ptyhService.findEq(BizPtyh.InnerColumn.yhZjhm,zjhm);
             if (userList.size() != 0){

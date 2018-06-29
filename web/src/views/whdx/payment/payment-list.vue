@@ -28,11 +28,11 @@
                 dateRange:'',
                 tableColumns: [
                     {title: "#",  type: 'index',width:60},
-                    {title: '学员姓名',key:'jfFs'},
+                    {title: '学员姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '缴费方式',key:'jfFs'},
                     {title: '缴费金额',key:'jfJl',append:'元'},
                     {title: '缴费时间',key:'jfSj'},
-                    {title: '缴费科目',key:'kmId',type:'dict',dict:'ZDCLK0067'},
+                    {title: '缴费科目',key:'kmId',type:'dict',dict:'ZDCLK0067',searchType:'dict'},
                 ],
                 pageData: [],
 				choosedData:[],
