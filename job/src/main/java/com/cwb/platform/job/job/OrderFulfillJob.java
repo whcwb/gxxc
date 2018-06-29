@@ -28,7 +28,7 @@ public class OrderFulfillJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        System.out.println("564564987987894897466545649874987");
+       // System.out.println("564564987987894897466545649874987");
         // 生成密钥
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -37,8 +37,8 @@ public class OrderFulfillJob implements Job {
         Map<String,String> map  = new HashMap<>();
         try {
             map.put("entity",MD5Util.MD5Encode("123456789" + format , null ));
-            //String post = HttpUtil.post("http://xclm.xxpt123.com:8080/biz/job/orderFulfil",map);
-            String post = HttpUtil.post("http://localhost:9086/job/orderFulfil",map);
+            String post = HttpUtil.post("http://xclm.xxpt123.com:8080/biz/job/orderFulfil",map);
+            //String post = HttpUtil.post("http://localhost:9086/job/orderFulfil",map);
             logger.debug(post);
             //System.out.println(post);
             //System.out.println("--------------------");
