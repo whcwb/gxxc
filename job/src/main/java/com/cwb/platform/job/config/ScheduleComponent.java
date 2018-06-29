@@ -23,7 +23,7 @@ public class ScheduleComponent {
 
 
         // gps同步定执行周期，每10s执行一次
-        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("0/30 * * * * ? ");
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("0/10 * * * * ? ");
 
 
         // gps同步创建一个trigger
