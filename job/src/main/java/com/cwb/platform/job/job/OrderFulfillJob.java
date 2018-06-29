@@ -6,6 +6,8 @@ import com.cwb.platform.job.util.MD5Util;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +21,7 @@ import java.util.Map;
 public class OrderFulfillJob implements Job {
 
 
-
+    Logger logger = LoggerFactory.getLogger("access_info");
 
     // http://xclm.xxpt123.com:8080/biz/job/orderFulfil
 
@@ -35,8 +37,9 @@ public class OrderFulfillJob implements Job {
         Map<String,String> map  = new HashMap<>();
         try {
             map.put("entity",MD5Util.MD5Encode("123456789" + format , null ));
-            String post = HttpUtil.post("http://xclm.xxpt123.com:8080/biz/job/orderFulfil",map);
-           // String post = HttpUtil.post("http://localhost:9086/job/orderFulfil",map);
+            //String post = HttpUtil.post("http://xclm.xxpt123.com:8080/biz/job/orderFulfil",map);
+            String post = HttpUtil.post("http://localhost:9086/job/orderFulfil",map);
+            logger.debug(post);
             //System.out.println(post);
             //System.out.println("--------------------");
         } catch (Exception e) {

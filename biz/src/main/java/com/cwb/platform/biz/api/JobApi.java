@@ -5,6 +5,7 @@ import com.cwb.platform.biz.service.JobService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MD5Util;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,7 @@ public class JobApi {
     @RequestMapping(value="/orderFulfil", method={RequestMethod.POST})
     public ApiResponse<String> orderFulfil(String entity){
         //1、报文验证 IP、时间戳、业务编号、md5校证值。
+
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String host = request.getRemoteHost();
         if(!StringUtils.equals(host,"127.0.0.1")){
@@ -67,6 +69,9 @@ public class JobApi {
         List<BizOrder> list=jobService.orderFulfil();
 
         String messaget="";
+        if(CollectionUtils.isEmpty(list)){
+            messaget = "未查询到订单";
+        }
         for(BizOrder l:list){
             String value = redisDao.boundValueOps("order_"+l.getDdId()).get();
             if(StringUtils.isEmpty(value)){
