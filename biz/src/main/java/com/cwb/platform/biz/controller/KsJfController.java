@@ -45,4 +45,13 @@ public class KsJfController extends QueryController<BizKsJf,String> {
         return service.waitPaymentList(km);
     }
 
+    @RequestMapping("export")
+    public ApiResponse<String> export(Integer km){
+        return service.export(km);
+    }
+
+    @RequestMapping("batchImport")
+    public ApiResponse<String> batchImport(String filePath){
+        return service.batchImport(filePath);
+    }
 }

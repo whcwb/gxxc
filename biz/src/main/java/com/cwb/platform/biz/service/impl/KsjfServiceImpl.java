@@ -12,6 +12,7 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -195,6 +196,16 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         userList.removeIf(p->payedUserIds.contains(p.getId()));
         res.setResult(userList);
         return res;
+    }
+
+    @Override
+    public ApiResponse<String> export(Integer km) {
+        return null;
+    }
+
+    @Override
+    public ApiResponse<String> batchImport(String filePath) {
+        return null;
     }
 
     private String getKm(String code) {
