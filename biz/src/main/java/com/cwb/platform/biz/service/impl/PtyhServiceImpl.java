@@ -1,10 +1,7 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.cwb.platform.biz.mapper.BizJlMapper;
-import com.cwb.platform.biz.mapper.BizPtyhMapper;
-import com.cwb.platform.biz.mapper.BizUserMapper;
-import com.cwb.platform.biz.mapper.BizWjMapper;
+import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
@@ -15,6 +12,7 @@ import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
@@ -45,6 +43,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.*;
@@ -100,6 +101,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Autowired
     private SysYhJsMapper userRoleMapper;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
 
 
     AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
@@ -1547,76 +1552,33 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         Map<String, BizJl> bizJlMap = new HashMap<>();
 
-//        RuntimeCheck.ifBlank(yhId , "用户 id 不能为空");
-
         BizUser bizUser = userService.findById(currentUser.getId());
         BizYhpf yhpf = new BizYhpf();
-        if (StringUtils.isNotBlank(bizUser.getYhJlid())) { // 受理专员
-            BizJl bizJl = jlService.findById(bizUser.getYhJlid());
-            yhpf.setJlId(bizJl.getYhId());
-            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
-            if (CollectionUtils.isNotEmpty(entity)) {
-                bizJl.setYhFz(entity.get(0).getYhFz());
-            }
-            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
-            // bizJlMap.put("0" ,  bizJl);
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid());  // 受理专员
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid1());  // 科目一
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid2());
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid3());
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid4());
 
-            bizJls.add(bizJl);
-
-
-        } else {
-            // bizJlMap.put("0" , null);
-            bizJls.add(null);
-        }
-        if (StringUtils.isNotBlank(bizUser.getYhJlid1())) { // 科目一专员
-            BizJl bizJl = jlService.findById(bizUser.getYhJlid1());
-            yhpf.setJlId(bizJl.getYhId());
-            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
-            if (CollectionUtils.isNotEmpty(entity)) {
-                bizJl.setYhFz(entity.get(0).getYhFz());
-            }
-            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
-            // bizJlMap.put("1", bizJl);3
-            bizJls.add(bizJl);
-        } else {
-            // bizJlMap.put("1" , null);
-            bizJls.add(null);
-        }
-        if (StringUtils.isNotBlank(bizUser.getYhJlid2())) { // 科目二专员
-            BizJl bizJl = jlService.findById(bizUser.getYhJlid2());
-            yhpf.setJlId(bizJl.getYhId());
-            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
-            if (CollectionUtils.isNotEmpty(entity)) {
-                bizJl.setYhFz(entity.get(0).getYhFz());
-            }
-            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
-            /* bizJlMap.put("2", bizJl);*/
-            bizJls.add(bizJl);
-        } else {
-            // bizJlMap.put("2" , null);
-            bizJls.add(null);
-        }
-        if (StringUtils.isNotBlank(bizUser.getYhJlid3())) { //科目三专员
-            BizJl bizJl = jlService.findById(bizUser.getYhJlid3());
-            yhpf.setJlId(bizJl.getYhId());
-            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
-            if (CollectionUtils.isNotEmpty(entity)) {
-                bizJl.setYhFz(entity.get(0).getYhFz());
-            }
-            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
-            /*bizJlMap.put("3" , bizJl);
-            bizJlMap.put("4" , bizJl);*/
-            bizJls.add(bizJl);
-            bizJls.add(bizJl);
-        } else {
-            /*bizJlMap.put("3" , null);
-            bizJlMap.put("4" , null);*/
-            bizJls.add(null);
-            bizJls.add(null);
-        }
 
         return ApiResponse.success(bizJls);
     }
+
+    private void addBizjls(List<BizJl> bizJls, BizYhpf yhpf, String yhJlid) {
+        if (StringUtils.isNotBlank(yhJlid)) { //
+            BizJl bizJl = jlService.findById(yhJlid);
+            yhpf.setJlId(bizJl.getYhId());
+            List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
+            if (CollectionUtils.isNotEmpty(entity)) {
+                bizJl.setYhFz(entity.get(0).getYhFz());
+            }
+            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
+            bizJls.add(bizJl);
+        } else {
+            bizJls.add(null);
+        }
+    }
+
 
     @Override
     public ApiResponse<List<List>> getPaymentRecord(String yhId) {
@@ -1646,6 +1608,63 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 
         return ApiResponse.success(lists);
+    }
+
+    @Override
+    public ApiResponse<List<Map<String, Object>>> statusQuery() {
+        Map<String,String> paramMap = ContextUtil.getParamMap();
+        String km = paramMap.get("km");
+        String kszt = paramMap.get("kszt");
+        String pageSizeStr = paramMap.get("pageSize");
+        String pageNumStr = paramMap.get("pageNum");
+
+        int pageSize = 8;
+        int pageNum = 1;
+        if (StringUtils.isNotEmpty(pageSizeStr)){
+            pageSize = Integer.parseInt(pageSizeStr);
+        }
+        if (StringUtils.isNotEmpty(pageNumStr)){
+            pageNum = Integer.parseInt(pageNumStr);
+        }
+        int passScore = 90;
+        if (km.equals("2") || km.equals("3")){
+            passScore = 80;
+        }
+        String sql = "select * from biz_ks_yk where km_code ='"+km+"' and ";
+        if (kszt.equals("0")){ // 未考试
+            sql += " cjq is null";
+        }else if (kszt.equals("1")) { // 已通过
+            sql +=" (cj1 >= "+passScore +" or  cj2 >= "+passScore+")";
+        }else if (kszt.equals("2")){ // 未通过
+            sql +=" (cj1 <  "+passScore +" and cj2 <  "+passScore+")";
+        }
+        sql += " limit "+pageSize+" ,"+(pageNum-1)*pageSize;
+        Query query = entityManager.createNativeQuery(sql,BizKsYk.class);
+        List<BizKsYk> list = query.getResultList();
+
+        ApiResponse<List<Map<String,Object>>> res = new ApiResponse<>();
+        if (list == null || list.size() == 0){
+            res.setResult(new ArrayList<>());
+            return res;
+        }
+
+        List<String> userIds = list.stream().map(BizKsYk::getYhId).collect(Collectors.toList());
+        List<BizPtyh> userList = ptyhService.findIn(BizPtyh.InnerColumn.id,userIds);
+        if (userList.size() == 0){
+            res.setResult(new ArrayList<>());
+            return res;
+        }
+
+        Map<String,BizKsYk> ykMap = list.stream().collect(Collectors.toMap(BizKsYk::getYhId,p->p));
+        List<Map<String,Object>> resList = new ArrayList<>(userList.size());
+        for (BizPtyh user : userList) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("yhId",user.getId());
+
+        }
+
+
+        return null;
     }
 
 

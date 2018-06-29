@@ -171,6 +171,13 @@ export let appRouter = [
         component: Main,
         children: [
             {
+                path: 'status-query',
+                icon: 'android-clipboard',
+                name: 'status-query',
+                meta: { title: '综合查询' },
+                component: () => import('@/views/whdx/student/status-query')
+            },
+            {
                 path: 'student-list',
                 icon: 'android-clipboard',
                 name: 'student-list',
@@ -190,6 +197,59 @@ export let appRouter = [
                 name: 'status',
                 meta: { title: '学习进度' },
                 component: () => import('@/views/whdx/student/status')
+            },
+		]
+    },
+    {
+        path: '/member',
+        icon: 'android-car',
+        name: 'member',
+        meta: {title: '会员管理'},
+        component: Main,
+        children: [
+            {
+                path: 'member-list',
+                icon: 'android-clipboard',
+                name: 'member-list',
+                meta: { title: '学员列表' },
+                component: () => import('@/views/whdx/member')
+            },
+		]
+    },
+    {
+        path: '/payment',
+        icon: 'android-car',
+        name: 'payment',
+        meta: {title: '缴费管理'},
+        component: Main,
+        children: [
+            {
+                path: 'payment-list',
+                icon: 'android-clipboard',
+                name: 'payment-list',
+                meta: { title: '学员列表' },
+                component: () => import('@/views/whdx/payment/payment-list.vue')
+            },
+            {
+                path: 'wait-payment1',
+                icon: 'android-clipboard',
+                name: 'wait-payment1',
+                meta: { title: '科一待缴费' },
+                component: () => import('@/views/whdx/payment/wait-payment1.vue')
+            },
+            {
+                path: 'wait-payment2',
+                icon: 'android-clipboard',
+                name: 'wait-payment2',
+                meta: { title: '科二待缴费' },
+                component: () => import('@/views/whdx/payment/wait-payment2.vue')
+            },
+            {
+                path: 'wait-payment3',
+                icon: 'android-clipboard',
+                name: 'wait-payment3',
+                meta: { title: '科三待缴费' },
+                component: () => import('@/views/whdx/payment/wait-payment3.vue')
             },
 		]
     },

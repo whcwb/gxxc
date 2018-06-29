@@ -72,7 +72,7 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         BizUser userMessage=userService.findById(user.getId());
         RuntimeCheck.ifFalse(userMessage!=null,"您好，您还不能对专员进行评分");
 
-        if(!jlid.equals(userMessage.getYhJlid()) && !jlid.equals(userMessage.getYhJlid()) && !jlid.equals(userMessage.getYhJlid()) && !jlid.equals(userMessage.getYhJlid())){
+        if(!jlid.equals(userMessage.getYhJlid()) && !jlid.equals(userMessage.getYhJlid1()) && !jlid.equals(userMessage.getYhJlid2()) && !jlid.equals(userMessage.getYhJlid3()) && !jlid.equals(userMessage.getYhJlid4())){
             return ApiResponse.fail("您好，您不能对该专员评分");
         }
 
@@ -111,7 +111,11 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         BizYhpf entity=new BizYhpf();
         entity.setYhId(user.getId());
         BizUser userMessage=userService.findById(user.getId());
-
+        String jlPf="5";
+        BizJl jlMessage=jlService.findById(jlId);
+        if(jlMessage!=null){
+            jlPf=jlMessage.getJlPf();
+        }
 
         if(userMessage!=null){
             entity.setJlId(jlId);
@@ -124,8 +128,11 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         List<BizYhpf> ret=this.findByEntity(entity);
         ret.sort(Comparator.comparing(BizYhpf::getId));//对列表进行排序
 
+
         if(ret!=null&&ret.size()>0){
-            return ApiResponse.success(ret.get(0));
+            BizYhpf yhpf= ret.get(0);
+            yhpf.setJlPjf(jlPf);
+            return ApiResponse.success(yhpf);
         }else {
             return ApiResponse.success(new BizYhpf());
         }

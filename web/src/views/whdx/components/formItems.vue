@@ -23,7 +23,7 @@
                     <Radio v-for='(item,index) in parent.dictUtil.getByCode(parent,i.dict)' v-if="i.excludeDict == null || i.excludeDict.indexOf(item.key) < 0" :label="item.key">{{item.val}}</Radio>
                 </RadioGroup>
                 <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled">
-                    <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)' :value="item.key" :key="item.key">{{item.val}}</Option>
+                    <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)'  v-if="i.excludeDict == null || i.excludeDict.indexOf(item.key) < 0"  :value="item.key" :key="item.key">{{item.val}}</Option>
                 </Select>
             </FormItem>
         </Col>

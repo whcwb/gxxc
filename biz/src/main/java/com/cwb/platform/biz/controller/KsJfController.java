@@ -4,12 +4,22 @@ import com.cwb.platform.biz.model.BizKsJf;
 import com.cwb.platform.biz.service.KsjfService;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.base.QueryController;
+import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.ExcelParams;
+import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,4 +48,13 @@ public class KsJfController extends QueryController<BizKsJf,String> {
         return service.getPayInfo(yhId);
     }
 
+    @RequestMapping("waitPaymentList")
+    public ApiResponse<List<BizPtyh>> waitPaymentList(Integer km){
+        return service.waitPaymentList(km);
+    }
+
+    @RequestMapping("batchImport")
+    public ApiResponse<String> batchImport(String filePath){
+        return service.batchImport(filePath);
+    }
 }

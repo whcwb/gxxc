@@ -4,12 +4,15 @@ import com.cwb.platform.biz.app.service.AppUserService;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.mapper.BizUserMapper;
 import com.cwb.platform.biz.model.BizUser;
+import com.cwb.platform.biz.service.UserService;
 import com.cwb.platform.biz.service.impl.PtyhServiceImpl;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
+import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -29,6 +32,8 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
     @Autowired
     private BizUserMapper entityMapper;
 
+    @Autowired
+    private UserService userService;
     @Autowired
     private BizPtyhMapper ptyhMapper;
 
@@ -98,9 +103,97 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
                     order.setUserGrade("2");
                 }
 
+                if(     StringUtils.equals(zdlm.getYhXySlType(),"0") ||
+                        StringUtils.equals(zdlm.getYhXySlType(),"1") ||
+                        StringUtils.equals(zdlm.getYhXySlType(),"2") ||
+                        StringUtils.equals(zdlm.getYhXySlType(),"3") ||
+                        StringUtils.equals(zdlm.getYhXySlType(),"4") ){
+                    order.setYhDqzt("0");
+                }
+                if(zdlm.getYhXyYkType().charAt(0) == '0'){
+                    order.setYhDqzt("0");
+                }else if(zdlm.getYhXyYkType().charAt(0) == '1'){
+                    order.setYhDqzt("1");
+                }else if(zdlm.getYhXyYkType().charAt(0) == '2'){
+                    order.setYhDqzt("2");
+                }else if(zdlm.getYhXyYkType().charAt(0) == '3'){
+                    order.setYhDqzt("3");
+                }else{
+                    order.setYhDqzt("4");
+                }
+
+
+
             }
         }
         return;
     }
-   
+
+    @Override
+    public ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, Page<BizUser> page) {
+        ApiResponse<List<BizUser>> result = new ApiResponse<>();
+
+        // 获取当前用户
+        BizPtyh currentUser = getAppCurrentUser();
+        RuntimeCheck.ifNull(currentUser, "当前登录用户不存在");
+        String userId = currentUser.getId();
+
+        SimpleCondition userCondition = new SimpleCondition(BizUser.class);
+        // 首先根据等级条件进行筛选出用户 id
+        if(StringUtils.isNotBlank(grade)){
+            if(StringUtils.equals(grade,"1")) {
+                userCondition.eq(BizUser.InnerColumn.yhSjid.name(),userId);
+            }else if(StringUtils.equals(grade,"2")){
+                userCondition.eq(BizUser.InnerColumn.yhSsjid.name(), userId);
+            }
+        }else{
+            userCondition.and().andCondition(" ( YH_SJID='"+userId+"' OR YH_SSJID='"+userId+"') ");
+        }
+
+        List<BizUser> bizUsers = userService.findByCondition(userCondition);
+
+        List<String> yhIds = bizUsers.stream().map(BizUser::getYhId).collect(Collectors.toList());
+
+
+
+        SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
+        if(CollectionUtils.isNotEmpty(yhIds)){
+            if(StringUtils.isNotBlank(yhlx) || StringUtils.isNotBlank(sfjf)) {
+                yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
+
+                if (StringUtils.isNotBlank(yhlx)) {
+                    yhCondition.eq(BizPtyh.InnerColumn.yhLx.name(), yhlx);
+                }
+                if (StringUtils.isNotBlank(sfjf)) {
+                    yhCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(), sfjf);
+                }
+                List<BizPtyh> ptyhs = ptyhService.findByCondition(yhCondition);
+                yhIds = ptyhs.stream().map(BizPtyh::getId).collect(Collectors.toList());
+
+            }
+
+            SimpleCondition condition = new SimpleCondition(BizUser.class);
+            if(StringUtils.isNotBlank(grade)){
+                if(StringUtils.equals(grade,"1")) {
+                    condition.eq(BizUser.InnerColumn.yhSjid.name(),userId);
+                }else if(StringUtils.equals(grade,"2")){
+                    condition.eq(BizUser.InnerColumn.yhSsjid.name(), userId);
+                }
+            }else{
+                condition.and().andCondition(" ( YH_SJID='"+userId+"' OR YH_SSJID='"+userId+"') ");
+            }
+
+            if(CollectionUtils.isNotEmpty(yhIds)) {
+                condition.in(BizUser.InnerColumn.yhId.name(), yhIds);
+                PageInfo<BizUser> pageInfo = userService.findPage(page, condition);
+                afterPager(pageInfo);
+                result.setPage(pageInfo);
+            }
+
+
+        }
+
+
+        return result;
+    }
 }

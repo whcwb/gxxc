@@ -5,17 +5,21 @@ import com.cwb.platform.biz.app.service.AppUserService;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.util.Base64TestUtil;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
+import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 前台 平台用户
@@ -25,7 +29,8 @@ import java.util.Map;
 public class AppPtyhController extends AppUserBaseController {
     @Autowired
     private PtyhService service;
-
+    @Value("${qr_code_file_url}")
+    private String qrCodeFileUrl;
 
     @Autowired
     private AppUserService userService;
@@ -174,6 +179,33 @@ public class AppPtyhController extends AppUserBaseController {
 
 
 
+    /**
+     * 上传用户签名
+     */
+    @PostMapping("/getqm")
+    public ApiResponse<String> base64UpLoad(@RequestParam String base64Data){
+        BizPtyh user = getAppCurrentUser();
+        if(base64Data == null || "".equals(base64Data)){
+            return ApiResponse.fail("上传失败，上传图片数据为空");
+//            throw new Exception("上传失败，上传图片数据为空");//
+        }
+        //qrCodeFileUrl
+        String fileUrl="/user_autograph/"+(UUID.randomUUID().toString()).replaceAll("-","")+".png";
+        FileUtil.fileExistsDir(qrCodeFileUrl+"/user_autograph/");
+        Boolean type=Base64TestUtil.generateImage(base64Data,qrCodeFileUrl+fileUrl);
+        if(type){
+            BizPtyh newPtyh=new BizPtyh();
+            newPtyh.setYhAutograph(fileUrl);
+            newPtyh.setId(user.getId());
+            service.update(newPtyh);
 
+            ApiResponse<String> res = new ApiResponse<>();
+            res.setMessage("操作成功");
+            res.setResult(fileUrl);
+            return res;
+        }else{
+            return ApiResponse.fail("上传失败请重新尝试");
+        }
+    }
 
 }

@@ -16,6 +16,12 @@ module.exports = {
     removeUserInfo:'/api/ptyh/removeUserInfo',
 
     getHandleStatus:'api/kssl/getHandleStatus', // 获取受理状态信息
+    kssl:{
+        QUERY:'/api/kssl/pager',
+    },
+    ksyk:{
+        QUERY:'/api/ksyk/pager',
+    },
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',
         GET_MENU_TREE:'/api/gn/getMenuTree',
@@ -50,6 +56,9 @@ module.exports = {
         ADD:'/api/ksjf/save',
         CHANGE:'/api/ksjf/update',
         DELE:'/api/ksjf/removeIds',
+        DJF:'/api/ksjf/waitPaymentList',
+        batchImport:'/api/ksjf/batchImport',
+        EXPORT:'/pub/ksjf/export',
     },
     ksjg:{
         QUERY:'/api/ksjg/pager',//考试结果记录

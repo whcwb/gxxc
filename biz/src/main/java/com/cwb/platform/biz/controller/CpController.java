@@ -4,10 +4,14 @@ import com.cwb.platform.biz.model.BizCp;
 import com.cwb.platform.biz.service.CpService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 /**
@@ -16,9 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/cp")
-public class CpController{
+public class CpController  {
     @Autowired
     private CpService service;
+
+
+
+
+    @RequestMapping(value="/pager", method={RequestMethod.POST, RequestMethod.GET})
+    public ApiResponse<List<BizCp>> pager(BizCp entity, Page<BizCp> pager){
+        return service.pager(pager);
+    }
 
     /**
      * 新增产品
@@ -36,9 +48,25 @@ public class CpController{
      * @return
      */
     @RequestMapping(value="/getcplx", method={RequestMethod.POST, RequestMethod.GET})
-    public ApiResponse<BizCp> getCpTyetList(String cpType){
+    public ApiResponse<BizCp> getCpTyet(String cpType){
         //产品类型（1、学费  2、补考费）必填
         RuntimeCheck.ifBlank(cpType,"您好，请确定产品类型");
-        return service.getCpTyetList(cpType);
+        return service.getCpTyet(cpType);
     }
+
+
+    /**
+     * 修改产品分佣费用 (需要生成短信验证码)
+     */
+    @PostMapping("/updateYj")
+    public ApiResponse<String> updateYj(BizCp bizCp){
+        return service.updateYj(bizCp);
+
+    }
+
+
+
+
+
+
 }

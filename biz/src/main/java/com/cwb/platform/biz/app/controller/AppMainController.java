@@ -382,8 +382,8 @@ public class AppMainController extends AppUserBaseController {
 				bizPtyh.setYhTx(fileUrl);
 				bizPtyh.setId(user.getId());
 				ptyhService.update(bizPtyh);
-			}else if(StringUtils.equals("30",fileType)){//证件号码提取
-				boolean retType=wjService.ocrRecognition (retMap,fileType,fileUrl,fileUrl.replaceAll(staticPath,""),user);
+			}else if(StringUtils.equals("30",fileType)){//驾驶证号码提取
+				boolean retType=wjService.ocrRecognition (retMap,fileType,staticPath+fileUrl,fileUrl.replaceAll(staticPath,""),user);
 				if(!retType){
 					ApiResponse<Map<String,String>> res = new ApiResponse<>();
 					res.setCode(500);

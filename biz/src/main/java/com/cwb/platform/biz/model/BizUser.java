@@ -103,11 +103,32 @@ public class BizUser implements Serializable {
      */
     @Column(name = "YH_JLID3")
     private String yhJlid3;
+    /**
+     * 科目三
+     */
+    @Column(name = "YH_JLID4")
+    private String yhJlid4;
+
+    /**
+     * 用户当前状态
+     */
+    @Transient
+    private String yhDqzt;
+
+
 
     @Transient
     private Map<String,Object> map;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhDqzt() {
+        return yhDqzt;
+    }
+
+    public void setYhDqzt(String yhDqzt) {
+        this.yhDqzt = yhDqzt;
+    }
 
     public String getYhJlid1() {
         return yhJlid1;
@@ -327,6 +348,14 @@ public class BizUser implements Serializable {
         this.yhJlid = yhJlid;
     }
 
+    public String getYhJlid4() {
+        return yhJlid4;
+    }
+
+    public void setYhJlid4(String yhJlid4) {
+        this.yhJlid4 = yhJlid4;
+    }
+
     public enum InnerColumn {
         yhId("YH_ID"),
         yhZjhm("YH_ZJHM"),
@@ -340,7 +369,8 @@ public class BizUser implements Serializable {
         yhJlid("YH_JLID"),
         yhJlid1("YH_JLID1"),
         yhJlid2("YH_JLID2"),
-        yhJlid3("YH_JLID3");
+        yhJlid3("YH_JLID3"),
+        yhjlid4("YH_JLID4");
 
         private final String column;
 
