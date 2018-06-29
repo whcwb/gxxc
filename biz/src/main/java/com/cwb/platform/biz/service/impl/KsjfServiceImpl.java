@@ -22,6 +22,7 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -199,8 +200,22 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
     }
 
     @Override
-    public ApiResponse<String> export(Integer km) {
-        return null;
+    public List<List<String>> export(Integer km) {
+        if (km == null){
+            km = 1;
+        }
+        ApiResponse<List<BizPtyh>> res = waitPaymentList(km);
+        List<List<String>> data = new ArrayList<>(res.getResult().size());
+        for (BizPtyh user : res.getResult()) {
+            List<String> row = new ArrayList<>();
+            row.add(user.getYhXm());
+            row.add(user.getYhZjhm());
+            row.add(km.toString());
+            row.add("");
+            row.add("");
+            data.add(row);
+        }
+        return data;
     }
 
     @Override

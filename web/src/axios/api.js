@@ -24,6 +24,7 @@ module.exports = {
     },
     ksjf:{
         QUERY:'/api/ksjf/pager',
+        EXPORT:'/pub/ksjf/export',
     },
     USERROOT:{
         GET_MENU_LIST:'/api/gn/getUserFunctions',

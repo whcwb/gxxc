@@ -388,6 +388,9 @@ util.getPageData = function(v) {
                     if (response.page){
                         v.pageData = response.page.list;
                         v.form.total = response.page.total;
+                        if (typeof v.onGetPageData == 'function'){
+                            v.onGetPageData();
+                        }
                     }else if (response.result){
                         v.pageData = response.result;
                     }

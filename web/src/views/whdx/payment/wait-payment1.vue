@@ -12,7 +12,7 @@
 			</Tooltip>
 		</Row>
 		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
+			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
 		</Row>
 		<component :is="componentName"></component>
 	</div>
@@ -36,6 +36,12 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '身份证号码',key:'yhZjhm',searchKey:'yhZhLike'},
                     {title: '手机号',key:'yhZh',searchKey:'yhZh'},
+                    {title: '科目',key:'km',render:(h,p)=>{
+                        return h('div','1')
+						}},
+                    {title: '金额',key:'money',render:(h,p)=>{
+                        return h('div','150元')
+						}},
                 ],
                 pageData: [],
 				choosedData:[],
@@ -54,59 +60,15 @@
             this.util.initTable(this)
         },
         methods: {
-            selectionChange(e){
-				this.choosedData = e;
-			},
-            allot(){
-                if (this.choosedData.length == 0){
-                    this.$Message.error("请选择学员")
-					return;
-				}
-				for (let r of this.choosedData){
-                    if (r.yhIxySffp == '1'){
-                        this.$Message.error("请选择未分配的学员")
-                        return;
-					}
-                    if (r.ddSfjx != '1'){
-                        this.$Message.error("请选择已缴费的学员")
-                        return;
-					}
-				}
-				this.componentName = allot;
-			},
-            pageChange(event) {
-                this.util.pageChange(this, event);
+            onGetPageData(){
+              let totalMoney = this.pageData.length * 150;
+              let totalRow = {yhXm:'合计'};
+              this.pageData.push(totalRow);
+                console.log(this.pageData);
             },
 			exportData(){
-                let params = {
-                    exportType:'ptyh',
-                    cols:'姓名,身份证号码,手机号,科目',
-					keys:'yhXm,yhZjhm,yhZh,km'
-				}
-				window.open(this.apis.exportData+'?km=1&exportType=ksjf&cols='+params.cols+'&keys='+params.keys);
+				window.open(this.apis.ksjf.EXPORT);
 			},
-			getData(api,yhId,componentName){
-                this.$http.get(api,{params:{yhId:yhId,pageSize:1,orderBy:'cjsj desc'}}).then((res)=>{
-                    if (res.code === 200 && res.page.list && res.page.list.length > 0){
-                        this.choosedItem = res.page.list[0];
-                    }else{
-                        this.choosedItem = {yhId:yhId};
-					}
-                    this.componentName = componentName
-                })
-			},
-            getSl(yhId){
-                this.getData(this.apis.kssl.QUERY,yhId,'sl');
-            },
-            getJf(yhId){
-                this.getData(this.apis.ksJf.QUERY,yhId,'jf');
-            },
-            getYk(yhId){
-                this.getData(this.apis.ksyk.QUERY,yhId,'yk');
-            },
-            getJg(yhId){
-                this.getData(this.apis.ksjg.QUERY,yhId,'jg');
-            },
         }
     }
 </script>

@@ -6,7 +6,6 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.base.QueryController;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.util.bean.ExcelParams;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,8 +25,8 @@ import java.util.Map;
  * Created by Administrator on 2018/6/19.
  */
 @Controller
-@RequestMapping("/api/ksjf")
-public class KsJfController extends QueryController<BizKsJf,String> {
+@RequestMapping("/pub/ksjf")
+public class KsJfExportController extends QueryController<BizKsJf,String> {
 
     @Autowired
     private KsjfService service;
@@ -39,25 +37,15 @@ public class KsJfController extends QueryController<BizKsJf,String> {
     }
 
 
-    @RequestMapping(value="/save", method={RequestMethod.POST})
-    @ResponseBody
-    public ApiResponse<String> save(BizKsJf entity){
-        return service.validAndSave(entity);
-    }
-    @RequestMapping("getPayInfo")
-    @ResponseBody
-    public ApiResponse<Map<String,String>> getPayInfo(String yhId){
-        return service.getPayInfo(yhId);
+
+    @RequestMapping("export")
+    public void export(Integer km, HttpServletResponse response) throws IOException {
+        response.setContentType("application/msexcel");
+        response.setHeader("pragma", "no-cache");
+        response.addHeader("Content-Disposition","attachment; filename=科目"+km+"待缴费清单-"+ DateUtils.getNowTime());
+        OutputStream out = response.getOutputStream();
+        String[] heads = new String[]{"姓名","身份证号","科目","是否缴费","备注"};
+        ExcelUtil.createSheet(out,"统计",heads,service.export(km));
     }
 
-    @RequestMapping("waitPaymentList")
-    @ResponseBody
-    public ApiResponse<List<BizPtyh>> waitPaymentList(Integer km){
-        return service.waitPaymentList(km);
-    }
-
-    @RequestMapping("batchImport")
-    public ApiResponse<String> batchImport(String filePath){
-        return service.batchImport(filePath);
-    }
 }
