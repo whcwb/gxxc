@@ -6,6 +6,7 @@ import com.cwb.platform.biz.service.CpService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 @Service
 public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpService {
@@ -33,12 +36,24 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
      * @param cpType    产品类型（1、学费  2、补考费）必填
      * @return
      */
-    public ApiResponse<BizCp> getCpTyetList(String cpType){
-
+    public ApiResponse<BizCp> getCpTyet(String cpType){
         BizCp bizCp=entityMapper.getCpTyetList(cpType);
         return ApiResponse.success(bizCp);
     }
+    /**
+     * 查询一个产品列表
+     * @return
+     */
+    public ApiResponse<List<BizCp>> getCpTyetList(){
+        BizCp queryBizCp=new BizCp();
+        queryBizCp.setCpYx("1");
 
+        SimpleCondition condition = new SimpleCondition(BizCp.class);
+        condition.eq(BizCp.InnerColumn.cpYx, "1");
+        condition.setOrderByClause(BizCp.InnerColumn.cpType.asc());
+        List<BizCp> list=this.findByCondition(condition);
+        return ApiResponse.success(list);
+    }
     /**
      * 后台-新增产品
      * @param entity
