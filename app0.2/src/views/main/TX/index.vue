@@ -31,15 +31,17 @@
     }
   }
   .md-input-item-control{
-    input{
-      color: #fc9153!important;
-      font-size: 0.6rem!important;
-      padding-left:0.6rem ;
+  }
+    #input{
+      input{
+        color: #fc9153!important;
+        font-size: 0.6rem!important;
+        padding-left:0.6rem ;
+      }
     }
-    input::-webkit-input-placeholder{
+    #input::-webkit-input-placeholder{
       font-size: 0.4rem;
     }
-  }
 </style>
 <template>
   <div id="bank" class="box_col">
@@ -107,7 +109,7 @@
             <i class="iconfont icon-ico-money"
                style=" "></i>
           </div>
-          <div class="box_row_100" @click="isKeyBoardShow=true">
+          <div id="input" class="box_row_100" @click="isKeyBoardShow=true">
             <md-input-item
               readonly
               type="money"
