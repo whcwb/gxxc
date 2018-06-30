@@ -71,7 +71,7 @@
             <el-button type="primary" round
                        style="width: 100%"
                        v-if="userMess.ddSfjx=='0'&&userMess.yhZt=='1'"
-                       @click="$router.push({name:'process'})"
+                       @click="$router.push({name:'productList'})"
             >缴费</el-button>
             <el-button  type="success" round
                         style="width: 100%"

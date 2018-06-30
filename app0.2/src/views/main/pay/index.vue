@@ -477,7 +477,7 @@
             //  *****************************
             this.$store.commit('CHjf', true);
             setTimeout(function () {
-              v.$router.back()
+              v.$router.push({name:'payMoneyOk'})
             },1000*2.7)
           })
         }

@@ -22,6 +22,23 @@
       bottom: 0;
       z-index: 9999;
     }
+    .icon-ico-money{
+      font-weight: 600;
+      font-size: 0.4rem;
+      color: #ff5e00;
+      position: absolute;
+      top:0.35rem;
+    }
+  }
+  .md-input-item-control{
+    input{
+      color: #fc9153!important;
+      font-size: 0.6rem!important;
+      padding-left:0.6rem ;
+    }
+    input::-webkit-input-placeholder{
+      font-size: 0.4rem;
+    }
   }
 </style>
 <template>
@@ -75,17 +92,24 @@
       </div>
 
       <div style="margin-top: 0.3rem;background-color: #fff;padding: 0 0.15rem">
-        <div style="font-size: 0.4rem;padding: 0.2rem 0 0 0;color: #949494;font-size: 0.35rem">
-          提现金额
+        <div class="box-row" style="font-size: 0.4rem;padding: 0.2rem 0 0 0;color: #949494;font-size: 0.35rem">
+          <div class="box_row_100">
+            提现金额
+          </div>
+          <div>
+            <el-button type="success" plain
+            @click="number=zhYE"
+            >全部提现</el-button>
+          </div>
         </div>
         <div class="box-row" style="height: 2rem">
-          <div>
+          <div style="width: 0rem;position: relative">
             <i class="iconfont icon-ico-money"
-               style=" font-weight: 600;font-size: 0.55rem;color: #ff5e00"></i>
+               style=" "></i>
           </div>
           <div class="box_row_100" @click="isKeyBoardShow=true">
             <md-input-item
-              disabled
+              readonly
               type="money"
               style="border-bottom: #949494 2px solid;"
               v-model="number"
@@ -105,7 +129,8 @@
       <div style="margin-top: 0.3rem ;padding: 0  0.3rem;text-align: center">
         <el-button type="warning" round
         @click="TX()"
-        style="padding: 0.15rem;font-size: 0.4rem;width: 100%">提现</el-button>
+        style="padding: 0.15rem;font-size: 0.4rem;width: 100%;
+            background-color: #fc9153">提现</el-button>
       </div>
     </div>
     <div id="JP" class="">
@@ -157,7 +182,7 @@
       zhye() {
         this.$http.post(this.apis.USERZH).then((res) => {
           if (res.code == 200) {
-            this.zhYE = parseInt(res.result.yhZhye)/100
+            this.zhYE = (parseInt(res.result.yhZhye)/100).toString()
           }
           console.log(res)
         }).catch((err) => {

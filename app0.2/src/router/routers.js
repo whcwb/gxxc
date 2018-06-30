@@ -136,5 +136,13 @@ module.exports = [
       title:'学员进程'
     },
     component:()=>import('@/views/main/infor/page/process')
+  },
+  {
+    path:'/payMoneyOk',
+    name:'payMoneyOk',
+    meta:{
+      title:'缴费成功'
+    },
+    component:()=>import('@/views/main/payMoneyOk')
   }
 ]
