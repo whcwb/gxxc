@@ -5,6 +5,14 @@
                    title="批量导入">
                   <div class="box-row" style="height: 55px;font-size: 16px">
                         <div>
+                              模版下载：
+                        </div>
+                        <div class="body-O">
+                              <a :href="staticPath+'缴费模板.xls'">批量导入缴费模版</a>
+                        </div>
+                  </div>
+                  <div class="box-row" style="height: 55px;font-size: 16px">
+                        <div>
                               上传文件：
                         </div>
                         <div class="body-O">
