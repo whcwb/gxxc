@@ -1,10 +1,9 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.cwb.platform.biz.mapper.BizJlMapper;
-import com.cwb.platform.biz.mapper.BizPtyhMapper;
-import com.cwb.platform.biz.mapper.BizUserMapper;
-import com.cwb.platform.biz.mapper.BizWjMapper;
+import com.alibaba.druid.support.spring.stat.annotation.Stat;
+import com.cwb.platform.biz.bean.StatusModel;
+import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
@@ -34,6 +33,7 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +85,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private PtyhService ptyhService;
     @Autowired
     private BizPtyhMapper entityMapper;
+    @Autowired
+    private BizKsYkMapper ksYkMapper;
     @Autowired
     private BizWjMapper wjMapper;
     @Autowired
@@ -1630,61 +1632,66 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
 
     @Override
-    public ApiResponse<List<Map<String, Object>>> statusQuery() {
-        Map<String,String> paramMap = ContextUtil.getParamMap();
-        String km = paramMap.get("km");
-        String kszt = paramMap.get("kszt");
-        String pageSizeStr = paramMap.get("pageSize");
-        String pageNumStr = paramMap.get("pageNum");
-
-        int pageSize = 8;
-        int pageNum = 1;
-        if (StringUtils.isNotEmpty(pageSizeStr)){
-            pageSize = Integer.parseInt(pageSizeStr);
-        }
-        if (StringUtils.isNotEmpty(pageNumStr)){
-            pageNum = Integer.parseInt(pageNumStr);
-        }
-        int passScore = 90;
-        if (km.equals("2") || km.equals("3")){
-            passScore = 80;
-        }
-        String sql = "select * from biz_ks_yk where km_code ='"+km+"' and ";
-        if (kszt.equals("0")){ // 未考试
-            sql += " cjq is null";
-        }else if (kszt.equals("1")) { // 已通过
-            sql +=" (cj1 >= "+passScore +" or  cj2 >= "+passScore+")";
-        }else if (kszt.equals("2")){ // 未通过
-            sql +=" (cj1 <  "+passScore +" and cj2 <  "+passScore+")";
-        }
-        sql += " limit "+pageSize+" ,"+(pageNum-1)*pageSize;
-        Query query = entityManager.createNativeQuery(sql,BizKsYk.class);
-        List<BizKsYk> list = query.getResultList();
-
-        ApiResponse<List<Map<String,Object>>> res = new ApiResponse<>();
+    public ApiResponse<List<StatusModel>> statusQuery(BizPtyh entity, Page<BizPtyh> pager) {
+        ApiResponse<List<BizPtyh>> res = pager(pager);
+        ApiResponse<List<StatusModel>> result = new ApiResponse<>();
+        result.setPage(res.getPage());
+        List<BizPtyh> list = res.getPage().getList();
         if (list == null || list.size() == 0){
-            res.setResult(new ArrayList<>());
-            return res;
+            return result;
         }
+        List<String> userIds = list.stream().map(BizPtyh::getId).collect(Collectors.toList());
+        List<BizUser> userList = userService.findIn(BizUser.InnerColumn.yhId,userIds);
+        Map<String,BizUser> userMap = userList.stream().collect(Collectors.toMap(BizUser::getYhId,p->p));
 
-        List<String> userIds = list.stream().map(BizKsYk::getYhId).collect(Collectors.toList());
-        List<BizPtyh> userList = ptyhService.findIn(BizPtyh.InnerColumn.id,userIds);
-        if (userList.size() == 0){
-            res.setResult(new ArrayList<>());
-            return res;
+        List<StatusModel> models = new ArrayList<>();
+        for (BizPtyh ptyh : list) {
+            BizUser user = userMap.get(ptyh.getId());
+            if (user == null)continue;
+            StatusModel model = new StatusModel(ptyh);
+            BizPtyh zy0 = ptyhService.findById(user.getYhJlid());
+            model.setZy0(zy0);
+
+            BizPtyh zy1 = ptyhService.findById(user.getYhJlid1());
+            model.setZy1(zy1);
+
+            BizPtyh zy2 = ptyhService.findById(user.getYhJlid2());
+            model.setZy0(zy2);
+
+            BizPtyh zy3 = ptyhService.findById(user.getYhJlid3());
+            model.setZy0(zy3);
+
+            BizPtyh zy4 = ptyhService.findById(user.getYhJlid4());
+            model.setZy0(zy4);
+
+            BizKsYk km1 = getYk(ptyh,"1");
+            model.setKm1(km1);
+
+            BizKsYk km2 = getYk(ptyh,"2");
+            model.setKm2(km2);
+
+            BizKsYk km3 = getYk(ptyh,"3");
+            model.setKm3(km3);
+
+            BizKsYk km4 = getYk(ptyh,"4");
+            model.setKm4(km4);
+            models.add(model);
         }
-
-        Map<String,BizKsYk> ykMap = list.stream().collect(Collectors.toMap(BizKsYk::getYhId,p->p));
-        List<Map<String,Object>> resList = new ArrayList<>(userList.size());
-        for (BizPtyh user : userList) {
-            Map<String,Object> map = new HashMap<>();
-            map.put("yhId",user.getId());
-
-        }
-
-
-        return null;
+        PageInfo pageInfo = res.getPage();
+        pageInfo.setList(models);
+        result.setPage(pageInfo);
+        return result;
     }
 
-
+    private BizKsYk getYk(BizPtyh ptyh,String km){
+        SimpleCondition condition = new SimpleCondition(BizKsYk.class);
+        condition.eq(BizKsYk.InnerColumn.yhId,ptyh.getId());
+        condition.eq(BizKsYk.InnerColumn.kmCode,km);
+        condition.setOrderByClause(BizKsYk.InnerColumn.cjsj.desc());
+        List<BizKsYk> yks = ksYkMapper.selectByExampleAndRowBounds(condition, new RowBounds(0, 1));
+        if (yks.size() != 0){
+            return yks.get(0);
+        }
+        return null;
+    }
 }

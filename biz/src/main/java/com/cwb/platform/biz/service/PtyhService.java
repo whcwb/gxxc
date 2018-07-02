@@ -1,6 +1,7 @@
 package com.cwb.platform.biz.service;
 
 
+import com.cwb.platform.biz.bean.StatusModel;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -80,5 +81,5 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     ApiResponse<List<List>> getPaymentRecord(String yhId);
 
-    ApiResponse<List<Map<String,Object>>> statusQuery();
+    ApiResponse<List<StatusModel>> statusQuery(BizPtyh entity, Page<BizPtyh> pager);
 }

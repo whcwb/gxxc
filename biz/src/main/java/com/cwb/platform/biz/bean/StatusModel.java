@@ -7,7 +7,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StatusModel extends BizPtyh {
+public class StatusModel {
+    private String id;
+    private String yhXm;
+    private String yhZh;
+    private String yhZjhm;
+    private String yhXyYkType;
+    private String yhXySlType;
+
     private BizKsYk km1;
     private BizKsYk km2;
     private BizKsYk km3;
@@ -18,5 +25,14 @@ public class StatusModel extends BizPtyh {
     private BizPtyh zy2; // 二阶段专员
     private BizPtyh zy3; // 三阶段专员
     private BizPtyh zy4; // 四阶段专员
+
+    public StatusModel(BizPtyh ptyh){
+        this.id = ptyh.getId();
+        this.yhXm = ptyh.getYhXm();
+        this.yhZh = ptyh.getYhZh();
+        this.yhZjhm = ptyh.getYhZjhm();
+        this.yhXyYkType = ptyh.getYhXyYkType();
+        this.yhXySlType = ptyh.getYhXySlType();
+    }
 
 }
