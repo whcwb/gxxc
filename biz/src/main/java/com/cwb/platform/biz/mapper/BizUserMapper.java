@@ -59,27 +59,29 @@ public interface BizUserMapper extends Mapper<BizUser> {
     void updateJlid3(@Param("list") List<String> list, @Param("jlId") String jlId);
 
     @Select(" <script> " +
-            " SELECT u.YH_ID FROM BIZ_USER u , BIZ_PTYH p where " +
-            " <if test=\"grade == 1 \"> " +
+            " SELECT u.* FROM BIZ_USER u , BIZ_PTYH p where " +
+            " <choose>" +
+            " <when test=\"grade == 1 \"> " +
             " u.YH_SJID = #{userid} " +
-            " </if> " +
-            " <if test=\"grade == 2 \"> " +
+            " </when> " +
+            " <when test=\"grade == 2 \"> " +
             " u.YH_SSJID = #{userid} " +
-            " </if> " +
-            " <if test=\"grade ==null or grade == '' \"> " +
+            " </when> " +
+            " <otherwise > " +
             " (u.YH_SJID =#{userid} OR u.YH_SSJID =#{userid} ) " +
-            " </if> " +
-            " <if test=\"yhlx !=null and yhlx != '' \"> " +
+            " </otherwise> " +
+            "</choose>" +
+            " <if test=\"yhlx !=null  \"> " +
             " AND p.YH_LX = #{yhlx} " +
             " </if> " +
-            " <if test=\"sfjf !=null and sfjf !=''  \"> " +
+            " <if test=\"sfjf !=null   \"> " +
             " AND p.DD_SFJX = #{sfjf} " +
             " </if> " +
-            " <if test= \"yhxm !=null and yhxm != '' \"> " +
+            " <if test= \"yhxm !=null  \"> " +
             " AND u.YH_XM like '%${yhxm}%' " +
             " </if> " +
-            " AND u.YH_ID = p.ID ORDER BY u.CJSJ " +
+            " AND u.YH_ID = p.ID ORDER BY ABS(p.YH_LX) asc,ABS(p.DD_SFJX) desc" +
             " </script> ")
-    List<String> getYhIdByTerm(@Param("grade")String grade, @Param("userid") String userId, @Param("yhlx")String yhlx, @Param("sfjf") String sfjf, @Param("yhxm")String yhXm);
+    List<BizUser> getYhIdByTerm(@Param("grade")String grade, @Param("userid") String userId, @Param("yhlx")String yhlx, @Param("sfjf") String sfjf, @Param("yhxm")String yhXm);
 
 }

@@ -12,7 +12,6 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
-import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -25,7 +24,6 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
-import org.bouncycastle.util.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -265,6 +263,10 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         // 学员身份证号是否存在
         // 同一个学员，同一个科目，只能交一次
         ApiResponse<List<String>> res = new ApiResponse<>();
+        if (data.size() == 0){
+            res.setCode(100);
+            return res;
+        }
         int c = 0;
         List<String> idCardList = new ArrayList<>(data.size());
         List<RowData> rowDataList = new ArrayList<>();
@@ -292,9 +294,22 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             if (StringUtils.isEmpty(row.getMoney())){
                 error += "缴费金额不能为空,";
             }
-            errorMap.put(c,error);
+            if (StringUtils.isNotEmpty(error)){
+                errorMap.put(c,error);
+            }
         }
-
+        if (idCardList.size() == 0){
+            if (errorMap.size() != 0){
+                List<String> errors = new ArrayList<>();
+                for (Map.Entry<Integer, String> entry : errorMap.entrySet()) {
+                    errors.add("第"+entry.getKey()+"行："+entry.getValue());
+                }
+                res.setResult(errors);
+                res.setCode(100);
+            }
+            res.setCode(100);
+            return res;
+        }
         Map<String,String> idCardYhIdMap = new HashMap<>();
 
         // 学员身份证号是否存在
@@ -332,6 +347,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         }
         if (errors.size() != 0){
             res.setResult(errors);
+            res.setCode(100);
         }
         return res;
     }
@@ -347,7 +363,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         public RowData(List<String> row){
             this.name = row.get(0);
             this.idCard = row.get(1);
-            this.subject = Integer.parseInt(row.get(2));
+            this.subject = StringUtils.isEmpty(row.get(2)) ? null : Integer.parseInt(row.get(2));
             this.isPayed = "是".equals(row.get(3));
             this.money = row.get(4);
             this.method = row.get(5);
@@ -446,7 +462,8 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         msg.setData(data);
         asyncEventBusUtil.post(new SendWechatMsgEvent(msg));
         try {
-            String res = wechatService.sendTemplateMsg(msg);
+            // 2018/7/2  用户缴费、受理、约考 这些信息是否需要下发验证号码  经理2018-07-02 微信上说暂时不发
+            String res = wechatService.sendTemplateMsg(msg,null);
             log.info("sendMsg result :", res);
             return res;
         } catch (WxErrorException e) {

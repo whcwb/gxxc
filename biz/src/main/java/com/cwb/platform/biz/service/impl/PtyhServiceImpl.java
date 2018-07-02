@@ -12,7 +12,6 @@ import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
-import com.cwb.platform.sys.model.SysJs;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.model.SysYhJs;
 import com.cwb.platform.sys.service.YhService;
@@ -40,7 +39,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -1133,7 +1131,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public ApiResponse<List<String>> assignStudents(String yhId, String jlId, String jlType) {
-
+        SysYh user = getCurrentUser();
         BizPtyh users = this.findById(jlId);
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
 
@@ -1154,6 +1152,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         map.put("ids", ids);
         map.put("jlId", jlId);
         map.put("jlType", jlType);
+        map.put("user", user);
         eventBus.post(map);
         return ApiResponse.success(ids);
     }
@@ -1165,8 +1164,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<String> ids = (List<String>) map.get("ids");
             String jlId = (String) map.get("jlId");
             String jlType = (String) map.get("jlType");
-            this.wxSendMessage(ids, jlId, jlType);
+            SysYh user = (SysYh) map.get("user");
+            this.wxSendMessage(ids, jlId, jlType,user);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         payInfo.debug("进入异步通知开始 Async END---");
     }
@@ -1177,11 +1178,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @param ids
      * @param jlId
      */
-    @Async
-    public void wxSendMessage(List<String> ids, String jlId, String jlType) {
-        SysYh user = getCurrentUser();
+    public void wxSendMessage(List<String> ids, String jlId, String jlType,SysYh user) {
         String jlMessage = "专员您好，为您分配了" + ids.size() + "位学员。请您及时联系！";//给教练下发的记录
         payInfo.debug("分配学员-下发消息--------------------");
+        System.out.println("------------------------------------------------------------------------------------------");
         try {
             BizJl jlMsage = jlService.findById(jlId);
             BizPtyh appJlUser = ptyhService.findById(jlId);
@@ -1199,11 +1199,19 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             msg.setUrl(wxJlDomain);
             msg.setData(data);
             String res = "";
+
+            Map<String, String> jlSmsMap = new HashMap<String, String>();
+            jlSmsMap.put("phoneNumbers", appJlUser.getYhZh());//电话号码
+            jlSmsMap.put("templateType", "3");//给专员下发短信
+//                ${userName}专员，你好！平台为您分配了一位新学员（${studentUser}），电话号码是（${studentTel}），请您及时与他联系并安排培训！
+            jlSmsMap.put("userName", jlMsage.getYhXm());//专员姓名
+
             try {
-                res = wechatService.sendTemplateMsg(msg);
+                res = wechatService.sendTemplateMsg(msg,null);
             } catch (Exception e) {
             }
             payInfo.debug("sendMsg result :", res);
+
             SimpleCondition condition = new SimpleCondition(BizPtyh.class);
             condition.in(BizPtyh.InnerColumn.id.name(), ids);
             List<BizPtyh> userList = entityMapper.selectByExample(condition);
@@ -1235,7 +1243,21 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 msg.setUrl(wxXyDomain);
                 msg.setData(data);
                 try {
-                    res = wechatService.sendTemplateMsg(msg);
+                    //尊敬的${userName}学员，您好！平台为您分配了${stage}的培训专员（${user}），电话号码是(${tel})，请保持手机畅通，以便专员与您联系！
+                    Map<String, String> xlSmsMap = new HashMap<String, String>();
+                    xlSmsMap.put("phoneNumbers", u.getYhZh());//电话号码
+                    xlSmsMap.put("templateType", "4");//给专员下发短信
+                    xlSmsMap.put("userName", u.getYhXm());//学员姓名
+                    xlSmsMap.put("stage", first);
+                    xlSmsMap.put("user", jlMsage.getYhXm());
+                    xlSmsMap.put("tel", jlMsage.getYhSjhm());
+
+                    jlSmsMap.put("studentUser", u.getYhXm());//学员姓名
+                    jlSmsMap.put("studentTel", u.getYhZh());//学员电话
+                    List<Map<String, String>> smsMapList=new ArrayList<Map<String, String>>();
+                    smsMapList.add(xlSmsMap);
+                    smsMapList.add(jlSmsMap);
+                    res = wechatService.sendTemplateMsg(msg,smsMapList);
                 } catch (Exception e) {
                 }
                 payInfo.debug("sendMsg result :", res);
