@@ -54,7 +54,7 @@ public class KsJfController extends QueryController<BizKsJf,String> {
     }
 
     @RequestMapping("batchImport")
-    public ApiResponse<String> batchImport(String filePath){
+    public ApiResponse<List<String>> batchImport(String filePath){
         return service.batchImport(filePath);
     }
 }
