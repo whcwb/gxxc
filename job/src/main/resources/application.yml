@@ -10,6 +10,5 @@ spring:
       awaitTerminationSeconds: 30
 logging:
   config: classpath:log4j2.xml
-server:
-  port: 81
+url: http://xclm.xxpt123.com:8080/biz/job/orderFulfil
 
