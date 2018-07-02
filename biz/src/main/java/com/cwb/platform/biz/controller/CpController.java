@@ -6,10 +6,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,11 +53,11 @@ public class CpController  {
 
 
     /**
-     * 修改产品分佣费用 (需要生成短信验证码)
+     * 验证验证码
      */
-    @PostMapping("/updateYj")
-    public ApiResponse<String> updateYj(BizCp bizCp){
-        return service.updateYj(bizCp);
+    @PostMapping("/yzcpCode")
+    public ApiResponse<String> validateCSMS(@RequestParam(value = "cpId",required = false) String cpId, @RequestParam(value = "code1",required = false) String code1 ,@RequestParam(value = "code2",required = false) String code2){
+        return service.validateCSMS(cpId,code1,code2);
 
     }
 
