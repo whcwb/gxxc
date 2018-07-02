@@ -12,6 +12,7 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -185,10 +186,17 @@ public class AppPtyhController extends AppUserBaseController {
     @PostMapping("/getqm")
     public ApiResponse<String> base64UpLoad(@RequestParam String base64Data){
         BizPtyh user = getAppCurrentUser();
+
         if(base64Data == null || "".equals(base64Data)){
             return ApiResponse.fail("上传失败，上传图片数据为空");
 //            throw new Exception("上传失败，上传图片数据为空");//
         }
+
+        BizPtyh queryBizPtyh=service.findByIdSelect(user.getId());
+        if(queryBizPtyh==null){
+            return ApiResponse.fail("操作失败，请重新尝试");
+        }
+        RuntimeCheck.ifTrue(StringUtils.isNotBlank(queryBizPtyh.getYhAutograph()),"用户");
         //qrCodeFileUrl
         String fileUrl="/user_autograph/"+(UUID.randomUUID().toString()).replaceAll("-","")+".png";
         FileUtil.fileExistsDir(qrCodeFileUrl+"/user_autograph/");

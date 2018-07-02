@@ -14,6 +14,18 @@
         			<Row>
         				<form-items :parent="v"></form-items>
         			</Row>
+					<Row v-if="showValidCode">
+						<Col span="12">
+							<FormItem prop='validCode1' label='验证码1'>
+								<Input v-model="validCode1" placeholder="验证码1"></Input>
+							</FormItem>
+						</Col>
+						<Col span="12">
+							<FormItem prop='validCode2' label='验证码2'>
+								<Input v-model="validCode2" placeholder="验证码2"></Input>
+							</FormItem>
+						</Col>
+					</Row>
         		</Form>
         	</div>
         	<div slot='footer'>
@@ -50,7 +62,10 @@
                     {label:'二级佣金',prop:'cpRjyj',type:'number',append:'元'},
                 ],
                 ruleInline:{
-				}
+				},
+				showValidCode:false,
+				validCode1:'',
+				validCode2:''
 			}
 		},
 		created(){
@@ -61,6 +76,21 @@
 		},
 		methods: {
             save(){
+                let v= this;
+                let p = JSON.parse(JSON.stringify(this.formItem));
+                p.cpJl = parseFloat(p.cpJl) * 100;
+                p.cpYjyj = parseFloat(p.cpYjyj) * 100;
+                p.cpRjyj = parseFloat(p.cpRjyj) * 100;
+                this.$http.post(this.apis.cp.ADD,p).then((res)=>{
+                    if (res.code === 200){
+                        v.$Message.success("请填写短信验证码");
+                        this.showValidCode = true;
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
+            },
+            valid(){
                 let v= this;
                 let p = JSON.parse(JSON.stringify(this.formItem));
                 p.cpJl = parseFloat(p.cpJl) * 100;

@@ -226,9 +226,14 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
     }
 
     @Override
-    public ApiResponse<String> batchImport(String filePath) {
+    public ApiResponse<List<String>> batchImport(String filePath) {
         List<List<String>> data = ExcelUtil.getData(staticPath+filePath);
+        RuntimeCheck.ifNull(data,"读取文件异常");
         data = data.subList(1,data.size());
+        ApiResponse<List<String>> res = validImportData(data);
+        if (!res.isSuccess()){
+            return res;
+        }
         String now = DateUtils.getNowTime();
         for (List<String> stringList : data) {
             if (!stringList.get(3).equals("是")) {
@@ -250,7 +255,103 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             }
             save(jf);
         }
-        return ApiResponse.success();
+        return res;
+    }
+
+    private ApiResponse<List<String>> validImportData(List<List<String>> data){
+        // 必填字段是否都有
+        // 学员身份证号不能重复
+        // 学员身份证号是否存在
+        // 同一个学员，同一个科目，只能交一次
+        ApiResponse<List<String>> res = new ApiResponse<>();
+        List<String> errors = new ArrayList<>();
+        int c = 0;
+        for (List<String> datum : data) {
+            c ++;
+            RowData row = new RowData(datum);
+            if (!row.isPayed())continue;
+            String error = "第"+c+"行:";
+            if (StringUtils.isEmpty(row.getIdCard())){
+                error += "身份证号码不能为空,";
+            }
+            if (row.getSubject() == null){
+                error += "科目编码不能为空";
+            }
+            if (row.getMoney() == null){
+                error += "缴费金额不能为空";
+            }
+            errors.add(error);
+        }
+        if (errors.size() != 0){
+            res.setResult(errors);
+        }
+        return res;
+    }
+
+    private class RowData{
+        private String name;
+        private String idCard;
+        private Integer subject;
+        private boolean isPayed;
+        private Double money;
+        private String method;
+
+        public RowData(List<String> row){
+            this.name = row.get(0);
+            this.idCard = row.get(1);
+            this.subject = Integer.parseInt(row.get(2));
+            this.isPayed = "是".equals(row.get(3));
+            this.money = new Double(row.get(4));
+            this.method = row.get(5);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getIdCard() {
+            return idCard;
+        }
+
+        public void setIdCard(String idCard) {
+            this.idCard = idCard;
+        }
+
+        public Integer getSubject() {
+            return subject;
+        }
+
+        public void setSubject(Integer subject) {
+            this.subject = subject;
+        }
+
+        public boolean isPayed() {
+            return isPayed;
+        }
+
+        public void setPayed(boolean payed) {
+            isPayed = payed;
+        }
+
+        public Double getMoney() {
+            return money;
+        }
+
+        public void setMoney(Double money) {
+            this.money = money;
+        }
+
+        public String getMethod() {
+            return method;
+        }
+
+        public void setMethod(String method) {
+            this.method = method;
+        }
     }
 
     private String getKm(String code) {

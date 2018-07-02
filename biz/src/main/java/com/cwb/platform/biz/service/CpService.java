@@ -11,7 +11,8 @@ public interface CpService extends BaseService<BizCp,String>{
     ApiResponse<List<BizCp>> getCpTyetList();
     ApiResponse<String> saveCp(BizCp entity);
 
-    ApiResponse<String> updateYj(BizCp bizCp);
 
     ApiResponse<BizCp> getCpTyet(String cpType);
+
+    ApiResponse<String> validateCSMS(String cpId, String code1, String code2);
 }
