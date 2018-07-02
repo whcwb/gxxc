@@ -139,6 +139,20 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
         RuntimeCheck.ifNull(currentUser, "当前登录用户不存在");
         String userId = currentUser.getId();
 
+
+        if(StringUtils.trim(grade).length() == 0){
+            grade = null;
+        }
+        if(StringUtils.trim(yhlx).length() == 0){
+            yhlx = null;
+        }
+        if(StringUtils.trim(sfjf).length() == 0){
+            sfjf = null;
+        }
+        if(StringUtils.trim(yhXm).length() == 0){
+            yhXm = null;
+        }
+
         List<String> yhIds = userMapper.getYhIdByTerm(grade, userId, yhlx, sfjf, yhXm);
         /*SimpleCondition userCondition = new SimpleCondition(BizUser.class);
         // 首先根据等级条件进行筛选出用户 id
@@ -198,4 +212,6 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
 
         return result;
     }
+
+
 }
