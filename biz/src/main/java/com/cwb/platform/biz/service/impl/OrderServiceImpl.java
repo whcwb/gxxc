@@ -189,7 +189,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
                 String cpMc = (String) map.get("cpMc");
                 String cpType = (String) map.get("cpType");//产品类型
                 this.asynchronousSendMessage(order,cpMc,cpType);
-            }else  if("1".equals(type)){
+            }else  if("1".equals(type)||"3".equals(type)){
                 payInfo.debug("异步通知进入生成邀请号码---");
                 String yhZsyqm= (String) map.get("yhZsyqm");
                 String yhZsyqmImg= (String) map.get("yhZsyqmImg");
