@@ -111,8 +111,10 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
         }else{
             return ApiResponse.fail("修改失败，请重新操作");
         }
-
-        return ApiResponse.success();
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setMessage("操作成功");
+        res.setResult(newBizCp.getId());
+        return res;
     }
 
     /**
@@ -146,8 +148,8 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
 
         BizCp updateCp=new BizCp();
         updateCp.setId(cpId);
-        updateCp.setCpYx("0");
-        int i=entityMapper.updateByPrimaryKey(updateCp);
+        updateCp.setCpYx("1");
+        int i=this.update(updateCp);
 
         if(i == 1){ // 保存成功 ，清除redis
             redisDao.delete("cp-SMS-"+cpId);
