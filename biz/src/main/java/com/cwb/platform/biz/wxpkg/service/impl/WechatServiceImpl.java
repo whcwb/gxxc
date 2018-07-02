@@ -114,6 +114,11 @@ public class WechatServiceImpl implements WechatService {
             String code=smsMap.get("code");//专员姓名
             templateParam="{\"userName\":\"" + userName + "\",\"operator\":\"" + operator + "\",\"dates\":\"" + dates + "\",\"cpName\":\"" + cpName + "\",\"cpType\":\"" + cpType + "\",\"cpMoney\":\"" + cpMoney + "\",\"parameter\":\"" + parameter + "\",\"code\":\"" + code + "\"}";
             sendSmsMap.put("templateParam",templateParam);
+        }else if(StringUtils.equals(templateType,"2")){
+//            会员缴费成功  恭喜您成功加入学车联盟平台，平台客服电话${tel}，如果您有疑问可以与我们取得联系！
+            String tel=smsMap.get("tel");//专员姓名
+            templateParam="{\"tel\":\"" + tel + "\"}";
+            sendSmsMap.put("templateParam",templateParam);
         }
         return sendSmsMap;
     }
