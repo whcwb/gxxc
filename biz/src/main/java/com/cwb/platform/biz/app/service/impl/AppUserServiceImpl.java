@@ -139,17 +139,18 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
         RuntimeCheck.ifNull(currentUser, "当前登录用户不存在");
         String userId = currentUser.getId();
 
+       if(StringUtils.isBlank(grade)) {
 
-        if(StringUtils.trim(grade).length() == 0){
-            grade = null;
-        }
-        if(StringUtils.trim(yhlx).length() == 0){
+               grade = null;
+
+       }
+        if(StringUtils.isBlank(yhlx)){
             yhlx = null;
         }
-        if(StringUtils.trim(sfjf).length() == 0){
+        if(StringUtils.isBlank(sfjf)){
             sfjf = null;
         }
-        if(StringUtils.trim(yhXm).length() == 0){
+        if(StringUtils.isBlank(yhXm)){
             yhXm = null;
         }
 
@@ -213,5 +214,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
         return result;
     }
 
-
+    public static void main(String[] args) {
+        System.out.println(StringUtils.isBlank("   "));
+    }
 }

@@ -60,22 +60,24 @@ public interface BizUserMapper extends Mapper<BizUser> {
 
     @Select(" <script> " +
             " SELECT u.YH_ID FROM BIZ_USER u , BIZ_PTYH p where " +
-            " <if test=\"grade == 1 \"> " +
+            " <choose>" +
+            " <when test=\"grade == 1 \"> " +
             " u.YH_SJID = #{userid} " +
-            " </if> " +
-            " <if test=\"grade == 2 \"> " +
+            " </when> " +
+            " <when test=\"grade == 2 \"> " +
             " u.YH_SSJID = #{userid} " +
-            " </if> " +
-            " <if test=\"grade ==null or grade == '' \"> " +
+            " </when> " +
+            " <otherwise > " +
             " (u.YH_SJID =#{userid} OR u.YH_SSJID =#{userid} ) " +
-            " </if> " +
-            " <if test=\"yhlx !=null and yhlx != '' \"> " +
+            " </otherwise> " +
+            "</choose>" +
+            " <if test=\"yhlx !=null  \"> " +
             " AND p.YH_LX = #{yhlx} " +
             " </if> " +
-            " <if test=\"sfjf !=null and sfjf !=''  \"> " +
+            " <if test=\"sfjf !=null   \"> " +
             " AND p.DD_SFJX = #{sfjf} " +
             " </if> " +
-            " <if test= \"yhxm !=null and yhxm != '' \"> " +
+            " <if test= \"yhxm !=null  \"> " +
             " AND u.YH_XM like '%${yhxm}%' " +
             " </if> " +
             " AND u.YH_ID = p.ID ORDER BY u.CJSJ " +
