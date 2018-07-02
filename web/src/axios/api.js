@@ -98,6 +98,7 @@ module.exports = {
         CHANGE:'/api/cp/update',
         DELE:'/api/cp/removeIds',
         getcplx:'/api/cp/getcplx',
+        yzcpCode:'/api/cp/yzcpCode',
     },
     student:{
         QUERY:'/api/ptyh/pager',//平台用户管理

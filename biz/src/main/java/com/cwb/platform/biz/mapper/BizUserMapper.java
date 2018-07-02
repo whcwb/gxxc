@@ -66,16 +66,16 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " <if test=\"grade == 2 \"> " +
             " u.YH_SSJID = #{userid} " +
             " </if> " +
-            " <if test=\"grade ==null \"> " +
+            " <if test=\"grade ==null or grade == '' \"> " +
             " (u.YH_SJID =#{userid} OR u.YH_SSJID =#{userid} ) " +
             " </if> " +
-            " <if test=\"yhlx !=null  \"> " +
+            " <if test=\"yhlx !=null and yhlx != '' \"> " +
             " AND p.YH_LX = #{yhlx} " +
             " </if> " +
-            " <if test=\"sfjf !=null  \"> " +
+            " <if test=\"sfjf !=null and sfjf !=''  \"> " +
             " AND p.DD_SFJX = #{sfjf} " +
             " </if> " +
-            " <if test= \"yhxm !=null \"> " +
+            " <if test= \"yhxm !=null and yhxm != '' \"> " +
             " AND u.YH_XM like '%${yhxm}%' " +
             " </if> " +
             " AND u.YH_ID = p.ID ORDER BY u.CJSJ " +

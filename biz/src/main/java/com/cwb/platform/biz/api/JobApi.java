@@ -47,7 +47,7 @@ public class JobApi {
      * @return
      */
     @RequestMapping(value="/orderFulfil", method={RequestMethod.POST})
-    public ApiResponse<String> orderFulfil(@RequestParam(value = "key",required = false) String key,@RequestParam("token") String token){
+    public ApiResponse<String> orderFulfil(@RequestParam(value = "key",required = false) String key,@RequestParam(value = "token",required = false) String token){
         //1、报文验证 IP、时间戳、业务编号、md5校证值。
 
         if(StringUtils.isBlank(token)){
