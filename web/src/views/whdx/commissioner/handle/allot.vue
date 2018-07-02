@@ -59,7 +59,7 @@
                 apiRoot:this.apis.student,
 				readonly: false,
                 form: {
-                    zylxPager:"slzy",
+                    yhLx:"slzy",
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

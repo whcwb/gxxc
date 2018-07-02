@@ -1,10 +1,12 @@
 package com.cwb.platform.biz.controller;
 
+import com.cwb.platform.biz.bean.StatusModel;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.base.BaseController;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -137,8 +139,8 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     }
 
     @RequestMapping("status-query")
-    public ApiResponse<List<Map<String,Object>>> statusQuery(){
-        return service.statusQuery();
+    public ApiResponse<List<StatusModel>> statusQuery(BizPtyh entity, Page<BizPtyh> pager){
+        return service.statusQuery(entity, pager);
     }
 
 
