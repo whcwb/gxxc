@@ -59,7 +59,7 @@ public interface BizUserMapper extends Mapper<BizUser> {
     void updateJlid3(@Param("list") List<String> list, @Param("jlId") String jlId);
 
     @Select(" <script> " +
-            " SELECT u.YH_ID FROM BIZ_USER u , BIZ_PTYH p where " +
+            " SELECT u.* FROM BIZ_USER u , BIZ_PTYH p where " +
             " <choose>" +
             " <when test=\"grade == 1 \"> " +
             " u.YH_SJID = #{userid} " +
@@ -80,8 +80,8 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " <if test= \"yhxm !=null  \"> " +
             " AND u.YH_XM like '%${yhxm}%' " +
             " </if> " +
-            " AND u.YH_ID = p.ID ORDER BY u.CJSJ " +
+            " AND u.YH_ID = p.ID ORDER BY ABS(p.YH_LX) asc,ABS(p.DD_SFJX) desc" +
             " </script> ")
-    List<String> getYhIdByTerm(@Param("grade")String grade, @Param("userid") String userId, @Param("yhlx")String yhlx, @Param("sfjf") String sfjf, @Param("yhxm")String yhXm);
+    List<BizUser> getYhIdByTerm(@Param("grade")String grade, @Param("userid") String userId, @Param("yhlx")String yhlx, @Param("sfjf") String sfjf, @Param("yhxm")String yhXm);
 
 }
