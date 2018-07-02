@@ -25,11 +25,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +44,8 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 	private JsService roleService;
 	@Autowired
 	private JgService jgService;
+	@Autowired
+	private SysYhJsMapper yhJsMapper;
 
 	@Override
 	protected Class<SysYh> getEntityCls(){
@@ -55,6 +55,19 @@ public class YhServiceImpl extends BaseServiceImpl<SysYh, String> implements YhS
 	@Override
 	protected Mapper<SysYh> getBaseMapper() {
 		return baseMapper;
+	}
+
+	@Override
+	public List<SysYh> getByRoleIds(List<String> roleIds) {
+		SimpleCondition condition = new SimpleCondition(SysYhJs.class);
+		condition.in(SysYhJs.InnerColumn.jsId,roleIds);
+		List<SysYhJs> userRoles = yhJsMapper.selectByExample(condition);
+		if (userRoles.size() == 0){
+			return new ArrayList<>();
+		}
+		List<String> userIds = userRoles.stream().map(SysYhJs::getYhId).collect(Collectors.toList());
+		List<SysYh> userList = findIn(SysYh.InnerColumn.yhid,userIds);
+		return userList;
 	}
 
 	/**
