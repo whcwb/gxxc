@@ -15,6 +15,7 @@ import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
@@ -101,6 +102,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private KsYkService ksYkService;
     @Autowired
     private KsjfService ksjfService;
+    @Autowired
+    private YhService yhService;
 
     @Autowired
     private SysYhJsMapper userRoleMapper;
@@ -177,10 +180,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public boolean fillPagerCondition(LimitedCondition condition) {
-
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String rz = request.getParameter("rz");
         String zylx = request.getParameter("zylx");
+        String zylxPager = request.getParameter("zylxPager");
         if (StringUtils.isNotBlank(rz)) { // 若不为空则为学员认证列表
             condition.and().andIsNotNull("yhZjhm");
         }
@@ -201,6 +204,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                     break;
                 case "k3":
                     condition1.eq(BizUser.InnerColumn.yhJlid3, user.getYhid());
+                case "k4":
+                    condition1.eq(BizUser.InnerColumn.yhjlid4, user.getYhid());
                     break;
             }
             List<BizUser> userList = userMapper.selectByExample(condition1);
@@ -210,10 +215,15 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<String> yhIds = userList.stream().map(BizUser::getYhId).collect(Collectors.toList());
             condition.in(BizPtyh.InnerColumn.id, yhIds);
         }
-
+        if (StringUtils.isNotEmpty(zylxPager)) {
+            List<SysYh> sysYhs = yhService.getByRoleIds(Arrays.asList(zylxPager));
+            List<String> zjhms = sysYhs.stream().map(SysYh::getZjhm).collect(Collectors.toList());
+            condition.in(BizUser.InnerColumn.yhZjhm, zjhms);
+        }
 
         return true;
     }
+
 
     @Override
     protected void afterPager(PageInfo<BizPtyh> resultPage) {
@@ -270,6 +280,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     public BizPtyh afterReturns(BizPtyh bizPtyh) {
         this.afterReturn(bizPtyh);
         return bizPtyh;
+    }
+
+    @Override
+    public List<BizPtyh> getByRoleIds(List<String> roleIds) {
+
+        return null;
     }
 
     /**

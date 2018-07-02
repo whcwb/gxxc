@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
+    List<BizPtyh> getByRoleIds(List<String> roleIds);
 
     /**
      *  更新用户是否锁定状态 0 否 1 是
