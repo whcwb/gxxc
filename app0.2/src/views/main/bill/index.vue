@@ -1,26 +1,32 @@
 <style lang="less">
   #bill{
     .billList{
+      background-color: #fff;
+      margin-bottom: 0.05rem;
       .tit{
-        /*background-color: #f2f2f2;*/
-        /*padding: 0.1rem 0.2rem;*/
-        /*.mon{*/
-          /*color: #000;*/
-          /*font-size: 0.22rem;*/
-        /*}*/
-        /*.sz{//收支*/
-          /*font-size: 0.2rem;*/
-          /*.icon-ico-money{*/
-            /*font-size: 0.2rem;*/
-          /*}*/
-        /*}*/
       }
-
+    }
+    font-size: 0.2rem;
+    .billItem{
+      background-color: #fff;
+      margin-bottom: 0.05rem;
+      height: 0.8rem;
+      .iconImg{
+        width: 0.8rem;
+        position: relative;
+        img{
+          width:0.5rem;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+        }
+      }
     }
   }
 </style>
 <template>
-      <div id="bill" class="box_col">
+      <div id="bill" class="box_col" style="background-color: #f2f2f2">
         <div>
           <mt-header title="账单">
             <router-link to="/Home" slot="left">
@@ -29,44 +35,43 @@
           </mt-header>
         </div>
         <div class="box_col_auto">
-          <div class="billList box-row" v-for="(item,index) in pageList">
-            <div style="width: 0.5rem;padding:0 0.15rem">
+          <div class="billItem box-row" v-for="(item,index) in pageList">
+            <div class="iconImg">
               <img
-                style="width: 100%"
-                src="static/img/bill.png" alt="">
+                :src="item.zjFs=='1' ? 'static/bank/zd1.png' : 'static/bank/zd2.png'" alt="">
             </div>
-            <div class="box_row_100"
-                style="border-bottom: #949494 solid 1px;
-                margin-right: 0.2rem">
+            <div class="box_row_100">
 
-              <div class="box-row" style="padding-top: 0.2rem;
-                    color: #505050;font-size: 0.16rem;font-weight: 700">
-                <div class="box_row_100">
-                  {{item.mxlx | mxlx}}
-                </div>
-                <div>
-                  {{item.zjFs | zjFs}}
-                  {{item.zjJe/100}}
-                </div>
-              </div>
-
-              <div class="box-row"
-                   style="padding-top: 0.15rem;font-size: 0.16rem;
-                          color: #949494;font-weight: 600">
-                <div class="box_row_100">
-                  {{item.cjsj}}
-                </div>
-                <div style="text-align: right">
-                  <div v-show="item.zjZt!=0">
-                    <div>{{item.zjZt | zjZt}}</div>
-                    <div v-show="item.zjZt==2">{{item.zjBz}}</div>
+                <div class="box_col">
+                  <div class="box_col_100">
+                      <div class="box-row" style="padding-top: 0.12rem">
+                          <div class="box_row_100">
+                              {{item.mxlx | mxlx}}
+                          </div>
+                          <div style="padding: 0 0.15rem">
+                              {{item.zjFs | zjFs}}
+                              {{item.zjJe/100}}
+                          </div>
+                      </div>
                   </div>
-                  <div v-show="item.zjZt==0">
-                    <div>{{item.txShZt | txShZt}}</div>
-                    <div v-show="item.txShZt==2">{{item.zjBz}}</div>
+                  <div class="box_col_100">
+                      <div class="box-row" style="padding-top: 0.12rem">
+                        <div class="box_row_100" style="font-size: 0.15rem">
+                          {{item.cjsj}}
+                        </div>
+                        <div style="font-size: 0.13rem;font-weight: 700;padding: 0 0.15rem">
+                          <div>
+                            <div :style="{color:item.zjZt=='1' ? '#000' : 'red'}">{{item.zjZt | zjZt}}</div>
+                            <div>{{item.zjBz}}</div>
+                          </div>
+                          <!--<div v-show="item.zjZt==0">-->
+                            <!--<div>{{item.txShZt | txShZt}}</div>-->
+                            <!--<div v-show="item.txShZt==2">{{item.zjBz}}</div>-->
+                          <!--</div>-->
+                        </div>
+                      </div>
                   </div>
                 </div>
-              </div>
 
             </div>
           </div>
