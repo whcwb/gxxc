@@ -53,7 +53,7 @@
                 apiRoot:this.apis.student,
 				readonly: false,
                 form: {
-                    zylxPager:"k2",
+                    yhLx:"k2",
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
