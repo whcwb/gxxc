@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="box_col">
+  <div id="app" class="box_col" :style="{minHeight:minHeight}">
     <!--<transition name="el-fade-in-linear">-->
       <router-view/>
     <!--</transition>-->
@@ -8,7 +8,23 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data(){
+    return{
+      minHeight:'0px'
+    }
+  },
+  mounted(){
+    this.minHeight = this.getWindowHeight()+'px'
+    // console.log('页面高度',this.getWindowHeight())
+    // alert(this.getWindowHeight())
+  },
+  methods:{
+    getWindowHeight(){
+      var windowHeight = window.innerHeight
+      return windowHeight
+    }
+  }
 }
 </script>
 

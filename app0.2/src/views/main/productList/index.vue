@@ -1,49 +1,39 @@
 <style lang="less">
   #productList{
     font-size: 0.2rem;
-    background: #dadada;
+    background: #f2f2f2;
     .cpList{
-      padding: 0.1rem 0;
-      .cpItem{
-        padding:0.1rem;
-        margin: 0.05rem 0 0 0;
-        background: #f2f2f2;
-        .cpName{
+      padding:0 0 0.1rem 0;
+      .cpItems{
+        height: 0.8rem;
+        margin-bottom: 0.05rem;
+        background-color: #fff;
+        .titType{
+          width: 0.6rem;
+          height: 0.6rem;
+          border-radius: 0.3rem;
+          border: #00a4ff 2px solid;
+          text-align: center;
+          line-height: 0.6rem;
+          margin: 0.1rem 0.15rem;
           font-size: 0.22rem;
           font-weight: 700;
-          color: #ffa700;
-          border-bottom: #eb873a solid 0.02rem
+          color: #00ceff;
+        }
+        .cpMess{
+          font-size: 0.16rem;
+          padding-top: 0.15rem;
         }
         .cpMoney{
-          padding:0 0.05rem 0.02rem 0.05rem;
-          font-size: 0.22rem;
+          padding:0.1rem 0.05rem 0.02rem 0.05rem;
+          font-size: 0.2rem;
           font-weight: 700;
           color: #eb873a;
           i{
             font-size: 0.2rem;
           }
-          /*font-size: 22rem;*/
-          /*font-weight: 700;*/
-
-        }
-        .cpMess{
-            font-size: 0.13rem;
-            margin-right:0.08rem ;
-        }
-        .cpOk{
-          text-align: right;
-          padding: 0.06rem 0;
-        }
-        .backColor{
-          height: 0.05rem;
-          background: linear-gradient(to right, #00ff43 , #00b8ff);
-        }
-        .backColorTop{
-          height: 0.05rem;
-          background: linear-gradient(to right , #00b8ff , #00ff43);
         }
       }
-
     }
 
   }
@@ -56,27 +46,31 @@
       </div>
     </mt-header>
     <div class="box_col_auto cpList">
-      <div class="cpItem" v-for="(item,index) in cpList">
-        <div class="box-row" style="margin-bottom: 0.06rem">
-          <div class="cpName box_row_100">
-            <span style=";padding: 0 0.05rem 0.02rem 0.05rem">
-              {{item.cpMc}}
-            </span>
-          </div>
-          <div class="cpMoney">
-            <i class="iconfont icon-ico-money"></i>
-            {{item.cpJl/100}}
+
+      <div class="cpItems box-row"
+           v-for="(item,index) in cpList">
+        <div style="width:0.9rem">
+          <div class="titType">
+            {{item.cpMc}}
           </div>
         </div>
-        <div class="box-row">
-          <div class="cpMess box_row_100">
-            产品信息:{{item.cpXx}}
-          </div>
-          <div class="cpOk">
-            <el-button type="success" size="small"
-                       @click="paymoney(item)">购买套餐</el-button>
+        <div class="box_row_100 cpMess">
+          产品信息:
+          <div style="width: 100%;display: block;word-break: break-all;">
+            {{item.cpXx}}
           </div>
         </div>
+        <div class="box_col" style="width: 1rem;">
+            <div class="box_col_100 cpMoney">
+              <i class="iconfont icon-ico-money"></i>
+              {{item.cpJl/100}}
+            </div>
+            <div class="box_col_100">
+              <el-button type="success" size="small"
+                         @click="paymoney(item)">购买套餐</el-button>
+            </div>
+        </div>
+
       </div>
     </div>
 

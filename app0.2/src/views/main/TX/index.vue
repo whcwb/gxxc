@@ -30,18 +30,21 @@
       top:0.35rem;
     }
   }
-  .md-input-item-control{
+  #input{
+    input{
+      color: #fc9153!important;
+      font-size: 0.5rem!important;
+      padding-left:0.6rem ;
+    }
   }
-    #input{
-      input{
-        color: #fc9153!important;
-        font-size: 0.6rem!important;
-        padding-left:0.6rem ;
+  #input{
+    .md-input-item-control{
+      input::-webkit-input-placeholder{
+        font-size: 0.34rem!important;
+        color: #c1c1c1;
       }
     }
-    #input::-webkit-input-placeholder{
-      font-size: 0.4rem;
-    }
+  }
 </style>
 <template>
   <div id="bank" class="box_col">
@@ -217,17 +220,18 @@
           return
         }
         if (this.number) {
+          // this.number = parseInt(this.number)
           this.$http.post(this.apis.TX, {
             'ttje': this.number * 100,
             'yhkid': v.bankList[v.bankListIndex].id
           }).then((res) => {
             if (res.code == 200) {
               Toast.info(res.message)
-              v.number = ''
               v.$router.push({name: 'bill'})
             } else {
               Toast.info(res.message)
             }
+            v.number = ''
           }).catch((err) => {
 
           })

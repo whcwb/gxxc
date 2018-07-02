@@ -102,15 +102,20 @@
         <div class="box-row">
           <div class="box_row_100" style="margin: 0.05rem">
             <el-button type="primary"
-                       v-if="usermess.ddSfjx=='0'&&usermess.yhZt=='1'"
+                       v-if="usermess.yhZt=='1'"
                        @click="$router.push({name:'productList'})"
             >缴费
             </el-button>
             <el-button type="primary"
-                       v-else-if="usermess.ddSfjx=='1'"
-                       @click="okjf"
-            >已缴费
+                       v-else-if="usermess.yhZt!='1'&&usermess.yhZt!='-1'"
+                       @click="errtost(usermess.yhZt)"
+            >缴费
             </el-button>
+            <!--<el-button type="primary"-->
+                       <!--v-else-if="usermess.ddSfjx=='1'"  usermess.ddSfjx=='0'&& -->
+                       <!--@click="okjf"-->
+            <!--&gt;已缴费-->
+            <!--</el-button>-->
             <el-button type="primary"
                        v-else
                        @click="tost"
@@ -162,6 +167,7 @@
             ></span>&nbsp;&nbsp;{{usermess.yhZt | yhZt}}</span>
       </mt-cell>
     </div>
+
     <!--<div style="position: fixed;z-index: 1000">-->
     <!--<sign-canvas @saveResult="saveResult"></sign-canvas>-->
     <!--</div>-->
@@ -257,6 +263,21 @@
         }).catch((err) => {
           Toast('账户余额获取失败')
         })
+      },
+      errtost(val){
+        let errmess = ''
+        switch (val) {
+          case '0':
+            errmess = '实名认证审核中';
+            break;
+          case '2':
+            errmess = '实名认证驳回,重新上传证件信息！';
+            break;
+          default:
+            return val
+            break;
+        }
+        Toast(errmess)
       },
       tost() {
         Toast('请实名认证')
