@@ -132,7 +132,6 @@
                         this.unitName = this.getUnitName(c);
                         this.showConfirm = c != 4;
                         this.formItem.slType = c+1;
-                        console.log(this.formItem.slType);
                     }
                 })
             },
