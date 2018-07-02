@@ -98,6 +98,7 @@ module.exports = {
         CHANGE:'/api/cp/update',
         DELE:'/api/cp/removeIds',
         getcplx:'/api/cp/getcplx',
+        yzcpCode:'/api/cp/yzcpCode',
     },
     student:{
         QUERY:'/api/ptyh/pager',//平台用户管理
@@ -111,6 +112,7 @@ module.exports = {
         updateSfsd:'/api/ptyh/updateSfsd',//用户管理
         getUserCoachEvaluate:'/api/ptyh/updateSfsd',//获取用户对教练的评分
         getPaymentRecord:'/api/ptyh/getPaymentRecord',//获取用户进度信息
+        status_query:'/api/ptyh/status-query',//获取用户进度信息
     },
     teacher:{
         QUERY:'/api/jl/pager',//平台用户管理
