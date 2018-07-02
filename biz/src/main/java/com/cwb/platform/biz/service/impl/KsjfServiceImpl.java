@@ -239,13 +239,14 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             if (!stringList.get(3).equals("是")) {
                 continue;
             }
-            String zjhm = stringList.get(1);
+            RowData row = new RowData(stringList);
+            String zjhm = row.getIdCard();
             BizKsJf jf = new BizKsJf();
             jf.setYhZjhm(zjhm);
-            jf.setKmId(stringList.get(2));
+            jf.setKmId(row.getSubject().toString());
             jf.setJfSj(now);
-            jf.setJfJl(stringList.get(4));
-            jf.setJfFs(stringList.get(5));
+            jf.setJfJl(row.getMoney());
+            jf.setJfFs(row.getMethod());
 
             List<BizPtyh> userList = ptyhService.findEq(BizPtyh.InnerColumn.yhZjhm,zjhm);
             if (userList.size() != 0){
@@ -264,23 +265,70 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         // 学员身份证号是否存在
         // 同一个学员，同一个科目，只能交一次
         ApiResponse<List<String>> res = new ApiResponse<>();
-        List<String> errors = new ArrayList<>();
         int c = 0;
+        List<String> idCardList = new ArrayList<>(data.size());
+        List<RowData> rowDataList = new ArrayList<>();
+        Map<Integer,String> errorMap = new HashMap<>();
+        Map<String,Integer> idCardRowNumMap = new HashMap<>();
         for (List<String> datum : data) {
             c ++;
             RowData row = new RowData(datum);
+            rowDataList.add(row);
             if (!row.isPayed())continue;
-            String error = "第"+c+"行:";
+            String error = "";
             if (StringUtils.isEmpty(row.getIdCard())){
                 error += "身份证号码不能为空,";
+            }else{
+                if (idCardList.contains(row.getIdCard())){
+                    error += "身份证号码重复";
+                }else{
+                    idCardRowNumMap.put(row.getIdCard(),c);
+                    idCardList.add(row.getIdCard());
+                }
             }
             if (row.getSubject() == null){
-                error += "科目编码不能为空";
+                error += "科目编码不能为空,";
             }
-            if (row.getMoney() == null){
-                error += "缴费金额不能为空";
+            if (StringUtils.isEmpty(row.getMoney())){
+                error += "缴费金额不能为空,";
             }
-            errors.add(error);
+            errorMap.put(c,error);
+        }
+
+        Map<String,String> idCardYhIdMap = new HashMap<>();
+
+        // 学员身份证号是否存在
+        List<BizPtyh> userList = ptyhService.findIn(BizPtyh.InnerColumn.yhZjhm,idCardList);
+        List<String> foundUserIds = userList.stream().map(BizPtyh::getId).collect(Collectors.toList());
+        for (String s : idCardList) {
+            if (!foundUserIds.contains(s)){
+                int rowNum = idCardRowNumMap.get(s);
+                String error = errorMap.get(rowNum) + "身份证号不存在";
+                errorMap.put(rowNum,error);
+            }
+        }
+
+        for (BizPtyh ptyh : userList) {
+            idCardYhIdMap.put(ptyh.getYhZjhm(),ptyh.getId());
+        }
+
+        // 同一个学员，同一个科目，只能交一次
+        for (RowData row : rowDataList) {
+            String yhId = idCardYhIdMap.get(row.getIdCard());
+            SimpleCondition condition = new SimpleCondition(BizKsJf.class);
+            condition.eq(BizKsJf.InnerColumn.kmId,row.getSubject());
+            condition.eq(BizKsJf.InnerColumn.yhId,yhId);
+            int count = countByCondition(condition);
+            if (count > 0){
+                int rowNum = idCardRowNumMap.get(row.getIdCard());
+                String error = errorMap.get(rowNum) + "该学员已过科目" + row.getSubject()+"的费用";
+                errorMap.put(rowNum,error);
+            }
+        }
+
+        List<String> errors = new ArrayList<>();
+        for (Map.Entry<Integer, String> entry : errorMap.entrySet()) {
+            errors.add("第"+entry.getKey()+"行："+entry.getValue());
         }
         if (errors.size() != 0){
             res.setResult(errors);
@@ -293,7 +341,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         private String idCard;
         private Integer subject;
         private boolean isPayed;
-        private Double money;
+        private String money;
         private String method;
 
         public RowData(List<String> row){
@@ -301,7 +349,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             this.idCard = row.get(1);
             this.subject = Integer.parseInt(row.get(2));
             this.isPayed = "是".equals(row.get(3));
-            this.money = new Double(row.get(4));
+            this.money = row.get(4);
             this.method = row.get(5);
         }
 
@@ -337,11 +385,11 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             isPayed = payed;
         }
 
-        public Double getMoney() {
+        public String getMoney() {
             return money;
         }
 
-        public void setMoney(Double money) {
+        public void setMoney(String money) {
             this.money = money;
         }
 

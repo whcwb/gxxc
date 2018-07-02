@@ -30,7 +30,8 @@
         	</div>
         	<div slot='footer'>
         		<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-        		<Button type="primary" @click="v.save()">确定</Button>
+        		<Button v-if="!showValidCode" type="primary" @click="v.save()">确定</Button>
+        		<Button v-if="showValidCode" type="primary" @click="v.valid()">验证</Button>
         	</div>
         </Modal>
 	</div>
@@ -65,7 +66,8 @@
 				},
 				showValidCode:false,
 				validCode1:'',
-				validCode2:''
+				validCode2:'',
+				cpId:'',
 			}
 		},
 		created(){
@@ -83,7 +85,8 @@
                 p.cpRjyj = parseFloat(p.cpRjyj) * 100;
                 this.$http.post(this.apis.cp.ADD,p).then((res)=>{
                     if (res.code === 200){
-                        v.$Message.success("请填写短信验证码");
+                        this.cpId = res.result;
+                        v.$Message.success("请填写短信验证码,验证码有效期为一天");
                         this.showValidCode = true;
                     }else{
                         this.$Message.error(res.message);
@@ -92,11 +95,12 @@
             },
             valid(){
                 let v= this;
-                let p = JSON.parse(JSON.stringify(this.formItem));
-                p.cpJl = parseFloat(p.cpJl) * 100;
-                p.cpYjyj = parseFloat(p.cpYjyj) * 100;
-                p.cpRjyj = parseFloat(p.cpRjyj) * 100;
-                this.$http.post(this.apis.cp.ADD,p).then((res)=>{
+                let p = {
+                    cpId:this.cpId,
+                    code1:this.validCode1,
+                    code2:this.validCode2,
+				};
+                this.$http.post(this.apis.cp.yzcpCode,p).then((res)=>{
                     if (res.code === 200){
                         v.$Message.success(res.message);
                         v.util.getPageData(v.$parent)

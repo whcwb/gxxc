@@ -39,7 +39,8 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
 
     @Autowired
     private PtyhServiceImpl ptyhService;
-
+    @Autowired
+    private BizUserMapper userMapper;
     @Override
     protected Mapper<BizUser> getBaseMapper() {
         return entityMapper;
@@ -130,7 +131,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
     }
 
     @Override
-    public ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, Page<BizUser> page) {
+    public ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, String yhXm, Page<BizUser> page) {
         ApiResponse<List<BizUser>> result = new ApiResponse<>();
 
         // 获取当前用户
@@ -138,7 +139,8 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
         RuntimeCheck.ifNull(currentUser, "当前登录用户不存在");
         String userId = currentUser.getId();
 
-        SimpleCondition userCondition = new SimpleCondition(BizUser.class);
+        List<String> yhIds = userMapper.getYhIdByTerm(grade, userId, yhlx, sfjf, yhXm);
+        /*SimpleCondition userCondition = new SimpleCondition(BizUser.class);
         // 首先根据等级条件进行筛选出用户 id
         if(StringUtils.isNotBlank(grade)){
             if(StringUtils.equals(grade,"1")) {
@@ -155,7 +157,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
         List<String> yhIds = bizUsers.stream().map(BizUser::getYhId).collect(Collectors.toList());
 
 
-
+        // 二次筛选
         SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
         if(CollectionUtils.isNotEmpty(yhIds)){
             if(StringUtils.isNotBlank(yhlx) || StringUtils.isNotBlank(sfjf)) {
@@ -181,8 +183,8 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
                 }
             }else{
                 condition.and().andCondition(" ( YH_SJID='"+userId+"' OR YH_SSJID='"+userId+"') ");
-            }
-
+            }*/
+            SimpleCondition condition = new SimpleCondition(BizUser.class);
             if(CollectionUtils.isNotEmpty(yhIds)) {
                 condition.in(BizUser.InnerColumn.yhId.name(), yhIds);
                 PageInfo<BizUser> pageInfo = userService.findPage(page, condition);
@@ -191,7 +193,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
             }
 
 
-        }
+        //}
 
 
         return result;

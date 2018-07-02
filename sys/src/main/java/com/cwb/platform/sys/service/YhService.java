@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface YhService extends BaseService<SysYh, String> {
 
+	List<SysYh> getByRoleIds(List<String> roleIds);
 	/**
 	 * 新增用户
 	 * @param user 用户
