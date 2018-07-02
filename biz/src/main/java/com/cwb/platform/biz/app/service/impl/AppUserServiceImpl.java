@@ -130,7 +130,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
     }
 
     @Override
-    public ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, Page<BizUser> page) {
+    public ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, String yhXm, Page<BizUser> page) {
         ApiResponse<List<BizUser>> result = new ApiResponse<>();
 
         // 获取当前用户
@@ -184,6 +184,9 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
             }
 
             if(CollectionUtils.isNotEmpty(yhIds)) {
+                if(StringUtils.isNotBlank(yhXm)) {
+                    condition.like(BizUser.InnerColumn.yhXm.name(), "%" + yhXm + "%");
+                }
                 condition.in(BizUser.InnerColumn.yhId.name(), yhIds);
                 PageInfo<BizUser> pageInfo = userService.findPage(page, condition);
                 afterPager(pageInfo);
