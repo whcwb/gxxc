@@ -265,6 +265,10 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         // 学员身份证号是否存在
         // 同一个学员，同一个科目，只能交一次
         ApiResponse<List<String>> res = new ApiResponse<>();
+        if (data.size() == 0){
+            res.setCode(100);
+            return res;
+        }
         int c = 0;
         List<String> idCardList = new ArrayList<>(data.size());
         List<RowData> rowDataList = new ArrayList<>();
@@ -292,9 +296,22 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             if (StringUtils.isEmpty(row.getMoney())){
                 error += "缴费金额不能为空,";
             }
-            errorMap.put(c,error);
+            if (StringUtils.isNotEmpty(error)){
+                errorMap.put(c,error);
+            }
         }
-
+        if (idCardList.size() == 0){
+            if (errorMap.size() != 0){
+                List<String> errors = new ArrayList<>();
+                for (Map.Entry<Integer, String> entry : errorMap.entrySet()) {
+                    errors.add("第"+entry.getKey()+"行："+entry.getValue());
+                }
+                res.setResult(errors);
+                res.setCode(100);
+            }
+            res.setCode(100);
+            return res;
+        }
         Map<String,String> idCardYhIdMap = new HashMap<>();
 
         // 学员身份证号是否存在
@@ -332,6 +349,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         }
         if (errors.size() != 0){
             res.setResult(errors);
+            res.setCode(100);
         }
         return res;
     }
@@ -347,7 +365,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         public RowData(List<String> row){
             this.name = row.get(0);
             this.idCard = row.get(1);
-            this.subject = Integer.parseInt(row.get(2));
+            this.subject = StringUtils.isEmpty(row.get(2)) ? null : Integer.parseInt(row.get(2));
             this.isPayed = "是".equals(row.get(3));
             this.money = row.get(4);
             this.method = row.get(5);
