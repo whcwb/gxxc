@@ -13,6 +13,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +29,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implements AppUserService {
+public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> implements AppUserService {
     @Autowired
     private BizUserMapper entityMapper;
 
@@ -39,6 +40,8 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
 
     @Autowired
     private PtyhServiceImpl ptyhService;
+    @Autowired
+    private BizUserMapper userMapper;
 
     @Override
     protected Mapper<BizUser> getBaseMapper() {
@@ -46,82 +49,82 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
     }
 
     @Override
-    protected Class<?> getEntityCls(){
+    protected Class<?> getEntityCls() {
         return BizUser.class;
     }
 
     /**
      * 分页补充   按全部、已付款、待付款 来进行查询
-     * @param condition
      *
+     * @param condition
      * @return
      */
-    public boolean fillPagerCondition(LimitedCondition condition){
-        BizPtyh user=getAppCurrentUser();
-        RuntimeCheck.ifNull(user,"用户不存在");
-        String userId=user.getId();
+    public boolean fillPagerCondition(LimitedCondition condition) {
+        BizPtyh user = getAppCurrentUser();
+        RuntimeCheck.ifNull(user, "用户不存在");
+        String userId = user.getId();
 
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()) .getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String userGrade = request.getParameter("userGrade");//用户等级  1、一级用户   2、二级用户。不写查全部
-        if(StringUtils.equals(userGrade,"1")){//一级用户
-            condition.and().andEqualTo(BizUser.InnerColumn.yhSjid.name(),userId);//上级ID
-        }else  if(StringUtils.equals(userGrade,"2")) {//二级用户
-            condition.and().andEqualTo(BizUser.InnerColumn.yhSsjid.name(),userId);//上上级ID
-        }else{
+        if (StringUtils.equals(userGrade, "1")) {//一级用户
+            condition.and().andEqualTo(BizUser.InnerColumn.yhSjid.name(), userId);//上级ID
+        } else if (StringUtils.equals(userGrade, "2")) {//二级用户
+            condition.and().andEqualTo(BizUser.InnerColumn.yhSsjid.name(), userId);//上上级ID
+        } else {
 //            condition.and().andEqualTo(BizUser.InnerColumn.yhSjid.name(),userId);//上级ID
 //            condition.or().andEqualTo(BizUser.InnerColumn.yhSsjid.name(),userId);//上上级ID
 //             上面这样写有问题。SQL会是 (YH_SJID='1') or (YH_SSJID='')    而我要的是：(YH_SJID='1' or YH_SSJID='') 所以不能满足我的需求
-            condition.and().andCondition(" ( YH_SJID='"+userId+"' OR YH_SSJID='"+userId+"') ");
+            condition.and().andCondition(" ( YH_SJID='" + userId + "' OR YH_SSJID='" + userId + "') ");
 
         }
         return true;
     }
+
     @Override
-    protected void afterPager(PageInfo<BizUser> resultPage){
-        BizPtyh user=getAppCurrentUser();
-        RuntimeCheck.ifNull(user,"用户不存在");
-        String userId=user.getId();
+    protected void afterPager(PageInfo<BizUser> resultPage) {
+        BizPtyh user = getAppCurrentUser();
+        RuntimeCheck.ifNull(user, "用户不存在");
+        String userId = user.getId();
 
         List<BizUser> list = resultPage.getList();
-        if(CollectionUtils.isNotEmpty(list)){
-            List<String > ids = list.stream().map(BizUser::getYhId).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(list)) {
+            List<String> ids = list.stream().map(BizUser::getYhId).collect(Collectors.toList());
 
             SimpleCondition condition = new SimpleCondition(BizPtyh.class);
-            condition.in(BizPtyh.InnerColumn.id.name(),ids);
+            condition.in(BizPtyh.InnerColumn.id.name(), ids);
             List<BizPtyh> userwjs = ptyhMapper.selectByExample(condition);
 
-            Map<String,BizPtyh> userMap = userwjs.stream().collect(Collectors.toMap(BizPtyh::getId, p->p));
+            Map<String, BizPtyh> userMap = userwjs.stream().collect(Collectors.toMap(BizPtyh::getId, p -> p));
 
-            for(BizUser order:list){
-                String orderUserId=order.getYhId();
-                if (!userMap.containsKey(orderUserId))continue;
+            for (BizUser order : list) {
+                String orderUserId = order.getYhId();
+                if (!userMap.containsKey(orderUserId)) continue;
                 BizPtyh zdlm = userMap.get(orderUserId);
                 order.setUserDetail(ptyhService.afterReturns(zdlm));
-                if(StringUtils.equals(userId,order.getYhSjid())){
+                if (StringUtils.equals(userId, order.getYhSjid())) {
                     order.setUserGrade("1");
-                }else{
+                } else {
                     order.setUserGrade("2");
                 }
 
-                if(     StringUtils.equals(zdlm.getYhXySlType(),"0") ||
-                        StringUtils.equals(zdlm.getYhXySlType(),"1") ||
-                        StringUtils.equals(zdlm.getYhXySlType(),"2") ||
-                        StringUtils.equals(zdlm.getYhXySlType(),"3") ||
-                        StringUtils.equals(zdlm.getYhXySlType(),"4") ){
+                if (StringUtils.equals(zdlm.getYhXySlType(), "0") ||
+                        StringUtils.equals(zdlm.getYhXySlType(), "1") ||
+                        StringUtils.equals(zdlm.getYhXySlType(), "2") ||
+                        StringUtils.equals(zdlm.getYhXySlType(), "3") ||
+                        StringUtils.equals(zdlm.getYhXySlType(), "4")) {
                     order.setYhDqzt("0");
                 }
-                if(zdlm.getYhXyYkType().charAt(0) == '0'){
+                if (zdlm.getYhXyYkType().charAt(0) == '0') {
                     order.setYhDqzt("0");
-                }else if(zdlm.getYhXyYkType().charAt(0) == '1'){
+                } else if (zdlm.getYhXyYkType().charAt(0) == '1') {
                     order.setYhDqzt("1");
-                }else if(zdlm.getYhXyYkType().charAt(0) == '2'){
+                } else if (zdlm.getYhXyYkType().charAt(0) == '2') {
                     order.setYhDqzt("2");
-                }else if(zdlm.getYhXyYkType().charAt(0) == '3'){
+                } else if (zdlm.getYhXyYkType().charAt(0) == '3') {
                     order.setYhDqzt("3");
-                }else{
+                } else {
                     order.setYhDqzt("4");
                 }
-
 
 
             }
@@ -130,7 +133,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
     }
 
     @Override
-    public ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, Page<BizUser> page) {
+    public ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, String yhXm, Page<BizUser> page) {
         ApiResponse<List<BizUser>> result = new ApiResponse<>();
 
         // 获取当前用户
@@ -138,7 +141,24 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
         RuntimeCheck.ifNull(currentUser, "当前登录用户不存在");
         String userId = currentUser.getId();
 
-        SimpleCondition userCondition = new SimpleCondition(BizUser.class);
+        if (StringUtils.isBlank(grade)) {
+
+            grade = null;
+
+        }
+        if (StringUtils.isBlank(yhlx)) {
+            yhlx = null;
+        }
+        if (StringUtils.isBlank(sfjf)) {
+            sfjf = null;
+        }
+        if (StringUtils.isBlank(yhXm)) {
+            yhXm = null;
+        }
+        PageHelper.startPage(page.getPageNum(), page.getPageSize());
+        List<BizUser> users = userMapper.getYhIdByTerm(grade, userId, yhlx, sfjf, yhXm);
+        PageInfo<BizUser> pageInfo = new PageInfo<>(users);
+        /*SimpleCondition userCondition = new SimpleCondition(BizUser.class);
         // 首先根据等级条件进行筛选出用户 id
         if(StringUtils.isNotBlank(grade)){
             if(StringUtils.equals(grade,"1")) {
@@ -155,7 +175,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
         List<String> yhIds = bizUsers.stream().map(BizUser::getYhId).collect(Collectors.toList());
 
 
-
+        // 二次筛选
         SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
         if(CollectionUtils.isNotEmpty(yhIds)){
             if(StringUtils.isNotBlank(yhlx) || StringUtils.isNotBlank(sfjf)) {
@@ -181,19 +201,20 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser,String> implemen
                 }
             }else{
                 condition.and().andCondition(" ( YH_SJID='"+userId+"' OR YH_SSJID='"+userId+"') ");
-            }
+            }*/
 
-            if(CollectionUtils.isNotEmpty(yhIds)) {
-                condition.in(BizUser.InnerColumn.yhId.name(), yhIds);
-                PageInfo<BizUser> pageInfo = userService.findPage(page, condition);
-                afterPager(pageInfo);
-                result.setPage(pageInfo);
-            }
+            afterPager(pageInfo);
+            result.setPage(pageInfo);
 
 
-        }
+
+        //}
 
 
         return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(StringUtils.isBlank("   "));
     }
 }

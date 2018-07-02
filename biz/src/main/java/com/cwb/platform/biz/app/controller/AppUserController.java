@@ -41,10 +41,11 @@ public class AppUserController extends AppUserBaseController {
     public ApiResponse<List<BizUser>> myTeam(@RequestParam(value = "grade",required = false) String grade,
                                              @RequestParam(value = "yhlx",required = false) String yhlx,
                                              @RequestParam(value = "sfjf" ,required =  false) String sfjf,
+                                             @RequestParam(value = "yhxm",required = false)String yhXm,
                                              Page<BizUser> page){
 
 
-         return  service.myTeam(grade, yhlx, sfjf, page);
+         return  service.myTeam(grade, yhlx, sfjf, yhXm, page);
 
     }
 

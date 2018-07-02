@@ -1,6 +1,8 @@
 package com.cwb.platform.biz.service.impl;
 
 
+import com.alibaba.druid.support.spring.stat.annotation.Stat;
+import com.cwb.platform.biz.bean.StatusModel;
 import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
@@ -12,6 +14,7 @@ import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
@@ -29,13 +32,13 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -81,6 +84,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Autowired
     private BizPtyhMapper entityMapper;
     @Autowired
+    private BizKsYkMapper ksYkMapper;
+    @Autowired
     private BizWjMapper wjMapper;
     @Autowired
     private BizJlMapper jlMapper;
@@ -98,6 +103,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private KsYkService ksYkService;
     @Autowired
     private KsjfService ksjfService;
+    @Autowired
+    private YhService yhService;
 
     @Autowired
     private SysYhJsMapper userRoleMapper;
@@ -174,10 +181,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public boolean fillPagerCondition(LimitedCondition condition) {
-
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String rz = request.getParameter("rz");
         String zylx = request.getParameter("zylx");
+        String zylxPager = request.getParameter("zylxPager");
         if (StringUtils.isNotBlank(rz)) { // 若不为空则为学员认证列表
             condition.and().andIsNotNull("yhZjhm");
         }
@@ -198,6 +205,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                     break;
                 case "k3":
                     condition1.eq(BizUser.InnerColumn.yhJlid3, user.getYhid());
+                case "k4":
+                    condition1.eq(BizUser.InnerColumn.yhjlid4, user.getYhid());
                     break;
             }
             List<BizUser> userList = userMapper.selectByExample(condition1);
@@ -207,10 +216,15 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<String> yhIds = userList.stream().map(BizUser::getYhId).collect(Collectors.toList());
             condition.in(BizPtyh.InnerColumn.id, yhIds);
         }
-
+        if (StringUtils.isNotEmpty(zylxPager)) {
+            List<SysYh> sysYhs = yhService.getByRoleIds(Arrays.asList(zylxPager));
+            List<String> zjhms = sysYhs.stream().map(SysYh::getZjhm).collect(Collectors.toList());
+            condition.in(BizUser.InnerColumn.yhZjhm, zjhms);
+        }
 
         return true;
     }
+
 
     @Override
     protected void afterPager(PageInfo<BizPtyh> resultPage) {
@@ -218,7 +232,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (CollectionUtils.isNotEmpty(list)) {
             list.stream().forEach(bizPtyh -> afterReturn(bizPtyh));
         }
-
         return;
     }
 
@@ -267,6 +280,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     public BizPtyh afterReturns(BizPtyh bizPtyh) {
         this.afterReturn(bizPtyh);
         return bizPtyh;
+    }
+
+    @Override
+    public List<BizPtyh> getByRoleIds(List<String> roleIds) {
+
+        return null;
     }
 
     /**
@@ -910,7 +929,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizUser bizUser = new BizUser();
         bizUser.setYhId(user.getId());//用户ID
         bizUser.setYhZjhm(entity.getYhZjhm());//用户证件号码
-        bizUser.setYhSjhm(entity.getYhZh());//用户账户
+        bizUser.setYhSjhm(user.getYhZh());//用户账户
         bizUser.setYhSfjsz(yhSfyjz);//设置是否有驾驶证(1:有 2:没有)
         bizUser.setYhXm(entity.getYhXm());//姓名
         bizUser.setCjsj(DateUtils.getNowTime());//创建时间
@@ -1112,7 +1131,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public ApiResponse<List<String>> assignStudents(String yhId, String jlId, String jlType) {
-
+        SysYh user = getCurrentUser();
         BizPtyh users = this.findById(jlId);
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
 
@@ -1133,6 +1152,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         map.put("ids", ids);
         map.put("jlId", jlId);
         map.put("jlType", jlType);
+        map.put("user", user);
         eventBus.post(map);
         return ApiResponse.success(ids);
     }
@@ -1144,8 +1164,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<String> ids = (List<String>) map.get("ids");
             String jlId = (String) map.get("jlId");
             String jlType = (String) map.get("jlType");
-            this.wxSendMessage(ids, jlId, jlType);
+            SysYh user = (SysYh) map.get("user");
+            this.wxSendMessage(ids, jlId, jlType,user);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         payInfo.debug("进入异步通知开始 Async END---");
     }
@@ -1156,11 +1178,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @param ids
      * @param jlId
      */
-    @Async
-    public void wxSendMessage(List<String> ids, String jlId, String jlType) {
-        SysYh user = getCurrentUser();
+    public void wxSendMessage(List<String> ids, String jlId, String jlType,SysYh user) {
         String jlMessage = "专员您好，为您分配了" + ids.size() + "位学员。请您及时联系！";//给教练下发的记录
         payInfo.debug("分配学员-下发消息--------------------");
+        System.out.println("------------------------------------------------------------------------------------------");
         try {
             BizJl jlMsage = jlService.findById(jlId);
             BizPtyh appJlUser = ptyhService.findById(jlId);
@@ -1178,11 +1199,19 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             msg.setUrl(wxJlDomain);
             msg.setData(data);
             String res = "";
+
+            Map<String, String> jlSmsMap = new HashMap<String, String>();
+            jlSmsMap.put("phoneNumbers", appJlUser.getYhZh());//电话号码
+            jlSmsMap.put("templateType", "3");//给专员下发短信
+//                ${userName}专员，你好！平台为您分配了一位新学员（${studentUser}），电话号码是（${studentTel}），请您及时与他联系并安排培训！
+            jlSmsMap.put("userName", jlMsage.getYhXm());//专员姓名
+
             try {
-                res = wechatService.sendTemplateMsg(msg);
+                res = wechatService.sendTemplateMsg(msg,null);
             } catch (Exception e) {
             }
             payInfo.debug("sendMsg result :", res);
+
             SimpleCondition condition = new SimpleCondition(BizPtyh.class);
             condition.in(BizPtyh.InnerColumn.id.name(), ids);
             List<BizPtyh> userList = entityMapper.selectByExample(condition);
@@ -1214,7 +1243,21 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 msg.setUrl(wxXyDomain);
                 msg.setData(data);
                 try {
-                    res = wechatService.sendTemplateMsg(msg);
+                    //尊敬的${userName}学员，您好！平台为您分配了${stage}的培训专员（${user}），电话号码是(${tel})，请保持手机畅通，以便专员与您联系！
+                    Map<String, String> xlSmsMap = new HashMap<String, String>();
+                    xlSmsMap.put("phoneNumbers", u.getYhZh());//电话号码
+                    xlSmsMap.put("templateType", "4");//给专员下发短信
+                    xlSmsMap.put("userName", u.getYhXm());//学员姓名
+                    xlSmsMap.put("stage", first);
+                    xlSmsMap.put("user", jlMsage.getYhXm());
+                    xlSmsMap.put("tel", jlMsage.getYhSjhm());
+
+                    jlSmsMap.put("studentUser", u.getYhXm());//学员姓名
+                    jlSmsMap.put("studentTel", u.getYhZh());//学员电话
+                    List<Map<String, String>> smsMapList=new ArrayList<Map<String, String>>();
+                    smsMapList.add(xlSmsMap);
+                    smsMapList.add(jlSmsMap);
+                    res = wechatService.sendTemplateMsg(msg,smsMapList);
                 } catch (Exception e) {
                 }
                 payInfo.debug("sendMsg result :", res);
@@ -1611,61 +1654,66 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
 
     @Override
-    public ApiResponse<List<Map<String, Object>>> statusQuery() {
-        Map<String,String> paramMap = ContextUtil.getParamMap();
-        String km = paramMap.get("km");
-        String kszt = paramMap.get("kszt");
-        String pageSizeStr = paramMap.get("pageSize");
-        String pageNumStr = paramMap.get("pageNum");
-
-        int pageSize = 8;
-        int pageNum = 1;
-        if (StringUtils.isNotEmpty(pageSizeStr)){
-            pageSize = Integer.parseInt(pageSizeStr);
-        }
-        if (StringUtils.isNotEmpty(pageNumStr)){
-            pageNum = Integer.parseInt(pageNumStr);
-        }
-        int passScore = 90;
-        if (km.equals("2") || km.equals("3")){
-            passScore = 80;
-        }
-        String sql = "select * from biz_ks_yk where km_code ='"+km+"' and ";
-        if (kszt.equals("0")){ // 未考试
-            sql += " cjq is null";
-        }else if (kszt.equals("1")) { // 已通过
-            sql +=" (cj1 >= "+passScore +" or  cj2 >= "+passScore+")";
-        }else if (kszt.equals("2")){ // 未通过
-            sql +=" (cj1 <  "+passScore +" and cj2 <  "+passScore+")";
-        }
-        sql += " limit "+pageSize+" ,"+(pageNum-1)*pageSize;
-        Query query = entityManager.createNativeQuery(sql,BizKsYk.class);
-        List<BizKsYk> list = query.getResultList();
-
-        ApiResponse<List<Map<String,Object>>> res = new ApiResponse<>();
+    public ApiResponse<List<StatusModel>> statusQuery(BizPtyh entity, Page<BizPtyh> pager) {
+        ApiResponse<List<BizPtyh>> res = pager(pager);
+        ApiResponse<List<StatusModel>> result = new ApiResponse<>();
+        result.setPage(res.getPage());
+        List<BizPtyh> list = res.getPage().getList();
         if (list == null || list.size() == 0){
-            res.setResult(new ArrayList<>());
-            return res;
+            return result;
         }
+        List<String> userIds = list.stream().map(BizPtyh::getId).collect(Collectors.toList());
+        List<BizUser> userList = userService.findIn(BizUser.InnerColumn.yhId,userIds);
+        Map<String,BizUser> userMap = userList.stream().collect(Collectors.toMap(BizUser::getYhId,p->p));
 
-        List<String> userIds = list.stream().map(BizKsYk::getYhId).collect(Collectors.toList());
-        List<BizPtyh> userList = ptyhService.findIn(BizPtyh.InnerColumn.id,userIds);
-        if (userList.size() == 0){
-            res.setResult(new ArrayList<>());
-            return res;
+        List<StatusModel> models = new ArrayList<>();
+        for (BizPtyh ptyh : list) {
+            BizUser user = userMap.get(ptyh.getId());
+            if (user == null)continue;
+            StatusModel model = new StatusModel(ptyh);
+            BizPtyh zy0 = ptyhService.findById(user.getYhJlid());
+            model.setZy0(zy0);
+
+            BizPtyh zy1 = ptyhService.findById(user.getYhJlid1());
+            model.setZy1(zy1);
+
+            BizPtyh zy2 = ptyhService.findById(user.getYhJlid2());
+            model.setZy0(zy2);
+
+            BizPtyh zy3 = ptyhService.findById(user.getYhJlid3());
+            model.setZy0(zy3);
+
+            BizPtyh zy4 = ptyhService.findById(user.getYhJlid4());
+            model.setZy0(zy4);
+
+            BizKsYk km1 = getYk(ptyh,"1");
+            model.setKm1(km1);
+
+            BizKsYk km2 = getYk(ptyh,"2");
+            model.setKm2(km2);
+
+            BizKsYk km3 = getYk(ptyh,"3");
+            model.setKm3(km3);
+
+            BizKsYk km4 = getYk(ptyh,"4");
+            model.setKm4(km4);
+            models.add(model);
         }
-
-        Map<String,BizKsYk> ykMap = list.stream().collect(Collectors.toMap(BizKsYk::getYhId,p->p));
-        List<Map<String,Object>> resList = new ArrayList<>(userList.size());
-        for (BizPtyh user : userList) {
-            Map<String,Object> map = new HashMap<>();
-            map.put("yhId",user.getId());
-
-        }
-
-
-        return null;
+        PageInfo pageInfo = res.getPage();
+        pageInfo.setList(models);
+        result.setPage(pageInfo);
+        return result;
     }
 
-
+    private BizKsYk getYk(BizPtyh ptyh,String km){
+        SimpleCondition condition = new SimpleCondition(BizKsYk.class);
+        condition.eq(BizKsYk.InnerColumn.yhId,ptyh.getId());
+        condition.eq(BizKsYk.InnerColumn.kmCode,km);
+        condition.setOrderByClause(BizKsYk.InnerColumn.cjsj.desc());
+        List<BizKsYk> yks = ksYkMapper.selectByExampleAndRowBounds(condition, new RowBounds(0, 1));
+        if (yks.size() != 0){
+            return yks.get(0);
+        }
+        return null;
+    }
 }

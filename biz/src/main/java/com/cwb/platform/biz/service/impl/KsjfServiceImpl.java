@@ -12,7 +12,6 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
-import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -25,7 +24,6 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
-import org.bouncycastle.util.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -226,21 +224,27 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
     }
 
     @Override
-    public ApiResponse<String> batchImport(String filePath) {
+    public ApiResponse<List<String>> batchImport(String filePath) {
         List<List<String>> data = ExcelUtil.getData(staticPath+filePath);
+        RuntimeCheck.ifNull(data,"读取文件异常");
         data = data.subList(1,data.size());
+        ApiResponse<List<String>> res = validImportData(data);
+        if (!res.isSuccess()){
+            return res;
+        }
         String now = DateUtils.getNowTime();
         for (List<String> stringList : data) {
             if (!stringList.get(3).equals("是")) {
                 continue;
             }
-            String zjhm = stringList.get(1);
+            RowData row = new RowData(stringList);
+            String zjhm = row.getIdCard();
             BizKsJf jf = new BizKsJf();
             jf.setYhZjhm(zjhm);
-            jf.setKmId(stringList.get(2));
+            jf.setKmId(row.getSubject().toString());
             jf.setJfSj(now);
-            jf.setJfJl(stringList.get(4));
-            jf.setJfFs(stringList.get(5));
+            jf.setJfJl(row.getMoney());
+            jf.setJfFs(row.getMethod());
 
             List<BizPtyh> userList = ptyhService.findEq(BizPtyh.InnerColumn.yhZjhm,zjhm);
             if (userList.size() != 0){
@@ -250,7 +254,168 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             }
             save(jf);
         }
-        return ApiResponse.success();
+        return res;
+    }
+
+    private ApiResponse<List<String>> validImportData(List<List<String>> data){
+        // 必填字段是否都有
+        // 学员身份证号不能重复
+        // 学员身份证号是否存在
+        // 同一个学员，同一个科目，只能交一次
+        ApiResponse<List<String>> res = new ApiResponse<>();
+        if (data.size() == 0){
+            res.setCode(100);
+            return res;
+        }
+        int c = 0;
+        List<String> idCardList = new ArrayList<>(data.size());
+        List<RowData> rowDataList = new ArrayList<>();
+        Map<Integer,String> errorMap = new HashMap<>();
+        Map<String,Integer> idCardRowNumMap = new HashMap<>();
+        for (List<String> datum : data) {
+            c ++;
+            RowData row = new RowData(datum);
+            rowDataList.add(row);
+            if (!row.isPayed())continue;
+            String error = "";
+            if (StringUtils.isEmpty(row.getIdCard())){
+                error += "身份证号码不能为空,";
+            }else{
+                if (idCardList.contains(row.getIdCard())){
+                    error += "身份证号码重复";
+                }else{
+                    idCardRowNumMap.put(row.getIdCard(),c);
+                    idCardList.add(row.getIdCard());
+                }
+            }
+            if (row.getSubject() == null){
+                error += "科目编码不能为空,";
+            }
+            if (StringUtils.isEmpty(row.getMoney())){
+                error += "缴费金额不能为空,";
+            }
+            if (StringUtils.isNotEmpty(error)){
+                errorMap.put(c,error);
+            }
+        }
+        if (idCardList.size() == 0){
+            if (errorMap.size() != 0){
+                List<String> errors = new ArrayList<>();
+                for (Map.Entry<Integer, String> entry : errorMap.entrySet()) {
+                    errors.add("第"+entry.getKey()+"行："+entry.getValue());
+                }
+                res.setResult(errors);
+                res.setCode(100);
+            }
+            res.setCode(100);
+            return res;
+        }
+        Map<String,String> idCardYhIdMap = new HashMap<>();
+
+        // 学员身份证号是否存在
+        List<BizPtyh> userList = ptyhService.findIn(BizPtyh.InnerColumn.yhZjhm,idCardList);
+        List<String> foundUserIds = userList.stream().map(BizPtyh::getId).collect(Collectors.toList());
+        for (String s : idCardList) {
+            if (!foundUserIds.contains(s)){
+                int rowNum = idCardRowNumMap.get(s);
+                String error = errorMap.get(rowNum) + "身份证号不存在";
+                errorMap.put(rowNum,error);
+            }
+        }
+
+        for (BizPtyh ptyh : userList) {
+            idCardYhIdMap.put(ptyh.getYhZjhm(),ptyh.getId());
+        }
+
+        // 同一个学员，同一个科目，只能交一次
+        for (RowData row : rowDataList) {
+            String yhId = idCardYhIdMap.get(row.getIdCard());
+            SimpleCondition condition = new SimpleCondition(BizKsJf.class);
+            condition.eq(BizKsJf.InnerColumn.kmId,row.getSubject());
+            condition.eq(BizKsJf.InnerColumn.yhId,yhId);
+            int count = countByCondition(condition);
+            if (count > 0){
+                int rowNum = idCardRowNumMap.get(row.getIdCard());
+                String error = errorMap.get(rowNum) + "该学员已过科目" + row.getSubject()+"的费用";
+                errorMap.put(rowNum,error);
+            }
+        }
+
+        List<String> errors = new ArrayList<>();
+        for (Map.Entry<Integer, String> entry : errorMap.entrySet()) {
+            errors.add("第"+entry.getKey()+"行："+entry.getValue());
+        }
+        if (errors.size() != 0){
+            res.setResult(errors);
+            res.setCode(100);
+        }
+        return res;
+    }
+
+    private class RowData{
+        private String name;
+        private String idCard;
+        private Integer subject;
+        private boolean isPayed;
+        private String money;
+        private String method;
+
+        public RowData(List<String> row){
+            this.name = row.get(0);
+            this.idCard = row.get(1);
+            this.subject = StringUtils.isEmpty(row.get(2)) ? null : Integer.parseInt(row.get(2));
+            this.isPayed = "是".equals(row.get(3));
+            this.money = row.get(4);
+            this.method = row.get(5);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getIdCard() {
+            return idCard;
+        }
+
+        public void setIdCard(String idCard) {
+            this.idCard = idCard;
+        }
+
+        public Integer getSubject() {
+            return subject;
+        }
+
+        public void setSubject(Integer subject) {
+            this.subject = subject;
+        }
+
+        public boolean isPayed() {
+            return isPayed;
+        }
+
+        public void setPayed(boolean payed) {
+            isPayed = payed;
+        }
+
+        public String getMoney() {
+            return money;
+        }
+
+        public void setMoney(String money) {
+            this.money = money;
+        }
+
+        public String getMethod() {
+            return method;
+        }
+
+        public void setMethod(String method) {
+            this.method = method;
+        }
     }
 
     private String getKm(String code) {
@@ -297,7 +462,8 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         msg.setData(data);
         asyncEventBusUtil.post(new SendWechatMsgEvent(msg));
         try {
-            String res = wechatService.sendTemplateMsg(msg);
+            // 2018/7/2  用户缴费、受理、约考 这些信息是否需要下发验证号码  经理2018-07-02 微信上说暂时不发
+            String res = wechatService.sendTemplateMsg(msg,null);
             log.info("sendMsg result :", res);
             return res;
         } catch (WxErrorException e) {

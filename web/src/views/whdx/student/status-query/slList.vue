@@ -39,8 +39,12 @@
                 ],
                 pageData: [],
                 form: {
-                    yhId:'',
-                    pageSize: 1000,
+                    userId:'',
+                    userGrade:'1',
+                    byBysjInRange:'',
+                    total: 0,
+                    pageNum: 1,
+                    pageSize: 8,
                 },
             }
         },
@@ -53,19 +57,13 @@
 		  }
 		},
         created() {
-            this.form.yhId = this.parent.formItem.yhId;
-            this.getData(this.form.yhId);
+            this.pageData = this.parent.$data.status[0];
+            this.util.fillTableColumns(this)
         },
         methods: {
-            getData(yhId){
-                let v = this;
-                this.$http.get(this.apis.kssl.QUERY,{params:this.form}).then((res)=>{
-                    if (res.code === 200 && res.page.list){
-                        v.pageData = res.page.list;
-                        v.util.fillTableColumns(v)
-                    }
-				})
-			},
+            pageChange(event) {
+                this.util.pageChange(this, event);
+            },
         }
     }
 </script>

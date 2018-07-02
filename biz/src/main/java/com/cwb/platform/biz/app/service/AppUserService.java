@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface AppUserService extends BaseService<BizUser,String>{
 
-    ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, Page<BizUser> page);
+    ApiResponse<List<BizUser>> myTeam(String grade, String yhlx, String sfjf, String yhXm, Page<BizUser> page);
 }

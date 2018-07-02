@@ -8,6 +8,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +21,8 @@ import java.util.Map;
 @DisallowConcurrentExecution*/
 public class OrderFulfillJob implements Job {
 
+    @Value("${url}")
+    private String url;
 
     Logger logger = LoggerFactory.getLogger("access_info");
 
@@ -37,7 +40,7 @@ public class OrderFulfillJob implements Job {
         Map<String,String> map  = new HashMap<>();
         try {
             map.put("key",MD5Util.MD5Encode("123456789" + format , null ));
-            String post = HttpUtil.post("http://xclm.xxpt123.com:8080/biz/job/orderFulfil",map);
+            String post = HttpUtil.post(url,map);
             //String post = HttpUtil.post("http://localhost:9086/job/orderFulfil",map);
             logger.debug(post);
             //System.out.println(post);

@@ -14,11 +14,24 @@
         			<Row>
         				<form-items :parent="v"></form-items>
         			</Row>
+					<Row v-if="showValidCode">
+						<Col span="12">
+							<FormItem prop='validCode1' label='验证码1'>
+								<Input v-model="validCode1" placeholder="验证码1"></Input>
+							</FormItem>
+						</Col>
+						<Col span="12">
+							<FormItem prop='validCode2' label='验证码2'>
+								<Input v-model="validCode2" placeholder="验证码2"></Input>
+							</FormItem>
+						</Col>
+					</Row>
         		</Form>
         	</div>
         	<div slot='footer'>
         		<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-        		<Button type="primary" @click="v.save()">确定</Button>
+        		<Button v-if="!showValidCode" type="primary" @click="v.save()">确定</Button>
+        		<Button v-if="showValidCode" type="primary" @click="v.valid()">验证</Button>
         	</div>
         </Modal>
 	</div>
@@ -50,7 +63,11 @@
                     {label:'二级佣金',prop:'cpRjyj',type:'number',append:'元'},
                 ],
                 ruleInline:{
-				}
+				},
+				showValidCode:false,
+				validCode1:'',
+				validCode2:'',
+				cpId:'',
 			}
 		},
 		created(){
@@ -67,6 +84,23 @@
                 p.cpYjyj = parseFloat(p.cpYjyj) * 100;
                 p.cpRjyj = parseFloat(p.cpRjyj) * 100;
                 this.$http.post(this.apis.cp.ADD,p).then((res)=>{
+                    if (res.code === 200){
+                        this.cpId = res.result;
+                        v.$Message.success("请填写短信验证码,验证码有效期为一天");
+                        this.showValidCode = true;
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
+            },
+            valid(){
+                let v= this;
+                let p = {
+                    cpId:this.cpId,
+                    code1:this.validCode1,
+                    code2:this.validCode2,
+				};
+                this.$http.post(this.apis.cp.yzcpCode,p).then((res)=>{
                     if (res.code === 200){
                         v.$Message.success(res.message);
                         v.util.getPageData(v.$parent)

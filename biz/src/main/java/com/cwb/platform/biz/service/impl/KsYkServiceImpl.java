@@ -2,6 +2,7 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.BizExamPlaceMapper;
 import com.cwb.platform.biz.mapper.BizKsYkMapper;
+import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.model.BizExamPlace;
 import com.cwb.platform.biz.model.BizKsYk;
 import com.cwb.platform.biz.service.KsYkService;
@@ -19,6 +20,7 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,6 +55,9 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
 
     @Autowired
     private  AsyncEventBusUtil asyncEventBusUtil;
+
+    @Autowired
+    private BizPtyhMapper ptyhMapper;
     @Override
     protected Mapper<BizKsYk> getBaseMapper() {
         return entityMapper;
@@ -87,13 +92,36 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         entity.setYhZjhm(ptyh.getYhZjhm());//用户证件号码
         entity.setYhXm(ptyh.getYhXm());//用户姓名
 
-        BizPtyh newPtyh=new BizPtyh();
-        newPtyh.setId(entity.getYhId());
-        newPtyh.setYhXyYkType(entity.getKmCode());
-        ptyhService.update(newPtyh);
+//        BizPtyh newPtyh=new BizPtyh();
+//        newPtyh.setId(entity.getYhId());
+//        newPtyh.setYhXyYkType(entity.getKmCode());
+//        ptyhService.update(newPtyh);
 
         sendMsg(entity,ptyh);
+
+        updateExamStatus(entity);
         return entityMapper.insertSelective(entity);
+    }
+
+    private int getPassScore(String km){
+        return (km.equals("1") || km.equals("4")) ? 90 : 80;
+    }
+
+    private void updateExamStatus(BizKsYk yk){
+        if (StringUtils.isEmpty(yk.getYhId()))return;
+        BizPtyh user = ptyhMapper.selectByPrimaryKey(yk.getYhId());
+        if (user == null)return;
+        String state = yk.getKmCode();
+        int passScore = getPassScore(yk.getKmCode());
+        if (yk.getCj1() == null){
+            state += "0";
+        } else if (yk.getCj1() >= passScore || yk.getCj2() >= passScore){
+            state += "1";
+        }else{
+            state += "2";
+        }
+        user.setYhXyYkType(state);
+        ptyhMapper.updateByPrimaryKeySelective(user);
     }
 
 
