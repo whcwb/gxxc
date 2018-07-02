@@ -12,7 +12,7 @@ router.beforeEach((to, from, next) => {
   console.log('去',to)
   // console.log('来',from)
   Util.title(to.meta.title);
-  // debugger
+
   let openid = localStorage.getItem("openid");
   // let openid = "123123";
   let ISLOGIN = sessionStorage.getItem("ISLOGIN");

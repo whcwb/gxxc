@@ -36,9 +36,9 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071',searchType:'dict',excludeDict:['1','2','3']},
-                    {title: '约考状态',key:'yhXyYkType',dict:'ZDCLK0067',searchType:'dict'},
+                    {title: '约考状态',key:'yhXyYkType',dict:'ykzt',searchType:'dict'},
                     {
-                        title: '操作',
+                        title: '详情',
                         key: 'action',
                         render: (h, params) => {
                             let buttons = [];
@@ -71,6 +71,7 @@
                 pageData: [],
 				choosedData:[],
                 form: {
+                    yhXySlType:'4',
                     yhLx:"1",
                     byBysjInRange:'',
                     total: 0,

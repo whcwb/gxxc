@@ -43,12 +43,6 @@
 				},
                 formInputs:[
                     {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
-                    {label:'学员缴费时间',prop:'jfSj',type:"date"},
-                    {label:'缴费渠道',prop:'jfFs'},
-                    {label:'科目编码',prop:'kmId',dict:'ZDCLK0067'},
-                    {label:'缴费金额',prop:'jfJl',append:'元',handler:(o)=>{
-                            return parseFloat(o/100);}
-					},
                 ],
                 ruleInline:{
 				},

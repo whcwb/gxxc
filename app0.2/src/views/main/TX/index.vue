@@ -14,7 +14,7 @@
     background-color: #eaeaea;
     position: relative;
     #bankList, #bankCard {
-      background-color: #7e7e7e;
+      background-color: #f2f2f2;
       position: absolute;
       left: 0;
       top: 0;
@@ -22,7 +22,26 @@
       bottom: 0;
       z-index: 9999;
     }
+    .icon-ico-money{
+      font-weight: 600;
+      font-size: 0.4rem;
+      color: #ff5e00;
+      position: absolute;
+      top:0.35rem;
+    }
   }
+  .md-input-item-control{
+  }
+    #input{
+      input{
+        color: #fc9153!important;
+        font-size: 0.6rem!important;
+        padding-left:0.6rem ;
+      }
+    }
+    #input::-webkit-input-placeholder{
+      font-size: 0.4rem;
+    }
 </style>
 <template>
   <div id="bank" class="box_col">
@@ -30,7 +49,7 @@
                @seltBankCard="seltBankCard"
                :bankList="bankList"></component>
     <div class="box-row" style="background-color: #2d8cf0;
-    height: 1rem;;line-height: 1.1rem;text-align: center">
+          height: 1rem;;line-height: 1.1rem;text-align: center">
       <div style="height: 1rem;width: 1rem;
           line-height: 0.6rem;
           text-align: center;color: #ededed"
@@ -57,13 +76,9 @@
             </div>
 
             <div class="box-row" @click="compName='bankList'" v-else>
-              <!--<div>-->
-                <!--<i class="iconfont icon-detail" style="font-size: 0.8rem;color: #8c8c8c"></i>-->
-              <!--</div>-->
               <div class="box_row_100" style="font-size: 0.3rem;color: #8c8c8c">
-                <div style="padding: 0.12rem">
-                  <!--{{bankList[bankListIndex].yhkSsyh}}-->
-                  <img :src="bankList[bankListIndex].yhkLogo" alt="">
+                <div style="padding: 0.12rem 0 0 0.12rem">
+                  <img :src="bankList[bankListIndex].yhkLogo" alt="" style="width: 50%">
                 </div>
                 <div style="padding: 0.15rem 0.3rem;font-size: 0.33rem">
                   {{bankList[bankListIndex].yhkKh}}
@@ -79,26 +94,31 @@
       </div>
 
       <div style="margin-top: 0.3rem;background-color: #fff;padding: 0 0.15rem">
-        <div style="font-size: 0.4rem;padding: 0.2rem 0 0 0">
-          提现金额
+        <div class="box-row" style="font-size: 0.4rem;padding: 0.2rem 0 0 0;color: #949494;font-size: 0.35rem">
+          <div class="box_row_100">
+            提现金额
+          </div>
+          <div>
+            <el-button type="success" plain
+            @click="number=zhYE"
+            >全部提现</el-button>
+          </div>
         </div>
         <div class="box-row" style="height: 2rem">
-          <div>
+          <div style="width: 0rem;position: relative">
             <i class="iconfont icon-ico-money"
-               style=" font-weight: 600;font-size: 0.6rem;line-height: 1.5rem"></i>
+               style=" "></i>
           </div>
-          <div class="box_row_100" @click="isKeyBoardShow=true">
+          <div id="input" class="box_row_100" @click="isKeyBoardShow=true">
             <md-input-item
-              disabled
+              readonly
               type="money"
-              style="border-bottom: #949494 2px solid"
+              style="border-bottom: #949494 2px solid;"
               v-model="number"
               placeholder="提现金额"
               autofocus="autofocus"
               @focus="isKeyBoardShow=true"
             ></md-input-item>
-            <!--@keydown="onInputKeydown"-->
-            <!--@change="onInputChange"-->
             <div style="font-size: 0.25rem">
               可提现余额{{zhYE}}元
             </div>
@@ -111,7 +131,8 @@
       <div style="margin-top: 0.3rem ;padding: 0  0.3rem;text-align: center">
         <el-button type="warning" round
         @click="TX()"
-        style="padding: 0.15rem;font-size: 0.4rem;width: 100%">提现</el-button>
+        style="padding: 0.15rem;font-size: 0.4rem;width: 100%;
+            background-color: #fc9153">提现</el-button>
       </div>
     </div>
     <div id="JP" class="">
@@ -128,8 +149,8 @@
 </template>
 
 <script>
-  import {Header, Cell, Toast} from 'mint-ui'
-  import {ActionSheet, Dialog, InputItem, NumberKeyboard} from 'mand-mobile'
+  import {Header} from 'mint-ui'
+  import {Toast,ActionSheet, InputItem, NumberKeyboard} from 'mand-mobile'
   import bankList from './comp/bankCarList'
   import addbankCard from './comp/addBankCard'
   export default {
@@ -163,7 +184,7 @@
       zhye() {
         this.$http.post(this.apis.USERZH).then((res) => {
           if (res.code == 200) {
-            this.zhYE = parseInt(res.result.yhZhye)/100
+            this.zhYE = (parseInt(res.result.yhZhye)/100).toString()
           }
           console.log(res)
         }).catch((err) => {
@@ -192,7 +213,7 @@
         var v = this
         // let bank =v.bankList[v.bankListIndex].id
         if (v.bankList.length == 0) {
-          Toast('请选择银行卡')
+          Toast.info('请选择银行卡')
           return
         }
         if (this.number) {
@@ -201,17 +222,17 @@
             'yhkid': v.bankList[v.bankListIndex].id
           }).then((res) => {
             if (res.code == 200) {
-              Toast(res.message)
+              Toast.info(res.message)
               v.number = ''
               v.$router.push({name: 'bill'})
             } else {
-              Toast(res.message)
+              Toast.info(res.message)
             }
           }).catch((err) => {
 
           })
         } else {
-          Toast('提现金额不能为空')
+          Toast.info('提现金额不能为空')
         }
       },
       getbanklist() {

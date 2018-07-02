@@ -1,0 +1,54 @@
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+
+@keyframes bounce-in {
+  0%{
+    opacity: 0
+  }
+  100% {
+    opacity: 1
+  }
+}
+#infoSTY {
+  font-size: 0.2rem;
+  .header{
+    background-color: #26a2ff;
+    line-height:0.4rem;
+    color:#fff;
+    .el-input__inner{
+      background: #26a2ff;
+      color: #fff;
+      outline: none;
+      border: #fff solid 1px;
+      height: 0.3rem;
+      line-height: 0.3rem;
+      font-size: 0.12rem;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 0.15rem;
+    }
+    .el-input__inner::-webkit-input-placeholder{
+      color: #fff;
+    }
+    .titFun{//功能样式
+      width: 0.5rem;
+      font-size: 0.15rem;
+      position: relative;
+      .selectList{//下拉筛选样式
+        background-color: #5698ca;
+        position: absolute;
+        right: 0;
+        width: 0.7rem;
+        text-align: center;
+        .selectItem{
+          border-bottom: #26a2ff solid 1px;
+        }
+      }
+    }
+  }
+}

@@ -34,7 +34,7 @@
     data(){
       return{
         compname:'homePage',
-        compnameList:['homePage','mess','Homecenter'],
+        compnameList:['homePage','mess','infor','Homecenter'],
         footerNum:this.$store.state.app.tabId,
         footerList:[
           {
@@ -42,15 +42,15 @@
             icon:'icon-shouye',
             text:'首页'
           },
-          // {
-          //   now:false,
-          //   icon:'icon-zixun',
-          //   text:'资讯'
-          // },
           {
             now:false,
             icon:'icon-xiaoxi',
             text:'学车'
+          },
+          {
+            now:false,
+            icon:'icon-tuandui',
+            text:'团队'
           },
           {
             now:false,

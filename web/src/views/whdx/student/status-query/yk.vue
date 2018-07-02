@@ -15,14 +15,6 @@
         				<form-items :parent="v"></form-items>
         			</Row>
 					<Row>
-						<Col span="12">
-							<label>第一次考试成绩</label>
-							<choose-img :type="'cjd1'" :path="formItem.cjd1" @imgChange="imgChange1"></choose-img>
-						</Col>
-						<Col span="12">
-							<label>第二次考试成绩</label>
-							<choose-img :type="'cjd2'" :path="formItem.cjd2" @imgChange="imgChange2"></choose-img>
-						</Col>
 					</Row>
 					<Row>
 						<yk-list :parent="v"></yk-list>
@@ -56,11 +48,6 @@
 				},
                 formInputs:[
                     {label:'用户',prop:'yhId',type:'foreignKey',disabled:true},
-                    {label:'科目编码',prop:'kmCode',dict:'ZDCLK0067'},
-                    {label:'考场名称',prop:'examPlaceId',type:'foreignKey'},
-                    {label:'预约考试时间',prop:'ykSj',type:'date'},
-                    {label:'第一次考试成绩',prop:'cj1',type:''},
-                    {label:'第二次考试成绩',prop:'cj2',type:''},
                 ],
                 ruleInline:{
 				},

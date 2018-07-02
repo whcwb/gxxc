@@ -121,5 +121,28 @@ module.exports = [
       title:'训练场'
     },
     component:()=>import('@/views/main/homePage/page/xlcMess')
+  },{
+    path:'/productList',
+    name:'productList',
+    meta:{
+      title:'产品列表'
+    },
+    component:()=>import('@/views/main/productList')
+  },
+  {
+    path:'/process',
+    name:'process',
+    meta:{
+      title:'学员进程'
+    },
+    component:()=>import('@/views/main/infor/page/process')
+  },
+  {
+    path:'/payMoneyOk',
+    name:'payMoneyOk',
+    meta:{
+      title:'缴费成功'
+    },
+    component:()=>import('@/views/main/payMoneyOk')
   }
 ]
