@@ -215,8 +215,10 @@
               甲方（签章）:
               <el-button v-if="sign" type="primary" icon="el-icon-edit" circle
                          @click="signShow=!signShow"
-              ></el-button>
-              <el-button v-else type="success" icon="el-icon-check" circle></el-button>
+              >请签名</el-button>
+              <el-button v-else type="success" icon="el-icon-check" circle>
+                已签名
+              </el-button>
             </div>
             <div>
               时间：{{getdateStr(0)}}
