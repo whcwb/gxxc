@@ -157,6 +157,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         sendMap.put("type","2");
         sendMap.put("order",order);
         sendMap.put("cpMc",bizCp.getCpMc());
+        sendMap.put("cpType",bizCp.getCpType());//产品类型
         eventBus.post(sendMap);
 
 //        this.asynchronousSendMessage(order,bizCp.getCpMc());
@@ -186,7 +187,8 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
                 payInfo.debug("异步通知进入异步下发消息---");
                 BizOrder order= (BizOrder) map.get("order");
                 String cpMc = (String) map.get("cpMc");
-                this.asynchronousSendMessage(order,cpMc);
+                String cpType = (String) map.get("cpType");//产品类型
+                this.asynchronousSendMessage(order,cpMc,cpType);
             }else  if("1".equals(type)){
                 payInfo.debug("异步通知进入生成邀请号码---");
                 String yhZsyqm= (String) map.get("yhZsyqm");
@@ -201,7 +203,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
      * 异步下发消息
      * @param order
      */
-    public void asynchronousSendMessage(BizOrder order,String cpMc){
+    public void asynchronousSendMessage(BizOrder order,String cpMc,String cpType){
         payInfo.debug("下发微信通知---");
         String yhId=order.getYhId();
         BizPtyh ptyh=ptyhService.findById(yhId);
@@ -226,8 +228,22 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             msg.setTemplateId(examMsgId);
             msg.setUrl(wxDomain);
             msg.setData(data);
-
-            String res = wechatService.sendTemplateMsg(msg);
+            List<Map<String,String>> smsMapList=new ArrayList<>();
+            Map<String, String> smsMap = new HashMap<String, String>();
+            smsMap.put("phoneNumbers", ptyh.getYhZh());//电话号码
+            if(StringUtils.equals(cpType,"1")){//学员
+                smsMap.put("templateType", "1");//学员
+            }else if(StringUtils.equals(cpType,"3")){//会员
+                smsMap.put("templateType", "3");//会员
+            }else {
+                smsMap=null;
+            }
+            if(smsMap==null){
+                smsMapList=null;
+            }else {
+                smsMapList.add(smsMap);
+            }
+            String res = wechatService.sendTemplateMsg(msg,smsMapList);
             payInfo.info("sendMsg result :", res);
 
         } catch (WxErrorException e) {
@@ -240,6 +256,8 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         } catch (WxErrorException e) {
             payInfo.error("发送微信模板消息异常", e);
         }
+
+
     }
 
     /**

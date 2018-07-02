@@ -12,7 +12,6 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
-import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -25,7 +24,6 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
-import org.bouncycastle.util.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -446,7 +444,8 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         msg.setData(data);
         asyncEventBusUtil.post(new SendWechatMsgEvent(msg));
         try {
-            String res = wechatService.sendTemplateMsg(msg);
+            // 2018/7/2  用户缴费、受理、约考 这些信息是否需要下发验证号码  经理2018-07-02 微信上说暂时不发
+            String res = wechatService.sendTemplateMsg(msg,null);
             log.info("sendMsg result :", res);
             return res;
         } catch (WxErrorException e) {

@@ -16,7 +16,7 @@ public class EventHandler {
     @Subscribe
     public void onSendWechatMsg(SendWechatMsgEvent event){
         try {
-            String res = wechatService.sendTemplateMsg(event.getData());
+            String res = wechatService.sendTemplateMsg(event.getData(),null);
             log.info("sendMsg result :",res);
         } catch (WxErrorException e) {
             log.error("发送微信模板消息异常",e);
