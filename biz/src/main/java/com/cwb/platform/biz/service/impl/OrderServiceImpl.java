@@ -140,7 +140,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         order.setPayMoney(l.getPayMoney());
         order.setDdZftd(l.getDdZftd());
         // 判断订单产品是否属于学费，只有学费才生成邀请码
-        if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
+        if(StringUtils.equals(bizCp.getCpType(),"1")||StringUtils.equals(bizCp.getCpType(),"3")) { // 产品类型为会员、学员时 ， 需要生成邀请码
             yhZsyqm = genId();
             yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
             String userName="";
@@ -189,7 +189,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
                 String cpMc = (String) map.get("cpMc");
                 String cpType = (String) map.get("cpType");//产品类型
                 this.asynchronousSendMessage(order,cpMc,cpType);
-            }else  if("1".equals(type)||"3".equals(type)){
+            }else  if("1".equals(type)){
                 payInfo.debug("异步通知进入生成邀请号码---");
                 String yhZsyqm= (String) map.get("yhZsyqm");
                 String yhZsyqmImg= (String) map.get("yhZsyqmImg");
@@ -234,7 +234,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             if(StringUtils.equals(cpType,"1")){//学员
                 smsMap.put("templateType", "1");//学员
             }else if(StringUtils.equals(cpType,"3")){//会员
-                smsMap.put("templateType", "3");//会员
+                smsMap.put("templateType", "2");//会员
             }else {
                 smsMap=null;
             }
@@ -251,7 +251,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         }
         try {
             // 缴费成功发送微信消息
-            WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已注册成功，请留意接听客服电话，关注您的培训流程！").build();
+            WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已缴费成功，请留意接听客服电话，关注您的培训流程！").build();
             wxMpService.getKefuService().sendKefuMessage(message);
         } catch (WxErrorException e) {
             payInfo.error("发送微信模板消息异常", e);
