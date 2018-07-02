@@ -13,6 +13,7 @@ import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
+import com.cwb.platform.sys.model.SysJs;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.model.SysYhJs;
 import com.cwb.platform.sys.service.YhService;
@@ -231,7 +232,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (CollectionUtils.isNotEmpty(list)) {
             list.stream().forEach(bizPtyh -> afterReturn(bizPtyh));
         }
-
         return;
     }
 
