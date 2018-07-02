@@ -1,7 +1,10 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.cwb.platform.biz.mapper.*;
+import com.cwb.platform.biz.mapper.BizJlMapper;
+import com.cwb.platform.biz.mapper.BizPtyhMapper;
+import com.cwb.platform.biz.mapper.BizUserMapper;
+import com.cwb.platform.biz.mapper.BizWjMapper;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
@@ -910,7 +913,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizUser bizUser = new BizUser();
         bizUser.setYhId(user.getId());//用户ID
         bizUser.setYhZjhm(entity.getYhZjhm());//用户证件号码
-        bizUser.setYhSjhm(entity.getYhZh());//用户账户
+        bizUser.setYhSjhm(user.getYhZh());//用户账户
         bizUser.setYhSfjsz(yhSfyjz);//设置是否有驾驶证(1:有 2:没有)
         bizUser.setYhXm(entity.getYhXm());//姓名
         bizUser.setCjsj(DateUtils.getNowTime());//创建时间
