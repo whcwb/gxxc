@@ -127,7 +127,7 @@
         methods:{
           losesfocus(){
             var v = this
-            this.$http.post(this.apis.YZYHK,{yhkKh:v.from.yhkKh,dn:localStorage.getItem('phone')}).then((res)=>{
+            this.$http.post(this.apis.YZYHK,this.from).then((res)=>{
               console.log('一行卡',res)
               if(res.code==200){
                 v.yhkYz = false

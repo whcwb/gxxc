@@ -3,6 +3,7 @@ package com.cwb.platform.biz.service.impl;
 import com.cwb.platform.biz.mapper.BizCpMapper;
 import com.cwb.platform.biz.model.BizCp;
 import com.cwb.platform.biz.service.CpService;
+import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -11,6 +12,7 @@ import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.commonUtil.StringDivUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +20,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -30,6 +32,10 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
     private BizCpMapper entityMapper;
     @Autowired
     private StringRedisTemplate redisDao;
+
+
+    @Autowired
+    private WechatService wechatService;
 
 
     @Override
@@ -108,11 +114,62 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
             redisDao.boundValueOps("cp-SMS-"+newBizCp.getId()).set(code1 + "," + code2,1,TimeUnit.DAYS);
             // 调用短信发送接口
            /* SendSmsUtil.sendSmsMap();*/
+
+            //尊敬的${userName},操作员:${operator}于${dates}修改了${parameter},本次操作验证码是${code},请及时授权处理
+            List<Map<String, String>> smsMapList=new ArrayList<Map<String, String>>();
+            String dates=DateUtils.getDateStr(new Date(), "yyyy年MM月dd日HH时mm分ss各");
+            String cpTypes=entity.getCpType();
+            String cpName="";
+            if(StringUtils.equals(cpTypes,"1")){
+                cpName="学费";
+            }else if(StringUtils.equals(cpTypes,"3")){
+                cpName="会员";
+            }
+            cpJl.toString();
+            String fyString="";
+            if(StringUtils.equals(entity.getCpYj(),"1")){
+                fyString+="分佣。一级"+(entity.getCpYjyj()/100)+"二级："+(entity.getCpRjyj()/100) ;
+            }else {
+                fyString+="不分佣";
+            }
+            fyString=""; // TODO: 2018/7/2 生产环境时需要去掉
+            String parameter=fyString;
+            Map<String, String> smsMap = new HashMap<String, String>();
+            smsMap.put("phoneNumbers", "18672922385");//  刘总电话 ‭15927183566‬ 电话号码  todo 李总的电话
+            smsMap.put("templateType", "5");//给专员下发短信
+            smsMap.put("userName", "李总");//姓名
+            smsMap.put("operator", sysYh.getXm());
+            smsMap.put("dates", dates);
+            smsMap.put("cpName", entity.getCpMc());
+            smsMap.put("cpType", cpName);
+            smsMap.put("cpMoney", (cpJl/100)+"");
+            smsMap.put("parameter", parameter);
+            smsMap.put("code", code1);
+            smsMapList.add(smsMap);
+            smsMap = new HashMap<String, String>();
+            smsMap.put("phoneNumbers", "15671618665");//  todo 刘总的电话
+            smsMap.put("templateType", "5");//给专员下发短信
+            smsMap.put("userName", "刘总");//姓名
+            smsMap.put("operator", sysYh.getXm());
+            smsMap.put("dates", dates);
+            smsMap.put("parameter", parameter);
+            smsMap.put("code", code2);
+            smsMap.put("cpName", entity.getCpMc());
+            smsMap.put("cpType", cpName);
+            smsMap.put("cpMoney", (cpJl/100)+"");
+            smsMapList.add(smsMap);
+            try {
+                wechatService.sendTemplateMsg(null,smsMapList);
+            } catch (WxErrorException e) {
+                e.printStackTrace();
+            }
         }else{
             return ApiResponse.fail("修改失败，请重新操作");
         }
-
-        return ApiResponse.success();
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setMessage("操作成功");
+        res.setResult(newBizCp.getId());
+        return res;
     }
 
     /**
@@ -146,8 +203,8 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
 
         BizCp updateCp=new BizCp();
         updateCp.setId(cpId);
-        updateCp.setCpYx("0");
-        int i=entityMapper.updateByPrimaryKey(updateCp);
+        updateCp.setCpYx("1");
+        int i=this.update(updateCp);
 
         if(i == 1){ // 保存成功 ，清除redis
             redisDao.delete("cp-SMS-"+cpId);

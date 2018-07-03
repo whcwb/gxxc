@@ -49,6 +49,11 @@
               </div>
             </div>
           </div>
+          <div v-if="bankList.length==0">
+            <div>
+             你还没有绑定银行卡，
+            </div>
+          </div>
         </div>
       </div>
 </template>

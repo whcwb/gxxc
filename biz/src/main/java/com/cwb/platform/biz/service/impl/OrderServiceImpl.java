@@ -140,7 +140,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         order.setPayMoney(l.getPayMoney());
         order.setDdZftd(l.getDdZftd());
         // 判断订单产品是否属于学费，只有学费才生成邀请码
-        if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
+        if(StringUtils.equals(bizCp.getCpType(),"1")||StringUtils.equals(bizCp.getCpType(),"3")) { // 产品类型为会员、学员时 ， 需要生成邀请码
             yhZsyqm = genId();
             yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
             String userName="";
@@ -157,6 +157,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         sendMap.put("type","2");
         sendMap.put("order",order);
         sendMap.put("cpMc",bizCp.getCpMc());
+        sendMap.put("cpType",bizCp.getCpType());//产品类型
         eventBus.post(sendMap);
 
 //        this.asynchronousSendMessage(order,bizCp.getCpMc());
@@ -186,7 +187,8 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
                 payInfo.debug("异步通知进入异步下发消息---");
                 BizOrder order= (BizOrder) map.get("order");
                 String cpMc = (String) map.get("cpMc");
-                this.asynchronousSendMessage(order,cpMc);
+                String cpType = (String) map.get("cpType");//产品类型
+                this.asynchronousSendMessage(order,cpMc,cpType);
             }else  if("1".equals(type)){
                 payInfo.debug("异步通知进入生成邀请号码---");
                 String yhZsyqm= (String) map.get("yhZsyqm");
@@ -201,7 +203,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
      * 异步下发消息
      * @param order
      */
-    public void asynchronousSendMessage(BizOrder order,String cpMc){
+    public void asynchronousSendMessage(BizOrder order,String cpMc,String cpType){
         payInfo.debug("下发微信通知---");
         String yhId=order.getYhId();
         BizPtyh ptyh=ptyhService.findById(yhId);
@@ -226,8 +228,22 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             msg.setTemplateId(examMsgId);
             msg.setUrl(wxDomain);
             msg.setData(data);
-
-            String res = wechatService.sendTemplateMsg(msg);
+            List<Map<String,String>> smsMapList=new ArrayList<>();
+            Map<String, String> smsMap = new HashMap<String, String>();
+            smsMap.put("phoneNumbers", ptyh.getYhZh());//电话号码
+            if(StringUtils.equals(cpType,"1")){//学员
+                smsMap.put("templateType", "1");//学员
+            }else if(StringUtils.equals(cpType,"3")){//会员
+                smsMap.put("templateType", "2");//会员
+            }else {
+                smsMap=null;
+            }
+            if(smsMap==null){
+                smsMapList=null;
+            }else {
+                smsMapList.add(smsMap);
+            }
+            String res = wechatService.sendTemplateMsg(msg,smsMapList);
             payInfo.info("sendMsg result :", res);
 
         } catch (WxErrorException e) {
@@ -235,11 +251,13 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         }
         try {
             // 缴费成功发送微信消息
-            WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已注册成功，请留意接听客服电话，关注您的培训流程！").build();
+            WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已缴费成功，请留意接听客服电话，关注您的培训流程！").build();
             wxMpService.getKefuService().sendKefuMessage(message);
         } catch (WxErrorException e) {
             payInfo.error("发送微信模板消息异常", e);
         }
+
+
     }
 
     /**
