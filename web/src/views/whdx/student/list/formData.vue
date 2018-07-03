@@ -47,7 +47,7 @@
 			</div>
 			<div slot='footer'>
 				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
-				<Button type="primary" @click="v.util.save(v)">确定</Button>
+				<!--<Button type="primary" @click="v.util.save(v)">确定</Button>-->
 			</div>
 		</Modal>
 	</div>
@@ -76,7 +76,7 @@
                     {label:'账号',prop:'yhZh',disabled:true},
                     {label:'姓名',prop:'yhXm'},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
-                    {label:'身份证号码',prop:'yhZjhm'},
+                    {label:'身份证号码',prop:'yhZjhm',disabled:true},
                     {label:'状态',prop:'yhZt',type:'dict',dict:'ZDCLK0043'},
                     {label:'是否缴费',prop:'ddSfjx',type:'dict',dict:'ZDCLK0045'},
                     {label:'受理状态',prop:'yhXySlType',type:'dict',dict:'ZDCLK0071'},
@@ -90,9 +90,15 @@
 		created(){
 		    this.util.initFormModal(this);
 		    this.getImages();
-		    this.getImages();
 		},
 		methods: {
+		    beforeSave(){
+		        let  p = {
+		            yhId:this.formItem.yhId,
+                    yhZt:this.formItem.yhZt,
+                    ddSfjx:this.formItem.ddSfjx,
+				}
+			},
 		    getStatus(){
 		        this.$http.get().then((res)=>{
                     console.log(res);

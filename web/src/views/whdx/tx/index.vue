@@ -53,7 +53,7 @@
                     {title:'审核人',key:'ttShr'},
                     {title:'提现审核状态',key:'ttShzt',dict:'ZDCLK0049'},
                     {title:'银行卡号',key:'ttYhkh'},
-                    {title:'开户行',key:'ttKhh'},
+                    {title:'所属银行',key:'ttKhh'},
                     {title:'提现姓名',key:'txXm'},
                     {
                         title: '操作',
