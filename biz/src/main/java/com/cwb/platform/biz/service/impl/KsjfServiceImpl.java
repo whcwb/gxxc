@@ -314,9 +314,9 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
 
         // 学员身份证号是否存在
         List<BizPtyh> userList = ptyhService.findIn(BizPtyh.InnerColumn.yhZjhm,idCardList);
-        List<String> foundUserIds = userList.stream().map(BizPtyh::getId).collect(Collectors.toList());
+        List<String> foundIdCards = userList.stream().map(BizPtyh::getYhZjhm).collect(Collectors.toList());
         for (String s : idCardList) {
-            if (!foundUserIds.contains(s)){
+            if (!foundIdCards.contains(s)){
                 int rowNum = idCardRowNumMap.get(s);
                 String error = errorMap.get(rowNum) + "身份证号不存在";
                 errorMap.put(rowNum,error);
