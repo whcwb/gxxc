@@ -151,7 +151,6 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             sendMap.put("yhZsyqmImg",yhZsyqmImg);
             sendMap.put("userName",userName);
             eventBus.post(sendMap);
-//            this.asynchronousOperate(yhZsyqm,yhZsyqmImg,userName,order);
         }
         Map<String,Object> sendMap=new HashMap<String,Object>();
         sendMap.put("type","2");
@@ -160,15 +159,20 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         sendMap.put("cpType",bizCp.getCpType());//产品类型
         eventBus.post(sendMap);
 
-//        this.asynchronousSendMessage(order,bizCp.getCpMc());
-
+        BizPtyh queryUser=ptyhService.findByIdSelect(order.getYhId());
 
 
         BizPtyh bizPtyh=new BizPtyh();
         bizPtyh.setId(order.getYhId());
         bizPtyh.setDdSfjx("1");
+        //1、产品类型为3 会员  2、用户当前属性不等于1学员  3、用户当前属性等于1并且未邀费成功的
         if(StringUtils.equals(bizCp.getCpType(),"3")){
             bizPtyh.setYhLx("3");
+            if(StringUtils.equals(queryUser.getYhLx(),"1")&&StringUtils.equals(queryUser.getDdSfjx(),"1")){
+                bizPtyh.setYhLx("1");
+            }
+        }else  if(StringUtils.equals(bizCp.getCpType(),"1")){
+            bizPtyh.setYhLx("1");
         }
         if(StringUtils.isNotEmpty(yhZsyqm)){
             bizPtyh.setYhZsyqm(yhZsyqm);//用户自己邀请码
