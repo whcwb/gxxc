@@ -204,7 +204,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
         BizCp updateCp=new BizCp();
         updateCp.setId(cpId);
         updateCp.setCpYx("1");
-        updateCp.setCpYz("1");
+//        updateCp.setCpYz("1");
         int i=this.update(updateCp);
 
         if(i == 1){ // 保存成功 ，清除redis

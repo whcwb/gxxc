@@ -207,7 +207,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         newEntity.setYhCjr(user.getYhid());//用户ID
         newEntity.setCjsj(DateUtils.getNowTime());//创建时间
         newEntity.setYhXm(entity.getYhXm());//用户姓名
-        newEntity.setYhLx(entity.getJsId());
+        newEntity.setYhLx("zy");
 
 
 
@@ -254,7 +254,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         sysYh.setCjsj(DateUtils.getNowTime());
         sysYh.setZt("01");
         sysYh.setXm(entity.getYhXm());
-        sysYh.setLx(entity.getJsId());
+        sysYh.setLx("zy");
         sysYh.setXb(sex);
         sysYh.setZjhm(entity.getYhZjhm());
 

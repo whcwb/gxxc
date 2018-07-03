@@ -11,9 +11,8 @@ import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
-import com.cwb.platform.sys.model.BizPtyh;
-import com.cwb.platform.sys.model.SysYh;
-import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.model.*;
+import com.cwb.platform.sys.service.JsService;
 import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -142,6 +141,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Autowired
     private WechatService wechatService;
+    @Autowired
+    private JsService jsService;
 
 
     @Override
@@ -229,9 +230,79 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     protected void afterPager(PageInfo<BizPtyh> resultPage) {
         List<BizPtyh> list = resultPage.getList();
+        if (list.size() == 0){
+            return;
+        }
+
+        // 获取用户角色
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String showRoles = request.getParameter("showRoles");
+        if ("true".equals(showRoles)){
+            List<String> idCardList = list.stream().map(BizPtyh::getYhZjhm).collect(Collectors.toList());
+            List<SysYh> sysUserList = yhService.findIn(SysYh.InnerColumn.zjhm,idCardList);
+            if (sysUserList.size() == 0) return;
+            Map<String,String> idCardSysUserIdMap = sysUserList.stream().collect(Collectors.toMap(SysYh::getZjhm,SysYh::getYhid));
+            for (BizPtyh ptyh : list) {
+                String idCard = ptyh.getYhZjhm();
+                String yhId = idCardSysUserIdMap.get(idCard);
+                if (StringUtils.isNotEmpty(yhId)){
+                    ptyh.setSysUserId(yhId);
+                }
+            }
+
+            List<String> sysUserIds = sysUserList.stream().map(SysYh::getYhid).collect(Collectors.toList());
+            SimpleCondition condition = new SimpleCondition(SysYhJs.class);
+            condition.in(SysYhJs.InnerColumn.yhId,sysUserIds);
+            List<SysYhJs> userRoleList = userRoleMapper.selectByExample(condition);
+            if (userRoleList.size() == 0) return;
+            Map<String,List<String>> sysIdRoleIdMap = new HashMap<>();
+            for (SysYhJs sysYhJs : userRoleList) {
+                String yhId = sysYhJs.getYhId();
+                if (sysIdRoleIdMap.containsKey(yhId)){
+                    sysIdRoleIdMap.get(yhId).add(sysYhJs.getJsId());
+                }else{
+                    List<String> roleIdList= new ArrayList<>();
+                    roleIdList.add(sysYhJs.getJsId());
+                    sysIdRoleIdMap.put(yhId,roleIdList);
+                }
+            }
+
+            List<String> roleIds = userRoleList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+            List<SysJs> roleList = jsService.findIn(SysJs.InnerColumn.jsId,roleIds);
+            if (roleList.size() == 0) return;
+            Map<String,SysJs> roleIdRoleMap = roleList.stream().collect(Collectors.toMap(SysJs::getJsId,p->p));
+            Map<String,List<String>> sysIdRoleNameMap = new HashMap<>();
+            for (Map.Entry<String, List<String>> entry : sysIdRoleIdMap.entrySet()) {
+                List<String> roleIdList = entry.getValue();
+                List<String> roleNames = new ArrayList<>(roleIdList.size());
+                for (String s : roleIdList) {
+                    SysJs role = roleIdRoleMap.get(s);
+                    if (role != null){
+                        roleNames.add(role.getJsmc());
+                    }
+                }
+                sysIdRoleNameMap.put(entry.getKey(),roleNames);
+            }
+
+            for (BizPtyh ptyh : list) {
+                String sysId = ptyh.getSysUserId();
+                if (StringUtils.isEmpty(sysId))continue;
+                List<String> roleNames = sysIdRoleNameMap.get(sysId);
+                String roleNameStr = "";
+                for (String name : roleNames) {
+                    roleNameStr += name+",";
+                }
+                if (roleNameStr.length() != 0){
+                    roleNameStr = roleNameStr.substring(0,roleNameStr.length() - 1);
+                }
+                ptyh.setRoleNames(roleNameStr);
+            }
+        }
+
         if (CollectionUtils.isNotEmpty(list)) {
             list.stream().forEach(bizPtyh -> afterReturn(bizPtyh));
         }
+
         return;
     }
 

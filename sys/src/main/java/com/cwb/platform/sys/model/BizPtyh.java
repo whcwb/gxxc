@@ -234,6 +234,15 @@ public class BizPtyh implements Serializable {
     @Transient
     private String imgTypeList;
 
+    @Transient
+    private String sysUserId;
+
+    @Transient
+    private String roleIds;
+
+    @Transient
+    private String roleNames;
+
     /**
      * 教练姓名
      */
