@@ -139,18 +139,28 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
         order.setPayMoney(l.getPayMoney());
         order.setDdZftd(l.getDdZftd());
+
+        BizPtyh queryUser=ptyhService.findByIdSelect(order.getYhId());
+
         // 判断订单产品是否属于学费，只有学费才生成邀请码
         if(StringUtils.equals(bizCp.getCpType(),"1")||StringUtils.equals(bizCp.getCpType(),"3")) { // 产品类型为会员、学员时 ， 需要生成邀请码
-            yhZsyqm = genId();
-            yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
-            String userName="";
-            userName=order.getYhXm();
-            Map<String,Object> sendMap=new HashMap<String,Object>();
-            sendMap.put("type","1");
-            sendMap.put("yhZsyqm",yhZsyqm);
-            sendMap.put("yhZsyqmImg",yhZsyqmImg);
-            sendMap.put("userName",userName);
-            eventBus.post(sendMap);
+            String queryYhZsyqm="";
+            if(queryUser!=null){
+                queryYhZsyqm=queryUser.getYhZsyqm();
+            }
+            //判断当前用户是否存在邀请码，如果存在邀请码将不会重新新的邀请码
+            if(StringUtils.isEmpty(queryYhZsyqm)){
+                yhZsyqm = genId();
+                yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
+                String userName="";
+                userName=order.getYhXm();
+                Map<String,Object> sendMap=new HashMap<String,Object>();
+                sendMap.put("type","1");
+                sendMap.put("yhZsyqm",yhZsyqm);
+                sendMap.put("yhZsyqmImg",yhZsyqmImg);
+                sendMap.put("userName",userName);
+                eventBus.post(sendMap);
+            }
         }
         Map<String,Object> sendMap=new HashMap<String,Object>();
         sendMap.put("type","2");
@@ -159,7 +169,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         sendMap.put("cpType",bizCp.getCpType());//产品类型
         eventBus.post(sendMap);
 
-        BizPtyh queryUser=ptyhService.findByIdSelect(order.getYhId());
+
 
 
         BizPtyh bizPtyh=new BizPtyh();
