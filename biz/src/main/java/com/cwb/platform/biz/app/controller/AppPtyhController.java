@@ -12,7 +12,6 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -196,7 +195,7 @@ public class AppPtyhController extends AppUserBaseController {
         if(queryBizPtyh==null){
             return ApiResponse.fail("操作失败，请重新尝试");
         }
-        RuntimeCheck.ifTrue(StringUtils.isNotBlank(queryBizPtyh.getYhAutograph()),"用户");
+//        RuntimeCheck.ifTrue(StringUtils.isNotBlank(queryBizPtyh.getYhAutograph()),"用户");
         //qrCodeFileUrl
         String fileUrl="/user_autograph/"+(UUID.randomUUID().toString()).replaceAll("-","")+".png";
         FileUtil.fileExistsDir(qrCodeFileUrl+"/user_autograph/");
