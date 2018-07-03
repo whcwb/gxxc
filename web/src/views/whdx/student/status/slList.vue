@@ -35,7 +35,10 @@
                     {title: "#",  type: 'index'},
                     {title: '单位名称',key:'name'},
                     {title: '受理时间',key:'slSj'},
-                    {title: '受理类型',key:'slType',type:'dict',dict:'ZDCLK0071'},
+                    {title: '受理类型',key:'slType',render:(h,p)=>{
+                            let s = this.dictUtil.getItemByCode(this,'ZDCLK0071',p.row.slType);
+                            return h('div',s.val);
+						}},
                 ],
                 pageData: [],
                 form: {
