@@ -73,6 +73,7 @@ public class WechatServiceImpl implements WechatService {
         sendSmsMap.put("templateCode",templateCode);//模板编号
         String templateParam="";
         if(StringUtils.equals(templateType,"3")){
+//            ${userName}专员，你好！平台为您分配了一位新学员（${studentUser}），电话号码是（${studentTel}），请您及时与他联系并安排培训！
             String userName=smsMap.get("userName");//专员姓名
             String studentUser=smsMap.get("studentUser");//学员姓名
             String studentTel=smsMap.get("studentTel");//学员手机号码
