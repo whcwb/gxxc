@@ -1,7 +1,6 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.alibaba.druid.support.spring.stat.annotation.Stat;
 import com.cwb.platform.biz.bean.StatusModel;
 import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.*;
@@ -11,10 +10,12 @@ import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
-import com.cwb.platform.sys.model.*;
+import com.cwb.platform.sys.model.BizPtyh;
+import com.cwb.platform.sys.model.SysJs;
+import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysYhJs;
 import com.cwb.platform.sys.service.JsService;
 import com.cwb.platform.sys.service.YhService;
-import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
@@ -47,7 +48,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.*;
@@ -1288,13 +1288,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<BizPtyh> userList = entityMapper.selectByExample(condition);
             String first = "";
             if (StringUtils.equals("0", jlType)) {
-                first = "专员";
+                first = "受理";
             } else if (StringUtils.equals("1", jlType)) {
-                first = "科目一专员";
+                first = "科目一";
             } else if (StringUtils.equals("2", jlType)) {
-                first = "科目二专员";
+                first = "科目二";
             } else if (StringUtils.equals("3", jlType)) {
-                first = "科目三专员";
+                first = "科目三";
             }
             Map<String, String> xbMap = new HashMap<>();
             xbMap.put("1", "男");
@@ -1306,7 +1306,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 data.add(new WxMpTemplateData("keyword1", jlMsage.getYhXm()));
                 data.add(new WxMpTemplateData("keyword2", jlMsage.getYhSjhm()));//教练电话
                 data.add(new WxMpTemplateData("keyword3", user.getXm()));
-                data.add(new WxMpTemplateData("remark", "学员" + u.getYhXm() + "您好，" + first + "分配成功。" + first + "：" + jlMsage.getYhXm() + "，性别" + xbMap.get(appJlUser.getYhXb()) + "驾龄" + jlMsage.getJlJl()));
+                data.add(new WxMpTemplateData("remark", "学员" + u.getYhXm() + "您好，" + first + "分配成功。" + first + "：" + jlMsage.getYhXm() + "，性别" + xbMap.get(appJlUser.getYhXb())));
                 payInfo.debug("u.getYhOpenId():" + u.getYhOpenId());
                 msg = new WxMpTemplateMessage();
                 msg.setToUser(u.getYhOpenId());

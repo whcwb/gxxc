@@ -18,7 +18,6 @@ import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.ExcelUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
@@ -461,14 +460,14 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         msg.setUrl(wxDomain);
         msg.setData(data);
         asyncEventBusUtil.post(new SendWechatMsgEvent(msg));
-        try {
-            // 2018/7/2  用户缴费、受理、约考 这些信息是否需要下发验证号码  经理2018-07-02 微信上说暂时不发
-            String res = wechatService.sendTemplateMsg(msg,null);
-            log.info("sendMsg result :", res);
-            return res;
-        } catch (WxErrorException e) {
-            log.error("发送微信模板消息异常", e);
-        }
+//        try {
+//            // 2018/7/2  用户缴费、受理、约考 这些信息是否需要下发验证号码  经理2018-07-02 微信上说暂时不发
+//            String res = wechatService.sendTemplateMsg(msg,null);
+//            log.info("sendMsg result :", res);
+//            return res;
+//        } catch (WxErrorException e) {
+//            log.error("发送微信模板消息异常", e);
+//        }
         return "未知错误";
     }
 }

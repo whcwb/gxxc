@@ -196,6 +196,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         newEntity.setJobType("0");//定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
         newEntity.setCpId(cpId);
         newEntity.setOpenId(entity.getOpenId());
+        newEntity.setUserAutograph(entity.getUserAutograph());
         boolean payType=false;//就否完成支付。
         if(entity.getDdZftd().equals(("2"))){//微信支付
 
