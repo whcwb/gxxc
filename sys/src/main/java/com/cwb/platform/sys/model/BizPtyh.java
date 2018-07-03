@@ -213,6 +213,11 @@ public class BizPtyh implements Serializable {
     private String yhAutograph;
 
     /**
+     * 用户邀请码过期时间
+     */
+    @Column(name = "YH_YQMGQSJ")
+    private String yhYqmgqsj;
+    /**
      * 手机验证码
      */
     @Transient

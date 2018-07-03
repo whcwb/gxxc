@@ -27,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,8 +156,6 @@ public class AppMainController extends AppUserBaseController {
 	 * 注册短信验证码下发
 	 * @param zh		手机号码
 	 * @param yyyqm	用户应邀邀请码
-	 * @param key		申请验证码KEY-必填
-	 * @param codeID	验证码
 	 * @return
 	 */
 	@RequestMapping(value="/sendSMSzc", method={RequestMethod.POST})
@@ -184,8 +184,17 @@ public class AppMainController extends AppUserBaseController {
 		newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yyyqm);
 		newCondition.eq(BizPtyh.InnerColumn.yhSfsd.name(),"0");//用户没有锁定
 		newCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(),"1");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
-		count = ptyhService.countByCondition(newCondition);
-		RuntimeCheck.ifTrue(count == 0,"邀请码有误");
+
+		// 判断用户邀请码是否过期 todo
+		List<BizPtyh> bizPtyhs = ptyhService.findByCondition(newCondition);
+		RuntimeCheck.ifEmpty(bizPtyhs,"用户不存在");
+		RuntimeCheck.ifBlank(bizPtyhs.get(0).getYhYqmgqsj(),"用户邀请码失效");
+		if( bizPtyhs.get(0).getYhYqmgqsj().compareTo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) < 0 ){
+			return ApiResponse.fail("用户邀请码已过期");
+		}
+
+		/*count = ptyhService.countByCondition(newCondition);
+		RuntimeCheck.ifTrue(count == 0,"邀请码有误");*/
 //		4、生成手机验证码
 		String identifyingCode= StringDivUtils.getSix();//获取验证码
 		boolean sendType=ptyhService.sendSMS(zh,1,identifyingCode);

@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Executors;
 
@@ -188,10 +190,32 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             bizPtyh.setYhZsyqm(yhZsyqm);//用户自己邀请码
             bizPtyh.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
         }
+        // 增加二维码有效期 todo
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.now();
+        LocalDateTime years = null;
+        if(StringUtils.isBlank(queryUser.getYhYqmgqsj())){ // 邀请码过期时间为空 , 添加过期时间为一年
+            years = dateTime.plusYears(1L);
+            bizPtyh.setYhYqmgqsj(years.format(formatter));
+        }else {
+
+            // 验证有效期是否已经过了
+            if(queryUser.getYhYqmgqsj().compareTo(dateTime.format(formatter)) > 0){
+                LocalDateTime localDateTime = LocalDateTime.parse(queryUser.getYhYqmgqsj(),formatter);
+                 years = localDateTime.plusYears(1L);
+                bizPtyh.setYhYqmgqsj(years.format(formatter));
+            }else {
+                 years = dateTime.plusYears(1L);
+                bizPtyh.setYhYqmgqsj(years.format(formatter));
+            }
+        }
+
         ptyhService.update(bizPtyh);
 
         return ApiResponse.success();
     }
+
+
     @Subscribe
     public  void sendObject(Map<String,Object> map){
         payInfo.debug("进入异步通知开始 Async begin---");
