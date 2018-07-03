@@ -1,4 +1,4 @@
---清除系统中所有用户数据
+-- 清除系统中所有用户数据
 DELETE FROM biz_cjd;
 --  biz_cp;--产品信息表不能被删除。禁止被删除
 DELETE FROM BIZ_JL;
