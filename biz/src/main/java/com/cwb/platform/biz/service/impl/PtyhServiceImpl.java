@@ -607,7 +607,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
 
-        int i = entityMapper.insertSelective(newEntity);
+
         String bizptyhlog = "";
         try {
             bizptyhlog = mapper.writeValueAsString(newEntity);
@@ -642,6 +642,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         bizUser.setCjsj(DateUtils.getNowTime());//创建时间
         bizUser.setYhSjid(yhSjid);//设置上级ID
         bizUser.setYhSsjid(yhSsjid);//上上级ID
+
+        int i = entityMapper.insertSelective(newEntity);
         i = userMapper.insert(bizUser);
         RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
 
