@@ -34,7 +34,6 @@
                     {title: "",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '类型',key:'yhLx',dict:'ZDCLK0041'},
                     {title: '类型',key:'roleNames'},
                     {
                         title: '操作',
