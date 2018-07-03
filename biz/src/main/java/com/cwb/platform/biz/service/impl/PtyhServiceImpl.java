@@ -1705,6 +1705,27 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         return result;
     }
 
+    @Override
+    public ApiResponse<List<BizPtyh>> getZyList(String type) {
+        SimpleCondition condition = new SimpleCondition(SysYhJs.class);
+        condition.eq(SysYhJs.InnerColumn.jsId,type);
+        List<SysYhJs> userRoleList = userRoleMapper.selectByExample(condition);
+        if (userRoleList.size() == 0){
+            return new ApiResponse<>();
+        }
+
+        List<String> sysUserIds = userRoleList.stream().map(SysYhJs::getYhId).collect(Collectors.toList());
+        List<SysYh> sysUserList = yhService.findIn(SysYh.InnerColumn.yhid,sysUserIds);
+        if (sysUserList.size() == 0){
+            return new ApiResponse<>();
+        }
+        List<String> idCardList =  sysUserList.stream().map(SysYh::getZjhm).collect(Collectors.toList());
+        List<BizPtyh> bizUserList = findIn(BizPtyh.InnerColumn.yhZjhm,idCardList);
+        ApiResponse<List<BizPtyh>> res = new ApiResponse<>();
+        res.setResult(bizUserList);
+        return res;
+    }
+
     private BizKsYk getYk(BizPtyh ptyh,String km){
         SimpleCondition condition = new SimpleCondition(BizKsYk.class);
         condition.eq(BizKsYk.InnerColumn.yhId,ptyh.getId());

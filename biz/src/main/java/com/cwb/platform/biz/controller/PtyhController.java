@@ -143,6 +143,11 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.statusQuery(entity, pager);
     }
 
+    @RequestMapping("getZyList")
+    public ApiResponse<List<BizPtyh>> getZyList(String type){
+        return service.getZyList(type);
+    }
+
 
 
 
