@@ -223,6 +223,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             condition.in(BizUser.InnerColumn.yhZjhm, zjhms);
         }
 
+        List<String > notUrsrId=new ArrayList<>();
+        notUrsrId.add("460418231002202112");
+        notUrsrId.add("461211447838375937");
+        notUrsrId.add("461211447838375938");
+        condition.notIn(BizPtyh.InnerColumn.id,notUrsrId);
         return true;
     }
 
@@ -1643,7 +1648,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifBlank(userId, "请选择用户");
         BizPtyh ptyh = entityMapper.selectByPrimaryKey(userId);
         if (ptyh == null) return ApiResponse.fail("学员不存在!");
-        RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getDdSfjx(), "1"), "用户已缴费，不能进行此操作");
+        RuntimeCheck.ifTrue(StringUtils.equals(ptyh.getDdSfjx(), "1"), "用户已缴费，不能进行此操作");
 
         BizWj wj = new BizWj();
         wj.setYhId(userId);
