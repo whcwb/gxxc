@@ -82,4 +82,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<List<List>> getPaymentRecord(String yhId);
 
     ApiResponse<List<StatusModel>> statusQuery(BizPtyh entity, Page<BizPtyh> pager);
+
+    ApiResponse<List<BizPtyh>> getZyList(String type);
 }

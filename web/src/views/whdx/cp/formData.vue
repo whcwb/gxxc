@@ -52,10 +52,10 @@
                     cpJl:0,
                     cpYjyj:0,
                     cpRjyj:0,
-
+					cpXx:'购买此套餐即可享受学车服务及平台会员推荐服务'
 				},
                 formInputs:[
-                    {label:'费用名称',prop:'cpMc'},
+                    {label:'费用名称',prop:'cpMc',disabled:true},
                     {label:'费用类型',prop:'cpType',dict:'ZDCLK0063'},
                     {label:'费用总金额',prop:'cpJl',type:'number',append:'元'},
                     {label:'是否分佣',prop:'cpYj',dict:'ZDCLK0064'},
@@ -72,6 +72,7 @@
 		},
 		created(){
             this.util.initFormModal(this);
+            this.formItem.cpXx = this.formItem.cpType === '1' ? '购买此套餐即可享受学车服务及平台会员推荐服务' : '购买此套餐即可享受平台会员推荐服务'
             this.formItem.cpJl = parseFloat(this.formItem.cpJl) / 100;
             this.formItem.cpYjyj = parseFloat(this.formItem.cpYjyj) / 100;
             this.formItem.cpRjyj = parseFloat(this.formItem.cpRjyj) / 100;
