@@ -29,10 +29,12 @@ import java.util.List;
 public class JobApi {
     @Autowired
     private JobService jobService;
-    @Value("${JOB_KEY}")
+    @Value("${JOB.KEY}")
     private String jobKey;
-    @Value("${JOB_TOKEN}")
+    @Value("${JOB.TOKEN}")
     private String jobToken;
+    @Value("${JOB.HOST}")
+    private String jobHost;
 
     @Autowired
     private StringRedisTemplate redisDao;
@@ -56,7 +58,7 @@ public class JobApi {
             }
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String host = request.getRemoteHost();
-            if(!StringUtils.equals(host,"127.0.0.1")){
+            if(StringUtils.indexOf(jobHost,host) < 0 ){
                 return ApiResponse.fail("ip异常");
             }
             //MD5Util.MD5Encode(jobKey + DateUtils.getDateStr(new Date(), "yyyy-MM-dd HH:mm"),null);

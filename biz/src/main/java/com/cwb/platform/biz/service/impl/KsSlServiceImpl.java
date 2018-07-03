@@ -90,28 +90,28 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         entity.setYhXm(ptyh.getYhXm());//用户姓名
 
 //        确认受理状态
-        Example condition = new Example(BizKsSl.class);
-        condition.and().andEqualTo(BizKsSl.InnerColumn.yhId.name(), entity.getYhId());
-        condition.setOrderByClause(BizKsSl.InnerColumn.slType.desc());
-        List<BizKsSl> list = this.findByCondition(condition);
-        if(list.isEmpty()){
-            entity.setSlType("1");
-        }else if(list.size()>0){
-            String slType=list.get(0).getSlType();
-            if(StringUtils.equals(slType,"1")){
-                slType="2";
-            }else if(StringUtils.equals(slType,"2")){
-                slType="3";
-            }else if(StringUtils.equals(slType,"3")){
-                slType="4";
-            }else if(StringUtils.equals(slType,"4")){
-                RuntimeCheck.ifTrue(true, "该用户已完成受理全流程，不需要再进行此操作");
-            }else{
-                //该用户的受理状态不是1,2,3,4,中的任意一条，所以该数据是错误的数据，不存在的数据。
-                RuntimeCheck.ifTrue(true, "该用户受理数据异常，请联系管理员");
-            }
-            entity.setSlType(slType);
-        }
+//        Example condition = new Example(BizKsSl.class);
+//        condition.and().andEqualTo(BizKsSl.InnerColumn.yhId.name(), entity.getYhId());
+//        condition.setOrderByClause(BizKsSl.InnerColumn.slType.desc());
+//        List<BizKsSl> list = this.findByCondition(condition);
+//        if(list.isEmpty()){
+//            entity.setSlType("1");
+//        }else if(list.size()>0){
+//            String slType=list.get(0).getSlType();
+//            if(StringUtils.equals(slType,"1")){
+//                slType="2";
+//            }else if(StringUtils.equals(slType,"2")){
+//                slType="3";
+//            }else if(StringUtils.equals(slType,"3")){
+//                slType="4";
+//            }else if(StringUtils.equals(slType,"4")){
+//                RuntimeCheck.ifTrue(true, "该用户已完成受理全流程，不需要再进行此操作");
+//            }else{
+//                //该用户的受理状态不是1,2,3,4,中的任意一条，所以该数据是错误的数据，不存在的数据。
+//                RuntimeCheck.ifTrue(true, "该用户受理数据异常，请联系管理员");
+//            }
+//            entity.setSlType(slType);
+//        }
         BizPtyh newPtyh=new BizPtyh();
         newPtyh.setId(entity.getYhId());
         newPtyh.setYhXySlType(entity.getSlType());

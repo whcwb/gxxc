@@ -117,7 +117,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
 
             //尊敬的${userName},操作员:${operator}于${dates}修改了${parameter},本次操作验证码是${code},请及时授权处理
             List<Map<String, String>> smsMapList=new ArrayList<Map<String, String>>();
-            String dates=DateUtils.getDateStr(new Date(), "yyyy年MM月dd日HH时mm分ss各");
+            String dates=DateUtils.getDateStr(new Date(), "MM月dd日HH时mm分ss分");
             String cpTypes=entity.getCpType();
             String cpName="";
             if(StringUtils.equals(cpTypes,"1")){
@@ -126,7 +126,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
                 cpName="会员";
             }
             cpJl.toString();
-            String fyString="";
+            String fyString="无";
             if(StringUtils.equals(entity.getCpYj(),"1")){
                 fyString+="分佣。一级"+(entity.getCpYjyj()/100)+"二级："+(entity.getCpRjyj()/100) ;
             }else {
@@ -204,6 +204,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
         BizCp updateCp=new BizCp();
         updateCp.setId(cpId);
         updateCp.setCpYx("1");
+//        updateCp.setCpYz("1");
         int i=this.update(updateCp);
 
         if(i == 1){ // 保存成功 ，清除redis

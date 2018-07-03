@@ -133,6 +133,12 @@ public class BizOrder implements Serializable {
      */
     @Column(name = "OPEN_ID")
     private String openId;
+    /**
+     * 用户订单签名
+     */
+    @Column(name = "USER_AUTOGRAPH")
+    private String userAutograph;
+
 
 
     /**
@@ -150,6 +156,14 @@ public class BizOrder implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
+    public String getUserAutograph() {
+        return userAutograph;
+    }
+
+    public void setUserAutograph(String userAutograph) {
+        this.userAutograph = userAutograph;
+    }
 
     public String getUserGrade() {
         return userGrade;
