@@ -51,10 +51,10 @@
 			    v:this,
                 operate:'分配',
 				showModal: true,
-                apiRoot:this.apis.student,
+                pagerUrl:this.apis.student.getZyList,
 				readonly: false,
                 form: {
-                    yhLx:"k4",
+                    type:"k4",
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
