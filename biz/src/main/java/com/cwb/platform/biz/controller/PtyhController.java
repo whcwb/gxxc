@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ptyh")
@@ -138,12 +137,12 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
 
     }
 
-    @RequestMapping("status-query")
+    @RequestMapping(value = "/status-query", method={RequestMethod.POST})
     public ApiResponse<List<StatusModel>> statusQuery(BizPtyh entity, Page<BizPtyh> pager){
         return service.statusQuery(entity, pager);
     }
 
-    @RequestMapping("getZyList")
+    @RequestMapping(value = "/getZyList", method={RequestMethod.POST})
     public ApiResponse<List<BizPtyh>> getZyList(String type){
         return service.getZyList(type);
     }
