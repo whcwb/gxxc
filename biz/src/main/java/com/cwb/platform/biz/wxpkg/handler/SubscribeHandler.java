@@ -1,8 +1,6 @@
 package com.cwb.platform.biz.wxpkg.handler;
 
-import com.cwb.platform.biz.wxpkg.budiler.ImageBuilder;
 import com.cwb.platform.biz.wxpkg.budiler.TextBuilder;
-import com.cwb.platform.sys.service.ZdxmService;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
@@ -13,7 +11,6 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -56,7 +53,7 @@ public class SubscribeHandler extends AbstractHandler {
 
 			WxMenuButton button1 = new WxMenuButton();
 			button1.setKey("button1");
-			button1.setName("我要学车");
+			button1.setName("进入联盟");//张总要求修改
 			button1.setType(WxConsts.MenuButtonType.VIEW);
 			button1.setUrl("http://www.520xclm.com/wx");
 
