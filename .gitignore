@@ -13,6 +13,8 @@ buildNumber.properties
 
 .idea/
 
+.vscode/
+
 .classpath
 .project
 .settings/

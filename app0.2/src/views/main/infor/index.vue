@@ -116,10 +116,11 @@
                                  :style="{color:item.userDetail.ddSfjx=='1'?'#00b65f':'#ff8800'}">
                               {{item.userDetail.ddSfjx | ddSfjx}}
                             </div>
-                            <div class="userType box_row_100"
-                                 :style="{color:item.userDetail.yhLx=='3'?'#ff000a':'#2d8cf0'}"
-                            >
-                              {{item.userDetail.yhLx | yhLx}}
+                            <div :style="{color:item.userDetail.yhLx=='3'?'#ff000a':'#2d8cf0'}"
+                                 class="userType box_row_100">
+                              <span v-show="item.userDetail.ddSfjx=='1'">
+                                {{item.userDetail.yhLx | yhLx}}
+                              </span>
                             </div>
                             <div class="userGrade box_row_100">
                               {{item.userGrade | userGrade}}
@@ -151,71 +152,12 @@
 </template>
 
 <script>
+  import mixin from '@/mixin'
   export default {
     name: "index",
-    components:{
+    mixins:[mixin],
+    components:{},
 
-    },
-    filters:{
-      yhDqzt:(val)=>{
-        switch (val){
-          case "0":
-            return '档案信息受理中'
-          break;
-          case "1":
-            return '科目一进行中'
-          break;
-          case "2":
-            return '科目二进行中'
-          break;
-          case "3":
-            return '科目三进行中'
-          break;
-          case "4":
-            return '科目四进行中'
-          break
-          default:
-            return '完结'
-        }
-      },
-      yhLx:(val)=>{
-        if(val==1){
-          return '学员'
-        }else if(val==3){
-          return '会员'
-        }
-      },
-      yhXm:(val)=>{
-        if(val){
-          return val
-        }
-        return '***'
-      },
-      yhTx:(val)=>{
-        if(val){
-          return val
-        }
-        return 'static/login/LOGO.png'
-      },
-      ddSfjx:(val)=>{
-        switch (val){
-          case '0':
-            return '未交费'
-            break;
-          case '1':
-            return '已交费'
-        }
-      },
-      userGrade:(val)=>{
-        switch (val){
-          case '1':
-            return '一级用户'
-            break;
-          case '2':
-            return '二级用户'
-        }
-      }
-    },
     watch:{
       search:function (n,o) {
         if(n==''){

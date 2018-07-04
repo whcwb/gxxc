@@ -1,0 +1,126 @@
+<!--登录-->
+<template>
+  <ui-page top="0">
+    <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
+      <ui-view class="login_bg">
+        <ui-view class="section">
+          <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
+            <!-- logo图展示区 -->
+            <ui-view class="top_logo">
+              <ui-image src="../static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
+            </ui-view>
+            <!-- 数据表单区 -->
+            <ui-view class="content_form">
+              <ui-form bindsubmit="formSubmit" bindreset="formReset">
+                <ui-view class="input_padding">
+                  <ui-input ui:model="form.username" maxlength="11" type="tel" placeholder="请输入手机号"></ui-input>
+                </ui-view>
+                <ui-view class="input_padding">
+                  <ui-input ui:model="form.password" type="password" placeholder="请输入密码"></ui-input>
+                </ui-view>
+                <ui-view class="input_padding">
+                  <ui-row>
+                    <ui-col align="right" vertical-align="middle">
+                      <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1">
+                        <ui-text block class="reset_pwd">
+                          忘记密码?
+                        </ui-text>
+                      </ui-navigator>
+                    </ui-col>
+                  </ui-row>
+                </ui-view>
+                <ui-view class="input_padding">
+                  <ui-button class="submit_btn">登录</ui-button>
+                </ui-view>
+              </ui-form>
+            </ui-view>
+            <ui-view class="bottom">
+              <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1">
+                <ui-text block class="reg">
+                  创建账号
+                </ui-text>
+              </ui-navigator>
+            </ui-view>
+          </ui-view>
+        </ui-view>
+      </ui-view>
+    </ui-view>
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    "navigationStyle": 'custom',
+    "scrollType": "div",
+    "title":"登录",
+    "disableScroll":true
+  },
+  data() {
+    return {
+      height: ui.DEFAULT_CONTENT_HEIGHT + 46,
+      form:{
+        username:'',
+        password:''
+      }
+    }
+  },
+  methods: {
+    formSubmit(){
+
+    },
+    formReset(){
+
+    }
+  },
+  mounted() {
+    
+  }
+}
+</script>
+
+<style lang="less">
+.grid_box{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.login_bg{
+  flex-grow:1;
+  background: url('../static/img/login/bg.png') no-repeat center center;
+}
+
+.top_logo{
+  height: 420rpx;
+  .mix-flex-center();
+}
+.bottom{
+  height: 320rpx;
+  .mix-flex-center();
+}
+.content_form{
+  flex-grow:1;
+}
+
+.input_padding{
+  padding: 20px 30px 0 30px;
+}
+
+.reset_pwd{
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+}
+
+.reg{
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+.submit_btn{
+  font-size:18px;
+  font-weight: bold;
+  color:#5cadff;
+}
+</style>
