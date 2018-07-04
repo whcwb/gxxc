@@ -157,6 +157,12 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
                 if (dqks.getCj1()==null){
                     first +="您已经成功预约了"+time+km+"，"+dqks.getSchoolName()+"的考试，请按时前往！";
                 }else{
+                    if(dqks.getCj1()==null){
+                        dqks.setCj1(0);
+                    }
+                    if(dqks.getCj2()==null){
+                        dqks.setCj2(0);
+                    }
                     if (dqks.getCj1()>=90||dqks.getCj2()>=90){
                         first +="恭喜您已经成功通过科目一的考试，现在您可以准备下一科目的学习了！";
                     }else {
