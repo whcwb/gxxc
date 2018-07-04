@@ -126,8 +126,25 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
                 } else {
                     order.setYhDqzt("4");
                 }
+//                待受理 受理中 受理成功
+                String yhzt="";
+                //00表示未受理 01受理成功 02表示受理中
+                if(StringUtils.equals(zdlm.getYhXySlType(), "0") ){
+                    yhzt="00";
+                }else if( StringUtils.equals(zdlm.getYhXySlType(), "1") ||
+                            StringUtils.equals(zdlm.getYhXySlType(), "2") ||
+                            StringUtils.equals(zdlm.getYhXySlType(), "3") ){
+                    yhzt="02";
+                }else if(StringUtils.equals(zdlm.getYhXySlType(), "4")&& (StringUtils.isEmpty(zdlm.getYhXyYkType())||StringUtils.equals(zdlm.getYhXyYkType(),"0"))){
+                    yhzt="01";
+                }else if(StringUtils.isNotEmpty(zdlm.getYhXyYkType())){
+                    yhzt=zdlm.getYhXyYkType();
+                }
+                order.setYhslZt(yhzt);
 
-
+                if (StringUtils.isNotBlank(order.getYhZjhm())) {
+                    order.setYhZjhm(order.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
+                }
             }
         }
         return;
