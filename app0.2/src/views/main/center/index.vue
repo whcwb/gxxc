@@ -237,13 +237,13 @@
         Toast(errmess)
       },
       tost() {
-        Toast('请实名认证')
+        Toast('请先实名认证')
       },
       okjf() {
-        Toast('您已缴费')
+        Toast('请先实名认证,并购买套餐服务')
       },
       txyz() {
-        Toast('请先完成缴费')
+        Toast('请先实名认证,并购买套餐服务')
       }
     }
   }

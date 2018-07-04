@@ -5,7 +5,7 @@ let ajaxUrl = "http://www.520xclm.com";
 
 module.exports = {
   url:ajaxUrl,
-  // port:'9086',
+  // port:'8080',
   port:'8080/biz',
   wechat:{
       getCode:'/wechat/message/getCode',
@@ -38,6 +38,7 @@ module.exports = {
   USERSAVE:'/app/ptyh/save',//用户注册
   SWIPER:'/app/hd/pager ',//轮播图
   TX:'/app/tx/save',//资金提现
+
   TEAM:'/app/user/pager',//我的团队
 
   TEAMMESS:'/app/user/myteam',//团队学员信息

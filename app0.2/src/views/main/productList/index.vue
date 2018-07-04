@@ -5,7 +5,7 @@
     .cpList{
       padding:0 0 0.1rem 0;
       .cpItems{
-        height: 0.8rem;
+        /*height: 0.8rem;*/
         margin-bottom: 0.05rem;
         background-color: #fff;
         .titType{
@@ -17,6 +17,7 @@
         }
         .cpMess{
           font-size: 0.14rem;
+          padding: 0.1rem 0;
           color: #000;
           width: 100%;display: block;word-break: break-all;
           padding-top: 0.08rem;
@@ -64,7 +65,7 @@
               <i class="iconfont icon-ico-money"></i>
               {{item.cpJl/100}}
             </div>
-            <div class="box_col_100">
+            <div class="box_col_100" style="padding-top: 0.1rem">
               <el-button type="primary" size="small"
                          @click="paymoney(item)">购买套餐</el-button>
             </div>

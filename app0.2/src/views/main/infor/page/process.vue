@@ -566,6 +566,7 @@
       this.user = this.$store.state.app.userMess;
       if(this.$route.params.id){
           this.studentID = this.$route.params.id
+          this.initialIndex = this.$route.params.number
       }else {
         this.$router.back()
       }

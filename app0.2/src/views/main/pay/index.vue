@@ -31,6 +31,23 @@
           text-indent:0.3rem;
           margin-top: 0.1rem;
         }
+        .userSign{
+          position: relative;
+          .signImg{
+            position: absolute;
+            left: -0.2rem;
+            top: -0.5rem;
+            z-index: 101;
+            width: 1.6rem;
+            height: 1.6rem;
+            border-radius:2.5rem;
+            border: #f54d55 0.03rem solid;
+            img{
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
       }
     }
     #sign{
@@ -69,7 +86,7 @@
         <div style="text-align: center;position: relative">
           <div class="tit">用户缴费协议</div>
         </div>
-        <div style="padding: 0.05rem 0.3rem 0.1rem 0.3rem">
+        <div class="" style="padding: 0.05rem 0.3rem 0.1rem 0.3rem">
           <div class="box-row">
             <div class="box_row_100">
               <div>
@@ -207,7 +224,10 @@
           </div>
         </div>
         <div class="box-row" style="padding: 0.15rem 0.3rem">
-          <div class="" style="margin-right: 0.2rem">
+          <div class="userSign" style="margin-right: 0.2rem">
+            <div class="signImg"  v-show="saveResultUrl!=''">
+              <img :src="apis.getImgUrl+saveResultUrl" alt="">
+            </div>
             <div>
               甲方代表:<span class="decoration">{{usermess.yhXm}}</span>
             </div>
@@ -279,7 +299,6 @@
           </div>
           <div class="box_row_100" style="font-weight: 700;font-size: 0.28rem;color: #fff">
             缴费
-
           </div>
         <div style="height: 1.5rem;width: 1.2rem;text-align: center;">
         </div>

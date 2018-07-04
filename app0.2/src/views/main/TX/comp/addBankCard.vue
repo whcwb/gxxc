@@ -22,12 +22,16 @@
                @click="$parent.compName='bankList'">
             <i class="iconfont icon-left1"></i>
           </div>
-          <div class="body" style="font-size: 0.3rem;font-weight: 700;line-height: 1rem">
+          <div class="" style="font-size: 0.3rem;font-weight: 700;line-height: 1rem">
             添加银行卡
           </div>
+          <div class="box_row_100" v-show="bankImg!=''" style="text-align: right">
+            <img :src="bankImg" style="width: 50%" alt="">
+          </div>
         </div>
-        <div class="body" style="padding: 0.3rem 0">
-          <div style="font-size: 0.36rem;padding: 0.1rem 0.2rem;color:#424242;">
+        <div class="body" style="">
+          <div style="font-size: 0.3rem;padding: 0.1rem 0.2rem;color:#424242;background-color: #fff;border-bottom: #f2f2f2 1px solid">
+            <span style="color: red;font-weight: 700;font-size: 0.35rem">*</span>
             请绑定持卡人本人的银行卡
           </div>
           <md-field>
@@ -77,9 +81,6 @@
             {{errMess}}
           </div>
         </div>
-        <div class="tost" v-show="ToastMessShow">
-            {{ToastMess}}
-        </div>
       </div>
 </template>
 
@@ -101,20 +102,12 @@
                 yhkKh:'',
                 dn:localStorage.getItem('phone')
               },
-              ToastMessShow:false,
-              ToastMess:'友情提示',
-              errMess:''
+            errMess:'',
+            bankImg:'',
+            // http://lundroid.com/banklogo/8003a3.png
           }
         },
         watch:{
-          ToastMessShow:function (n,o) {
-            var v = this
-            if(n==true){
-              setTimeout(function () {
-                v.ToastMessShow = false
-              },1000*3)
-            }
-          }
         },
         created(){
           this.util.GetUserMess(this, (res) => {
@@ -127,10 +120,16 @@
         methods:{
           losesfocus(){
             var v = this
+            if(v.from.yhkXm==''|| v.from.yhkKh=='' || v.from.dn==''){
+              v.errMess = '请将填写完整！'
+              return
+            }
+
             this.$http.post(this.apis.YZYHK,this.from).then((res)=>{
               console.log('一行卡',res)
               if(res.code==200){
                 v.yhkYz = false
+                v.bankImg = res.result.bank_logo
                 v.errMess = res.result.bank_name + res.result.card_type +'验证通过'
               }else {
                 v.errMess = res.message+'请将信息填写完整'
@@ -145,8 +144,7 @@
           yz(){
             var v = this
             if(v.from.yhkXm==''|| v.from.yhkKh=='' || v.from.dn==''){
-              v.ToastMess = '请将填写完整！'
-              v.ToastMessShow = true
+              v.errMess = '请将填写完整！'
             }else {
               v.addBanh()
             }
@@ -155,8 +153,7 @@
             var v = this
             this.$http.post(this.apis.ADDBANK,this.from).then((res)=>{
               console.log(res)
-              v.ToastMessShow = true
-              v.ToastMess = res.message
+              v.errMess = res.message
               if(res.code==200){
                 v.$parent.compName = 'bankList'
                 v.$parent.getbanklist()

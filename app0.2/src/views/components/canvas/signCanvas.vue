@@ -17,16 +17,19 @@
         data(){
           return{
             options:{
-              brushColor: '#000',
-              brushWidth: 10,
+              brushColor: '#ff2600',
+              brushWidth: 50,
               brushType: 'marker',
               width: 500,
-              height: 800,
+              height: 600,
               shadowEnable: false,
               shadowWidth: 10,
               canvasBackgroundColor: '#fff',
             }
           }
+        },
+        mounted(){
+            this.options.height = window.innerHeight
         },
         methods:{
           saveResult (data) {
