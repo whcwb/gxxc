@@ -31,6 +31,12 @@
                       <img :src="ewm" style="width: 100%" alt="">
                   </div>
                   <div style="text-align: center;">扫一扫上面的二维码图案，加入我们吧</div>
+                  <div style="text-align: center">
+                    二维码有效期至
+                    <div>
+                      {{usermess.yhYqmgqsj}}
+                    </div>
+                  </div>
               </div>
               <div v-else
               style="text-align: center;font-size: 0.3rem;font-weight: 700;line-height: 1.5rem">
