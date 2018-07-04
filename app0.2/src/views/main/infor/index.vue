@@ -124,6 +124,7 @@
                             </div>
                             <div class="userGrade box_row_100">
                               {{item.userGrade | userGrade}}
+                              {{item.yhslZt}}
                             </div>
                           </div>
                         </div>
@@ -135,7 +136,7 @@
               </div>
               <div v-if="item.userDetail.yhLx==1"
                    style="font-size: 0.14rem;padding: 0.02rem 0.15rem;border-top: slategray 1px solid">
-                学员当前进度 : {{item.yhDqzt | yhDqzt}}
+                学员当前进度 >>> {{item.yhslZt | yhslZt}}
               </div>
 
           </div>
@@ -211,7 +212,12 @@
         if(item.userDetail.yhLx!="1"){
           return
         }
-        this.$router.push({name:'process',params:{id:item.userDetail.id}})
+        this.$router.push({name:'process',
+          params:{
+          id:item.userDetail.id,
+          number:parseInt(item.yhDqzt)
+          }
+        })
       },
       searchClick(val){
         // alert(val)

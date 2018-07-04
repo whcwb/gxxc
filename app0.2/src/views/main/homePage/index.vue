@@ -430,7 +430,7 @@
         showQrcode(val) {
           var v = this
           if (v.usermess.ddSfjx == '0') {
-            Toast('请先缴费')
+            Toast('请先实名认证,并购买套餐服务')
           } else {
             this.$router.push({name: 'myCenterQrcode'});
           }

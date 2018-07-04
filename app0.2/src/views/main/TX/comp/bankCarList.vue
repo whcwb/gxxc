@@ -11,13 +11,18 @@
       height: 3rem;
       margin-bottom: 0.2rem;
     }
+    .errMess{
+      text-align: center;
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
   }
 </style>
 <template>
       <div id="bankList" class="box_col" :style="{backgroundImage:'url('+'static/bank/bankbank.png'+')' }">
-        <div class="box-row"
-             style="height: 0.8rem;line-height: 0.8rem;
-             color: #fff;background-color: #00000000">
+        <div class="box-row" style="height: 0.8rem;line-height: 0.8rem;color: #fff;background-color: #00000000;border-bottom: #f2f2f2 1px solid">
           <div style="width: 0.6rem;text-align: center;line-height: 0.4rem"
                @click="$parent.compName=''">
             <i class="iconfont icon-left1"></i>
@@ -49,10 +54,13 @@
               </div>
             </div>
           </div>
-          <div v-if="bankList.length==0">
-            <div>
-             你还没有绑定银行卡，
-            </div>
+          <div class="errMess"
+               @click="$parent.compName='addbankCard'"
+               v-if="bankList.length==0">
+            <!--<div style="font-size: 0.4rem;font-weight: 700;color: #f2f2f2">-->
+             <!--你还没有绑定银行卡-->
+            <!--</div>-->
+            <i class="iconfont icon-add1" style="color: #f2f2f2;font-size: 2rem"></i>
           </div>
         </div>
       </div>

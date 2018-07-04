@@ -245,8 +245,6 @@
             this.bankList = res.result
           } else {
             this.bankList = []
-            this.compName = ''
-
           }
         }).catch((err) => {
 
