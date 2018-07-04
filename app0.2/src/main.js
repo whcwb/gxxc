@@ -34,5 +34,5 @@ new Vue({
   router:router,
   store: store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 })

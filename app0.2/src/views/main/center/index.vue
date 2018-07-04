@@ -55,6 +55,8 @@
       <div class="box_row_100 box_cen">
         <div>
           {{usermess.yhXm | yhXm}}
+          <el-tag v-show="usermess.ddSfjx=='1'"
+            type="warning" size="mini">{{usermess.yhLx | yhLx}}</el-tag>
         </div>
         <div class="box-row" style="margin-top: 0.15rem">
           <div>
@@ -167,61 +169,20 @@
             ></span>&nbsp;&nbsp;{{usermess.yhZt | yhZt}}</span>
       </mt-cell>
     </div>
-
-    <!--<div style="position: fixed;z-index: 1000">-->
-    <!--<sign-canvas @saveResult="saveResult"></sign-canvas>-->
-    <!--</div>-->
   </div>
 </template>
 
 <script>
   import {Toast} from 'mint-ui';
-  import signCanvas from '../../components/canvas/signCanvas'
-
+  import mixin from '@/mixin'
   export default {
     name: "index",
     components: {
-      signCanvas
     },
-    filters: {
-      yhXm: (val) => {
-        if (val) {
-          return val
-        }
-        return '未实名'
-      },
-      yhZhye(val) {
-        if (val == '') {
-          return 0
-        }
-        return val
-      },
-      yhZt: function (val) {
-        switch (val) {
-          case '0':
-            return '审核中';
-            break;
-          case '1':
-            return '已认证';
-            break;
-          case '2':
-            return '审核驳回';
-            break;
-          case '-1':
-            return '未认证';
-            break;
-          default:
-            return val
-            break;
-        }
-      },
-    },
+    mixins:[mixin],
     data() {
       return {
         usermess: this.$store.state.app.userMess,
-        //   {
-        //   yhTx: ''
-        // },
         zhYE: {
           yhZhye: 0
         }
@@ -229,11 +190,7 @@
     },
     created() {
       var v = this
-      // if(v.usermess===''){
-      this.util.GetUserMess(v, (res) => {
-        this.usermess = res
-      })
-      // }
+
       this.getYE()
     },
     methods: {

@@ -258,7 +258,8 @@
       </div>
     </div>
     <div id="sign" v-show="signShow">
-      <sign-canvas @saveResult="saveResult"></sign-canvas>
+      <signcanvas @saveResult="saveResult"></signcanvas>
+
       <span style="position: absolute;top: 0;z-index: 300;right: 0;
       padding: 0.2rem;font-size: 0.35rem;font-weight: 600;color: #868686"
       @click="signShow=!signShow">
@@ -266,7 +267,7 @@
       </span>
       <div style="position: absolute;top: 0;z-index: 300;left: 0;
       padding: 0.2rem;font-size: 0.25rem;color: #fb5f00">
-        请签名..
+        请将手机横屏签名..
       </div>
     </div>
     <div class="box-row"style="background-color: #2d8cf0;height: 0.8rem;;line-height: 0.8rem;text-align: center">
@@ -329,14 +330,14 @@
 
 <script>
   import {Toast, Button, Radio, Field, FieldItem, InputItem, Switch, Cashier} from 'mand-mobile'
-  import signCanvas from '../../components/canvas/signCanvas'
+  import signcanvas from '../../components/canvas/signCanvas'
   export default {
     name: 'cashier-demo',
     /* DELETE */
     height: 100,
     /* DELETE */
     components: {
-      signCanvas,
+      signcanvas,
       [Button.name]: Button,
       [Radio.name]: Radio,
       [Field.name]: Field,
@@ -395,7 +396,8 @@
         ],
         payMess:{},
         agreeShow:true,
-        checkboxVal:false
+        checkboxVal:false,
+        saveResultUrl:''
       }
     },
     watch:{
@@ -425,7 +427,7 @@
     },
     methods: {
       saveResult(mes){
-        // this.checkboxVal = true
+        this.saveResultUrl = mes
         this.sign = false
         this.signShow = false
       },
@@ -567,7 +569,7 @@
         var v = this
 
         console.log(v.cp)
-        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id}).then((res)=>{
+        this.$http.post(this.apis.CPPAY,{ddZftd:2,cpId:v.cp.id,userAutograph:v.saveResultUrl}).then((res)=>{
           console.log(res)
           if(res.code==200){
             console.log(res.result)

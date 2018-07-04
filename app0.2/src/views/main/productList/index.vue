@@ -9,20 +9,17 @@
         margin-bottom: 0.05rem;
         background-color: #fff;
         .titType{
-          width: 0.6rem;
-          height: 0.6rem;
           border-radius: 0.3rem;
-          border: #00a4ff 2px solid;
-          text-align: center;
-          line-height: 0.6rem;
-          margin: 0.1rem 0.15rem;
-          font-size: 0.22rem;
+          padding-top: 0.1rem;
+          font-size: 0.18rem;
           font-weight: 700;
-          color: #00ceff;
+          color: #0a87e4;
         }
         .cpMess{
-          font-size: 0.16rem;
-          padding-top: 0.15rem;
+          font-size: 0.14rem;
+          color: #000;
+          width: 100%;display: block;word-break: break-all;
+          padding-top: 0.08rem;
         }
         .cpMoney{
           padding:0.1rem 0.05rem 0.02rem 0.05rem;
@@ -49,14 +46,16 @@
 
       <div class="cpItems box-row"
            v-for="(item,index) in cpList">
-        <div style="width:0.9rem">
+        <!--<div style="width:0.9rem">-->
+          <!--<div class="titType">-->
+            <!--{{item.cpMc}}-->
+          <!--</div>-->
+        <!--</div>-->
+        <div class="box_row_100" style="padding-left: 0.12rem">
           <div class="titType">
             {{item.cpMc}}
           </div>
-        </div>
-        <div class="box_row_100 cpMess">
-          产品信息:
-          <div style="width: 100%;display: block;word-break: break-all;">
+          <div class="cpMess" style="">
             {{item.cpXx}}
           </div>
         </div>
@@ -66,7 +65,7 @@
               {{item.cpJl/100}}
             </div>
             <div class="box_col_100">
-              <el-button type="success" size="small"
+              <el-button type="primary" size="small"
                          @click="paymoney(item)">购买套餐</el-button>
             </div>
         </div>

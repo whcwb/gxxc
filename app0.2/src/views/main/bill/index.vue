@@ -10,7 +10,7 @@
     .billItem{
       background-color: #fff;
       margin-bottom: 0.05rem;
-      height: 0.8rem;
+      height: 1rem;
       .iconImg{
         width: 0.8rem;
         position: relative;
@@ -55,7 +55,7 @@
                       </div>
                   </div>
                   <div class="box_col_100">
-                      <div class="box-row" style="padding-top: 0.12rem">
+                      <div class="box-row" style="padding: 0.1rem 0 0.02rem 0">
                         <div class="box_row_100" style="font-size: 0.15rem">
                           {{item.cjsj}}
                         </div>

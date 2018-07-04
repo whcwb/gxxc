@@ -341,25 +341,12 @@
 <script>
     import {Toast} from 'mint-ui'
     import { DropMenu } from 'mand-mobile'
-
+    import mixin from '@/mixin'
     export default {
       name: "index",
+      mixins:[mixin],
       components:{
         [DropMenu.name]:DropMenu
-      },
-      filters: {
-        yhZhye(val) {
-          if (val == '') {
-            return 0
-          }
-          return val
-        },
-        userInviteCount(val){
-          if (val) {
-            return val
-          }
-            return 0
-        }
       },
       watch:{
         dropTxt:function (n,o) {
