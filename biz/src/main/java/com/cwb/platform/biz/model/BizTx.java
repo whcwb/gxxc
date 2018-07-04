@@ -120,7 +120,11 @@ public class BizTx implements Serializable {
      */
     @Column(name = "YHK_ID")
     private String yhkid;
-
+    /**
+     * 提现-所属于银行
+     */
+    @Column(name = "TT_SSYH")
+    private String ttSsyh;
 
     private static final long serialVersionUID = 1L;
 
@@ -130,6 +134,14 @@ public class BizTx implements Serializable {
 
     public void setYhkid(String yhkid) {
         this.yhkid = yhkid;
+    }
+
+    public String getTtSsyh() {
+        return ttSsyh;
+    }
+
+    public void setTtSsyh(String ttSsyh) {
+        this.ttSsyh = ttSsyh;
     }
 
     /**

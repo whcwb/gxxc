@@ -193,6 +193,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         updateBizTx.setId(bizTx.getId());
         updateBizTx.setTxXm(bizTx.getTxXm());
         updateBizTx.setTtZt(bizTx.getTtZt());
+        updateBizTx.setTtBz(bizTx.getTtBz());
         // 更新提现明细表
         update(updateBizTx);
         // 更新佣金明细表
@@ -244,6 +245,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newEntity.setTtKhh(bizYhk.getYhkKhh());//设置用户开户行
         newEntity.setTxXm(bizYhk.getYhkXm());//提现姓名
         newEntity.setYhkid(bizYhk.getId());
+        newEntity.setTtSsyh(bizYhk.getYhkSsyh());//提现所属银行
 
        int i= entityMapper.insert(newEntity);
        if(i==1){
