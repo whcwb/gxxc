@@ -26,7 +26,6 @@
             return {
                 v:this,
                 SpinShow: true,
-                apiRoot:this.apis.user,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -36,7 +35,10 @@
                     {title: '缴费方式',key:'jfFs'},
                     {title: '缴费金额',key:'jfJl',append:'元'},
                     {title: '缴费时间',key:'jfSj'},
-                    {title: '缴费科目',key:'kmId',type:'dict',dict:'ZDCLK0067'},
+                    {title: '缴费科目',key:'kmId',type:'dict',dict:'ZDCLK0067',render:(h,p)=>{
+                            let s = this.dictUtil.getItemByCode(this,'ZDCLK0067',p.row.kmId);
+                            return h('div',s.val);
+                        }},
                 ],
                 pageData: [],
                 form: {
@@ -64,7 +66,7 @@
         methods: {
             getData(yhId){
                 let v = this;
-                this.$http.get(this.apis.ksjf.QUERY,{params:this.form}).then((res)=>{
+                this.$http.get(this.apis.ksJf.QUERY,{params:this.form}).then((res)=>{
                     if (res.code === 200 && res.page.list){
                         v.pageData = res.page.list;
                         v.util.fillTableColumns(v)
