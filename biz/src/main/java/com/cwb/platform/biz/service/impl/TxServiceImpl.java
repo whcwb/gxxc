@@ -189,8 +189,12 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         // 更新佣金明细表
         bizYjmx.setZjBz(bizTx.getTtBz());
 
+        BizTx updateBizTx=new BizTx();
+        updateBizTx.setId(bizTx.getId());
+        updateBizTx.setTxXm(bizTx.getTxXm());
+        updateBizTx.setTtZt(bizTx.getTtZt());
         // 更新提现明细表
-        update(bizTx);
+        update(updateBizTx);
         // 更新佣金明细表
         yjmxService.update(bizYjmx);
 

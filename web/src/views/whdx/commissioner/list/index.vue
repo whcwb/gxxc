@@ -34,7 +34,7 @@
                     {title: "",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '类型',key:'yhLx',dict:'ZDCLK0041'},
+                    {title: '类型',key:'roleNames'},
                     {
                         title: '操作',
                         key: 'action',
@@ -68,7 +68,9 @@
                 pageData: [],
 				choosedData:[],
                 form: {
-                    yhLxIn:"slzy,k1,k2,k3",
+                    // yhLxIn:"slzy,k1,k2,k3",
+					showRoles:'true',
+                    yhLx:"zy",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,

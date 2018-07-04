@@ -39,10 +39,20 @@
                 tableColumns: [
                     {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '身份证号码',key:'yhZjhm',searchKey:'yhZhLike'},
-                    {title: '手机号',key:'yhZh',searchKey:'yhZh'},
+                    {title: '身份证号码',key:'yhZjhm',searchKey:'yhZhLike',render:(h,p)=>{
+                        let s = p.row.yhZjhm;
+                        if (!s)return '';
+                        s = s.substring(0,6)+'******'+s.substring(12,18);
+                        return h('div',s)
+						}},
+                    {title: '手机号',key:'yhZh',searchKey:'yhZh',render:(h,p)=>{
+                            let s = p.row.yhZh;
+                            if (!s)return '';
+                            s = s.substring(0,3)+'****'+s.substring(7,11);
+                            return h('div',s)
+                        }},
                     {title: '科目',key:'km',render:(h,p)=>{
-                        return h('div','1')
+                        return h('div','科目一')
 						}},
                     {title: '金额',key:'money',render:(h,p)=>{
                         return h('div','120元')

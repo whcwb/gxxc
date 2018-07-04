@@ -5,14 +5,6 @@
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
         	<search-items :parent="v"></search-items>
-            <Button type="info" @click="exportData">
-                <Icon type="ios-download-outline"></Icon>
-            </Button>
-            <Tooltip content="批量导入" placement="top">
-                <Button type="success" @click="componentName='batchImport'">
-                    <Icon type="arrow-return-left"></Icon>
-                </Button>
-            </Tooltip>
         </Row>
         <Row style="position: relative;">
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -49,7 +41,7 @@
                     {title:'提现时间',key:'ttSj'},
                     {title:'审核人',key:'ttShr'},
                     {title:'银行卡号',key:'ttYhkh'},
-                    {title:'开户行',key:'ttKhh'},
+                    {title:'所属银行',key:'ttKhh'},
                     {title:'提现姓名',key:'txXm'},
                     {
                         title: '操作',

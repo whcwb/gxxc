@@ -90,7 +90,7 @@
                 pageData: [],
 				choosedData:[],
                 form: {
-                    yhLx:"member",
+                    yhLx:"3",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,

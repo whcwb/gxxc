@@ -170,12 +170,14 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                 newBizOrder.setJobDescribe("订单编号：" + l.getDdId() + ",用户ID不能为空");
                 retType = false;
             } else {
-                //查询这个用户是否有已经处理成功的记录。 目的，防止一个用户支付两次，重复支付时，不能分佣金，需要联系用户做退款处理。
-                SimpleCondition condition = new SimpleCondition(BizOrder.class);
-                condition.eq(BizOrder.InnerColumn.yhId.name(), yhId);
-                condition.eq(BizOrder.InnerColumn.ddZfzt.name(), "1");//支付状态（0,待支付 1、支付成功  2、支付失败）
-                condition.eq(BizOrder.InnerColumn.jobType.name(), "1");//定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
-                int i = orderMapper.selectCountByExample(condition);//
+//                用户需要支持多次支付
+//                //查询这个用户是否有已经处理成功的记录。 目的，防止一个用户支付两次，重复支付时，不能分佣金，需要联系用户做退款处理。
+//                SimpleCondition condition = new SimpleCondition(BizOrder.class);
+//                condition.eq(BizOrder.InnerColumn.yhId.name(), yhId);
+//                condition.eq(BizOrder.InnerColumn.ddZfzt.name(), "1");//支付状态（0,待支付 1、支付成功  2、支付失败）
+//                condition.eq(BizOrder.InnerColumn.jobType.name(), "1");//定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
+//                int i = orderMapper.selectCountByExample(condition);//
+                int i=0;
                 if (i > 0) {
                     log.debug("订单编号：" + l.getDdId() + ",用户" + yhId + " 已有一笔缴费订单，此订单不能进行分派佣金");
                     newBizOrder.setJobType("2");
@@ -294,6 +296,9 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                     }
                 }
             }
+        }else{
+            newBizOrder.setJobType("1");// 定时任务操作成功
+            newBizOrder.setJobDescribe("订单编号：" + l.getDdId() +" 产品："+bizCp.getCpMc()+"，不参与分佣");
         }
 
         orderMapper.updateByPrimaryKeySelective(newBizOrder);

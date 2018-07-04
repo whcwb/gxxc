@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Executors;
 
@@ -139,19 +141,28 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
         order.setPayMoney(l.getPayMoney());
         order.setDdZftd(l.getDdZftd());
+
+        BizPtyh queryUser=ptyhService.findByIdSelect(order.getYhId());
+
         // 判断订单产品是否属于学费，只有学费才生成邀请码
-        if(StringUtils.equals(bizCp.getCpType(),"1")) { // 产品类型为学费时 ， 需要生成邀请码
-            yhZsyqm = genId();
-            yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
-            String userName="";
-            userName=order.getYhXm();
-            Map<String,Object> sendMap=new HashMap<String,Object>();
-            sendMap.put("type","1");
-            sendMap.put("yhZsyqm",yhZsyqm);
-            sendMap.put("yhZsyqmImg",yhZsyqmImg);
-            sendMap.put("userName",userName);
-            eventBus.post(sendMap);
-//            this.asynchronousOperate(yhZsyqm,yhZsyqmImg,userName,order);
+        if(StringUtils.equals(bizCp.getCpType(),"1")||StringUtils.equals(bizCp.getCpType(),"3")) { // 产品类型为会员、学员时 ， 需要生成邀请码
+            String queryYhZsyqm="";
+            if(queryUser!=null){
+                queryYhZsyqm=queryUser.getYhZsyqm();
+            }
+            //判断当前用户是否存在邀请码，如果存在邀请码将不会重新新的邀请码
+            if(StringUtils.isEmpty(queryYhZsyqm)){
+                yhZsyqm = genId();
+                yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
+                String userName="";
+                userName=order.getYhXm();
+                Map<String,Object> sendMap=new HashMap<String,Object>();
+                sendMap.put("type","1");
+                sendMap.put("yhZsyqm",yhZsyqm);
+                sendMap.put("yhZsyqmImg",yhZsyqmImg);
+                sendMap.put("userName",userName);
+                eventBus.post(sendMap);
+            }
         }
         Map<String,Object> sendMap=new HashMap<String,Object>();
         sendMap.put("type","2");
@@ -160,24 +171,51 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         sendMap.put("cpType",bizCp.getCpType());//产品类型
         eventBus.post(sendMap);
 
-//        this.asynchronousSendMessage(order,bizCp.getCpMc());
 
 
 
         BizPtyh bizPtyh=new BizPtyh();
         bizPtyh.setId(order.getYhId());
         bizPtyh.setDdSfjx("1");
+        //1、产品类型为3 会员  2、用户当前属性不等于1学员  3、用户当前属性等于1并且未邀费成功的
         if(StringUtils.equals(bizCp.getCpType(),"3")){
             bizPtyh.setYhLx("3");
+            if(StringUtils.equals(queryUser.getYhLx(),"1")&&StringUtils.equals(queryUser.getDdSfjx(),"1")){
+                bizPtyh.setYhLx("1");
+            }
+        }else  if(StringUtils.equals(bizCp.getCpType(),"1")){
+            bizPtyh.setYhLx("1");
         }
         if(StringUtils.isNotEmpty(yhZsyqm)){
             bizPtyh.setYhZsyqm(yhZsyqm);//用户自己邀请码
             bizPtyh.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
         }
+        // 增加二维码有效期 todo
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.now();
+        LocalDateTime years = null;
+        if(StringUtils.isBlank(queryUser.getYhYqmgqsj())){ // 邀请码过期时间为空 , 添加过期时间为一年
+            years = dateTime.plusYears(1L);
+            bizPtyh.setYhYqmgqsj(years.format(formatter));
+        }else {
+
+            // 验证有效期是否已经过了
+            if(queryUser.getYhYqmgqsj().compareTo(dateTime.format(formatter)) > 0){
+                LocalDateTime localDateTime = LocalDateTime.parse(queryUser.getYhYqmgqsj(),formatter);
+                 years = localDateTime.plusYears(1L);
+                bizPtyh.setYhYqmgqsj(years.format(formatter));
+            }else {
+                 years = dateTime.plusYears(1L);
+                bizPtyh.setYhYqmgqsj(years.format(formatter));
+            }
+        }
+
         ptyhService.update(bizPtyh);
 
         return ApiResponse.success();
     }
+
+
     @Subscribe
     public  void sendObject(Map<String,Object> map){
         payInfo.debug("进入异步通知开始 Async begin---");
@@ -234,7 +272,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             if(StringUtils.equals(cpType,"1")){//学员
                 smsMap.put("templateType", "1");//学员
             }else if(StringUtils.equals(cpType,"3")){//会员
-                smsMap.put("templateType", "3");//会员
+                smsMap.put("templateType", "2");//会员
             }else {
                 smsMap=null;
             }
@@ -251,7 +289,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         }
         try {
             // 缴费成功发送微信消息
-            WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已注册成功，请留意接听客服电话，关注您的培训流程！").build();
+            WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已缴费成功，请留意接听客服电话，关注您的培训流程！").build();
             wxMpService.getKefuService().sendKefuMessage(message);
         } catch (WxErrorException e) {
             payInfo.error("发送微信模板消息异常", e);

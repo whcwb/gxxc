@@ -20,8 +20,8 @@
 						</Col>
 						<Col v-if="formItem.slType != '1'" span="12">
 							<FormItem prop='name' label='驾校名称'>
-								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校...'">
-									<Option v-for = '(item,index) in schoolList' :value="item.schoolShortName" :key="item.schoolCode">{{item.schoolShortName}}</Option>
+								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校...'" label-in-value @on-change="schoolChange">
+									<Option v-for = '(item,index) in schoolList' :value="item.schoolCode" :key="item.schoolCode" :label="item.schoolShortName">{{item.schoolShortName}}</Option>
 								</Select>
 							</FormItem>
 						</Col>
@@ -100,6 +100,9 @@
 		mounted(){
 		},
 		methods: {
+            schoolChange(o){
+                this.formItem.name = o.label;
+            },
             clickStep(index){
                 // alert(index);
             },

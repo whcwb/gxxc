@@ -76,6 +76,11 @@ public class BizCp implements Serializable {
      */
     @Column(name = "CP_XX")
     private String cpXx;
+    /**
+     * 产品验证状态(0待手机短信验证 1、已进行手机短信验证)  暂时不用
+     */
+    @Column(name = "CP_YZ")
+    private String cpYz;
 
 //
 //    /**
@@ -97,6 +102,14 @@ public class BizCp implements Serializable {
 //    private String cpSh;
 
     private static final long serialVersionUID = 1L;
+
+    public String getCpYz() {
+        return cpYz;
+    }
+
+    public void setCpYz(String cpYz) {
+        this.cpYz = cpYz;
+    }
 
     /**
      * 获取产品ID

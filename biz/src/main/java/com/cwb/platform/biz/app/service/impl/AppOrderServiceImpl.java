@@ -163,15 +163,15 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         BizPtyh userSelect = ptyhMapper.selectByPrimaryKey(userId);
         RuntimeCheck.ifNull(userSelect,"用户不存在");
         RuntimeCheck.ifFalse(StringUtils.equals(userSelect.getYhZt(),"1"),"您好，请您上传证件或等待管理员对您资料进行认证！");//认证状态 ZDCLK0043(0 未认证、1 已认证)
-        RuntimeCheck.ifTrue(StringUtils.equals(userSelect.getDdSfjx(),"1"),"您已支付成功，无需再次支付！");//获取是否缴费(0无 1已缴费)
+//        RuntimeCheck.ifTrue(StringUtils.equals(userSelect.getDdSfjx(),"1"),"您已支付成功，无需再次支付！");//获取是否缴费(0无 1已缴费) todo 让用户可以重复支付
         RuntimeCheck.ifTrue(StringUtils.equals(userSelect.getYhSfsd(),"1"),"您已经锁定，无法支付。请联系管理人员进行解锁！");//用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
-
-        SimpleCondition condition = new SimpleCondition(BizOrder.class);
-        condition.eq(BizOrder.InnerColumn.yhId.name(), userId);
-        condition.eq(BizOrder.InnerColumn.ddZt.name(), "2");//订单状态(1、待缴费 2、已缴费 3、已退费)
-        condition.eq(BizOrder.InnerColumn.ddZfzt.name(), "1");//支付状态（0,待支付 1、支付成功  2、支付失败）
-        Integer count = this.countByCondition(condition);
-        RuntimeCheck.ifTrue(count > 0,"您已支付成功，无需再次支付！");
+        // TODO: 2018/7/2  让用户可以重复支付
+//        SimpleCondition condition = new SimpleCondition(BizOrder.class);
+//        condition.eq(BizOrder.InnerColumn.yhId.name(), userId);
+//        condition.eq(BizOrder.InnerColumn.ddZt.name(), "2");//订单状态(1、待缴费 2、已缴费 3、已退费)
+//        condition.eq(BizOrder.InnerColumn.ddZfzt.name(), "1");//支付状态（0,待支付 1、支付成功  2、支付失败）
+//        Integer count = this.countByCondition(condition);
+//        RuntimeCheck.ifTrue(count > 0,"您已支付成功，无需再次支付！");
 
         BizUser bizUser=userService.findById(userId);
         RuntimeCheck.ifNull(bizUser,"您好，请您上传证件资料进行认证！");
@@ -196,6 +196,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         newEntity.setJobType("0");//定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
         newEntity.setCpId(cpId);
         newEntity.setOpenId(entity.getOpenId());
+        newEntity.setUserAutograph(entity.getUserAutograph());
         boolean payType=false;//就否完成支付。
         if(entity.getDdZftd().equals(("2"))){//微信支付
 

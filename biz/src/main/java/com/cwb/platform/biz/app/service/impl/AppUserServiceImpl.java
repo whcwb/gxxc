@@ -101,6 +101,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
                 if (!userMap.containsKey(orderUserId)) continue;
                 BizPtyh zdlm = userMap.get(orderUserId);
                 order.setUserDetail(ptyhService.afterReturns(zdlm));
+//                用户等级 * 1、一级用户   2、二级用户
                 if (StringUtils.equals(userId, order.getYhSjid())) {
                     order.setUserGrade("1");
                 } else {

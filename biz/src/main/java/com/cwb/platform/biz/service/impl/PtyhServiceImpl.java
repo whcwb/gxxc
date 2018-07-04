@@ -1,7 +1,6 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.alibaba.druid.support.spring.stat.annotation.Stat;
 import com.cwb.platform.biz.bean.StatusModel;
 import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.*;
@@ -12,10 +11,11 @@ import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
 import com.cwb.platform.sys.model.BizPtyh;
+import com.cwb.platform.sys.model.SysJs;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.service.JsService;
 import com.cwb.platform.sys.service.YhService;
-import com.cwb.platform.sys.util.ContextUtil;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
@@ -48,7 +48,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.*;
@@ -142,6 +141,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Autowired
     private WechatService wechatService;
+    @Autowired
+    private JsService jsService;
 
 
     @Override
@@ -222,6 +223,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             condition.in(BizUser.InnerColumn.yhZjhm, zjhms);
         }
 
+        List<String > notUrsrId=new ArrayList<>();
+        notUrsrId.add("460418231002202112");
+        notUrsrId.add("461211447838375937");
+        notUrsrId.add("461211447838375938");
+        condition.notIn(BizPtyh.InnerColumn.id,notUrsrId);
         return true;
     }
 
@@ -229,9 +235,79 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     protected void afterPager(PageInfo<BizPtyh> resultPage) {
         List<BizPtyh> list = resultPage.getList();
+        if (list.size() == 0){
+            return;
+        }
+
+        // 获取用户角色
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String showRoles = request.getParameter("showRoles");
+        if ("true".equals(showRoles)){
+            List<String> idCardList = list.stream().map(BizPtyh::getYhZjhm).collect(Collectors.toList());
+            List<SysYh> sysUserList = yhService.findIn(SysYh.InnerColumn.zjhm,idCardList);
+            if (sysUserList.size() == 0) return;
+            Map<String,String> idCardSysUserIdMap = sysUserList.stream().collect(Collectors.toMap(SysYh::getZjhm,SysYh::getYhid));
+            for (BizPtyh ptyh : list) {
+                String idCard = ptyh.getYhZjhm();
+                String yhId = idCardSysUserIdMap.get(idCard);
+                if (StringUtils.isNotEmpty(yhId)){
+                    ptyh.setSysUserId(yhId);
+                }
+            }
+
+            List<String> sysUserIds = sysUserList.stream().map(SysYh::getYhid).collect(Collectors.toList());
+            SimpleCondition condition = new SimpleCondition(SysYhJs.class);
+            condition.in(SysYhJs.InnerColumn.yhId,sysUserIds);
+            List<SysYhJs> userRoleList = userRoleMapper.selectByExample(condition);
+            if (userRoleList.size() == 0) return;
+            Map<String,List<String>> sysIdRoleIdMap = new HashMap<>();
+            for (SysYhJs sysYhJs : userRoleList) {
+                String yhId = sysYhJs.getYhId();
+                if (sysIdRoleIdMap.containsKey(yhId)){
+                    sysIdRoleIdMap.get(yhId).add(sysYhJs.getJsId());
+                }else{
+                    List<String> roleIdList= new ArrayList<>();
+                    roleIdList.add(sysYhJs.getJsId());
+                    sysIdRoleIdMap.put(yhId,roleIdList);
+                }
+            }
+
+            List<String> roleIds = userRoleList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
+            List<SysJs> roleList = jsService.findIn(SysJs.InnerColumn.jsId,roleIds);
+            if (roleList.size() == 0) return;
+            Map<String,SysJs> roleIdRoleMap = roleList.stream().collect(Collectors.toMap(SysJs::getJsId,p->p));
+            Map<String,List<String>> sysIdRoleNameMap = new HashMap<>();
+            for (Map.Entry<String, List<String>> entry : sysIdRoleIdMap.entrySet()) {
+                List<String> roleIdList = entry.getValue();
+                List<String> roleNames = new ArrayList<>(roleIdList.size());
+                for (String s : roleIdList) {
+                    SysJs role = roleIdRoleMap.get(s);
+                    if (role != null){
+                        roleNames.add(role.getJsmc());
+                    }
+                }
+                sysIdRoleNameMap.put(entry.getKey(),roleNames);
+            }
+
+            for (BizPtyh ptyh : list) {
+                String sysId = ptyh.getSysUserId();
+                if (StringUtils.isEmpty(sysId))continue;
+                List<String> roleNames = sysIdRoleNameMap.get(sysId);
+                String roleNameStr = "";
+                for (String name : roleNames) {
+                    roleNameStr += name+",";
+                }
+                if (roleNameStr.length() != 0){
+                    roleNameStr = roleNameStr.substring(0,roleNameStr.length() - 1);
+                }
+                ptyh.setRoleNames(roleNameStr);
+            }
+        }
+
         if (CollectionUtils.isNotEmpty(list)) {
             list.stream().forEach(bizPtyh -> afterReturn(bizPtyh));
         }
+
         return;
     }
 
@@ -536,7 +612,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
 
-        int i = entityMapper.insertSelective(newEntity);
+
         String bizptyhlog = "";
         try {
             bizptyhlog = mapper.writeValueAsString(newEntity);
@@ -571,6 +647,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         bizUser.setCjsj(DateUtils.getNowTime());//创建时间
         bizUser.setYhSjid(yhSjid);//设置上级ID
         bizUser.setYhSsjid(yhSsjid);//上上级ID
+
+        int i = entityMapper.insertSelective(newEntity);
         i = userMapper.insert(bizUser);
         RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
 
@@ -1217,13 +1295,13 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             List<BizPtyh> userList = entityMapper.selectByExample(condition);
             String first = "";
             if (StringUtils.equals("0", jlType)) {
-                first = "专员";
+                first = "受理";
             } else if (StringUtils.equals("1", jlType)) {
-                first = "科目一专员";
+                first = "科目一";
             } else if (StringUtils.equals("2", jlType)) {
-                first = "科目二专员";
+                first = "科目二";
             } else if (StringUtils.equals("3", jlType)) {
-                first = "科目三专员";
+                first = "科目三";
             }
             Map<String, String> xbMap = new HashMap<>();
             xbMap.put("1", "男");
@@ -1235,7 +1313,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 data.add(new WxMpTemplateData("keyword1", jlMsage.getYhXm()));
                 data.add(new WxMpTemplateData("keyword2", jlMsage.getYhSjhm()));//教练电话
                 data.add(new WxMpTemplateData("keyword3", user.getXm()));
-                data.add(new WxMpTemplateData("remark", "学员" + u.getYhXm() + "您好，" + first + "分配成功。" + first + "：" + jlMsage.getYhXm() + "，性别" + xbMap.get(appJlUser.getYhXb()) + "驾龄" + jlMsage.getJlJl()));
+                data.add(new WxMpTemplateData("remark", "学员" + u.getYhXm() + "您好，" + first + "分配成功。" + first + "：" + jlMsage.getYhXm() + "，性别" + xbMap.get(appJlUser.getYhXb())));
                 payInfo.debug("u.getYhOpenId():" + u.getYhOpenId());
                 msg = new WxMpTemplateMessage();
                 msg.setToUser(u.getYhOpenId());
@@ -1570,7 +1648,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifBlank(userId, "请选择用户");
         BizPtyh ptyh = entityMapper.selectByPrimaryKey(userId);
         if (ptyh == null) return ApiResponse.fail("学员不存在!");
-        RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getDdSfjx(), "1"), "用户已缴费，不能进行此操作");
+        RuntimeCheck.ifTrue(StringUtils.equals(ptyh.getDdSfjx(), "1"), "用户已缴费，不能进行此操作");
 
         BizWj wj = new BizWj();
         wj.setYhId(userId);
@@ -1703,6 +1781,27 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         pageInfo.setList(models);
         result.setPage(pageInfo);
         return result;
+    }
+
+    @Override
+    public ApiResponse<List<BizPtyh>> getZyList(String type) {
+        SimpleCondition condition = new SimpleCondition(SysYhJs.class);
+        condition.eq(SysYhJs.InnerColumn.jsId,type);
+        List<SysYhJs> userRoleList = userRoleMapper.selectByExample(condition);
+        if (userRoleList.size() == 0){
+            return new ApiResponse<>();
+        }
+
+        List<String> sysUserIds = userRoleList.stream().map(SysYhJs::getYhId).collect(Collectors.toList());
+        List<SysYh> sysUserList = yhService.findIn(SysYh.InnerColumn.yhid,sysUserIds);
+        if (sysUserList.size() == 0){
+            return new ApiResponse<>();
+        }
+        List<String> idCardList =  sysUserList.stream().map(SysYh::getZjhm).collect(Collectors.toList());
+        List<BizPtyh> bizUserList = findIn(BizPtyh.InnerColumn.yhZjhm,idCardList);
+        ApiResponse<List<BizPtyh>> res = new ApiResponse<>();
+        res.setResult(bizUserList);
+        return res;
     }
 
     private BizKsYk getYk(BizPtyh ptyh,String km){

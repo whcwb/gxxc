@@ -113,6 +113,7 @@ module.exports = {
         getUserCoachEvaluate:'/api/ptyh/updateSfsd',//获取用户对教练的评分
         getPaymentRecord:'/api/ptyh/getPaymentRecord',//获取用户进度信息
         status_query:'/api/ptyh/status-query',//获取用户进度信息
+        getZyList:'/api/ptyh/getZyList',//获取专员列表
     },
     teacher:{
         QUERY:'/api/jl/pager',//平台用户管理

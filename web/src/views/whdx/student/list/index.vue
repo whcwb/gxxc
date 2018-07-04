@@ -68,7 +68,7 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
+                        width: 150,
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildButton(this,h,'success','card','详情',()=>{
