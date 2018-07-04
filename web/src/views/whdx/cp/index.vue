@@ -50,7 +50,7 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.id),
+                                // this.util.buildDeleteButton(this,h,params.row.id),
                             ]);
                         }
                     }

@@ -66,18 +66,17 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
 
     @Override
     public ApiResponse<String> validAndSave(BizKsSl entity) {
-        int i=save(entity);
-        return i==1?ApiResponse.success():ApiResponse.fail();
+        int i=saveBizKsSl(entity);
+        return i>0?ApiResponse.success():ApiResponse.fail();
     }
-    @Override
-    public int save(BizKsSl entity) {
+    public int saveBizKsSl(BizKsSl entity) {
 //        RuntimeCheck.ifBlank(entity.getCode(), "请选择机构");
 //        RuntimeCheck.ifBlank(entity.getName(), "请确定机构名称");
 
-//        RuntimeCheck.ifBlank(entity.getSlType(), "审核状态不能为空");
-//        if (org.apache.commons.lang.StringUtils.containsNone(entity.getSlType(), new char[]{'1', '2', '3', '4'})) {
-//            RuntimeCheck.ifTrue(true,"请输入正确审核状态");
-//        }
+        RuntimeCheck.ifBlank(entity.getSlType(), "受理类型不能为空");
+        if (org.apache.commons.lang.StringUtils.containsNone(entity.getSlType(), new char[]{'1', '2', '3', '4'})) {
+            RuntimeCheck.ifTrue(true,"请输入正确受理类型");
+        }
 
 
         SysYh user=getCurrentUser();
@@ -89,11 +88,65 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         entity.setYhZjhm(ptyh.getYhZjhm());//用户证件号码
         entity.setYhXm(ptyh.getYhXm());//用户姓名
 
-//        确认受理状态
-//        Example condition = new Example(BizKsSl.class);
-//        condition.and().andEqualTo(BizKsSl.InnerColumn.yhId.name(), entity.getYhId());
-//        condition.setOrderByClause(BizKsSl.InnerColumn.slType.desc());
-//        List<BizKsSl> list = this.findByCondition(condition);
+        int i=0;
+        //如果受理状态是完结状态，需要检查系统中已经入库的状态，对未入库的受理，系统自动受理
+        if(StringUtils.equals(entity.getSlType(),"4")){
+            List<BizKsSl> addList=new ArrayList<BizKsSl>();
+//          确认受理状态
+            Example condition = new Example(BizKsSl.class);
+            condition.and().andEqualTo(BizKsSl.InnerColumn.yhId.name(), entity.getYhId());
+            condition.setOrderByClause(BizKsSl.InnerColumn.slType.desc());
+            List<BizKsSl> list = this.findByCondition(condition);
+            String ksSlType="1,2,3,4";//1、医院体验 2、入网面签 3、档案采集 4、受理成功
+            //移除数据库中已经有的类型。
+            if(list != null && list.size()>0 ){
+                for(BizKsSl sl:list ){
+                    String slType=sl.getSlType();
+                    if(StringUtils.isNotEmpty(slType)){
+                        ksSlType=ksSlType.replaceAll(slType,"");
+                    }
+                }
+            }
+            if(StringUtils.isNotEmpty(ksSlType)){
+                String[] slTypeList=ksSlType.split(",");
+                if(slTypeList!=null && slTypeList.length>0){
+                    for(String type : slTypeList){
+                        if(StringUtils.isNotEmpty(type)){
+                            BizKsSl addObject = new BizKsSl();
+//                            addObject = entity;
+                            addObject.setId(genId());
+                            addObject.setSlType(type);
+                            addObject.setCode(entity.getCode());
+                            addObject.setName(entity.getName());
+                            addObject.setSlSj(entity.getSlSj());
+                            addObject.setYhXm(entity.getYhXm());
+                            addObject.setYhZjhm(entity.getYhZjhm());
+                            addObject.setCjr(entity.getCjr());
+                            addObject.setCjsj(entity.getCjsj());
+                            addObject.setLsh(entity.getLsh());
+                            addObject.setYhId(entity.getYhId());
+                            if(StringUtils.equals(type,"1")){//如果是医院的话，就将单位编号 单位姓名给移除
+                                addObject.setCode("");
+                                addObject.setName("");
+                            }
+
+                            if(!StringUtils.equals(type,"4")){//如果不是受理成功，就将流水号移除
+                                addObject.setLsh("");
+                            }
+                            addList.add(addObject);
+                        }
+                    }
+                }
+            }
+
+            if(addList!=null&&addList.size()>0){
+               entityMapper.insertBatchKsSl(addList);
+               i=addList.size();
+            }
+        }else{
+           i= entityMapper.insertSelective(entity);
+        }
+
 //        if(list.isEmpty()){
 //            entity.setSlType("1");
 //        }else if(list.size()>0){
@@ -112,6 +165,7 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
 //            }
 //            entity.setSlType(slType);
 //        }
+
         BizPtyh newPtyh=new BizPtyh();
         newPtyh.setId(entity.getYhId());
         newPtyh.setYhXySlType(entity.getSlType());
@@ -119,7 +173,7 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
 
         // 向微信用户发送消息
         sendMsg(entity,ptyh);
-        return entityMapper.insertSelective(entity);
+        return i;
     }
 
 

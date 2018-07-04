@@ -49,7 +49,7 @@
                     {title:'提现时间',key:'ttSj'},
                     {title:'审核人',key:'ttShr'},
                     {title:'银行卡号',key:'ttYhkh'},
-                    {title:'所属银行',key:'ttKhh'},
+                    {title:'所属银行',key:'ttSsyh'},
                     {title:'提现姓名',key:'txXm'},
                     {
                         title: '操作',

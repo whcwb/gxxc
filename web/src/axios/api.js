@@ -1,5 +1,6 @@
 //网络请求地址前缀
-let BASE_URL = 'http://www.520xclm.com:8080/biz/';
+let serverDomain='http:///www.520xclm.com';
+let BASE_URL = serverDomain + ':8080/biz/';
 // let BASE_URL = 'http://127.0.0.1:9086';
 // let BASE_URL = 'http://192.168.31.35:9086';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
@@ -9,7 +10,7 @@ module.exports = {
     //图片上传地址
     UPLOAD: BASE_URL + '/upload',
     UPLOAD_PRIVATE: 'http://www.520xclm.com:8080/biz' + '/app/zjupload',
-    STATIC_PATH: BASE_URL + ':8765/server/',
+    STATIC_PATH: serverDomain + ':8001/',
     VIDEO_PATH:'',
     exportData:BASE_URL+'/pub/export',
 

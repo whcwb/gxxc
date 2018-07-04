@@ -13,19 +13,26 @@
         						:styles="{top: '20px'}">
         			<Row>
         				<form-items :parent="v"></form-items>
-						<Col v-if="formItem.slType == '1'" span="12">
+						<Col span="12">
+							<FormItem prop='slType' label='受理类型'>
+								<Select  filterable clearable  v-model="formItem.slType" placeholder="请选择类型..."  @on-change="typeChange">
+									<Option v-for = '(item,index) in v.dictUtil.getByCode(v,"ZDCLK0071")' :value="item.key" :key="item.key">{{item.val}}</Option>
+								</Select>
+							</FormItem>
+						</Col>
+						<Col v-show="!showLsh" span="12">
 							<FormItem prop='name' label='医院名称'>
 								<Input v-model="formItem.name" placeholder="请输入医院名称"></Input>
 							</FormItem>
 						</Col>
-						<Col v-if="formItem.slType != '1'" span="12">
+						<Col v-show="showLsh" span="12">
 							<FormItem prop='name' label='驾校名称'>
 								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校...'" label-in-value @on-change="schoolChange">
 									<Option v-for = '(item,index) in schoolList' :value="item.schoolCode" :key="item.schoolCode" :label="item.schoolShortName">{{item.schoolShortName}}</Option>
 								</Select>
 							</FormItem>
 						</Col>
-						<Col span="12" v-if="formItem.slType == '4'" >
+						<Col span="12" v-if="showLsh" >
 							<FormItem prop='lsh' label='流水号'>
 								<Input v-model="formItem.lsh" placeholder="请输入流水号"></Input>
 							</FormItem>
@@ -67,7 +74,6 @@
                 formInputs:[
                     {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'受理时间',prop:'slSj',type:'date'},
-                    {label:'受理类型',prop:'slType',dict:'ZDCLK0071',type:'dict'},
                 ],
                 ruleInline:{
 				},
@@ -87,6 +93,7 @@
 				unitName:'',
                 showConfirm:false,
 				schoolList:[],
+				showLsh:false,
 			}
 		},
 		created(){
@@ -100,6 +107,10 @@
 		mounted(){
 		},
 		methods: {
+            typeChange(o){
+                this.formItem.slType = o;
+                this.showLsh = o == '4'
+            },
             schoolChange(o){
                 this.formItem.name = o.label;
             },
