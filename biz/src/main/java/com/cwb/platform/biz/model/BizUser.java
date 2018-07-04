@@ -114,13 +114,25 @@ public class BizUser implements Serializable {
      */
     @Transient
     private String yhDqzt;
-
+    /**
+     * 用户团队列表受理状态
+     */
+    @Transient
+    private String yhslZt;
 
 
     @Transient
     private Map<String,Object> map;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhslZt() {
+        return yhslZt;
+    }
+
+    public void setYhslZt(String yhslZt) {
+        this.yhslZt = yhslZt;
+    }
 
     public String getYhDqzt() {
         return yhDqzt;
