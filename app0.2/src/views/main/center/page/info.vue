@@ -40,7 +40,7 @@
                   <!--<imgup :demoImg="userMess.yhTx"-->
                          <!--@handleSuccess="handleSuccess">-->
                   <!--</imgup>-->
-                  <img :src="wxupimg" style="width: 100%">
+                  <img :src="wxupimg" style="width: 0.6rem;height: 0.6rem">
                 </div>
               </mt-cell>
               <div @click="compname='bm'">
