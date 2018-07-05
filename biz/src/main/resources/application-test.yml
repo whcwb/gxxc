@@ -11,7 +11,7 @@ spring:
 
 
 server:
-  port: 9086
+  port: 8080
 
 #测试调试 1 进行调试  0 正式  正式环境里不需要配置这个参数
 debug_test: 1
@@ -21,43 +21,9 @@ order_money: 2500
 
 logo_file_url: /opt/gxxc/logo.png
 
-qr_code_file_url: d:/2003/
+qr_code_file_url: d://2003/
 
-credentialsPath: d:/2004/
+credentialsPath: d://2004/
 
-wxDomain: http://www.520xclm.com/wx
-# 接收到第三方支付成功的消息后，支付回调操作
-wxPayBackDomain: http://www.520xclm.com/wx
-#分配学员学员链接地址
-wxassignXyDomain: http://www.520xclm.com/wx
-#分配学员教练链接地址
-wxassignJlDomain: http://www.520xclm.com/wx
-
-wxMsgTemplate:
-  handle: 0jqcQ-ucdPPfGl3WlyquqhaqOSaj1_8wc7jvZTqXh-I
-  exam: QyJLmqWBdoJfvRvvWGuWTpdt6-0r2-nGKJXhNTD4sT4
-  pay: RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o
-  payBack: RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o
-  assignXy: JjeCO5HE0TnA1bj9HWCIlkMNjm2mxO-1PgmM10xens0
-  assignJl: JjeCO5HE0TnA1bj9HWCIlkMNjm2mxO-1PgmM10xens0
-
-wechat:
-  appId: wxb01394ea85904296
-  secret: 1357c923084a743e10131df166796303
-  #设置微信公众号的token
-  token: xclmToken
-  #设置微信公众号的EncodingAESKey
-  aesKey: FaCUOuOXFk2l80CMkrtALclKwFVaFxa4UOzKpBOFNlk
-  domain: http://www.520xclm.com
-  tradeType: JSAPI
-  pay:
-    appId: wxb01394ea85904296
-    mchId: 1506987921
-    mchKey: rFNTUgr6ptfTEe7pTuoEWViJE2Jh3jwU
-    subAppId:
-    subMchId:
-    keyPath:
-    domain: http://www.520xclm.com
-    trade_type: JSAPI
-    notify_url: http://www.520xclm.com:8080/biz/wxPay/notifyCallback
-
+# 项目中图片访问的地址 这边需要用域名访问
+img_url: http://www.520xclm.com:8001/
