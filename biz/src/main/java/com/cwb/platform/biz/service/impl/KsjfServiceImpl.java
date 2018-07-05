@@ -150,7 +150,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
                 // 判断考试是否通过，如果考试通过，则已缴费；如果考试未通过，则判断缴费时间
                 BizKsYk exam = entry.getValue();
                 int stand = (exam.getKmCode().equals("2") || exam.getKmCode().equals("3")) ? 80 : 90;
-                if (exam.getCj1() >= stand || exam.getCj2() >= stand) {
+                if (exam.getCj1() != null && (exam.getCj1() >= stand || exam.getCj2() >= stand)) {
                     map.put(entry.getKey(), "已缴");
                 } else {
                     BizKsJf payInfo = payMap.get(entry.getKey());
@@ -246,12 +246,18 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             jf.setJfFs(row.getMethod());
 
             List<BizPtyh> userList = ptyhService.findEq(BizPtyh.InnerColumn.yhZjhm,zjhm);
-            if (userList.size() != 0){
+            if (userList!=null && userList.size() != 0){
                 BizPtyh user = userList.get(0);
-                jf.setYhId(user.getId());
-                jf.setYhXm(user.getYhXm());
+                if(StringUtils.equals(user.getYhLx(),"1")){
+                    jf.setYhId(user.getId());
+                    jf.setYhXm(user.getYhXm());
+                    save(jf);
+                }else{
+                    //该用户不属于学员不插入支付
+                }
+            }else{
+                //未找到该用户
             }
-            save(jf);
         }
         return res;
     }
