@@ -124,7 +124,6 @@
                             </div>
                             <div class="userGrade box_row_100">
                               {{item.userGrade | userGrade}}
-                              {{item.yhslZt}}
                             </div>
                           </div>
                         </div>

@@ -111,13 +111,13 @@ export default {
           return '档案受理中'
           break;
         case "10":
-          return '10科目一已约考'
+          return '科目一已约考'
           break;
         case "11":
-          return '11科目一已通过'
+          return '科目一已通过'
           break;
         case  "12":
-          return '12 科目一未通过'
+          return '科目一未通过'
           break;
         case  "20":
           return '科目二已约考'

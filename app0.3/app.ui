@@ -6,7 +6,7 @@ export default {
       "pages/index",
       "pages/detail",
       
-    ],
+    ,"pages/reg"],
     "theme": {
       "theme-color": "#3399ff"
     },
