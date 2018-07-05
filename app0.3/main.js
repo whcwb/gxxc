@@ -1,4 +1,6 @@
 import app from './app.ui'
+// import '#/static/'
+
 
 let options = {
   app: app,

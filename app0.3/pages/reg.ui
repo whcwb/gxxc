@@ -1,7 +1,88 @@
 <!---->
 <template>
-  <ui-page class="reg" top="0" style="background-image:url('static/img/reg/regBack.png')">
-        注册
+  <ui-page top="0">
+     <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
+      <ui-view class="reg">
+      
+
+          <ui-view class="fromSty">
+              <ui-row space="60">
+                <ui-col span="8" align="center">
+                  <ui-view class="text">
+                    欢迎加入我们
+                  </ui-view>
+                </ui-col>
+                <ui-col span="4">
+
+                </ui-col>
+              </ui-row>
+              <ui-row space="40">
+                  <ui-input 
+                    ui:model="form.username"
+                    maxlength="11" type="tel"
+                    placeholder="请输入手机号"></ui-input>
+              </ui-row>
+              <ui-row space="40">
+                <ui-sms-input 
+                    style="border-radius:5px;width:100%"
+                    ui:model="form.code"
+                    bindsend="handleSend"
+                    second="120"
+                    init-text="验证码"></ui-sms-input>
+              </ui-row>
+              <ui-row space="40">
+                <ui-input ui:model="form.password" type="password" placeholder="请输入密码"></ui-input>
+              </ui-row>
+              <ui-row space="40">
+                <ui-col span="1" align="left">
+
+                  <ui-checkbox-group bindchange="checkboxChange">
+                    <ui-label class="checkbox" ui:for="{{items}}">
+                      <ui-checkbox value="{{index}}" checked="{{ item.checked }}"></ui-checkbox>
+                    </ui-label>
+                  </ui-checkbox-group>
+                  
+                </ui-col>
+                <ui-col span="11">
+                    <ui-view class="checkbox" bindtap="Agreement=true">
+                        <span class='txt'>
+                          我已阅读并同意《 <span class="txtMess"> 注册协议 </span> 》
+                        </span> 
+                    </ui-view>
+                </ui-col>
+              </ui-row>
+              <ui-row space="40">
+                <ui-button type=""
+                style="    background: linear-gradient(to top, #f3b222, rgb(251, 219, 72));
+                width: 70%;border-color: #e6a23c;color:#fff"
+                 full-width="false">
+                  立即注册
+                </ui-button>
+              </ui-row>
+
+
+          </ui-view>
+
+
+
+
+          <ui-mask class="AgreementSty" ui:model="Agreement" effect="scale-in" >
+              <ui-view class="AgreementMessSty" bindtap="">
+                  <ui-view class='messTop'>
+                      用户注册协议
+                      <ui-view class="close" bindtap="Agreement=false">
+                        关闭
+                      </ui-view>
+                  </ui-view>
+                  <ui-view class='messcontent'>
+                    
+                  </ui-view>
+              </ui-view>
+          </ui-mask>
+
+
+      </ui-view>
+    </ui-view>
   </ui-page>
 </template>
 
@@ -9,21 +90,101 @@
 export default {
   config: {
     "navigationStyle": 'custom',
-    "scrollType": "div",
+    "scrollType": "body",
     "title":"注册",
     "disableScroll":true
   },
   data() {
-    return {}
+    return {
+      height: ui.DEFAULT_CONTENT_HEIGHT + 46,
+      items:[
+        { checked:true }
+      ],
+      Agreement:false,//注册协议
+      form:{
+        yhYqm:'',
+        username:'',
+        password:'',
+        code:'',
+        xy:false
+      }
+    }
   },
-  methods: {},
-  mounted() {}
+  mounted() {},
+  methods: {
+    handleSend (run) {
+        run()
+        ui.showToast({ title: '验证码已发送' })
+    },
+    checkboxChange(val){
+      if(val.value.length==1){
+        this.form.xy=true
+      }else{
+        this.form.xy=false
+      }
+      console.log(this.form.xy);
+      
+    }
+  }
 }
 </script>
 
 <style lang="less">
+  .grid_box{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
   .reg{
+    flex-grow:1;
     background: no-repeat top;
     background-size: 100%;
+    background-image:url('../static/img/reg/regBack.png')
+  }
+  .fromSty{
+    height: 100%;
+    padding: 0 60rpx;
+    margin-top: 50%;
+    .text{
+      color: #fff;
+      font-size: 42rpx;
+      font-weight: 700
+    }
+  }
+  .checkbox{
+    .txt{
+      color: #fff;
+      .txtMess{
+        color: #f75d42;
+
+      }
+    }
+  }
+  .AgreementSty{
+    padding: 30rpx;
+    .AgreementMessSty{
+      background-color: #fff;
+      height: 100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      .messTop{
+        font-size: 50rpx;
+        font-weight: 700;
+        text-align: center;
+        color: #f75d42;
+        padding: 35rpx 0;
+        position: relative;
+        .close{
+          position: absolute;
+          top: 10rpx;
+          right: 20rpx;
+          font-size: 30rpx!important;
+        }
+      }
+      .messcontent{
+        flex-grow:1;
+      }
+    }
   }
 </style>
