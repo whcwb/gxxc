@@ -43,6 +43,22 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
     @Value("${credentialsPath}")
     private String credentialsPath;
 
+//  文本识别的KEY
+    @Value("${baidu.img.ocr.app_id}")
+    private String APP_ID;
+    @Value("${baidu.img.ocr.app_key}")
+    private String API_KEY;
+    @Value("${baidu.img.ocr.secret_key}")
+    private String SECRET_KEY;
+
+    //主体识别的KEY值
+    @Value("${baidu.img.detect.app_id}")
+    public String DETECT_APP_ID;
+    @Value("${baidu.img.detect.app_key}")
+    public String DETECT_API_KEY;
+    @Value("${baidu.img.detect.secret_key}")
+    public String DETECT_SECRET_KEY;
+
 
     @Autowired
     private StringRedisTemplate redisDao;
@@ -55,9 +71,9 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
     }
 
     //设置APPID/AK/SK
-    public static final String APP_ID = "sE9HAgpK2XKsrKiuorzCoory";
-    public static final String API_KEY = "sE9HAgpK2XKsrKiuorzCoory";
-    public static final String SECRET_KEY = "HNyUWG5Od5docsq83l5l6hVgdKv6Etng";
+//    public static final String APP_ID = "sE9HAgpK2XKsrKiuorzCoory";
+//    public static final String API_KEY = "sE9HAgpK2XKsrKiuorzCoory";
+//    public static final String SECRET_KEY = "HNyUWG5Od5docsq83l5l6hVgdKv6Etng";
 
     @Override
     protected Mapper<BizWj> getBaseMapper() {
@@ -227,6 +243,7 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
                 String bank_card_number="",bank_name="",bank_card_type="";
                 try {
                     bank_card_number=res.getJSONObject("result").getString("bank_card_number");
+                    bank_card_number=bank_card_number.replaceAll(" ","");
                 }catch (Exception e){}
                 try {
                     bank_name=res.getJSONObject("result").getString("bank_name");
@@ -234,16 +251,11 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
                 try {
                     bank_card_type=res.getJSONObject("result").getString("bank_card_type");
                 }catch (Exception e){}
-//                try {
-//                    csrq=res.getJSONObject("words_result").getJSONObject("出生").getString("words");
-//                }catch (Exception e){}
-//                try {
-//                    cfzh=res.getJSONObject("words_result").getJSONObject("公民身份号码").getString("words");
-//                }catch (Exception e){}
-//                try {
-//                    zz=res.getJSONObject("words_result").getJSONObject("住址").getString("words");
-//                }catch (Exception e){}
                 if(StringUtils.isEmpty(bank_card_number)){
+                    retType=false;
+                    retMap.put("image_message","未能识别出信息");
+                }
+                if(StringUtils.isEmpty(bank_name)){
                     retType=false;
                     retMap.put("image_message","未能识别出信息");
                 }
@@ -267,8 +279,9 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
         }
     }
     @Subscribe
-    public  void sendGps(String imgUrl){
-        SampleDemo.tailorSubjectImg(imgUrl);
+    public  void sendGps(String imgUrl){//APP_ID, API_KEY, SECRET_KEY
+        System.out.println("**********"+"APP_ID:"+DETECT_APP_ID+" API_KEY:"+DETECT_API_KEY+" SECRET_KEY:"+DETECT_SECRET_KEY);
+        SampleDemo.tailorSubjectImg(imgUrl,DETECT_APP_ID,DETECT_API_KEY,DETECT_SECRET_KEY);
     }
 
 

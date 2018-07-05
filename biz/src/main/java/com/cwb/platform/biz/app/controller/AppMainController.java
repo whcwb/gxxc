@@ -286,61 +286,16 @@ public class AppMainController extends AppUserBaseController {
 		if (!savePath.endsWith("/")) {
 			savePath += "/";
 		}
+
+
 		BizPtyh user = getAppCurrentUser();
-//		//重新验证登录
-//		String userid = request.getHeader("userid");
-//		String token = request.getHeader("token");
-//		String url = request.getHeader("url");
-//		log.debug("openid=" + request.getHeader("openid")+"---------------------------------------------------");
-//		if (token == null){
-//			token = request.getParameter("token");
-//		}
-//		if (userid == null){
-//			userid = request.getParameter("userid");
-//		}
-//		if (StringUtils.isEmpty(userid) || StringUtils.isEmpty(token)) {
-//			user=null;
-//		}else{
-//			try {
-//				//1、验证访问者是否合法
-//				String userId = JwtUtil.getClaimAsString(token, "userId");
-//				log.debug("userId=" + userId);
-//				if (!userid.equals(userId)) {
-//					user=null;
-//				}else {
-//					//2、验证用户状态
-//					user = ptyhService.findByIdSelect(userid);
-//					if ("1".equals(user.getYhSfsd())) {
-//						user = null;
-//					} else {
-//						String value = redisDao.boundValueOps(userid).get();
-//						log.debug("value=" + value);
-//						log.debug("token=" + token);
-//						if (StringUtils.isEmpty(value) || !value.equals(token)) {
-//							user = null;
-//						}else{
-//							String userInfoJson = redisDao.boundValueOps(userid + "-appUserInfo").get();
-//							log.debug("boundValueOps");
-//							ObjectMapper mapper = new ObjectMapper();
-//							user = mapper.readValue(userInfoJson, BizPtyh.class);
-//							log.debug("userInfoJson:" + userInfoJson);
-//							if (StringUtils.isEmpty(userInfoJson)) {
-//								user = null;
-//							}
-//						}
-//					}
-//				}
-//			} catch (Exception e) {
-//				user=null;
-//			}
-//		}
 
 		log.debug("getWxFile------------2、获取用户登录："+user==null?"未登录":"已登录");
 		savePath+="temp";
 		log.debug("getWxFile------------3、文件存放地址："+savePath);
 		if(StringUtils.isNotEmpty(fileType)){
 			if(StringUtils.indexOf("10 11 20 21 ", fileType)>-1){
-				savePath = credentialsPath+DateUtils.getToday().replaceAll("-","")+"/";//生成新的文件路径
+				savePath = credentialsPath+"certificate/"+DateUtils.getToday().replaceAll("-","")+"/";//生成新的文件路径
 				credentialsType=true;
 			}
 		}
@@ -404,6 +359,7 @@ public class AppMainController extends AppUserBaseController {
 					res.setResult(retMap);
 					return res;
 				}
+
 			}
 			retMap.put("filePath",fileUrl);
 			if(StringUtils.isNotEmpty(yhYhkCode)){

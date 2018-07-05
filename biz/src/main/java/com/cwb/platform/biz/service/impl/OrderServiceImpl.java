@@ -106,8 +106,8 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
         BizOrder newBizOrder=new BizOrder();
         newBizOrder.setDdId(l.getDdId());
-        newBizOrder.setDdZt("2");//2、订单状态 2
-        newBizOrder.setDdZfzt("1");//支付状态 1成功 2 失败
+        newBizOrder.setDdZt("2");//2、订单状态 2  设置订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
+        newBizOrder.setDdZfzt("1");//支付状态 1成功 2 失败  ZDCLK0039  0,待支付 1、支付成功  2、支付失败
 //        newBizOrder.setDdZftd(l.getDdZftd());//设置支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
         newBizOrder.setDdZfpz(l.getDdZfpz());//支付凭证ID(保存支付通道返回的CODE)
         newBizOrder.setPayMoney(l.getPayMoney());//订单支付成功后，将实际支付的金额回写到这里。用于验证订单支付是否异常
@@ -142,7 +142,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         order.setPayMoney(l.getPayMoney());
         order.setDdZftd(l.getDdZftd());
 
-        BizPtyh queryUser=ptyhService.findByIdSelect(order.getYhId());
+        BizPtyh queryUser=ptyhService.findById(order.getYhId());
 
         // 判断订单产品是否属于学费，只有学费才生成邀请码
         if(StringUtils.equals(bizCp.getCpType(),"1")||StringUtils.equals(bizCp.getCpType(),"3")) { // 产品类型为会员、学员时 ， 需要生成邀请码

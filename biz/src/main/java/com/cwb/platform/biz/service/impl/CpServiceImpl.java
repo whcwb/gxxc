@@ -135,7 +135,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
             fyString=""; // TODO: 2018/7/2 生产环境时需要去掉
             String parameter=fyString;
             Map<String, String> smsMap = new HashMap<String, String>();
-            smsMap.put("phoneNumbers", "18672922385");//  刘总电话 ‭15927183566‬ 电话号码  todo 李总的电话
+            smsMap.put("phoneNumbers", "15827013808");//  李总电话 ‭15927183566‬ 电话号码  todo 李总的电话
             smsMap.put("templateType", "5");//给专员下发短信
             smsMap.put("userName", "李总");//姓名
             smsMap.put("operator", sysYh.getXm());
@@ -147,7 +147,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
             smsMap.put("code", code1);
             smsMapList.add(smsMap);
             smsMap = new HashMap<String, String>();
-            smsMap.put("phoneNumbers", "15671618665");//  todo 刘总的电话
+            smsMap.put("phoneNumbers", "15927183566");//  todo 刘总的电话
             smsMap.put("templateType", "5");//给专员下发短信
             smsMap.put("userName", "刘总");//姓名
             smsMap.put("operator", sysYh.getXm());
