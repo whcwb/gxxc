@@ -52,8 +52,8 @@
                 </ui-col>
               </ui-row>
               <ui-row space="40">
-                <ui-button type=""
-                style="    background: linear-gradient(to top, #f3b222, rgb(251, 219, 72));
+                <ui-button bindtap="reg"
+                style="background: linear-gradient(to top, #f3b222, rgb(251, 219, 72));
                 width: 70%;border-color: #e6a23c;color:#fff"
                  full-width="false">
                   立即注册
@@ -121,9 +121,14 @@ export default {
         this.form.xy=true
       }else{
         this.form.xy=false
+        
       }
       console.log(this.form.xy);
-      
+    },
+    reg(){
+      ui.navigateTo({
+        url: '/pages/index'
+      })
     }
   }
 }
