@@ -1,0 +1,29 @@
+<!---->
+<template>
+  <ui-page class="reg" top="0" style="background-image:url('static/img/reg/regBack.png')">
+        注册
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    "navigationStyle": 'custom',
+    "scrollType": "div",
+    "title":"注册",
+    "disableScroll":true
+  },
+  data() {
+    return {}
+  },
+  methods: {},
+  mounted() {}
+}
+</script>
+
+<style lang="less">
+  .reg{
+    background: no-repeat top;
+    background-size: 100%;
+  }
+</style>

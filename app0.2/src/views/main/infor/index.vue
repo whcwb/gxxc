@@ -14,6 +14,8 @@
         position: relative;
         img{
           width: 0.5rem;
+          height: 0.5rem;
+          border-radius: 0.25rem;
           position: absolute;
           top: 50%;
           left: 50%;
@@ -124,7 +126,6 @@
                             </div>
                             <div class="userGrade box_row_100">
                               {{item.userGrade | userGrade}}
-                              {{item.yhslZt}}
                             </div>
                           </div>
                         </div>
@@ -134,7 +135,7 @@
 
                   </div>
               </div>
-              <div v-if="item.userDetail.yhLx==1"
+              <div v-if="item.userDetail.yhLx=='1' && item.userDetail.ddSfjx == '1'"
                    style="font-size: 0.14rem;padding: 0.02rem 0.15rem;border-top: slategray 1px solid">
                 学员当前进度 >>> {{item.yhslZt | yhslZt}}
               </div>

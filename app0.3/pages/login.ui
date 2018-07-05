@@ -30,16 +30,16 @@
                   </ui-row>
                 </ui-view>
                 <ui-view class="input_padding">
-                  <ui-button class="submit_btn">登录</ui-button>
+                  <ui-button class="submit_btn" bindtap="login">登录</ui-button>
                 </ui-view>
               </ui-form>
             </ui-view>
-            <ui-view class="bottom">
-              <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1">
+            <ui-view class="bottom" bindtap="reg">
+              <!-- <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1"> -->
                 <ui-text block class="reg">
                   创建账号
                 </ui-text>
-              </ui-navigator>
+              <!-- </ui-navigator> -->
             </ui-view>
           </ui-view>
         </ui-view>
@@ -66,6 +66,20 @@ export default {
     }
   },
   methods: {
+    login(){
+      // alert('123')
+      ui.navigateTo({
+        url: '/pages/index'
+      })
+
+      this.sayHello()
+      
+    },
+    reg(){
+      ui.navigateTo({
+        url: '/pages/reg'
+      })
+    },
     formSubmit(){
 
     },
