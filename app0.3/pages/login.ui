@@ -30,7 +30,7 @@
                   </ui-row>
                 </ui-view>
                 <ui-view class="input_padding">
-                  <ui-button class="submit_btn">登录</ui-button>
+                  <ui-button class="submit_btn" bindtap="login">登录</ui-button>
                 </ui-view>
               </ui-form>
             </ui-view>
@@ -66,6 +66,15 @@ export default {
     }
   },
   methods: {
+    login(){
+      // alert('123')
+      ui.navigateTo({
+        url: '/pages/index'
+      })
+
+      this.sayHello()
+      
+    },
     formSubmit(){
 
     },

@@ -57,7 +57,6 @@
               type="bankCard"
               v-model="from.yhkKh"
               placeholder="xxxx xxxx xxxx xxxx"
-              :maxlength="20"
               @focus="yhkYz = true"
             >
               <div slot="right" style="position: relative;width: 100%;height: 100%;color: #ffa7007d!important;" @click="getBankCrdNumber">
