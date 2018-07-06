@@ -4,9 +4,10 @@ export default {
     "pages": [
       "pages/login",
       "pages/index",
-      "pages/detail",
-      
-    ,"pages/reg"],
+      "pages/detail",      
+      "pages/reg",
+      "pages/studyCar"
+    ,"pages/myTeam"],
     "theme": {
       "theme-color": "#3399ff"
     },
@@ -26,6 +27,16 @@ export default {
           "pagePath": "pages/index",
           "iconName": "home",
           "text": "首页"
+        },
+        {
+          "pagePath": "pages/studyCar",
+          "iconName": "home",
+          "text": "学车"
+        },
+        {
+          "pagePath": "pages/myTeam",
+          "iconName": "home",
+          "text": "团队"
         },
         {
           "pagePath": "pages/user",

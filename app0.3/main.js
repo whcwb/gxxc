@@ -1,5 +1,5 @@
 import app from './app.ui'
-// import '#/static/'
+import '#/static/css/box.less'
 
 
 let options = {
