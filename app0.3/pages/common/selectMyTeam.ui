@@ -10,7 +10,6 @@
         </ui-col>
         <ui-col vertical-align="middle" align="right" space-right="10" width="70" bindtap="share">
           <ui-icon type="share2" size="18" color="#262626"></ui-icon>
-          123
         </ui-col>
       </ui-row>
     </ui-nav-bar>
@@ -24,9 +23,7 @@
     <!-- <ui-fixed-view style="z-index:99" top="60" right="50">
       <ui-button type="primary" bindtap="share">分享</ui-button>
     </ui-fixed-view> -->
-    
-    <ui-mask ui:model="{{shareMask}}" class="share_mask" 
-    hide-delay="400" top="0" blur="light" bindshow="maskShow" bindtap="columnHide">
+    <ui-mask ui:model="{{shareMask}}" class="share_mask" hide-delay="400" top="0" blur="light" bindshow="maskShow" bindtap="columnHide">
       <ui-view class="column_wrap {{ className }}">
 
         <ui-view class="column_content" ui:for="{{ shareColumn }}" ui:for-index="index" style="{{{ 'animation-duration':animationDuration[index] }}}" bindtap="maskHide(item.share)">

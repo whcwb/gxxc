@@ -1,25 +1,77 @@
 <template>
-  <ui-page>
-      <!-- <ui-image
-      src="http://images.uileader.com/20171117/a1fa37d0-fbd7-4316-be27-1136a97b459b.jpg"
-      height="{{ imgHeight }}"
-      load-effect="fade"
-      ></ui-image> -->
-    <ui-scroll-view
-        scroll-y
-    height="{{height}}"
-    pull-down="{{ pullDown }}"
-    enable-reach-bottom-load ="{{loadMore}}"
-    on-load-more="{{ handleLoadMore }}">
+  <ui-page style="background:#f2f2f2">
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'background':'linear-gradient(to right, #4075FF 10% ,#29B6FD 80%, #32A8FE 100%)'} }}">
+        <ui-row height="46">
+          <ui-col width="10"></ui-col>
+          <ui-col vertical-align="middle" align="center">
+            <ui-view style="width:100%">
+              <ui-input ui:model="{{ searchVal }}" 
+              style="back"
+              bindinput="handleInput" placeholder="监听input事件"></ui-input>
+            </ui-view>
+          </ui-col>
+          <ui-col width="10"></ui-col>
+          <ui-col vertical-align="middle" align="center"  width="70" bindtap="selt">
+              <ui-view bindtap="showMask=true" style="color:#fff;font-weight: 700;">
+                {{selectVal.txt}}
+              </ui-view>
+          </ui-col>
+          <ui-col width="10"></ui-col>
+        </ui-row>
+    </ui-nav-bar>
+
+
+    <ui-scroll-view scroll-y height="{{height}}" pull-down="{{ pullDown }}" pull-up="{{ pullUp }}" enable-reach-bottom-load ="{{loadMore}}" >
       <ui-view class="content_list">
-        <ui-view ui:for="{{ items }}" class="{{{'grey-bg': index % 2 == 0}}}">
-          {{ item }}
+        <ui-view style="background:#ffffff"
+         ui:for="{{ items }}" class="{{{'grey-bg': index % 2 == 0}}}">
+          <ui-row height="100" space-bottom="10">
+            <ui-col span="3" align="center" vertical-align="middle">
+                <ui-image src="../static/img/home/car0000.png" 
+                 width="80" height="80"></ui-image>
+            </ui-col>
+            <ui-col span="9">
+                <ui-row space-top='10' height="50">
+                    <ui-col span="6">
+                      王小明
+                    </ui-col>
+                    <ui-col span="5" align="right">
+                      18812345678
+                    </ui-col>
+                </ui-row>
+                <ui-row height="50">
+                    <ui-col span="4">
+                      是否缴费
+                    </ui-col>
+                    <ui-col span="4" align="left">
+                      用户类型
+                    </ui-col>
+                    <ui-col span="3" align="right">
+                      用户级别
+                    </ui-col>
+                </ui-row>
+            </ui-col>
+          </ui-row>
+          
         </ui-view>
       </ui-view>
-    <ui-view style="width:200px;margin:0 auto;">
-      <ui-divider ui:show="{{!loadMore}}">没有新数据了</ui-divider>
-    </ui-view>
+      <ui-view style="width:200px;margin:0 auto;">
+        <ui-divider ui:show="{{!loadMore}}">没有新数据了</ui-divider>
+      </ui-view>
     </ui-scroll-view>
+
+    <ui-mask ui:model="showMask">
+      <ui-view class="selectList box_row_list" style="height:100%;background:#ffffff">
+        <ui-view class="selectItem" :class="index%3==0? 'bc_green' : index%3==1 ? 'bc_red' : 'bc_blue'"  
+                 ui:for="{{selectList}}"
+                 bindtap="getSeltItem(item,index)">
+                 <ui-view class="selectItemTxT">
+                    {{item.txt}}
+                 </ui-view>
+        </ui-view>
+      </ui-view>
+    </ui-mask>
+
   </ui-page>
 </template>
 
@@ -28,21 +80,56 @@
     config: {
       navigationBarTitleText: "下拉与到底加载",
       disableScroll:true,
-      navigationBarBorderColor: "rgba(231, 231, 231, 0.6)",
-      navigationBarBackgroundColor:"#FFFFFF",
-      navigationBarTextStyle:"black",
-      navigationBarTextStyle:"black"
+      // navigationBarBorderColor: "rgba(231, 231, 231, 0.6)",
+      // navigationBarBackgroundColor:"#FFFFFF",
+      // navigationBarTextStyle:"black",
+      // navigationBarTextStyle:"black"
     },
     data () {
       return {
+        // Mask遮罩层
+        showMask:false,
+        selectVal:{
+          txt:'全部',
+          val:'07'
+        },
+        selectList:[{
+          txt:'一级用户',
+          val:'01',
+        },{
+          txt:'二级用户',
+          val:'02',
+        },{
+          txt:'学院',
+          val:'03',
+        },{
+          txt:'会员',
+          val:'04',
+        },{
+          txt:'已交费',
+          val:'05',
+        },{
+          txt:'未交费',
+          val:'06',
+        },{
+          txt:'全部',
+          val:'07',
+        }],
+        // Mask遮罩层END
+        searchVal:"",
         items: [],
         bottom: 30,
         height: ui.DEFAULT_CONTENT_HEIGHT,
-        imgHeight: parseInt(ui.WIN_WIDTH / 1125 * 628),
         pullDown: {
           distance: 50,
           onBegin: () => {},
           onActive: this.handleActive,
+          onAfter: this.handlePullDownAfter
+        },
+        pullUp:{
+          distance: 50,
+          onBegin: () => {},
+          onActive: this.handleLoadMore,
           onAfter: this.handlePullDownAfter
         },
         count:0,
@@ -50,6 +137,19 @@
       }
     },
     methods: {
+      selt(){//类别选择
+
+      },
+      handleInput(){//search收索
+
+      },
+      getSeltItem(item,index){
+        this.selectVal = item
+        this.showMask=false
+        console.log(item);
+        console.log(index);
+        
+      },
       handleLoadMore () {
         this.count ++
         if(this.count > 10){
@@ -86,6 +186,13 @@
             title: '处理下拉刷新'
           })
         }
+      },
+      handlePullUpAfter (flag) {
+        if (flag) {
+          ui.showToast({
+            title: '处理上拉刷新'
+          })
+        }
       }
     },
     mounted () {
@@ -98,4 +205,32 @@
 </script>
 
 <style lang="less">
+  .selectList{
+    padding: 50rpx;
+    .selectItem{
+      width:48%;
+      color: #fff;
+      text-align: center;
+      font-size: 45rpx;
+      font-weight: 700;
+      margin: 1%;
+      position: relative;
+      .selectItemTxT{
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%)
+      }
+    }
+  }
+  .bc_green{
+    background-color: #7CC422;
+  }
+  .bc_red{
+    background-color: #FFA060;
+  }
+  .bc_blue{
+    background-color: #46D1E4;
+  }
 </style>

@@ -7,7 +7,7 @@ export default {
       "pages/detail",      
       "pages/reg",
       "pages/studyCar"
-    ,"pages/myTeam"],
+    ,"pages/myTeam","pages/common/selectMyTeam"],
     "theme": {
       "theme-color": "#3399ff"
     },

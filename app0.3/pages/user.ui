@@ -1,18 +1,5 @@
 <template>
-    <ui-page >
-      <ui-nav-bar slot="nav-bar"  class="nav_bar">
-        <ui-row height="46">
-          <ui-col vertical-align="middle" align="center" width="50">
-            <ui-icon name="ring" size="24" color="#fff"></ui-icon>
-          </ui-col>
-          <ui-col vertical-align="middle" align="center">
-            <ui-view class="nav_title">我的</ui-view>
-          </ui-col>
-          <ui-col vertical-align="middle" align="center" width="50">
-            <ui-icon name="setting" size="24" color="#fff"></ui-icon>
-          </ui-col>
-        </ui-row>
-      </ui-nav-bar>
+    <ui-page top="0">
       <ui-view class="user_content">
         <ui-row height="150" class="header_top">
           <ui-col vertical-align="middle" align="center" width="90">
@@ -42,7 +29,7 @@
 <script>
 export default {
   config: {
-    navigationStyle: 'custom',
+    "navigationStyle": 'custom',
     navigationBarTextStyle: 'white',
     backgroundColor: '#F4F4F4'
   },
