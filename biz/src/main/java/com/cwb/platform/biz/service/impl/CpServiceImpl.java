@@ -128,9 +128,9 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
             cpJl.toString();
             String fyString="无";
             if(StringUtils.equals(entity.getCpYj(),"1")){
-                fyString+="分佣。一级"+(entity.getCpYjyj()/100)+"二级："+(entity.getCpRjyj()/100) ;
+                fyString+="分，一级"+(entity.getCpYjyj()/100)+"二级："+(entity.getCpRjyj()/100) ;
             }else {
-                fyString+="不分佣";
+                fyString+="不分";
             }
             fyString=""; // TODO: 2018/7/2 生产环境时需要去掉
             String parameter=fyString;

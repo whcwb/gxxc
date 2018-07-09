@@ -2,6 +2,7 @@ package com.cwb.platform.biz.util;
 
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.FileUtil;
+import com.cwb.platform.util.commonUtil.JsonUtil;
 import org.apache.commons.lang.StringUtils;
 
 import javax.imageio.ImageIO;
@@ -19,28 +20,54 @@ import java.util.Map;
  */
 public class ImgUtil {
     public static void main(String[] args) {
-        List<Map<String, String>> parameterlist=new ArrayList<>();
-        Map<String,String> map =new HashMap<String,String>();
-        map.put("fileType","img");
-        map.put("x","1");
-        map.put("y","1");
-        map.put("message","/Users/yangx/Desktop/img/logo/thtc.png");
-        parameterlist.add(map);
-        map =new HashMap<String,String>();
-        map.put("fileType","text");
-        map.put("x","100");
-        map.put("y","100");
-        map.put("message","杨强");
-        parameterlist.add(map);
-        map =new HashMap<String,String>();
-        map.put("fileType","text");
-        map.put("x","200");
-        map.put("y","200");
-        map.put("message","13311111111");
-        parameterlist.add(map);
-        ///Users/yangx/Desktop/img/logo/thtc.png
+        String jsonMapString="[{\"backdropImg\":\"/Users/yangx/Desktop/img/1.jpeg\",\"oracleId\":\"#oracleId#\",\"parameterlist\":[{\"fileType\":\"text\",\"x\":\"100\",\"y\":\"115\",\"message\":\"#userName#\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"text\",\"x\":\"100\",\"y\":\"145\",\"message\":\"#userDn#\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"text\",\"x\":\"150\",\"y\":\"170\",\"message\":\"#userZJH#\",\"textzt\":\"宋体\",\"textsize\":\"10\"}]},{\"backdropImg\":\"/Users/yangx/Desktop/img/2.jpeg\",\"oracleId\":\"#oracleId#\",\"parameterlist\":[]},{\"backdropImg\":\"/Users/yangx/Desktop/img/3.jpeg\",\"oracleId\":\"#oracleId#\",\"parameterlist\":[{\"fileType\":\"text\",\"x\":\"70\",\"y\":\"300\",\"message\":\"#addyyyy#\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"text\",\"x\":\"120\",\"y\":\"300\",\"message\":\"#addmm#\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"text\",\"x\":\"165\",\"y\":\"300\",\"message\":\"#adddd#\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"text\",\"x\":\"300\",\"y\":\"300\",\"message\":\"#addyyyy#\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"text\",\"x\":\"350\",\"y\":\"300\",\"message\":\"#addmm#\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"text\",\"x\":\"400\",\"y\":\"300\",\"message\":\"#adddd#\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"img\",\"x\":\"360\",\"y\":\"210\",\"message\":\"/Users/yangx/Desktop/img/logo/thtc.png\",\"textzt\":\"宋体\",\"textsize\":\"10\"},{\"fileType\":\"img\",\"x\":\"120\",\"y\":\"205\",\"message\":\"#userQm#\",\"textzt\":\"宋体\",\"textsize\":\"10\"}]}]";
+        jsonMapString=jsonMapString.replaceAll("#oracleId#","order2003");
+        jsonMapString=jsonMapString.replaceAll("#userName#","杨强");
+        jsonMapString=jsonMapString.replaceAll("#userDn#","133111111111");
+        jsonMapString=jsonMapString.replaceAll("#userZJH#","3200000000000000000");
+        jsonMapString=jsonMapString.replaceAll("#addyyyy#","2018");
+        jsonMapString=jsonMapString.replaceAll("#addmm#","08");
+        jsonMapString=jsonMapString.replaceAll("#adddd#","08");
+        jsonMapString=jsonMapString.replaceAll("#userQm#","/Users/yangx/Desktop/img/aaa.png");
 
-        generateCode("/Users/yangx/Desktop/img/out",parameterlist,"/Users/yangx/Desktop/img/1.jpeg","order13456");
+//#oracleId#  订单id
+//#userName#	用户姓名
+//#userDn#	用户手机
+//#userZJH#	用户证件号
+//#addyyyy#	订单创建时间 年
+//#addmm#		订单创建时间 月
+//#adddd#		订单创建时间 日
+//#userQm#	用户签名的地址。
+
+        List<Map<String,Object>> list=JsonUtil.toList(jsonMapString, Map.class);
+        for(Map<String,Object> m:list){
+            List<Map<String, String>> parameterlist=new ArrayList<>();
+            parameterlist= (List<Map<String, String>>) m.get("parameterlist");
+            //"backdropImg" -> "/Users/yangx/Desktop/img/1.jpeg"
+            generateCode("/Users/yangx/Desktop/img/out1",parameterlist,(String) m.get("backdropImg"),(String) m.get("oracleId"));//"oracleId" -> "order2003"
+        }
+//        List<Map<String, String>> parameterlist=new ArrayList<>();
+//        Map<String,String> map =new HashMap<String,String>();
+//        map.put("fileType","img");
+//        map.put("x","1");
+//        map.put("y","1");
+//        map.put("message","/Users/yangx/Desktop/img/logo/thtc.png");
+//        parameterlist.add(map);
+//        map =new HashMap<String,String>();
+//        map.put("fileType","text");
+//        map.put("x","100");
+//        map.put("y","100");
+//        map.put("message","杨强");
+//        parameterlist.add(map);
+//        map =new HashMap<String,String>();
+//        map.put("fileType","text");
+//        map.put("x","200");
+//        map.put("y","200");
+//        map.put("message","13311111111");
+//        parameterlist.add(map);
+//        ///Users/yangx/Desktop/img/logo/thtc.png
+//
+//        generateCode("/Users/yangx/Desktop/img/out",parameterlist,"/Users/yangx/Desktop/img/1.jpeg","order13456");
     }
 
     /**

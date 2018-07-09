@@ -10,20 +10,20 @@ import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.service.impl.CpServiceImpl;
 import com.cwb.platform.biz.service.impl.PtyhServiceImpl;
 import com.cwb.platform.biz.service.impl.UserServiceImpl;
+import com.cwb.platform.biz.util.ImgUtil;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
-import com.cwb.platform.util.commonUtil.DateUtils;
-import com.cwb.platform.util.commonUtil.IpUtils;
-import com.cwb.platform.util.commonUtil.MathUtil;
-import com.cwb.platform.util.commonUtil.WeixinUtils;
+import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.Subscribe;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -36,7 +36,9 @@ import tk.mybatis.mapper.common.Mapper;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 //import java.math.BigDecimal;
@@ -56,6 +58,11 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
     @Value("${wechat.pay.notify_url}")
     private String notifyUrl;
 
+    @Value("${userAgreementPath}")
+    private String userAgreementPath;
+    @Value("${staticPath}")
+    private String staticPath;
+
     @Autowired
     private BizOrderMapper entityMapper;
 
@@ -73,6 +80,11 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 
     @Resource(name = "wxPayService")
     private WxPayService wxService;
+
+    AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
+    public AppOrderServiceImpl() {
+        eventBus.register(this);
+    }
 
     @Override
     protected Mapper<BizOrder> getBaseMapper() {
@@ -231,6 +243,13 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 
         }
         if(payType){
+//            异步下发，生成签名
+            Map<String, Object> map = new HashMap<>();
+            map.put("ptyh", userSelect);//BizPtyh userSelect
+            map.put("bizCp", bizCp);//BizCp bizCp
+            map.put("order",newEntity);//BizOrder
+            eventBus.post(map);
+
             entityMapper.insert(newEntity);
             return ApiResponse.success(ret);
         }else{
@@ -244,6 +263,13 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         }
     }
 
+    /**
+     * 微信创建预支付
+     * @param order
+     * @param bizCp
+     * @param request
+     * @return
+     */
     public Map<String,Object> create(BizOrder order, BizCp bizCp,HttpServletRequest request) {
         try {
             WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();   //商户订单类
@@ -272,5 +298,75 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
             return map;
         }
 
+    }
+
+
+    @Subscribe
+    public void sendObject(Map<String, Object> map) {
+        payInfo.debug("进入异步通知开始 addOracle 生成协议 begin---");
+        try {
+//            map.put("ptyh", userSelect);//BizPtyh userSelect
+//            map.put("bizCp", bizCp);//BizCp bizCp
+//            map.put("order",newEntity);//BizOrder
+            BizPtyh user= (BizPtyh) map.get("ptyh");
+            BizCp bizCp= (BizCp) map.get("bizCp");
+            BizOrder order= (BizOrder) map.get("order");
+            String cpType=bizCp.getCpType();//获取产品类型（1、学费  2、补考费）必填
+            String cpXyJson=bizCp.getCpXyJson();
+            if(StringUtils.isNotEmpty(cpXyJson)){
+                String agreementImgList="";
+                String userQm=staticPath;
+                if (!userQm.endsWith("/")) {
+                    userQm += "/";
+                }
+
+                cpXyJson=cpXyJson.replaceAll("#oracleId#",order.getDdId());//订单ID
+                cpXyJson=cpXyJson.replaceAll("#userName#",user.getYhXm());//学员姓名
+                cpXyJson=cpXyJson.replaceAll("#userDn#",user.getYhZh());//演员手机
+                cpXyJson=cpXyJson.replaceAll("#userZJH#",user.getYhZjhm());//学员证件号
+                cpXyJson=cpXyJson.replaceAll("#addyyyy#",DateUtils.getToday("yyyy"));//订单创建的年   -MM-dd
+                cpXyJson=cpXyJson.replaceAll("#addmm#",DateUtils.getToday("MM"));//订单月
+                cpXyJson=cpXyJson.replaceAll("#adddd#",DateUtils.getToday("dd"));//订单日
+                cpXyJson=cpXyJson.replaceAll("#userQm#",userQm+order.getUserAutograph());//用户签字的图片
+
+
+                payInfo.debug("生成出来的JSON报文是："+cpXyJson);
+
+                List<Map<String,Object>> list=JsonUtil.toList(cpXyJson, Map.class);
+                for(Map<String,Object> m:list){
+                    List<Map<String, String>> parameterlist=new ArrayList<>();
+                    parameterlist= (List<Map<String, String>>) m.get("parameterlist");
+                    //"backdropImg" -> "/Users/yangx/Desktop/img/1.jpeg"
+                    Map<String,String> retMap=ImgUtil.generateCode(userAgreementPath,parameterlist,(String) m.get("backdropImg"),(String) m.get("oracleId"));//"oracleId" -> "order2003"
+                    if(StringUtils.equals(retMap.get("code"),"200")){
+                        agreementImgList+=retMap.get("fileUrl")+";";
+                    }
+                }
+                if(StringUtils.isNotEmpty(agreementImgList)){
+                    String[] imgFileUrl=agreementImgList.split(";");
+                    if(imgFileUrl!=null&&imgFileUrl.length>0){
+                        String imgURL=userAgreementPath;
+                        if (!imgURL.endsWith("/")) {
+                            imgURL += "/";
+                        }
+                        File imgFile=new File(imgURL+imgFileUrl[0]);
+                        String filePath=imgFile.getPath();
+                        String fileNames=FileUtil.getNamePart(filePath);
+                        filePath=filePath.replaceAll(fileNames,"");
+                        String pdfPate=(!filePath.endsWith("/")?filePath+="/":filePath)+order.getDdId()+".pdf";
+                        pdfPate=pdfPate.replaceAll(userAgreementPath,"");
+                        BizOrder newOrder=new BizOrder();
+                        newOrder.setDdId(order.getDdId());
+                        newOrder.setAgreementImgList(agreementImgList);
+                        newOrder.setAgreementPdfList(pdfPate);
+                        this.update(newOrder);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        payInfo.debug("进入异步通知开始 addOracle 生成协议 END---");
     }
 }

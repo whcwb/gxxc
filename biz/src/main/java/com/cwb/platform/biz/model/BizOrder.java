@@ -150,6 +150,17 @@ public class BizOrder implements Serializable {
     private String billContrastMsg;
 
 
+    /**
+     * 对账结果描述
+     */
+    @Column(name = "AGREEMENT_IMG_LIST")
+    private String agreementImgList;
+
+    /**
+     * 对账结果描述
+     */
+    @Column(name = "AGREEMENT_PDF_LIST")
+    private String agreementPdfList;
 
     /**
      * 用户等级
@@ -164,6 +175,22 @@ public class BizOrder implements Serializable {
     private BizPtyh userDetail;
 
     private static final long serialVersionUID = 1L;
+
+    public String getAgreementImgList() {
+        return agreementImgList;
+    }
+
+    public void setAgreementImgList(String agreementImgList) {
+        this.agreementImgList = agreementImgList;
+    }
+
+    public String getAgreementPdfList() {
+        return agreementPdfList;
+    }
+
+    public void setAgreementPdfList(String agreementPdfList) {
+        this.agreementPdfList = agreementPdfList;
+    }
 
     public String getBillContrastType() {
         return billContrastType;
