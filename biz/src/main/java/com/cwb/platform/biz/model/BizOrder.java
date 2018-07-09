@@ -138,6 +138,16 @@ public class BizOrder implements Serializable {
      */
     @Column(name = "USER_AUTOGRAPH")
     private String userAutograph;
+    /**
+     * 对账状态：0未对账      1、已对账      2、对账异常
+     */
+    @Column(name = "BILL_CONTRAST_TYPE")
+    private String billContrastType;
+    /**
+     * 对账结果描述
+     */
+    @Column(name = "BILL_CONTRAST_MSG")
+    private String billContrastMsg;
 
 
 
@@ -153,9 +163,23 @@ public class BizOrder implements Serializable {
     @Transient
     private BizPtyh userDetail;
 
-
-
     private static final long serialVersionUID = 1L;
+
+    public String getBillContrastType() {
+        return billContrastType;
+    }
+
+    public void setBillContrastType(String billContrastType) {
+        this.billContrastType = billContrastType;
+    }
+
+    public String getBillContrastMsg() {
+        return billContrastMsg;
+    }
+
+    public void setBillContrastMsg(String billContrastMsg) {
+        this.billContrastMsg = billContrastMsg;
+    }
 
     public String getUserAutograph() {
         return userAutograph;

@@ -1,8 +1,10 @@
 package com.cwb.platform.biz.service.impl;
 
 
+import com.cwb.platform.biz.mapper.BizBillContrastMapper;
 import com.cwb.platform.biz.mapper.BizOrderMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
+import com.cwb.platform.biz.model.BizBillContrast;
 import com.cwb.platform.biz.model.BizCp;
 import com.cwb.platform.biz.model.BizOrder;
 import com.cwb.platform.biz.model.BizYjmx;
@@ -12,6 +14,8 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
+import com.github.binarywang.wxpay.bean.result.WxPayBillBaseResult;
+import com.github.binarywang.wxpay.bean.result.WxPayBillResult;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +38,12 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
 
     @Autowired
     private BizOrderMapper orderMapper;
+    @Autowired
+    private OrderService oracleService;
+
+    @Autowired
+    private BizBillContrastMapper billContrastMapper;
+
 
     @Autowired
     private PtyhService pyhtService;
@@ -93,35 +103,33 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
     }
 
 
-    /**
-     * 订单处理定时任务
-     */
-    @Override
-    public void orderFulfilJob(){
-        final List<BizOrder> list = orderFulfil();
-        for(BizOrder l:list){
-            String value = redisDao.boundValueOps("order_"+l.getDdId()).get();
-            if(StringUtils.isEmpty(value)){
-                try {
-                    ApiResponse<String> ret=updateOrderFulfilDispose(l);
-                    if(!ret.isSuccess()){
-                        log.debug(ret.getMessage());
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                    log.debug("订单："+l.getDdId()+"处理异常"); // TODO: 2018/6/8 数据库异常，需要回写到定时任务中
-                }
-                finally {
-                    redisDao.delete("order_"+l.getDdId());
-                }
-
-            }else{
-                log.debug("订单编号："+l.getDdId()+"已被其它应用于"+value+"处理。系统跳过处理");
-            }
-        }
-
-
-    }
+//    /**
+//     * 订单处理定时任务
+//     */
+//    @Override
+//    public void orderFulfilJob(){
+//        final List<BizOrder> list = orderFulfil();
+//        for(BizOrder l:list){
+//            String value = redisDao.boundValueOps("order_"+l.getDdId()).get();
+//            if(StringUtils.isEmpty(value)){
+//                try {
+//                    ApiResponse<String> ret=updateOrderFulfilDispose(l);
+//                    if(!ret.isSuccess()){
+//                        log.debug(ret.getMessage());
+//                    }
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                    log.debug("订单："+l.getDdId()+"处理异常"); // TODO: 2018/6/8 数据库异常，需要回写到定时任务中
+//                }
+//                finally {
+//                    redisDao.delete("order_"+l.getDdId());
+//                }
+//
+//            }else{
+//                log.debug("订单编号："+l.getDdId()+"已被其它应用于"+value+"处理。系统跳过处理");
+//            }
+//        }
+//    }
 
 
 
@@ -304,5 +312,150 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
         orderMapper.updateByPrimaryKeySelective(newBizOrder);
         log.debug("5、更新订单主表。完成订单的分派");
         return retType ? ApiResponse.success() : ApiResponse.fail(newBizOrder.getJobDescribe());
+    }
+
+    /**
+     * 系统对账处理
+     * 1、
+     * @param billResult
+     * @return
+     */
+    public List<String> billContrast(WxPayBillResult billResult,String billDate){
+        List<String> ret=new ArrayList<String>();
+        log.debug("1、开始处理时间为："+billDate+"的对账数据。共"+billResult.getTotalRecord()+"笔。总交易额:"+billResult.getTotalFee() );
+        List<WxPayBillBaseResult> billResultList=billResult.getWxPayBillBaseResultLst();
+        List<BizBillContrast> addBizBillList=new ArrayList<BizBillContrast>();
+        String orderList="";//待缴费状态的订单
+        if(billResultList!=null && billResultList.size()>0){
+            int i=1;
+            for(WxPayBillBaseResult l:billResultList){
+                BizBillContrast bizBill= new BizBillContrast();
+                bizBill.setId(genId());
+                bizBill.setTradeTime(billDate);
+                bizBill.setOpenId(l.getOpenId());
+                bizBill.setTradeType(l.getTradeType());//交易类型   JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里  MICROPAY--刷卡支付，刷卡支付有单独的支付接口，不调用统一下单接口
+                bizBill.setTradeState(l.getTradeState());//交易状态
+                bizBill.setTotalFee(l.getTotalFee());//总金额(元)
+                bizBill.setRefundId(l.getRefundId());//微信退款单号
+                bizBill.setRefundChannel(l.getRefundChannel());//退款类型
+                bizBill.setPatType("2");//支付通道(1、支付宝 2、微信)
+                bizBill.setOriginalMessage(l.toString());//对账文件的原始报文
+                bizBill.setRefundFee(l.getSettlementRefundFee());//退款金额
+                bizBill.setOrderId(l.getOutTradeNo());
+
+                Boolean bizType=true;
+                String errorMessage="操作成功";
+                log.debug("2-"+i+"、开始处理第："+i+"条数据");
+                log.debug("2-"+i+"、对账的文件："+l.toString());
+                String transactionId=l.getTransactionId();
+                String orderId=l.getOutTradeNo();//
+
+                BizOrder newBizOrder=new BizOrder();
+                newBizOrder.setDdId(orderId);
+
+                SimpleCondition condition = new SimpleCondition(BizOrder.class);
+                condition.eq(BizOrder.InnerColumn.ddZfpz.name(), transactionId);//支付状态（0,待支付 1、支付成功  2、支付失败）
+                condition.eq(BizOrder.InnerColumn.ddId.name(), orderId);//定时任务处理状态(0、待处理 1、处理成功 2、处理失败 )
+                List<BizOrder> list = orderMapper.selectByExample(condition);//
+                if (list == null || list.isEmpty()) {
+                    bizType=false;
+                    errorMessage="微信支付流水ID："+transactionId+"未找到这笔订单";
+                    log.debug("2-"+i+"、对账的文件："+l.toString());
+                }
+                if(bizType) {
+                    BizOrder order = list.get(0);
+                    String billContrastType = order.getBillContrastType();//对账状态：0未对账      1、已对账      2、对账异常
+//                    对账成功的，就跳过处理
+                    if (StringUtils.equals(billContrastType, "1")) {
+                        bizType = false;
+                        errorMessage = "微信支付流水ID：" + transactionId + " 该订单已经对账成功 ，不需要再次对账处理";
+                        log.debug("2-" + i + "、" + errorMessage);
+                        newBizOrder.setBillContrastType("2");
+                        newBizOrder.setBillContrastMsg(errorMessage);
+                        orderMapper.updateByPrimaryKeySelective(newBizOrder);
+                    } else {
+                        //交易类型   JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里  MICROPAY--刷卡支付，刷卡支付有单独的支付接口，不调用统一下单接口
+                        String tradeType = l.getTradeType();
+                        //交易状态
+                        //                SUCCESS: 对应收入 REFUND: 对应支出-退款 REVOKED: 对应支出-撤销
+                        //                这里有几点注意：
+                        //                1、账单的交易状态，和订单的交易状态没有关系，发生过退款的订单，在这里依然有一条success
+                        //                交易状态不会变更 2、只有发生过支付（进账）的订单，在撤销后才会发生支出并出现在对账单里。
+                        String tradeState = l.getTradeState();
+                        String totalFee = l.getTotalFee();//交易金额
+                        String settlementRefundFee = l.getSettlementRefundFee();//退款金额
+                        if (StringUtils.equals(tradeState, "SUCCESS")) {//处理成功
+                            if (MathUtil.stringToDouble(totalFee) - order.getDdZfje() / 100 != 0) {
+                                bizType = false;
+                                errorMessage = "微信支付流水ID：" + transactionId + " 金额与订单中金额(" + (order.getDdZfje() / 100) + ")不匹配";
+                                log.debug("2-" + i + "、对账的文件：" + l.toString());
+                                newBizOrder.setBillContrastType("2");
+                                newBizOrder.setBillContrastMsg(errorMessage);
+                                orderMapper.updateByPrimaryKeySelective(newBizOrder);
+                            } else {
+                                String ddZt = order.getDdZt();//获取订单状态(ZDCLK0037 1、待缴费 2、已缴费 3、已退费)
+                                if (StringUtils.equals(ddZt, "1") && StringUtils.equals(bizBill.getRefundFee(), "0.00")) {
+                                    orderList += order.getDdId() + ",";
+                                }
+                                //修改订单表
+                                newBizOrder.setBillContrastType("1");
+                                newBizOrder.setBillContrastMsg("");
+                                orderMapper.updateByPrimaryKeySelective(newBizOrder);
+                            }
+                        } else if (StringUtils.equals(tradeState, "REVOKED") || StringUtils.equals(tradeState, "REFUND")) {//撤销
+                            //后台退费后，这里会有撤销操作。
+                            if (StringUtils.isNotEmpty(orderList)) {
+                                orderList = orderList.replaceAll(order.getDdId() + ",", "");
+                            }
+                            errorMessage = "微信支付流水ID：" + transactionId + " 于" + l.getTradeTime() + "产生了退款操作。请紧急联系管理人员进行核实";
+                            log.debug("2-" + i + "、" + errorMessage);
+                            newBizOrder.setBillContrastType("2");
+                            newBizOrder.setBillContrastMsg(errorMessage);
+                            orderMapper.updateByPrimaryKeySelective(newBizOrder);
+                        }
+
+                    }
+                }
+
+                log.debug("2-"+i+"、第："+i+"条数据，对账结果");
+
+                if(bizType){
+                    bizBill.setDisposeType("1");
+                }else {
+                    bizBill.setDisposeType("0");
+                }
+                bizBill.setDisposeMessage(errorMessage);
+                addBizBillList.add(bizBill);
+
+                if(StringUtils.isNotEmpty(orderList)){
+                    try {
+                        String [] orderLists=orderList.split(",");
+                        if(orderLists!=null&&orderLists.length>0){
+                            for(String orde:orderLists){
+                                BizOrder order=new BizOrder();
+                                order.setDdId(orde);
+                                order.setPayMoney(l.getTotalFee());//支付宝，实际支付的金额
+                                order.setDdZftd("2");//设置支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
+                                ApiResponse<String>  res= oracleService.updateOrderPayTpye(order);
+                                BizOrder neBizOrder=new BizOrder();
+                                neBizOrder.setDdId(orde);
+                                if(res.isSuccess()) {
+                                    neBizOrder.setBillContrastMsg("该订单是由对账业务设置成支付成功的。");
+                                }else{
+                                    neBizOrder.setBillContrastMsg("该订单是由对账业务操作，对账业务修改订单状态时，修改失败 失败原因："+res.getMessage());
+                                }
+                                orderMapper.updateByPrimaryKeySelective(neBizOrder);
+                            }
+                        }
+                    }catch (Exception e){}
+                }
+            }
+        }
+
+        if(addBizBillList!=null && addBizBillList.size()>0){
+            billContrastMapper.insertBatch(addBizBillList);
+        }
+        log.debug(billDate+"对账业务数据处理结束");
+        return ret;
     }
 }
