@@ -1,47 +1,31 @@
 <template>
   <ui-page style="overflow-y: hidden;">
       <ui-view class=box_col style="{{ { height: height+ 'px'} }}">
-          <ui-view class="tabSty" bindchange="">
-              <ui-segment>
-                  <ui-segment-item>
-                      全部
-                  </ui-segment-item>
-                  <ui-segment-item>
-                      一级用户
-                  </ui-segment-item>
-                  <ui-segment-item>
-                      二级用户
-                  </ui-segment-item>
-              </ui-segment>
-          </ui-view>
           <ui-view class="box_col_auto">
               <ui-scroll-view scroll-y height="{{height}}" pull-down="{{ pullDown }}" pull-up="{{ pullUp }}">
                 <ui-view class="content_list">
                   <ui-view style="background:#ffffff"
                   ui:for="{{ items }}">
-                    <ui-row height="100" space-bottom="10">
-                      <ui-col span="3" align="center" vertical-align="middle">
-                          <ui-image src="../../static/img/home/car0000.png" 
-                          width="80" height="80"></ui-image>
+                    <ui-row height="60" space-bottom="10">
+                      <ui-col span="2" align="center" vertical-align="middle">
+                          <ui-image src="../../static/img/bank/zd1.png" 
+                          width="40" height="40"></ui-image>
                       </ui-col>
                       <ui-col span="9">
                           <ui-row space-top='10' height="50">
                               <ui-col span="6">
-                                王小明
+                                费用类型
                               </ui-col>
                               <ui-col span="5" align="right">
-                                18812345678
+                                收支
                               </ui-col>
                           </ui-row>
                           <ui-row height="50">
-                              <ui-col span="4">
-                                是否缴费
+                              <ui-col span="6">
+                                创建时间
                               </ui-col>
-                              <ui-col span="4" align="left">
-                                用户类型
-                              </ui-col>
-                              <ui-col span="3" align="right">
-                                用户级别
+                              <ui-col span="5" align="right">
+                                备注
                               </ui-col>
                           </ui-row>
                       </ui-col>
@@ -64,7 +48,7 @@
     config: {
       navigationBarBackgroundColor:"#26a2ff",
       navigationBarTextStyle:"white",
-      navigationBarTitleText:"我的团队",
+      navigationBarTitleText:"我的账单",
       title:'我的团队',
       backgroundColor:'#f2f2f2',
       delay:false,//延迟加载

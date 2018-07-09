@@ -15,7 +15,7 @@
               听说邀请好友还有现金，速速围观
             </ui-view>
             <ui-view class="funcFloat box_row">
-                <ui-view class="box_row_100">
+                <ui-view class="box_row_100" bindtap="goBill">
                   <ui-view class="itemVal">
                       0元
                   </ui-view>
@@ -172,6 +172,13 @@ export default {
       ui.navigateTo({
         url: '/pages/center/myTeam'
       })
+    },
+    goBill(){
+      ui.navigateTo(
+        {
+          url:'/pages/center/bill'
+        }
+      )
     }
 
   },

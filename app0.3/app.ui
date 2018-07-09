@@ -10,7 +10,7 @@ export default {
       "pages/myTeam",
       "pages/common/selectMyTeam",
       "pages/center/myTeam",
-      ],
+      "pages/center/bill"],
     "theme": {
       "theme-color": "#3399ff"
     },
