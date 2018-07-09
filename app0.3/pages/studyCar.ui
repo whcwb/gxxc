@@ -27,7 +27,8 @@
         </ui-view>
         <ui-view slot="sticky">
           <ui-row height="46" class="nav_top">
-            <ui-col vertical-align="middle" align="center" bindtap="openPopup(index)" ui:for="{{ navList }}" class="{{ item.active }}">
+            <ui-col vertical-align="middle" align="center" bindtap="openPopup(index)" 
+            ui:for="{{ navList }}" class="{{ item.active }}">
               <ui-row height="46">
                 <ui-col vertical-align="middle" align="right" space-right="5">
                   <ui-view>
@@ -57,7 +58,8 @@
     <ui-popup ui:model="{{show1 }}" position="top" top="{{ popupTop }}" height="{{ scroHeight }}" mask-style="{{{ top: popupTop+'px' }}}" bindhide="popHide" bindshow="popShow">
       <ui-view class="top_pop">
         <ui-scroll-view scroll-y="scroll-y" height="{{scroHeight}}">
-          <ui-check-list max="1" label-position="left" options="{{ foodList }}" type="plain" ui:model="{{ checklist1 }}" bindchange="change" color="#3AC3B0"></ui-check-list>
+          <ui-check-list max="1" label-position="left" 
+          options="{{ foodList }}" type="plain" ui:model="{{ checklist1 }}" bindchange="change" color="#3AC3B0"></ui-check-list>
         </ui-scroll-view>
       </ui-view>
     </ui-popup>
