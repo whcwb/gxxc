@@ -21,10 +21,10 @@
     </ui-nav-bar>
 
 
-    <ui-scroll-view scroll-y height="{{height}}" pull-down="{{ pullDown }}" pull-up="{{ pullUp }}" enable-reach-bottom-load ="{{loadMore}}" >
+    <ui-scroll-view scroll-y height="{{height}}" pull-down="{{ pullDown }}" pull-up="{{ pullUp }}">
       <ui-view class="content_list">
         <ui-view style="background:#ffffff"
-         ui:for="{{ items }}" class="{{{'grey-bg': index % 2 == 0}}}">
+         ui:for="{{ items }}">
           <ui-row height="100" space-bottom="10">
             <ui-col span="3" align="center" vertical-align="middle">
                 <ui-image src="../static/img/home/car0000.png" 
@@ -163,7 +163,6 @@
             this.bottom += 10
           }, 1500)
         }
-
       },
       handleActive () {
         // 将返回的请求接管，实现让请求结果来控制下拉刷新的状态
