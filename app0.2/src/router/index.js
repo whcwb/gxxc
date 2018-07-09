@@ -15,8 +15,8 @@ router.beforeEach((to, from, next) => {
 
   let openid = localStorage.getItem("openid");
   let ISLOGIN = sessionStorage.getItem("ISLOGIN");
-    openid = "123123";
-    ISLOGIN=true;
+    // openid = "123123";
+    // ISLOGIN=true;
 
   let userToken = localStorage.getItem("userMess");
   //if(openid!=null && userToken){ ISLOGIN=true;}
