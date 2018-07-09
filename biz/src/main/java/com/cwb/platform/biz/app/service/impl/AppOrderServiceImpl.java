@@ -336,7 +336,9 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
                 for(Map<String,Object> m:list){
                     List<Map<String, String>> parameterlist=new ArrayList<>();
                     parameterlist= (List<Map<String, String>>) m.get("parameterlist");
-                    //"backdropImg" -> "/Users/yangx/Desktop/img/1.jpeg"
+                    // TODO: 2018/7/10 这里为了安全，需要将所有用户有关的信息，全部做隐藏。 staticPath生成的图片，需要将用户证件号码给隐藏
+//                    Map<String,String> retMap=ImgUtil.generateCode(staticPath,parameterlist,(String) m.get("backdropImg"),(String) m.get("oracleId"));//"oracleId" -> "order2003"
+//                    ImgUtil.generateCode(userAgreementPath,parameterlist,(String) m.get("backdropImg"),(String) m.get("oracleId"));//"oracleId" -> "order2003"
                     Map<String,String> retMap=ImgUtil.generateCode(userAgreementPath,parameterlist,(String) m.get("backdropImg"),(String) m.get("oracleId"));//"oracleId" -> "order2003"
                     if(StringUtils.equals(retMap.get("code"),"200")){
                         agreementImgList+=retMap.get("fileUrl")+";";
