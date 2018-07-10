@@ -20,6 +20,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,24 +135,69 @@ public class JobApi {
      * 详情请见: <a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">下载对账单</a>
      * </pre>
      *
-     * @param billDate   对账单日期 bill_date	下载对账单的日期，格式：20140603
-     * @param billType   账单类型	bill_type	ALL，返回当日所有订单信息，默认值，SUCCESS，返回当日成功支付的订单，REFUND，返回当日退款订单
-     * @param deviceInfo 设备号	device_info	非必传参数，终端设备号
+     *  billDate   对账单日期 bill_date	下载对账单的日期，格式：20140603
+     *  billType   账单类型	bill_type	ALL，返回当日所有订单信息，默认值，SUCCESS，返回当日成功支付的订单，REFUND，返回当日退款订单
+     *  deviceInfo 设备号	device_info	非必传参数，终端设备号
      * @return 保存到本地的临时文件
      */
     @PostMapping("/downloadBill")
-    public ApiResponse<List<String>> downloadBill(@RequestParam String billDate,
-                                        @RequestParam String billType,
-                                        @RequestParam(name = "deviceInfo",required=false) String deviceInfo) throws WxPayException {
+    public ApiResponse<List<String>> downloadBill(@RequestParam String billDate,@RequestParam(required = false) String key, @RequestParam(value = "token",required = false) String token) throws WxPayException {
         List<String> retMessage=new ArrayList<String>();
-         WxPayBillResult billResult=wxService.downloadBill(billDate, billType, "", deviceInfo);
+        ApiResponse<List<String>> res = new ApiResponse<List<String>>();
+        if(StringUtils.isBlank(token)){
+            if(StringUtils.isBlank(key)){
+                res.setMessage("密钥为空");
+                return res;
+            }
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            String host = request.getRemoteHost();
+            if(StringUtils.indexOf(jobHost,host) < 0 ){
+                res.setMessage("ip异常");
+                return res;
+            }
+            //MD5Util.MD5Encode(jobKey + DateUtils.getDateStr(new Date(), "yyyy-MM-dd HH:mm"),null);
+            DateTime dateTime = DateTime.now();
+            DateTime minusMinutes = dateTime.minusMinutes(1);
+            String encode = MD5Util.MD5Encode(jobKey + DateUtils.getDateStr(dateTime.toDate(), "yyyy-MM-dd HH:mm"), null);
+            String encode1 = MD5Util.MD5Encode(jobKey + DateUtils.getDateStr(minusMinutes.toDate(), "yyyy-MM-dd HH:mm"), null);
+            if(!StringUtils.equals(key,encode) && !StringUtils.equals(key,encode1)){
+                res.setMessage("不是当前的任务");
+                return res;
+            }
+        }else {
+            if(!StringUtils.equals(jobToken,token)){
+                res.setMessage("token错误");
+                return res;
+            }
+        }
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        if(StringUtils.isBlank(billDate)) {
+
+            LocalDateTime time = LocalDateTime.now();
+            LocalDateTime dateTime = time.minusDays(13);
+            billDate = dateTime.format(dateTimeFormatter);
+        }else{
+            try {
+                LocalDate.parse(billDate,dateTimeFormatter);
+            }catch (DateTimeParseException e){
+                res.setMessage("所传日期格式不对");
+                return res;
+            }
+        }
+        String billType = "ALL";
+        String deviceInfo = "";
+
+        WxPayBillResult billResult=wxService.downloadBill(billDate, billType, "", deviceInfo);
          if(billResult!=null&&billResult.getWxPayBillBaseResultLst().size()>0){
              retMessage= jobService.billContrast(billResult,billDate);
          }
 
-        ApiResponse<List<String>> res = new ApiResponse<List<String>>();
+
         res.setMessage("操作成功");
         res.setResult(retMessage);
         return res;
     }
+
+
+
 }

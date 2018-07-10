@@ -201,10 +201,10 @@ public class AppPtyhController extends AppUserBaseController {
         FileUtil.fileExistsDir(qrCodeFileUrl+"/user_autograph/");
         Boolean type=Base64TestUtil.generateImage(base64Data,qrCodeFileUrl+fileUrl);
         if(type){
-            BizPtyh newPtyh=new BizPtyh();
+            /*BizPtyh newPtyh=new BizPtyh();
             newPtyh.setYhAutograph(fileUrl);
             newPtyh.setId(user.getId());
-            service.update(newPtyh);
+            service.update(newPtyh);*/
 
             ApiResponse<String> res = new ApiResponse<>();
             res.setMessage("操作成功");
