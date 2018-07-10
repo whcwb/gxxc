@@ -3,7 +3,8 @@
     <ui-view class="grid_box backF2">
         <!-- module 1 -->
         <ui-view class="demo demo3">
-            <ui-ex-swiper id="swiperdotsstyle" autoplay="{{ autoplay }}" pagination centered-slides loop space-between="5" slides-per-view="auto">
+            <ui-ex-swiper id="swiperdotsstyle" autoplay="{{ autoplay }}" 
+            pagination centered-slides loop space-between="5" slides-per-view="auto">
                 <ui-ex-swiper-item ui:for="{{items}}" ui:for-item="item" ui:for-index="index">
                   <ui-image src="{{ item.src }}" mode="simple"></ui-image>
                 </ui-ex-swiper-item>
@@ -48,6 +49,7 @@
                 </ui-row>
             </ui-view>
             <ui-view slot="sticky">
+
               <ui-row class="title">
                     <ui-col>推荐</ui-col>
                     <ui-col
@@ -58,7 +60,7 @@
           </ui-sticky>
         </ui-view>
         <ui-view>
-          <ui-view ui:for="{{ itemlist }}" class='xlcList box_row'>
+          <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc">
               
               <ui-view class="xlcItemImg">
                 <ui-image src="../static/img/home/car0000.png" width="100"></ui-image>
@@ -101,12 +103,9 @@
 
     <ui-mask ui:if="{{showMask}}" ui:model="showMask" effect="scale-in" hide-on-tap=true hide-on-touch=true
       bindtap="closemask">
-      <!-- bindtap="handleShowMask9(false)" -->
-        <!-- <ui-view class="box_col" style="position: relative;"> -->
             <ui-image 
               style="position: absolute;top: 45%;left: 50%;transform: translate(-50%,-50%);"
               src="http://www.520xclm.com:8001//QRCode/20180625/460765622230319888.png" width="300"></ui-image>
-        <!-- </ui-view> -->
     </ui-mask>
 
   </ui-page>
@@ -116,6 +115,7 @@
 export default {
   config: {
     "navigationStyle": 'custom',
+    delay:false,//延迟加载
   },
   data () {
     return {
@@ -170,13 +170,20 @@ export default {
     },
     goMyTeam(){
       ui.navigateTo({
-        url: '/pages/center/myTeam'
+        url: 'center/myTeam'
       })
     },
     goBill(){
       ui.navigateTo(
         {
-          url:'/pages/center/bill'
+          url:'center/bill'
+        }
+      )
+    },
+    goXlc(){
+      ui.navigateTo(
+        {
+          url:'home/xlcMess'
         }
       )
     }

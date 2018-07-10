@@ -1,27 +1,94 @@
 <template>
-    <ui-page top="0">
-      <ui-view class="user_content">
-        <ui-row height="150" class="header_top">
-          <ui-col vertical-align="middle" align="center" width="90">
-            <ui-view class="head_portrait">
+    <ui-page top="0" style="overflow-y: hidden;">
+      <ui-view class="box_col" style="{{ { height: pageHeight(46)+ 'px'} }}">
+            <ui-view class="userTop">
+              <ui-row>
+                <ui-col span="3" align="left" 
+                  vertical-align="middle" bindtap="goMyMess">
+                    <ui-view class="pageHello">
+                      <ui-image src="../static/img/login/logo.png"
+                          width="60"
+                          height="60"></ui-image> 
+                    </ui-view>  
+                </ui-col>
+                <ui-col span="6" align="left" vertical-align="middle" space-left="20">
+                  <ui-view class="pageHello">刘显斌</ui-view>
+                  <ui-view class="pageHello">159****3566</ui-view>
+                </ui-col>
+                <ui-col span="3" align="right" 
+                vertical-align="middle" space-right="20"
+                bindtap="showMask=true">
+                  <ui-icon type="user" size="36" color="#fff"></ui-icon>
+                </ui-col>
+              </ui-row>
             </ui-view>
-            <ui-image
-            src="{{ portraitUrl }}"
-            mode='aspectFill'
-            width="60"
-            height="60"
-            class="head_portrait"
-            ></ui-image>
-          </ui-col>
-          <ui-col vertical-align="middle" align="left">
-            <ui-view class="login">立即登录</ui-view>
-            <ui-view class="login_after">登录后可享受更多特权</ui-view>
-          </ui-col>
-          <ui-col vertical-align="middle" align="right" width="50" space-right="15">
-            <ui-icon name="arrow-right" size="18" color="#fff"></ui-icon>
-          </ui-col>
-        </ui-row>
-        
+
+            <ui-view class="userItem marB25">
+              <ui-row>
+                <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                  <ui-view>0元</ui-view>
+                  <ui-view>账户余额</ui-view>
+                </ui-col>
+                <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                  <ui-view>0元</ui-view>
+                  <ui-view>邀请奖励</ui-view>
+                </ui-col> 
+                <ui-col span="3" align="left" vertical-align="middle" space-left="40">
+                  <ui-view>
+                    <ui-button type="primary" size="default" bindtap="goProductList">缴费</ui-button>
+                  </ui-view>
+                </ui-col>
+                <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                  <ui-view>
+                    <ui-button type="primary" size="default" bindtap="tx">提现</ui-button>
+                  </ui-view>
+                </ui-col>
+              </ui-row>
+            </ui-view>
+            
+
+            <ui-view class="userItem marB5" bindtap="goBill">
+              <ui-row>
+                <ui-col span="6" align="left" vertical-align="middle" space-left="20">
+                  0 我的账单
+                </ui-col>
+                <ui-col span="6" align="right" vertical-align="middle" space-right="20">
+                  >
+                </ui-col>
+              </ui-row>
+            </ui-view>
+
+            <ui-view class="userItem marB5"  bindtap="goMyTeam">
+              <ui-row>
+                <ui-col span="6" align="left" vertical-align="middle" space-left="20">
+                  0 我的团队
+                </ui-col>
+                  <ui-col span="6" align="right" vertical-align="middle" space-right="20">
+                  >
+                </ui-col>
+              </ui-row>
+            </ui-view>
+
+            <ui-view class="userItem marB5" bindtap="goReallyname">
+              <ui-row>
+                <ui-col span="6" align="left" vertical-align="middle" space-left="20">
+                  0 实名认证
+                </ui-col>
+                  <ui-col span="6" align="right" vertical-align="middle" space-right="20">
+                  已认证 >
+                </ui-col>
+              </ui-row>
+            </ui-view>
+
+
+            <ui-mask ui:if="{{showMask}}" ui:model="showMask" effect="scale-in" hide-on-tap=true hide-on-touch=true
+              bindtap="showMask = false">
+                    <ui-image 
+                      style="position: absolute;top: 45%;left: 50%;transform: translate(-50%,-50%);"
+                      src="http://www.520xclm.com:8001//QRCode/20180625/460765622230319888.png" width="300"></ui-image>
+            </ui-mask>
+
+
       </ui-view>
     </ui-page>
 </template>
@@ -29,44 +96,91 @@
 <script>
 export default {
   config: {
-    "navigationStyle": 'custom',
-    navigationBarTextStyle: 'white',
-    backgroundColor: '#F4F4F4'
+    navigationStyle: 'custom',
+    navigationBarTitleText:"个人中心",
+    title:'个人中心',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
   },
   data () {
     return {
+      showMask:false,
       portraitUrl: require('#/images/portrait_bg.png')
     }
   },
   methods: {
-
+      goMyMess(){
+        ui.navigateTo(
+          {
+            url:'center/info'
+          }
+        )
+      },
+      goMyTeam(){
+        ui.navigateTo({
+          url: 'center/myTeam'
+        })
+      },
+      goBill(){
+        ui.navigateTo(
+          {
+            url:'center/bill'
+          }
+        )
+      },
+      goReallyname(){
+        ui.navigateTo(
+          {
+            url:'center/reallyName'
+          }
+        )
+      },
+      goProductList(){
+        ui.showToast({ title:'缴费' , icon: 'success' })
+      },
+      tx(){
+        ui.showToast({ title:'提现' , icon: 'success' })
+      }
   }
 }
 
 </script>
 
 <style lang="less">
-
-.nav_bar {
-    background: @theme-color;
-    .nav_title {
-        color: #fff;
-    }
+.userItem{
+  background: #fff;
+  padding: 20rpx 20rpx;
+}
+.marB25{
+  margin-bottom:25rpx;
+}
+.marB5{
+  margin-bottom:5rpx;
+}
+.borB{
 }
 
-.header_top {
-    background: @theme-color;
-    .head_portrait {
-      border-radius: 50%; 
-    }
-    .login {
-      color: #fff;
-      font-size: 18px;
-    }
-    .login_after {
-        color: #fff;
-        font-size: 12px;
-    }
+.userTop{
+  background: #3399FF;
+  padding: 35rpx 20rpx;
 }
 
+
+
+.pageHello{
+  font-size: 35rpx;color: aliceblue
+
+}
+.lmw{
+  background-color:"#3399FF"
+}
+.content{
+  .mix-flex-center();
+}
+.sliderContent{
+  padding:50px 50px 0px 50px;
+}
+.buttonContent{
+  padding:50px;
+}
 </style>

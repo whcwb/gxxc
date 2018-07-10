@@ -80,10 +80,7 @@
     config: {
       navigationBarTitleText: "下拉与到底加载",
       disableScroll:true,
-      // navigationBarBorderColor: "rgba(231, 231, 231, 0.6)",
-      // navigationBarBackgroundColor:"#FFFFFF",
-      // navigationBarTextStyle:"black",
-      // navigationBarTextStyle:"black"
+      delay:false,//延迟加载
     },
     data () {
       return {
