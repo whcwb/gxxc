@@ -11,6 +11,7 @@ import com.cwb.platform.biz.service.impl.CpServiceImpl;
 import com.cwb.platform.biz.service.impl.PtyhServiceImpl;
 import com.cwb.platform.biz.service.impl.UserServiceImpl;
 import com.cwb.platform.biz.util.ImgUtil;
+import com.cwb.platform.biz.util.PrintToPdfUtil;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -305,9 +306,6 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
     public void sendObject(Map<String, Object> map) {
         payInfo.debug("进入异步通知开始 addOracle 生成协议 begin---");
         try {
-//            map.put("ptyh", userSelect);//BizPtyh userSelect
-//            map.put("bizCp", bizCp);//BizCp bizCp
-//            map.put("order",newEntity);//BizOrder
             BizPtyh user= (BizPtyh) map.get("ptyh");
             BizCp bizCp= (BizCp) map.get("bizCp");
             BizOrder order= (BizOrder) map.get("order");
@@ -351,11 +349,18 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
                         if (!imgURL.endsWith("/")) {
                             imgURL += "/";
                         }
-                        File imgFile=new File(imgURL+imgFileUrl[0]);
-                        String filePath=imgFile.getPath();
+                        File[] files =new File[imgFileUrl.length] ;
+
+                        for(int i=0;i<imgFileUrl.length;i++){
+                            File imgFile=new File(imgURL+imgFileUrl[i]);
+                            files[i]=imgFile;
+                        }
+
+                        String filePath=files[0].getPath();
                         String fileNames=FileUtil.getNamePart(filePath);
                         filePath=filePath.replaceAll(fileNames,"");
                         String pdfPate=(!filePath.endsWith("/")?filePath+="/":filePath)+order.getDdId()+".pdf";
+                        PrintToPdfUtil.toPdf(files,pdfPate);
                         pdfPate=pdfPate.replaceAll(userAgreementPath,"");
                         BizOrder newOrder=new BizOrder();
                         newOrder.setDdId(order.getDdId());
