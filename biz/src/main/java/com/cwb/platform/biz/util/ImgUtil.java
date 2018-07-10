@@ -120,6 +120,7 @@ public class ImgUtil {
                     outFilePath += "/";
                 }
                 FileUtil.CopyFile(backdropFile,new File(outFilePath+fileName));//复制文件
+                fileUrl=(outFilePath+fileName).replaceAll(outFilePaths,"");//移除前缀
             }else{
                 BufferedImage imageLocal = ImageIO.read(backdropFile);
 

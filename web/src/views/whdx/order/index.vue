@@ -17,14 +17,17 @@
 </template>
 
 <script>
+    import showFiles from './showFiles'
 
     export default {
         name: 'order',
+        components:{showFiles},
         data() {
             return {
                 v:this,
                 SpinShow: true,
                 apiRoot:this.apis.order,
+                staticPath:this.apis.STATIC_PATH,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -44,18 +47,29 @@
                     {title:'实际支付金额',key:'payMoney',render:(h,p)=>{
                             return h('div',parseFloat(p.row.payMoney/100)+'元')
                         }},
-                    // {
-                    //     title: '操作',
-                    //     key: 'action',
-                    //     width: 120,
-                    //     fixed: 'right',
-                    //     render: (h, params) => {
-                    //         return h('div', [
-                    //             this.util.buildEditButton(this,h,params),
-                    //             this.util.buildDeleteButton(this,h,params.row.id),
-                    //         ]);
-                    //     }
-                    // }
+                    {title:'对账状态',key:'billContrastType',dict:'ZDCLK0072',searchType:'dict'},
+                    {title:'对账结果描述',key:'billContrastMsg'},
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 120,
+                        fixed: 'right',
+                        render: (h, params) => {
+                            return h('div', [
+                                this.util.buildButton(this,h,'success','eye','查看协议',()=>{
+                                    this.choosedItem = params.row;
+                                    this.componentName = 'showFiles';
+                                }),
+                                this.util.buildButton(this,h,'success','arrow-down-a','下载协议',()=>{
+                                    if (params.row.agreementPdfList){
+                                        window.open(this.staticPath +'Agreement/'+ params.row.agreementPdfList)
+                                    }else{
+                                        this.$Message.success('暂无协议');
+                                    }
+                                }),
+                            ]);
+                        }
+                    }
                 ],
                 pageData: [],
                 form: {
