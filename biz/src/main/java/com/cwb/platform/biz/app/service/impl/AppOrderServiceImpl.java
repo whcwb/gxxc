@@ -10,20 +10,21 @@ import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.service.impl.CpServiceImpl;
 import com.cwb.platform.biz.service.impl.PtyhServiceImpl;
 import com.cwb.platform.biz.service.impl.UserServiceImpl;
+import com.cwb.platform.biz.util.ImgUtil;
+import com.cwb.platform.biz.util.PrintToPdfUtil;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
-import com.cwb.platform.util.commonUtil.DateUtils;
-import com.cwb.platform.util.commonUtil.IpUtils;
-import com.cwb.platform.util.commonUtil.MathUtil;
-import com.cwb.platform.util.commonUtil.WeixinUtils;
+import com.cwb.platform.util.commonUtil.*;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderResult;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.Subscribe;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -36,7 +37,9 @@ import tk.mybatis.mapper.common.Mapper;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 //import java.math.BigDecimal;
@@ -56,6 +59,11 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
     @Value("${wechat.pay.notify_url}")
     private String notifyUrl;
 
+    @Value("${userAgreementPath}")
+    private String userAgreementPath;
+    @Value("${staticPath}")
+    private String staticPath;
+
     @Autowired
     private BizOrderMapper entityMapper;
 
@@ -73,6 +81,11 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 
     @Resource(name = "wxPayService")
     private WxPayService wxService;
+
+    AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
+    public AppOrderServiceImpl() {
+        eventBus.register(this);
+    }
 
     @Override
     protected Mapper<BizOrder> getBaseMapper() {
@@ -165,13 +178,16 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         RuntimeCheck.ifFalse(StringUtils.equals(userSelect.getYhZt(),"1"),"您好，请您上传证件或等待管理员对您资料进行认证！");//认证状态 ZDCLK0043(0 未认证、1 已认证)
 //        RuntimeCheck.ifTrue(StringUtils.equals(userSelect.getDdSfjx(),"1"),"您已支付成功，无需再次支付！");//获取是否缴费(0无 1已缴费) todo 让用户可以重复支付
         RuntimeCheck.ifTrue(StringUtils.equals(userSelect.getYhSfsd(),"1"),"您已经锁定，无法支付。请联系管理人员进行解锁！");//用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
-        // TODO: 2018/7/2  让用户可以重复支付
-//        SimpleCondition condition = new SimpleCondition(BizOrder.class);
-//        condition.eq(BizOrder.InnerColumn.yhId.name(), userId);
-//        condition.eq(BizOrder.InnerColumn.ddZt.name(), "2");//订单状态(1、待缴费 2、已缴费 3、已退费)
-//        condition.eq(BizOrder.InnerColumn.ddZfzt.name(), "1");//支付状态（0,待支付 1、支付成功  2、支付失败）
-//        Integer count = this.countByCondition(condition);
-//        RuntimeCheck.ifTrue(count > 0,"您已支付成功，无需再次支付！");
+
+        //  2018/7/2  让用户可以重复支付  但是学费一个时间内，只能有一个有效的。
+        SimpleCondition condition = new SimpleCondition(BizOrder.class);
+        condition.eq(BizOrder.InnerColumn.yhId.name(), userId);
+        condition.eq(BizOrder.InnerColumn.ddZt.name(), "2");//订单状态(1、待缴费 2、已缴费 3、已退费)
+        condition.eq(BizOrder.InnerColumn.ddZfzt.name(), "1");//支付状态（0,待支付 1、支付成功  2、支付失败）
+        condition.and().andCondition(" CP_ID IN (SELECT ID FROM biz_cp WHERE CP_TYPE='1') ");
+        Integer count = this.countByCondition(condition);
+        String ykzt=userSelect.getYhXyYkType();//学员约考状态
+        RuntimeCheck.ifTrue(count > 0 && (!StringUtils.equals(ykzt,"41")),"您已支付成功，无需再次支付！");
 
         BizUser bizUser=userService.findById(userId);
         RuntimeCheck.ifNull(bizUser,"您好，请您上传证件资料进行认证！");
@@ -231,6 +247,13 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 
         }
         if(payType){
+//            异步下发，生成签名
+            Map<String, Object> map = new HashMap<>();
+            map.put("ptyh", userSelect);//BizPtyh userSelect
+            map.put("bizCp", bizCp);//BizCp bizCp
+            map.put("order",newEntity);//BizOrder
+            eventBus.post(map);
+
             entityMapper.insert(newEntity);
             return ApiResponse.success(ret);
         }else{
@@ -244,6 +267,13 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         }
     }
 
+    /**
+     * 微信创建预支付
+     * @param order
+     * @param bizCp
+     * @param request
+     * @return
+     */
     public Map<String,Object> create(BizOrder order, BizCp bizCp,HttpServletRequest request) {
         try {
             WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();   //商户订单类
@@ -272,5 +302,81 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
             return map;
         }
 
+    }
+
+
+    @Subscribe
+    public void sendObject(Map<String, Object> map) {
+        payInfo.debug("进入异步通知开始 addOracle 生成协议 begin---");
+        try {
+            BizPtyh user= (BizPtyh) map.get("ptyh");
+            BizCp bizCp= (BizCp) map.get("bizCp");
+            BizOrder order= (BizOrder) map.get("order");
+            String cpType=bizCp.getCpType();//获取产品类型（1、学费  2、补考费）必填
+            String cpXyJson=bizCp.getCpXyJson();
+            if(StringUtils.isNotEmpty(cpXyJson)){
+                String agreementImgList="";
+                String userQm=staticPath;
+                if (!userQm.endsWith("/")) {
+                    userQm += "/";
+                }
+
+                cpXyJson=cpXyJson.replaceAll("#oracleId#",order.getDdId());//订单ID
+                cpXyJson=cpXyJson.replaceAll("#userName#",user.getYhXm());//学员姓名
+                cpXyJson=cpXyJson.replaceAll("#userDn#",user.getYhZh());//演员手机
+                cpXyJson=cpXyJson.replaceAll("#userZJH#",user.getYhZjhm());//学员证件号
+                cpXyJson=cpXyJson.replaceAll("#addyyyy#",DateUtils.getToday("yyyy"));//订单创建的年   -MM-dd
+                cpXyJson=cpXyJson.replaceAll("#addmm#",DateUtils.getToday("MM"));//订单月
+                cpXyJson=cpXyJson.replaceAll("#adddd#",DateUtils.getToday("dd"));//订单日
+                cpXyJson=cpXyJson.replaceAll("#userQm#",userQm+order.getUserAutograph());//用户签字的图片
+
+
+                payInfo.debug("生成出来的JSON报文是："+cpXyJson);
+
+                List<Map<String,Object>> list=JsonUtil.toList(cpXyJson, Map.class);
+                for(Map<String,Object> m:list){
+                    List<Map<String, String>> parameterlist=new ArrayList<>();
+                    parameterlist= (List<Map<String, String>>) m.get("parameterlist");
+                    // TODO: 2018/7/10 这里为了安全，需要将所有用户有关的信息，全部做隐藏。 staticPath生成的图片，需要将用户证件号码给隐藏
+//                    Map<String,String> retMap=ImgUtil.generateCode(staticPath,parameterlist,(String) m.get("backdropImg"),(String) m.get("oracleId"));//"oracleId" -> "order2003"
+//                    ImgUtil.generateCode(userAgreementPath,parameterlist,(String) m.get("backdropImg"),(String) m.get("oracleId"));//"oracleId" -> "order2003"
+                    Map<String,String> retMap=ImgUtil.generateCode(userAgreementPath,parameterlist,(String) m.get("backdropImg"),(String) m.get("oracleId"));//"oracleId" -> "order2003"
+                    if(StringUtils.equals(retMap.get("code"),"200")){
+                        agreementImgList+=retMap.get("fileUrl")+";";
+                    }
+                }
+                if(StringUtils.isNotEmpty(agreementImgList)){
+                    String[] imgFileUrl=agreementImgList.split(";");
+                    if(imgFileUrl!=null&&imgFileUrl.length>0){
+                        String imgURL=userAgreementPath;
+                        if (!imgURL.endsWith("/")) {
+                            imgURL += "/";
+                        }
+                        File[] files =new File[imgFileUrl.length] ;
+
+                        for(int i=0;i<imgFileUrl.length;i++){
+                            File imgFile=new File(imgURL+imgFileUrl[i]);
+                            files[i]=imgFile;
+                        }
+
+                        String filePath=files[0].getPath();
+                        String fileNames=FileUtil.getNamePart(filePath);
+                        filePath=filePath.replaceAll(fileNames,"");
+                        String pdfPate=(!filePath.endsWith("/")?filePath+="/":filePath)+order.getDdId()+".pdf";
+                        PrintToPdfUtil.toPdf(files,pdfPate);
+                        pdfPate=pdfPate.replaceAll(userAgreementPath,"");
+                        BizOrder newOrder=new BizOrder();
+                        newOrder.setDdId(order.getDdId());
+                        newOrder.setAgreementImgList(agreementImgList);
+                        newOrder.setAgreementPdfList(pdfPate);
+                        this.update(newOrder);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        payInfo.debug("进入异步通知开始 addOracle 生成协议 END---");
     }
 }

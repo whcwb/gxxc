@@ -27,3 +27,8 @@ credentialsPath: d://2004/
 
 # 项目中图片访问的地址 这边需要用域名访问
 img_url: http://www.520xclm.com:8001/
+
+userAgreementPath: /Users/yangx/Desktop/img/out2/
+
+
+staticPath: /Users/yangx/Desktop/img

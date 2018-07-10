@@ -60,6 +60,9 @@ server:
 #学费类型的产品金额不能低于该值，如果低于该值，将无法插入。
 order_money: 2500
 
+# 用户的协议
+userAgreementPath: /opt/gxxc/nginx/Agreement/
+
 
 staticPath: /opt/gxxc/nginx/
 #证件照片上传的地址 必须要心/结尾

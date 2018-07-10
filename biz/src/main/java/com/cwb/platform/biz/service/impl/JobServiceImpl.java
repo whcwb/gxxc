@@ -434,7 +434,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                             for(String orde:orderLists){
                                 BizOrder order=new BizOrder();
                                 order.setDdId(orde);
-                                order.setPayMoney(l.getTotalFee());//支付宝，实际支付的金额
+                                order.setPayMoney(String.valueOf((int)Double.parseDouble(l.getTotalFee()) * 100) );//支付宝，实际支付的金额
                                 order.setDdZftd("2");//设置支付通道(1、支付宝  2、微信  3、银联  4、快钱……)
                                 ApiResponse<String>  res= oracleService.updateOrderPayTpye(order);
                                 BizOrder neBizOrder=new BizOrder();
@@ -447,7 +447,8 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                                 orderMapper.updateByPrimaryKeySelective(neBizOrder);
                             }
                         }
-                    }catch (Exception e){}
+                    }catch (Exception e){
+                    }
                 }
             }
         }

@@ -82,6 +82,12 @@ public class BizCp implements Serializable {
     @Column(name = "CP_YZ")
     private String cpYz;
 
+    /**
+     * 协议的JSON报文
+     */
+    @Column(name = "CP_XY_JSON")
+    private String cpXyJson;
+
 //
 //    /**
 //     * 审核人
@@ -109,6 +115,14 @@ public class BizCp implements Serializable {
 
     public void setCpYz(String cpYz) {
         this.cpYz = cpYz;
+    }
+
+    public String getCpXyJson() {
+        return cpXyJson;
+    }
+
+    public void setCpXyJson(String cpXyJson) {
+        this.cpXyJson = cpXyJson;
     }
 
     /**

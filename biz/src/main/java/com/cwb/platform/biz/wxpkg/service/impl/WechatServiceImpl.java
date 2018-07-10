@@ -47,10 +47,10 @@ public class WechatServiceImpl implements WechatService {
         Map<String, String> sendSmsMap=new HashMap<String, String>();
 
         Map<String,String> map=new HashMap<>();
-        map.put("1","SMS_138068124");//学员缴费成功  恭喜您已缴费成功，成为学车联盟的学员。请您保持手机畅通，我们会跟您取得联系，以便安排您的学车流程！祝您学车愉快！
-        map.put("2","SMS_138073086");//会员缴费成功  恭喜您成功加入学车联盟平台，平台客服电话${tel}，如果您有疑问可以与我们取得联系！
-        map.put("3","SMS_138068443");//分配成功后，给专员下发短信  ${userName}专员，你好！平台为您分配了一位新学员（${studentUser}），电话号码是（${studentTel}），请您及时与他联系并安排培训！
-        map.put("4","SMS_138078052");//尊敬的${userName}学员，您好！平台为您分配了${stage}的培训专员（${user}），电话号码是(${tel})，请保持手机畅通，以便专员与您联系！
+        map.put("1","SMS_139236614");//学员-缴费成功通知-20180710版本  恭喜您已缴费成功，成为学车联盟的学员。请您保持手机畅通，我们会跟您取得联系，根据您的需要量身定做您的学车流程！祝您学车愉快！
+        map.put("2","SMS_139226671");//会员-缴费成功短信推送-20180710版本   恭喜您成功加入学车联盟平台，您可以最大限度的使用平台资讯，为您的事业提供强大的支持。平台客服电话${tel}，如果您有疑问可以随时与我们取得联系！
+        map.put("3","SMS_139236622");//分配成功后，给专员下发短信 专员分配通知-20180710版本 ${userName}专员，你好！平台为您分配了一位新学员（${studentUser}），电话：${studentTel}，请您及时联系并跟据学员的需要安排培训！
+        map.put("4","SMS_139241633");// 分配专员学员端通知-20180710版本 尊敬的${userName}学员，您好！平台为您分配了${stage}阶段的培训专员（${user}），电话：${tel}，请保持手机畅通，以便专员随时与您联系！
         map.put("5","SMS_138063513");//尊敬的${userName},操作员:${operator}于${dates}修改产品名称：${cpName}类型：${cpType}金额：${cpMoney}属性${parameter},本次操作编号${code}及时授权
 
         String templateType=smsMap.get("templateType");

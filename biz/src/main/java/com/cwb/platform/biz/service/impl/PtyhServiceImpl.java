@@ -1297,11 +1297,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             if (StringUtils.equals("0", jlType)) {
                 first = "受理";
             } else if (StringUtils.equals("1", jlType)) {
-                first = "科目一";
+                first = "第一";
             } else if (StringUtils.equals("2", jlType)) {
-                first = "科目二";
+                first = "第二";
             } else if (StringUtils.equals("3", jlType)) {
-                first = "科目三";
+                first = "第三";
             }
             Map<String, String> xbMap = new HashMap<>();
             xbMap.put("1", "男");
