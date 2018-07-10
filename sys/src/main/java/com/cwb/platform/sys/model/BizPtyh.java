@@ -207,7 +207,7 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_XY_FPZY_TYPE")
     private String yhXyFpzyType;
     /**
-     * 用户签名
+     * 用户签名 (这个字段已经下放到订单表中，所以该字段已经无效)
      */
     @Column(name = "YH_AUTOGRAPH")
     private String yhAutograph;
