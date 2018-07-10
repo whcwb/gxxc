@@ -1,10 +1,13 @@
 package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.BizCpMapper;
+import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.model.BizCp;
+import com.cwb.platform.biz.model.BizOrder;
 import com.cwb.platform.biz.service.CpService;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
@@ -33,6 +36,8 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
     @Autowired
     private StringRedisTemplate redisDao;
 
+    @Autowired
+    private BizPtyhMapper ptyhMapper;
 
     @Autowired
     private WechatService wechatService;
@@ -57,6 +62,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
      * @return
      */
     public ApiResponse<List<BizCp>> getCpTyetList(){
+        BizPtyh user=getAppCurrentUser(false);
         BizCp queryBizCp=new BizCp();
         queryBizCp.setCpYx("1");
 
@@ -64,7 +70,30 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
         condition.eq(BizCp.InnerColumn.cpYx, "1");
         condition.setOrderByClause(BizCp.InnerColumn.cpType.asc());
         List<BizCp> list=this.findByCondition(condition);
-        return ApiResponse.success(list);
+
+        List<BizCp> retCpList=list;
+        if(user!=null&&list!=null&&list.size()>0){
+            String userId=user.getId();
+            BizPtyh userSelect = ptyhMapper.selectByPrimaryKey(userId);
+            SimpleCondition orderCondition = new SimpleCondition(BizOrder.class);
+            orderCondition.eq(BizOrder.InnerColumn.yhId.name(), userId);
+            orderCondition.eq(BizOrder.InnerColumn.ddZt.name(), "2");//订单状态(1、待缴费 2、已缴费 3、已退费)
+            orderCondition.eq(BizOrder.InnerColumn.ddZfzt.name(), "1");//支付状态（0,待支付 1、支付成功  2、支付失败）
+            orderCondition.and().andCondition(" CP_ID IN (SELECT ID FROM biz_cp WHERE CP_TYPE='1') ");
+            Integer count = this.countByCondition(orderCondition);
+            String ykzt=userSelect.getYhXyYkType();//学员约考状态
+
+            if(count>0&&(!StringUtils.equals(ykzt,"41"))){
+                retCpList=new ArrayList<>();
+//                移除所有会员的产品
+                for(BizCp cp:list){
+                    if(!StringUtils.equals(cp.getCpType(),"1")){
+                        retCpList.add(cp);
+                    }
+                }
+            }
+        }
+        return ApiResponse.success(retCpList);
     }
     /**
      * 后台-新增产品
@@ -105,6 +134,15 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
         newBizCp.setCpYx("0");//设置产品是否有效(0、无效 1、生效)
         newBizCp.setCjsj(DateUtils.getNowTime());//设置创建时间
         newBizCp.setCjr(sysYh.getYhid());//设置创建人
+
+//        将上一条产品JSON回写到新的里面
+        SimpleCondition condition = new SimpleCondition(BizCp.class);
+        condition.eq(BizCp.InnerColumn.cpYx, "1");
+        condition.eq(BizCp.InnerColumn.cpType, entity.getCpType());
+        List<BizCp> cpList=this.findByCondition(condition);
+        if(cpList!=null&&cpList.size()>0){
+            newBizCp.setCpXyJson(cpList.get(0).getCpXyJson());
+        }
 
 
        int i= entityMapper.insert(newBizCp);
