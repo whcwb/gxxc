@@ -193,6 +193,8 @@ public class BizPtyh implements Serializable {
     private String yhXySlType;
     /**
      * 学员约考状态
+     * 10、 科目一已约考 11、 科目一已通过 12、 科目一未通过 20、 科目二已约考 21、 科目二已通过 22、 科目二未通过
+     * 30、 科目三已约考 31、 科目三已通过 32、 科目三未通过 40、 科目四已约考 41、 科目四已通过 42、 科目四未通过
      */
     @Column(name = "YH_XY_YK_TYPE")
     private String yhXyYkType;
