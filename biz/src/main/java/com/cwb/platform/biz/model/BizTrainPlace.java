@@ -1,7 +1,7 @@
 package com.cwb.platform.biz.model;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "biz_train_place")
 public class BizTrainPlace implements Serializable {
@@ -138,6 +138,9 @@ public class BizTrainPlace implements Serializable {
      */
     @Column(name = "place_coordinate")
     private String placeCoordinate;
+
+    @Transient
+    private Double distance;
 
     private static final long serialVersionUID = 1L;
 
@@ -553,6 +556,14 @@ public class BizTrainPlace implements Serializable {
      */
     public void setPlaceCoordinate(String placeCoordinate) {
         this.placeCoordinate = placeCoordinate;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     public enum InnerColumn {

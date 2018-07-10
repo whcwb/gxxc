@@ -66,7 +66,7 @@
             <div style="color: #ff9400;position: relative;">
               <i class="iconfont icon-ico-money" style="font-size: 0.3rem;font-weight: 600"></i>
               <span style="font-size: 0.3rem;font-weight: 600">
-                2500
+                2600
               </span>
               <span style="color: #949494;font-size: 0.18rem">
                 门市价：9999

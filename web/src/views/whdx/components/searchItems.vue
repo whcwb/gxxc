@@ -2,6 +2,7 @@
     <span  :id="'searchRow'">
         <span v-for="(r,index) in tableColumns" v-if="r.searchKey || r.searchType" :key="index">
             <label :style="index > 1 ? 'margin-left:12px;' : ''">{{r.title}}:</label>
+
             <Input v-if="!r.searchType || r.searchType == 'text'" v-model="form[r.searchKey]" :placeholder="'请输入'+r.title" :style="inputStyle"></Input>
             <DatePicker v-else-if="r.searchType == 'daterange'" v-model="dateRange" @on-change="form[r.searchKey] = parent.util.dateRangeChange(dateRange)" confirm format="yyyy-MM-dd" type="daterange" placeholder="不限" :style="inputStyle"></DatePicker>
             <Select v-else-if="r.searchType == 'dict'" filterable clearable  v-model="form[r.key]" :placeholder="'不限'" :style="inputStyle">

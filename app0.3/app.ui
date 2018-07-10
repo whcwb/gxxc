@@ -4,9 +4,13 @@ export default {
     "pages": [
       "pages/login",
       "pages/index",
-      "pages/detail",
-      
-    ,"pages/reg"],
+      "pages/detail",      
+      "pages/reg",
+      "pages/studyCar",
+      "pages/myTeam",
+      "pages/common/selectMyTeam",
+      "pages/center/myTeam",
+      "pages/center/bill"],
     "theme": {
       "theme-color": "#3399ff"
     },
@@ -26,6 +30,16 @@ export default {
           "pagePath": "pages/index",
           "iconName": "home",
           "text": "首页"
+        },
+        {
+          "pagePath": "pages/studyCar",
+          "iconName": "home",
+          "text": "学车"
+        },
+        {
+          "pagePath": "pages/myTeam",
+          "iconName": "home",
+          "text": "团队"
         },
         {
           "pagePath": "pages/user",
@@ -223,7 +237,7 @@ export default {
         <ui-row>
           <ui-col width="80">
             <span class="back" bindtap="handleBack" ui:show="{{showBack}}">
-              <ui-icon type="arrow-left" font-size="24"></ui-icon>返回
+              <ui-icon type="arrow-left" font-size="24"></ui-icon>
             </span>
             <span class="back" ui:show="{{!showBack}}" bindtap="handleNavIconTap">
               <ui-icon type="list" color="#2B333B" size="16"></ui-icon>

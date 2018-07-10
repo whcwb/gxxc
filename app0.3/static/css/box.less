@@ -9,6 +9,19 @@ textshowLine{
   text-overflow:ellipsis;
   white-space: nowrap;
 }
+.grid_box{
+  display:flex;
+  height: 100%;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.backF2{
+  background-color: #f2f2f2;
+}
+
+
+
+
 .box_col{//纵向
   height: 100%;
   display: flex;
@@ -21,7 +34,7 @@ textshowLine{
     overflow: auto;
   }
 }
-.box-row{//横向
+.box_row{//横向
   //height: 100%;
   display: flex;
   flex-direction: row ;
@@ -49,13 +62,13 @@ textshowLine{
     overflow: auto;
   }
 }
-.box-row-z{//横向布局禁止换行
+.box_row_z{//横向布局禁止换行
   display: flex;
   flex-direction: row ;
   flex-wrap:nowrap ;
   height: 100%;
 }
-.box-row-list{//横向布局自动换行
+.box_row_list{//横向布局自动换行
   display: flex;
   flex-direction: row ;
   flex-wrap:wrap;

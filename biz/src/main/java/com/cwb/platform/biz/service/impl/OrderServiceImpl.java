@@ -190,7 +190,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             bizPtyh.setYhZsyqm(yhZsyqm);//用户自己邀请码
             bizPtyh.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
         }
-        // 增加二维码有效期 todo
+        // 增加二维码有效期
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.now();
         LocalDateTime years = null;

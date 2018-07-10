@@ -78,7 +78,7 @@ public class FileUtil {
      * 结果：jpg
      *
      *
-     * @param fileName 文件名
+     * @param fileName
      * @return 文件名中的类型部分
      * @since  1.0
      */

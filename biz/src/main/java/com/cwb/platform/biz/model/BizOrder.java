@@ -138,8 +138,29 @@ public class BizOrder implements Serializable {
      */
     @Column(name = "USER_AUTOGRAPH")
     private String userAutograph;
+    /**
+     * 对账状态：0未对账      1、已对账      2、对账异常
+     */
+    @Column(name = "BILL_CONTRAST_TYPE")
+    private String billContrastType;
+    /**
+     * 对账结果描述
+     */
+    @Column(name = "BILL_CONTRAST_MSG")
+    private String billContrastMsg;
 
 
+    /**
+     * 对账结果描述
+     */
+    @Column(name = "AGREEMENT_IMG_LIST")
+    private String agreementImgList;
+
+    /**
+     * 对账结果描述
+     */
+    @Column(name = "AGREEMENT_PDF_LIST")
+    private String agreementPdfList;
 
     /**
      * 用户等级
@@ -153,9 +174,39 @@ public class BizOrder implements Serializable {
     @Transient
     private BizPtyh userDetail;
 
-
-
     private static final long serialVersionUID = 1L;
+
+    public String getAgreementImgList() {
+        return agreementImgList;
+    }
+
+    public void setAgreementImgList(String agreementImgList) {
+        this.agreementImgList = agreementImgList;
+    }
+
+    public String getAgreementPdfList() {
+        return agreementPdfList;
+    }
+
+    public void setAgreementPdfList(String agreementPdfList) {
+        this.agreementPdfList = agreementPdfList;
+    }
+
+    public String getBillContrastType() {
+        return billContrastType;
+    }
+
+    public void setBillContrastType(String billContrastType) {
+        this.billContrastType = billContrastType;
+    }
+
+    public String getBillContrastMsg() {
+        return billContrastMsg;
+    }
+
+    public void setBillContrastMsg(String billContrastMsg) {
+        this.billContrastMsg = billContrastMsg;
+    }
 
     public String getUserAutograph() {
         return userAutograph;

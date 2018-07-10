@@ -176,58 +176,9 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
         List<BizUser> users = userMapper.getYhIdByTerm(grade, userId, yhlx, sfjf, yhXm);
         PageInfo<BizUser> pageInfo = new PageInfo<>(users);
-        /*SimpleCondition userCondition = new SimpleCondition(BizUser.class);
-        // 首先根据等级条件进行筛选出用户 id
-        if(StringUtils.isNotBlank(grade)){
-            if(StringUtils.equals(grade,"1")) {
-                userCondition.eq(BizUser.InnerColumn.yhSjid.name(),userId);
-            }else if(StringUtils.equals(grade,"2")){
-                userCondition.eq(BizUser.InnerColumn.yhSsjid.name(), userId);
-            }
-        }else{
-            userCondition.and().andCondition(" ( YH_SJID='"+userId+"' OR YH_SSJID='"+userId+"') ");
-        }
 
-        List<BizUser> bizUsers = userService.findByCondition(userCondition);
-
-        List<String> yhIds = bizUsers.stream().map(BizUser::getYhId).collect(Collectors.toList());
-
-
-        // 二次筛选
-        SimpleCondition yhCondition = new SimpleCondition(BizPtyh.class);
-        if(CollectionUtils.isNotEmpty(yhIds)){
-            if(StringUtils.isNotBlank(yhlx) || StringUtils.isNotBlank(sfjf)) {
-                yhCondition.in(BizPtyh.InnerColumn.id.name(), yhIds);
-
-                if (StringUtils.isNotBlank(yhlx)) {
-                    yhCondition.eq(BizPtyh.InnerColumn.yhLx.name(), yhlx);
-                }
-                if (StringUtils.isNotBlank(sfjf)) {
-                    yhCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(), sfjf);
-                }
-                List<BizPtyh> ptyhs = ptyhService.findByCondition(yhCondition);
-                yhIds = ptyhs.stream().map(BizPtyh::getId).collect(Collectors.toList());
-
-            }
-
-            SimpleCondition condition = new SimpleCondition(BizUser.class);
-            if(StringUtils.isNotBlank(grade)){
-                if(StringUtils.equals(grade,"1")) {
-                    condition.eq(BizUser.InnerColumn.yhSjid.name(),userId);
-                }else if(StringUtils.equals(grade,"2")){
-                    condition.eq(BizUser.InnerColumn.yhSsjid.name(), userId);
-                }
-            }else{
-                condition.and().andCondition(" ( YH_SJID='"+userId+"' OR YH_SSJID='"+userId+"') ");
-            }*/
-
-            afterPager(pageInfo);
-            result.setPage(pageInfo);
-
-
-
-        //}
-
+        afterPager(pageInfo);
+        result.setPage(pageInfo);
 
         return result;
     }

@@ -5,20 +5,22 @@ import com.cwb.platform.biz.service.JobService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MD5Util;
+import com.github.binarywang.wxpay.bean.result.WxPayBillResult;
+import com.github.binarywang.wxpay.exception.WxPayException;
+import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +37,9 @@ public class JobApi {
     private String jobToken;
     @Value("${JOB.HOST}")
     private String jobHost;
+
+    @Resource(name = "wxPayService")
+    private WxPayService wxService;
 
     @Autowired
     private StringRedisTemplate redisDao;
@@ -110,5 +115,40 @@ public class JobApi {
         return ApiResponse.success(messaget);
 
 //        return null;
+    }
+
+    /**
+     * 定时任务 定时对账
+     * <pre>
+     * 下载对账单
+     * 商户可以通过该接口下载历史交易清单。比如掉单、系统错误等导致商户侧和微信侧数据不一致，通过对账单核对后可校正支付状态。
+     * 注意：
+     * 1、微信侧未成功下单的交易不会出现在对账单中。支付成功后撤销的交易会出现在对账单中，跟原支付单订单号一致，bill_type为REVOKED；
+     * 2、微信在次日9点启动生成前一天的对账单，建议商户10点后再获取；
+     * 3、对账单中涉及金额的字段单位为“元”。
+     * 4、对账单接口只能下载三个月以内的账单。
+     * 接口链接：https://api.mch.weixin.qq.com/pay/downloadbill
+     * 详情请见: <a href="https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6">下载对账单</a>
+     * </pre>
+     *
+     * @param billDate   对账单日期 bill_date	下载对账单的日期，格式：20140603
+     * @param billType   账单类型	bill_type	ALL，返回当日所有订单信息，默认值，SUCCESS，返回当日成功支付的订单，REFUND，返回当日退款订单
+     * @param deviceInfo 设备号	device_info	非必传参数，终端设备号
+     * @return 保存到本地的临时文件
+     */
+    @PostMapping("/downloadBill")
+    public ApiResponse<List<String>> downloadBill(@RequestParam String billDate,
+                                        @RequestParam String billType,
+                                        @RequestParam(name = "deviceInfo",required=false) String deviceInfo) throws WxPayException {
+        List<String> retMessage=new ArrayList<String>();
+         WxPayBillResult billResult=wxService.downloadBill(billDate, billType, "", deviceInfo);
+         if(billResult!=null&&billResult.getWxPayBillBaseResultLst().size()>0){
+             retMessage= jobService.billContrast(billResult,billDate);
+         }
+
+        ApiResponse<List<String>> res = new ApiResponse<List<String>>();
+        res.setMessage("操作成功");
+        res.setResult(retMessage);
+        return res;
     }
 }
