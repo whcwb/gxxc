@@ -125,7 +125,6 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         List<BizKsJf> list2 = entityMapper.selectByExampleAndRowBounds(condition2, new RowBounds(0, 1));
         List<BizKsJf> list3 = entityMapper.selectByExampleAndRowBounds(condition3, new RowBounds(0, 1));
         List<BizKsJf> list4 = entityMapper.selectByExampleAndRowBounds(condition4, new RowBounds(0, 1));
-
         Map<String, BizKsJf> payMap = new HashMap<>(4);
         if (list1.size() != 0) {
             payMap.put("1", list1.get(0));
