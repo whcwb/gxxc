@@ -1,0 +1,78 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+      <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+        <ui-row height="46">
+          <ui-col vertical-align="middle" align="center" width="60" bindtap="navigateBack">
+            <ui-view class="nav_left">
+                <ui-icon type="left1" font-size="24"></ui-icon>
+            </ui-view>
+
+          </ui-col>
+          <ui-col vertical-align="middle" align="left">
+            <ui-view class="nav_title">添加银行卡</ui-view>
+          </ui-col>
+          <ui-col vertical-align="middle" align="center" width="60">
+                <!-- <ui-icon type="add" size="24"></ui-icon> -->
+          </ui-col>
+        </ui-row>
+      </ui-nav-bar>
+      <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+
+          <ui-view class="formSty">
+              <ui-view>
+                  <ui-row>
+                      <ui-col>
+                          <ui-view>
+                              我的姓名
+                          </ui-view>
+                      </ui-col>
+                      <ui-col>
+                          <ui-view>
+                          </ui-view>
+                      </ui-col>
+                      <ui-col>
+                          <ui-view>
+                          </ui-view>
+                      </ui-col>
+                  </ui-row>
+              </ui-view>
+
+          </ui-view>
+
+      </ui-view>
+
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationStyle: 'custom',
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"添加银行卡",
+    title:'添加银行卡',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
+  },
+  data() {
+    return {}
+  },
+  methods: {
+    navigateBack(){
+      ui.navigateBack()
+    }
+  },
+  mounted() {}
+}
+</script>
+
+<style lang="less">
+  .formSty{
+    background-color: #fff;
+    margin-top: 25rpx;
+    padding: 0 25rpx;
+  }
+
+</style>
