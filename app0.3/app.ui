@@ -13,7 +13,10 @@ export default {
       "pages/center/bill",
       "pages/home/xlcMess",
       "pages/center/info","pages/center/reallyName",
-      "pages/tx/index","pages/tx/pages/bankCardlist","pages/tx/pages/addBankCard"],
+      "pages/tx/index","pages/tx/pages/bankCardlist",
+      "pages/tx/pages/addBankCard","pages/pay/index",
+      "pages/product/index",
+      "pages/Agreement/learnCarFile","pages/Agreement/MemberFile"],
     "theme": {
       "theme-color": "#3399ff"
     },

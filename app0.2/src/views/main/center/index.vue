@@ -169,6 +169,13 @@
             ></span>&nbsp;&nbsp;{{usermess.yhZt | yhZt}}</span>
       </mt-cell>
     </div>
+
+    <div v-if="usermess.yhLx =='1'">
+      <el-button type="success"
+                 @click="backMoney"
+      >退款
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -194,6 +201,13 @@
       this.getYE()
     },
     methods: {
+      backMoney(){
+        this.$http.post(this.apis.BACKMONEY,{tkMessage:'我要退款'}).then((res)=>{
+
+        }).catch((err)=>{
+
+        })
+      },
       saveResult(mes) {
         alert('传递' + mes)
       },

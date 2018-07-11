@@ -18,7 +18,7 @@
                 <ui-col span="3" align="right" 
                 vertical-align="middle" space-right="20"
                 bindtap="showMask=true">
-                  <ui-icon type="user" size="36" color="#fff"></ui-icon>
+                  <ui-icon type="erweima" size="36" color="#fff"></ui-icon>
                 </ui-col>
               </ui-row>
             </ui-view>
@@ -49,33 +49,51 @@
 
             <ui-view class="userItem marB5" bindtap="goBill">
               <ui-row>
-                <ui-col span="6" align="left" vertical-align="middle" space-left="20">
-                  0 我的账单
+                <ui-col width='20' vertical-align="middle">
+                  <ui-icon type="wenjian1" size="15" color="#3399FF"></ui-icon>
                 </ui-col>
-                <ui-col span="6" align="right" vertical-align="middle" space-right="20">
-                  >
+                <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
+                      <ui-view class="ftWt">
+                            我的账单
+                      </ui-view>
+                </ui-col>
+                <ui-col align="right" vertical-align="middle" space-right="10">
+                  <ui-icon type="right" size="20" color="#3399FF"></ui-icon>
                 </ui-col>
               </ui-row>
             </ui-view>
 
             <ui-view class="userItem marB5"  bindtap="goMyTeam">
               <ui-row>
-                <ui-col span="6" align="left" vertical-align="middle" space-left="20">
-                  0 我的团队
+                <ui-col width='20' vertical-align="middle">
+                  <ui-icon type="tuandui" size="18" color="#3399FF"></ui-icon>
                 </ui-col>
-                  <ui-col span="6" align="right" vertical-align="middle" space-right="20">
-                  >
+                <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
+                      <ui-view class="ftWt">
+                        我的团队
+                      </ui-view>
+                </ui-col>
+                <ui-col align="right" vertical-align="middle" space-right="10">
+                  <ui-icon type="right" size="20" color="#3399FF"></ui-icon>
                 </ui-col>
               </ui-row>
             </ui-view>
 
             <ui-view class="userItem marB5" bindtap="goReallyname">
               <ui-row>
-                <ui-col span="6" align="left" vertical-align="middle" space-left="20">
-                  0 实名认证
+                <ui-col width='20' vertical-align="middle">
+                  <ui-icon type="anquan" size="18" color="#3399FF"></ui-icon>
                 </ui-col>
-                  <ui-col span="6" align="right" vertical-align="middle" space-right="20">
-                  已认证 >
+                <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
+                    <ui-view class="ftWt">
+                        实名认证
+                    </ui-view>
+                </ui-col>
+                <ui-col align="right" vertical-align="middle" space-right="20">
+                  已认证
+                </ui-col>
+                <ui-col width="20" align="right" vertical-align="middle" space-right="10">
+                  <ui-icon type="right" size="20" color="#3399FF"></ui-icon>
                 </ui-col>
               </ui-row>
             </ui-view>
@@ -136,7 +154,11 @@ export default {
         )
       },
       goProductList(){
-        ui.showToast({ title:'缴费' , icon: 'success' })
+        ui.navigateTo(
+          {
+            url:'/pages/product/index'
+          }
+        )
       },
       tx(){
         ui.navigateTo(
@@ -151,6 +173,11 @@ export default {
 </script>
 
 <style lang="less">
+.ftWt{
+  font-weight: 700;
+  color:#656565;
+  font-size: 28rpx;
+}
 .userItem{
   background: #fff;
   padding: 20rpx 20rpx;
