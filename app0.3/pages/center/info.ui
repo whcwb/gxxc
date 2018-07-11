@@ -1,0 +1,110 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+    <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+        <ui-view class="txItem" ui:for="{{ infoList }}">
+            <ui-row>
+              <ui-col vertical-align="middle">
+                  <ui-view>
+                    {{item.name}}
+                  </ui-view>
+              </ui-col>
+              <ui-col vertical-align="middle" align="right" bindtap="infoClick(item,index)">
+                  <ui-view ui:if="{{item.typ =='img'}}">
+                      <ui-image
+                          src="{{ item.val }}"
+                          mode='aspectFill'
+                          width="60"
+                          height="60"
+                          class="head_portrait"
+                          ></ui-image>
+                  </ui-view>
+                <ui-view  ui:if="{{item.typ =='txt'}}">
+                  <ui-text>{{item.val}}</ui-text >
+                </ui-view>
+              </ui-col>
+            </ui-row>
+        </ui-view>
+
+        <ui-view class="SignOut"> 
+          <ui-button type="warn">退出登录</ui-button>
+        </ui-view>
+
+        <ui-view class="box_col_100"></ui-view>
+
+        <ui-view class="copyright">
+            <ui-view>
+              Copyright@2017-2018
+            </ui-view>
+            <ui-view>
+              520学车联盟
+            </ui-view>
+            <ui-view>
+              武汉天弘腾创科技有限公司
+            </ui-view>
+        </ui-view>
+    </ui-view>
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"个人信息",
+    title:'个人信息',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
+  },
+  data() {
+    return {
+      infoList:[
+        {
+          name:'我的头像',
+          val:'../../static/img/login/logo.png',
+          typ:'img',
+          link:'',
+        },{
+          name:'我的昵称',
+          val:'小明',
+          typ:'txt',
+          link:'',
+        },{
+          name:'驾驶证件',
+          val:'无驾驶证',
+          typ:'txt',
+          link:'',
+        },{
+          name:'修改密码',
+          val:'******',
+          typ:'txt',
+          link:'',
+        }
+      ]
+    }
+  },
+  methods: {
+    infoClick(item,index){
+      ui.showToast({ title: item.name , icon: 'success' })
+    }
+  },
+  mounted() {}
+}
+</script>
+
+<style lang="less">
+  .copyright{
+    text-align: center;
+    padding-bottom: 120rpx;
+  }
+  .SignOut{
+    margin: 30rpx;
+  }
+  .txItem{
+    background-color: #fff;
+    padding: 25rpx 25rpx;
+    margin-bottom:5rpx;  
+    font-size: 30rpx;
+  }
+</style>

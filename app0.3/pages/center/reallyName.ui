@@ -1,0 +1,72 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+      <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+        <ui-view class="box_row zjModule">
+
+            <ui-view class="box_row_100 moduleItem zjzm">
+
+            </ui-view>
+            <ui-view class="box_row_100 moduleItem zjfm">
+
+            </ui-view>
+
+        </ui-view>
+
+        <ui-view class="jszsty">
+          <ui-switch title="是否有驾驶证" value="{{ true }}"></ui-switch>
+        </ui-view>
+
+        <ui-view class="butSty">
+          <ui-button type="primary">提交</ui-button>
+        </ui-view>
+
+      </ui-view>
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationBarBackgroundColor:"#26a2ff",
+      navigationBarTextStyle:"white",
+      navigationBarTitleText:"实名认证",
+      title:'实名认证',
+      backgroundColor:'#f2f2f2',
+      delay:false,//延迟加载
+  },
+  data() {
+    return {}
+  },
+  methods: {},
+  mounted() {}
+}
+</script>
+
+<style lang="less">
+.zjModule{
+  .moduleItem{
+    background: #fff;
+    height: 180rpx;
+    background-size:100%; 
+    background-position: top;
+    background-repeat: no-repeat;
+  }
+  .zjzm{
+    background-image: url('../../static/img/home/id_03.png');
+    margin: 65rpx 35rpx 65rpx 65rpx;
+  }
+  .zjfm{
+    background-image: url('../../static/img/home/id_05.png');
+    margin: 65rpx 65rpx 65rpx 35rpx;
+  }
+}
+.jszsty{
+  margin: 0 65rpx;
+  background-color: #fff;
+}
+.butSty{
+  margin: 65rpx;
+}
+
+</style>

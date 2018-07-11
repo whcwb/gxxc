@@ -12,8 +12,11 @@ let options = {
 }
 
 ui.extend({
-  sayHello:function(){
+  sayHello(){
     console.log('全局方法')
+  },
+  pageHeight(val){
+    return  ui.DEFAULT_CONTENT_HEIGHT + val
   }
 })
 
