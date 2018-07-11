@@ -11,3 +11,6 @@ mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.
 
 本地调试，端口必须是9086
 请求地址是：http://47.98.39.45:9087/#/login
+
+
+系统本分学员、会员 学员分佣会员不会。、。
