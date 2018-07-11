@@ -1,0 +1,100 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+      <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+        <ui-row height="46">
+          <ui-col vertical-align="middle" align="center" width="60" bindtap="navigateBack">
+            <ui-view class="nav_left">
+                <ui-icon type="left1" font-size="24"></ui-icon>
+            </ui-view>
+
+          </ui-col>
+          <ui-col vertical-align="middle" align="left">
+            <ui-view class="nav_title">选择银行卡</ui-view>
+          </ui-col>
+          <ui-col vertical-align="middle" align="center" width="60" bindtap="addBankCard">
+                <ui-icon type="add" size="24"></ui-icon>
+          </ui-col>
+        </ui-row>
+      </ui-nav-bar>
+      <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+          <ui-view class="box_col_auto listBox">
+
+              <ui-view class="listItem" ui:for="{{bankList}}">
+                <ui-row>
+                      <ui-col>
+                          <ui-image src="http://lundroid.com/banklogo/e4aa64.png"
+                            height="30"></ui-image>
+                  
+                          <ui-view class="bankCardNumber">
+                            尾号78952
+                          </ui-view>
+                      </ui-col>
+                      <ui-col width="30" vertical-align="middle" align="right">
+                        <ui-view ui:if="{{item.checked}}">
+                              <ui-icon type="duihao" size="34" color="#00a763"></ui-icon>
+                        </ui-view>
+                      </ui-col>
+                  </ui-row>
+              </ui-view>
+
+          </ui-view>
+      </ui-view>
+
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationStyle: 'custom',
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"选择银行卡",
+    title:'选择银行卡',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
+  },
+  data() {
+    return {
+      bankList:[
+        {
+          checked:false
+        },{
+          checked:true
+        },{
+          checked:false
+        }
+      ]
+    }
+  },
+  methods: {
+    navigateBack(){
+      ui.navigateBack()
+    },
+    addBankCard(){
+      ui.navigateTo(
+          {
+            url:'addBankCard'
+          }
+        )
+    }
+  },
+  mounted() {}
+}
+</script>
+
+<style lang="less">
+  .listBox{
+    padding-top:25rpx; 
+    .listItem{
+        padding: 10rpx 25rpx;
+        background-color: #fff;
+        margin: 3rpx 0;
+        .bankCardNumber{
+          padding-left: 18rpx;
+          margin-top: 10rpx;
+        }
+    }
+  }
+</style>

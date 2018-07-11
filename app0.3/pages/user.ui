@@ -139,7 +139,11 @@ export default {
         ui.showToast({ title:'缴费' , icon: 'success' })
       },
       tx(){
-        ui.showToast({ title:'提现' , icon: 'success' })
+        ui.navigateTo(
+          {
+            url:'tx/index'
+          }
+        )
       }
   }
 }
