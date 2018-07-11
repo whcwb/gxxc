@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.service.impl;
 
+import com.cwb.platform.biz.app.service.impl.AppOrderServiceImpl;
 import com.cwb.platform.biz.mapper.BizCpMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.model.BizCp;
@@ -42,6 +43,10 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
     @Autowired
     private WechatService wechatService;
 
+    @Autowired
+    private AppOrderServiceImpl appOrderService;
+
+
 
     @Override
     protected Mapper<BizCp> getBaseMapper() {
@@ -80,7 +85,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
             orderCondition.eq(BizOrder.InnerColumn.ddZt.name(), "2");//订单状态(1、待缴费 2、已缴费 3、已退费)
             orderCondition.eq(BizOrder.InnerColumn.ddZfzt.name(), "1");//支付状态（0,待支付 1、支付成功  2、支付失败）
             orderCondition.and().andCondition(" CP_ID IN (SELECT ID FROM biz_cp WHERE CP_TYPE='1') ");
-            Integer count = this.countByCondition(orderCondition);
+            Integer count = appOrderService.countByCondition(orderCondition);
             String ykzt=userSelect.getYhXyYkType();//学员约考状态
 
             if(count>0&&(!StringUtils.equals(ykzt,"41"))){
