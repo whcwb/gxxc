@@ -127,7 +127,8 @@ public class TkServiceImpl extends BaseServiceImpl<BizTk,String> implements TkSe
             RuntimeCheck.ifTrue(true,"您好，请输入正确的退款状态状态");
         }
 
-        BizTk findBy=this.findById(entity.getPkid());
+        String id = entity.getPkid();
+        BizTk findBy=this.findById(id);
         RuntimeCheck.ifTrue(findBy==null,"请填写正确的退款申请");
         BizTk newBizTk=new BizTk();
         newBizTk.setPkid(entity.getPkid());

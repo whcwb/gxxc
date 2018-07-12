@@ -20,6 +20,10 @@ module.exports = {
     kssl:{
         QUERY:'/api/kssl/pager',
     },
+    tk:{
+        QUERY:'/api/tk/pager',
+        tk:'/api/tk/tk',
+    },
     ksyk:{
         QUERY:'/api/ksyk/pager',
     },
