@@ -1,20 +1,24 @@
 package com.cwb.platform.sys.controller;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.bean.UserPassCredential;
 import com.cwb.platform.sys.bean.userInfoModel;
-import com.cwb.platform.util.exception.RuntimeCheck;
+import com.cwb.platform.sys.mapper.SysYhGnMapper;
 import com.cwb.platform.sys.model.SysJg;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysYhGn;
+import com.cwb.platform.sys.service.GnService;
 import com.cwb.platform.sys.service.JgService;
 import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.Des;
 import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.commonUtil.JwtUtil;
+import com.cwb.platform.util.exception.RuntimeCheck;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.code.kaptcha.impl.DefaultKaptcha;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +31,9 @@ import tk.mybatis.mapper.entity.Example;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialBlob;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,7 +50,11 @@ public class MainController {
 	@Autowired
 	private YhService userService;
 	@Autowired
+	private GnService gnService;
+	@Autowired
 	private JgService jgService;
+	@Autowired
+	private SysYhGnMapper yhGnMapper;
     @Autowired
     private DefaultKaptcha defaultKaptcha;
     @Autowired
@@ -115,6 +121,8 @@ public class MainController {
 					rMap.put("jgmc", org.getJgmc());
 				}
 				result.setResult(rMap);
+
+				initPermission(item);
 			} catch (Exception e) {
 				result.setCode(ApiResponse.FAILED);
 				result.setMessage("用户登陆失败，请重试！");
@@ -125,6 +133,31 @@ public class MainController {
 			return result;
 		}
 		return result;
+	}
+
+	private void initPermission(SysYh user){
+		List<SysYhGn> userFunctions = gnService.getYhGnList(user.getYhid());
+		if (userFunctions.size() == 0)return;
+
+		Set<String> functionCodes = new HashSet<>();
+		for (SysYhGn userFunction : userFunctions) {
+			String apiQz = userFunction.getApiQz();
+			if (!apiQz.contains(",")){
+				functionCodes.add(apiQz);
+				continue;
+			}
+			String[] qzs = apiQz.split(",");
+			for (String qz : qzs) {
+				if (StringUtils.isEmpty(qz))continue;
+				functionCodes.add(qz);
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		for (String functionCode : functionCodes) {
+			sb.append(functionCode).append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		redisDao.boundValueOps(user.getYhid()+"-apiQz").set(sb.toString(), 1, TimeUnit.DAYS);
 	}
 	/**
 	 * 用户退出接口
