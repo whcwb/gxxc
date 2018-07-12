@@ -258,6 +258,7 @@ util.add = (v)=>{
  * 保存或修改成功之后，提示成功，并且调用父组件刷新table数据方法，并关闭modal窗口，如果保存或修改失败，则提示错误信息
  */
 util.save = function(v){
+    console.log(v.saveUrl);
     // 根据状态自动判断调用新增接口还是修改接口
     let url = v.saveUrl ? v.saveUrl : (v.$parent.choosedItem ? v.apiRoot['CHANGE'] : v.apiRoot['ADD']);
     let rules = v.$refs.form.rules;
@@ -266,8 +267,6 @@ util.save = function(v){
         if (typeof v.beforeSave === 'function'){
             // 执行save方法之前的操作
             v.beforeSave()
-            console.log(typeof v.formValid);
-            console.log(!v.formValid);
             if (typeof v.formValid != 'undefined' && !v.formValid){
                 return;
             }

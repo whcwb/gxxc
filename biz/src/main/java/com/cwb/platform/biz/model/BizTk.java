@@ -1,6 +1,7 @@
 package com.cwb.platform.biz.model;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -9,6 +10,7 @@ public class BizTk implements Serializable {
     /**
      * 主键
      */
+    @Id
     @Column(name = "PKID")
     private String pkid;
 
