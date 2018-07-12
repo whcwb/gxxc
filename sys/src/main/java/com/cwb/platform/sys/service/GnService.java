@@ -5,12 +5,18 @@ import com.cwb.platform.sys.bean.Menu;
 import com.cwb.platform.sys.model.SysFw;
 import com.cwb.platform.sys.model.SysGn;
 import com.cwb.platform.sys.model.SysYh;
+import com.cwb.platform.sys.model.SysYhGn;
 import com.cwb.platform.util.bean.ApiResponse;
 
 import java.util.List;
 
 public interface GnService extends BaseService<SysGn, String> {
     ApiResponse<String> saveEntity(SysGn entity);
+
+    List<SysYhGn> getYhGnList(String yhId);
+
+    void updateUserFunctins(String yhdId);
+    void updateUserFunctins(SysYh  user);
 
     /**
      * 查找某个服务的所有功能

@@ -3,14 +3,11 @@ package com.cwb.platform.sys.service.impl;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.Menu;
+import com.cwb.platform.sys.service.*;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.cwb.platform.sys.mapper.*;
 import com.cwb.platform.sys.model.*;
-import com.cwb.platform.sys.service.FwService;
-import com.cwb.platform.sys.service.GnService;
-import com.cwb.platform.sys.service.JgService;
-import com.cwb.platform.sys.service.JsService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import javafx.beans.property.SimpleListProperty;
@@ -47,6 +44,10 @@ public class GnServiceImpl extends BaseServiceImpl<SysGn, String> implements GnS
     private SysJgsqlbMapper jgsqlbMapper;
     @Autowired
     private FwService fwService;
+    @Autowired
+    private YhService yhService;
+    @Autowired
+    private SysYhGnMapper yhGnMapper;
     @Override
     protected Mapper<SysGn> getBaseMapper() {
         return gnMapper;
@@ -72,6 +73,43 @@ public class GnServiceImpl extends BaseServiceImpl<SysGn, String> implements GnS
         jgsq.setCjr(getOperateUser());
         jgsqlbMapper.insertSelective(jgsq);
         return ApiResponse.success();
+    }
+
+    @Override
+    public List<SysYhGn> getYhGnList(String yhId) {
+        SimpleCondition condition = new SimpleCondition(SysYhGn.class);
+        condition.eq(SysYhGn.InnerColumn.yhid,yhId);
+        List<SysYhGn> userFunctions = yhGnMapper.selectByExample(condition);
+        if (userFunctions.size() == 0){
+            updateUserFunctins(yhId);
+        }
+        return userFunctions;
+    }
+
+    @Override
+    public void updateUserFunctins(String yhdId) {
+        RuntimeCheck.ifBlank(yhdId,"请选择用户");
+        SysYh user = yhService.findById(yhdId);
+        RuntimeCheck.ifNull(user,"用户不存在");
+        updateUserFunctins(user);
+    }
+
+    @Override
+    public void updateUserFunctins(SysYh user) {
+        RuntimeCheck.ifNull(user,"用户不存在");
+        List<SysGn> functions = getUserFunctions(user);
+
+        SimpleCondition condition = new SimpleCondition(SysYhGn.class);
+        condition.eq(SysYhGn.InnerColumn.yhid,user.getYhid());
+        yhGnMapper.deleteByExample(condition);
+
+        for (SysGn function : functions) {
+            SysYhGn yhGn = new SysYhGn();
+            yhGn.setYhid(user.getYhid());
+            yhGn.setGndm(function.getGndm());
+            yhGn.setApiQz(function.getApiQz());
+            yhGnMapper.insertSelective(yhGn);
+        }
     }
 
     @Override

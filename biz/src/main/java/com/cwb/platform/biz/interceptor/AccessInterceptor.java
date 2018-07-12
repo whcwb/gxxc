@@ -1,6 +1,5 @@
 package com.cwb.platform.biz.interceptor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.cwb.platform.sys.constant.Dict;
 import com.cwb.platform.sys.model.SysGn;
 import com.cwb.platform.sys.model.SysYh;
@@ -8,16 +7,21 @@ import com.cwb.platform.sys.service.GnService;
 import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.commonUtil.JwtUtil;
 import com.cwb.platform.util.spring.SpringContextUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 访问接口控制
@@ -33,6 +37,8 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 	private YhService yhService;
 
 	private StringRedisTemplate redisDao;
+
+	private List<String> excludeCtrls = Arrays.asList("exportCtrl","basicErrorController");
 
 	// 只要登录的用户都能访问
 	private List<String> whiteList = Arrays.asList(
@@ -74,6 +80,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		if (userid == null)
 			userid = request.getParameter("userid");
 		if (StringUtils.isEmpty(userid) || StringUtils.isEmpty(token)) {
+			request.getRequestDispatcher("/403").forward(request, response);
 			return false;
 		}
 		log.debug("访问地址[{}], 请求openid[{}],请求token[{},header请求地址[{}]]", request.getRequestURI(), userid, token, url);
@@ -81,6 +88,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		// 验证用户状态
 		SysYh user = yhService.findById(userid);
 		if (!Dict.UserStatus.VALID.getCode().equals(user.getZt())) {
+			request.getRequestDispatcher("/403").forward(request, response);
 			return false;
 		}
 		try {
@@ -88,12 +96,14 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 			String userId = JwtUtil.getClaimAsString(token, "userId");
 			log.debug("userId=" + userId);
 			if (!userid.equals(userId)) {
+				request.getRequestDispatcher("/403").forward(request, response);
 				return false;
 			}
 			String value = redisDao.boundValueOps(userid).get();
 			log.debug("value=" + value);
 			log.debug("token=" + token);
 			if (StringUtils.isEmpty(value) || !value.equals(token)) {
+				request.getRequestDispatcher("/403").forward(request, response);
 				return false;
 			}
 			request.setAttribute("userInfo", user);
@@ -104,20 +114,35 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 			ObjectMapper mapper = new ObjectMapper();
 			log.debug("userInfoJson:" + userInfoJson);
 			SysYh userInfo = mapper.readValue(userInfoJson, SysYh.class);
-			if (!whiteList.contains(request.getRequestURI()) && !"su".equals(userInfo.getLx())) { // su 用户可访问所有权限
+			if (!whiteList.contains(request.getRequestURI()) && !"su1".equals(userInfo.getLx())) { // su 用户可访问所有权限
 				if (!checkPermission(userInfo, request)) {
 					request.getRequestDispatcher("/403").forward(request, response);
 					return false;
 				}
 			}
 		} catch (Exception e) {
+			request.getRequestDispatcher("/403").forward(request, response);
 			return false;
 		}
 
 		return super.preHandle(request, response, handler);
 	}
 
-	private boolean checkPermission(SysYh user, HttpServletRequest request) throws IOException {
+	private boolean checkPermission(SysYh user, HttpServletRequest request) {
+		return checkPermissionNew(user,request);
+	}
+	private boolean checkPermissionNew(SysYh user, HttpServletRequest request) {
+		String redisVal = redisDao.boundValueOps(user.getYhid()+"-apiQz").get();
+		if (StringUtils.isEmpty(redisVal)) return false;
+
+		List<String> qzs = Arrays.asList(redisVal.split(","));
+		if (CollectionUtils.isEmpty(qzs)) return false;
+
+		String apiqz = getApiQz(request.getRequestURI());
+		if (StringUtils.isEmpty(apiqz)) return false;
+		return qzs.contains(apiqz);
+	}
+	private boolean checkPermissionOld(SysYh user, HttpServletRequest request) {
 		List<SysGn> functions = gnService.getUserFunctions(user);
 		if (functions == null || functions.size() == 0)
 			return false;
@@ -131,5 +156,23 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 				return true;
 		}
 		return false;
+	}
+
+	private String getApiQz(String uri){
+		String apiPrefix = uri.substring(0, uri.indexOf("/", 5) + 1);
+		return apiPrefix;
+//
+//		Map<String,Object> requestMappings = SpringContextUtil.getByAnnotation(RequestMapping.class);
+//		for (Map.Entry<String, Object> entry : requestMappings.entrySet()) {
+//			if (excludeCtrls.contains(entry.getKey()))continue;
+//			RequestMapping requestMapping = entry.getValue().getClass().getDeclaredAnnotation(RequestMapping.class);
+//			if (requestMapping == null)continue;
+//			String name = requestMapping.name();
+//			if (StringUtils.isEmpty(name))continue;
+//			if (uri.contains(name)){
+//				return entry.getKey();
+//			}
+//		}
+//		return null;
 	}
 }
