@@ -1,5 +1,5 @@
 <template>
-    <ui-page top="0" style="overflow-y: hidden;">
+    <ui-page style="overflow-y: hidden;">
       <ui-view class="box_col" style="{{ { height: pageHeight(46)+ 'px'} }}">
             <ui-view class="userTop">
               <ui-row>
@@ -97,6 +97,8 @@
                 </ui-col>
               </ui-row>
             </ui-view>
+              <ui-button type="primary" full-width="false" bindtap="paymoney">支付</ui-button>
+              <ui-button type="primary" full-width="false" bindtap="sys">扫一扫 </ui-button>
 
 
             <ui-mask ui:if="{{showMask}}" ui:model="showMask" effect="scale-in" hide-on-tap=true hide-on-touch=true
@@ -114,9 +116,10 @@
 <script>
 export default {
   config: {
-    navigationStyle: 'custom',
-    navigationBarTitleText:"个人中心",
-    title:'个人中心',
+    navigationBarBackgroundColor:"#3399FF",
+    navigationBarTitleText: "我的",
+    navigationBarTextStyle:"white",
+    title:'我的',
     backgroundColor:'#f2f2f2',
     delay:false,//延迟加载
   },
@@ -127,6 +130,60 @@ export default {
     }
   },
   methods: {
+      sys(){
+        ui.scanCode({
+          backgroundColor:'#39f',
+          color:'#4caf5',
+          onlyFromCamera: true,
+          success: (res) => {
+            console.log(res)
+            ui.showAlert({
+              content: res,
+              buttonText: '扫一扫',
+              success () {
+                ui.showToast({
+                  title: '触发了解更多'
+                })
+              }
+            })
+          }
+        })
+      },
+      paymoney(){
+        ui.request({
+          url: 'http://192.168.31.92:8080/pub/appPay', //仅为示例，并非真实的接口地址
+          data: {},
+          method:'POST',
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          success: function (res) {
+            console.log('数据请求',res.data)
+          }
+        })
+
+      },
+      WxPay(){
+        ui.requestPayment({
+            target: 'wxpay',
+            statement: {
+                "appId":'wxb01394ea85904296',     //公众号名称，由商户传入
+                "timeStamp":v.payMess.timeStamp,         //时间戳，自1970年以来的秒数
+                "nonceStr":v.payMess.nonceStr, //随机串
+                "package":v.payMess.package,  //
+                "signType":v.payMess.signType,         //微信签名方式：
+                "paySign":v.payMess.paySign //微信签名
+            },
+            success: function() {
+                console.log('支付成功')
+            },
+            fail: function() {
+                console.log('支付失败')
+            }
+        })
+      },
+
+
       goMyMess(){
         ui.navigateTo(
           {
@@ -188,9 +245,6 @@ export default {
 .marB5{
   margin-bottom:5rpx;
 }
-.borB{
-}
-
 .userTop{
   background: #3399FF;
   padding: 35rpx 20rpx;

@@ -19,7 +19,6 @@ export default {
     "navigationBarBorderColor": "rgba(231, 231, 231, 0.6)",
     "navigationBarBackgroundColor":"#FFFFFF",
     "navigationBarTextStyle":"black",
-    "navigationBarTextStyle":"black",
     "scrollType":"div",
     delay:false,//延迟加载
   },

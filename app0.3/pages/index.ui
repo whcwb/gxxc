@@ -1,5 +1,5 @@
 <template>
-  <ui-page top="0">
+  <ui-page>
     <ui-view class="grid_box backF2">
         <!-- module 1 -->
         <ui-view class="demo demo3">
@@ -63,7 +63,7 @@
           <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc">
               
               <ui-view class="xlcItemImg">
-                <ui-image src="../static/img/home/car0000.png" width="100"></ui-image>
+                <ui-image src="static/img/home/car0000.png" width="100"></ui-image>
               </ui-view>
               <ui-view class="box_row_100 xlcItemMess">
                 <ui-row>
@@ -114,7 +114,11 @@
 <script>
 export default {
   config: {
-    "navigationStyle": 'custom',
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTitleText: "首页",
+    navigationBarTextStyle:"white",
+    title:'首页',
+    backgroundColor:'#f2f2f2',
     delay:false,//延迟加载
   },
   data () {
