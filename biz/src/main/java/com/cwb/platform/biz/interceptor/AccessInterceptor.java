@@ -105,29 +105,31 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 			request.getRequestDispatcher("/403").forward(request, response);
 			return false;
 		}
-		String apiPrefix = getApiQz(request.getRequestURI());
 		if (!"su".equals(user.getLx())){ // su 用户可访问所有权限
-			if (!whiteList.contains(apiPrefix)) {
-				if (!checkPermission(user, apiPrefix)) {
+			String uri = request.getRequestURI();
+			if (!whiteList.contains(uri)) {
+				if (!checkPermission(user, uri)) {
 					request.getRequestDispatcher("/403").forward(request, response);
 					return false;
 				}
 			}
 		}
-
-
 		request.setAttribute("userInfo", user);
 		request.setAttribute("orgCode", user.getJgdm());
 		return super.preHandle(request, response, handler);
 	}
 
-	private boolean checkPermission(SysYh user, String apiPrefix) {
-		return checkPermissionNew(user,apiPrefix);
+	private boolean checkPermission(SysYh user, String uri) {
+		return checkPermissionNew(user,uri);
 	}
-	private boolean checkPermissionNew(SysYh user, String apiPrefix) {
+	private boolean checkPermissionNew(SysYh user, String uri) {
 		String redisVal = redisDao.boundValueOps(user.getYhid()+"-apiPrefix").get();
 		if (StringUtils.isEmpty(redisVal)) return false;
-		return redisVal.contains(apiPrefix);
+		String[] apiArray = redisVal.split(",");
+		for (String s : apiArray) {
+			if (uri.startsWith(s))return true;
+		}
+		return false;
 	}
 	private boolean checkPermissionOld(SysYh user, String apiPrefix) {
 		List<SysGn> functions = gnService.getUserFunctions(user);
@@ -143,41 +145,4 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		return false;
 	}
 
-	private String getApiQz(String uri){
-	    if (uri.startsWith("/biz/")){
-	        uri = uri.substring(4);
-        }
-//		List<String> mappings = getRequestMappings();
-//		for (String mapping : mappings) {
-//			if (uri.contains(mapping)){
-//				return mapping;
-//			}
-//		}
-//		return null;
-
-		String apiPrefix = uri.substring(0, uri.indexOf("/", 6) + 1);
-	    log.info("apiPrefix:"+apiPrefix);
-		return apiPrefix;
-	}
-
-	private List<String> getRequestMappings(){
-		if (this.mappings == null){
-			this.mappings = new ArrayList<>();
-			Map<String,Object> requestMappings = SpringContextUtil.getByAnnotation(RequestMapping.class);
-			for (Map.Entry<String, Object> entry : requestMappings.entrySet()) {
-				if (excludeCtrls.contains(entry.getKey()))continue;
-				Class<?> cls = entry.getValue().getClass();
-				String clasName = cls.getSimpleName();
-				RequestMapping requestMapping = entry.getValue().getClass().getAnnotation(RequestMapping.class);
-				if (requestMapping == null){
-					log.error("Not found requstmapping : "+clasName);
-					continue;
-				}
-				String[] value = requestMapping.value();
-				if (value.length == 0 || StringUtils.isEmpty(value[0]))continue;
-				this.mappings.add(value[0]);
-			}
-		}
-		return mappings;
-	}
 }
