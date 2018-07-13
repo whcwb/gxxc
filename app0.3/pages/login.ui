@@ -1,6 +1,6 @@
 <!--登录-->
 <template>
-  <ui-page top="0">
+  <ui-page>
     <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
       <ui-view class="login_bg">
         <ui-view class="section">

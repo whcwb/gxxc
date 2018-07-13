@@ -1,5 +1,16 @@
 <template>
     <ui-page style="overflow-y: hidden;">
+      <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+        <ui-row height="46">
+          <ui-col vertical-align="middle" align="center" width="60">
+          </ui-col>
+          <ui-col vertical-align="middle" align="center">
+            <ui-view class="nav_title">我的</ui-view>
+          </ui-col>
+          <ui-col vertical-align="middle" align="center" width="60">
+          </ui-col>
+        </ui-row>
+      </ui-nav-bar>
       <ui-view class="box_col" style="{{ { height: pageHeight(46)+ 'px'} }}">
             <ui-view class="userTop">
               <ui-row>
@@ -17,7 +28,7 @@
                 </ui-col>
                 <ui-col span="3" align="right" 
                 vertical-align="middle" space-right="20"
-                bindtap="showMask=true">
+                bindtap="qrcode">
                   <ui-icon type="erweima" size="36" color="#fff"></ui-icon>
                 </ui-col>
               </ui-row>
@@ -116,6 +127,7 @@
 <script>
 export default {
   config: {
+    navigationStyle: 'custom',
     navigationBarBackgroundColor:"#3399FF",
     navigationBarTitleText: "我的",
     navigationBarTextStyle:"white",
@@ -188,6 +200,14 @@ export default {
         ui.navigateTo(
           {
             url:'center/info'
+          }
+        )
+      },
+      qrcode(){
+        ui.getApp().QRpage = '/pages/user'
+        ui.navigateTo(
+          {
+            url:'/pages/common/qrCode'
           }
         )
       },

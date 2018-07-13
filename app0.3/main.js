@@ -15,6 +15,9 @@ ui.extend({
   sayHello(){
     console.log('全局方法')
   },
+  goBack(){
+    ui.navigateBack()
+  },
   pageHeight(val){
     return  ui.DEFAULT_CONTENT_HEIGHT + val
   },

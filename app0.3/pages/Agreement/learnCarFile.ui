@@ -5,8 +5,8 @@
         <ui-view style="text-align: center;position: relative">
           <ui-view class="tit">学车缴费协议</ui-view>
         </ui-view>
-        <ui-view class="" style="padding: 0.05rem 0.3rem 0.1rem 0.3rem">
-          <ui-view class="box-row">
+        <ui-view class="topBot">
+          <ui-view class="box_row">
             <ui-view class="box_row_100">
               <ui-view>
                 甲方:<ui-text class="decoration">{{usermess.yhXm}}</ui-text>
@@ -15,18 +15,18 @@
                 电话:<ui-text class="decoration">{{usermess.yhZh}}</ui-text>
               </ui-view>
               <ui-view>
-                证件号码: <ui-text class="decoration">{{usermess.yhZjhm}}</ui-text>
+                证件号码: <ui-view class="decoration textAR">{{usermess.yhZjhm}}</ui-view>
               </ui-view>
             </ui-view>
             <ui-view class="box_row_100">
-              <ui-view>
-                乙方:<ui-text class="decoration">武汉天弘腾创科技有限公司</ui-text>
-              </ui-view>
               <ui-view>
                 代表人:<ui-text class="decoration">腾创</ui-text>
               </ui-view>
               <ui-view>
                 电话: <ui-text class="decoration">13133446688</ui-text>
+              </ui-view>
+              <ui-view>
+                乙方:<ui-view class="decoration textAR">武汉天弘腾创科技有限公司</ui-view>
               </ui-view>
             </ui-view>
           </ui-view>
@@ -142,35 +142,35 @@
             </div>
           </div>
         </ui-view>
-        <ui-view class="box-row" style="padding: 0.15rem 0.3rem">
-          <!-- <div class="userSign" style="margin-right: 0.2rem">
+        <ui-view class="box_row" style="padding: 0.15rem 0.3rem">
+          <div class="userSign" style="margin-right: 0.2rem">
             <div class="signImg"  v-show="saveResultUrl!=''">
-              <img :src="apis.getImgUrl+saveResultUrl" alt="">
+              <!-- <img :src="apis.getImgUrl+saveResultUrl" alt=""> -->
             </div>
             <div>
-              甲方代表:<span class="decoration">{{usermess.yhXm}}</span>
+              甲方代表:<ui-view class="textAR">{{usermess.yhXm}}</ui-view>
             </div>
             <div>
               甲方（签章）:
-              <el-button v-if="sign" type="primary" icon="el-icon-edit" circle
+              <!-- <el-button v-if="sign" type="primary" icon="el-icon-edit" circle
                         @click="$parent.signShow=!$parent.signShow"
-              >请签名</el-button>
-              <el-button v-else type="success" icon="el-icon-check" circle>
+              >请签名</el-button> -->
+
+              <!-- <el-button v-else type="success" icon="el-icon-check" circle>
                 已签名
-              </el-button>
+              </el-button> -->
+              签名
             </div>
             <div>
-              时间：{{getdateStr(0)}}
+              时间:{{getdateStr(0)}}
             </div>
           </div>
           <div class="box_row_100" style="position: relative">
-            <img src="static/gz/thtc.png" style="width: 1.6rem;
-                      position: absolute;
-                      top: -0.5rem;
-                      right: 0.5rem;
-                      transform: rotate(-60deg);">
+            <img src="static/img/gz/thtc.png"
+                class="gzimg">
             <div>
-              乙方代表:<span class="decoration">武汉天弘腾创科技有限公司</span>
+              乙方代表:
+              <ui-view class="textAR">武汉天弘腾创科技有限公司</ui-view>
             </div>
             <div>
               乙方（签章）:
@@ -178,24 +178,25 @@
             <div>
               时间：{{getdateStr(0)}}
             </div>
-          </div> -->
+          </div>
         </ui-view>
 
-        <ui-view class="box-row">
-          <!-- <div class="box_row_100" style="padding: 0.2rem">
-            <el-button type="success" round
-                      @click="agreeShowOk"
-                      style="width: 100%;font-size: 0.4rem"
-            >同意</el-button>
+        <ui-view class="box_row">
+          <div class="box_row_100" style="padding: 0.2rem">
+            <ui-button type="primary" full-width="false"
+                      bindtap="agreeShowOk"
+                      style="width: 100%;font-size: 0.4rem">
+              同意
+            </ui-button>
           </div>
           <div class="box_row_100" style="padding: 0.2rem">
-            <el-button type="info" round
-                      @click="$router.push({name:'Home'})"
-                      style="width: 100%;font-size: 0.4rem"
-            >拒绝</el-button>
-          </div> -->
+            <ui-button type="primary" full-width="false"
+                      bindtap="closeBack"
+                      style="width: 100%;font-size: 0.4rem">
+              拒绝
+            </ui-button>
+          </div>
         </ui-view>
-
     </ui-view>
   </ui-page>
 </template>
@@ -203,18 +204,36 @@
 <script>
 export default {
   config: {
-    navigationBarTitleText: ""
+    navigationBarBackgroundColor:"#fff",
+    navigationStyle:'custom',
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"学车协议",
+    title:'学车协议',
+    backgroundColor:'#fff',
   },
   data() {
     return {
+      saveResultUrl:'123',
       usermess:{
         yhXm:'小名',
         yhZh:'13164799764',
-        yhZjhm:'211211111'
+        yhZjhm:'646448521232569654'
       }
     }
   },
-  methods: {},
+  methods: {
+    agreeShowOk(){
+      ui.navigateTo({
+        url:'/pages/pay/index'
+      }),
+      ui.getApp().payMess={
+        money:2600
+      }
+    },
+    closeBack(){
+      ui.navigateBack()
+    }
+  },
   mounted() {}
 }
 </script>
@@ -222,6 +241,13 @@ export default {
 <style lang="less">
 .agreeMess{
         background-color: #fff;
+        .topBot{
+          padding: 10rpx 36rpx;
+          border-bottom: #f2f2f2 3rpx solid;
+        }
+        .textAR{
+          padding-left: 25rpx; 
+        }
         .tit{
           color: #f75d42;
           font-size: 0.65rem;
@@ -230,18 +256,18 @@ export default {
         }
         .fonttit{
           font-weight: 700;
-          font-size: 0.35rem;
+          font-size: 32rpx;
         }
         .fontsty{
-          font-size: 0.25rem;
-          text-indent:0.3rem;
-          margin-top: 0.1rem;
+          font-size: 28rpx;
+          text-indent:50rpx;
+          margin-top: 15rpx;
         }
         .userSign{
           position: relative;
           .signImg{
             position: absolute;
-            left: -0.2rem;
+            right: -0.2rem;
             top: -0.5rem;
             z-index: 101;
             width: 1.6rem;
@@ -253,6 +279,12 @@ export default {
               height: 100%;
             }
           }
+        }
+        .gzimg{
+          width: 1.8rem;
+          position: absolute;
+          right: -0.2rem;
+          top: -0.5rem;
         }
       }
 </style>
