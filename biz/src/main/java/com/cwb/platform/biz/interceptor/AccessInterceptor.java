@@ -129,7 +129,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	private boolean checkPermission(SysYh user, HttpServletRequest request) {
-		return checkPermissionNew(user,request);
+		return checkPermissionOld(user,request);
 	}
 	private boolean checkPermissionNew(SysYh user, HttpServletRequest request) {
 		String redisVal = redisDao.boundValueOps(user.getYhid()+"-apiQz").get();
