@@ -103,7 +103,7 @@ public class MainController {
 
 			try {
 				String token = JwtUtil.createToken(item.getYhid(),item.getZh());
-				redisDao.boundValueOps(item.getYhid()).set(token, 1, TimeUnit.DAYS);
+				redisDao.boundValueOps(item.getYhid()+"-token").set(token, 1, TimeUnit.DAYS);
 				redisDao.boundValueOps(item.getYhid()+"-userInfo").set(mapper.writeValueAsString(item), 1, TimeUnit.DAYS);
 				AccessToken aToken = new AccessToken();
 				aToken.setUserId(item.getYhid());
@@ -157,7 +157,7 @@ public class MainController {
 			sb.append(functionCode).append(",");
 		}
 		sb.deleteCharAt(sb.length() - 1);
-		redisDao.boundValueOps(user.getYhid()+"-apiQz").set(sb.toString(), 1, TimeUnit.DAYS);
+		redisDao.boundValueOps(user.getYhid()+"-apiPrefix").set(sb.toString(), 1, TimeUnit.DAYS);
 	}
 	/**
 	 * 用户退出接口
@@ -168,9 +168,8 @@ public class MainController {
 	public ApiResponse<AccessToken> logout(HttpServletRequest request){
 		ApiResponse<AccessToken> result = new ApiResponse<>();
 		String userId = request.getHeader("userid");
-		redisDao.delete(userId);
+		redisDao.delete(userId+"-token");
 		redisDao.delete(userId+"-userInfo");
-
 		return result;
 	}
 

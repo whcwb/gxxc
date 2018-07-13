@@ -1,5 +1,6 @@
 package com.cwb.platform.util.spring;
 
+import lombok.experimental.var;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
