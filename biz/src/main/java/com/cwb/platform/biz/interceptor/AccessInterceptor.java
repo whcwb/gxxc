@@ -147,17 +147,17 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 	    if (uri.startsWith("/biz/")){
 	        uri = uri.substring(4);
         }
-		List<String> mappings = getRequestMappings();
-		for (String mapping : mappings) {
-			if (uri.contains(mapping)){
-				return mapping;
-			}
-		}
-		return null;
+//		List<String> mappings = getRequestMappings();
+//		for (String mapping : mappings) {
+//			if (uri.contains(mapping)){
+//				return mapping;
+//			}
+//		}
+//		return null;
 
-//		String apiPrefix = uri.substring(0, uri.indexOf("/", 6) + 1);
-//	    log.info("apiPrefix:"+apiPrefix);
-//		return apiPrefix;
+		String apiPrefix = uri.substring(0, uri.indexOf("/", 6) + 1);
+	    log.info("apiPrefix:"+apiPrefix);
+		return apiPrefix;
 	}
 
 	private List<String> getRequestMappings(){
