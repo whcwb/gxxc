@@ -16,7 +16,8 @@ export default {
       "pages/tx/index","pages/tx/pages/bankCardlist",
       "pages/tx/pages/addBankCard","pages/pay/index",
       "pages/product/index",
-      "pages/Agreement/learnCarFile","pages/Agreement/MemberFile"],
+      "pages/Agreement/learnCarFile","pages/Agreement/MemberFile",
+      "pages/common/signName","pages/common/qrCode"],
     "theme": {
       "theme-color": "#3399ff"
     },
@@ -59,6 +60,11 @@ export default {
   data () {
     return {
       //全局变量
+      userMess:{},
+      payMess:{},
+      
+      QRpage:'/pages/index',
+
       globalData: {
       },
       WIN_WIDTH:ui.WIN_WIDTH,
@@ -235,57 +241,58 @@ export default {
       </ui-view> -->
 
       <ui-view slot="panel">
-      <!-- 通用导航栏 -->
-        <ui-nav-bar
-          ui:if="pageConfig"
-          ui:show="navigationBarVisible"
-          style="{{ navStyle }}">
-          <ui-row>
-            <ui-col width="80">
-              <span class="back" bindtap="handleBack" ui:show="{{showBack}}">
-                <ui-icon type="left1" font-size="24"></ui-icon>
-              </span>
-              <span class="back" ui:show="{{!showBack}}" bindtap="handleNavIconTap">
-                <ui-icon type="list" color="#2B333B" size="16"></ui-icon>
-              </span>
-            </ui-col>
-            <ui-col width="{{WIN_WIDTH-160}}" align="center" content-direction="row" class="nav-bar-center">
-              <ui-view class="nav-bar-center-loading" style="display: none;"></ui-view>
-              <span class="nav-bar-center-text">{{ $t(winConfig.navigationBarTitleText) }}</span>
-            </ui-col>
-            <ui-col width="80">
+        <!-- 通用导航栏 -->
+          <ui-nav-bar
+            ui:if="pageConfig"
+            ui:show="navigationBarVisible"
+            style="{{ navStyle }}">
+            <ui-row>
+              <ui-col width="80">
+                <span class="back" bindtap="handleBack">
+                  <ui-icon type="left1" font-size="24"></ui-icon>
+                </span>
+                <!-- <span class="back" ui:show="{{!showBack}}" bindtap="handleNavIconTap">
+                  <ui-icon type="left1" font-size="24"></ui-icon>
+                </span> -->
+              </ui-col>
+              <ui-col width="{{WIN_WIDTH-160}}" align="center" content-direction="row" class="nav-bar-center">
+                <ui-view class="nav-bar-center-loading" style="display: none;"></ui-view>
+                <span class="nav-bar-center-text">{{ $t(winConfig.navigationBarTitleText) }}</span>
+              </ui-col>
+              <ui-col width="80">
 
-            </ui-col>
-          </ui-row>
-        </ui-nav-bar>
+              </ui-col>
+            </ui-row>
+          </ui-nav-bar>
 
-      <!-- 页面路由 -->
-      <keep-alive>
-        <router-view ui:if="{{ !isApp && pageConfig.cache }}" class="router-view"></router-view>
-      </keep-alive>
-      <router-view ui:if="{{ isApp || !pageConfig.cache }}" class="router-view"></router-view>
+        <!-- 页面路由 -->
+        <keep-alive>
+          <router-view ui:if="{{ !isApp && pageConfig.cache }}" class="router-view"></router-view>
+        </keep-alive>
+        <router-view ui:if="{{ isApp || !pageConfig.cache }}" class="router-view"></router-view>
 
-      <!-- 底部标签栏 -->
-      <ui-tab-bar
-          bindbeforechange="handleTabBeforeChange"
-          bindchange="handleTabChange"
-          ui:if="isTabBar"
-          ui:model="tabIndex"
-          style="{{ tabBarStyle }}"
-          id="{{ tabBar.id }}"
-          group-id="{{ tabBar.groupId }}"
-          icon-size="{{ tabBar.iconSize }}"
-          font-size="{{ tabBar.fontSize }}"
-          position="{{ tabBar.position }}"
-          list="{{ tabBarList }}"
-          paths="{{ tabBar.paths }}"
-          background-color="{{ tabBar.backgroundColor }}"
-          border-color="{{ tabBar.borderColor }}"
-          color="{{ tabBar.color }}"
-          selected-color="{{ tabBar.selectedColor }}">
-      </ui-tab-bar>
-    </ui-view>
+        <!-- 底部标签栏 -->
+        <ui-tab-bar
+            bindbeforechange="handleTabBeforeChange"
+            bindchange="handleTabChange"
+            ui:if="isTabBar"
+            ui:model="tabIndex"
+            style="{{ tabBarStyle }}"
+            id="{{ tabBar.id }}"
+            group-id="{{ tabBar.groupId }}"
+            icon-size="{{ tabBar.iconSize }}"
+            font-size="{{ tabBar.fontSize }}"
+            position="{{ tabBar.position }}"
+            list="{{ tabBarList }}"
+            paths="{{ tabBar.paths }}"
+            background-color="{{ tabBar.backgroundColor }}"
+            border-color="{{ tabBar.borderColor }}"
+            color="{{ tabBar.color }}"
+            selected-color="{{ tabBar.selectedColor }}">
+        </ui-tab-bar>
+      </ui-view>
     <!-- </ui-slide-menu> -->
+
   </ui-view>
 </template>
 

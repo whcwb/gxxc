@@ -1,66 +1,95 @@
+<!--search.ui-->
 <template>
-  <ui-page>
-    <ui-view class="demo2">
-      <ui-divider>居中并自定义可见范围</ui-divider>
-      <ui-ex-swiper pagination centered-slides space-between="10" loop slides-per-view="auto">
-        <ui-ex-swiper-item ui:for="{{items}}" ui:for-item="item" ui:for-index="index">
-          <ui-image src="{{ item.src }}" mode="simple"></ui-image>
-        </ui-ex-swiper-item>
-      </ui-ex-swiper>
-    </ui-view>
-  </ui-page>
+    <ui-page>
+    <ui-nav-bar slot="nav-bar"  class="nav_bar">
+      <ui-row class="search_box" border-bottom height="46">
+        <ui-col width="45" vertical-align="middle" align="left" space-left="10" bindtap="navigateBack">
+          <ui-icon type="arrow-left" size="18" color="#828282"></ui-icon>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="search_content">  
+            <ui-row height="30">
+              <ui-col vertical-align="middle" align="center" width="30">
+                <ui-icon type="search" color="#B5B5B5" size="18"></ui-icon>
+              </ui-col>
+              <ui-col vertical-align="middle">
+                <ui-form action="/search">
+                  <ui-input type="search" name="search" placeholder="搜索"></ui-input>
+                </ui-form>
+              </ui-col>
+            </ui-row>
+          </ui-view>
+        </ui-col>
+        <ui-col width="45" vertical-align="middle" align="center"></ui-col>
+      </ui-row>
+    </ui-nav-bar>
+
+      <ui-view class="content_list">
+        <ui-view ui:for="{{ items }}" class="{{{'grey-bg': index % 2 == 0}}}">
+          {{ item }}
+        </ui-view>
+      </ui-view>
+    </ui-page>
 </template>
 
 
 <script>
+// search.js
 export default {
   config: {
-    "navigationBarTitleText": "吸顶容器应用案例",
-    "navigationBarBorderColor": "rgba(231, 231, 231, 0.6)",
-    "navigationBarBackgroundColor":"#FFFFFF",
-    "navigationBarTextStyle":"black",
-    "scrollType":"div",
-    delay:false,//延迟加载
+    "navigationStyle": "custom",
+    "navigationBarTextStyle":"black"
   },
   data () {
     return {
-      items: [{
-        src: 'http://images.uileader.com/20171110/e5b64484-b5e0-472a-bf52-ac95fb5685d3.jpg',
-        title: '放肆玩乐，轻巧办公'
-      },
-      {
-        src: 'http://images.uileader.com/20171110/e33376a8-c599-42e5-87ed-84aec360a61d.jpg',
-        title: '高温保护，一路驰骋'
-      },
-      {
-        src: 'http://images.uileader.com/20171110/37cc4a4e-a253-4fcd-a4f6-d9710e8f63e8.jpg',
-        title: '七夕好货，独家礼赠'
-      }]
+      headerTop: ui.DEFAULT_HEADER_HEIGHT + 'px',
+      items: [],
+      show: false,
+      transitionName: 'search-pop-in'
     }
   },
   methods: {
+    showFullScreenSearch () {
+      this.show = true
+      this.transitionName = 'search-pop-in'
+    },
+    hideFullScreenSearch () {
+      this.show = false
+      this.transitionName = 'search-pop-out'
+    },
+    handleTap () {
+    },
+    navigateBack () {
+      ui.navigateBack()
+    }
   },
   mounted () {
+    for (let i = 1; i <= 30; i++) {
+      this.items.push(`列表项目${i}`)
+    }
   }
 }
-
 </script>
 
 <style lang="less">
-.demo2 {
-  .swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    background: #fff;
-    width: 70%;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .ui-image {
-      border-radius: 10px;
+.search_box {
+    width: 100%;
+    background-color: #fff;
+    .search_content {
+        background-color: #F4F4F4;
+        height: 30px;
+        border-radius: 25px;
+        overflow: hidden;
+        width: 100%;
+        .ui-input {
+            border: 0;
+            padding: 0;
+            background: transparent;
+            width: 95%;
+        }
+        .ui-input-inner {
+            height: 30px;
+        }
     }
-  }
 }
 </style>

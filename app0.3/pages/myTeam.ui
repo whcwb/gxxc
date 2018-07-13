@@ -127,7 +127,7 @@
           distance: 50,
           onBegin: () => {},
           onActive: this.handleLoadMore,
-          onAfter: this.handlePullDownAfter
+          onAfter: this.handlePullUpAfter
         },
         count:0,
         loadMore:true
@@ -148,6 +148,9 @@
         
       },
       handleLoadMore () {
+        ui.showToast({
+            title: '上啦'
+          })
         this.count ++
         if(this.count > 10){
           this.loadMore = false

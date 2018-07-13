@@ -1,5 +1,16 @@
 <template>
   <ui-page>
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+      <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">首页</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
     <ui-view class="grid_box backF2">
         <!-- module 1 -->
         <ui-view class="demo demo3">
@@ -32,65 +43,79 @@
                       已邀请
                   </ui-view>
                 </ui-view>
-                <ui-view class="box_row_100" style="text-align:right" bindtap="showMask=true">
-                  <ui-icon type="user" size="36" color="#fff"></ui-icon>
+                <ui-view class="box_row_100" style="text-align:right" bindtap="qrcode">
+                  <ui-icon type="erweima" size="28" color="#fff"></ui-icon>
                 </ui-view>
             </ui-view>
         </ui-view>
         <!-- 吸顶容器 -->
         <ui-view class="sticky-in-relative-container">
           <ui-sticky stick-on-tap  custom-style="{{ customStyle }}">
-            <ui-view>
-                <ui-row class="title">
-                    <ui-col>推荐</ui-col>
-                    <ui-col
-                    bindtap="showPopup"
-                    >{{checklist[0]}}</ui-col>
-                </ui-row>
+            <ui-view >
+                <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
+                    <ui-tab bindtap="tabsIndex=0">推荐</ui-tab>
+                    <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+                </ui-tabs>
             </ui-view>
             <ui-view slot="sticky">
-
-              <ui-row class="title">
-                    <ui-col>推荐</ui-col>
-                    <ui-col
-                    bindtap="showPopup"
-                    >{{checklist[0]}}</ui-col>
-                </ui-row>
+                <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
+                    <ui-tab>推荐</ui-tab>
+                    <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+                </ui-tabs>
+              <!-- <ui-row class="title">
+                  <ui-col>推荐</ui-col>
+                  <ui-col
+                  bindtap="showPopup"
+                  >{{checklist[0]}}</ui-col>
+              </ui-row> -->
             </ui-view>
           </ui-sticky>
         </ui-view>
-        <ui-view>
-          <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc">
-              
-              <ui-view class="xlcItemImg">
-                <ui-image src="static/img/home/car0000.png" width="100"></ui-image>
-              </ui-view>
-              <ui-view class="box_row_100 xlcItemMess">
-                <ui-row>
-                    <ui-col>驾校名称</ui-col>
-                    <ui-col align="right">2600.00</ui-col>
-                </ui-row>
-                <ui-row>
-                    <ui-col span='1'>0</ui-col>
-                    <ui-col>驾校地址</ui-col>
-                </ui-row>
-                <ui-row>
-                    <ui-col span='1'>0</ui-col>
-                    <ui-col>驾校交通</ui-col>
-                </ui-row>
-                <ui-row>
-                    <ui-col align="right"> >3000米</ui-col>
-                </ui-row>
-              </ui-view>
+        <!-- <ui-view> -->
+          <ui-scroll-view height="{{pageHeight(0)}}" scroll-y="scroll-y" pull-up="{{ pullUp }}">
+              <ui-view class="content_list">
+                  <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc">
+                      
+                      <ui-view class="xlcItemImg">
+                        <ui-image src="static/img/home/car0000.png" width="100"></ui-image>
+                      </ui-view>
+                      <ui-view class="box_row_100 xlcItemMess">
+                        <ui-row>
+                            <ui-col>驾校名称</ui-col>
+                            <ui-col align="right">2600.00</ui-col>
+                        </ui-row>
+                        <ui-row>
+                            <ui-col span='1'>0</ui-col>
+                            <ui-col>驾校地址</ui-col>
+                        </ui-row>
+                        <ui-row>
+                            <ui-col span='1'>0</ui-col>
+                            <ui-col>驾校交通</ui-col>
+                        </ui-row>
+                        <ui-row>
+                            <ui-col align="right"> >3000米</ui-col>
+                        </ui-row>
+                      </ui-view>
 
-          </ui-view>
-        </ui-view>
+                  </ui-view>
+              </ui-view>
+              <ui-view style="width:200px;margin:0 auto;">
+                <ui-divider ui:show="{{!loadMore}}">没有新数据了</ui-divider>
+              </ui-view>
+          </ui-scroll-view>
+        <!-- </ui-view> -->
     </ui-view>
 
-    <ui-popup ui:model="{{popupshow}}" position="top" height="{{ height+46 }}">
+    <ui-popup ui:model="{{popupshow}}" position="top">
       <ui-view class="top_pop">
-        <ui-view class="checkTit">团队筛选</ui-view>
-        <ui-scroll-view scroll-y="scroll-y" height="{{height+46}}">
+        <ui-view class="checkTit">
+          <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
+              <ui-tab bindtap="tabsIndex=0,popupshow=false">推荐</ui-tab>
+              <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+          </ui-tabs>
+        </ui-view>
+
+        <ui-scroll-view scroll-y="scroll-y">
           <ui-check-list max="1" 
           label-position="left" 
           options="{{ foodList }}" 
@@ -114,6 +139,7 @@
 <script>
 export default {
   config: {
+    navigationStyle: 'custom',
     navigationBarBackgroundColor:"#26a2ff",
     navigationBarTitleText: "首页",
     navigationBarTextStyle:"white",
@@ -123,14 +149,23 @@ export default {
   },
   data () {
     return {
+      tabsIndex:0,
       showMask:false,
 
       popupshow:false,
       checklist:['全部'],
       foodList:[
-        '全部','一级用户','二级用户','学车用户','会员用户','已交费','未交费'
+        '武汉市','江岸区','江汉区','硚口区','汉阳区',
+        '武昌区','青山区','洪山区','东西湖区','汉南区',
+        '蔡甸区','江夏区','黄陂区','新洲区'
       ],
-
+      
+      pullUp:{
+        distance: 50,
+        onBegin: () => {},
+        onActive: this.handleLoadMore,
+        onAfter: this.handlePullUpAfter
+      },
 
       height: ui.DEFAULT_CONTENT_HEIGHT,
       items:[{
@@ -150,15 +185,44 @@ export default {
       },
 
       itemlist: [],
+      count:0,
+      loadMore:true,
       offsetTop: ui.DEFAULT_HEADER_HEIGHT,
       customStyle:{
-        'background-color':'#eee',
-        'height': '46px',
-        'line-height': '46px'
+        'background-color':'#fff',
       }
     }
   },
   methods: {
+    handleLoadMore () {
+      ui.showToast({
+          title: '上啦'
+        })
+      this.count ++
+      if(this.count > 10){
+        this.loadMore = false
+        return false
+      }else{
+        window.setTimeout(() => {
+          for (let i = this.bottom + 1; i <= this.bottom + 10; i++) {
+            this.items.push(`列表项目${i}`)
+          }
+          this.bottom += 10
+        }, 1500)
+      }
+    },
+    handlePullUpAfter (flag) {
+      ui.showToast({
+          title: flag
+        })
+      if (flag) {
+        ui.showToast({
+          title: '处理上拉刷新'
+        })
+      }
+    },
+    handleChange (index, key) {
+    },
     change(val){
       // debugger
       console.log(val);
@@ -167,6 +231,7 @@ export default {
       
     },
     showPopup(){
+      this.tabsIndex = 1;
       this.popupshow = true
     },
     closemask(){
@@ -181,6 +246,14 @@ export default {
       ui.navigateTo(
         {
           url:'center/bill'
+        }
+      )
+    },
+    qrcode(){
+      ui.getApp().QRpage = '/pages/index'
+      ui.navigateTo(
+        {
+          url:'/pages/common/qrCode'
         }
       )
     },
@@ -216,9 +289,9 @@ export default {
 }
 
 .checkTit{
-  text-align: center;
-  padding: 15rpx 0;
-  font-size: 40rpx;
+  // text-align: center;
+  padding: 10rpx 0;
+  font-size: 28rpx;
   font-weight: 700;
 }
 .ui-image-container{

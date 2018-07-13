@@ -1,0 +1,58 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+      <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" width="60">
+          <ui-view class="nav_left">
+              <ui-icon type="left1" font-size="24"></ui-icon>
+          </ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">签字</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
+      <!-- <namecanvas ui:options="{{options}}" @result="saveResult" @clear="clear" /> -->
+  </ui-page>
+</template>
+
+<script>
+// import namecanvas from 'vue-sign-canvas'
+// require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
+export default {
+  config: {
+     backgroundColor:'#ffffff',
+  },
+  components:{
+    // namecanvas
+  },
+  data() {
+    return {
+      options:{
+        brushColor: '#ff2600',
+        brushWidth: ui.DEFAULT_CONTENT_HEIGHT,
+        brushType: 'marker',
+        width: 500,
+        height: 600,
+        shadowEnable: false,
+        shadowWidth: 10,
+        canvasBackgroundColor: '#fff',
+      }
+    }
+  },
+  methods: {
+    saveResult (data) {
+    },
+    clear () {
+    }
+  },
+  mounted() {}
+}
+</script>
+
+<style lang="less">
+
+</style>
