@@ -67,17 +67,16 @@ export default {
   },
   methods: {
     login(){
-      // alert('123')
-      // ui.navigateTo({
-      //   url: '/pages/index'
-      // })
-      let loginForm = {
-              username: '18672922385',
-              password: '123456'
-            }
-      this.$http('POST',ui.getApp().apis.LOGIN,loginForm,(data)=>{
-        console.log(data)
+      ui.navigateTo({
+        url: '/pages/index'
       })
+      // let loginForm = {
+      //         username: '18672922385',
+      //         password: '123456'
+      //       }
+      // this.$http('POST',ui.getApp().apis.LOGIN,loginForm,(data)=>{
+      //   console.log(data)
+      // })
 
 
       this.sayHello()

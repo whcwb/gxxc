@@ -44,6 +44,7 @@ ui.extend({
   },
   pageHeight(val){
     return  ui.DEFAULT_CONTENT_HEIGHT + val
+            // default content height
   },
   getdateStr(Y){
     var NowDate = new Date
