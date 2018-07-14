@@ -1,6 +1,6 @@
 <template>
-    <ui-page style="overflow-y: hidden;">
-      <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+    <ui-page style="overflow-y: hidden;"  pull-down="{{ pullDown }}">
+      <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#3399FF'} }}">
         <ui-row height="46">
           <ui-col vertical-align="middle" align="center" width="60">
           </ui-col>
@@ -11,7 +11,7 @@
           </ui-col>
         </ui-row>
       </ui-nav-bar>
-      <ui-view class="box_col" style="{{ { height: pageHeight(46)+ 'px'} }}">
+      <ui-view class="box_col" style="{{ { height: pageHeight(46)+ 'px','background-color':'#f2f2f2'} }}">
             <ui-view class="userTop">
               <ui-row>
                 <ui-col span="3" align="left" 
@@ -132,16 +132,23 @@ export default {
     navigationBarTitleText: "我的",
     navigationBarTextStyle:"white",
     title:'我的',
-    backgroundColor:'#f2f2f2',
+    backgroundColor:'#3399FF',
     delay:false,//延迟加载
   },
   data () {
     return {
       showMask:false,
-      portraitUrl: require('#/images/portrait_bg.png')
+      portraitUrl: require('#/images/portrait_bg.png'),
+      pullDown:{
+        distance: 100,
+        onActive:this.handleLoadMore
+      }
     }
   },
   methods: {
+      handleLoadMore(){
+          ui.showToast({ title: '下拉成功', icon: 'success' })
+      },
       sys(){
         ui.scanCode({
           backgroundColor:'#39f',
@@ -167,7 +174,8 @@ export default {
           data: {},
           method:'POST',
           header: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'content-type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded'
           },
           success: function (res) {
             console.log('数据请求',res.data)
@@ -244,6 +252,9 @@ export default {
           }
         )
       }
+  },
+  mounted () {
+    this.sayHello()
   }
 }
 

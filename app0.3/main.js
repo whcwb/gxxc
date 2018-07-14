@@ -1,7 +1,6 @@
 import app from './app.ui'
 import '#/static/css/box.less'
 
-
 let options = {
   app: app,
   beforeEach(to,from,next) {
@@ -10,10 +9,35 @@ let options = {
     next()
   }
 }
+// const Ajax = ui.getApp().Ajax
 
 ui.extend({
+    $http(method,url,data,callback){
+      ui.request({
+        url: ui.getApp().Ajax.url+':'+ui.getApp().Ajax.port+url, //仅为示例，并非真实的接口地址
+        data: data,
+        header: ui.getApp().Ajax.header,
+        method:method,
+        success: function (res) {
+          console.log(res)
+          callback && callback(res);
+        },
+        fail:function(err){
+          console.log(err)
+          callback && callback(err);
+        },
+        complete:function(mess){
+          console.log(mess)
+          callback && callback(mess);
+        }
+      })
+    },
+
+
+
+
   sayHello(){
-    console.log('全局方法')
+    console.log('全局方法参数',ui.getApp().Ajax)
   },
   goBack(){
     ui.navigateBack()

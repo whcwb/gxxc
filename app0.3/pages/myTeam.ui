@@ -4,16 +4,15 @@
         <ui-row height="46">
           <ui-col width="10"></ui-col>
           <ui-col vertical-align="middle" align="center">
-            <ui-view style="width:100%">
+            <ui-view class="findInput" style="width:100%" bindtap="handleInput">
               <ui-input ui:model="{{ searchVal }}" 
-              style="back"
-              bindinput="handleInput" placeholder="监听input事件"></ui-input>
+              bindinput="" placeholder="收索"></ui-input>
             </ui-view>
           </ui-col>
           <ui-col width="10"></ui-col>
           <ui-col vertical-align="middle" align="center"  width="70" bindtap="selt">
-              <ui-view bindtap="showMask=true" style="color:#fff;font-weight: 700;">
-                {{selectVal.txt}}
+              <ui-view bindtap="popupshow=true" style="color:#fff;font-weight: 700;">
+                {{selectVal[0] | typVal}}
               </ui-view>
           </ui-col>
           <ui-col width="10"></ui-col>
@@ -41,13 +40,13 @@
                 </ui-row>
                 <ui-row height="50">
                     <ui-col span="4">
-                      是否缴费
+                      已交费
                     </ui-col>
                     <ui-col span="4" align="left">
-                      用户类型
+                      会员
                     </ui-col>
                     <ui-col span="3" align="right">
-                      用户级别
+                     一级用户
                     </ui-col>
                 </ui-row>
             </ui-col>
@@ -60,17 +59,25 @@
       </ui-view>
     </ui-scroll-view>
 
-    <ui-mask ui:model="showMask">
-      <ui-view class="selectList box_row_list" style="height:100%;background:#ffffff">
-        <ui-view class="selectItem" :class="index%3==0? 'bc_green' : index%3==1 ? 'bc_red' : 'bc_blue'"  
-                 ui:for="{{selectList}}"
-                 bindtap="getSeltItem(item,index)">
-                 <ui-view class="selectItemTxT">
-                    {{item.txt}}
-                 </ui-view>
+
+    <ui-popup ui:model="{{popupshow}}" position="top">
+      <ui-view class="top_pop">
+        <ui-view class="checkTit">
+          <ui-tabs index="{{ 0 }}">
+              <ui-tab>区域选着</ui-tab>
+          </ui-tabs>
         </ui-view>
+
+        <ui-scroll-view scroll-y="scroll-y">
+          <ui-check-list max="1" 
+          label-position="left" 
+          options="{{ selectList }}" 
+          type="plain" 
+          ui:model="{{ selectVal}}" 
+          bindchange="change" color="#3AC3B0"></ui-check-list>
+        </ui-scroll-view>
       </ui-view>
-    </ui-mask>
+    </ui-popup>
 
   </ui-page>
 </template>
@@ -78,42 +85,58 @@
 <script>
   export default {
     config: {
-      navigationBarTitleText: "下拉与到底加载",
-      disableScroll:true,
+      navigationStyle: 'custom',
+      navigationBarBackgroundColor:"#26a2ff",
+      navigationBarTitleText: "团队",
+      navigationBarTextStyle:"white",
+      title:'团队',
+      backgroundColor:'#f2f2f2',
       delay:false,//延迟加载
+    },
+    computed:{
+      searchValue(){
+        return ui.getApp().searchValue
+      }
+    },
+    watch:{
+      searchValue:function(n,o){
+        this.searchVal = n
+        console.log(n)
+        console.log(o)
+
+      }
     },
     data () {
       return {
-        // Mask遮罩层
-        showMask:false,
-        selectVal:{
-          txt:'全部',
-          val:'07'
-        },
+        popupshow:false,
+
+        selectVal:[
+             '07'
+        ],
         selectList:[{
-          txt:'一级用户',
-          val:'01',
+          value:'全部',
+          key:'07',
         },{
-          txt:'二级用户',
-          val:'02',
+          value:'一级用户',
+          key:'01',
         },{
-          txt:'学院',
-          val:'03',
+          value:'二级用户',
+          key:'02',
         },{
-          txt:'会员',
-          val:'04',
+          value:'学员',
+          key:'03',
         },{
-          txt:'已交费',
-          val:'05',
+          value:'会员',
+          key:'04',
         },{
-          txt:'未交费',
-          val:'06',
+          value:'已交费',
+          key:'05',
         },{
-          txt:'全部',
-          val:'07',
+          value:'未交费',
+          key:'06',
         }],
         // Mask遮罩层END
-        searchVal:"",
+        searchVal:'',
         items: [],
         bottom: 30,
         height: ui.DEFAULT_CONTENT_HEIGHT,
@@ -133,12 +156,48 @@
         loadMore:true
       }
     },
+    filters: {
+      typVal:(val) =>{
+        switch (val) {
+          case '01':
+            return '一级用户';
+            break;
+          case '02':
+            return '二级用户';
+            break;
+          case '03':
+            return '学员';
+            break;
+          case '04':
+            return '会员';
+            break;
+          case '05':
+            return '已交费';
+            break;
+          case '06':
+            return '未交费';
+            break;
+          case '07':
+            return '全部';
+            break;
+          default:
+            return '用户类型'
+            break;
+        }
+      }
+    },
     methods: {
+      change(val){
+        console.log(val);
+        console.log(this.checklist);
+        this.popupshow = false
+        
+      },
       selt(){//类别选择
 
       },
       handleInput(){//search收索
-
+        ui.getApp().globalData.searchShow = true
       },
       getSeltItem(item,index){
         this.selectVal = item
@@ -204,32 +263,8 @@
 </script>
 
 <style lang="less">
-  .selectList{
-    padding: 50rpx;
-    .selectItem{
-      width:48%;
-      color: #fff;
-      text-align: center;
-      font-size: 45rpx;
-      font-weight: 700;
-      margin: 1%;
-      position: relative;
-      .selectItemTxT{
-        width: 100%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%)
-      }
+  .findInput{
+    .ui-input{
     }
-  }
-  .bc_green{
-    background-color: #7CC422;
-  }
-  .bc_red{
-    background-color: #FFA060;
-  }
-  .bc_blue{
-    background-color: #46D1E4;
   }
 </style>

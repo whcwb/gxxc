@@ -15,19 +15,21 @@
         </ui-col>
       </ui-row>
     </ui-nav-bar>
-      <!-- <namecanvas ui:options="{{options}}" @result="saveResult" @clear="clear" /> -->
+    <!-- <vuesigncanvas :options="options" 
+    @result="saveResult" @clear="clear" >
+    </vuesigncanvas> -->
   </ui-page>
 </template>
 
 <script>
-// import namecanvas from 'vue-sign-canvas'
+// import vuesigncanvas from 'vue-sign-canvas'
 // require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
 export default {
   config: {
      backgroundColor:'#ffffff',
   },
   components:{
-    // namecanvas
+    // vuesigncanvas
   },
   data() {
     return {

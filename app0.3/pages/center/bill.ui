@@ -14,18 +14,20 @@
                       <ui-col span="9">
                           <ui-row space-top='10' height="50">
                               <ui-col span="6">
-                                费用类型
+                                  <ui-view class="moneyTyp">
+                                    充值
+                                  </ui-view>
                               </ui-col>
                               <ui-col span="5" align="right">
-                                收支
+                                200
                               </ui-col>
                           </ui-row>
                           <ui-row height="50">
                               <ui-col span="6">
-                                创建时间
+                                2017-07-07 11:11:11
                               </ui-col>
                               <ui-col span="5" align="right">
-                                备注
+                                处理成功
                               </ui-col>
                           </ui-row>
                       </ui-col>
@@ -143,9 +145,8 @@
 </script>
 
 <style lang="less">
-  .tabSty{
-    background: #fff;
-    padding: 15rpx 0;
-    border-bottom: #f2f2f2 5rpx solid;
-  }
+    .moneyTyp{
+      font-weight: 700;
+      font-size: 30rpx;
+    }
 </style>

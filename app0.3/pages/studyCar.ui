@@ -1,64 +1,51 @@
-<!--search.ui-->
 <template>
-    <ui-page>
+  <ui-page>
     <ui-nav-bar slot="nav-bar"  class="nav_bar">
-      <ui-row class="search_box" border-bottom height="46">
-        <ui-col width="45" vertical-align="middle" align="left" space-left="10" bindtap="navigateBack">
-          <ui-icon type="arrow-left" size="18" color="#828282"></ui-icon>
-        </ui-col>
-        <ui-col vertical-align="middle" align="center">
-          <ui-view class="search_content">  
-            <ui-row height="30">
-              <ui-col vertical-align="middle" align="center" width="30">
-                <ui-icon type="search" color="#B5B5B5" size="18"></ui-icon>
-              </ui-col>
-              <ui-col vertical-align="middle">
-                <ui-form action="/search">
-                  <ui-input type="search" name="search" placeholder="搜索"></ui-input>
-                </ui-form>
-              </ui-col>
-            </ui-row>
+      <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" space-left="15" bindtap="showFullScreenSearch">
+          <ui-view class="search">
+            <ui-icon type="left1" size="15" color="#000"></ui-icon> 搜索
           </ui-view>
         </ui-col>
-        <ui-col width="45" vertical-align="middle" align="center"></ui-col>
+        <ui-col vertical-align="middle" align="center" width="50">
+          <ui-icon type="left1" size="24" color="#fff"></ui-icon>
+        </ui-col>
       </ui-row>
     </ui-nav-bar>
-
-      <ui-view class="content_list">
-        <ui-view ui:for="{{ items }}" class="{{{'grey-bg': index % 2 == 0}}}">
-          {{ item }}
-        </ui-view>
+    
+    <ui-view class="content_list">
+      <ui-view ui:for="{{ items }}" class="{{{'grey-bg': index % 2 == 0}}}">
+        {{ item }}
       </ui-view>
-    </ui-page>
+    </ui-view>
+
+
+
+  </ui-page>
 </template>
 
 
 <script>
+// search2.js
 // search.js
 export default {
   config: {
     "navigationStyle": "custom",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "#f00",
+    "scrollType":"div"
   },
   data () {
     return {
-      headerTop: ui.DEFAULT_HEADER_HEIGHT + 'px',
-      items: [],
-      show: false,
-      transitionName: 'search-pop-in'
+      items: []
     }
   },
   methods: {
     showFullScreenSearch () {
-      this.show = true
-      this.transitionName = 'search-pop-in'
+      debugger
+      ui.getApp().globalData.searchShow = true
+      ui.setStatusBarStyle({ style: 'dark' })
     },
-    hideFullScreenSearch () {
-      this.show = false
-      this.transitionName = 'search-pop-out'
-    },
-    handleTap () {
-    },
+
     navigateBack () {
       ui.navigateBack()
     }
@@ -69,27 +56,43 @@ export default {
     }
   }
 }
+
 </script>
 
 <style lang="less">
-.search_box {
+  // search.less
+.nav_bar{
+  background: linear-gradient(to right, #F65B2D, #F4001A);
+  .search{
     width: 100%;
-    background-color: #fff;
-    .search_content {
-        background-color: #F4F4F4;
-        height: 30px;
-        border-radius: 25px;
-        overflow: hidden;
-        width: 100%;
-        .ui-input {
-            border: 0;
-            padding: 0;
-            background: transparent;
-            width: 95%;
-        }
-        .ui-input-inner {
-            height: 30px;
-        }
-    }
+    line-height: 30px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    color: #fff;
+    font-size: 14px;
+  }
 }
+
+.back {
+  bottom: 100px;
+  right: 20px;
+  width: 46px;
+  padding: 7px;
+  height: 46px;
+  line-height: 16px;
+  border: 1px solid #F4001A;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  box-sizing: border-box;
+  background-color: #F4001A;
+  z-index: 99;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
 </style>

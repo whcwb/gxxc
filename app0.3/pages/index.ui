@@ -196,7 +196,7 @@ export default {
   methods: {
     handleLoadMore () {
       ui.showToast({
-          title: '上啦'
+          title: '上拉'
         })
       this.count ++
       if(this.count > 10){
@@ -224,7 +224,6 @@ export default {
     handleChange (index, key) {
     },
     change(val){
-      // debugger
       console.log(val);
       console.log(this.checklist);
       this.popupshow = false
@@ -263,6 +262,15 @@ export default {
           url:'home/xlcMess'
         }
       )
+    },
+    getLocationMess(){//定位 获取 位置信息
+      ui.getLocation({
+        type: 'wgs84',
+        success: function (res) {
+          console.log('获取 位置信息',res);
+          
+        }
+      })
     }
 
   },
