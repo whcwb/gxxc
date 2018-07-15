@@ -2,8 +2,8 @@
 <template>
   <ui-page top="0" style="overflow-y:auto">
       <ui-view class="win">
-            <ui-view class="_top"    style="background-image: url('static/img/png/title-bg.png');">
-                <ui-view class="nimg">
+            <ui-view class="_top"  style="background-image: url('static/img/png/title-bg.png');">
+                <ui-view class="nimg" bindtap="goscore">
                     <ui-view>
                       <ui-view class="titSty" style="">
                       </ui-view>
@@ -11,7 +11,8 @@
                     <ui-view class="_font alcen">xxx
                     </ui-view>
                      <ui-view class="alcen">
-                       <ui-star class="starSty" half=true style="transform: translateX(-18px)"></ui-star>
+                       <ui-star class="starSty" readonly=true value=5
+                       half=true style="transform: translateX(-18px)"></ui-star>
                      </ui-view>
                      <ui-view class="alcen">
                        4.0分
@@ -61,42 +62,45 @@
                         </ui-col>
                       </ui-row>
                       <ui-view style="padding: 0 60px;">
-                   <ui-timeline mode="row" style="text-align:center">
-                      <ui-timeline-item  ui:for="{{list}}" 
-                        point-color="{{index <= thisIndex ? '#3399ff' : '#8a8a8a'}}" 
-                        line-color="{{index<thisIndex?'#3399ff':''}}"
-                        shadow-class="{{index === thisIndex ? 'shadow-class' : ''}}"
-                        show-line="{{index === list.length-1 ? false : true}}">
-                        <ui-view class="continer">
-                          12
-                        </ui-view>
-                      </ui-timeline-item>
-                    </ui-timeline>
-                 </ui-view>
+                        <ui-timeline mode="row" style="text-align:center">
+                            <ui-timeline-item  ui:for="{{list}}" 
+                              point-color="{{index <= thisIndex ? '#3399ff' : '#8a8a8a'}}" 
+                              line-color="{{index<thisIndex?'#3399ff':''}}"
+                              shadow-class="{{index === thisIndex ? 'shadow-class' : ''}}"
+                              show-line="{{index === list.length-1 ? false : true}}">
+                                <ui-view class="continer">
+                                  12
+                                </ui-view>
+                            </ui-timeline-item>
+                          </ui-timeline>
+                      </ui-view>
                     </ui-view>
                     
                     <ui-view ui:if="{{timelineNext}}==1">
                       <ui-row >
                         <ui-col align='center'>
-                          <ui-image src="static/img/jpg/sxlx.jpg"></ui-image>
+                          <ui-image mode=aspectFit src="static/img/jpg/sxlx.jpg"></ui-image>
                           <ui-text>顺序练习</ui-text>
                         </ui-col>
                         <ui-col align='center'> 
-                          <ui-image src="static/img/jpg/zjlx.jpg"></ui-image>
+                          <ui-image mode=aspectFit src="static/img/jpg/zjlx.jpg"></ui-image>
                           <ui-text>章节练习</ui-text>
                         </ui-col >
                         <ui-col align='center'>
-                          <ui-image src="static/img/jpg/zxlx.jpg"></ui-image>
+                          <ui-image mode=aspectFit src="static/img/jpg/zxlx.jpg"></ui-image>
                           <ui-text>专项练习</ui-text>
+                        </ui-col>
+                        <ui-col>
+
                         </ui-col>
                       </ui-row>
                       <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      当前科目考试费
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="未缴"></ui-badge>
-                      </ui-col>
+                          <ui-col span="10" vertical-align="middle">
+                          当前科目考试费
+                          </ui-col>
+                          <ui-col align="right" vertical-align="middle" space-right="20">
+                              <ui-badge class="vip" text="未缴"></ui-badge>
+                          </ui-col>
                       </ui-row>
                       <ui-row>
                         <ui-col span=10>
@@ -107,26 +111,26 @@
                         </ui-col>
                       </ui-row>
                       <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      第一次考试
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="未通过"></ui-badge>
-                      </ui-col>
+                        <ui-col span="10" vertical-align="middle">
+                        第一次考试
+                        </ui-col>
+                        <ui-col align="right" vertical-align="middle" space-right="20">
+                            <ui-badge class="vip" text="未通过"></ui-badge>
+                        </ui-col>
                       </ui-row>
                       <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      第二次考试
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="通过"></ui-badge>
-                      </ui-col>
+                        <ui-col span="10" vertical-align="middle">
+                        第二次考试
+                        </ui-col>
+                        <ui-col align="right" vertical-align="middle" space-right="20">
+                            <ui-badge class="vip" text="通过"></ui-badge>
+                        </ui-col>
                       </ui-row>
                     </ui-view>
                     <ui-view ui:if="{{timelineNext}}==2">
                       <ui-row>
                         <ui-col space='10' align='center'>
-                          <ui-image mode=aspectFit src="static/img/jpg/hgbz.jpg"></ui-image>
+                          <ui-image  mode=aspectFit src="static/img/jpg/hgbz.jpg"></ui-image>
                            <ui-text>合格标准</ui-text>
                         </ui-col>
                         <ui-col space='8' align='center'>
@@ -191,81 +195,84 @@
                     </ui-view>
                     <ui-view ui:if="{{timelineNext}}==3">
                       <ui-view class="boxSty">
-                    <ui-row>
-                        <ui-col space='10' align='center'>
-                          <ui-image src="static/img/jpg/hgbz.jpg"></ui-image>
-                          <ui-text>评判标准</ui-text>
-                        </ui-col>
-                        <ui-col space='8' align='center'>
-                          <ui-image src="static/img/jpg/yyzl.jpg"></ui-image>
-                          <ui-text>语言指令</ui-text>
-                        </ui-col>
-                        <ui-col space='8' align='center'>
-                          <ui-image src="static/img/jpg/dg.jpg"></ui-image>
-                          <ui-text>灯光操作</ui-text>
-                        </ui-col>
-                        <ui-col space='8' align='center'>
-                          <ui-image src="static/img/jpg/kskj.jpg"></ui-image>
-                          <ui-text>考试口诀</ui-text>
-                        </ui-col>
-                      </ui-row>
+                          <ui-row>
+                              <ui-col space='10' align='center'>
+                                <ui-image mode=aspectFit src="static/img/jpg/hgbz.jpg"></ui-image>
+                                <ui-text>评判标准</ui-text>
+                              </ui-col>
+                              <ui-col space='8' align='center'>
+                                <ui-image mode=aspectFit src="static/img/jpg/yyzl.jpg"></ui-image>
+                                <ui-text>语言指令</ui-text>
+                              </ui-col>
+                              <ui-col space='8' align='center'>
+                                <ui-image mode=aspectFit src="static/img/jpg/dg.jpg"></ui-image>
+                                <ui-text>灯光操作</ui-text>
+                              </ui-col>
+                              <ui-col space='8' align='center'>
+                                <ui-image mode=aspectFit src="static/img/jpg/kskj.jpg"></ui-image>
+                                <ui-text>考试口诀</ui-text>
+                              </ui-col>
+                          </ui-row>
                       </ui-view>
-                    <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      当前科目考试费
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="未缴"></ui-badge>
-                      </ui-col>
+                      <ui-row height="50">
+                          <ui-col span="10" vertical-align="middle">
+                            当前科目考试费
+                          </ui-col>
+                          <ui-col align="right" vertical-align="middle" space-right="20">
+                              <ui-badge class="vip" text="未缴"></ui-badge>
+                          </ui-col>
                       </ui-row>
                       <ui-row>
-                        <ui-col span=10>
-                          东山考场
-                        </ui-col>
-                        <ui-col span=2>
-                          <ui-icon type="location"></ui-icon>
-                        </ui-col>
+                          <ui-col span=10>
+                            东山考场
+                          </ui-col>
+                          <ui-col span=2>
+                            <ui-icon type="location"></ui-icon>
+                          </ui-col>
                       </ui-row>
                       <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      第一次考试
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="未通过"></ui-badge>
-                      </ui-col>
+                          <ui-col span="10" vertical-align="middle">
+                          第一次考试
+                          </ui-col>
+                          <ui-col align="right" vertical-align="middle" space-right="20">
+                              <ui-badge class="vip" text="未通过"></ui-badge>
+                          </ui-col>
                       </ui-row>
                       <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      第二次考试
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="通过"></ui-badge>
-                      </ui-col>
+                          <ui-col span="10" vertical-align="middle">
+                          第二次考试
+                          </ui-col>
+                          <ui-col align="right" vertical-align="middle" space-right="20">
+                              <ui-badge class="vip" text="通过"></ui-badge>
+                          </ui-col>
                       </ui-row>
                     </ui-view>
                     <ui-view ui:if="{{timelineNext==4}}">
-                      <ui-row>
-                        <ui-col space='10' align='center'>
-                          <ui-image mode=aspectFit src="static/img/jpg/sxlx.jpg"></ui-image>
-                            <ui-text>顺序练习</ui-text>
-                        </ui-col>
-                        <ui-col space='8' align='center'>
-                          <ui-image mode=aspectFit src="static/img/jpg/zjlx.jpg"></ui-image>
-                            <ui-text>章节练习</ui-text>
-                        </ui-col>       
-                        <ui-col space='8' align='center'>
-                          <ui-image mode=aspectFit src="static/img/jpg/zxlx.jpg"></ui-image>
-                            <ui-text>专项练习</ui-text>
-                        </ui-col>
-                      </ui-row>
-                      <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      未预约
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="无需缴费"></ui-badge>
-                      </ui-col>
-                      </ui-row>
+                        <ui-row>
+                            <ui-col align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/sxlx.jpg"></ui-image>
+                                <ui-text>顺序练习</ui-text>
+                            </ui-col>
+                            <ui-col align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/zjlx.jpg"></ui-image>
+                                <ui-text>章节练习</ui-text>
+                            </ui-col>       
+                            <ui-col align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/zxlx.jpg"></ui-image>
+                                <ui-text>专项练习</ui-text>
+                            </ui-col>
+                            <ui-col>
+                              
+                            </ui-col>
+                        </ui-row>
+                        <ui-row height="50">
+                            <ui-col span="10" vertical-align="middle">
+                              未预约
+                            </ui-col>
+                            <ui-col align="right" vertical-align="middle" space-right="20">
+                                <ui-badge class="vip" text="无需缴费"></ui-badge>
+                            </ui-col>
+                        </ui-row>
                  </ui-view>
                  </ui-view>
             </ui-view>
@@ -321,6 +328,13 @@ export default {
     this.swiperChange(this.timeline)
   },
   methods: {
+    goscore(){
+        ui.navigateTo(
+          {
+            url:'/pages/score/index'
+          }
+        )
+    },
     swiperChange(val){
         console.log(val)
         this.timelineNext = val
@@ -340,13 +354,17 @@ export default {
 </script>
 
 <style lang="less">
-// verticalPx.less
-.ui-ex-swiper-item{
-  height: 80rpx;
-  .name{
-    // display: block;
+  .swiperbox{
+    color:#fff;
+    margin: 15rpx 0;
+    .name{
+      padding: 15rpx;
+    }
+    .mess{
+      padding: 0 0 15rpx 0;
+      font-size: 28rpx;
+    }
   }
-}
 
 .timeline-demo2 {
   .continer {

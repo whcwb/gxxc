@@ -18,7 +18,7 @@ export default {
       "pages/tx/pages/addBankCard","pages/pay/index",
       "pages/product/index",
       "pages/Agreement/learnCarFile","pages/Agreement/MemberFile",
-      "pages/common/signName","pages/common/qrCode"],
+      "pages/common/signName","pages/common/qrCode","pages/score/index"],
     "theme": {
       "theme-color": "#3399ff"
     },

@@ -26,7 +26,7 @@
             </ui-row>
         </ui-view>
 
-        <ui-view class="SignOut"> 
+        <ui-view class="SignOut" bindtap="gouBack"> 
           <ui-button type="warn">退出登录</ui-button>
         </ui-view>
 
@@ -86,7 +86,30 @@ export default {
   },
   methods: {
     infoClick(item,index){
-      ui.showToast({ title: item.name , icon: 'success' })
+      // ui.showToast({ title: item.name , icon: 'success' })
+      this.changeName()
+      
+    },
+    gouBack(){
+      ui.navigateTo({
+        url: '/pages/login'
+      })
+    },
+    changeName(){
+      ui.showPrompt({
+        title: '数据修改demo',
+        placeholder: '请输新数据',
+        confirmButtonText: '确认修改',
+        cancelButtonText: '放弃修改',
+        value: this.infoList[1].val,
+        success: (result) => {
+          let title = result.confirm ? `点击了确认修改按钮，文本框值为：${result.value}` : `点击了放弃修改按钮，文本框值为：${result.value}`
+          this.infoList[1].val = result.value
+          ui.showToast({
+            title: title
+          })
+        }
+      })
     }
   },
   mounted() {}

@@ -20,12 +20,12 @@
                 </ui-view>
                 <ui-view class="input_padding">
                   <ui-row>
-                    <ui-col align="right" vertical-align="middle">
-                      <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1">
+                    <ui-col align="right" vertical-align="middle" bindtap="forgetpassword">
+                      <!-- <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1"> -->
                         <ui-text block class="reset_pwd">
                           忘记密码?
                         </ui-text>
-                      </ui-navigator>
+                      <!-- </ui-navigator> -->
                     </ui-col>
                   </ui-row>
                 </ui-view>
@@ -88,6 +88,9 @@ export default {
       ui.navigateTo({
         url: '/pages/reg'
       })
+    },
+    forgetpassword(){
+        ui.showToast({ title: '忘记密码' })
     },
     formSubmit(){
 
