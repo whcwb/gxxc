@@ -187,7 +187,7 @@ public class AppMainController extends AppUserBaseController {
 
 		// 判断用户邀请码是否过期 todo
 		List<BizPtyh> bizPtyhs = ptyhService.findByCondition(newCondition);
-		RuntimeCheck.ifEmpty(bizPtyhs,"用户不存在");
+		RuntimeCheck.ifEmpty(bizPtyhs,"用户邀请码失效!");
 		RuntimeCheck.ifBlank(bizPtyhs.get(0).getYhYqmgqsj(),"用户邀请码失效");
 		if( bizPtyhs.get(0).getYhYqmgqsj().compareTo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) < 0 ){
 			return ApiResponse.fail("用户邀请码已过期");
