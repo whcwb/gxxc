@@ -129,7 +129,7 @@
                     </ui-view>
                     <ui-view ui:if="{{timelineNext}}==2">
                       <ui-row>
-                        <ui-col space='10' align='center'>
+                        <ui-col space='8' align='center'>
                           <ui-image  mode=aspectFit src="static/img/jpg/hgbz.jpg"></ui-image>
                            <ui-text>合格标准</ui-text>
                         </ui-col>
@@ -249,15 +249,15 @@
                     </ui-view>
                     <ui-view ui:if="{{timelineNext==4}}">
                         <ui-row>
-                            <ui-col align='center'>
+                            <ui-col space='8' align='center'>
                               <ui-image mode=aspectFit src="static/img/jpg/sxlx.jpg"></ui-image>
                                 <ui-text>顺序练习</ui-text>
                             </ui-col>
-                            <ui-col align='center'>
+                            <ui-col space='8' align='center'>
                               <ui-image mode=aspectFit src="static/img/jpg/zjlx.jpg"></ui-image>
                                 <ui-text>章节练习</ui-text>
                             </ui-col>       
-                            <ui-col align='center'>
+                            <ui-col space='8' align='center'>
                               <ui-image mode=aspectFit src="static/img/jpg/zxlx.jpg"></ui-image>
                                 <ui-text>专项练习</ui-text>
                             </ui-col>

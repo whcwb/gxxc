@@ -22,21 +22,27 @@
                 </ui-view>
                 <ui-view class="box_row_100 userMessSty">
                     <ui-view class="userName">
-                      用户姓名
+                      用户:{{usermess.yhBm}}
                     </ui-view>
                     <ui-view class="phone">
-                      13112345678
+                      电话:{{usermess.yhZh}}
                     </ui-view>
                 </ui-view>
 
               </ui-view>
 
               <ui-view class="codeImg">
-                  <ui-image src="http://www.520xclm.com:8001//QRCode/20180625/460765622230319888.png" ></ui-image>
+                  <ui-image :src="usermess.yhZsyqmImg" ></ui-image>
               </ui-view>
               
               <ui-view class="welTxt">
-                欢迎
+                扫一扫上面的二维码图案，加入我们吧
+                <ui-view>
+                  二维码有效期至
+                  <ui-view>
+                    {{usermess.yhYqmgqsj}}
+                  </ui-view>
+                </ui-view>
               </ui-view>
 
           </ui-view>
@@ -62,6 +68,7 @@ export default {
     return {
       height:ui.DEFAULT_CONTENT_HEIGHT/3*2,
       martop:ui.DEFAULT_CONTENT_HEIGHT/7,
+      usermess:ui.getApp().userMess
     }
   },
   methods: {

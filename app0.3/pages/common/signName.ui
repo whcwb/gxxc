@@ -15,21 +15,21 @@
         </ui-col>
       </ui-row>
     </ui-nav-bar>
-    <!-- <vuesigncanvas :options="options" 
+    <vuesigncanvas :options="options" 
     @result="saveResult" @clear="clear" >
-    </vuesigncanvas> -->
+    </vuesigncanvas>
   </ui-page>
 </template>
 
 <script>
-// import vuesigncanvas from 'vue-sign-canvas'
-// require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
+import vuesigncanvas from 'vue-sign-canvas'
+require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
 export default {
   config: {
      backgroundColor:'#ffffff',
   },
   components:{
-    // vuesigncanvas
+    vuesigncanvas
   },
   data() {
     return {
@@ -40,7 +40,8 @@ export default {
         width: 500,
         height: 600,
         shadowEnable: false,
-        shadowWidth: 10,
+        shadowWidth: 1,
+        brushWidth:5,
         canvasBackgroundColor: '#fff',
       }
     }

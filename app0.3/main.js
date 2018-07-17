@@ -4,31 +4,89 @@ import '#/static/css/box.less'
 let options = {
   app: app,
   beforeEach(to,from,next) {
+    let um = JSON.parse(localStorage.getItem('usermess'))
+    console.log(um)
+    // try{
+    //   um = ui.getApp().userMess
+    // }catch(e){
+
+    // }
+    
+    
+    
+    // console.log('路由数据监听',getMyApp())
+    
+    console.log()
+    if(to.path==('/pages/login' || '/pages/reg' )){
+      next()
+      return
+    }else if(!um){
+      ui.showToast({ title: '用户信息丢失，请重新登录！' })
+      next({
+        path:'/pages/login'
+      })
+    }else{
+      next()
+    }
     console.log('去',to)
     console.log('来',from)
-    next()
   }
 }
-// const Ajax = ui.getApp().Ajax
 
 ui.extend({
+    getUser(){
+      return JSON.parse(localStorage.getItem('usermess'))
+    },
+    getUserMess(callback){
+      this.$http('POST',ui.getApp().apis.USERMESS,{},(res)=>{
+        if(res.code==200 && res.result){
+            console.log('用户信息',res)
+            if(res.result.yhTx == ''){
+              res.result.yhTx ='static/img/login/LOGO.png'
+            }
+          }
+          callback && callback(res.result)
+          ui.getApp().userMess = res.result
+          localStorage.setItem('usermess',JSON.stringify(res.result))
+        }
+      )
+    },
+
+
     $http(method,url,data,callback){
+      let accessTokenStr = localStorage.getItem("token");
+      console.log('localStorage数据-----',accessTokenStr);
+      
+      if(accessTokenStr != null && accessTokenStr != ''&& accessTokenStr!=undefined){
+        let tokMess = JSON.parse(accessTokenStr)
+        ui.getApp().Ajax.header.token = tokMess.token
+        ui.getApp().Ajax.header.userId = tokMess.userId
+      }
+
       ui.request({
-        url: ui.getApp().Ajax.url+':'+ui.getApp().Ajax.port+url, //仅为示例，并非真实的接口地址
+        // ui.getApp().Ajax.url+':'+ui.getApp().Ajax.port+
+        url: url, //仅为示例，并非真实的接口地址
         data: data,
         header: ui.getApp().Ajax.header,
         method:method,
         success: function (res) {
-          console.log(res)
-          callback && callback(res);
+          console.log('请求成功')
+          if(res.data.code ==403){
+            ui.showToast({ title: res.data.message})
+            ui.redirectTo({
+              url: '/pages/login'
+            })
+          }else{
+            callback && callback(res.data);
+          }
         },
         fail:function(err){
-          console.log(err)
-          callback && callback(err);
+          console.log('请求失败')
+          callback && callback(err.data);
         },
         complete:function(mess){
-          console.log(mess)
-          callback && callback(mess);
+          console.log('请求结果')
+          callback && callback(mess.data);
         }
       })
     },

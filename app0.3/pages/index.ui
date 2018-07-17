@@ -12,12 +12,12 @@
       </ui-row>
     </ui-nav-bar>
     <ui-view class="grid_box backF2">
-        <!-- module 1 -->
+        <!-- module 1 "{{ autoplay }}"-->
         <ui-view class="demo demo3">
-            <ui-ex-swiper id="swiperdotsstyle" autoplay="{{ autoplay }}" 
+            <ui-ex-swiper id="swiperdotsstyle" autoplay= false
             pagination centered-slides loop space-between="5" slides-per-view="auto">
                 <ui-ex-swiper-item ui:for="{{items}}" ui:for-item="item" ui:for-index="index">
-                  <ui-image src="{{ item.src }}" mode="simple"></ui-image>
+                  <ui-image width=100% height=100%  src="{{ item.hdTpdz }}" mode="simple"></ui-image>
                 </ui-ex-swiper-item>
             </ui-ex-swiper>
         </ui-view>
@@ -74,23 +74,29 @@
         <!-- <ui-view> -->
           <ui-scroll-view height="{{pageHeight(0)}}" scroll-y="scroll-y" pull-up="{{ pullUp }}">
               <ui-view class="content_list">
-                  <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc">
+                  <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc(item)">
                       
                       <ui-view class="xlcItemImg">
                         <ui-image src="static/img/home/car0000.png" width="100"></ui-image>
                       </ui-view>
                       <ui-view class="box_row_100 xlcItemMess">
                         <ui-row>
-                            <ui-col>驾校名称</ui-col>
-                            <ui-col align="right">2600.00</ui-col>
+                            <ui-col>
+                              {{item.schoolName}}
+                            </ui-col>
+                            <ui-col align="right">￥2600.00</ui-col>
                         </ui-row>
                         <ui-row>
-                            <ui-col span='1'>0</ui-col>
-                            <ui-col>驾校地址</ui-col>
+                            <ui-col span='1'>
+                              <ui-icon type="dingwei" color="#3399ff"></ui-icon>
+                            </ui-col>
+                            <ui-col>{{item.address}}</ui-col>
                         </ui-row>
                         <ui-row>
-                            <ui-col span='1'>0</ui-col>
-                            <ui-col>驾校交通</ui-col>
+                            <ui-col span='1'>
+                              <ui-icon type="bus" color="#3399ff"></ui-icon>
+                            </ui-col>
+                            <ui-col>566、567、568</ui-col>
                         </ui-row>
                         <ui-row>
                             <ui-col align="right"> >3000米</ui-col>
@@ -126,13 +132,6 @@
       </ui-view>
     </ui-popup>
 
-    <ui-mask ui:if="{{showMask}}" ui:model="showMask" effect="scale-in" hide-on-tap=true hide-on-touch=true
-      bindtap="closemask">
-            <ui-image 
-              style="position: absolute;top: 45%;left: 50%;transform: translate(-50%,-50%);"
-              src="http://www.520xclm.com:8001//QRCode/20180625/460765622230319888.png" width="300"></ui-image>
-    </ui-mask>
-
   </ui-page>
 </template>
 
@@ -150,7 +149,6 @@ export default {
   data () {
     return {
       tabsIndex:0,
-      showMask:false,
 
       popupshow:false,
       checklist:['全部'],
@@ -168,18 +166,7 @@ export default {
       },
 
       height: ui.DEFAULT_CONTENT_HEIGHT,
-      items:[{
-        src: 'http://images.uileader.com/20171103/5906a28c-0f12-4b71-8df2-98791d8716f6.jpg',
-        title: '放肆玩乐，轻巧办公'
-      },
-      {
-        src: 'http://images.uileader.com/20171103/34795a1c-1365-4256-b9c1-6fb4af1de3da.jpg',
-        title: '高温保护，一路驰骋'
-      },
-      {
-        src: 'http://images.uileader.com/20171103/926a6fdc-80f6-4244-8354-860627c88115.jpg',
-        title: '七夕好货，独家礼赠'
-      }],
+      items:[],
       autoplay: {
         delay: 2.5*1000
       },
@@ -223,7 +210,7 @@ export default {
     },
     handleChange (index, key) {
     },
-    change(val){
+    change(val){//check-list 单选 数据返回
       console.log(val);
       console.log(this.checklist);
       this.popupshow = false
@@ -232,9 +219,6 @@ export default {
     showPopup(){
       this.tabsIndex = 1;
       this.popupshow = true
-    },
-    closemask(){
-      this.showMask = false
     },
     goMyTeam(){
       ui.navigateTo({
@@ -256,28 +240,56 @@ export default {
         }
       )
     },
-    goXlc(){
+    goXlc(item){
+      ui.getApp().xlcMess = item
       ui.navigateTo(
         {
           url:'home/xlcMess'
         }
       )
     },
-    getLocationMess(){//定位 获取 位置信息
-      ui.getLocation({
-        type: 'wgs84',
-        success: function (res) {
-          console.log('获取 位置信息',res);
+    // getLocationMess(){//定位 获取 位置信息
+    //   ui.getLocation({
+    //     type: 'wgs84',
+    //     success: function (res) {
+    //       console.log('获取 位置信息',res);
           
-        }
+    //     }
+    //   })
+    // },
+    getSwiperImg(){//获取轮播图片
+      this.$http('POST',ui.getApp().apis.SWIPER,{hdSxs:0},(res)=>{
+            if(res.code==200){
+              this.items = res.page.list
+            }
       })
-    }
+    },
+    XLC(){
+      var v = this
+      this.$http('POST',ui.getApp().apis.XLC,{},(res)=>{
+          if(res.code==200){
+            this.itemlist = res.page.list
+          }
+      })
 
+      // this.$http.post(this.apis.XLC).then((res)=>{
+      //   if(res.code==200){
+      //     v.xlcList = res.page.list
+      //   }
+      //   console.log(res)
+      // }).catch((err)=>{
+
+      // })
+    }
+  },
+  created () {
+    this.getSwiperImg()
+    this.XLC()
   },
   mounted() {
-    for (let i = 1; i <= 10; i++) {
-      this.itemlist.push(i + ' - 内容文本')
-    }
+    // for (let i = 1; i <= 10; i++) {
+    //   this.itemlist.push(i + ' - 内容文本')
+    // }
   }
 }
 
@@ -342,55 +354,6 @@ export default {
     }
     .itemTxt{
       color: #4aa3f7;
-    }
-  }
-}
-
-
-
-
-.swiper-slide {
-    .ui-image {
-      width: 100%;
-  }
-}
-#swiperdotsstyle{
-  .swiper-pagination-bullet {
-    width: 20rpx;
-    height: 3rpx;
-    background-color: #eee;
-    opacity: .5;
-    border-radius: 0;
-
-    &.swiper-pagination-bullet-active {
-      background-color: #fff;
-      opacity: 1;
-    }
-  }
-}
-.demo3{
-  .swiper-pagination {
-    bottom: 30rpx;
-  }
-  .swiper-lazy-preloader {
-      width: 24rpx;
-      height: 24rpx;
-      margin-left: -12rpx;
-      margin-top: -12rpx;
-    }
-  .swiper-slide {
-    position: relative;
-    .slide-title {
-      color:#fff;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      text-align: center;
-      height: 24rpx;
-      line-height: 24rpx;
-      font-size: 14rpx;
-      background-color: rgba(51, 51, 51, .2);
     }
   }
 }

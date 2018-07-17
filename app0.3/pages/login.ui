@@ -1,6 +1,17 @@
 <!--登录-->
 <template>
   <ui-page>
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff', 'background': 'linear-gradient(to right,#3799ee, #2890ea)'} }}">
+      <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">登录</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
     <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
       <ui-view class="login_bg">
         <ui-view class="section">
@@ -30,7 +41,7 @@
                   </ui-row>
                 </ui-view>
                 <ui-view class="input_padding">
-                  <ui-button class="submit_btn" bindtap="login">登录</ui-button>
+                  <ui-button class="submit_btn" bindtap="loginYZ">登录</ui-button>
                 </ui-view>
               </ui-form>
             </ui-view>
@@ -51,40 +62,98 @@
 <script>
 export default {
   config: {
-    "navigationStyle": 'custom',
-    "scrollType": "div",
-    "title":"登录",
-    "disableScroll":true
+    // "scrollType": "div",
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"登录",
+    title:'登录',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
   },
   data() {
     return {
       height: ui.DEFAULT_CONTENT_HEIGHT + 46,
       form:{
-        username:'',
-        password:''
-      }
+        username:'18672368676',
+        password:'123456'
+      },
+      routerPH:'0'
     }
   },
+  watch:{
+      routerPH:(n,o)=>{
+          console.log(n)
+          console.log(o)
+          ui.navigateTo({
+            url: '/pages/index'
+          })
+      }
+  },
   methods: {
+    loginYZ(){
+      var v = this
+      if(v.form.username==''){
+        ui.showToast({ title: '请输入手机号码!'})
+        return
+      }else if(v.form.username.length!==11){
+        ui.showToast({ title: '请输入正确的手机号码!'})
+      }else if(v.form.password==''){
+        ui.showToast({ title: '请输入登录密码!'})
+        return
+      }else {
+        v.login()
+      }
+    },
     login(){
-      ui.navigateTo({
-        url: '/pages/index'
+      var v = this
+
+      this.$http('POST',ui.getApp().apis.LOGIN,v.form,(res)=>{
+          if(res.code==200){
+            localStorage.setItem("token",JSON.stringify(res.result.accessToken))
+            // ui.setStorage({
+            //   key: "token",
+            //   data: JSON.stringify(res.result.accessToken)
+            // })
+        
+            v.getUserMess((res)=>{
+              console.log('*************',res)
+              v.routerPH='1'
+              // setTimeout(() => {
+              //   v.goIndex()
+              // }, 100);
+            })//获取用户信息
+
+          }else{
+              ui.showToast({ title: res.message})
+          }
       })
-      // let loginForm = {
-      //         username: '18672922385',
-      //         password: '123456'
-      //       }
-      // this.$http('POST',ui.getApp().apis.LOGIN,loginForm,(data)=>{
-      //   console.log(data)
-      // })
-
-
-      this.sayHello()
-      console.log(ui.getApp().Ajax);
-      
-      
+    },
+    goIndex(){
+        ui.navigateTo({
+          url: '/pages/index'
+        })
+    },
+    sys(){
+      ui.scanCode({
+        backgroundColor:'#39f',
+        color:'#4caf5',
+        onlyFromCamera: true,
+        success: (res) => {
+          console.log(res)
+          ui.showAlert({
+            content: res,
+            buttonText: '扫一扫',
+            success () {
+              ui.showToast({
+                title: '触发了解更多'
+              })
+            }
+          })
+        }
+      })
     },
     reg(){
+      ui.getApp().yqm='460765622230319188'
       ui.navigateTo({
         url: '/pages/reg'
       })

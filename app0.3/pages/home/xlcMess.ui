@@ -4,7 +4,6 @@
       <ui-view class="box_col" style="{{ { height: pageHeight(46)+ 'px'} }}">
           <ui-view class="box_col_auto">
               <ui-view class="xlcSwiper">
-                <ui-view class="closePage" bindtap="handleBack">关闭</ui-view>
                 <ui-ex-swiper pagination speed="200" loop=true autoplay="{{ autoplay }}">  
                   <ui-ex-swiper-item ui:for="{{items}}" ui:for-item="item" ui:for-index="index">
                     <ui-image src="{{ item.src }}" mode="simple"></ui-image>
@@ -15,7 +14,7 @@
 
               <ui-view class="xlcMessSty">
                 <ui-view class="tit">
-                  **驾校
+                  {{xlcMss.schoolName}}
                 </ui-view>
                 <ui-row>
                   <ui-col  vertical-align="bottom">
@@ -38,9 +37,9 @@
                 </ui-row>
               </ui-view>
 
-              <ui-view class="JxData">
+              <!-- <ui-view class="JxData">
                   数据统计
-              </ui-view>
+              </ui-view> -->
 
 
               <ui-view class="MapMess">
@@ -56,9 +55,12 @@
 <script>
 export default {
   config: {
-    "navigationStyle": 'custom',
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"训练场详情",
     title:'训练场详情',
     backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
   },
   data() {
     return {
@@ -77,22 +79,25 @@ export default {
       {
         src: 'http://images.uileader.com/20171103/926a6fdc-80f6-4244-8354-860627c88115.jpg',
         title: '七夕好货，独家礼赠'
-      }]
+      }],
+      mapPot:{
+        lng:'116.404',//经度-180---+180
+        lat:'39.915',//纬度-90-----+90
+
+      },
+      xlcMss:{}
     }
   },
   methods: {
-    handleBack () {
-      ui.navigateBack()
-    },
-    build(){
+    build(mapPot){
       var script = document.createElement("script")
       script.type = "text/javascript"
       var callbackName = '_callback'+Date.now()
       window[callbackName]= function(){
         console.log(BMap)
         var map = new BMap.Map("allmap");    // 创建Map实例
-        map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
-        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(new BMap.Point(mapPot.lng,mapPot.lat), 11);  // 初始化地图,设置中心点坐标和地图级别
+        var point = new BMap.Point(mapPot.lng,mapPot.lat);
         map.centerAndZoom(point, 15);    
         var marker = new BMap.Marker(point,);
         map.addOverlay(marker);     
@@ -111,7 +116,19 @@ export default {
     }
   },
   mounted() {
-    this.build()
+    
+    if(ui.getApp().xlcMess.mess){
+      ui.navigateBack()
+      return
+    }else{
+      console.log(ui.getApp().xlcMess);
+      this.mapPot.lng = ui.getApp().xlcMess.latitude
+      this.mapPot.lat = ui.getApp().xlcMess.longitude
+      this.xlcMss = ui.getApp().xlcMess
+    }
+    this.build(this.mapPot)
+  },
+  created () {
   }
 }
 </script>
@@ -161,15 +178,6 @@ export default {
 
   .xlcSwiper{
     position: relative;
-    .closePage{
-      position: absolute;
-      top: 0;
-      left: 0;
-      color: red;
-      z-index: 100;
-      font-weight: 700;
-      font-size: 40rpx;
-    }
   }
 
   .swiper-slide {

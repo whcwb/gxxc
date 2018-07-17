@@ -17,7 +17,7 @@
                 <ui-col span="3" align="left" 
                   vertical-align="middle" bindtap="goMyMess">
                     <ui-view class="pageHello">
-                      <ui-image src="../static/img/login/logo.png"
+                      <ui-image src="{{usermess.yhTx}}"
                           width="60"
                           height="60"></ui-image> 
                     </ui-view>  
@@ -125,6 +125,7 @@
 </template>
 
 <script>
+import mixin from '#/static/ajax/mixin'
 export default {
   config: {
     navigationStyle: 'custom',
@@ -135,6 +136,7 @@ export default {
     backgroundColor:'#3399FF',
     delay:false,//延迟加载
   },
+  mixins:[mixin],
   data () {
     return {
       showMask:false,
@@ -142,8 +144,12 @@ export default {
       pullDown:{
         distance: 100,
         onActive:this.handleLoadMore
-      }
+      },
+      usermess:ui.getApp().userMess
     }
+  },
+  watch:{
+
   },
   methods: {
       handleLoadMore(){
@@ -255,6 +261,11 @@ export default {
   },
   mounted () {
     this.sayHello()
+    console.log('**********',ui.getApp().userMess)
+    
+  },
+  created () {
+    this.usermess = this.getUser()
   }
 }
 

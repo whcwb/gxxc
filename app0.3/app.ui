@@ -3,8 +3,8 @@ import ajaxUrl from '#/static/ajax/url'
 export default {
   config: {
     "pages": [
-      "pages/login",
       "pages/index",
+      "pages/login",
       "pages/detail",      
       "pages/reg",
       "pages/studyCar",
@@ -56,26 +56,32 @@ export default {
         }
       ]
     },
-    "networkBaseUrl":""
+    "networkBaseUrl":'http://www.520xclm.com:8080/biz',
+    "networkTimeout":"3000"
   },
   data () {
     return {
       //全局变量
       // ajax数据请求参数配置
+      apis:ajaxUrl,
       Ajax:{
         url:ajaxUrl.url,
         port:ajaxUrl.port,
         header:{
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'token':'',
+          'userId':''
         }
       },
-      apis:ajaxUrl,
 
-
-      userMess:{},
-      payMess:{},
+      yqm:'',//新用户注册邀请码
+      userMess:'',//用户信息
+      payMess:{},//支付信息
+      xlcMess:{
+        mess:'mess'
+      },//训练场详情
       
-      QRpage:'/pages/index',
+      QRpage:'/pages/index',//我的邀请码返回页面地址
 
       globalData: {
         searchShow:false
@@ -171,8 +177,7 @@ export default {
   },
     // 初始化
   created () {
-    console.log('js数据' ,this.apis);
-    
+    console.log('js数据' ,this.apis)
     this.initTab()
     this.initPaths()
     this.$nextTick(() => {
@@ -292,11 +297,11 @@ export default {
 
 <template>
   <ui-view id="ui-app">
-    <!-- <ui-slide-menu width="280" threshold="30" touch="{{ pageConfig.touchSlideMenu }}" ui:model="showSlideMenu"> -->
+    <ui-slide-menu width="280" threshold="30" touch="{{ pageConfig.touchSlideMenu }}" ui:model="showSlideMenu">
 
-      <!-- <ui-view slot="menu" class="menu">
+      <ui-view slot="menu" class="menu">
         <ui-text block style="color:#fff;margin:10px">侧滑菜单</ui-text>
-      </ui-view> -->
+      </ui-view>
 
       <ui-view slot="panel">
         <!-- 通用导航栏 -->
@@ -349,7 +354,7 @@ export default {
             selected-color="{{ tabBar.selectedColor }}">
         </ui-tab-bar>
       </ui-view>
-    <!-- </ui-slide-menu> -->
+    </ui-slide-menu>
 
 
     <!-- 收索 -->
