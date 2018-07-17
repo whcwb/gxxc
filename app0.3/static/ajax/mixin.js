@@ -30,7 +30,19 @@ export default {
       }
       return 'static/login/LOGO.png'
     },
-
+    yhSfyjz(val){
+      switch (val) {
+        case '0':
+          return '无驾驶证';
+          break;
+        case '1':
+          return '有驾驶证';
+          break;
+        default:
+          return "无驾驶证";
+          break;
+      }
+    },
     userGrade: (val) => {
       switch (val) {
         case '1':
@@ -77,28 +89,6 @@ export default {
           break;
       }
     },
-
-    // yhDqzt:(val)=>{
-    //   switch (val){
-    //     case "0":
-    //       return '档案信息受理中'
-    //       break;
-    //     case "1":
-    //       return '科目一进行中'
-    //       break;
-    //     case "2":
-    //       return '科目二进行中'
-    //       break;
-    //     case "3":
-    //       return '科目三进行中'
-    //       break;
-    //     case "4":
-    //       return '科目四进行中'
-    //       break
-    //     default:
-    //       return '完结'
-    //   }
-    // },
     yhslZt(val) {
       switch (val) {
         case "00":
@@ -160,12 +150,8 @@ export default {
 
   },
   created() {
-    this.util.GetUserMess(this, (res) => {
-    })
-    console.log('全剧初始化');
   },
   mounted() {
-    console.log('全剧初始化2');
   }
 
 }

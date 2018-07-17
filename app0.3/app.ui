@@ -177,7 +177,6 @@ export default {
   },
     // 初始化
   created () {
-    console.log('js数据' ,this.apis)
     this.initTab()
     this.initPaths()
     this.$nextTick(() => {

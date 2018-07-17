@@ -2,6 +2,57 @@
 <template>
   <ui-page style="overflow-y: hidden;">
     <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+        <ui-view class="txItem">
+            <ui-row>
+              <ui-col vertical-align="middle">
+                  <ui-view>
+                    我的头像
+                  </ui-view>
+              </ui-col>
+              <ui-col vertical-align="middle" align="right" bindtap="">
+                  <ui-view>
+                      <ui-image
+                          src="{{usermess.yhTx}}"
+                          mode='aspectFill'
+                          width="60"
+                          height="60"
+                          class="head_portrait"
+                          ></ui-image>
+                  </ui-view>
+              </ui-col>
+            </ui-row>
+        </ui-view>
+
+        <ui-view class="txItem">
+            <ui-row>
+              <ui-col vertical-align="middle">
+                  <ui-view>
+                    我的昵称
+                  </ui-view>
+              </ui-col>
+              <ui-col vertical-align="middle" align="right" bindtap="">
+                  <ui-view>
+                      <ui-text>{{usermess.yhBm}}</ui-text >
+                  </ui-view>
+              </ui-col>
+            </ui-row>
+        </ui-view>
+        <ui-view class="txItem">
+            <ui-row>
+              <ui-col vertical-align="middle">
+                  <ui-view>
+                    驾驶证件
+                  </ui-view>
+              </ui-col>
+              <ui-col vertical-align="middle" align="right" bindtap="">
+                  <ui-view>
+                      <ui-text>{{usermess.yhSfyjz | yhSfyjz}}</ui-text >
+                  </ui-view>
+              </ui-col>
+            </ui-row>
+        </ui-view>
+
+
         <ui-view class="txItem" ui:for="{{ infoList }}">
             <ui-row>
               <ui-col vertical-align="middle">
@@ -48,6 +99,7 @@
 </template>
 
 <script>
+import mixin from '#/static/ajax/mixin'
 export default {
   config: {
     navigationBarBackgroundColor:"#26a2ff",
@@ -57,6 +109,7 @@ export default {
     backgroundColor:'#f2f2f2',
     delay:false,//延迟加载
   },
+  mixins:[mixin],
   data() {
     return {
       infoList:[
@@ -81,7 +134,8 @@ export default {
           typ:'txt',
           link:'',
         }
-      ]
+      ],
+      usermess:''
     }
   },
   methods: {
@@ -91,9 +145,13 @@ export default {
       
     },
     gouBack(){
+      this.$http('GET',ui.getApp().apis.LOGOUT,{},()=>{})
+      localStorage.removeItem("token");
+      localStorage.removeItem("usermess");
       ui.navigateTo({
         url: '/pages/login'
       })
+
     },
     changeName(){
       ui.showPrompt({
@@ -112,7 +170,10 @@ export default {
       })
     }
   },
-  mounted() {}
+  mounted() {},
+  created () {
+    this.usermess = this.getUser()
+  }
 }
 </script>
 

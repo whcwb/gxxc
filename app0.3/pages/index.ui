@@ -166,7 +166,7 @@ export default {
       },
 
       height: ui.DEFAULT_CONTENT_HEIGHT,
-      items:[],
+      items:[{}],
       autoplay: {
         delay: 2.5*1000
       },

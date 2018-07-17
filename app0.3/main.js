@@ -4,13 +4,15 @@ import '#/static/css/box.less'
 let options = {
   app: app,
   beforeEach(to,from,next) {
-    let um = JSON.parse(localStorage.getItem('usermess'))
+    let um = localStorage.getItem('usermess')
     console.log(um)
-    // try{
-    //   um = ui.getApp().userMess
-    // }catch(e){
+    try{
+      if(!um){
+        ui.getApp().userMess = JSON.parse(localStorage.getItem('usermess'))
+      }
+    }catch(e){
 
-    // }
+    }
     
     
     

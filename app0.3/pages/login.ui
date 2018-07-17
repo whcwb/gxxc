@@ -70,24 +70,15 @@ export default {
     backgroundColor:'#f2f2f2',
     delay:false,//延迟加载
   },
+  mixins:[mixin],
   data() {
     return {
       height: ui.DEFAULT_CONTENT_HEIGHT + 46,
       form:{
         username:'18672368676',
         password:'123456'
-      },
-      routerPH:'0'
-    }
-  },
-  watch:{
-      routerPH:(n,o)=>{
-          console.log(n)
-          console.log(o)
-          ui.navigateTo({
-            url: '/pages/index'
-          })
       }
+    }
   },
   methods: {
     loginYZ(){
@@ -110,19 +101,9 @@ export default {
       this.$http('POST',ui.getApp().apis.LOGIN,v.form,(res)=>{
           if(res.code==200){
             localStorage.setItem("token",JSON.stringify(res.result.accessToken))
-            // ui.setStorage({
-            //   key: "token",
-            //   data: JSON.stringify(res.result.accessToken)
-            // })
-        
             v.getUserMess((res)=>{
-              console.log('*************',res)
-              v.routerPH='1'
-              // setTimeout(() => {
-              //   v.goIndex()
-              // }, 100);
+                v.goIndex()
             })//获取用户信息
-
           }else{
               ui.showToast({ title: res.message})
           }
