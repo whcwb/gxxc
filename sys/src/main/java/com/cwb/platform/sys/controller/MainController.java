@@ -11,7 +11,6 @@ import com.cwb.platform.sys.service.GnService;
 import com.cwb.platform.sys.service.JgService;
 import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.bean.ApiResponse;
-import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.Des;
 import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.commonUtil.JwtUtil;
@@ -31,7 +30,6 @@ import tk.mybatis.mapper.entity.Example;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.rowset.serial.SerialBlob;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -156,7 +154,9 @@ public class MainController {
 		for (String functionCode : functionCodes) {
 			sb.append(functionCode).append(",");
 		}
-		sb.deleteCharAt(sb.length() - 1);
+		if(sb.length()>0){
+			sb.deleteCharAt(sb.length() - 1);
+		}
 		redisDao.boundValueOps(user.getYhid()+"-apiPrefix").set(sb.toString(), 1, TimeUnit.DAYS);
 	}
 	/**
