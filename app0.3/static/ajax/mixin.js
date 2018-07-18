@@ -28,7 +28,7 @@ export default {
       if (val) {
         return val
       }
-      return 'static/login/LOGO.png'
+      return 'static/img/login/LOGO.png'
     },
     yhSfyjz(val){
       switch (val) {

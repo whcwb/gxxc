@@ -44,7 +44,7 @@ module.exports = {
   TEAMMESS:'/app/user/myteam',//团队学员信息
 
   CHUSERMESS:'/app/ptyh/update',//昵称 头像修改
-  UPWORLD:'app/ptyh/mdfPwd',//密码修改
+  UPWORLD:'/app/ptyh/mdfPwd',//密码修改
   CPTYPE:'/app/cp/getcplx',//产品类别
   CPLIST:'/app/cp/getcplist',//产品列表
 

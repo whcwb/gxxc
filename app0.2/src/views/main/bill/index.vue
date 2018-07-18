@@ -157,7 +157,7 @@
         methods:{
           zdListType(){
             this.$http.post(this.apis.ZDLISTTYPE,{'typeCode':''}).then((res)=>{
-              console.log(res)
+              console.log(res)6
 
             }).catch((err)=>{
 

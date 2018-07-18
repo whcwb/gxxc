@@ -5,20 +5,12 @@ let options = {
   app: app,
   beforeEach(to,from,next) {
     let um = localStorage.getItem('usermess')
-    console.log(um)
     try{
       if(!um){
         ui.getApp().userMess = JSON.parse(localStorage.getItem('usermess'))
       }
-    }catch(e){
-
-    }
+    }catch(e){ }
     
-    
-    
-    // console.log('路由数据监听',getMyApp())
-    
-    console.log()
     if(to.path==('/pages/login' || '/pages/reg' )){
       next()
       return
@@ -47,9 +39,9 @@ ui.extend({
               res.result.yhTx ='static/img/login/LOGO.png'
             }
           }
-          callback && callback(res.result)
-          ui.getApp().userMess = res.result
           localStorage.setItem('usermess',JSON.stringify(res.result))
+          ui.getApp().userMess = res.result
+          callback && callback(res.result)
         }
       )
     },
@@ -57,8 +49,6 @@ ui.extend({
 
     $http(method,url,data,callback){
       let accessTokenStr = localStorage.getItem("token");
-      console.log('localStorage数据-----',accessTokenStr);
-      
       if(accessTokenStr != null && accessTokenStr != ''&& accessTokenStr!=undefined){
         let tokMess = JSON.parse(accessTokenStr)
         ui.getApp().Ajax.header.token = tokMess.token

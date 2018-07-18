@@ -21,19 +21,19 @@
                   <ui-row>
                       <ui-col span="9" vertical-align="middle">
                           <ui-view class="tit">
-                            {{item.name}}
+                            {{item.cpMc}}
                           </ui-view>
                       </ui-col>
                       <ui-col span="3" space-left="20" align="center"  vertical-align="middle">
                           <ui-view class="money">
-                            ￥{{item.moeney}}
+                            ￥{{item.cpJl/100}}
                           </ui-view>
                       </ui-col>
                   </ui-row>
                   <ui-row>
                       <ui-col span="9"  vertical-align="middle">
                         <ui-view class="mess">
-                            {{item.mess}}
+                            {{item.cpXx}}
                         </ui-view>
                       </ui-col>
                       <ui-col span="3" space-left="20" align="center"  vertical-align="middle"
@@ -90,9 +90,28 @@ export default {
             url:item.link
           }
         )
+    },
+    getPoList(){
+      var v = this
+      this.$http('POST',ui.getApp().apis.CPLIST,{},(res)=>{
+        if(res.code == 200 && res.result){
+          console.log('----------',res);
+          res.result.forEach((item,index) => {
+            if(item.cpType == 1){
+                item.link='/pages/Agreement/learnCarFile'
+            }else if(item.cpType == 3){
+                item.link='/pages/Agreement/MemberFile'
+            }
+          });
+          v.productList =  res.result
+        }
+      })
     }
   },
-  mounted() {}
+  mounted() {},
+  created () {
+    this.getPoList()
+  }
 }
 </script>
 

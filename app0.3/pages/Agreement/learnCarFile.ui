@@ -150,16 +150,10 @@
             <div>
               甲方代表:<ui-view class="textAR">{{usermess.yhXm}}</ui-view>
             </div>
-            <div>
+            <div bindtap="goSign">
               甲方（签章）:
-              <!-- <el-button v-if="sign" type="primary" icon="el-icon-edit" circle
-                        @click="$parent.signShow=!$parent.signShow"
-              >请签名</el-button> -->
-
-              <!-- <el-button v-else type="success" icon="el-icon-check" circle>
-                已签名
-              </el-button> -->
-              签名
+              <ui-button class="Pleasesign" ui:if="{{saveResultUrl==''}}" type="primary" size="mini">签名</ui-button>
+              <ui-button class="OKsign" ui:elif="{{saveResultUrl!=''}}" type="primary" size="mini">已签名</ui-button>
             </div>
             <div>
               时间:{{getdateStr(0)}}
@@ -190,7 +184,7 @@
             </ui-button>
           </div>
           <div class="box_row_100" style="padding: 0.2rem">
-            <ui-button type="primary" full-width="false"
+            <ui-button type="warn" full-width="false"
                       bindtap="closeBack"
                       style="width: 100%;font-size: 0.4rem">
               拒绝
@@ -213,7 +207,7 @@ export default {
   },
   data() {
     return {
-      saveResultUrl:'123',
+      saveResultUrl:'',
       usermess:{
         yhXm:'小名',
         yhZh:'13164799764',
@@ -222,6 +216,11 @@ export default {
     }
   },
   methods: {
+    goSign(){
+      ui.navigateTo({
+        url:'/pages/common/signName'
+      })
+    },
     agreeShowOk(){
       ui.navigateTo({
         url:'/pages/pay/index'
@@ -234,7 +233,9 @@ export default {
       ui.navigateBack()
     }
   },
-  mounted() {}
+  mounted() {
+    this.saveResultUrl = ui.getApp().signUrl
+  }
 }
 </script>
 
