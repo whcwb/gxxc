@@ -65,14 +65,8 @@ export default {
     return {
       productList:[
         {
-          name:'学车套餐',
-          moeney:'2600',
-          mess:'购买此套餐即可享受学车服务及平台会员推荐服务',
           link:'/pages/Agreement/learnCarFile'
         },{
-          name:'会员套餐',
-          moeney:'200',
-          mess:'购买此套餐即可享受平台会员推荐服务',
           link:'/pages/Agreement/MemberFile'
         }
       ]
@@ -85,6 +79,7 @@ export default {
       })
     },
     getPO(item){
+        ui.getApp().payMess = item
         ui.navigateTo(
           {
             url:item.link

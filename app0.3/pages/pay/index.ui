@@ -22,7 +22,7 @@
                   支付金额 
               </ui-view>
               <ui-view>
-                  {{money}}元
+                  ￥{{payMess.cpJl/100}}元
               </ui-view>
         </ui-view>
         <ui-view class="butSty">
@@ -47,11 +47,12 @@ export default {
   },
   data() {
     return {
-      money:ui.getApp().payMess.money,
+      payMess:ui.getApp().payMess,
     }
   },
   methods: {
     navigateBack(){
+      ui.getApp().signUrl = ''
       ui.navigateTo(
           {
             url:'/pages/product/index'
