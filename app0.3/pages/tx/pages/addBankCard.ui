@@ -32,7 +32,7 @@
                       </ui-col>
                       <ui-col vertical-align="middle">
                           <ui-view>
-                            <ui-input ui:model="{{ form.name }}" placeholder="请输入您的姓名"></ui-input>
+                            <ui-input ui:model="{{ form.yhkXm }}" placeholder="请输入您的姓名"></ui-input>
                           </ui-view>
                       </ui-col>
                       <ui-col vertical-align="middle" width="40">
@@ -52,7 +52,7 @@
                       </ui-col>
                       <ui-col vertical-align="middle">
                           <ui-view>
-                            <ui-input ui:model="{{ form.phone }}" placeholder="请输入您的手机号码"></ui-input>
+                            <ui-input ui:model="{{ form.dn }}" placeholder="请输入您的手机号码"></ui-input>
                           </ui-view>
                       </ui-col>
                       <ui-col vertical-align="middle" width="40">
@@ -72,7 +72,7 @@
                       </ui-col>
                       <ui-col vertical-align="middle">
                           <ui-view>
-                            <ui-input ui:model="{{ form.bankCode }}" placeholder="请输入您的银行卡号码"></ui-input>
+                            <ui-input ui:model="{{ form.yhkKh }}" placeholder="请输入您的银行卡号码"></ui-input>
                           </ui-view>
                       </ui-col>
                       <ui-col vertical-align="middle" width="40" bindtap="photoGraph">
@@ -85,7 +85,8 @@
           </ui-view>
 
           <ui-view class="subBut">
-              <ui-button type="primary" bindtap="subButton">提交</ui-button>
+              <ui-button type="primary" bindtap="losesfocus">绑定银行卡</ui-button>
+              <!-- <ui-button ui:else type="primary" bindtap="subButton">提交</ui-button> -->
           </ui-view>
 
       </ui-view>
@@ -106,14 +107,69 @@ export default {
   },
   data() {
     return {
+      // yz:true,
       form:{
-        name:'王晓明',
-        phone:'',
-        bankCode:''
+        yhkXm:'王晓明',
+        dn:'',
+        yhkKh:'6214832714637498'
       }
     }
   },
   methods: {
+    losesfocus(){
+      var v = this
+      if(v.form.yhkXm==''|| v.form.yhkKh=='' || v.form.dn==''){
+        ui.showToast({
+          title: '请将填写完整！'
+        }) 
+        return
+      }
+      this.$http("POST",ui.getApp().apis.YZYHK,this.form,(res)=>{
+        if(res.code==200){
+            // this.yz = false
+            ui.showToast({
+              title: '银行卡验证成功',
+              icon: 'success',
+              duration: 1500
+            }) 
+            setTimeout(() => {
+              v.saveBankCard()
+              
+            }, 1500);
+        }else{
+          ui.showToast({
+            title: '银行卡验证失败，请重新验证！',
+            duration: 1500
+          })
+        }
+      })
+    },
+    saveBankCard(){
+      ui.showLoading({
+        text: '银行卡绑定中……',
+        maskStyle: { 
+          'background-color': 'rgba(231,231,231,0)' 
+        }
+      })
+      this.$http("POST",ui.getApp().apis.ADDBANK,this.form,(res)=>{
+        ui.hideLoading() 
+        if(res.code==200){
+            ui.showConfirm({
+              content: '<div style="text-align: center">银行绑定陈功</div>',
+              confirmButtonText: '继续绑定银行卡',
+              cancelButtonText: '返回',
+              success (result) {
+                if(result.confirm){
+                }else{
+                  ui.navigateBack()
+                }
+              }
+            })
+        }
+      })
+
+
+    },
     subButton(){
         ui.showToast({
           title: '您点击了提交'
@@ -135,7 +191,12 @@ export default {
       })
     }
   },
-  mounted() {}
+  mounted() {},
+  created () {
+    this.form.yhkXm = this.getUser().yhXm
+    this.form.dn = JSON.parse(localStorage.getItem('phone'))
+    this.form.dn = '18602714782'
+  }
 }
 </script>
 

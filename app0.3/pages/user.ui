@@ -23,15 +23,15 @@
                     </ui-view>  
                 </ui-col>
                 <ui-col span="7" align="left" vertical-align="middle" space-left="20">
-                  <ui-view class="pageHello">
-                    <ui-row>
+                  <ui-view class="pageHello" >
+                    <ui-row height=26>
                         <ui-col span='4'>
                             {{usermess.yhXm | yhXm}}
                         </ui-col>
-                        <ui-col span='8' vertical-align="bottom">
-                            <ui-view class="userTyp"> 
+                        <ui-col class="userTyp" span='8' vertical-align="bottom">
+                            <!-- <ui-text class="userTyp">  -->
                               {{usermess.yhLx | yhLx}}  
-                            </ui-view>
+                            <!-- </ui-text> -->
                         </ui-col>
                     </ui-row>
                   </ui-view>
@@ -298,10 +298,9 @@ export default {
 
 <style lang="less">
 .userTyp{
-  font-size: 26rpx;
+  font-size: 25rpx;
   font-weight: 700;
   color:#ff6000;
-  padding-top: 15rpx;
 }
 .ftWt{
   font-weight: 700;

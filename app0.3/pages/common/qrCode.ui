@@ -14,7 +14,7 @@
       </ui-row>
     </ui-nav-bar>
     <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
-      <ui-view class="box_col_100 codeBox">
+      <ui-view class="box_col_auto codeBox">
           <ui-view class="codeSty" style="{{ {'margin-top':martop + 'px'} }}">
               <ui-view class="box_row">
                 <ui-view class="titImg">
@@ -68,7 +68,7 @@ export default {
     return {
       height:ui.DEFAULT_CONTENT_HEIGHT/3*2,
       martop:ui.DEFAULT_CONTENT_HEIGHT/7,
-      usermess:ui.getApp().userMess
+      usermess:{}
     }
   },
   methods: {
@@ -78,7 +78,10 @@ export default {
       })
     }
   },
-  mounted() {}
+  mounted() {},
+  created () {
+    this.usermess = this.getUser()
+  }
 }
 </script>
 
