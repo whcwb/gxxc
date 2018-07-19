@@ -187,17 +187,74 @@ public class JobApi {
         String billType = "ALL";
         String deviceInfo = "";
 
-        WxPayBillResult billResult=wxService.downloadBill(billDate, billType, "", deviceInfo);
-         if(billResult!=null&&billResult.getWxPayBillBaseResultLst().size()>0){
-             retMessage= jobService.billContrast(billResult,billDate);
-         }
-
+        try {
+            WxPayBillResult billResult=wxService.downloadBill(billDate, billType, "", deviceInfo);
+            if(billResult!=null&&billResult.getWxPayBillBaseResultLst().size()>0){
+                retMessage= jobService.billContrast(billResult,billDate);
+            }
+        }catch (WxPayException e){
+//            e.
+        }
 
         res.setMessage("操作成功");
         res.setResult(retMessage);
         return res;
     }
 
+    /**
+     * 微信端下载对账文件
+     * @param billDate
+     * @param key
+     * @param token
+     * @return
+     * @throws WxPayException
+     */
+    @PostMapping("/wxDownloadBill")
+    public ApiResponse<String> wxDownloadBill(@RequestParam String billDate,@RequestParam(required = false) String key, @RequestParam(value = "token",required = false) String token) throws WxPayException {
+        List<String> retMessage=new ArrayList<String>();
+        if(StringUtils.isBlank(token)){
+            if(StringUtils.isBlank(key)){
+                return ApiResponse.fail("密钥为空");
+            }
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            String host = request.getRemoteHost();
+            if(StringUtils.indexOf(jobHost,host) < 0 ){
+                return ApiResponse.fail("ip异常");
+            }
+            //MD5Util.MD5Encode(jobKey + DateUtils.getDateStr(new Date(), "yyyy-MM-dd HH:mm"),null);
+            DateTime dateTime = DateTime.now();
+            DateTime minusMinutes = dateTime.minusMinutes(1);
+            String encode = MD5Util.MD5Encode(jobKey + DateUtils.getDateStr(dateTime.toDate(), "yyyy-MM-dd HH:mm"), null);
+            String encode1 = MD5Util.MD5Encode(jobKey + DateUtils.getDateStr(minusMinutes.toDate(), "yyyy-MM-dd HH:mm"), null);
+            if(!StringUtils.equals(key,encode) && !StringUtils.equals(key,encode1)){
+                return ApiResponse.fail("不是当前的任务");
+            }
+        }else {
+            if(!StringUtils.equals(jobToken,token)){
+                return ApiResponse.fail("token错误");
+            }
+        }
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        if(StringUtils.isBlank(billDate)) {
 
-}
+            LocalDateTime time = LocalDateTime.now();
+            LocalDateTime dateTime = time.minusDays(13);
+            billDate = dateTime.format(dateTimeFormatter);
+        }else{
+            try {
+                LocalDate queryDate = LocalDate.parse(billDate, dateTimeFormatter);
+                queryDate.atStartOfDay();
+            }catch (DateTimeParseException e){
+                return ApiResponse.fail("所传日期格式不对");
+            }
+        }
+        String billType = "ALL";
+        String deviceInfo = "";
+
+//        return jobService.wxDownloadBill(billDate);
+//        ApiResponse<String> balanceBillAccount(String billDate,Boolean handcraft)
+        return jobService.balanceBillAccount(billDate,false);
+    }
+
+    }

@@ -197,6 +197,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         RuntimeCheck.ifNull(bizUser,"您好，请您上传证件资料进行认证！");
 
         BizOrder newEntity=new BizOrder();
+        newEntity.setBillContrastType("0");//对账状态：0未对账      1、已对账      2、对账异常
         newEntity.setDdId(genId());
         newEntity.setYhId(user.getId());//用户id
         newEntity.setCjsj(DateUtils.getNowTime());//创建时间
