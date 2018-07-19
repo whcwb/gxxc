@@ -33,7 +33,7 @@ RECHARGE_REFUND，返回当日充值退款订单
     private String tradeType;
 
     /**
-     * 交易状态
+     * 交易状态  1=支付成功  2 退款
      */
     @Column(name = "TRADE_STATE")
     private String tradeState;
@@ -91,6 +91,13 @@ RECHARGE_REFUND，返回当日充值退款订单
     private String orderId;
 
     /**
+     * 支付凭证(第三方支付平台的唯一订单号)
+     */
+    @Column(name = "TRANSACTION_ID")
+    private String transactionId;
+
+
+    /**
      * 对账文件的原始报文
         微信端的报文文档：
         https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6
@@ -116,6 +123,14 @@ RECHARGE_REFUND，返回当日充值退款订单
         this.orderId = orderId;
     }
 
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
     /**
      * @return ID
      */
@@ -130,7 +145,8 @@ RECHARGE_REFUND，返回当日充值退款订单
         this.id = id;
     }
 
-    /**
+    /**8
+     *
      * 获取交易时间
      *
      * @return TRADE_TIME - 交易时间
@@ -206,7 +222,7 @@ RECHARGE_REFUND，返回当日充值退款订单
     }
 
     /**
-     * 设置交易状态
+     * 设置交易状态  1-支付成功  2-退款
      *
      * @param tradeState 交易状态
      */
@@ -287,7 +303,7 @@ RECHARGE_REFUND，返回当日充值退款订单
     }
 
     /**
-     * 获取支付通道(1、支付宝 2、微信)
+     * 获取支付通道(ZDCLK0038  1、支付宝 2、微信)
      *
      * @return PAT_TYPE - 支付通道(1、支付宝 2、微信)
      */

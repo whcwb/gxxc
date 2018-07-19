@@ -17,6 +17,7 @@ public interface JobService extends BaseService<BizOrder,String> {
 
     List<String> billContrast(WxPayBillResult billResult,String billDate);
 
+    ApiResponse<String> wxDownloadBill(String billDate);
 
-//    void orderFulfilJob();
+    ApiResponse<String> balanceBillAccount(String billDate,Boolean handcraft);
 }
