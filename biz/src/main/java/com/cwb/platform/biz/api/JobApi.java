@@ -236,4 +236,35 @@ public class JobApi {
         return jobService.balanceBillAccount(billDate,false);
     }
 
+
+    @RequestMapping("/tj")
+    public ApiResponse<String> tj(@RequestParam(value = "tjsj",required = false)String tjsj){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        if(StringUtils.isBlank(tjsj)){ // 默认为前一天的时间
+            LocalDateTime localDateTime = LocalDateTime.now();
+            LocalDateTime minusDays = localDateTime.minusDays(1);
+            tjsj =  minusDays.format(dateTimeFormatter);
+        }else{
+            try {
+                LocalDateTime.parse(tjsj,dateTimeFormatter);
+            }catch (DateTimeParseException e){
+                return ApiResponse.fail("所传格式有误");
+            }
+
+
+        }
+
+        // 插入数据至统计表中 todo
+
+
+        return ApiResponse.success();
+
+    }
+
+
+
+
+
+
     }

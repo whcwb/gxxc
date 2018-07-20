@@ -273,7 +273,69 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
     }
 
     /**
+     * app方式支付
+     * @param request
+     * @return
+     */
+    @Override
+    public ApiResponse<Map<String, String>> appPay( HttpServletRequest request) {
+
+        Object payMessage=null;//支付明细
+        Map<String,String> ret=new HashMap<String,String>();
+        try {
+            WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();   //商户订单类
+            orderRequest.setBody("学费");
+            //orderRequest.setOpenid(order.getOpenId());//用户的openID
+//            //元转成分
+            orderRequest.setTotalFee((int) Math.ceil(MathUtil.stringToDouble("1")));   //注意：传入的金额参数单位为分
+            //outTradeNo  订单号
+            orderRequest.setOutTradeNo("111");
+            //tradeType 支付方式
+            orderRequest.setTradeType("APP");//JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
+            orderRequest.setNotifyUrl("http:192.168.31.92:8080/wxPay/notifyCallback");//接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数
+
+            //用户IP地址
+            orderRequest.setSpbillCreateIp(IpUtils.getRealIp(request));
+
+            WxPayUnifiedOrderResult orderResult = wxService.unifiedOrder(orderRequest);
+            Map<String,Object> wxMap =new HashedMap();
+            wxMap.put("orderResult", orderResult);
+            payMessage=wxMap.get("message");
+            if(wxMap!=null&&payMessage==null){
+                String prepayId="";//ddZfpz
+                 orderResult= (WxPayUnifiedOrderResult) wxMap.get("orderResult");
+                if(orderResult!=null){
+                    prepayId=orderResult.getPrepayId();
+                    if(StringUtils.isNotEmpty(prepayId)){
+
+                        //拼装给前台的报文
+                        SortedMap retSorteMap=new TreeMap<String, String>();
+                        retSorteMap.put("appId", appid);
+                        retSorteMap.put("timeStamp", String.valueOf(new Date().getTime()));
+                        retSorteMap.put("nonceStr", genId()); // 必填，生成签名的随机串
+                        retSorteMap.put("package", "prepay_id="+prepayId);
+                        retSorteMap.put("signType", "MD5");
+                        String paySign = WeixinUtils.createSign("UTF-8",retSorteMap,mchKey);//签名，微信根据参数字段的ASCII码值进行排序 加密签名,故使用SortMap进行参数排序
+                        ret.putAll(retSorteMap);
+                        ret.put("paySign", paySign);
+                    }
+                }
+            }
+        } catch (Exception e) {
+//            log.error("【微信支付】支付失败 订单号={} 原因={}", orderDTO.getOrderId(), e.getMessage());
+            e.printStackTrace();
+            Map<String,Object>map =new HashedMap();
+            map.put("message", e.getMessage());
+
+        }
+
+
+        return  ApiResponse.success(ret);
+    }
+
+    /**
      * 微信创建预支付
+     * 公众号方式支付
      * @param order
      * @param bizCp
      * @param request

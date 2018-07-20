@@ -12,4 +12,6 @@ public interface AppOrderService extends BaseService<BizOrder,String>{
 
 
     ApiResponse<Map<String,String>> saveAddOrder(BizOrder entity,HttpServletRequest request);
+
+    ApiResponse<Map<String,String>> appPay(HttpServletRequest request);
 }
