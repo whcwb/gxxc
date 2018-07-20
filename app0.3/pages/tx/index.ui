@@ -4,13 +4,13 @@
     <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
 
         <ui-view class="bankCard paddLR" bindtap="gobankList">
-          <ui-row>
+          <ui-row ui:if="bankList.length>0">
               <ui-col>
-                  <ui-image src="http://lundroid.com/banklogo/e4aa64.png"
+                  <ui-image src="{{bankList[banlIndex].yhkLogo}}"
                     height="40"></ui-image>
           
                   <ui-view class="bankCardNumber">
-                    尾号78952
+                    {{bankList[banlIndex].yhkKh}}
                   </ui-view>
               </ui-col>
               <ui-col width="30" vertical-align="middle" align="right">
@@ -22,17 +22,42 @@
 
       
         <ui-view class="paddLR">
-          <ui-view>提现金额</ui-view>
-          <ui-row>
-              <ui-col width="40" vertical-align="bottom">
-                <ui-icon type="ico-money" size="32" color="#000"></ui-icon>
-              </ui-col>
-              <ui-col vertical-align="bottom">
-                <ui-virtual-input ui:model="{{ value4 }}" 
-                type="digital" placeholder="请输入您要提现的金额"
-                cursor-color="#26a2ff" focus></ui-virtual-input>
-              </ui-col>
-          </ui-row>
+            <!-- <ui-view>提现金额</ui-view> -->
+            <ui-row>
+                <ui-col align="left">
+                    提现金额
+                </ui-col>
+                <ui-col align="right">
+                  <ui-button type="primary" size="mini">全部提现</ui-button>
+                </ui-col>
+            </ui-row>
+            <ui-row border-bottom=true space-bottom='10'>
+                <ui-col width="40" vertical-align="bottom">
+                  <ui-icon type="ico-money" size="32" color="#000"></ui-icon>
+                </ui-col>
+                <ui-col vertical-align="bottom">
+                  <ui-virtual-input ref="virtual" ui:model="{{ txmoney }}" 
+                  type="digital" placeholder="请输入您要提现的金额"
+                  cursor-color="#26a2ff" focus bindinput="bindinput"></ui-virtual-input>
+                </ui-col>
+            </ui-row>
+            <ui-row ui:if="{{!tostYe}}">
+                <ui-col width="40">
+                    余额:
+                </ui-col>
+                <ui-col>
+                  {{ye}}
+                </ui-col>
+
+            </ui-row>
+            <ui-view ui:else class="yeTostSty">
+                金额已超过提现余额！ 
+            </ui-view>
+        </ui-view>
+
+        <ui-view class="box_col_100"></ui-view>
+        <ui-view class='txButSty'>
+            <ui-button type="primary">提现</ui-button>
         </ui-view>
     
     </ui-view>
@@ -51,23 +76,67 @@ export default {
   },
   data() {
     return {
-      value4: '',
+      txmoney: '',
+      tostYe:false,
+      ye:'1.01',
+      banlIndex:ui.getApp().bankIndex,
+      bankList:[]
     }
   },
+  watch:{
+  },
   methods: {
+    bindinput(e){
+        this.ye = parseFloat(this.ye)
+        e=parseFloat(e)
+        if(e>this.ye){
+          this.tostYe = true
+          return
+        }
+        
+        this.tostYe = false
+        
+    },
     gobankList(){
       ui.navigateTo(
           {
             url:'pages/bankCardlist'
           }
         )
+    },
+    getBankList(){
+      this.$http('POST',ui.getApp().apis.BANKLIST,{},(res)=>{
+          if(res.code == 200 && res.result){
+            console.log(res);
+            res.result.forEach((item,index) => {
+              if(index==ui.getApp().bankIndex){
+                item.checked = true
+              }else{
+                item.checked = false
+              }
+              item.swipeOutVal = 'off'
+            });
+            this.bankList = res.result
+            // ui.getApp().banklist = res.result
+          }
+      })
     }
   },
-  mounted() {}
+  mounted() {},
+  created () {
+    this.getBankList()
+  }
 }
 </script>
 
 <style lang="less">
+  .yeTostSty{
+    color:#f00;
+    font-size: 30rpx;
+  }
+  .txButSty{
+    padding: 25rpx;
+  }
   .paddLR{
     padding: 10rpx 25rpx;
     background-color: #fff;

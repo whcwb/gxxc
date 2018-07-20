@@ -100,6 +100,7 @@ export default {
       this.$http('POST',ui.getApp().apis.LOGIN,v.form,(res)=>{
           if(res.code==200){
             localStorage.setItem("token",JSON.stringify(res.result.accessToken))
+            localStorage.setItem("phone",JSON.stringify(v.form.username))
             v.getUserMess((res)=>{
                   v.goIndex()
             })//获取用户信息
@@ -139,7 +140,9 @@ export default {
       })
     },
     forgetpassword(){
-        ui.showToast({ title: '忘记密码' })
+      ui.navigateTo({
+        url: '/pages/retrieveworld'
+      })
     },
     formSubmit(){
 

@@ -88,26 +88,26 @@
         </ui-view>
     </ui-view>
     <ui-popup class="popupFixed" ui:model="{{popupShow}}" position='top' top=0 width=100%>
-      <ui-view class="tit">
-        修改密码
-      </ui-view>
-      <ui-view class="conterBody">
-        <ui-view class="inputSty">
-            <ui-input ui:model="{{ form.oldPwd }}" type="password" placeholder="请输入原始密码"></ui-input>
+        <ui-view class="tit">
+          修改密码
         </ui-view>
-        <ui-view class="inputSty">
-            <ui-input ui:model="{{ form.newPwd }}" type="password" placeholder="请输入新的密码"></ui-input>
+        <ui-view class="conterBody">
+          <ui-view class="inputSty">
+              <ui-input ui:model="{{ form.oldPwd }}" type="password" placeholder="请输入原始密码"></ui-input>
+          </ui-view>
+          <ui-view class="inputSty">
+              <ui-input ui:model="{{ form.newPwd }}" type="password" placeholder="请输入新的密码"></ui-input>
+          </ui-view>
         </ui-view>
-      </ui-view>
-      <ui-view class="box_row butSty">
-          <ui-view class="box_row_100 butbox bor" style="color:#9e9e9e" bindtap="popupShow=false">
-            放弃修改
-          </ui-view>
-          <ui-view class="box_row_100 butbox" style="color:#26a2ff" bindtap="upWorld">
-            确定修改
-          </ui-view>
-      </ui-view>
-  </ui-popup>
+        <ui-view class="box_row butSty">
+            <ui-view class="box_row_100 butbox bor" style="color:#9e9e9e" bindtap="popupShow=false">
+              放弃修改
+            </ui-view>
+            <ui-view class="box_row_100 butbox" style="color:#26a2ff" bindtap="upWorld">
+              确定修改
+            </ui-view>
+        </ui-view>
+    </ui-popup>
   </ui-page>
 </template>
 

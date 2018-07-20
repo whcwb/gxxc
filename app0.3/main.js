@@ -11,7 +11,7 @@ let options = {
       }
     }catch(e){ }
     
-    if(to.path==('/pages/login' || '/pages/reg' )){
+    if(to.path=='/pages/login' || to.path=='/pages/reg' || to.path=='/pages/retrieveworld' ){
       next()
       return
     }else if(!um){
@@ -45,7 +45,6 @@ ui.extend({
         }
       )
     },
-
 
     $http(method,url,data,callback){
       let accessTokenStr = localStorage.getItem("token");

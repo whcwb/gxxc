@@ -9,7 +9,6 @@ export default {
       "pages/reg",
       "pages/studyCar",
       "pages/myTeam",
-      "pages/common/selectMyTeam",
       "pages/center/myTeam",
       "pages/center/bill",
       "pages/home/xlcMess",
@@ -18,7 +17,8 @@ export default {
       "pages/tx/pages/addBankCard","pages/pay/index",
       "pages/product/index",
       "pages/Agreement/learnCarFile","pages/Agreement/MemberFile",
-      "pages/common/signName","pages/common/qrCode","pages/score/index"],
+      "pages/common/signName","pages/common/qrCode",
+      "pages/score/index","pages/retrieveworld"],
     "theme": {
       "theme-color": "#3399ff"
     },
@@ -84,6 +84,13 @@ export default {
       },//训练场详情
       
       QRpage:'/pages/index',//我的邀请码返回页面地址
+    
+      bankIndex:3,//银行卡列表索引
+      banklist:[],//银行卡列表
+
+
+
+
 
       globalData: {
         searchShow:false
