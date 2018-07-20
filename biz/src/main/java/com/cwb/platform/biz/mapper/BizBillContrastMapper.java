@@ -91,21 +91,18 @@ public interface BizBillContrastMapper extends Mapper<BizBillContrast> {
             " UPDATE BIZ_ORDER  "+
             " SET BILL_CONTRAST_TYPE = '2', BILL_CONTRAST_MSG = '对账失败'  "+
             " WHERE date_format(str_to_date(left(DD_ZFSJ,10),'%Y-%m-%d'),'%Y%m%d') = #{billDate} " +
-            " AND DD_ID NOT IN " +
-            " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
-            " #{item} " +
-            "</foreach>" +
+            " AND BILL_CONTRAST_TYPE='0' " +
             " </script>"})
-    void updateNotOrderContrastType(@Param("list") List<String> successOrderList, @Param("billDate")  String billDate);
+    void updateNotOrderContrastType( @Param("billDate")  String billDate);
+
+
     @Update({ "<script> " +
             " UPDATE BIZ_BILL_CONTRAST  "+
             " SET DISPOSE_TYPE = '2', DISPOSE_MESSAGE = '对账失败'  "+
             " WHERE " +
             " TRADE_TIME= #{billDate} AND  TRADE_STATE in ('1','2') " +
-            " AND ORDER_ID NOT IN " +
-            " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
-            " #{item} " +
-            "</foreach>" +
+            " AND DISPOSE_TYPE is NULL" +
             " </script>"})
-    void updateNotBillContrastType(@Param("list") List<String> successOrderList, @Param("billDate")  String billDate);
+    void updateNotBillContrastType( @Param("billDate")  String billDate);
+
 }

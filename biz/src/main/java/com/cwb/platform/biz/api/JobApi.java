@@ -236,7 +236,11 @@ public class JobApi {
         return jobService.balanceBillAccount(billDate,false);
     }
 
-
+    /**
+     * 对账统计
+     * @param tjsj
+     * @return
+     */
     @RequestMapping("/tj")
     public ApiResponse<String> tj(@RequestParam(value = "tjsj",required = false)String tjsj){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -251,8 +255,6 @@ public class JobApi {
             }catch (DateTimeParseException e){
                 return ApiResponse.fail("所传格式有误");
             }
-
-
         }
 
         // 插入数据至统计表中 todo
@@ -261,10 +263,4 @@ public class JobApi {
         return ApiResponse.success();
 
     }
-
-
-
-
-
-
-    }
+}
