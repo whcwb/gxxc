@@ -63,6 +63,7 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String jlid = request.getParameter("jlid");
         RuntimeCheck.ifBlank(jlid, "专员id不能为空");
+        RuntimeCheck.ifTrue(entity.getSlType()==null, "受理状态不能为空");
 
         RuntimeCheck.ifFalse(entity.getYhFz()!=null, "评分的分值不能为空");
 //        RuntimeCheck.ifFalse(entity.getYhPl()!=null, "评论不能为空");
@@ -85,6 +86,7 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         BizYhpf yhpf=new BizYhpf();
         yhpf.setYhId(user.getId());
         yhpf.setJlId(jlid);
+        yhpf.setSlType(entity.getSlType());
         int selecCount=entityMapper.selectCount(yhpf);
         RuntimeCheck.ifTrue(selecCount>0,"您好，您已对专员："+jlMessage.getYhXm()+"做出过评价，感谢您的评价");
 //        2、进行评论操作
@@ -93,6 +95,7 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         yhpf.setYhPl(entity.getYhPl());
         yhpf.setYhBm(user.getYhBm());
         yhpf.setJlXm(jlMessage.getYhXm());
+        yhpf.setSlType(entity.getSlType());
         yhpf.setAuditType(1);
 
         entityMapper.insertSelective(yhpf);

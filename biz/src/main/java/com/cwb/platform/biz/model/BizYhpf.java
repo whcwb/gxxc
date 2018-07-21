@@ -65,6 +65,12 @@ public class BizYhpf implements Serializable {
     private String jlXm;
 
     /**
+     * 当前学员
+     */
+    @Column(name = "SL_TYPE")
+    private Integer slType;
+
+    /**
      * 教练平均分
      */
     @Transient
@@ -79,6 +85,14 @@ public class BizYhpf implements Serializable {
 
     public void setJlPjf(String jlPjf) {
         this.jlPjf = jlPjf;
+    }
+
+    public Integer getSlType() {
+        return slType;
+    }
+
+    public void setSlType(Integer slType) {
+        this.slType = slType;
     }
 
     /**
