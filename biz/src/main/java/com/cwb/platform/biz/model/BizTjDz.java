@@ -74,8 +74,8 @@ public class BizTjDz implements Serializable {
     /**
      * 订单失败金额
      */
-    @Column(name = "ORDER_FAIL_FEE")
-    private String orderFailFee;
+    @Column(name = "Bill_FAIL_COUNT")
+    private String billFailCount;
 
     /**
      * 创建时间
@@ -281,22 +281,12 @@ public class BizTjDz implements Serializable {
         this.orderFailCount = orderFailCount;
     }
 
-    /**
-     * 获取订单失败金额
-     *
-     * @return ORDER_FAIL_FEE - 订单失败金额
-     */
-    public String getOrderFailFee() {
-        return orderFailFee;
+    public String getBillFailCount() {
+        return billFailCount;
     }
 
-    /**
-     * 设置订单失败金额
-     *
-     * @param orderFailFee 订单失败金额
-     */
-    public void setOrderFailFee(String orderFailFee) {
-        this.orderFailFee = orderFailFee;
+    public void setBillFailCount(String billFailCount) {
+        this.billFailCount = billFailCount;
     }
 
     /**

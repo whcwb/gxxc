@@ -12,6 +12,7 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -131,6 +132,26 @@ public class AppPtyhController extends AppUserBaseController {
             long userInviteCount=0;
             userInviteCount=userService.countByCondition(condition);
             users.setUserInviteCount(userInviteCount);
+
+
+            if (StringUtils.equals(users.getYhXySlType(), "0") ||
+                    StringUtils.equals(users.getYhXySlType(), "1") ||
+                    StringUtils.equals(users.getYhXySlType(), "2") ||
+                    StringUtils.equals(users.getYhXySlType(), "3") ||
+                    StringUtils.equals(users.getYhXySlType(), "4")) {
+                users.setYhDqzt("0");
+            }
+            if (users.getYhXyYkType().charAt(0) == '0') {
+                users.setYhDqzt("0");
+            } else if (users.getYhXyYkType().charAt(0) == '1') {
+                users.setYhDqzt("1");
+            } else if (users.getYhXyYkType().charAt(0) == '2') {
+                users.setYhDqzt("2");
+            } else if (users.getYhXyYkType().charAt(0) == '3') {
+                users.setYhDqzt("3");
+            } else {
+                users.setYhDqzt("4");
+            }
         }
         return ApiResponse.success(users);
     }
