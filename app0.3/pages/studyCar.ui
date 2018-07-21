@@ -602,6 +602,8 @@ export default {
       })
     },
     goscore(){
+        ui.getApp().zyMess = this.zyMwssList[this.timelineNext]
+        ui.getApp().zyMess.type = this.timelineNext
         ui.navigateTo(
           {
             url:'/pages/score/index'

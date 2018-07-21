@@ -249,7 +249,7 @@ export default {
       goBill(){
         ui.navigateTo(
           {
-            url:'center/bill'
+            url:'center/bill2'
           }
         )
       },

@@ -197,6 +197,25 @@ export default {
           break;
       }
     },
+    getType:(val)=>{
+      switch (val){
+        case 0:
+          return '受理专员'
+        break;
+        case 1:
+          return '科目一专员'
+          break;
+        case 2:
+          return '科目二专员'
+        break;
+        case 3:
+          return '科目三专员'
+        break;
+        case 4:
+          return '科目四专员'
+        break;
+      }
+    },
     yhXmZY:(val)=>{
       if (val){
         return val
@@ -208,6 +227,58 @@ export default {
         return parseInt(val)
       }
       return 0
+    },
+    zjZt:(val)=>{
+      switch (val){
+        case '0':
+          return '提现冻结'
+          break;
+        case '1':
+          return '处理成功'
+          break;
+        case '2':
+          return '提现失败'
+          break;
+      }
+    },
+    txShZt:(val)=>{
+      switch (val){
+        case '0':
+          return '待审核'
+          break;
+        case '1':
+          return '待打款'
+          break;
+        case '2':
+          return '审核失败'
+          break;
+      }
+    },
+    mxlx:(val)=>{
+      switch (val){
+        case '1':
+          return '充值'
+        break;
+        case '2':
+          return '分佣'
+        break;
+        case '3':
+            return '消费'
+        break;
+        case '4':
+          return '提现'
+        break;
+      }
+    },
+    zjFs:(val)=>{
+      switch (val){
+        case '1':
+          return ''
+          break;
+        case '-1':
+          return '-'
+          break;
+      }
     }
 
   },
