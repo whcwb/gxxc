@@ -769,6 +769,7 @@
     },
     created() {
       this.user = this.$store.state.app.userMess;
+      this.initialIndex = parseInt(this.user.yhDqzt)
       this.getZYmess()
 
       // this.getCoachInfo();
@@ -784,15 +785,18 @@
         var v = this
         this.$http.post(this.apis.getZYmess).then((res)=>{
           console.log('钻元信息',res);
-          res.result.forEach((item,index)=>{
-            if(item.jlPf){
-              item.jlPf = parseInt(item.jlPf)
-            }
-          })
-          if(res.code==200 && res.result){
-            v.zyMwssList= []
-            v.zyMwssList = res.result
+          if(res.code==200){
+              res.result.forEach((item,index)=>{
+                if(item.jlPf){
+                  item.jlPf = parseInt(item.jlPf)
+                }
+              })
+              if(res.code==200 && res.result){
+                v.zyMwssList= []
+                v.zyMwssList = res.result
+              }
           }
+
         }).catch((err)=>{
 
         })
