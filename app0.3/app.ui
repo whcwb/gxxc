@@ -10,7 +10,8 @@ export default {
       "pages/studyCar",
       "pages/myTeam",
       "pages/center/myTeam",
-
+      "pages/center/myTeam2",
+      
       "pages/center/bill",
       "pages/center/bill2",
 
