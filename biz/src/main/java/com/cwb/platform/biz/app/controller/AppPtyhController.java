@@ -138,7 +138,9 @@ public class AppPtyhController extends AppUserBaseController {
                     StringUtils.equals(users.getYhXySlType(), "1") ||
                     StringUtils.equals(users.getYhXySlType(), "2") ||
                     StringUtils.equals(users.getYhXySlType(), "3") ||
-                    StringUtils.equals(users.getYhXySlType(), "4")) {
+                    StringUtils.equals(users.getYhXySlType(), "5") ||
+                    StringUtils.equals(users.getYhXySlType(), "4")
+                    ) {
                 users.setYhDqzt("0");
             }
             if (users.getYhXyYkType().charAt(0) == '0') {
@@ -152,6 +154,18 @@ public class AppPtyhController extends AppUserBaseController {
             } else {
                 users.setYhDqzt("4");
             }
+
+            //如果本阶段已完成，自动跳转到下一个阶段
+            if(StringUtils.equals(users.getYhXyYkType(),"11")){
+                users.setYhDqzt("2");
+            }else if(StringUtils.equals(users.getYhXyYkType(),"21")){
+                users.setYhDqzt("3");
+            }else if(StringUtils.equals(users.getYhXyYkType(),"31")){
+                users.setYhDqzt("4");
+            }else if(StringUtils.equals(users.getYhXySlType(),"5")){
+                users.setYhDqzt("1");
+            }
+
         }
         return ApiResponse.success(users);
     }
