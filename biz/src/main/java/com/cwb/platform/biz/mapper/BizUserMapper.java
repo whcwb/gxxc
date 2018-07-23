@@ -58,6 +58,16 @@ public interface BizUserMapper extends Mapper<BizUser> {
             "</script>")
     void updateJlid3(@Param("list") List<String> list, @Param("jlId") String jlId);
 
+    @Update("<script>" +
+            " UPDATE BIZ_USER SET YH_JLID4 = #{jlId}" +
+            " where YH_ID IN " +
+            " <foreach collection='list' item='item' open='(' close=')' separator=','>" +
+            " #{item} " +
+            "</foreach>" +
+            " AND YH_JLID4 IS NULL" +
+            "</script>")
+    void updateJlid4(@Param("list") List<String> list, @Param("jlId") String jlId);
+
     @Select(" <script> " +
             " SELECT u.* FROM BIZ_USER u , BIZ_PTYH p where " +
             " <choose>" +
