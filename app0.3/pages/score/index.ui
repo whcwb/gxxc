@@ -8,21 +8,21 @@
             </ui-view>
             <ui-view class="userMess">
                 <ui-view class="userTyp">
-                      受理专员
+                      {{zyType | getType}}
                 </ui-view>
                 <ui-view class="userName">
-                      王小明
+                      {{zymess.yhXm}}
                 </ui-view>
                 <ui-view class="star">
                   <ui-row height="40">
                       <ui-col span="3"></ui-col>
                       <ui-col span="" align="left">
-                        <ui-star readonly=true value=5  vertical-align="middle"></ui-star>
+                        <ui-star readonly=true value="{{zymess.jlPf}}"  vertical-align="middle"></ui-star>
                       </ui-col>
                   </ui-row>
                 </ui-view>
                 <ui-view class="number">
-                  5.0分
+                  {{zymess.jlPf}}分
                 </ui-view>
             </ui-view>
 
@@ -33,13 +33,13 @@
                     </ui-view>
                     <ui-view class="text">
                       <ui-view>
-                          区域:江岸区
+                          区域:{{zymess.jlQu | jlQu}}
                       </ui-view>
                       <ui-view>
                           性别:男
                       </ui-view>
                       <ui-view>
-                          电话:13112345678
+                          电话:{{zymess.yhSjhm}}
                       </ui-view>
                     </ui-view>
                 </ui-view>
@@ -49,11 +49,16 @@
                       学员评分
                     </ui-view>
                     <ui-view class="text box_row num">
-                      <ui-star star-width="30" star-height=30></ui-star>
+                      <ui-star 
+                        value="{{pf}}"
+                        readonly="{{pf_disabled}}"
+                        bindchange="getStarVal"
+                        star-width="30" 
+                        star-height=30></ui-star>
                       <ui-view class="strNum box_row_100">
-                        5.0
+                        {{pf}}
                       </ui-view>
-                      <ui-view class="submit" bindtap="setUp">
+                      <ui-view class="submit" bindtap="setUp" ui:if="!pf_disabled">
                         <ui-icon mode="wechat" type="success" size="24"></ui-icon>
                       </ui-view>
                     </ui-view>
@@ -64,121 +69,8 @@
     </ui-page>
     
 </template>
-        <!-- <ui-row  style="backgound:#fff">
-            <ui-col span="12">
-                <ui-row style="padding:60px 0 15px 0">
-                  <ui-col align="center" vertical-align="middle">
-                    <ui-view class="pageHeght">受理专员</ui-view>
-                    <ui-view>
-                    <ui-row>
-                      <ui-col  style="padding: 20px 0 0 0;font-size:20px;font-weight:450" align="left" vertical-align="middle">
-                        赵虎
-                      </ui-col>
-                    </ui-row>
-                  </ui-view> 
-
-                    <ui-view>
-                      <ui-row>
-                      <ui-col span="12" space-right="35">
-                      <ui-star></ui-star>
-                      </ui-col>
-                      <ui-col align="center" vertical-align="middle" style="font-size:20px; color:#FF9933">5</ui-col>
-                      </ui-row> 
-                    </ui-view>   
-                  </ui-col>
-                </ui-row>
-            </ui-col>
-            </ui-row>
-
-
-            <ui-row class="pageHeght">
-            <ui-col span="12">
-                <ui-row style="background:#FFF;padding:20px 0 20px 0"></ui-row>
-            </ui-col>
-        </ui-row>
-
-
-        <ui-row  >
-            <ui-col span="12">
-                <ui-row style="padding:15px 0 10px 0">
-                  <ui-col space-left="25" vertical-align="middle">
-                    <ui-view class="pageHeght">专员详情</ui-view>  
-                  </ui-col>
-                </ui-row>
-            </ui-col>
-            </ui-row>
-
-            <ui-view style="background-color: #F8F8F8; border-color: #F8F8F8; border-radius: 20px;margin:0 15px 0 15px">
-            <ui-row>
-            <ui-col span="12">
-                <ui-row style="padding:15px 0 10px 0">
-                  <ui-col space-left="20" vertical-align="middle">
-            <ui-view style="padding: 0 0 0 0">区域：江岸区</ui-view>
-                    <ui-view>性别：男</ui-view> 
-                    <ui-view>电话：15214273391</ui-view>  
-      
-                  </ui-col>
-                </ui-row>
-            </ui-col>
-            </ui-row>
-            </ui-view>
-
-
-
-
-
-            <ui-row class="pageHeght">
-            <ui-col span="12">
-                <ui-row style="background:#FFF;padding:20px 0 20px 0;margin:15px 0 0 0"></ui-row>
-            </ui-col>
-        </ui-row>
-
-
-        <ui-row >
-            <ui-col span="12">
-                <ui-row style="padding:15px 0 15px 0">
-                  <ui-col space-left="25" vertical-align="middle">
-                    <ui-view class="pageHeght">学员评价</ui-view>
-                  </ui-col>
-                </ui-row>
-            </ui-col>
-            </ui-row>
-
-            <ui-view style="background-color: #F8F8F8; border-color: #F8F8F8; border-radius: 20px;margin:0 15px 15px 15px" vertical-align="middle">
-            <ui-row vertical-align="middle">
-            <ui-col span="12">
-                <ui-row style="padding:15px 0 15px 0">
-                  <ui-col space-left="10" vertical-align="middle">
-            <ui-view>
-              <ui-row>
-                <ui-col align="left" span="6" vertical-align="middle">
-                  <ui-star vertical-align="middle"></ui-star>
-                </ui-col>
-                <ui-col style="font-size:20px; color:#FF9933;padding:15px 0 0 0" align="left" space-right="20">
-                  0
-                </ui-col>
-                <ui-col align="center" vertical-align="middle">
-                  <ui-button class="okBut" icon='user' full-width='false'></ui-button>
-                </ui-col>
-              </ui-row>
-              </ui-view>
-                  </ui-col>
-                </ui-row>
-            </ui-col>
-        </ui-row> -->
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
+import mixin from '#/static/ajax/mixin'
 export default {
   config: {
     navigationBarBackgroundColor:"#26a2ff",
@@ -188,13 +80,67 @@ export default {
     backgroundColor:'#f2f2f2',
     delay:false,//延迟加载
   },
+  mixins:[mixin],
   data () {
     return {
+      zymess:{},
+      zyType:0,
+      pf_disabled:false,
+      pf:0
     }
   },
+  watch: {
+    pf:(n,o)=>{
+        console.log('nnnnnnnnn',n);
+        console.log('ooooooooo',o);
+    }
+  },
+  created () {
+    console.log(ui.getApp().zyMess);
+    var v = this
+    if(ui.getApp().zyMess.yhId){
+      this.zymess = ui.getApp().zyMess
+      this.zyType = ui.getApp().zyMess.type
+      if(ui.getApp().zyMess.yhFz!=''){
+        v.pf_disabled = true
+        v.pf = ui.getApp().zyMess.yhFz
+      }
+    }else {
+      // this.$router.push('/Home')
+    }
+    
+  },
   methods: {
+    getStarVal(val){
+        this.pf = val
+        console.log('-----------',val);
+        
+    },
     setUp(){
-      ui.showToast({ title: '评分提交' })
+      var v = this
+      this.$http('POST',ui.getApp().apis.PF_TEACHER,{yhFz:v.pf,yhPl:'文字评论',jlid:v.zymess.yhId},(res)=>{
+        console.log(res);
+        if (res.code == 200) {
+          v.GETstudentPF()
+        } else {
+          Toast(res.message);
+        }
+      })
+      // ui.showToast({ title: '评分提交' })
+    },
+    GETstudentPF(){
+      var v = this
+      this.$http('POST',ui.getApp().apis.GET_PF,{jlId:v.zymess.yhId},(res)=>{
+        if (res.code == 200) {
+          if(res.result.id){
+            v.zymess.jlPf = res.result.jlPjf
+            v.pf=res.result.yhFz
+            v.pf_disabled = true
+          }
+        } else {
+          ui.showToast({ title:res.message})
+        }
+      })
     }
   }
 }
@@ -248,18 +194,6 @@ export default {
       border: #f2f2f2 1rpx solid;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .okBut{

@@ -77,7 +77,7 @@ ui.extend({
         },
         complete:function(mess){
           console.log('请求结果')
-          callback && callback(mess.data);
+          // callback && callback(mess.data);
         }
       })
     },

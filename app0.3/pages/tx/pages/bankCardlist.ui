@@ -111,14 +111,27 @@ export default {
     },
     remove(item,index){
       console.log('remove');
+      var v = this 
       ui.showConfirm({
         content: '<div style="text-align: center;color:#f00!important">你是否确定删除银行卡!!!</div>',
         confirmButtonText: '删除',
         cancelButtonText: '返回',
         success (result) {
           if(result.confirm){
-            ui.showToast({
-              title: '银行移除'
+            v.$http('POST',ui.getApp().apis.BANKCARDDELE+item.id,{},(res)=>{
+                if(res.code==200){
+                    if(index==ui.getApp().bankIndex){
+                      ui.getApp().bankIndex = 0
+                    }
+                  ui.showToast({
+                    title: '银行移除成功'
+                  })
+                  v.getBankList()
+                }else{
+                  ui.showToast({
+                    title: res.message
+                  })
+                }
             })
           }
         }

@@ -8,14 +8,25 @@
                       <ui-view class="titSty" style="">
                       </ui-view>
                     </ui-view>
-                    <ui-view class="_font alcen">xxx
+                    <ui-view class="_font alcen">
+                      {{zyMess.yhXm | yhXmZY}}
                     </ui-view>
-                     <ui-view class="alcen">
-                       <ui-star class="starSty" readonly=true value=5
-                       half=true style="transform: translateX(-18px)"></ui-star>
+                    <ui-view class="_fontQy alcen">
+                      {{zyMess.jlQu | jlQu}}
+                    </ui-view>
+                    <ui-view class="alcen">
                      </ui-view>
                      <ui-view class="alcen">
-                       4.0分
+                       <ui-row height=35>
+                         <ui-col span=8 align="right" style="z-index=1000">
+                            <ui-star class="starSty" readonly=true value="{{zyMess.jlPf | jlPf}}"
+                            half=true style="transform: translateX(-18px)"></ui-star>
+                         </ui-col>
+                         <ui-col span=1></ui-col>
+                         <ui-col span=3 align="left" vertical-align='bottom'>
+                             {{zyMwssList[timelineNext].jlPf | jlPf}}分
+                         </ui-col>
+                       </ui-row>
                      </ui-view>
                 </ui-view>
             </ui-view>
@@ -27,24 +38,23 @@
                     </ui-view>
                   </ui-divider>
                   <ui-ex-swiper pagination 
-                  centered-slides space-between="10" 
-                  loop="{{false}}" slides-per-view="auto"  index='{{timeline}}'
-                  bindchange="swiperChange">
+                    centered-slides space-between="10" 
+                    loop="{{false}}" slides-per-view="auto"  index='{{timeline}}'
+                    bindchange="swiperChange">
                     <ui-ex-swiper-item ui:for="{{items}}" class=""
-                    ui:for-item="item" ui:for-index="index"
-                    style="{{ {'background-image':'url('+item.src+')'} }}">
+                        ui:for-item="item" ui:for-index="index"
+                        style="{{ {'background-image':'url('+item.src+')'} }}">
                       <ui-view class="swiperbox">
                         <ui-view class="name">{{item.name}}</ui-view>
                         <ui-view class="mess">{{item.mess}}</ui-view>
                       </ui-view>
-                      <!-- <ui-image src="{{ item.src }}" mode="simple"></ui-image> -->
                     </ui-ex-swiper-item>
                   </ui-ex-swiper>
                 </ui-view>
                 <ui-view class="boxSty">
                     <ui-view ui:if="{{timelineNext==0}}">
                       <ui-row>
-                        <ui-col space='10' align='center'>
+                        <ui-col space='8' align='center'>
                           <ui-image mode=aspectFit src="static/img/jpg/bm.jpg"></ui-image>
                             <ui-text>报名条件</ui-text>
                         </ui-col>
@@ -61,191 +71,309 @@
                           <ui-text>学车流程</ui-text>
                         </ui-col>
                       </ui-row>
-                      <ui-view style="padding: 0 60px;">
-                        <ui-timeline mode="row" style="text-align:center">
-                            <ui-timeline-item  ui:for="{{list}}" 
-                              point-color="{{index <= thisIndex ? '#3399ff' : '#8a8a8a'}}" 
-                              line-color="{{index<thisIndex?'#3399ff':''}}"
-                              shadow-class="{{index === thisIndex ? 'shadow-class' : ''}}"
-                              show-line="{{index === list.length-1 ? false : true}}">
-                                <ui-view class="continer">
-                                  12
-                                </ui-view>
-                            </ui-timeline-item>
-                          </ui-timeline>
+                      <ui-view style="padding:8px">
+                          <ui-view class="slboxSty">
+                            <ui-view class="slTitSty">
+                                受理进度
+                            </ui-view>
+
+                            <ui-timeline mode="row" style="text-align:center">
+                                <ui-timeline-item  ui:for="{{list}}" 
+                                  class="timeline"
+                                  point-color="{{index <= thisIndex ? '#3399ff' : '#8a8a8a'}}" 
+                                  line-color="{{index<thisIndex?'#3399ff':''}}"
+                                  shadow-class="{{index === thisIndex ? 'shadow-class' : ''}}"
+                                  show-line="{{index === list.length-1 ? false : true}}">
+                                    <ui-view class="continer">
+                                      <ui-view class="pos">
+                                        {{item.pos}}
+                                      </ui-view>
+                                      <ui-view class="gary">
+                                        <ui-view ui:if="{{handleStatus[JSON.stringify(index+1)]}}">
+                                          {{handleStatus[index+1].name}}<br>
+                                          {{handleStatus[index+1].slSj}}
+                                        </ui-view>
+                                        <ui-view ui:else>
+                                          待完成
+                                        </ui-view>
+                                      </ui-view>
+                                    </ui-view>
+                                </ui-timeline-item>
+                              </ui-timeline>
+                          </ui-view>
                       </ui-view>
                     </ui-view>
-                    
-                    <ui-view ui:if="{{timelineNext}}==1">
+                    <ui-view ui:if="{{timelineNext==1}}">
                       <ui-row >
-                        <ui-col align='center'>
+                        <ui-col span=3 space='8' align='center'>
                           <ui-image mode=aspectFit src="static/img/jpg/sxlx.jpg"></ui-image>
                           <ui-text>顺序练习</ui-text>
                         </ui-col>
-                        <ui-col align='center'> 
+                        <ui-col span=3 space='8' align='center'> 
                           <ui-image mode=aspectFit src="static/img/jpg/zjlx.jpg"></ui-image>
                           <ui-text>章节练习</ui-text>
                         </ui-col >
-                        <ui-col align='center'>
+                        <ui-col span=3 space='8' align='center'>
                           <ui-image mode=aspectFit src="static/img/jpg/zxlx.jpg"></ui-image>
                           <ui-text>专项练习</ui-text>
                         </ui-col>
-                        <ui-col>
+                        <ui-col span=3 space='8'></ui-col>
+                      </ui-row>
+                      <ui-row height="50" class="box2Sty" border-bottom=true>
+                          <ui-col span="10" vertical-align="middle">
+                              当前科目考试费
+                          </ui-col>
+                          <ui-col align="right" vertical-align="middle" space-right="20">
+                              <ui-badge class="vip"
+                                  ui:if="{{payInfo['1'] == '已缴'}}"
+                                  style="{{ {backgroundColor:'#67c23a'} }}"
+                                  text="已缴费"></ui-badge>
+                              <ui-badge class="vip"
+                                  ui:else
+                                  style="{{ {backgroundColor:'#0f0'} }}"
+                                  text="未缴费"></ui-badge>
+                          </ui-col>
+                      </ui-row>
+                      <ui-view  style="padding:8px">
+                        <ui-view class="kcBoxSty">
+                            <ui-view class="kcBoxTit box_row">
+                                <ui-view class="kcBoxTitTit box_row_100">
+                                    <ui-text ui:if="{{examInfo['1']}}">{{examInfo['1'].schoolName}}</ui-text>
+                                    <ui-text ui:else>未预约</ui-text>
+                                </ui-view>
+                                <ui-view ui:if="{{examInfo['1']}}" bindtap="showMap(examInfo['1'])">
+                                    <ui-icon type="location" color="#67c23a" size="26"></ui-icon>
+                                </ui-view>
+                            </ui-view>
 
-                        </ui-col>
-                      </ui-row>
-                      <ui-row height="50">
-                          <ui-col span="10" vertical-align="middle">
-                          当前科目考试费
-                          </ui-col>
-                          <ui-col align="right" vertical-align="middle" space-right="20">
-                              <ui-badge class="vip" text="未缴"></ui-badge>
-                          </ui-col>
-                      </ui-row>
-                      <ui-row>
-                        <ui-col span=10>
-                          东山考场
-                        </ui-col>
-                        <ui-col span=2>
-                          <ui-icon type="location"></ui-icon>
-                        </ui-col>
-                      </ui-row>
-                      <ui-row height="50">
-                        <ui-col span="10" vertical-align="middle">
-                        第一次考试
-                        </ui-col>
-                        <ui-col align="right" vertical-align="middle" space-right="20">
-                            <ui-badge class="vip" text="未通过"></ui-badge>
-                        </ui-col>
-                      </ui-row>
-                      <ui-row height="50">
-                        <ui-col span="10" vertical-align="middle">
-                        第二次考试
-                        </ui-col>
-                        <ui-col align="right" vertical-align="middle" space-right="20">
-                            <ui-badge class="vip" text="通过"></ui-badge>
-                        </ui-col>
-                      </ui-row>
-                    </ui-view>
-                    <ui-view ui:if="{{timelineNext}}==2">
-                      <ui-row>
-                        <ui-col space='8' align='center'>
-                          <ui-image  mode=aspectFit src="static/img/jpg/hgbz.jpg"></ui-image>
-                           <ui-text>合格标准</ui-text>
-                        </ui-col>
-                        <ui-col space='8' align='center'>
-                          <ui-image mode=aspectFit src="static/img/jpg/cftc.jpg"></ui-image>
-                          <ui-text>侧方停车</ui-text>
-                        </ui-col>
-                        <ui-col space='8' align='center'>
-                          <ui-image mode=aspectFit src="static/img/jpg/qxxs.jpg"></ui-image>
-                          <ui-text>曲线行驶</ui-text>
-                        </ui-col>
-                        <ui-col space='8' align='center'>
-                          <ui-image mode=aspectFit src="../static/img/jpg/zjzw.jpg"></ui-image>
-                          <ui-text>直角转弯</ui-text>
-                        </ui-col>
-                      </ui-row>
-                      <ui-view>    
-                      <ui-row span='6'>
-                        <ui-col space='8' align='center'>
-                          <ui-image mode=aspectFit src="../static/img/jpg/spqb.jpg"></ui-image>
-                          <ui-text>上坡起步</ui-text>
-                        </ui-col>
-                        <ui-col space='8' align='center'>
-                          <ui-image mode=aspectFit src="../static/img/jpg/dcrk.jpg"></ui-image>
-                          <ui-text>倒车入库</ui-text>
-                        </ui-col>
-                        <ui-col></ui-col>
-                        <ui-col></ui-col>
-                        </ui-row>
-                        </ui-view>    
-                       <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      当前科目考试费
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="未缴"></ui-badge>
-                      </ui-col>
-                      </ui-row>
-                      <ui-row>
-                        <ui-col span=10>
-                          东山考场
-                        </ui-col>
-                        <ui-col span=2>
-                          <ui-icon type="location"></ui-icon>
-                        </ui-col>
-                      </ui-row>
-                      <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      第一次考试
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="未通过"></ui-badge>
-                      </ui-col>
-                      </ui-row>
-                      <ui-row height="50">
-                      <ui-col span="10" vertical-align="middle">
-                      第二次考试
-                      </ui-col>
-                      <ui-col align="right" vertical-align="middle" space-right="20">
-                           <ui-badge class="vip" text="通过"></ui-badge>
-                      </ui-col>
-                      </ui-row>
-                    </ui-view>
-                    <ui-view ui:if="{{timelineNext}}==3">
-                      <ui-view class="boxSty">
-                          <ui-row>
-                              <ui-col space='10' align='center'>
-                                <ui-image mode=aspectFit src="static/img/jpg/hgbz.jpg"></ui-image>
-                                <ui-text>评判标准</ui-text>
-                              </ui-col>
-                              <ui-col space='8' align='center'>
-                                <ui-image mode=aspectFit src="static/img/jpg/yyzl.jpg"></ui-image>
-                                <ui-text>语言指令</ui-text>
-                              </ui-col>
-                              <ui-col space='8' align='center'>
-                                <ui-image mode=aspectFit src="static/img/jpg/dg.jpg"></ui-image>
-                                <ui-text>灯光操作</ui-text>
-                              </ui-col>
-                              <ui-col space='8' align='center'>
-                                <ui-image mode=aspectFit src="static/img/jpg/kskj.jpg"></ui-image>
-                                <ui-text>考试口诀</ui-text>
-                              </ui-col>
-                          </ui-row>
+
+
+                            <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['1']}}">
+                                  <ui-view class="box_row_100 kcBoxBodyTiT">
+                                        <ui-view>
+                                            第一次考试 
+                                        </ui-view>
+                                        <ui-view>
+                                            {{examInfo['1'].ykSj}}
+                                        </ui-view>
+                                  </ui-view>
+                                  <ui-view class="fs">
+                                    <ui-circular
+                                      radius=35
+                                      color="{{examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
+                                      value="70"
+                                      line-width="4"
+                                      line-cap="round"
+                                      ></ui-circular>
+                                      <ui-view class="fs_chil_box" style="{{ {color:examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'} }}">
+                                            <ui-view class="fs_va">
+                                              {{examInfo['1'].cj1}}分
+                                            </ui-view>
+                                            <ui-view class="fs_typ">
+                                              {{examInfo['1'].cj1 >= 90 ? '合格' : '不合格'}}
+                                            </ui-view> 
+                                      </ui-view>
+                                  </ui-view>
+                            </ui-view>
+                            <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['1'] && examInfo['1'].cj1 < 90}}">
+                                  <ui-view class="box_row_100 kcBoxBodyTiT">
+                                        <ui-view>
+                                            第二次考试 
+                                        </ui-view>
+                                        <ui-view>
+                                            {{examInfo['1'].ykSj}}
+                                        </ui-view>
+                                  </ui-view>
+                                  <ui-view class="fs">
+                                    <ui-circular
+                                      radius=35
+                                      color="{{examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
+                                      value="70"
+                                      line-width="4"
+                                      line-cap="round"
+                                      ></ui-circular>
+                                      <ui-view class="fs_chil_box" style="{{ {color:examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'} }}">
+                                            <ui-view class="fs_va">
+                                              {{examInfo['1'].cj1}}分
+                                            </ui-view>
+                                            <ui-view class="fs_typ">
+                                              {{examInfo['1'].cj1 >= 90 ? '合格' : '不合格'}}
+                                            </ui-view> 
+                                      </ui-view>
+                                  </ui-view>
+                            </ui-view>
+
+                        </ui-view>
                       </ui-view>
-                      <ui-row height="50">
-                          <ui-col span="10" vertical-align="middle">
-                            当前科目考试费
-                          </ui-col>
-                          <ui-col align="right" vertical-align="middle" space-right="20">
-                              <ui-badge class="vip" text="未缴"></ui-badge>
-                          </ui-col>
-                      </ui-row>
-                      <ui-row>
-                          <ui-col span=10>
-                            东山考场
-                          </ui-col>
-                          <ui-col span=2>
-                            <ui-icon type="location"></ui-icon>
-                          </ui-col>
-                      </ui-row>
-                      <ui-row height="50">
-                          <ui-col span="10" vertical-align="middle">
-                          第一次考试
-                          </ui-col>
-                          <ui-col align="right" vertical-align="middle" space-right="20">
-                              <ui-badge class="vip" text="未通过"></ui-badge>
-                          </ui-col>
-                      </ui-row>
-                      <ui-row height="50">
-                          <ui-col span="10" vertical-align="middle">
-                          第二次考试
-                          </ui-col>
-                          <ui-col align="right" vertical-align="middle" space-right="20">
-                              <ui-badge class="vip" text="通过"></ui-badge>
-                          </ui-col>
-                      </ui-row>
+
+                    </ui-view>
+                    <ui-view ui:if="{{timelineNext==2}}">
+                        <ui-row>
+                            <ui-col space='8' align='center'>
+                              <ui-image  mode=aspectFit src="static/img/jpg/hgbz.jpg"></ui-image>
+                              <ui-text>合格标准</ui-text>
+                            </ui-col>
+                            <ui-col space='8' align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/cftc.jpg"></ui-image>
+                              <ui-text>侧方停车</ui-text>
+                            </ui-col>
+                            <ui-col space='8' align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/qxxs.jpg"></ui-image>
+                              <ui-text>曲线行驶</ui-text>
+                            </ui-col>
+                            <ui-col space='8' align='center'>
+                              <ui-image mode=aspectFit src="../static/img/jpg/zjzw.jpg"></ui-image>
+                              <ui-text>直角转弯</ui-text>
+                            </ui-col>
+                        </ui-row>
+                        <ui-view>    
+                            <ui-row span='6'>
+                                <ui-col space='8' align='center'>
+                                  <ui-image mode=aspectFit src="../static/img/jpg/spqb.jpg"></ui-image>
+                                  <ui-text>上坡起步</ui-text>
+                                </ui-col>
+                                <ui-col space='8' align='center'>
+                                  <ui-image mode=aspectFit src="../static/img/jpg/dcrk.jpg"></ui-image>
+                                  <ui-text>倒车入库</ui-text>
+                                </ui-col>
+                                <ui-col></ui-col>
+                                <ui-col></ui-col>
+                            </ui-row>
+                        </ui-view>    
+                        <ui-row height="50" class="box2Sty" border-bottom=true>
+                            <ui-col span="10" vertical-align="middle">
+                                当前科目考试费
+                            </ui-col>
+                            <ui-col align="right" vertical-align="middle" space-right="20">
+                                <ui-badge class="vip"
+                                    ui:if="{{payInfo['2'] == '已缴'}}"
+                                    style="{{ {backgroundColor:'#67c23a'} }}"
+                                    text="已缴费"></ui-badge>
+                                <ui-badge class="vip"
+                                    ui:else
+                                    style="{{ {backgroundColor:'#0f0'} }}"
+                                    text="未缴费"></ui-badge>
+                            </ui-col>
+                        </ui-row>
+                        
+                        <ui-view  style="padding:8px">
+                          <ui-view class="kcBoxSty">
+                              <ui-view class="kcBoxTit box_row">
+                                  <ui-view class="kcBoxTitTit box_row_100">
+                                      <ui-text ui:if="{{examInfo['2']}}">{{examInfo['1'].schoolName}}</ui-text>
+                                      <ui-text ui:else>未预约</ui-text>
+                                  </ui-view>
+                                  <ui-view ui:if="{{examInfo['2']}}" bindtap="showMap(examInfo['2'])">
+                                      <ui-icon type="location" color="#67c23a" size="26"></ui-icon>
+                                  </ui-view>
+                              </ui-view>
+
+                              <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['2']}}">
+                                    <ui-view class="box_row_100 kcBoxBodyTiT">
+                                          <ui-view>
+                                              第一次考试 
+                                          </ui-view>
+                                          <ui-view>
+                                              {{examInfo['2'].ykSj}}
+                                          </ui-view>
+                                    </ui-view>
+                                    <ui-view class="fs">
+                                      <ui-circular
+                                        radius=35
+                                        color="{{examInfo['2'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
+                                        value="70"
+                                        line-width="4"
+                                        line-cap="round"
+                                        ></ui-circular>
+                                        <ui-view class="fs_chil_box" style="{{ {color:examInfo['2'].cj1 >= 90 ? '#1ec695' : '#f00'} }}">
+                                              <ui-view class="fs_va">
+                                                {{examInfo['2'].cj1}}分
+                                              </ui-view>
+                                              <ui-view class="fs_typ">
+                                                {{examInfo['2'].cj1 >= 90 ? '合格' : '不合格'}}
+                                              </ui-view> 
+                                        </ui-view>
+                                    </ui-view>
+                              </ui-view>
+                          </ui-view>
+                        </ui-view>
+                    </ui-view>
+                    <ui-view ui:if="{{timelineNext==3}}">
+                        <ui-row>
+                            <ui-col space='10' align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/hgbz.jpg"></ui-image>
+                              <ui-text>评判标准</ui-text>
+                            </ui-col>
+                            <ui-col space='8' align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/yyzl.jpg"></ui-image>
+                              <ui-text>语言指令</ui-text>
+                            </ui-col>
+                            <ui-col space='8' align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/dg.jpg"></ui-image>
+                              <ui-text>灯光操作</ui-text>
+                            </ui-col>
+                            <ui-col space='8' align='center'>
+                              <ui-image mode=aspectFit src="static/img/jpg/kskj.jpg"></ui-image>
+                              <ui-text>考试口诀</ui-text>
+                            </ui-col>
+                        </ui-row>
+                        <ui-row height="50" class="box2Sty" border-bottom=true>
+                            <ui-col span="10" vertical-align="middle">
+                                当前科目考试费
+                            </ui-col>
+                            <ui-col align="right" vertical-align="middle" space-right="20">
+                                <ui-badge class="vip"
+                                    ui:if="{{payInfo['3'] == '已缴'}}"
+                                    style="{{ {backgroundColor:'#67c23a'} }}"
+                                    text="已缴费"></ui-badge>
+                                <ui-badge class="vip"
+                                    ui:else
+                                    style="{{ {backgroundColor:'#0f0'} }}"
+                                    text="未缴费"></ui-badge>
+                            </ui-col>
+                        </ui-row>
+                        
+                        <ui-view  style="padding:8px">
+                          <ui-view class="kcBoxSty">
+                              <ui-view class="kcBoxTit box_row">
+                                  <ui-view class="kcBoxTitTit box_row_100">
+                                      <ui-text ui:if="{{examInfo['3']}}">{{examInfo['3'].schoolName}}</ui-text>
+                                      <ui-text ui:else>未预约</ui-text>
+                                  </ui-view>
+                                  <ui-view ui:if="{{examInfo['3']}}" bindtap="showMap(examInfo['3'])">
+                                      <ui-icon type="location" color="#67c23a" size="26"></ui-icon>
+                                  </ui-view>
+                              </ui-view>
+
+                              <ui-view class="kcBoxBody box_row"  ui:if="{{examInfo['3']}}">
+                                    <ui-view class="box_row_100 kcBoxBodyTiT">
+                                          <ui-view>
+                                              第一次考试 
+                                          </ui-view>
+                                          <ui-view>
+                                              {{examInfo['3'].ykSj}}
+                                          </ui-view>
+                                    </ui-view>
+                                    <ui-view class="fs">
+                                      <ui-circular
+                                        radius=35
+                                        color="{{examInfo['3'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
+                                        value="70"
+                                        line-width="4"
+                                        line-cap="round"
+                                        ></ui-circular>
+                                        <ui-view class="fs_chil_box" style="{{ {color:examInfo['4'].cj1 >= 90 ? '#1ec695' : '#f00'} }}">
+                                              <ui-view class="fs_va">
+                                                {{examInfo['3'].cj1}}分
+                                              </ui-view>
+                                              <ui-view class="fs_typ">
+                                                {{examInfo['3'].cj1 >= 90 ? '合格' : '不合格'}}
+                                              </ui-view> 
+                                        </ui-view>
+                                    </ui-view>
+                              </ui-view>
+                          </ui-view>
+                        </ui-view>
                     </ui-view>
                     <ui-view ui:if="{{timelineNext==4}}">
                         <ui-row>
@@ -261,19 +389,67 @@
                               <ui-image mode=aspectFit src="static/img/jpg/zxlx.jpg"></ui-image>
                                 <ui-text>专项练习</ui-text>
                             </ui-col>
-                            <ui-col>
-                              
-                            </ui-col>
+                            <ui-col></ui-col>
                         </ui-row>
-                        <ui-row height="50">
+                        <ui-row height="50" class="box2Sty" border-bottom=true>
                             <ui-col span="10" vertical-align="middle">
-                              未预约
+                                当前科目考试费
                             </ui-col>
                             <ui-col align="right" vertical-align="middle" space-right="20">
-                                <ui-badge class="vip" text="无需缴费"></ui-badge>
+                                <ui-badge class="vip"
+                                    ui:if="{{payInfo['4'] == '已缴'}}"
+                                    style="{{ {backgroundColor:'#67c23a'} }}"
+                                    text="已缴费"></ui-badge>
+                                <ui-badge class="vip"
+                                    ui:else
+                                    style="{{ {backgroundColor:'#0f0'} }}"
+                                    text="未缴费"></ui-badge>
                             </ui-col>
                         </ui-row>
-                 </ui-view>
+                        <ui-view  style="padding:8px">
+                          <ui-view class="kcBoxSty">
+                              <ui-view class="kcBoxTit box_row">
+                                  <ui-view class="kcBoxTitTit box_row_100">
+                                      <ui-text ui:if="{{examInfo['4']}}">{{examInfo['4'].schoolName}}</ui-text>
+                                      <ui-text ui:else>未预约</ui-text>
+                                  </ui-view>
+                                  <ui-view ui:if="{{examInfo['4']}}" bindtap="showMap(examInfo['4'])">
+                                      <ui-icon type="location" color="#67c23a" size="26"></ui-icon>
+                                  </ui-view>
+                              </ui-view>
+
+
+
+                              <ui-view class="kcBoxBody box_row"  ui:if="{{examInfo['4']}}">
+                                    <ui-view class="box_row_100 kcBoxBodyTiT">
+                                          <ui-view>
+                                              第一次考试 
+                                          </ui-view>
+                                          <ui-view>
+                                              {{examInfo['4'].ykSj}}
+                                          </ui-view>
+                                    </ui-view>
+                                    <ui-view class="fs">
+                                      <ui-circular
+                                        radius=35
+                                        color="{{examInfo['4'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
+                                        value="70"
+                                        line-width="4"
+                                        line-cap="round"
+                                        ></ui-circular>
+                                        <ui-view class="fs_chil_box" style="{{ {color:examInfo['4'].cj1 >= 90 ? '#1ec695' : '#f00'} }}">
+                                              <ui-view class="fs_va">
+                                                {{examInfo['4'].cj1}}分
+                                              </ui-view>
+                                              <ui-view class="fs_typ">
+                                                {{examInfo['4'].cj1 >= 90 ? '合格' : '不合格'}}
+                                              </ui-view> 
+                                        </ui-view>
+                                    </ui-view>
+                              </ui-view>
+                          </ui-view>
+                        </ui-view>
+                    </ui-view>
                  </ui-view>
             </ui-view>
       </ui-view>
@@ -281,10 +457,15 @@
 </template>
 
 <script>
+import mixin from '#/static/ajax/mixin'
 export default {
   config: {
     navigationStyle: 'custom',
+    title:'学车',
+    backgroundColor:'#fff',
+    delay:false,//延迟加载
   },
+  mixins:[mixin],
   data() {
     return {
       list: [
@@ -297,8 +478,11 @@ export default {
       winWidth: window.innerWidth,
       color: '',
       thisIndex: 2,
-      timeline:0,
-      timelineNext:0,
+      handleStatus:[],
+
+      usermess:{},
+      timeline:0,//swiper索引
+      timelineNext:0,//swiper 模块索引
       items: [
         {
           src: 'static/img/bank/card1.png',
@@ -321,14 +505,105 @@ export default {
           name: '科目四',
           mess:'安全文明驾驶常识'
         }
-      ]
+      ],
+      zyMess:{//专员信息
+        qymc:'',
+        yhXm:'',
+        jlPf:0
+      },
+      zyMwssList:[//专员信息列表
+        {
+          qymc:'',
+          yhXm:'',
+          jlPf:0
+        },{
+          qymc:'',
+          yhXm:'',
+          jlPf:0
+        },{
+          qymc:'',
+          yhXm:'',
+          jlPf:0
+        },{
+          qymc:'',
+          yhXm:'',
+          jlPf:0
+        },{
+          qymc:'',
+          yhXm:'',
+          jlPf:0
+        }
+      ],
+      payInfo:{},//缴费信息
+      examInfo:[],//考试信息
     }
   },
+  created () {
+    this.timeline = parseInt(this.getUser().yhDqzt)
+    this.usermess  = this.getUser()
+    this.getZYmess()//获取专员信息
+    this.swiperChange(this.timeline)//初始化选项卡
+
+    this.getHandleStatus()// 获取受理状态信息
+    this.getPayInfo()// 缴费信息
+    this.getExamInfo()//考试信息
+  },
   mounted(){
-    this.swiperChange(this.timeline)
   },
   methods: {
+    getZYmess(){//获取专员信息
+      var v = this
+
+      this.$http("post",ui.getApp().apis.getZYmess,{},(res)=>{
+          console.log('钻元信息',res);
+          if(res.code==200 && res.result){
+              res.result.forEach((item,index)=>{
+                if(item.jlPf){
+                  item.jlPf = parseInt(item.jlPf)
+                }
+              })
+              v.zyMwssList= []
+              v.zyMwssList = res.result
+          }
+      })
+    },
+    getHandleStatus(){// 获取受理状态信息
+      this.$http("POST",ui.getApp().apis.getHandleStatus,{yhId: this.usermess.id},(res)=>{
+          console.log('获取受理状态信息-',res)
+        if (res.code == 200 && res.result){
+          this.handleStatus = res.result;
+          this.thisIndex = parseInt(res.message);
+        }
+      })
+    },
+    getPayInfo() {// 缴费信息
+      this.$http("GET",ui.getApp().apis.getPayInfo,{yhId: this.usermess.id},(res)=>{
+        if (res.code == 200 && res.result) {
+          console.log('缴费信息',res);
+          
+          this.payInfo = res.result;
+        }
+      })
+    },
+    getExamInfo() {// 考试信息
+      let v = this;
+      this.$http('GET',ui.getApp().apis.getExamInfo,{yhId: this.usermess.id},(res)=>{
+          console.log('考试信息',res);
+          
+          if (res.code == 200 && res.result) {
+            this.examInfo = res.result;
+            // let s = parseInt(res.message)+1
+            // this.activeName2 = 'step'+s;
+            //   for (let item of v.tabLabel) {
+            //       item.tabImg = "static/png/tab-default.png";
+            //   }
+            //   this.tabLabel[s-1].tabImg = "static/png/tab-selected.png";
+          }
+      })
+    },
     goscore(){
+        ui.getApp().zyMess = this.zyMwssList[this.timelineNext]
+        ui.getApp().zyMess.type = this.timelineNext
         ui.navigateTo(
           {
             url:'/pages/score/index'
@@ -338,6 +613,7 @@ export default {
     swiperChange(val){
         console.log(val)
         this.timelineNext = val
+        this.zyMess = this.zyMwssList[val]
         this.items.forEach((item,index)=>{
           if(index == val ){
               item.src = 'static/img/bank/card1.png'
@@ -348,12 +624,85 @@ export default {
     },
     ping(e){
       console.log(e)
+    },
+    showMap(exam){
+      // if (!exam.examPlaceLat || !exam.examPlaceLng){
+      //     Toast('未设置经纬度')
+      //   return;
+      // }
+      // var map = new BMap.Map("allmap");
+      // var geolocation = new BMap.Geolocation();
+      // let lat = exam.examPlaceLat;
+      // let lng = exam.examPlaceLng;
+      // geolocation.getCurrentPosition(function(r){
+      //   if(this.getStatus() === BMAP_STATUS_SUCCESS){
+      //     location.href="http://api.map.baidu.com/direction?origin="+r.point.lat+","+r.point.lng+"&destination="+lat+","+lng+"&mode=driving&region=武汉&output=html";
+      //   }
+      //   else {
+      //     alert('failed'+this.getStatus());
+      //   }
+      // },{enableHighAccuracy: true})
     }
   }
 }
 </script>
 
 <style lang="less">
+.kcBoxSty{
+  // padding: 20rpx;
+  border:#c5c5c5 4rpx solid;
+  border-radius:12rpx; 
+  .kcBoxTit{
+    padding: 12rpx;
+    font-size:30rpx;
+    font-weight: 600;
+    color:#636363; 
+    border-bottom: #c5c5c5 2rpx solid;
+    .kcBoxTitTit{
+      line-height: 80rpx;
+      font-weight: 600;
+    }
+  }
+  .kcBoxBody{
+     padding: 12rpx;
+     border-bottom: #c5c5c5 2rpx solid;
+     .kcBoxBodyTiT{
+       line-height: 70rpx;
+     }
+     .fs{
+       position: relative;
+       .fs_chil_box{
+          position: absolute;
+          top:50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+
+          color: #67c23a;
+          font-weight: 600;
+          font-size: 30rpx;
+
+          width: 100rpx;
+          height: 100rpx;
+          border-radius: 50rpx;
+          
+          text-align: center;
+          .fs_va{
+            line-height: 60rpx;
+            height: 50rpx;
+
+          }
+          .fs_typ{
+            font-size: 28rpx;
+            height: 50rpx;
+          }
+       }
+     }
+  }
+}
+
+.swiper-pagination-bullets{
+  display: none;
+}
   .swiperbox{
     color:#fff;
     margin: 15rpx 0;
@@ -365,21 +714,39 @@ export default {
       font-size: 28rpx;
     }
   }
+.slboxSty{
+  border:#c5c5c5 4rpx solid;
+  border-radius:12rpx; 
+  padding-bottom:30; 
+  .slTitSty{
+    padding: 12rpx;
+    font-size:30rpx;
+    font-weight: 600;
+    color:#636363; 
+    border-bottom: #c5c5c5 2rpx solid;
+  }
+}
 
-.timeline-demo2 {
+.timeline {
+  height: 200rpx;
   .continer {
-    width: 72px;
     position: relative;
-    top: 4px;
-    height: 60px;
+    width: 160rpx;
+    // height: 300rpx;
+    // background: #fa6e2d;
     .pos {
-      margin-top: 20px;
+      width: 160rpx;
+      position: absolute;
+      top: 0;
       color: #333;
-      font-size: 10px;
+      font-size: 26rpx;
     }
     .gary {
-      color: #8a8a8a;
-      font-size: 10px;
+      width: 160rpx;
+      position: absolute;
+      top:80rpx;
+      color: #333;
+      font-size: 20rpx;
     }
   }
 }
@@ -399,9 +766,9 @@ export default {
     }
 }
 .vip {
-  background-color: #fa6e2d;
-  border-radius: 3px;
-  padding: 3px 8px;
+  // background-color: #fa6e2d;
+  border-radius: 10rpx;
+  padding: 8rpx 8rpx;
   width: 132rpx;
 }
 
@@ -432,7 +799,7 @@ export default {
 }
 .content{
   flex-grow:1;
-  background-color: #ffffff;
+  // background-color: #ffffff;
   height: 500px;
 
 }
@@ -443,9 +810,9 @@ export default {
   background-position: top;
 }
 .titSty{
-  width:150rpx;
-  height:150rpx;
-  border-radius:75rpx;
+  width:130rpx;
+  height:130rpx;
+  border-radius:65rpx;
   margin:auto;
   border: #f2f2f2 3rpx solid;
   background-image: url('../static/img/png/card-bg.png');
@@ -457,7 +824,13 @@ export default {
   text-align: center;
 }
 ._font{
-  font-size: 44rpx;
+  padding: 10rpx;
+  font-size: 36rpx;
+  color: #f2f2f2;
+}
+._fontQy{
+  padding: 10rpx;
+  font-size: 24rpx;
   color: #f2f2f2;
 }
 .continer {

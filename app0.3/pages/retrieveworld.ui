@@ -8,7 +8,7 @@
             <ui-icon type="left1" font-size="24"></ui-icon>
           </ui-col>
           <ui-col vertical-align="middle" align="center">
-            <ui-view class="nav_title">密码找回</ui-view>
+            <ui-view class="nav_title">密码重置</ui-view>
           </ui-col>
           <ui-col vertical-align="middle" align="center" width="60">
           </ui-col>
@@ -47,7 +47,7 @@
                   style="background: linear-gradient(to top, #f3b222, rgb(251, 219, 72));
                   width: 100%;border-color: #e6a23c;color:#fff"
                   full-width="false">
-                    立即注册
+                    提交
                   </ui-button>
                 </ui-row>
 
@@ -74,7 +74,7 @@ export default {
       height: ui.DEFAULT_CONTENT_HEIGHT,
       mesCode:false,
       tel:'',
-      code:'778334',
+      code:'',
       newPwd:''
     }
   },

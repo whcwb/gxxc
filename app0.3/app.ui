@@ -10,7 +10,11 @@ export default {
       "pages/studyCar",
       "pages/myTeam",
       "pages/center/myTeam",
+      "pages/center/myTeam2",
+      
       "pages/center/bill",
+      "pages/center/bill2",
+
       "pages/home/xlcMess",
       "pages/center/info","pages/center/reallyName",
       "pages/tx/index","pages/tx/pages/bankCardlist",
@@ -87,6 +91,8 @@ export default {
     
       bankIndex:3,//银行卡列表索引
       banklist:[],//银行卡列表
+
+      zyMess:{},//专员信息
 
 
 

@@ -243,13 +243,13 @@ export default {
       },
       goMyTeam(){
         ui.navigateTo({
-          url: 'center/myTeam'
+          url: 'center/myTeam2'
         })
       },
       goBill(){
         ui.navigateTo(
           {
-            url:'center/bill'
+            url:'center/bill2'
           }
         )
       },

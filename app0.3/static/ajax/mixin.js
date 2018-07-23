@@ -148,6 +148,139 @@ export default {
       return 0
     },
 
+    jlQu:(val)=>{
+      switch (val) {
+        case "430014":
+          return '江岸区'
+          break;
+        case "4300001":
+          return '江汉区'
+          break;
+        case "4300002":
+          return '硚口区'
+          break;
+        case "430050":
+          return '汉阳区'
+          break;
+        case "4300003":
+          return '武昌区'
+          break;
+        case "430080":
+          return '武昌区'
+          break;
+        case "430080":
+          return '青山区'
+          break;
+        case "430070":
+          return '洪山区'
+          break;
+        case "430040":
+          return '东西湖区'
+          break;
+        case "430090":
+          return '汉南区'
+          break;
+        case "430100":
+          return '蔡甸区'
+          break;
+        case "430200":
+          return '蔡甸区'
+          break;
+        case "432200":
+          return '黄陂区'
+          break;
+        case "431400":
+          return '新洲区'
+          break;
+        default:
+          return '***'
+          break;
+      }
+    },
+    getType:(val)=>{
+      switch (val){
+        case 0:
+          return '受理专员'
+        break;
+        case 1:
+          return '科目一专员'
+          break;
+        case 2:
+          return '科目二专员'
+        break;
+        case 3:
+          return '科目三专员'
+        break;
+        case 4:
+          return '科目四专员'
+        break;
+      }
+    },
+    yhXmZY:(val)=>{
+      if (val){
+        return val
+      }
+      return '暂未分配专员'
+    },
+    jlPf:(val)=>{
+      if (val){
+        return parseInt(val)
+      }
+      return 0
+    },
+    zjZt:(val)=>{
+      switch (val){
+        case '0':
+          return '提现冻结'
+          break;
+        case '1':
+          return '处理成功'
+          break;
+        case '2':
+          return '提现失败'
+          break;
+      }
+    },
+    txShZt:(val)=>{
+      switch (val){
+        case '0':
+          return '待审核'
+          break;
+        case '1':
+          return '待打款'
+          break;
+        case '2':
+          return '审核失败'
+          break;
+      }
+    },
+    mxlx:(val)=>{
+      switch (val){
+        case '1':
+          return '充值'
+        break;
+        case '2':
+          return '分佣'
+        break;
+        case '3':
+            return '消费'
+        break;
+        case '4':
+          return '提现'
+        break;
+      }
+    },
+    zjFs:(val)=>{
+      switch (val){
+        case '1':
+          return ''
+          break;
+        case '-1':
+          return '-'
+          break;
+      }
+    }
+
   },
   created() {
   },

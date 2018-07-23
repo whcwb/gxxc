@@ -73,10 +73,10 @@ module.exports = {
   getZYmess:'/app/ptyh/getJls',//获取专员信息
 
 
-  getHandleStatus:'app/kssl/getHandleStatus', // 获取受理状态信息
+  getHandleStatus:'/app/kssl/getHandleStatus', // 获取受理状态信息
 
-  getExamInfo:'app/ksyk/getUserExamInfo', // 考试信息
-  getPayInfo:'app/ksjf/getPayInfo', // 缴费信息
+  getExamInfo:'/app/ksyk/getUserExamInfo', // 考试信息
+  getPayInfo:'/app/ksjf/getPayInfo', // 缴费信息
 
   PF_TEACHER:'/app/pf/save',//学员为教练员评分
   GET_PF:'/app/pf/getjlpf',//获取评分信息
