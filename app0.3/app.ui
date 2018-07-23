@@ -22,7 +22,7 @@ export default {
       "pages/product/index",
       "pages/Agreement/learnCarFile","pages/Agreement/MemberFile",
       "pages/common/signName","pages/common/qrCode",
-      "pages/score/index","pages/retrieveworld"],
+      "pages/score/index","pages/retrieveworld","pages/common/star"],
     "theme": {
       "theme-color": "#3399ff"
     },

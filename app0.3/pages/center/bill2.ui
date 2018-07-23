@@ -4,13 +4,11 @@
       <!-- <ui-view class=box_col style="{{ { height: pageHeight(0)+ 'px'} }}">
           <ui-view class="box_col_auto"> -->
               <ui-view class="listErr" bindtap="getpagerliost(1)" ui:if="{{items.length==0}}">
-                <ui-icon mode="wechat" type="warn"
-                  color="#9e9e9e" size="50"></ui-icon>
-                <ui-view class="mess">
-                  数据没有了,点击重新获取。
-                </ui-view>
-              </ui-view>
-
+                  <ui-icon type="lendmoney" color="#9e9e9e" size="60"></ui-icon>
+                  <ui-view class="mess" style="font-weight:600">
+                      没有账单产生
+                  </ui-view>
+              </ui-view>  
               <ui-scroll-view
                   scroll-y
                   height="{{pageHeight(0)}}"
@@ -140,9 +138,6 @@ export default {
           if(this.pageNum<this.pages){
             this.loadMore = true
           }
-          ui.showToast({
-            title: '数据更新'
-          })
       }
     },
     mounted () {

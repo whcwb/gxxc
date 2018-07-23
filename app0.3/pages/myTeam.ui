@@ -20,10 +20,9 @@
     </ui-nav-bar>
 
     <ui-view class="listErr" bindtap="selectVal=['0']" ui:if="{{items.length==0}}">
-        <ui-icon mode="wechat" type="warn"
-          color="#9e9e9e" size="50"></ui-icon>
+        <ui-icon type="tuandui" color="#9e9e9e" size="50"></ui-icon>
         <ui-view class="mess">
-          数据没有了,点击重新获取。
+            您的团队没有成员呦
         </ui-view>
     </ui-view>
     <ui-scroll-view 
