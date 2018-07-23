@@ -166,6 +166,8 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
         }
         if (StringUtils.isBlank(yhlx)) {
             yhlx = null;
+        }else{
+            sfjf = "1";
         }
         if (StringUtils.isBlank(sfjf)) {
             sfjf = null;
