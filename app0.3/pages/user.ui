@@ -167,6 +167,7 @@ export default {
   },
   methods: {
       handleLoadMore(){
+        this.getUserMess()
         this.getYE((res)=>{
           ui.showToast({ title: '用户信息更新成功', icon: 'success' })
         })

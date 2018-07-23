@@ -15,14 +15,12 @@
                 </ui-view>
                 <ui-view class="star">
                   <ui-row height="40">
-                      <ui-col span="3"></ui-col>
-                      <ui-col span="" align="left">
-                        <ui-star readonly=true value="{{zymess.jlPf}}"  vertical-align="middle"></ui-star>
+                      <ui-col align="center">
+                        <ui-view>
+                          <mystar :num="zymess.jlPf"></mystar> 
+                        </ui-view>
                       </ui-col>
                   </ui-row>
-                </ui-view>
-                <ui-view class="number">
-                  {{zymess.jlPf}}分
                 </ui-view>
             </ui-view>
 
@@ -55,7 +53,10 @@
                         bindchange="getStarVal"
                         star-width="30" 
                         star-height=30></ui-star>
-                      <ui-view class="strNum box_row_100">
+                      <ui-view class="strNum box_row_100" ui:if="{{pf_disabled}}">
+                        {{zymess.yhFz}}
+                      </ui-view>
+                      <ui-view class="strNum box_row_100" ui:else>
                         {{pf}}
                       </ui-view>
                       <ui-view class="submit" bindtap="setUp" ui:if="!pf_disabled">
@@ -71,6 +72,7 @@
 </template>
 <script>
 import mixin from '#/static/ajax/mixin'
+import mystar from '../common/star'
 export default {
   config: {
     navigationBarBackgroundColor:"#26a2ff",
@@ -81,9 +83,14 @@ export default {
     delay:false,//延迟加载
   },
   mixins:[mixin],
+  components: {
+    mystar
+  },
   data () {
     return {
-      zymess:{},
+      zymess:{
+        jlPf:0
+      },
       zyType:0,
       pf_disabled:false,
       pf:0
@@ -106,7 +113,7 @@ export default {
         v.pf = ui.getApp().zyMess.yhFz
       }
     }else {
-      // this.$router.push('/Home')
+      ui.navigateBack()
     }
     
   },
@@ -118,7 +125,7 @@ export default {
     },
     setUp(){
       var v = this
-      this.$http('POST',ui.getApp().apis.PF_TEACHER,{yhFz:v.pf,yhPl:'文字评论',jlid:v.zymess.yhId},(res)=>{
+      this.$http('POST',ui.getApp().apis.PF_TEACHER,{yhFz:v.pf,yhPl:'文字评论',jlid:v.zymess.yhId,slType:v.zyType},(res)=>{
         console.log(res);
         if (res.code == 200) {
           v.GETstudentPF()
@@ -126,14 +133,13 @@ export default {
           Toast(res.message);
         }
       })
-      // ui.showToast({ title: '评分提交' })
     },
     GETstudentPF(){
       var v = this
-      this.$http('POST',ui.getApp().apis.GET_PF,{jlId:v.zymess.yhId},(res)=>{
+      this.$http('POST',ui.getApp().apis.GET_PF,{jlId:v.zymess.yhId,slType:v.zyType},(res)=>{
         if (res.code == 200) {
           if(res.result.id){
-            v.zymess.jlPf = res.result.jlPjf
+            v.zymess.jlPf = parseInt(res.result.jlPjf)
             v.pf=res.result.yhFz
             v.pf_disabled = true
           }
