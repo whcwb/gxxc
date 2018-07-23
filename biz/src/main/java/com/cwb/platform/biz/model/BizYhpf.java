@@ -63,6 +63,13 @@ public class BizYhpf implements Serializable {
      */
     @Column(name = "JL_XM")
     private String jlXm;
+    /**
+     * 用户的受理阶段
+     * 用户的受理阶段(0:受理阶段  1：科目一阶段  2：科目二阶段 3：科目三阶段 4：科目四阶段)
+     */
+    @Column(name = "SL_TYPE")
+    private String slType;
+
 
     /**
      * 教练平均分
@@ -72,6 +79,14 @@ public class BizYhpf implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
+    public String getSlType() {
+        return slType;
+    }
+
+    public void setSlType(String slType) {
+        this.slType = slType;
+    }
 
     public String getJlPjf() {
         return jlPjf;
