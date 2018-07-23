@@ -1665,8 +1665,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public ApiResponse<List<BizJl>> getJls() {
-
-
         BizPtyh currentUser = getAppCurrentUser();
 
         List<BizJl> bizJls = new ArrayList<>();
@@ -1675,26 +1673,46 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         BizUser bizUser = userService.findById(currentUser.getId());
         BizYhpf yhpf = new BizYhpf();
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid());  // 受理专员
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid1());  // 科目一
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid2());
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid3());
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid4());
-
-
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid(),"0");  // 受理专员
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid1(),"1");  // 科目一
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid2(),"2");// 科目二
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid3(),"3");// 科目三
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid4(),"4");// 科目四
         return ApiResponse.success(bizJls);
     }
 
-    private void addBizjls(List<BizJl> bizJls, BizYhpf yhpf, String yhJlid) {
+    private void addBizjls(List<BizJl> bizJls, BizYhpf yhpf, String yhJlid,String slType) {
         if (StringUtils.isNotBlank(yhJlid)) { //
             BizJl bizJl = jlService.findById(yhJlid);
+            BizJl newBizJl =new BizJl();
+//            DeepStudent s2 = (DeepStudent) s1.clone();
             yhpf.setJlId(bizJl.getYhId());
+            yhpf.setSlType(slType);
             List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
             if (CollectionUtils.isNotEmpty(entity)) {
-                bizJl.setYhFz(entity.get(0).getYhFz());
+                newBizJl.setYhFz(entity.get(0).getYhFz());
+            }else{
+                newBizJl.setYhFz(null);
             }
-            bizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
-            bizJls.add(bizJl);
+            newBizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
+            newBizJl.setYhId(bizJl.getYhId());
+            newBizJl.setYhXm(bizJl.getYhXm());
+            newBizJl.setYhSjhm(bizJl.getYhSjhm());
+            newBizJl.setCjsj(bizJl.getCjsj());
+            newBizJl.setJlJl(bizJl.getJlJl());
+            newBizJl.setJlQu(bizJl.getJlQu());
+            newBizJl.setJlZml(bizJl.getJlZml());
+            newBizJl.setJlJjlxr(bizJl.getJlJjlxr());
+            newBizJl.setJlJjlxrdh(bizJl.getJlJjlxrdh());
+            newBizJl.setJlZz(bizJl.getJlZz());
+            newBizJl.setJlPf(bizJl.getJlPf());
+            newBizJl.setJlImg(bizJl.getJlImg());
+            newBizJl.setJlMs(bizJl.getJlMs());
+            newBizJl.setJlShZt(bizJl.getJlShZt());
+            newBizJl.setJlShMs(bizJl.getJlShMs());
+
+
+            bizJls.add(newBizJl);
         } else {
             bizJls.add(null);
         }
