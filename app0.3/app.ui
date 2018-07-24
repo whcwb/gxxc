@@ -78,6 +78,8 @@ export default {
         }
       },
 
+      wxUtil:{},
+
       yqm:'',//新用户注册邀请码
       userMess:'',//用户信息
       payMess:{},//支付信息
@@ -194,6 +196,20 @@ export default {
   },
     // 初始化
   created () {
+    // 微信js初始化 
+    var script = document.createElement("script")
+    script.type = "text/javascript"
+    script.src="./static/utils/jweixin-1.2.0.js"
+    document.body.appendChild(script)
+
+    script.onload = function(){
+        console.log('*****',wx)
+        // 微信js初始化成功后引用 微信功能方法
+        ui.getApp().wxUtil = require('./static/ajax/wechatUtil.js').default
+        let authCode = ui.getApp().wxUtil.getQueryString("code");
+        console.log('获取code',authCode)
+    }
+
     this.initTab()
     this.initPaths()
     this.$nextTick(() => {

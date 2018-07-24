@@ -1,6 +1,5 @@
 import app from './app.ui'
 import '#/static/css/box.less'
-
 let options = {
   app: app,
   beforeEach(to,from,next) {
