@@ -22,7 +22,7 @@ export default {
       "pages/product/index",
       "pages/Agreement/learnCarFile","pages/Agreement/MemberFile",
       "pages/common/signName","pages/common/qrCode",
-      "pages/score/index","pages/retrieveworld","pages/common/star"],
+      "pages/score/index","pages/retrieveworld","pages/common/star","pages/myTeam/details"],
     "theme": {
       "theme-color": "#3399ff"
     },
@@ -93,6 +93,8 @@ export default {
       banklist:[],//银行卡列表
 
       zyMess:{},//专员信息
+
+      myTeamMess:{},//团队信息传值
 
 
 

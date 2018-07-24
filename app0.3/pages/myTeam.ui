@@ -31,7 +31,7 @@
           on-load-more="{{ handleLoadMore }}">
       <ui-view class="content_list">
         <ui-view style="background:#ffffff"
-         ui:for="{{ items }}">
+         ui:for="{{ items }}" bindtap="goStudentDetails(item)">
           <ui-row height="60" space-top="10">
             <ui-col span="3" align="center" vertical-align="middle">
                 <ui-image src="{{item.userDetail.yhTx | yhTx}}" 
@@ -288,6 +288,19 @@
             title: '处理下拉刷新'
           })
       },
+      goStudentDetails(item){
+        if(item.userDetail.yhLx!="1"){
+          return
+        }
+        this.$router.push({name:'process',
+          params:{
+          id:item.userDetail.id,
+          number:parseInt(item.yhDqzt)
+          }
+        })
+        console.log('学员信息',item);
+        
+      }
     },
     mounted () {
       // for (let i = 1; i <= this.bottom; i++) {
