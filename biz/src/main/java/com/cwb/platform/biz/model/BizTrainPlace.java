@@ -138,7 +138,9 @@ public class BizTrainPlace implements Serializable {
      */
     @Column(name = "place_coordinate")
     private String placeCoordinate;
-
+    /**
+     * GPS点位的距离
+     */
     @Transient
     private Double distance;
 
