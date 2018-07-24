@@ -274,6 +274,7 @@ public class BizPtyh implements Serializable {
 
     /**
      * 用户当前状态
+     * 0 处于受理状态 1科目1状态 2科目二状态  3科目三状态   4科目四状态
      */
     @Transient
     private String yhDqzt;
