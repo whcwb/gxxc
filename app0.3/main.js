@@ -36,7 +36,7 @@ ui.extend({
         if(res.code==200 && res.result){
             console.log('用户信息',res)
             if(res.result.yhTx == ''){
-              res.result.yhTx ='static/img/login/LOGO.png'
+              res.result.yhTx ='static/img/login/logo.png'
             }
           }
           localStorage.setItem('usermess',JSON.stringify(res.result))

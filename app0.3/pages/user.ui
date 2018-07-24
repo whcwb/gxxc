@@ -17,9 +17,8 @@
                 <ui-col span="2" align="left" 
                   vertical-align="middle" bindtap="goMyMess">
                     <ui-view class="pageHello">
-                      <ui-image src="{{usermess.yhTx}}"
-                          width="60"
-                          height="60"></ui-image> 
+                      <ui-image src="{{usermess.yhTx}}" width="60" height="60"></ui-image> 
+                      <ui-image src="static/img/login/logo.png" width="60" height="60"></ui-image>
                     </ui-view>  
                 </ui-col>
                 <ui-col span="7" align="left" vertical-align="middle" space-left="20">
