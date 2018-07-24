@@ -100,7 +100,6 @@ export default {
             console.log('----------',res);
             if(res.code==200){
                   v.pages = res.page.pages
-                  v.pageNum = res.page.pageNum
                   if(res.page.list){
                     res.page.list.forEach((item,index) => {
                         v.items.push(item)
@@ -114,6 +113,7 @@ export default {
         console.log(this.pageNum);
         console.log(this.pages);
         if(this.pageNum<this.pages){
+          this.pageNum ++
           this.getpagerliost(this.pageNum)
         }else{
           this.loadMore = false

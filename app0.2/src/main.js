@@ -35,4 +35,21 @@ new Vue({
   store: store,
   components: { App },
   template: '<App/>',
+  created(){
+    // let authCode = this.wechatUtil.getQueryString("code");
+    // alert('获取code')
+    // alert(authCode)
+    //
+    // if (!authCode){
+    //   this.wechatUtil.getCode();
+    //
+    // }else{
+    //   this.wechatUtil.vueParent = this;
+    //   this.wechatUtil.getOpenid(authCode,(res)=>{
+    //     localStorage.setItem("openid",res);
+    //     sessionStorage.setItem("ISLOGIN",true);
+    //     this.wechatUtil.initConfig();
+    //   });
+    // }
+  }
 })

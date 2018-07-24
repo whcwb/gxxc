@@ -11,6 +11,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,6 +23,11 @@ import java.util.Map;
  */
 @Component
 public class SubscribeHandler extends AbstractHandler {
+
+	@Value("${wechat.appId}")
+	private String appId;
+	@Value("${wechat.domain}")
+	private String domain;
 
 	@Override
 	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService weixinService,
@@ -55,7 +61,7 @@ public class SubscribeHandler extends AbstractHandler {
 			button1.setKey("button1");
 			button1.setName("进入联盟");//张总要求修改
 			button1.setType(WxConsts.MenuButtonType.VIEW);
-			button1.setUrl("http://www.520xclm.com/wx");
+			button1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect");
 
 			WxMenuButton button2 = new WxMenuButton();
 			button2.setKey("button2");

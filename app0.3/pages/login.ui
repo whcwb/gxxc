@@ -18,7 +18,7 @@
           <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
             <!-- logo图展示区 -->
             <ui-view class="top_logo">
-              <ui-image src="../static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
+              <ui-image src="static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
             </ui-view>
             <!-- 数据表单区 -->
             <ui-view class="content_form">
@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      height: ui.DEFAULT_CONTENT_HEIGHT + 46,
+      height: ui.DEFAULT_CONTENT_HEIGHT,
       form:{
         username:'13164183391',
         password:'123456'
