@@ -117,9 +117,10 @@
                 </ui-col>
               </ui-row>
             </ui-view>
+            {{mapMess}}
               <ui-button type="primary" full-width="false" bindtap="paymoney">支付</ui-button>
               <ui-button type="primary" full-width="false" bindtap="sys">扫一扫 </ui-button>
-
+              <ui-button type="primary" full-width="false" bindtap="getmapCode">获取定位数据 </ui-button>
 
             <ui-mask ui:if="{{showMask}}" ui:model="showMask" effect="scale-in" hide-on-tap=true hide-on-touch=true
               bindtap="showMask = false">
@@ -157,7 +158,8 @@ export default {
       usermess:'',
       zhYE: {
         yhZhye: 0
-      }
+      },
+      mapMess:{}
     }
   },
   watch:{
@@ -284,6 +286,11 @@ export default {
             }
         })
       },
+      getmapCode(){
+        ui.getApp().wxUtil.getMapCode((res)=>{
+            this.mapMess = res
+        })
+      }
   },
   mounted () {
   },

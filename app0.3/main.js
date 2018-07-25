@@ -46,7 +46,7 @@ ui.extend({
             console.log('获取code',authCode)
 
             if(authCode){
-              localStorage.setItem("projectType",JSON.stringify(true))
+              localStorage.setItem("projectType",true)
             
               // 获取Openid
               ui.getApp().wxUtil.vueParent = this;

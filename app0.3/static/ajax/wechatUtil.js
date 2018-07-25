@@ -24,11 +24,11 @@ wechatUtil.getQueryString = function(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]); return null;
-}
+};
 
 wechatUtil.getCode = ()=>{
     window.location.href = wechatUtil.authLoginUrl;
-}
+};
 wechatUtil.getOpenid = (code,callback)=>{
     $.ajax({
         // url:wechatUtil.baseUrl+urls.wechat.getOpenid+"?code="+code,
@@ -44,7 +44,7 @@ wechatUtil.getOpenid = (code,callback)=>{
             }
         }
     })
-}
+};
 
 wechatUtil.initConfig = ()=>{
     let curl = location.href.split('#')[0];
@@ -60,7 +60,7 @@ wechatUtil.initConfig = ()=>{
       }
     }
   })
-}
+};
 
 
 wechatUtil.config = function(){
@@ -73,10 +73,10 @@ wechatUtil.config = function(){
         jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay'] // 必填，需要使用的JS接口列表
     });
     wechatUtil.refreshNonceStr();
-}
+};
 wechatUtil.refreshNonceStr = ()=>{
     wechatUtil.nonceStr = randomString(16);
-}
+};
 
 wechatUtil.pay = function(prepay,callback){
     wx.chooseWXPay({
@@ -91,7 +91,7 @@ wechatUtil.pay = function(prepay,callback){
 // 支付成功后的回调函数
         }
     });
-}
+};
 wechatUtil.checkJsApi = ()=>{
   wx.checkJsApi({
     jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
@@ -101,7 +101,7 @@ wechatUtil.checkJsApi = ()=>{
       // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
     }
   });
-}
+};
 wx.ready(function(){
     if (typeof wechatUtil.afterReady == 'function'){
         wechatUtil.afterReady();
@@ -142,7 +142,7 @@ wechatUtil.qrScan = (callback)=>{//打开微信扫码功能
             // alert(JSON.stringify(res));
         }
     });
-}
+};
 wechatUtil.chooseImage = (callback)=>{//拍照或从手机相册中选图接口
     console.log('chooseImage');
     wx.chooseImage({
@@ -155,13 +155,13 @@ wechatUtil.chooseImage = (callback)=>{//拍照或从手机相册中选图接口
             callback && callback(localIds);
         }
     });
-}
+};
 wechatUtil.previewImage = ()=>{//预览图片接口
   wx.previewImage({
     current: '', // 当前显示图片的http链接
     urls: [] // 需要预览的图片http链接列表
   })
-},
+};
 wechatUtil.uploadImage = (id , callback)=>{//上传图片接口
     wx.uploadImage({
         localId: id, // 需要上传的图片的本地ID，由chooseImage接口获得
@@ -172,18 +172,19 @@ wechatUtil.uploadImage = (id , callback)=>{//上传图片接口
           callback && callback(res)
         }
     });
-},
-wechatUtil.getMapCode = ()=>{
+};
+wechatUtil.getMapCode = (callback)=>{
     wx.getLocation({
-    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-    success: function (res) {
-        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-        var speed = res.speed; // 速度，以米/每秒计
-        var accuracy = res.accuracy; // 位置精度
+        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+        success: function (res) {
+            var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+            var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            var speed = res.speed; // 速度，以米/每秒计
+            var accuracy = res.accuracy; // 位置精度
+            callback && callback(res)
         }
     });
-},
+};
 function randomString(len) {
     len = len || 32;
     var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
