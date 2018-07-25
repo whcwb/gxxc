@@ -26,7 +26,7 @@
               </ui-view>
         </ui-view>
         <ui-view class="butSty">
-            <ui-button bindtap="paymoney" >立即支付</ui-button>
+            <ui-button bindtap="getWxPayMess" >立即支付</ui-button>
         </ui-view>
 
     </ui-view>
@@ -48,57 +48,65 @@ export default {
   data() {
     return {
       payMess:ui.getApp().payMess,
+      wxPayMess:{}
     }
   },
   methods: {
     navigateBack(){
       ui.getApp().signUrl = ''
       ui.navigateTo(
-          {
-            url:'/pages/product/index'
-          }
-        )
+        {
+          url:'/pages/product/index'
+        }
+      )
     },
-    paymoney(){
-      ui.showToast({ title: '支付'})
+    getWxPayMess(){
+      var v = this
 
-      // ui.request({
-      //   url: 'http://192.168.31.92:8080/pub/appPay', //仅为示例，并非真实的接口地址
-      //   data: {},
-      //   method:'POST',
-      //   header: {
-      //     'Content-Type': 'application/x-www-form-urlencoded'
-      //   },
-      //   success: function (res) {
-      //     console.log('数据请求',res.data)
-      //     this.WxPay()
-      //   }
-      // })
-
-    },
-    WxPay(){
-      ui.requestPayment({
-          target: 'wxpay',
-          statement: {
-              "appId":'wxb01394ea85904296',     //公众号名称，由商户传入
-              "timeStamp":v.payMess.timeStamp,         //时间戳，自1970年以来的秒数
-              "nonceStr":v.payMess.nonceStr, //随机串
-              "package":v.payMess.package,  //
-              "signType":v.payMess.signType,         //微信签名方式：
-              "paySign":v.payMess.paySign //微信签名
-          },
-          success: function() {
-              console.log('支付成功')
-          },
-          fail: function() {
-              console.log('支付失败')
-          }
+      this.$http('POST',ui.getApp().apis.CPPAY,{ddZftd:2,cpId:v.payMess.id,userAutograph:ui.getApp().signUrl},(res)=>{
+        if(res.code==200){
+          console.log(res.result)
+          // v.wxPayMess = res.result
+         this. WxPay(res.result)
+        }else {
+        console.log('失败')
+        }
       })
+    },
+    WxPay(mess){
+      var v = this
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          "appId":mess.appId,     //公众号名称，由商户传入
+          "timeStamp":mess.timeStamp,         //时间戳，自1970年以来的秒数
+          "nonceStr":mess.nonceStr, //随机串
+          "package":mess.package,
+          "signType":mess.signType,         //微信签名方式：
+          "paySign":mess.paySign //微信签名
+        },
+        function(res){
+          console.log(res)
+          if(res.err_msg=='get_brand_wcpay_request:ok'){
+            ui.showToast({ title: '支付成功' })
+            this.navigateBack()
+          }else if(res.err_msg=='get_brand_wcpay_request::fail'){
+            ui.showToast({ title: '支付失败' })
+            this.navigateBack()
+          }else if(res.err_msg=='get_brand_wcpay_request:cancel'){
+            ui.showToast({ title: '支付取消' })
+          }
+        }
+      );
     },
   },
   mounted() {},
   created () {
-    console.log(ui.getApp().payMess);
+    console.log(ui.getApp().signUrl);
+    console.log(ui.getApp().signUrl);
+    if(ui.getApp().signUrl =='' || ui.getApp().payMess.cpJl == null){
+      this.navigateBack()
+    }
+    // this.getWxPayMess()
     
   }
 }

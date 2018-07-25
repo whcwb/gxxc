@@ -1,5 +1,6 @@
 <script>
 import ajaxUrl from '#/static/ajax/url'
+// import wechatUtil from'./static/ajax/wechatUtil.js'
 export default {
   config: {
     "pages": [
@@ -74,17 +75,19 @@ export default {
         header:{
           'Content-Type': 'application/x-www-form-urlencoded',
           'token':'',
-          'userId':''
+          'userId':'',
+          'openid':''
         }
       },
 
-      wxUtil:{},
+      wxUtil:null,//微信 功能方法
 
       yqm:'',//新用户注册邀请码
       userMess:'',//用户信息
-      payMess:{},//支付信息
-      backsignUrl:'',//签名页面返回
+
+      payMess:null,//支付信息
       signUrl:'',//签名地址
+      backsignUrl:'',//签名页面返回
       xlcMess:{
         mess:'mess'
       },//训练场详情
@@ -96,7 +99,7 @@ export default {
 
       zyMess:{},//专员信息
 
-      myTeamMess:{},//团队信息传值
+      myTeamMess:{},//团队信息传值-查看学院进度
 
 
 
@@ -192,23 +195,24 @@ export default {
       this.handleIosGesture()
       this.initTab()
       this.initBodyStyle()
+    },
+    wxUtil(n,o){//微信方法监听
+      console.log('数据监听*-*-*-*-*-*-*-');
+      if(n==null){
+        this.getWxJs()
+      }
     }
   },
     // 初始化
   created () {
-    // 微信js初始化 
-    var script = document.createElement("script")
-    script.type = "text/javascript"
-    script.src="./static/utils/jweixin-1.2.0.js"
-    document.body.appendChild(script)
+    //微信 ? 微信 ：App
+    localStorage.setItem("projectType",false)
 
-    script.onload = function(){
-        console.log('*****',wx)
-        // 微信js初始化成功后引用 微信功能方法
-        ui.getApp().wxUtil = require('./static/ajax/wechatUtil.js').default
-        let authCode = ui.getApp().wxUtil.getQueryString("code");
-        console.log('获取code',authCode)
-    }
+
+    //微信js 初始化
+    this.getWxJs()
+    //微信js初始化END
+
 
     this.initTab()
     this.initPaths()

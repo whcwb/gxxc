@@ -110,7 +110,7 @@ wx.ready(function(){
     //微信jsapi使用，不允许页面切换，所以这里使用router来做页面跳转，不再使用location强制跳页面
     if (wechatUtil.vueParent){
     //   wechatUtil.vueParent.$router.push({name:'indexName'});
-    alert('页面跳转')
+    console.log('页面跳转')
       return;
     }
     wechatUtil.checkJsApi();
@@ -172,7 +172,18 @@ wechatUtil.uploadImage = (id , callback)=>{//上传图片接口
           callback && callback(res)
         }
     });
-}
+},
+wechatUtil.getMapCode = ()=>{
+    wx.getLocation({
+    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+    success: function (res) {
+        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+        var speed = res.speed; // 速度，以米/每秒计
+        var accuracy = res.accuracy; // 位置精度
+        }
+    });
+},
 function randomString(len) {
     len = len || 32;
     var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';

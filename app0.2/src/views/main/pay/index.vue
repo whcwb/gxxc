@@ -449,9 +449,6 @@
       }else {
         this.$router.back()
       }
-
-      // this.getCPlist()
-
     },
     computed: {
       cashier() {
@@ -570,20 +567,6 @@
         console.log('取消')
         // Abort pay request or checking request
         this.timer && clearTimeout(this.timer)
-      },
-      getCPlist(){//获取缴费
-        var v = this
-        this.$http.post(this.apis.CPTYPE,{cpType:1}).then((res)=>{
-          console.log(res)
-          if(res.code==200){
-            v.cp = res.result
-            v.cashierAmount ="'" + parseInt(res.result.cpJl)/100 +"'"
-            // v.payMoney(res.result.id)
-          }
-
-        }).catch((err)=>{
-
-        })
       },
       payMoney(){
         var v = this

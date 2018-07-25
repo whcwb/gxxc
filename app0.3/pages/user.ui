@@ -17,7 +17,7 @@
                 <ui-col span="2" align="left" 
                   vertical-align="middle" bindtap="goMyMess">
                     <ui-view class="pageHello">
-                      <ui-image src="{{usermess.yhTx}}" width="60" height="60"></ui-image> 
+                      <ui-image src="{{usermess.yhTx}}" width="60" height="60" style="border-radius: 30px;"></ui-image> 
                     </ui-view>  
                 </ui-col>
                 <ui-col span="7" align="left" vertical-align="middle" space-left="20">
@@ -289,7 +289,9 @@ export default {
   },
   created () {
     this.getYE()
-    this.usermess = this.getUser()
+    this.getUserMess((res)=>{
+      this.usermess = res
+    })
   }
 }
 

@@ -114,7 +114,29 @@ export default {
           url: '/pages/index'
         })
     },
-    sys(){
+    reg(){
+      // ui.getApp().yqm='460765622230319188'
+      // ui.navigateTo({
+      //   url: '/pages/reg'
+      // })
+      console.log('项目？ 微信:App**********',ui.getApp().projectType);
+      if(ui.getApp().projectType){
+          this.wxSys()
+      }else{
+          this.sys()
+      }
+    },
+    wxSys(){//微信扫一扫
+      ui.getApp().wxUtil.qrScan((res)=>{
+          // v.codeyz(res)
+          console.log('邀请码',res);
+          ui.getApp().yqm = res
+          ui.navigateTo({
+            url: '/pages/reg'
+          })
+      })
+    },
+    sys(){//App扫一扫功能
       ui.scanCode({
         backgroundColor:'#39f',
         color:'#4caf5',
@@ -131,12 +153,6 @@ export default {
             }
           })
         }
-      })
-    },
-    reg(){
-      ui.getApp().yqm='460765622230319188'
-      ui.navigateTo({
-        url: '/pages/reg'
       })
     },
     forgetpassword(){

@@ -27,6 +27,40 @@ let options = {
 }
 
 ui.extend({
+    // 微信js方法
+    getWxJs(){
+        // 微信js初始化 
+        var script = document.createElement("script")
+        script.type = "text/javascript"
+        script.src="./static/utils/jweixin-1.2.0.js"
+        document.body.appendChild(script)
+
+        script.onload = function(){ // 微信js初始化 回调函数
+            console.log('*****wx',wx)
+            
+            // 微信js初始化成功后引用 微信功能方法
+            ui.getApp().wxUtil = require('./static/ajax/wechatUtil.js').default
+
+            //获取Code 直
+            let authCode = ui.getApp().wxUtil.getQueryString("code");
+            console.log('获取code',authCode)
+
+            if(authCode){
+              localStorage.setItem("projectType",JSON.stringify(true))
+            
+              // 获取Openid
+              ui.getApp().wxUtil.vueParent = this;
+              ui.getApp().wxUtil.getOpenid(authCode,(res)=>{
+                  console.log('openid-------',res)
+                  localStorage.setItem("openid",res);//存储openid
+                  ui.getApp().wxUtil.initConfig();//执行 微信 config
+              });
+            }
+        }
+    },
+    projectType(){
+      return localStorage.getItem('projectType')
+    },
     getUser(){
       return JSON.parse(localStorage.getItem('usermess'))
     },
@@ -51,6 +85,10 @@ ui.extend({
         let tokMess = JSON.parse(accessTokenStr)
         ui.getApp().Ajax.header.token = tokMess.token
         ui.getApp().Ajax.header.userId = tokMess.userId
+      }
+      let openid = localStorage.getItem("openid");
+      if(openid){
+        ui.getApp().Ajax.header.openid = openid
       }
 
       ui.request({

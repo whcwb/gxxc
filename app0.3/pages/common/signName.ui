@@ -50,7 +50,7 @@ export default {
     saveResult (data) {
       this.$http("POST",ui.getApp().apis.SIGN,{base64Data:data.substring(22)},(res)=>{
         if(res.code==200){
-          ui.getApp().signUrl = ui.getApp().apis.getImgUrl+res.result
+          ui.getApp().signUrl = res.result
           this.goBack()
           // window.location.href = ui.getApp().signUrl
           //http://www.520xclm.com:8001//user_autograph/7cfb610a1ca04ac08e5fb9ae65175db6.png
