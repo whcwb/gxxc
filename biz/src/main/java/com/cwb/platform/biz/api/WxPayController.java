@@ -81,6 +81,7 @@ public class WxPayController {
                         Map<String, String> kvm=new HashMap<String, String>();
                         try {
                                 kvm = XMLUtil.parseXmlStringToMap(result);
+//                                kvm = WXPayUtil.xmlToMap(result);//微信官方接收的demo
                         }catch (Exception e){
                             payLog.setZfMs("报文转MAP出错");
                         }
@@ -148,8 +149,6 @@ public class WxPayController {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
-
 
             }
         } catch (Exception e) {
