@@ -145,7 +145,7 @@
         <ui-view class="box_row" style="padding: 0.15rem 0.3rem">
           <ui-view class="userSign" style="margin-right: 0.2rem">
             <ui-view class="signImg"  v-show="saveResultUrl!=''">
-              <img src="{{saveResultUrl}}" alt="">
+              <img src="{{apiUrl+saveResultUrl}}" alt="">
             </ui-view>
             <ui-view>
               甲方代表:<ui-view class="textAR">{{usermess.yhXm}}</ui-view>
@@ -207,6 +207,7 @@ export default {
   },
   data() {
     return {
+      apiUrl:ui.getApp().apis.getImgUrl,
       saveResultUrl:'',
       usermess:{
         yhXm:'小名',

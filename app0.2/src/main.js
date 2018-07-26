@@ -36,6 +36,7 @@ new Vue({
   components: { App },
   template: '<App/>',
   created(){
+
     // let authCode = this.wechatUtil.getQueryString("code");
     // alert('获取code')
     // alert(authCode)
