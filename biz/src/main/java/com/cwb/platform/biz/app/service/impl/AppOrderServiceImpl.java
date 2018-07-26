@@ -1,6 +1,12 @@
 package com.cwb.platform.biz.app.service.impl;
 
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.cwb.platform.biz.app.service.AppOrderService;
 import com.cwb.platform.biz.mapper.BizOrderMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
@@ -63,6 +69,28 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
     private String userAgreementPath;
     @Value("${staticPath}")
     private String staticPath;
+
+//支付宝 支付的参数配置-----------------
+    //  应用id(app_id)
+    @Value("${alipay.app_id}")
+    private static String alipayAppId;
+    //APPA应用私钥(private_key)
+    @Value("${alipay.app_privaie_key}")
+    private static String appPrivaieKey;
+    //编码格式(charset)
+    @Value("${alipay.charset}")
+    private static String charset;
+    //    支付宝公钥
+    @Value("${alipay.alipay_public_key}")
+    private static String alipayPublicKey;
+    //    网关(gateway)请求支付的接口
+    @Value("${alipay.gateway}")
+    private static String gateway;
+    //  签名类型  默认为：RSA2
+    @Value("${alipay.sign_type}")
+    private static String signType;
+    @Value("${alipay.notify_url}")
+    private String alipayNotifyUrl;
 
     @Autowired
     private BizOrderMapper entityMapper;
@@ -157,7 +185,9 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         if(StringUtils.containsNone(entity.getDdZftd(), new char[]{'1', '2','3','4'})){
             RuntimeCheck.ifTrue(true,"您好，请输入确定支付方式");
         }
-        if(entity.getDdZftd().equals(("2"))){
+
+//        entity.getPayTypeApp()  为空 或者 0 时，表示公众号支付，微信公众号的支付必须要传OPENID
+        if(entity.getDdZftd().equals(("2"))&&(StringUtils.isEmpty(entity.getPayTypeApp())||StringUtils.equals(entity.getPayTypeApp(),"0"))){
             String openId=request.getHeader("openid");
             RuntimeCheck.ifTrue(StringUtils.isEmpty(openId),"支付创建失败，请稍后尝试");
             entity.setOpenId(openId);
@@ -218,11 +248,11 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         newEntity.setCpId(cpId);
         newEntity.setOpenId(entity.getOpenId());
         newEntity.setUserAutograph(entity.getUserAutograph());
+        newEntity.setPayTypeApp(entity.getPayTypeApp());//  支付通道，APP为1 为空的话，为空 或者为0 公众号支付
         boolean payType=false;//就否完成支付。
         if(entity.getDdZftd().equals(("2"))){//微信支付
 
             payInfo.debug("openId="+newEntity.getOpenId()+"---------------------------------------------------");
-
             Map<String,Object> wxMap= create(newEntity,bizCp,request);
             payMessage=wxMap.get("message");
             if(wxMap!=null&&payMessage==null){
@@ -249,7 +279,40 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
             }
 
         }else if(entity.getDdZftd().equals(("1"))){//支付宝方式支付。
+            //支付宝方式进行支付操作 APP方式支付
 
+            //实例化客户端
+            AlipayClient alipayClient = new DefaultAlipayClient(gateway, alipayAppId, appPrivaieKey, "json", charset, alipayPublicKey, signType);
+//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+            AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
+//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+            AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+
+            model.setBody(bizCp.getCpMc());//对一笔交易的具体描述信息。如果是多种商品，请将商品描述字符串累加传给body。
+            model.setSubject(bizCp.getCpMc());
+            model.setOutTradeNo(newEntity.getDdId());//订单ID
+            model.setTotalAmount(String.valueOf(MathUtil.stringToDouble(bizCp.getCpJl())/100));//支付金额    MathUtil.stringToDouble(bizCp.getCpJl())
+            // TODO: 2018/7/26 支付宝需要知道所有的产品信息，每个产品都是最开始固定的，所以这边写死。
+            String productCode="";
+            if(StringUtils.equals(cpType,"1")){//获取产品类型（1、学费  2、补考费）必填
+                productCode="";
+            }else if(StringUtils.equals(cpType,"1")){
+                productCode="";
+            }
+            model.setProductCode(productCode);//销售产品码，商家和支付宝签约的产品码
+            model.setTimeoutExpress("1c");//订单当天有效  该笔订单允许的最晚付款时间，逾期将关闭交易。取值范围：1m～15d。m-分钟，h-小时，d-天，1c-当天（1c-当天的情况下，无论交易何时创建，都在0点关闭）。 该参数数值不接受小数点， 如 1.5h，可转换为 90m。
+
+            alipayRequest.setBizModel(model);
+            alipayRequest.setNotifyUrl(alipayNotifyUrl);
+            try {
+                //这里和普通的接口调用不同，使用的是sdkExecute
+                AlipayTradeAppPayResponse response = alipayClient.sdkExecute(alipayRequest);
+                System.out.println("结果："+response.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
+                ret.put("alipaySenBody", response.getBody());
+                payType=true;
+            } catch (AlipayApiException e) {
+                e.printStackTrace();
+            }
         }
         if(payType){
 //            异步下发，生成签名
@@ -328,8 +391,6 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
             map.put("message", e.getMessage());
 
         }
-
-
         return  ApiResponse.success(ret);
     }
 
@@ -350,8 +411,12 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
             orderRequest.setTotalFee((int) Math.ceil(MathUtil.stringToDouble(bizCp.getCpJl())));   //注意：传入的金额参数单位为分
             //outTradeNo  订单号
             orderRequest.setOutTradeNo(order.getDdId());
-            //tradeType 支付方式
-            orderRequest.setTradeType(tradeType);//JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
+            //tradeType 支付方式  0或者为空 是公众号支付   1 表示APP支付。
+            if(StringUtils.isEmpty(order.getPayTypeApp())||StringUtils.equals(order.getPayTypeApp(),"0")){
+                orderRequest.setTradeType("JSAPI");//JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
+            }else if(StringUtils.equals(order.getPayTypeApp(),"1")){
+                orderRequest.setTradeType("APP");
+            }
             orderRequest.setNotifyUrl(notifyUrl);//接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数
 
             //用户IP地址
@@ -362,7 +427,6 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
             map.put("orderResult", orderResult);
             return map;
         } catch (Exception e) {
-//            log.error("【微信支付】支付失败 订单号={} 原因={}", orderDTO.getOrderId(), e.getMessage());
             e.printStackTrace();
             Map<String,Object>map =new HashedMap();
             map.put("message", e.getMessage());
