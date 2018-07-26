@@ -219,18 +219,18 @@
                               <ui-text>曲线行驶</ui-text>
                             </ui-col>
                             <ui-col space='8' align='center' bindtap="gouTxt('http://m.jxedt.com/km2_82_605/')">
-                              <ui-image mode=aspectFit src="../static/img/jpg/zjzw.jpg"></ui-image>
+                              <ui-image mode=aspectFit src="static/img/jpg/zjzw.jpg"></ui-image>
                               <ui-text>直角转弯</ui-text>
                             </ui-col>
                         </ui-row>
                         <ui-view>    
                             <ui-row span='6'>
                                 <ui-col space='8' align='center' bindtap="gouTxt('http://m.jxedt.com/km2_82_602/')">
-                                  <ui-image mode=aspectFit src="../static/img/jpg/spqb.jpg"></ui-image>
+                                  <ui-image mode=aspectFit src="static/img/jpg/spqb.jpg"></ui-image>
                                   <ui-text>上坡起步</ui-text>
                                 </ui-col>
                                 <ui-col space='8' align='center' bindtap="gouTxt('http://m.jxedt.com/km2_82_606/')">
-                                  <ui-image mode=aspectFit src="../static/img/jpg/dcrk.jpg"></ui-image>
+                                  <ui-image mode=aspectFit src="static/img/jpg/dcrk.jpg"></ui-image>
                                   <ui-text>倒车入库</ui-text>
                                 </ui-col>
                                 <ui-col></ui-col>

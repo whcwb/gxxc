@@ -44,10 +44,12 @@ ui.extend({
             //获取Code 直
             let authCode = ui.getApp().wxUtil.getQueryString("code");
             console.log('获取code',authCode)
-
+            
             if(authCode){
               localStorage.setItem("projectType",true)
-            
+              if (typeof ui.getApp().appTypeCallback == 'function'){
+                ui.getApp().appTypeCallback('wx');
+              }
               // 获取Openid
               ui.getApp().wxUtil.vueParent = this;
               ui.getApp().wxUtil.getOpenid(authCode,(res)=>{
@@ -55,16 +57,21 @@ ui.extend({
                   localStorage.setItem("openid",res);//存储openid
                   ui.getApp().wxUtil.initConfig();//执行 微信 config
               });
+
+            }else{
+              if (typeof ui.getApp().appTypeCallback == 'function'){
+                ui.getApp().appTypeCallback('app');
+              }
             }
         }
     },
-    projectType(){
+    projectType(){//获取项目类型
       return localStorage.getItem('projectType')
     },
-    getUser(){
+    getUser(){//获取用户信息
       return JSON.parse(localStorage.getItem('usermess'))
     },
-    getUserMess(callback){
+    getUserMess(callback){//网络数据请求 获取用户信息
       this.$http('POST',ui.getApp().apis.USERMESS,{},(res)=>{
         if(res.code==200 && res.result){
             console.log('用户信息',res)
@@ -79,7 +86,7 @@ ui.extend({
       )
     },
 
-    $http(method,url,data,callback){
+    $http(method,url,data,callback){//网路数据请求
       let accessTokenStr = localStorage.getItem("token");
       if(accessTokenStr != null && accessTokenStr != ''&& accessTokenStr!=undefined){
         let tokMess = JSON.parse(accessTokenStr)

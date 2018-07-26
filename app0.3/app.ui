@@ -67,6 +67,7 @@ export default {
   data () {
     return {
       //全局变量
+      appTypeCallback:'',
       // ajax数据请求参数配置
       apis:ajaxUrl,
       Ajax:{
@@ -100,7 +101,6 @@ export default {
       zyMess:{},//专员信息
 
       myTeamMess:{},//团队信息传值-查看学院进度
-
 
 
 

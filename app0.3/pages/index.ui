@@ -13,7 +13,7 @@
     </ui-nav-bar>
     <ui-view class="grid_box backF2">
         <!-- module 1 "{{ autoplay }}"-->
-        <ui-view class="demo demo3">
+        <ui-view class="swiperSty">
             <ui-ex-swiper id="swiperdotsstyle" autoplay= false
             pagination centered-slides loop space-between="5" slides-per-view="auto">
                 <ui-ex-swiper-item ui:for="{{items}}" ui:for-item="item" ui:for-index="index">
@@ -178,8 +178,7 @@ export default {
       offsetTop: ui.DEFAULT_HEADER_HEIGHT,
       customStyle:{
         'background-color':'#fff',
-      },
-      GpsCodeMess:{}
+      }
     }
   },
   methods: {
@@ -259,15 +258,16 @@ export default {
     },
     getGpsCode(){
       ui.getApp().wxUtil.getMapCode((res)=>{
-          this.GpsCodeMess = res
-          this.XLC()
+          this.XLC(res)
       })
     },
-    XLC(){
+    XLC(res){
       var v = this
       let gpsMess = ''
-      if(v.GpsCodeMess.latitude&&v.GpsCodeMess.longitude){
-        gpsMess=v.GpsCodeMess.latitude+','+v.GpsCodeMess.longitude
+      if(res){
+        if(res.latitude&&res.longitude){
+          gpsMess=res.latitude+','+res.longitude
+        }
       }
       this.$http('POST',ui.getApp().apis.XLC,{gps:gpsMess},(res)=>{
           if(res.code==200){
@@ -277,11 +277,14 @@ export default {
     }
   },
   created () {
-    console.log('11111111111111111111111',localStorage.getItem("projectType"))
-    if(localStorage.getItem("projectType")=='true'){
-      this.getGpsCode()
-    }else{
-      this.XLC()
+    var v = this
+    ui.getApp().appTypeCallback = (type)=>{
+      alert(type)
+      if(type=='wx'){
+        v.getGpsCode()
+      }else{
+        v.XLC()
+      }
     }
     this.getSwiperImg()
   },
@@ -292,6 +295,9 @@ export default {
 </script>
 
 <style lang="less">
+.swiperSty{
+  height: 300rpx;
+}
 .xlcList{
   padding: 20rpx 0 0 0 ;
   background: #fff;
@@ -330,7 +336,7 @@ export default {
 
 
 .module2{
-  margin: 30rpx 0 20rpx 0;
+  margin: 0rpx 0 20rpx 0;
   background: #fff;
   padding: 15rpx 20rpx;
   .price{

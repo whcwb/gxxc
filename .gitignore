@@ -12,7 +12,7 @@ buildNumber.properties
 .mvn/timing.properties
 
 .idea/
-
+dist/
 .vscode/
 
 .classpath
