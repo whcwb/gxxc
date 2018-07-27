@@ -21,6 +21,11 @@ public class BizExamPlace implements Serializable {
      * 地址
      */
     private String address;
+    /**
+     *区县行政区划代码
+     */
+    private String regioncode;
+
 
     /**
      * 创建时间
@@ -75,6 +80,14 @@ public class BizExamPlace implements Serializable {
 
     public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+    public String getRegioncode() {
+        return regioncode;
+    }
+
+    public void setRegioncode(String regioncode) {
+        this.regioncode = regioncode;
     }
 
     /**

@@ -3,6 +3,9 @@ package com.cwb.platform.biz.model;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * 驾校表
+ */
 @Table(name = "biz_drivers_school")
 public class BizDriversSchool implements Serializable {
     /**
