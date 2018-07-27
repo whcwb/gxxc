@@ -46,10 +46,7 @@ ui.extend({
             console.log('获取code',authCode)
             
             if(authCode){
-              localStorage.setItem("projectType",true)
-              if (typeof ui.getApp().appTypeCallback == 'function'){
-                ui.getApp().appTypeCallback('wx');
-              }
+              
               // 获取Openid
               ui.getApp().wxUtil.vueParent = this;
               ui.getApp().wxUtil.getOpenid(authCode,(res)=>{
@@ -58,10 +55,18 @@ ui.extend({
                   ui.getApp().wxUtil.initConfig();//执行 微信 config
               });
 
+              // if (typeof ui.getApp().appTypeCallback == 'function'){
+              //   ui.getApp().appTypeCallback('wx');
+              // }
+
             }else{
-              if (typeof ui.getApp().appTypeCallback == 'function'){
-                ui.getApp().appTypeCallback('app');
-              }
+                  if(typeof ui.getApp().wxUtil.afterReady == 'function'){
+                    ui.getApp().wxUtil.afterReady('app');
+                  }
+
+              // if (typeof ui.getApp().appTypeCallback == 'function'){
+              //   ui.getApp().appTypeCallback('app');
+              // }
             }
         }
     },

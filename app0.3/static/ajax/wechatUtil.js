@@ -17,7 +17,7 @@ wechatUtil.nonceStr = randomString(16);
 wechatUtil.baseUrl = urls.url+':8080/biz/';
 wechatUtil.authLoginUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+wechatUtil.appId+'&redirect_uri='+urls.url+'/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect';
 
-wechatUtil.afterReady = null;
+wechatUtil.afterReady = '';
 //存储Vue对象，用来在微信方法中，可以调用vue内容
 wechatUtil.vueParent = null;
 wechatUtil.getQueryString = function(name) {
@@ -103,8 +103,9 @@ wechatUtil.checkJsApi = ()=>{
   });
 };
 wx.ready(function(){
+    localStorage.setItem("projectType",true)
     if (typeof wechatUtil.afterReady == 'function'){
-        wechatUtil.afterReady();
+        wechatUtil.afterReady('wx');
         return;
     }
     //微信jsapi使用，不允许页面切换，所以这里使用router来做页面跳转，不再使用location强制跳页面

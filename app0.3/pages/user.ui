@@ -1,7 +1,7 @@
 <template>
     <ui-page style="overflow-y: hidden;"  pull-down="{{ pullDown }}">
-      <!-- <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#3399FF'} }}">
-        <ui-row height="46">
+      <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#3399FF'} }}">
+        <!-- <ui-row height="46">
           <ui-col vertical-align="middle" align="center" width="60">
           </ui-col>
           <ui-col vertical-align="middle" align="center">
@@ -9,8 +9,8 @@
           </ui-col>
           <ui-col vertical-align="middle" align="center" width="60">
           </ui-col>
-        </ui-row>
-      </ui-nav-bar> -->
+        </ui-row> -->
+      </ui-nav-bar>
       <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px','background-color':'#f2f2f2'} }}">
             <ui-view class="box_col_auto">
                 <ui-view class="userTop">
@@ -118,10 +118,6 @@
                     </ui-col>
                   </ui-row>
                 </ui-view>
-                {{mapMess}}
-                  <ui-button type="primary" full-width="false" bindtap="paymoney">支付</ui-button>
-                  <ui-button type="primary" full-width="false" bindtap="sys">扫一扫 </ui-button>
-                  <ui-button type="primary" full-width="false" bindtap="getmapCode">获取定位数据 </ui-button>
 
                 <ui-mask ui:if="{{showMask}}" ui:model="showMask" effect="scale-in" hide-on-tap=true hide-on-touch=true
                   bindtap="showMask = false">
@@ -173,40 +169,6 @@ export default {
         this.getYE((res)=>{
           ui.showToast({ title: '用户信息更新成功', icon: 'success' })
         })
-      },
-      sys(){
-        ui.scanCode({
-          backgroundColor:'#39f',
-          color:'#4caf5',
-          onlyFromCamera: true,
-          success: (res) => {
-            console.log(res)
-            ui.showAlert({
-              content: res,
-              buttonText: '扫一扫',
-              success () {
-                ui.showToast({
-                  title: '触发了解更多'
-                })
-              }
-            })
-          }
-        })
-      },
-      paymoney(){
-        ui.request({
-          url: 'http://192.168.31.92:8080/pub/appPay', //仅为示例，并非真实的接口地址
-          data: {},
-          method:'POST',
-          header: {
-            'content-type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          success: function (res) {
-            console.log('数据请求',res.data)
-          }
-        })
-
       },
       WxPay(){
         ui.requestPayment({
@@ -286,11 +248,6 @@ export default {
             }else{
               ui.showToast({ title:res.message})
             }
-        })
-      },
-      getmapCode(){
-        ui.getApp().wxUtil.getMapCode((res)=>{
-            this.mapMess = res
         })
       }
   },
