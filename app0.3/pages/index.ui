@@ -168,7 +168,7 @@ export default {
         {key: '430100', value: '蔡甸区'},
         {key: '430200', value: '黄陂区'},
         {key: '431400', value: '新洲区'},
-        {key: '43001', value: '武汉市'},
+        {key: '4300001', value: '武汉市'}
       ],
       
       pullUp:{

@@ -186,7 +186,7 @@ export default {
         case "431400":
           return '新洲区'
           break;
-        case "43001":
+        case "4300001":
           return '武汉市'
           break;
         default:
