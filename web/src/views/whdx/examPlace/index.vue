@@ -34,6 +34,7 @@
                     {title:'名称',key:'name'},
                     {title:'地址',key:'address'},
                     {title:'考试科目',key:'kskm'},
+                    {title:'区域代码',key:'regioncode',dict:'ZDCLK0060'},
                     {
                         title: '操作',
                         key: 'action',

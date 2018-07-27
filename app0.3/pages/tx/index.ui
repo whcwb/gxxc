@@ -28,7 +28,7 @@
                     提现金额
                 </ui-col>
                 <ui-col align="right">
-                  <ui-button type="primary" size="mini">全部提现</ui-button>
+                  <ui-button type="primary" size="mini" bindtap="txmoney = ye">全部提现</ui-button>
                 </ui-col>
             </ui-row>
             <ui-row border-bottom=true space-bottom='10'>

@@ -54,13 +54,13 @@
             <ui-view >
                 <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
                     <ui-tab bindtap="tabsIndex=0">推荐</ui-tab>
-                    <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+                    <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
                 </ui-tabs>
             </ui-view>
             <ui-view slot="sticky">
                 <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
                     <ui-tab>推荐</ui-tab>
-                    <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+                    <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
                 </ui-tabs>
               <!-- <ui-row class="title">
                   <ui-col>推荐</ui-col>
@@ -118,7 +118,7 @@
         <ui-view class="checkTit">
           <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
               <ui-tab bindtap="tabsIndex=0,popupshow=false">推荐</ui-tab>
-              <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+              <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
           </ui-tabs>
         </ui-view>
 
@@ -137,6 +137,7 @@
 </template>
 
 <script>
+import mixin from '#/static/ajax/mixin'
 export default {
   config: {
     navigationStyle: 'custom',
@@ -147,16 +148,27 @@ export default {
     backgroundColor:'#f2f2f2',
     delay:false,//延迟加载
   },
+  mixins:[mixin],
   data () {
     return {
       tabsIndex:0,
 
       popupshow:false,
-      checklist:['全部'],
+      checklist:['43001'],
       foodList:[
-        '武汉市','江岸区','江汉区','硚口区','汉阳区',
-        '武昌区','青山区','洪山区','东西湖区','汉南区',
-        '蔡甸区','江夏区','黄陂区','新洲区'
+        {key: '430014', value: '江岸区'},
+        {key: '4300001', value: '江汉区'},
+        {key: '4300002', value: '硚口区'},
+        {key: '430050', value: '汉阳区'},
+        {key: '4300003', value: '武昌区'},
+        {key: '430080', value: '青山区'},
+        {key: '430070', value: '洪山区'},
+        {key: '430040', value: '东西湖区'},
+        {key: '430090', value: '汉南区'},
+        {key: '430100', value: '蔡甸区'},
+        {key: '430200', value: '黄陂区'},
+        {key: '431400', value: '新洲区'},
+        {key: '4300001', value: '武汉市'}
       ],
       
       pullUp:{
@@ -209,13 +221,13 @@ export default {
         })
       }
     },
-    handleChange (index, key) {
+    handleChange (index, key) {//tan选项卡
     },
     change(val){//check-list 单选 数据返回
       console.log(val);
       console.log(this.checklist);
       this.popupshow = false
-      
+      this.getGpsCode()
     },
     showPopup(){
       this.tabsIndex = 1;
@@ -269,7 +281,7 @@ export default {
           gpsMess=res.latitude+','+res.longitude
         }
       }
-      this.$http('POST',ui.getApp().apis.XLC,{gps:gpsMess},(res)=>{
+      this.$http('POST',ui.getApp().apis.XLC,{gps:gpsMess,regionCode:v.checklist[0]},(res)=>{
           if(res.code==200){
             this.itemlist = res.page.list
           }
@@ -278,17 +290,31 @@ export default {
   },
   created () {
     var v = this
-    ui.getApp().appTypeCallback = (type)=>{
-      alert(type)
-      if(type=='wx'){
-        v.getGpsCode()
-      }else{
-        v.XLC()
-      }
-    }
+    sessionStorage.setItem('first',true)
     this.getSwiperImg()
+  
+    if(localStorage.getItem("projectType") == 'true'){//微信
+      v.getGpsCode()
+      clearTimeout()
+      return
+    }else{//延时判断--微信--app
+      ui.showLoading({
+        text: '数据加载中'
+      })
+      setTimeout(()=>{
+        ui.hideLoading()
+        ui.showToast({ title: '数据加载成功', icon: 'success'})
+        if(localStorage.getItem("projectType") == 'true'){
+          v.getGpsCode()
+        }else{
+          v.XLC()
+        }
+      },1.5*1000)
+    }
+
   },
   mounted() {
+    sessionStorage.setItem('first',false)
   }
 }
 

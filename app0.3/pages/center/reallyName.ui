@@ -37,7 +37,7 @@
                   审核中
               </ui-view>
           </ui-view>
-          <ui-view ui:elif="userMess.yhZt=='2'">
+          <ui-view ui:elif="userMess.yhZt=='1'">
               <ui-image src="static/img/zjsh/zjsh1.png"></ui-image>
               <ui-view class="mess">
                   审核通过
@@ -57,7 +57,7 @@
                   </ui-view>
               </ui-view>
           </ui-view>
-          <ui-view ui:elif="userMess.yhZt=='1'">
+          <ui-view ui:elif="userMess.yhZt=='2'">
               <ui-image src="static/img/zjsh/zjsh2.png"></ui-image>
               <ui-view class="mess">
                   审核驳回

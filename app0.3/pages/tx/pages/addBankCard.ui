@@ -109,9 +109,9 @@ export default {
     return {
       // yz:true,
       form:{
-        yhkXm:'王晓明',
+        yhkXm:'',
         dn:'',
-        yhkKh:'6214832714637498'
+        yhkKh:''
       }
     }
   },

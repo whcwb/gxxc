@@ -31,6 +31,7 @@
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'训练场地名称',key:'placeName',searchKey:'placeNameLike'},
+                    {title:'区域代码',key:'regionCode',dict:'ZDCLK0060'},
                     {title:'场地缩略图',key:'placeIcon'},
                     {title:'地址',key:'address'},
                     {title:'实测面积',key:'measuredArea'},

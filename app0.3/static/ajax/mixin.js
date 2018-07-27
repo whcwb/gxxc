@@ -166,9 +166,6 @@ export default {
           return '武昌区'
           break;
         case "430080":
-          return '武昌区'
-          break;
-        case "430080":
           return '青山区'
           break;
         case "430070":
@@ -183,14 +180,14 @@ export default {
         case "430100":
           return '蔡甸区'
           break;
-        case "430200":
-          return '蔡甸区'
-          break;
         case "432200":
           return '黄陂区'
           break;
         case "431400":
           return '新洲区'
+          break;
+        case "4300001":
+          return '武汉市'
           break;
         default:
           return '***'

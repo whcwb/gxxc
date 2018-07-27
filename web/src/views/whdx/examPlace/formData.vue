@@ -38,6 +38,7 @@
                     {label:'名称',prop:'name'},
                     {label:'地址',prop:'address'},
                     {label:'考试科目',prop:'kskm'},
+                    {label:'区域代码',prop:'regioncode',dict:'ZDCLK0060',type:'dict'},
                 ],
                 ruleInline:{
 				}
