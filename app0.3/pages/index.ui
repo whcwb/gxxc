@@ -228,7 +228,6 @@ export default {
       console.log(this.checklist);
       this.popupshow = false
       this.getGpsCode()
-      
     },
     showPopup(){
       this.tabsIndex = 1;
