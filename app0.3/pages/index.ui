@@ -294,31 +294,37 @@ export default {
   },
   created () {
     var v = this
-    sessionStorage.setItem('first',true)
+    // sessionStorage.setItem('first',true)
     this.getSwiperImg()
-  
-    if(localStorage.getItem("projectType") == 'true'){//微信
+    if(localStorage.getItem("projectType") == 'true'){
       v.getGpsCode()
-      clearTimeout()
-      return
-    }else{//延时判断--微信--app
-      ui.showLoading({
-        text: '数据加载中'
-      })
-      setTimeout(()=>{
-        ui.hideLoading()
-        ui.showToast({ title: '数据加载成功', icon: 'success'})
-        if(localStorage.getItem("projectType") == 'true'){
-          v.getGpsCode()
-        }else{
-          v.XLC()
-        }
-      },1.5*1000)
+    }else{
+      v.XLC()
     }
+
+  
+    // if(localStorage.getItem("projectType") == 'true'){//微信
+    //   v.getGpsCode()
+    //   clearTimeout()
+    //   return
+    // }else{//延时判断--微信--app
+    //   ui.showLoading({
+    //     text: '数据加载中'
+    //   })
+    //   setTimeout(()=>{
+    //     ui.hideLoading()
+    //     ui.showToast({ title: '数据加载成功', icon: 'success'})
+    //     if(localStorage.getItem("projectType") == 'true'){
+    //       v.getGpsCode()
+    //     }else{
+    //       v.XLC()
+    //     }
+    //   },1.5*1000)
+    // }
 
   },
   mounted() {
-    sessionStorage.setItem('first',false)
+    // sessionStorage.setItem('first',false)
   }
 }
 

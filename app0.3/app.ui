@@ -4,6 +4,7 @@ import ajaxUrl from '#/static/ajax/url'
 export default {
   config: {
     "pages": [
+      "pages/Welcome",
       "pages/index",
       "pages/login",
       "pages/detail",      

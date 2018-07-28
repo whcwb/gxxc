@@ -10,7 +10,7 @@ let options = {
       }
     }catch(e){ }
     
-    if(to.path=='/pages/login' || to.path=='/pages/reg' || to.path=='/pages/retrieveworld' ){
+    if(to.path=='/pages/login' || to.path=='/pages/reg' || to.path=='/pages/retrieveworld' || to.path=='/pages/Welcome' ){
       next()
       return
     }else if(!um){
