@@ -2,8 +2,8 @@
     <ui-page style="overflow-y: hidden;">
         <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
             <ui-view class="pageTop">
-                <ui-view class="tx">
-
+                <ui-view class="tx"  style="text-align: center;">
+                  <ui-icon type="zaixiaoxueyuan" size="40" color="#dadada"></ui-icon>
                 </ui-view>
             </ui-view>
             <ui-view class="userMess">
@@ -189,15 +189,15 @@ export default {
     position: relative;
     background-color: #26a2ff;
     .tx{
-      width: 160rpx;
-      height: 160rpx;
-      border-radius:80rpx; 
+      width: 140rpx;
+      height: 140rpx;
+      border-radius:70rpx; 
+      border:#c7c7c7 4rpx solid;
       background-color: #ffffff;
       position: absolute;
       top: 100%;
       left: 50%;
       transform: translate(-50%,-50%);
-      border: #f2f2f2 1rpx solid;
     }
   }
 

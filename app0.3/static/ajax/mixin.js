@@ -180,13 +180,13 @@ export default {
         case "430100":
           return '蔡甸区'
           break;
-        case "432200":
+        case "430200":
           return '黄陂区'
           break;
         case "431400":
           return '新洲区'
           break;
-        case "4300001":
+        case "43":
           return '武汉市'
           break;
         default:

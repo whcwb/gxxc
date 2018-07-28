@@ -72,8 +72,11 @@
           </ui-sticky>
         </ui-view>
         <!-- <ui-view> -->
-          <ui-scroll-view height="{{pageHeight(0)}}" scroll-y="scroll-y" pull-up="{{ pullUp }}">
+          <ui-scroll-view height="{{pageHeight(0)}}" scroll-y="scroll-y">
               <ui-view class="content_list">
+                  <ui-view ui:if="itemlist.length==0" style="text-align: center; font-size: 22px;padding: 40px 0;">
+                      暂无训练场数据
+                  </ui-view>
                   <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc(item)">
                       
                       <ui-view class="xlcItemImg">
@@ -154,7 +157,7 @@ export default {
       tabsIndex:0,
 
       popupshow:false,
-      checklist:['43001'],
+      checklist:['43'],
       foodList:[
         {key: '430014', value: '江岸区'},
         {key: '4300001', value: '江汉区'},
@@ -168,7 +171,7 @@ export default {
         {key: '430100', value: '蔡甸区'},
         {key: '430200', value: '黄陂区'},
         {key: '431400', value: '新洲区'},
-        {key: '4300001', value: '武汉市'}
+        {key: '43', value: '武汉市'}
       ],
       
       pullUp:{
@@ -228,6 +231,7 @@ export default {
       console.log(this.checklist);
       this.popupshow = false
       this.getGpsCode()
+      // this.XLC()
     },
     showPopup(){
       this.tabsIndex = 1;
@@ -281,7 +285,7 @@ export default {
           gpsMess=res.latitude+','+res.longitude
         }
       }
-      this.$http('POST',ui.getApp().apis.XLC,{gps:gpsMess,regionCode:v.checklist[0]},(res)=>{
+      this.$http('POST',ui.getApp().apis.XLC,{gps:gpsMess,inputRegionCode:v.checklist[0]},(res)=>{
           if(res.code==200){
             this.itemlist = res.page.list
           }

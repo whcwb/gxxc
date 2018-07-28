@@ -5,7 +5,8 @@
             <ui-view class="_top"  style="background-image: url('static/img/png/title-bg.png');">
                 <ui-view class="nimg" bindtap="goscore">
                     <ui-view>
-                      <ui-view class="titSty" style="">
+                      <ui-view class="titSty" style="text-align: center;">
+                        <ui-icon type="zaixiaoxueyuan" size="40" color="#dadada"></ui-icon>
                       </ui-view>
                     </ui-view>
                     <ui-view class="_font alcen">
