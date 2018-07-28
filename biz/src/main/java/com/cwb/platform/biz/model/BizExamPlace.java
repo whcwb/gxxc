@@ -200,6 +200,7 @@ public class BizExamPlace implements Serializable {
         address("address"),
         cjsj("cjsj"),
         cjr("cjr"),
+        regioncode("regioncode"),
         kskm("kskm");
 
         private final String column;

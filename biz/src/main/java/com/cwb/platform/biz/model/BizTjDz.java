@@ -18,6 +18,12 @@ public class BizTjDz implements Serializable {
     private String dzSj;
 
     /**
+     * 支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)
+     */
+    @Column(name = "PAY_PASS")
+    private String payPass;
+
+    /**
      * 订单查询总数
      */
     @Column(name = "ORACLE_COUNT")
@@ -86,6 +92,14 @@ public class BizTjDz implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
+    public String getPayPass() {
+        return payPass;
+    }
+
+    public void setPayPass(String payPass) {
+        this.payPass = payPass;
+    }
 
     /**
      * @return PKID

@@ -5,6 +5,7 @@ import com.cwb.platform.biz.model.BizExamPlace;
 import com.cwb.platform.biz.service.ExamPlaceService;
 import com.cwb.platform.biz.util.GpsUtil;
 import com.cwb.platform.sys.base.BaseServiceImpl;
+import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +39,18 @@ public class ExamServiceImpl extends BaseServiceImpl<BizExamPlace,String> implem
         examPlaceMapper.insertSelective(entity);
         return ApiResponse.success();
     }
+
+
+    @Override
+    public boolean fillPagerCondition(LimitedCondition condition){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()) .getRequest();
+        String regionCode = request.getParameter("inputRegionCode");//区县行政区划代码
+        if(StringUtils.isNotEmpty(regionCode)){
+            condition.startWith(BizExamPlace.InnerColumn.regioncode.name(), regionCode + "%");
+        }
+        return true;
+    }
+
 
     @Override
     protected void afterPager(PageInfo<BizExamPlace> resultPage) {

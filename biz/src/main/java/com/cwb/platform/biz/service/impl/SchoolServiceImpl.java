@@ -30,6 +30,12 @@ public class SchoolServiceImpl extends BaseServiceImpl<BizDriversSchool,String> 
 
     @Override
     public boolean fillPagerCondition(LimitedCondition condition){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()) .getRequest();
+        String regionCode = request.getParameter("inputRegionCode");//区县行政区划代码
+        if(StringUtils.isNotEmpty(regionCode)){
+            condition.startWith(BizDriversSchool.InnerColumn.regionCode.name(), regionCode + "%");
+        }
+
         condition.setOrderByClause("create_time desc");
         return true;
     }

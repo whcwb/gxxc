@@ -603,6 +603,7 @@ public class BizTrainPlace implements Serializable {
         schoolName("school_name"),
         placeBeianimg("place_beianImg"),
         approvedCarNum("approved_car_num"),
+        regionCode("region_code"),
         placeCoordinate("place_coordinate");
 
         private final String column;

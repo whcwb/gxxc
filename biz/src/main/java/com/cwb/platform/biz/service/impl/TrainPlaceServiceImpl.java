@@ -36,6 +36,12 @@ public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String>
 
     @Override
     public boolean fillPagerCondition(LimitedCondition condition){
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()) .getRequest();
+        String regionCode = request.getParameter("inputRegionCode");//区县行政区划代码
+        if(StringUtils.isNotEmpty(regionCode)){
+            condition.startWith(BizTrainPlace.InnerColumn.regionCode.name(), regionCode + "%");
+        }
         condition.setOrderByClause("create_time desc");
         return true;
     }
