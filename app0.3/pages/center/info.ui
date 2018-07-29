@@ -9,7 +9,7 @@
                     我的头像
                   </ui-view>
               </ui-col>
-              <ui-col vertical-align="middle" align="right" bindtap="">
+              <ui-col vertical-align="middle" align="right" bindtap="getImg">
                   <ui-view>
                       <ui-image
                           src="{{usermess.yhTx}}"
@@ -157,7 +157,23 @@ export default {
     }
   },
   methods: {
-    reviseName(){
+    getImg(){
+      var v = this
+      ui.getApp().wxUtil.chooseImage((imgID)=>{
+        ui.getApp().wxUtil.uploadImage(imgID[0],(httpID)=>{
+          v.UPIMG(httpID.serverId)
+        })
+      })
+    },
+    UPIMG(id){
+      var v = this
+        this.$http('POST',ui.getApp().apis.WXIMGUP,{code:id,fileType:'-'},(res)=>{
+          this.getUserMess((res)=>{
+            this.usermess = res
+          })
+        })
+    },
+    reviseName(){//昵称修改
         var v = this
         ui.showPrompt({
           title: '昵称修改',
@@ -186,7 +202,7 @@ export default {
           }
         })
     },
-    upWorld(){
+    upWorld(){//密码修改
       var v = this
       if(v.form.oldPwd==""){
           ui.showToast({
@@ -218,28 +234,12 @@ export default {
       }
     },
 
-    gouBack(){
+    gouBack(){//退出登录
       this.$http('GET',ui.getApp().apis.LOGOUT,{},()=>{})
       ui.navigateTo({
         url: '/pages/login'
       })
     },
-    changeName(){
-      ui.showPrompt({
-        title: '数据修改demo',
-        placeholder: '请输新数据',
-        confirmButtonText: '确认修改',
-        cancelButtonText: '放弃修改',
-        value: this.infoList[1].val,
-        success: (result) => {
-          let title = result.confirm ? `点击了确认修改按钮，文本框值为：${result.value}` : `点击了放弃修改按钮，文本框值为：${result.value}`
-          this.infoList[1].val = result.value
-          ui.showToast({
-            title: title
-          })
-        }
-      })
-    }
   },
   mounted() {},
   created () {

@@ -112,6 +112,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
                         StringUtils.equals(zdlm.getYhXySlType(), "1") ||
                         StringUtils.equals(zdlm.getYhXySlType(), "2") ||
                         StringUtils.equals(zdlm.getYhXySlType(), "3") ||
+                        StringUtils.equals(zdlm.getYhXySlType(), "5") ||
                         StringUtils.equals(zdlm.getYhXySlType(), "4")) {
                     order.setYhDqzt("0");
                 }
@@ -126,6 +127,18 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
                 } else {
                     order.setYhDqzt("4");
                 }
+
+                //如果本阶段已完成，自动跳转到下一个阶段
+                if(StringUtils.equals(zdlm.getYhXyYkType(),"11")){
+                    order.setYhDqzt("2");
+                }else if(StringUtils.equals(zdlm.getYhXyYkType(),"21")){
+                    order.setYhDqzt("3");
+                }else if(StringUtils.equals(zdlm.getYhXyYkType(),"31")){
+                    order.setYhDqzt("4");
+                }else if(StringUtils.equals(zdlm.getYhXySlType(),"5")){
+                    order.setYhDqzt("1");
+                }
+
 //                待受理 受理中 受理成功
                 String yhzt="";
                 //00表示未受理 01受理成功 02表示受理中
@@ -166,6 +179,8 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
         }
         if (StringUtils.isBlank(yhlx)) {
             yhlx = null;
+        }else{
+            sfjf = "1";
         }
         if (StringUtils.isBlank(sfjf)) {
             sfjf = null;

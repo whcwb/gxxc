@@ -20,12 +20,12 @@
 								</Select>
 							</FormItem>
 						</Col>
-						<Col v-show="!showLsh" span="12">
+						<Col v-show="formItem.slType == '1'" span="12">
 							<FormItem prop='name' label='医院名称'>
 								<Input v-model="formItem.name" placeholder="请输入医院名称"></Input>
 							</FormItem>
 						</Col>
-						<Col v-show="showLsh" span="12">
+						<Col v-show="formItem.slType != '1'" span="12">
 							<FormItem prop='name' label='驾校名称'>
 								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校...'" label-in-value @on-change="schoolChange">
 									<Option v-for = '(item,index) in schoolList' :value="item.schoolCode" :key="item.schoolCode" :label="item.schoolShortName">{{item.schoolShortName}}</Option>

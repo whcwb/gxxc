@@ -64,10 +64,14 @@ public class UserServiceImpl extends BaseServiceImpl<BizUser,java.lang.String> i
             }else if(StringUtils.equals("3",jlType)){
                 entityMapper.updateJlid3(list, jlId);
                 ptyhMapper.updateXyfpType(list, "4");
+            }else if(StringUtils.equals("4",jlType)){
+                entityMapper.updateJlid4(list, jlId);
+                ptyhMapper.updateXyfpType(list, "5");
             }
         }
 
     }
+    //updateJlid4
 
     @Override
     public List<String> getYhIds(List<String> ids) {

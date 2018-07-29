@@ -22,7 +22,7 @@
                 </ui-view>
                 <ui-view class="box_row_100 userMessSty">
                     <ui-view class="userName">
-                      用户:{{usermess.yhBm}}
+                      用户:{{usermess.yhXm}}
                     </ui-view>
                     <ui-view class="phone">
                       电话:{{usermess.yhZh}}

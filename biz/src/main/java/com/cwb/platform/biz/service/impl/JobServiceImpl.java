@@ -1,10 +1,7 @@
 package com.cwb.platform.biz.service.impl;
 
 
-import com.cwb.platform.biz.mapper.BizBillContrastMapper;
-import com.cwb.platform.biz.mapper.BizOrderMapper;
-import com.cwb.platform.biz.mapper.BizPtyhMapper;
-import com.cwb.platform.biz.mapper.BizTjDzMapper;
+import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -68,6 +65,10 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
 
     @Autowired
     private CpService cpService;
+
+    @Autowired
+    private BizTjMapper tjMapper;
+
 
     @Resource(name = "wxPayService")
     private WxPayService wxService;
@@ -530,14 +531,17 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
      * 对账业务处理
      * @param billDate  对账日期
      * @param handcraft  是否手工对账  如果是手工对账，就要删除 对账日期的账单
+     * @param  payTpye  支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)
      * @return
      */
-    public ApiResponse<String> balanceBillAccount(String billDate,Boolean handcraft){
+    public ApiResponse<String> balanceBillAccount(String billDate,Boolean handcraft,String payTpye){
 
         BizTjDz bizTjDz=new BizTjDz();
         bizTjDz.setPkid(genId());
         bizTjDz.setDzSj(billDate);
         bizTjDz.setCreationTime(DateUtils.getNowTime());
+        bizTjDz.setPayPass(payTpye);
+        bizTjDzMapper.insertSelective(bizTjDz);
 //        1、检查对账日期是否正确
         RuntimeCheck.ifTrue(StringUtils.isBlank(billDate), "对账时间不能为空");
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -545,12 +549,6 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
         LocalDate billDateOperate =null;
         try {
             billDateOperate = LocalDate.parse(billDate, dateTimeFormatter);
-//            LocalDate queryDate = LocalDate.parse(billDate,dateTimeFormatter);
-//            LocalDateTime queryDateTime = queryDate.atStartOfDay();
-//            if((queryDateTime.plusDays(1).plusHours(9).plusMinutes(59)).isAfter((LocalDateTime.now()))){
-//                System.out.println("您好，微信的对账文件需要在第二天的10点之后开始获取。其它时间不允许获取对账");
-//                return ApiResponse.fail("您好，微信的对账文件需要在第二天的10点之后开始获取。其它时间不允许获取对账");
-//            }
         }catch (DateTimeParseException e){
             return ApiResponse.fail("所传日期格式不对");
         }
@@ -562,12 +560,21 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
             billContrastMapper.resettingOrderBillContrast(billDate);
         }
 //        3、下载对账文件
+        if(StringUtils.equals(payTpye,"2")){
 //        3-1、下载微信对账文件
-        ApiResponse<String>  wxBill=this.wxDownloadBill(billDate);
-        if(wxBill.getCode() != 200){
-            RuntimeCheck.ifTrue(true, "获取微信对账文件失败："+wxBill.getMessage());
-        }
+            ApiResponse<String>  wxBill=this.wxDownloadBill(billDate);
+            if(wxBill.getCode() != 200){
+                RuntimeCheck.ifTrue(true, "获取微信对账文件失败："+wxBill.getMessage());
+            }
+        }else if(StringUtils.equals(payTpye,"1")){
 //        3-2、下载其它对账文件  todo 后期增加
+//            3-2-1获取账单的下地址
+//            3-2-2通过下载地址，下载对账文件的zip 文件
+//            3-2-3解压zip 文件，获取出对账文件
+//            3-2-4找到出对账文件
+//            3-2-5读取出账单信息
+
+        }
 
 //        4、对账业务开始
 //        4-1-1、查询支付日期符合的订单
@@ -724,7 +731,8 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
         billContrastMapper.updateNotBillContrastType(billDate);
         billContrastMapper.updateNotOrderContrastType(billDate);
 
-        bizTjDzMapper.addStatistics(bizTjDz,billDate);
+//        bizTjDzMapper.addStatistics(bizTjDz,billDate);
+        bizTjDzMapper.updateStatistics(bizTjDz,billDate);
 
 //        4-6、清除redis所有k
         redisDao.delete("orderSuccess");
@@ -734,5 +742,22 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
         redisDao.delete("billRefund");
 
         return ApiResponse.success();
+    }
+
+    /**
+     * 提现统计接口
+     * 1、订单统计
+     * 2、提现统计
+     * @param tjsj
+     */
+    public void orderStatistics(String tjsj){
+        BizTj tj=new BizTj();
+        tj.setTjSj(tjsj);
+        tjMapper.delete(tj);
+
+        tj.setCjsj(DateUtils.getNowTime());
+        tjMapper.orderStatistics(tjsj,DateUtils.getNowTime());
+
+
     }
 }

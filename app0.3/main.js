@@ -1,6 +1,5 @@
 import app from './app.ui'
 import '#/static/css/box.less'
-
 let options = {
   app: app,
   beforeEach(to,from,next) {
@@ -11,7 +10,7 @@ let options = {
       }
     }catch(e){ }
     
-    if(to.path=='/pages/login' || to.path=='/pages/reg' || to.path=='/pages/retrieveworld' ){
+    if(to.path=='/pages/login' || to.path=='/pages/reg' || to.path=='/pages/retrieveworld' || to.path=='/pages/Welcome' ){
       next()
       return
     }else if(!um){
@@ -28,15 +27,61 @@ let options = {
 }
 
 ui.extend({
-    getUser(){
+    // 微信js方法
+    getWxJs(){
+        // 微信js初始化 
+        var script = document.createElement("script")
+        script.type = "text/javascript"
+        script.src="./static/utils/jweixin-1.2.0.js"
+        document.body.appendChild(script)
+
+        script.onload = function(){ // 微信js初始化 回调函数
+            console.log('*****wx',wx)
+            
+            // 微信js初始化成功后引用 微信功能方法
+            ui.getApp().wxUtil = require('./static/ajax/wechatUtil.js').default
+
+            //获取Code 直
+            let authCode = ui.getApp().wxUtil.getQueryString("code");
+            console.log('获取code',authCode)
+            
+            if(authCode){
+              
+              // 获取Openid
+              ui.getApp().wxUtil.vueParent = this;
+              ui.getApp().wxUtil.getOpenid(authCode,(res)=>{
+                  console.log('openid-------',res)
+                  localStorage.setItem("openid",res);//存储openid
+                  ui.getApp().wxUtil.initConfig();//执行 微信 config
+              });
+
+              // if (typeof ui.getApp().appTypeCallback == 'function'){
+              //   ui.getApp().appTypeCallback('wx');
+              // }
+
+            }else{
+                  if(typeof ui.getApp().wxUtil.afterReady == 'function'){
+                    ui.getApp().wxUtil.afterReady('app');
+                  }
+
+              // if (typeof ui.getApp().appTypeCallback == 'function'){
+              //   ui.getApp().appTypeCallback('app');
+              // }
+            }
+        }
+    },
+    projectType(){//获取项目类型
+      return localStorage.getItem('projectType')
+    },
+    getUser(){//获取用户信息
       return JSON.parse(localStorage.getItem('usermess'))
     },
-    getUserMess(callback){
+    getUserMess(callback){//网络数据请求 获取用户信息
       this.$http('POST',ui.getApp().apis.USERMESS,{},(res)=>{
         if(res.code==200 && res.result){
             console.log('用户信息',res)
             if(res.result.yhTx == ''){
-              res.result.yhTx ='static/img/login/LOGO.png'
+              res.result.yhTx ='static/img/login/logo.png'
             }
           }
           localStorage.setItem('usermess',JSON.stringify(res.result))
@@ -46,12 +91,16 @@ ui.extend({
       )
     },
 
-    $http(method,url,data,callback){
+    $http(method,url,data,callback){//网路数据请求
       let accessTokenStr = localStorage.getItem("token");
       if(accessTokenStr != null && accessTokenStr != ''&& accessTokenStr!=undefined){
         let tokMess = JSON.parse(accessTokenStr)
         ui.getApp().Ajax.header.token = tokMess.token
         ui.getApp().Ajax.header.userId = tokMess.userId
+      }
+      let openid = localStorage.getItem("openid");
+      if(openid){
+        ui.getApp().Ajax.header.openid = openid
       }
 
       ui.request({
@@ -77,7 +126,7 @@ ui.extend({
         },
         complete:function(mess){
           console.log('请求结果')
-          callback && callback(mess.data);
+          // callback && callback(mess.data);
         }
       })
     },

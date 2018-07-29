@@ -187,6 +187,7 @@ public class JobApi {
 
     /**
      * 微信端下载对账文件
+     * @param payTpye 1、支付宝 2、微信
      * @param billDate
      * @param key
      * @param token
@@ -194,7 +195,7 @@ public class JobApi {
      * @throws WxPayException
      */
     @PostMapping("/wxDownloadBill")
-    public ApiResponse<String> wxDownloadBill(@RequestParam String billDate,@RequestParam(required = false) String key, @RequestParam(value = "token",required = false) String token) throws WxPayException {
+    public ApiResponse<String> wxDownloadBill(@RequestParam String payTpye,@RequestParam String billDate,@RequestParam(required = false) String key, @RequestParam(value = "token",required = false) String token) throws WxPayException {
         List<String> retMessage=new ArrayList<String>();
         if(StringUtils.isBlank(token)){
             if(StringUtils.isBlank(key)){
@@ -233,7 +234,11 @@ public class JobApi {
                 return ApiResponse.fail("所传日期格式不对");
             }
         }
-        return jobService.balanceBillAccount(billDate,false);
+        if(!(StringUtils.equals(payTpye,"2")||StringUtils.equals(payTpye,"1"))){
+            return ApiResponse.fail("平台暂未开通:"+payTpye+" 类型的支付通道");
+        }
+        //是否手工对账  如果是手工对账，就要删除 对账日期的账单
+        return jobService.balanceBillAccount(billDate,false,payTpye);
     }
 
     /**
@@ -256,8 +261,9 @@ public class JobApi {
                 return ApiResponse.fail("所传格式有误");
             }
         }
-
+        //tjsj
         // 插入数据至统计表中 todo
+        jobService.orderStatistics(tjsj);
 
 
         return ApiResponse.success();

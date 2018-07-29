@@ -13,7 +13,7 @@
     </ui-nav-bar>
     <ui-view class="grid_box backF2">
         <!-- module 1 "{{ autoplay }}"-->
-        <ui-view class="demo demo3">
+        <ui-view class="swiperSty">
             <ui-ex-swiper id="swiperdotsstyle" autoplay= false
             pagination centered-slides loop space-between="5" slides-per-view="auto">
                 <ui-ex-swiper-item ui:for="{{items}}" ui:for-item="item" ui:for-index="index">
@@ -54,13 +54,13 @@
             <ui-view >
                 <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
                     <ui-tab bindtap="tabsIndex=0">推荐</ui-tab>
-                    <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+                    <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
                 </ui-tabs>
             </ui-view>
             <ui-view slot="sticky">
                 <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
                     <ui-tab>推荐</ui-tab>
-                    <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+                    <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
                 </ui-tabs>
               <!-- <ui-row class="title">
                   <ui-col>推荐</ui-col>
@@ -72,8 +72,11 @@
           </ui-sticky>
         </ui-view>
         <!-- <ui-view> -->
-          <ui-scroll-view height="{{pageHeight(0)}}" scroll-y="scroll-y" pull-up="{{ pullUp }}">
+          <ui-scroll-view height="{{pageHeight(0)}}" scroll-y="scroll-y">
               <ui-view class="content_list">
+                  <ui-view ui:if="itemlist.length==0" style="text-align: center; font-size: 22px;padding: 40px 0;">
+                      暂无训练场数据
+                  </ui-view>
                   <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc(item)">
                       
                       <ui-view class="xlcItemImg">
@@ -99,7 +102,8 @@
                             <ui-col>566、567、568</ui-col>
                         </ui-row>
                         <ui-row>
-                            <ui-col align="right"> >3000米</ui-col>
+                            <ui-col align="right" ui:if="{{item.distance == ''}}">无法获取位置信息</ui-col>
+                            <ui-col align="right" ui:else>{{item.distance}}米</ui-col>
                         </ui-row>
                       </ui-view>
 
@@ -117,7 +121,7 @@
         <ui-view class="checkTit">
           <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
               <ui-tab bindtap="tabsIndex=0,popupshow=false">推荐</ui-tab>
-              <ui-tab bindtap="showPopup">{{checklist[0]}}</ui-tab>
+              <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
           </ui-tabs>
         </ui-view>
 
@@ -136,6 +140,7 @@
 </template>
 
 <script>
+import mixin from '#/static/ajax/mixin'
 export default {
   config: {
     navigationStyle: 'custom',
@@ -146,16 +151,27 @@ export default {
     backgroundColor:'#f2f2f2',
     delay:false,//延迟加载
   },
+  mixins:[mixin],
   data () {
     return {
       tabsIndex:0,
 
       popupshow:false,
-      checklist:['全部'],
+      checklist:['43'],
       foodList:[
-        '武汉市','江岸区','江汉区','硚口区','汉阳区',
-        '武昌区','青山区','洪山区','东西湖区','汉南区',
-        '蔡甸区','江夏区','黄陂区','新洲区'
+        {key: '430014', value: '江岸区'},
+        {key: '4300001', value: '江汉区'},
+        {key: '4300002', value: '硚口区'},
+        {key: '430050', value: '汉阳区'},
+        {key: '4300003', value: '武昌区'},
+        {key: '430080', value: '青山区'},
+        {key: '430070', value: '洪山区'},
+        {key: '430040', value: '东西湖区'},
+        {key: '430090', value: '汉南区'},
+        {key: '430100', value: '蔡甸区'},
+        {key: '430200', value: '黄陂区'},
+        {key: '431400', value: '新洲区'},
+        {key: '43', value: '武汉市'}
       ],
       
       pullUp:{
@@ -208,13 +224,14 @@ export default {
         })
       }
     },
-    handleChange (index, key) {
+    handleChange (index, key) {//tan选项卡
     },
     change(val){//check-list 单选 数据返回
       console.log(val);
       console.log(this.checklist);
       this.popupshow = false
-      
+      this.getGpsCode()
+      // this.XLC()
     },
     showPopup(){
       this.tabsIndex = 1;
@@ -222,13 +239,13 @@ export default {
     },
     goMyTeam(){
       ui.navigateTo({
-        url: 'center/myTeam'
+        url: 'center/myTeam2'
       })
     },
     goBill(){
       ui.navigateTo(
         {
-          url:'center/bill'
+          url:'center/bill2'
         }
       )
     },
@@ -248,15 +265,6 @@ export default {
         }
       )
     },
-    // getLocationMess(){//定位 获取 位置信息
-    //   ui.getLocation({
-    //     type: 'wgs84',
-    //     success: function (res) {
-    //       console.log('获取 位置信息',res);
-          
-    //     }
-    //   })
-    // },
     getSwiperImg(){//获取轮播图片
       this.$http('POST',ui.getApp().apis.SWIPER,{hdSxs:0},(res)=>{
             if(res.code==200){
@@ -264,38 +272,68 @@ export default {
             }
       })
     },
-    XLC(){
+    getGpsCode(){
+      ui.getApp().wxUtil.getMapCode((res)=>{
+          this.XLC(res)
+      })
+    },
+    XLC(res){
       var v = this
-      this.$http('POST',ui.getApp().apis.XLC,{},(res)=>{
+      let gpsMess = ''
+      if(res){
+        if(res.latitude&&res.longitude){
+          gpsMess=res.latitude+','+res.longitude
+        }
+      }
+      this.$http('POST',ui.getApp().apis.XLC,{gps:gpsMess,inputRegionCode:v.checklist[0]},(res)=>{
           if(res.code==200){
             this.itemlist = res.page.list
           }
       })
-
-      // this.$http.post(this.apis.XLC).then((res)=>{
-      //   if(res.code==200){
-      //     v.xlcList = res.page.list
-      //   }
-      //   console.log(res)
-      // }).catch((err)=>{
-
-      // })
     }
   },
   created () {
+    var v = this
+    // sessionStorage.setItem('first',true)
     this.getSwiperImg()
-    this.XLC()
+    if(localStorage.getItem("projectType") == 'true'){
+      v.getGpsCode()
+    }else{
+      v.XLC()
+    }
+
+  
+    // if(localStorage.getItem("projectType") == 'true'){//微信
+    //   v.getGpsCode()
+    //   clearTimeout()
+    //   return
+    // }else{//延时判断--微信--app
+    //   ui.showLoading({
+    //     text: '数据加载中'
+    //   })
+    //   setTimeout(()=>{
+    //     ui.hideLoading()
+    //     ui.showToast({ title: '数据加载成功', icon: 'success'})
+    //     if(localStorage.getItem("projectType") == 'true'){
+    //       v.getGpsCode()
+    //     }else{
+    //       v.XLC()
+    //     }
+    //   },1.5*1000)
+    // }
+
   },
   mounted() {
-    // for (let i = 1; i <= 10; i++) {
-    //   this.itemlist.push(i + ' - 内容文本')
-    // }
+    // sessionStorage.setItem('first',false)
   }
 }
 
 </script>
 
 <style lang="less">
+.swiperSty{
+  height: 300rpx;
+}
 .xlcList{
   padding: 20rpx 0 0 0 ;
   background: #fff;
@@ -334,7 +372,7 @@ export default {
 
 
 .module2{
-  margin: 30rpx 0 20rpx 0;
+  margin: 0rpx 0 20rpx 0;
   background: #fff;
   padding: 15rpx 20rpx;
   .price{

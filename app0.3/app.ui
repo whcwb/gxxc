@@ -1,8 +1,10 @@
 <script>
 import ajaxUrl from '#/static/ajax/url'
+// import wechatUtil from'./static/ajax/wechatUtil.js'
 export default {
   config: {
     "pages": [
+      "pages/Welcome",
       "pages/index",
       "pages/login",
       "pages/detail",      
@@ -10,7 +12,11 @@ export default {
       "pages/studyCar",
       "pages/myTeam",
       "pages/center/myTeam",
+      "pages/center/myTeam2",
+      
       "pages/center/bill",
+      "pages/center/bill2",
+
       "pages/home/xlcMess",
       "pages/center/info","pages/center/reallyName",
       "pages/tx/index","pages/tx/pages/bankCardlist",
@@ -18,7 +24,7 @@ export default {
       "pages/product/index",
       "pages/Agreement/learnCarFile","pages/Agreement/MemberFile",
       "pages/common/signName","pages/common/qrCode",
-      "pages/score/index","pages/retrieveworld"],
+      "pages/score/index","pages/retrieveworld","pages/common/star","pages/myTeam/details"],
     "theme": {
       "theme-color": "#3399ff"
     },
@@ -62,6 +68,7 @@ export default {
   data () {
     return {
       //全局变量
+      appTypeCallback:'',
       // ajax数据请求参数配置
       apis:ajaxUrl,
       Ajax:{
@@ -70,15 +77,19 @@ export default {
         header:{
           'Content-Type': 'application/x-www-form-urlencoded',
           'token':'',
-          'userId':''
+          'userId':'',
+          'openid':''
         }
       },
 
+      wxUtil:null,//微信 功能方法
+
       yqm:'',//新用户注册邀请码
       userMess:'',//用户信息
-      payMess:{},//支付信息
-      backsignUrl:'',//签名页面返回
+
+      payMess:null,//支付信息
       signUrl:'',//签名地址
+      backsignUrl:'',//签名页面返回
       xlcMess:{
         mess:'mess'
       },//训练场详情
@@ -88,6 +99,9 @@ export default {
       bankIndex:3,//银行卡列表索引
       banklist:[],//银行卡列表
 
+      zyMess:{},//专员信息
+
+      myTeamMess:{},//团队信息传值-查看学院进度
 
 
 
@@ -182,10 +196,25 @@ export default {
       this.handleIosGesture()
       this.initTab()
       this.initBodyStyle()
+    },
+    wxUtil(n,o){//微信方法监听
+      console.log('数据监听*-*-*-*-*-*-*-');
+      if(n==null){
+        this.getWxJs()
+      }
     }
   },
     // 初始化
   created () {
+    //微信 ? 微信 ：App
+    localStorage.setItem("projectType",false)
+
+
+    //微信js 初始化
+    this.getWxJs()
+    //微信js初始化END
+
+
     this.initTab()
     this.initPaths()
     this.$nextTick(() => {

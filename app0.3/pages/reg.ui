@@ -15,8 +15,6 @@
       </ui-nav-bar>
       <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
         <ui-view class="reg">
-        
-
             <ui-view class="fromSty">
                 <ui-row space="60">
                   <ui-col span="8" align="center">
