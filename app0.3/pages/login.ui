@@ -74,8 +74,8 @@ export default {
     return {
       height: ui.DEFAULT_CONTENT_HEIGHT,
       form:{
-        username:'13164183391',
-        password:'123456'
+        username:'',
+        password:''
       }
     }
   },

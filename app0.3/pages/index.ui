@@ -135,8 +135,7 @@
         </ui-scroll-view>
       </ui-view>
     </ui-popup>
-
-  </ui-page>
+   </ui-page>
 </template>
 
 <script>
