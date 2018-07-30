@@ -92,7 +92,7 @@ public class HdServiceImpl extends BaseServiceImpl<BizHd,String> implements HdSe
     @Override
     public boolean fillPagerCondition(LimitedCondition condition){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()) .getRequest();
-        String hdSx = request.getParameter("hdSxs");
+        String hdSx = request.getParameter("hdSxs");//  0、热门 1、驾校  2、训练场
         if(StringUtils.equals(hdSx,"0")){
             condition.and().andIsNotNull("hdTj");
             condition.and().andNotEqualTo("hdTj","");
