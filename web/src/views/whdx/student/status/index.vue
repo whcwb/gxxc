@@ -71,6 +71,7 @@
                 pageData: [],
 				choosedData:[],
                 form: {
+                    ddSfjx:'1',
                     yhLx:"1",
                     byBysjInRange:'',
                     total: 0,

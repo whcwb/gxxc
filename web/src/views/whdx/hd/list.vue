@@ -39,12 +39,12 @@
                     {title: '标题',key:'hdBt',searchKey:'hdBtLike'},
                     {title: '正文',key:'hdZw'},
                     {title: '类型',key:'hdSx',dict:'ZDCLK0036',searchType:'dict'},
-					{title:'推荐',key:'hdtj',
+					{title:'推荐',key:'hdTj',
 						render:(h,p)=>{
-                            return this.util.buildSwitch(h,p.row.hdtj && p.row.hdtj.length > 0 ? true:false,(value)=>{
+                            return this.util.buildSwitch(h,p.row.hdTj && p.row.hdTj.length > 0 ? true:false,(value)=>{
                                 let rzt = value ? '1':''
                                 let v = this;
-                                this.$http.post(this.apis.hd.hdtj,{'id':p.row.id,'hdtj':rzt}).then((res) =>{
+                                this.$http.post(this.apis.hd.hdtj,{'id':p.row.id,'hdTj':rzt}).then((res) =>{
                                     if(res.code==200){
                                         this.$Message.success(res.message);
                                     }else{
