@@ -950,10 +950,3 @@ export default {
   }
 }
 </style>
-
-// navigationBarBackgroundColor:"#26a2ff",
-//     navigationBarTextStyle:"white",
-//     navigationBarTitleText:"学员进度",
-//     title:'学员进度',
-//     backgroundColor:'#f2f2f2',
-//     delay:false,//延迟加载
