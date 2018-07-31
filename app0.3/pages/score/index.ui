@@ -1,5 +1,17 @@
 <template>
     <ui-page style="overflow-y: hidden;">
+      <!-- <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+        <ui-row height="46">
+          <ui-col vertical-align="middle" align="center" width="60">
+            
+          </ui-col>
+          <ui-col vertical-align="middle" align="center">
+            <ui-view class="nav_title">首页</ui-view>
+          </ui-col>
+          <ui-col vertical-align="middle" align="center" width="60">
+          </ui-col>
+        </ui-row>
+      </ui-nav-bar> -->
         <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
             <ui-view class="pageTop">
                 <ui-view class="tx"  style="text-align: center;">
@@ -68,7 +80,9 @@
             </ui-view>
         </ui-view>
     </ui-page>
-    
+    <!-- ui.switchTab({
+        url: ui.getApp().QRpage
+      }) -->
 </template>
 <script>
 import mixin from '#/static/ajax/mixin'

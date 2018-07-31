@@ -362,12 +362,33 @@ export default {
         (res)=>{
           if(res.code==200){
             ui.showToast({ title: '用户注册成功'})
+            this.login()
           }else{
             ui.showToast({ title: res.message })
           }
         }
       )
-    }
+    },
+    login(){
+      var v = this
+
+      this.$http('POST',ui.getApp().apis.LOGIN,{username:v.form.yhZh,password:v.form.yhMm},(res)=>{
+          if(res.code==200){
+            localStorage.setItem("token",JSON.stringify(res.result.accessToken))
+            localStorage.setItem("phone",JSON.stringify(v.form.username))
+            v.getUserMess((res)=>{
+                  v.goIndex()
+            })//获取用户信息
+          }else{
+              ui.showToast({ title: res.message})
+          }
+      })
+    },
+    goIndex(){
+        ui.navigateTo({
+          url: '/pages/index'
+        })
+    },
   }
 }
 </script>

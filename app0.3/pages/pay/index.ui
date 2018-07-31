@@ -88,7 +88,10 @@ export default {
           console.log(res)
           if(res.err_msg=='get_brand_wcpay_request:ok'){
             ui.showToast({ title: '支付成功' })
-            this.navigateBack()
+            ui.getApp().signUrl = ''
+            ui.switchTab({
+              url:'/pages/user'
+            })
           }else if(res.err_msg=='get_brand_wcpay_request::fail'){
             ui.showToast({ title: '支付失败' })
             this.navigateBack()

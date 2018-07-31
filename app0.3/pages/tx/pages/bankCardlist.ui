@@ -91,7 +91,12 @@ export default {
               item.swipeOutVal = 'off'
             });
             this.bankList = res.result
-            // ui.getApp().banklist = res.result
+          }else{
+            ui.navigateTo(
+              {
+                url:'/pages/tx/index'
+              }
+            )
           }
       })
     },

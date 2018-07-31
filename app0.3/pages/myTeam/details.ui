@@ -117,7 +117,7 @@
                                       </ui-view>
                                   </ui-view>
                             </ui-view>
-                            <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['1'] && examInfo['1'].cj1 < 90 && examInfo['1'].cj2!==''}}">
+                            <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['1'] && examInfo['1'].cj2 < 90 && examInfo['1'].cj2!==''}}">
                                   <ui-view class="box_row_100 kcBoxBodyTiT">
                                         <ui-view>
                                             第二次考试 
@@ -129,17 +129,17 @@
                                   <ui-view class="fs">
                                     <ui-circular
                                       radius=35
-                                      color="{{examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
+                                      color="{{examInfo['1'].cj2 >= 90 ? '#1ec695' : '#f00'}}"
                                       value="70"
                                       line-width="4"
                                       line-cap="round"
                                       ></ui-circular>
-                                      <ui-view class="fs_chil_box" style="{{ {color:examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'} }}">
+                                      <ui-view class="fs_chil_box" style="{{ {color:examInfo['1'].cj2 >= 90 ? '#1ec695' : '#f00'} }}">
                                             <ui-view class="fs_va">
-                                              {{examInfo['1'].cj1}}分
+                                              {{examInfo['1'].cj2}}分
                                             </ui-view>
                                             <ui-view class="fs_typ">
-                                              {{examInfo['1'].cj1 >= 90 ? '合格' : '不合格'}}
+                                              {{examInfo['1'].cj2 >= 90 ? '合格' : '不合格'}}
                                             </ui-view> 
                                       </ui-view>
                                   </ui-view>
