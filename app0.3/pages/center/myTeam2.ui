@@ -37,7 +37,7 @@
                           <ui-row height="100" space-bottom="10">
                             <ui-col span="3" align="center" vertical-align="middle">
                                 <ui-image src="{{item.userDetail.yhTx | yhTx}}" 
-                                width="70" height="70"></ui-image>
+                                width="70" height="70" style="border-radius:35px"></ui-image>
                             </ui-col>
                             <ui-col span="9">
                                 <ui-row space-top='10' height="50">

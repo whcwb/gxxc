@@ -27,7 +27,7 @@
                             <ui-col span='4'>
                                 {{usermess.yhXm | yhXm}}
                             </ui-col>
-                            <ui-col class="userTyp" span='8' vertical-align="bottom">
+                            <ui-col ui:if="{{usermess.ddSfjx=='1'}}" class="userTyp" span='8' vertical-align="bottom">
                                 <!-- <ui-text class="userTyp">  -->
                                   {{usermess.yhLx | yhLx}}  
                                 <!-- </ui-text> -->
@@ -37,8 +37,8 @@
                       <ui-view class="pageHello">{{usermess.yhZh}}</ui-view>
                     </ui-col>
                     <ui-col span="3" align="right" 
-                    vertical-align="middle" space-right="20"
-                    bindtap="qrcode">
+                      vertical-align="middle" space-right="20"
+                      bindtap="qrcode">
                       <ui-icon type="erweima" size="36" color="#fff"></ui-icon>
                     </ui-col>
                   </ui-row>
@@ -199,6 +199,10 @@ export default {
         )
       },
       qrcode(){
+        if(this.usermess.ddSfjx!='1'){
+            ui.showToast({ title: '请先缴费' })
+            return
+        }
         ui.getApp().QRpage = '/pages/user'
         ui.navigateTo(
           {
@@ -226,6 +230,10 @@ export default {
         )
       },
       goProductList(){
+        if(this.usermess.yhZt!= '1'){
+            ui.showToast({ title: '请先实名认证' })
+            return
+        }
         ui.navigateTo(
           {
             url:'/pages/product/index'

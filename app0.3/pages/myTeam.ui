@@ -65,9 +65,8 @@
                 </ui-row>
             </ui-col>
           </ui-row>
-          <ui-view v-if="item.userDetail.yhLx=='1' && item.userDetail.ddSfjx == '1'"
-                style="font-size: 0.14rem;padding: 0.02rem 0.15rem;border-top: slategray 1px solid">
-            学员当前进度 >>> {{item.yhslZt | yhslZt}}
+          <ui-view class="studentLine" v-if="item.userDetail.yhLx=='1' && item.userDetail.ddSfjx == '1'">
+            学员当前进度  :  {{item.yhslZt | yhslZt}}
           </ui-view>
         </ui-view>
       </ui-view>
@@ -291,12 +290,13 @@
       goStudentDetails(item){
         if(item.userDetail.yhLx!="1"){
           return
+        }else if(item.userDetail.ddSfjx==0){
+          ui.showToast({ title: '当前学员未缴' })
+          return
         }
-        this.$router.push({name:'process',
-          params:{
-          id:item.userDetail.id,
-          number:parseInt(item.yhDqzt)
-          }
+        ui.getApp().myTeamMess = item
+        ui.navigateTo({
+          url: '/pages/myTeam/details'
         })
         console.log('学员信息',item);
         
@@ -328,5 +328,10 @@
       font-size: 40rpx;
       color:#bfbfbf;
     }
+  }
+  .studentLine{
+      font-size: 26rpx;
+      padding: 15rpx 40rpx;
+      border-top: slategray 1px solid
   }
 </style>

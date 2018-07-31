@@ -179,14 +179,20 @@ export default {
       ui.navigateBack()
     },
     photoGraph(){
-      ui.showAlert({
-        title: '提示',
-        content: '您正在进行拍照模式',
-        buttonText: '确定',
-        success () {
-          ui.showToast({
-            title: '你点击了确定'
-          })
+      var v = this
+      ui.getApp().wxUtil.chooseImage((imgID)=>{
+        ui.getApp().wxUtil.uploadImage(imgID[0],(httpID)=>{
+          v.UPIMG(httpID.serverId)
+        })
+      })
+    },
+    UPIMG(id){
+      var v = this
+      this.$http('POST',ui.getApp().apis.WXIMGUP,{code:id,fileType:'30'},(res)=>{
+        if(res.code==200){
+          v.form.yhkKh = res.result.bank_card_number
+        }else{
+          ui.showToast({ title: '银行卡号获取失败' })
         }
       })
     }
@@ -195,7 +201,6 @@ export default {
   created () {
     this.form.yhkXm = this.getUser().yhXm
     this.form.dn = JSON.parse(localStorage.getItem('phone'))
-    this.form.dn = '18602714782'
   }
 }
 </script>

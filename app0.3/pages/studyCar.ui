@@ -30,24 +30,24 @@
             </ui-view>
             <ui-view class="content">
                 <ui-view class="demo2">
-                  <ui-divider color="#ff9900">
-                    <ui-view style="color:#ff9900">
-                      *请注意您的学车进度！
-                    </ui-view>
-                  </ui-divider>
-                  <ui-ex-swiper pagination 
-                    centered-slides space-between="10" 
-                    loop="{{false}}" slides-per-view="auto"  index='{{timeline}}'
-                    bindchange="swiperChange">
-                    <ui-ex-swiper-item ui:for="{{items}}" class=""
-                        ui:for-item="item" ui:for-index="index"
-                        style="{{ {'background-image':'url('+item.src+')'} }}">
-                      <ui-view class="swiperbox">
-                        <ui-view class="name">{{item.name}}</ui-view>
-                        <ui-view class="mess">{{item.mess}}</ui-view>
+                    <ui-divider color="#ff9900">
+                      <ui-view style="color:#ff9900">
+                        *请注意您的学车进度！
                       </ui-view>
-                    </ui-ex-swiper-item>
-                  </ui-ex-swiper>
+                    </ui-divider>
+                    <ui-ex-swiper pagination 
+                      centered-slides space-between="10" 
+                      loop="{{false}}" slides-per-view="auto"  index='{{timeline}}'
+                      bindchange="swiperChange">
+                      <ui-ex-swiper-item ui:for="{{items}}" class=""
+                          ui:for-item="item" ui:for-index="index"
+                          style="{{ {'background-image':'url('+item.src+')'} }}">
+                        <ui-view class="swiperbox">
+                          <ui-view class="name">{{item.name}}</ui-view>
+                          <ui-view class="mess">{{item.mess}}</ui-view>
+                        </ui-view>
+                      </ui-ex-swiper-item>
+                    </ui-ex-swiper>
                 </ui-view>
                 <ui-view class="boxSty">
                     <ui-view ui:if="{{timelineNext==0}}">
@@ -146,7 +146,7 @@
 
 
 
-                            <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['1'].cj1!==''}}">
+                            <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['1'] && examInfo['1'].cj1!==''}}">
                                   <ui-view class="box_row_100 kcBoxBodyTiT">
                                         <ui-view>
                                             第一次考试 
@@ -159,7 +159,7 @@
                                     <ui-circular
                                       radius=35
                                       color="{{examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
-                                      value="70"
+                                      value="{{examInfo['1'].cj1}}"
                                       line-width="4"
                                       line-cap="round"
                                       ></ui-circular>
@@ -185,17 +185,17 @@
                                   <ui-view class="fs">
                                     <ui-circular
                                       radius=35
-                                      color="{{examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
-                                      value="70"
+                                      color="{{examInfo['1'].cj2 >= 90 ? '#1ec695' : '#f00'}}"
+                                      value="{{examInfo['1'].cj2}}"
                                       line-width="4"
                                       line-cap="round"
                                       ></ui-circular>
-                                      <ui-view class="fs_chil_box" style="{{ {color:examInfo['1'].cj1 >= 90 ? '#1ec695' : '#f00'} }}">
+                                      <ui-view class="fs_chil_box" style="{{ {color:examInfo['1'].cj2 >= 90 ? '#1ec695' : '#f00'} }}">
                                             <ui-view class="fs_va">
-                                              {{examInfo['1'].cj1}}分
+                                              {{examInfo['1'].cj2}}分
                                             </ui-view>
                                             <ui-view class="fs_typ">
-                                              {{examInfo['1'].cj1 >= 90 ? '合格' : '不合格'}}
+                                              {{examInfo['1'].cj2 >= 90 ? '合格' : '不合格'}}
                                             </ui-view> 
                                       </ui-view>
                                   </ui-view>
@@ -266,7 +266,7 @@
                                   </ui-view>
                               </ui-view>
 
-                              <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['2']}}">
+                              <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['2'] && examInfo['2'].cj1!==''}}">
                                     <ui-view class="box_row_100 kcBoxBodyTiT">
                                           <ui-view>
                                               第一次考试 
@@ -279,7 +279,7 @@
                                       <ui-circular
                                         radius=35
                                         color="{{examInfo['2'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
-                                        value="70"
+                                        value="{{examInfo['2'].cj1}}"
                                         line-width="4"
                                         line-cap="round"
                                         ></ui-circular>
@@ -289,6 +289,33 @@
                                               </ui-view>
                                               <ui-view class="fs_typ">
                                                 {{examInfo['2'].cj1 >= 90 ? '合格' : '不合格'}}
+                                              </ui-view> 
+                                        </ui-view>
+                                    </ui-view>
+                              </ui-view>
+                              <ui-view class="kcBoxBody box_row" ui:if="{{examInfo['2'] && examInfo['2'].cj1 < 90 && examInfo['2'].cj2!==''}}">
+                                    <ui-view class="box_row_100 kcBoxBodyTiT">
+                                          <ui-view>
+                                              第二次考试 
+                                          </ui-view>
+                                          <ui-view>
+                                              {{examInfo['2'].ykSj}}
+                                          </ui-view>
+                                    </ui-view>
+                                    <ui-view class="fs">
+                                      <ui-circular
+                                        radius=35
+                                        color="{{examInfo['2'].cj2 >= 90 ? '#1ec695' : '#f00'}}"
+                                        value="{{examInfo['2'].cj2}}"
+                                        line-width="4"
+                                        line-cap="round"
+                                        ></ui-circular>
+                                        <ui-view class="fs_chil_box" style="{{ {color:examInfo['2'].cj2 >= 90 ? '#1ec695' : '#f00'} }}">
+                                              <ui-view class="fs_va">
+                                                {{examInfo['2'].cj2}}分
+                                              </ui-view>
+                                              <ui-view class="fs_typ">
+                                                {{examInfo['2'].cj2 >= 90 ? '合格' : '不合格'}}
                                               </ui-view> 
                                         </ui-view>
                                     </ui-view>
@@ -343,7 +370,7 @@
                                   </ui-view>
                               </ui-view>
 
-                              <ui-view class="kcBoxBody box_row"  ui:if="{{examInfo['3']}}">
+                              <ui-view class="kcBoxBody box_row"  ui:if="{{examInfo['3'] && examInfo['3'].cj1!==''}}">
                                     <ui-view class="box_row_100 kcBoxBodyTiT">
                                           <ui-view>
                                               第一次考试 
@@ -356,7 +383,7 @@
                                       <ui-circular
                                         radius=35
                                         color="{{examInfo['3'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
-                                        value="70"
+                                        value="{{examInfo['3'].cj1}}"
                                         line-width="4"
                                         line-cap="round"
                                         ></ui-circular>
@@ -366,6 +393,33 @@
                                               </ui-view>
                                               <ui-view class="fs_typ">
                                                 {{examInfo['3'].cj1 >= 90 ? '合格' : '不合格'}}
+                                              </ui-view> 
+                                        </ui-view>
+                                    </ui-view>
+                              </ui-view>
+                              <ui-view class="kcBoxBody box_row"  ui:if="{{examInfo['3'] && examInfo['3'].cj1 < 90 && examInfo['3'].cj2!==''}}">
+                                    <ui-view class="box_row_100 kcBoxBodyTiT">
+                                          <ui-view>
+                                              第一次考试 
+                                          </ui-view>
+                                          <ui-view>
+                                              {{examInfo['3'].ykSj}}
+                                          </ui-view>
+                                    </ui-view>
+                                    <ui-view class="fs">
+                                      <ui-circular
+                                        radius=35
+                                        color="{{examInfo['3'].cj2 >= 90 ? '#1ec695' : '#f00'}}"
+                                        value="{{examInfo['3'].cj2}}"
+                                        line-width="4"
+                                        line-cap="round"
+                                        ></ui-circular>
+                                        <ui-view class="fs_chil_box" style="{{ {color:examInfo['4'].cj2 >= 90 ? '#1ec695' : '#f00'} }}">
+                                              <ui-view class="fs_va">
+                                                {{examInfo['3'].cj2}}分
+                                              </ui-view>
+                                              <ui-view class="fs_typ">
+                                                {{examInfo['3'].cj2 >= 90 ? '合格' : '不合格'}}
                                               </ui-view> 
                                         </ui-view>
                                     </ui-view>
@@ -416,9 +470,7 @@
                                   </ui-view>
                               </ui-view>
 
-
-
-                              <ui-view class="kcBoxBody box_row"  ui:if="{{examInfo['4']}}">
+                              <ui-view class="kcBoxBody box_row"  ui:if="{{examInfo['4'] && examInfo['4'].cj1!==''}}">
                                     <ui-view class="box_row_100 kcBoxBodyTiT">
                                           <ui-view>
                                               第一次考试 
@@ -431,7 +483,7 @@
                                       <ui-circular
                                         radius=35
                                         color="{{examInfo['4'].cj1 >= 90 ? '#1ec695' : '#f00'}}"
-                                        value="70"
+                                        value="{{examInfo['4'].cj1}}"
                                         line-width="4"
                                         line-cap="round"
                                         ></ui-circular>
@@ -441,6 +493,33 @@
                                               </ui-view>
                                               <ui-view class="fs_typ">
                                                 {{examInfo['4'].cj1 >= 90 ? '合格' : '不合格'}}
+                                              </ui-view> 
+                                        </ui-view>
+                                    </ui-view>
+                              </ui-view>
+                              <ui-view class="kcBoxBody box_row"  ui:if="{{examInfo['4'] && examInfo['4'].cj1 < 90 && examInfo['4'].cj2!==''}}">
+                                    <ui-view class="box_row_100 kcBoxBodyTiT">
+                                          <ui-view>
+                                              第一次考试 
+                                          </ui-view>
+                                          <ui-view>
+                                              {{examInfo['4'].ykSj}}
+                                          </ui-view>
+                                    </ui-view>
+                                    <ui-view class="fs">
+                                      <ui-circular
+                                        radius=35
+                                        color="{{examInfo['4'].cj2 >= 90 ? '#1ec695' : '#f00'}}"
+                                        value="{{examInfo['4'].cj2}}"
+                                        line-width="4"
+                                        line-cap="round"
+                                        ></ui-circular>
+                                        <ui-view class="fs_chil_box" style="{{ {color:examInfo['4'].cj2 >= 90 ? '#1ec695' : '#f00'} }}">
+                                              <ui-view class="fs_va">
+                                                {{examInfo['4'].cj2}}分
+                                              </ui-view>
+                                              <ui-view class="fs_typ">
+                                                {{examInfo['4'].cj2 >= 90 ? '合格' : '不合格'}}
                                               </ui-view> 
                                         </ui-view>
                                     </ui-view>
@@ -463,6 +542,7 @@ export default {
     title:'学车',
     backgroundColor:'#fff',
     delay:false,//延迟加载
+    cache:true
   },
   components: {
     mystar
@@ -701,17 +781,17 @@ export default {
 .swiper-pagination-bullets{
   display: none;
 }
-  .swiperbox{
-    color:#fff;
-    margin: 15rpx 0;
-    .name{
-      padding: 15rpx;
-    }
-    .mess{
-      padding: 0 0 15rpx 0;
-      font-size: 28rpx;
-    }
+.swiperbox{
+  color:#fff;
+  margin: 15rpx 0;
+  .name{
+    padding: 15rpx;
   }
+  .mess{
+    padding: 0 0 15rpx 0;
+    font-size: 28rpx;
+  }
+}
 .slboxSty{
   border:#c5c5c5 4rpx solid;
   border-radius:12rpx; 
@@ -870,3 +950,10 @@ export default {
   }
 }
 </style>
+
+// navigationBarBackgroundColor:"#26a2ff",
+//     navigationBarTextStyle:"white",
+//     navigationBarTitleText:"学员进度",
+//     title:'学员进度',
+//     backgroundColor:'#f2f2f2',
+//     delay:false,//延迟加载
