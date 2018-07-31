@@ -101,7 +101,7 @@ export default {
 
       zyMess:{},//专员信息
 
-      myTeamMess:{},//团队信息传值-查看学院进度
+      myTeamMess:'',//团队信息传值-查看学院进度
 
 
 
