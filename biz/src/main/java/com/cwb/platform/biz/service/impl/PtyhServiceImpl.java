@@ -184,7 +184,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     public boolean fillPagerCondition(LimitedCondition condition) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String rz = request.getParameter("rz");
-        String zylx = request.getParameter("zylx");
+        String zylx = request.getParameter("zylx");//查询用户受理状态
         String zylxPager = request.getParameter("zylxPager");
         if (StringUtils.isNotBlank(rz)) { // 若不为空则为学员认证列表
             condition.and().andIsNotNull("yhZjhm");
@@ -1673,6 +1673,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         BizUser bizUser = userService.findById(currentUser.getId());
         BizYhpf yhpf = new BizYhpf();
+        yhpf.setYhId(bizUser.getYhId());
         addBizjls(bizJls, yhpf, bizUser.getYhJlid(),"0");  // 受理专员
         addBizjls(bizJls, yhpf, bizUser.getYhJlid1(),"1");  // 科目一
         addBizjls(bizJls, yhpf, bizUser.getYhJlid2(),"2");// 科目二
