@@ -560,7 +560,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
             billContrastMapper.resettingOrderBillContrast(billDate);
         }
 //        3、下载对账文件
-        if(StringUtils.equals(payTpye,"2")){
+        if(StringUtils.equals(payTpye,"2")){//支付通道(ZDCLK0038 1、支付宝  2、微信  3、银联  4、快钱……)
 //        3-1、下载微信对账文件
             ApiResponse<String>  wxBill=this.wxDownloadBill(billDate);
             if(wxBill.getCode() != 200){
@@ -573,6 +573,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
 //            3-2-3解压zip 文件，获取出对账文件
 //            3-2-4找到出对账文件
 //            3-2-5读取出账单信息
+
 
         }
 

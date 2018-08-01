@@ -5,6 +5,8 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
+import com.cwb.platform.biz.model.BizBillContrast;
+import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.util.commonUtil.FileUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.zip.ZipEntry;
@@ -12,6 +14,7 @@ import org.apache.tools.zip.ZipFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -27,10 +30,13 @@ import java.util.List;
 /** 支付宝 对账方法
  * Created by Administrator on 2018/7/30.
  */
-public class AlipayBillServiceImpl {
+public class AlipayBillServiceImpl extends BaseServiceImpl {
 
     Logger logger = LoggerFactory.getLogger("access_info");
-
+    @Override
+    protected Mapper getBaseMapper() {
+        return null;
+    }
 
     //  应用id(app_id)
     @Value("${alipay.app_id}")
@@ -156,11 +162,16 @@ public class AlipayBillServiceImpl {
     }
 
     public static void main(String[] args) {
-        try {
-//            readZipCvsFile(new File("C:\\Users\\Administrator\\Desktop\\2003\\20886126836996110156_20160906.zip"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+////            readZipCvsFile(new File("C:\\Users\\Administrator\\Desktop\\2003\\20886126836996110156_20160906.zip"));
+//            downloadAlipayBills("","","");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+       String csvRowContent="支付宝交易号,商户订单号,业务类型,商品名称,创建时间,完成时间,交易门店,操作员,终端号,对账账户,订单金额,交易金额,红包抵扣,集分宝抵扣,优惠汇总,卡消费金额,卷核销金额,商家红包,退款批次号,服务费,分润,备注";
+        String [] csvColumnArray = csvRowContent.split(",");
+        String totalFee = String.valueOf(Math.abs(Double.parseDouble(csvColumnArray[12].trim())));//红包抵扣
     }
 
 //    public static void readZipCvsFile(File file) throws Exception {
@@ -207,35 +218,37 @@ public class AlipayBillServiceImpl {
      * 2017年7月18日 上午11:44:10
      */
     @SuppressWarnings("unchecked")
-    public void downloadAlipayBills(String alipayBillDownloadUrl,String tradeDate,String mch) throws Exception {
-        URL url = new URL(alipayBillDownloadUrl);
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setConnectTimeout(5 * 1000);
-        // 1 读取压缩文件流
-        InputStream inputStream = conn.getInputStream();
-        if(null==inputStream){
-            logger.info("商户号:"+mch+",获取对账单文件流为空！");
-            return;
-        }
-        File tempFile = new File("temp");
-        FileOutputStream fos = new FileOutputStream(tempFile);
-        int len = -1;
-        byte[] b = new byte[1024];
-        while ((len = inputStream.read(b)) > -1) {
-            fos.write(b, 0, len);
-        }
-        fos.close();
-        inputStream.close();
+    public static void downloadAlipayBills(String alipayBillDownloadUrl, String tradeDate, String mch) throws Exception {
+//        URL url = new URL(alipayBillDownloadUrl);
+//        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+//        conn.setRequestMethod("GET");
+//        conn.setConnectTimeout(5 * 1000);
+//        // 1 读取压缩文件流
+//        InputStream inputStream = conn.getInputStream();
+//        if(null==inputStream){
+//            logger.info("商户号:"+mch+",获取对账单文件流为空！");
+//            return;
+//        }
+//        File tempFile = new File("temp");
+//        FileOutputStream fos = new FileOutputStream(tempFile);
+//        int len = -1;
+//        byte[] b = new byte[1024];
+//        while ((len = inputStream.read(b)) > -1) {
+//            fos.write(b, 0, len);
+//        }
+//        fos.close();
+//        inputStream.close();
         // 2 解压
-        ZipFile zipFile = new ZipFile(tempFile, "gbk");
+//        ZipFile zipFile = new ZipFile(tempFile, "gbk");
+        ZipFile zipFile = new ZipFile(new File("C:\\Users\\Administrator\\Desktop\\2003\\222\\20886126836996110156_20160906-2.zip"), "gbk");
         Enumeration<ZipEntry> zList=zipFile.getEntries();
         while(zList.hasMoreElements()){
             ZipEntry ze =(ZipEntry)zList.nextElement();
-            if(ze.isDirectory() || !ze.getName().endsWith("业务明细.csv")){//为空的文件夹什么都不做
+            if(ze.isDirectory() || !ze.getName().endsWith("业务明细.csv")){//为空的文件夹什么都不做 将汇总的文件也给删除掉
             }else{
                 List<String> csvContentList = new ArrayList<String>();
-                logger.info("文件:"+ze.getName()+",大小:"+ze.getSize()+"bytes");
+//                logger.info("文件:"+ze.getName()+",大小:"+ze.getSize()+"bytes");
+                System.out.println("文件:"+ze.getName()+",大小:"+ze.getSize()+"bytes");
                 if(ze.getSize()>0){
                     BufferedReader reader = null;
                     try {
@@ -243,14 +256,16 @@ public class AlipayBillServiceImpl {
                         String line=null;
                         while((line=reader.readLine())!=null){
                             csvContentList.add(line);
+                            System.out.println(line);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }finally{
                         reader.close();
                     }
-                    logger.info("文件:"+ze.getName()+",条数:"+csvContentList.size());
-                    if(null!=csvContentList && !csvContentList.isEmpty()){
+//                    logger.info("文件:"+ze.getName()+",条数:"+csvContentList.size());
+                    System.out.println("文件:"+ze.getName()+",条数:"+csvContentList.size());
+                    if(null!=csvContentList && !csvContentList.isEmpty()){//账单的文件是否存在。
 //                        List<String> oldList = alipayAccountDao.getAlipayAccountByDate(tradeDate);
 //                        saveAlipayBills(csvContentList,oldList,mch);
                     }
@@ -258,7 +273,7 @@ public class AlipayBillServiceImpl {
             }
         }
         zipFile.close();
-        tempFile.delete();
+//        tempFile.delete();
     }
 
     /**
@@ -271,15 +286,20 @@ public class AlipayBillServiceImpl {
      * 2017年8月1日 下午2:43:36
      */
     private void saveAlipayBills(List<String> csvContentList,List<String> oldList,String mch) throws Exception{
-//        for(int i=5;i<csvContentList.size();i++){
-//            String csvRowContent = csvContentList.get(i);
-//            if(csvRowContent.indexOf("业务明细列表结束")!=-1){
-//                break;
-//            }
+        for(int i=5;i<csvContentList.size();i++){
+            String csvRowContent = csvContentList.get(i);
+            if(csvRowContent.indexOf("业务明细列表结束")!=-1){
+                break;
+            }
+            BizBillContrast bizBill= new BizBillContrast();
+            bizBill.setId(genId());
+            bizBill.setOriginalMessage(csvRowContent);
+//            bizBill.setTradeTime(billDate);
+//
 //            AccountQueryAccountLogVO vo = new AccountQueryAccountLogVO();
 //            vo.setAlipayID(UUIDGenerator.getUUID());
 //            String [] csvColumnArray = csvRowContent.split(",");
-//            String totalFee = String.valueOf(Math.abs(Double.parseDouble(csvColumnArray[12].trim())));
+//            String totalFee = String.valueOf(Math.abs(Double.parseDouble(csvColumnArray[12].trim())));//红包抵扣
 //            vo.setSellerAccount(mch);
 //            vo.setPartnerId(mch);
 //            vo.setCurrency("156");
@@ -306,7 +326,7 @@ public class AlipayBillServiceImpl {
 //            if (!oldList.contains(vo.getTradeNo())) {
 //                alipayAccountDao.insertAlipayAccount(vo);
 //            }
-//        }
+        }
     }
 
 
