@@ -126,7 +126,6 @@ public class YhpfServiceImpl extends BaseServiceImpl<BizYhpf,String> implements 
         if(userMessage!=null){
             entity.setJlId(jlId);
             entity.setAuditType(1);
-           //entity.setJlId(userMessage.getYhJlid());
         }else{
             return ApiResponse.success(new BizYhpf());
         }
