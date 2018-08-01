@@ -96,12 +96,12 @@ export default {
       
       QRpage:'/pages/index',//我的邀请码返回页面地址
     
-      bankIndex:3,//银行卡列表索引
+      bankIndex:0,//银行卡列表索引
       banklist:[],//银行卡列表
 
       zyMess:{},//专员信息
 
-      myTeamMess:{},//团队信息传值-查看学院进度
+      myTeamMess:'',//团队信息传值-查看学院进度
 
 
 

@@ -29,7 +29,7 @@
             <ui-view class="funcFloat box_row">
                 <ui-view class="box_row_100" bindtap="goBill">
                   <ui-view class="itemVal">
-                      0元
+                      {{zhYE.yhZhye/100 | yhZhye}}元
                   </ui-view>
                   <ui-view class="itemTxt">
                       累计奖励
@@ -37,7 +37,7 @@
                 </ui-view>
                 <ui-view class="box_row_100" style="text-align:center" bindtap="goMyTeam">
                   <ui-view class="itemVal">
-                      0人
+                      {{usermess.userInviteCount}}人
                   </ui-view>
                   <ui-view class="itemTxt">
                       已邀请
@@ -135,8 +135,7 @@
         </ui-scroll-view>
       </ui-view>
     </ui-popup>
-
-  </ui-page>
+   </ui-page>
 </template>
 
 <script>
@@ -154,6 +153,10 @@ export default {
   mixins:[mixin],
   data () {
     return {
+      usermess:'',
+      zhYE: {
+        yhZhye: 0
+      },
       tabsIndex:0,
 
       popupshow:false,
@@ -197,6 +200,17 @@ export default {
     }
   },
   methods: {
+    getYE(callback) {//获取账户余额
+      var v = this
+      this.$http('POST',ui.getApp().apis.USERZH,{},(res)=>{
+          if(res.code==200){
+            v.zhYE.yhZhye = res.result.yhZhye
+            callback && callback(true)
+          }else{
+            ui.showToast({ title:res.message})
+          }
+      })
+    },
     handleLoadMore () {
       ui.showToast({
           title: '上拉'
@@ -250,6 +264,10 @@ export default {
       )
     },
     qrcode(){
+      if(this.usermess.ddSfjx!='1'){
+          ui.showToast({ title: '请先缴费' })
+          return
+      }
       ui.getApp().QRpage = '/pages/index'
       ui.navigateTo(
         {
@@ -294,37 +312,18 @@ export default {
   },
   created () {
     var v = this
-    // sessionStorage.setItem('first',true)
+    this.getYE()
+    this.getUserMess((res)=>{
+      this.usermess = res
+    })
     this.getSwiperImg()
     if(localStorage.getItem("projectType") == 'true'){
       v.getGpsCode()
     }else{
       v.XLC()
     }
-
-  
-    // if(localStorage.getItem("projectType") == 'true'){//微信
-    //   v.getGpsCode()
-    //   clearTimeout()
-    //   return
-    // }else{//延时判断--微信--app
-    //   ui.showLoading({
-    //     text: '数据加载中'
-    //   })
-    //   setTimeout(()=>{
-    //     ui.hideLoading()
-    //     ui.showToast({ title: '数据加载成功', icon: 'success'})
-    //     if(localStorage.getItem("projectType") == 'true'){
-    //       v.getGpsCode()
-    //     }else{
-    //       v.XLC()
-    //     }
-    //   },1.5*1000)
-    // }
-
   },
   mounted() {
-    // sessionStorage.setItem('first',false)
   }
 }
 

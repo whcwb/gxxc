@@ -18,6 +18,9 @@
     <vuesigncanvas :options="options" 
     @result="saveResult" @clear="clear" >
     </vuesigncanvas>
+     <ui-fixed-view top="50" left="10">
+      <ui-view class="titColor">请将手机横屏放置</ui-view>
+    </ui-fixed-view>
   </ui-page>
 </template>
 
@@ -70,5 +73,8 @@ export default {
 </script>
 
 <style lang="less">
-
+.titColor{
+  font-size: 30rpx;
+  color:#FFA060;
+}
 </style>

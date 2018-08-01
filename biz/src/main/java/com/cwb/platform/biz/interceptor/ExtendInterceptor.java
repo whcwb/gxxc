@@ -22,6 +22,7 @@ public class ExtendInterceptor extends BaseWebConfigure {
 				.excludePathPatterns("/app/login","/app/ptyh/save","/app/ptyh/wxlogin","/app/sendSMSzc"
 						,"/app/sendSMScz"
 						,"/app/yzyym"
+						,"/app/hd/pager"
 						,"/app/zjupload"
 						,"/app/cd/xlcpager"
 						,"/app/cd/kcpager"

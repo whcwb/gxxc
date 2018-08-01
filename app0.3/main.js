@@ -54,23 +54,12 @@ ui.extend({
                   localStorage.setItem("openid",res);//存储openid
                   ui.getApp().wxUtil.initConfig();//执行 微信 config
               });
-
-              // if (typeof ui.getApp().appTypeCallback == 'function'){
-              //   ui.getApp().appTypeCallback('wx');
-              // }
-
             }else{
-                  if(typeof ui.getApp().wxUtil.afterReady == 'function'){
-                    ui.getApp().wxUtil.afterReady('app');
-                  }
-
-              // if (typeof ui.getApp().appTypeCallback == 'function'){
-              //   ui.getApp().appTypeCallback('app');
-              // }
+              return 
             }
         }
     },
-    projectType(){//获取项目类型
+    projectType(){//获取项目类型 true 微信  false app
       return localStorage.getItem('projectType')
     },
     getUser(){//获取用户信息

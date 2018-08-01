@@ -155,7 +155,8 @@ export default {
       var v = this
       this.$http('POST',ui.getApp().apis.IDRZ,{'imgList':v.form.imgList.join(',')},(res)=>{
         if(res.code==200){
-          // v.rz()
+          ui.showToast({ title: '认证成功' })
+          ui.navigateBack()
         }else {
           ui.showToast({ title: res.message })
         }

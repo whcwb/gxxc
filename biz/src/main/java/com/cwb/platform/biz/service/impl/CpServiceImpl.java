@@ -146,6 +146,7 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
         condition.eq(BizCp.InnerColumn.cpType, entity.getCpType());
         List<BizCp> cpList=this.findByCondition(condition);
         if(cpList!=null&&cpList.size()>0){
+            newBizCp.setCpXx(cpList.get(0).getCpXx());
             newBizCp.setCpXyJson(cpList.get(0).getCpXyJson());
         }
 

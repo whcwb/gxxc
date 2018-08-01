@@ -103,7 +103,7 @@ wechatUtil.checkJsApi = ()=>{
   });
 };
 wx.ready(function(){
-    localStorage.setItem("projectType",true)
+    localStorage.setItem("projectType",true)//微信js加载成功
     if (typeof wechatUtil.afterReady == 'function'){
         wechatUtil.afterReady('wx');
         return;
