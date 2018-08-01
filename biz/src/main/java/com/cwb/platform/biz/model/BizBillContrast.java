@@ -101,6 +101,8 @@ RECHARGE_REFUND，返回当日充值退款订单
      * 对账文件的原始报文
         微信端的报文文档：
         https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6
+     支付宝的报文文档：
+     https://docs.open.alipay.com/204/106262/
      */
     @Column(name = "ORIGINAL_MESSAGE")
     private String originalMessage;

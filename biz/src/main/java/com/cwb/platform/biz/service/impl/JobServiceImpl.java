@@ -514,7 +514,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                 bizBill.setTransactionId(transactionId);//支付凭证ID
                 bizBill.setOrderId(l.getOutTradeNo());
                 if(StringUtils.isEmpty(tradeState)){
-                    bizBill.setDisposeMessage("该账单的-交易状态 类型没有处理，止条交易状态跳过处理");
+                    bizBill.setDisposeMessage("该账单的-交易状态 类型没有处理，此条交易状态跳过处理");
                     bizBill.setDisposeType("0");//处理状态 0处理失败  1 成功
                 }
                 addBizBillList.add(bizBill);
