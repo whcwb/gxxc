@@ -1,0 +1,218 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+    <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+
+        <ui-view class="bankCard paddLR">
+          <ui-view ui:if="bankList.length==0" class='addBankList' bindtap="addbankCard">
+              点我<ui-text class="Add">添</ui-text>加银行卡
+          </ui-view>
+          <ui-row ui:else bindtap="gobankList">
+              <ui-col>
+                  <ui-image src="{{bankList[banlIndex].yhkLogo}}"
+                    height="40"></ui-image>
+          
+                  <ui-view class="bankCardNumber">
+                    {{bankList[banlIndex].yhkKh}}
+                  </ui-view>
+              </ui-col>
+              <ui-col width="30" vertical-align="middle" align="right">
+                      <ui-icon type="right" size="34" color="#b5b5b5"></ui-icon>
+              </ui-col>
+          </ui-row>
+        </ui-view>
+
+      
+        <ui-view class="paddLR">
+            <!-- <ui-view>提现金额</ui-view> -->
+            <ui-row>
+                <ui-col align="left">
+                    提现金额
+                </ui-col>
+                <ui-col align="right">
+                  <ui-button type="primary" size="mini" bindtap="txmoney = ye">全部提现</ui-button>
+                </ui-col>
+            </ui-row>
+            <ui-row border-bottom=true space-bottom='10'>
+                <ui-col width="40" vertical-align="bottom">
+                  <ui-icon type="ico-money" size="32" color="#000"></ui-icon>
+                </ui-col>
+                <ui-col vertical-align="bottom">
+                  <ui-virtual-input ref="virtual" ui:model="{{ txmoney }}" 
+                  type="digital" placeholder="请输入您要提现的金额"
+                  cursor-color="#26a2ff" focus bindinput="bindinput"></ui-virtual-input>
+                </ui-col>
+            </ui-row>
+            <ui-row ui:if="{{!tostYe}}">
+                <ui-col width="40">
+                    余额:
+                </ui-col>
+                <ui-col>
+                  {{ye}}
+                </ui-col>
+
+            </ui-row>
+            <ui-view ui:else class="yeTostSty">
+                金额已超过提现余额！ 
+            </ui-view>
+        </ui-view>
+
+        <ui-view class="box_col_100"></ui-view>
+        <ui-view class='txButSty'>
+            <ui-button type="primary" bindtap="TX">提现</ui-button>
+        </ui-view>
+    
+    </ui-view>
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"提现",
+    title:'提现',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
+  },
+  data() {
+    return {
+      txmoney: '',
+      tostYe:false,
+      ye:'0.00',
+      banlIndex:ui.getApp().bankIndex,
+      bankList:[]
+    }
+  },
+  watch:{
+  },
+  methods: {
+    addbankCard(){
+      ui.navigateTo(
+          {
+            url:'/pages/tx/pages/addBankCard'
+          }
+        )
+    },
+    zhye() {
+      this.$http('POST',ui.getApp().apis.USERZH,{},(res)=>{
+        if (res.code == 200) {
+          if(res.result.yhZhye == 0){
+            this.ye = '0.00'
+          }else{
+            this.ye = (res.result.yhZhye/100).toString()
+          }
+        }
+      })
+    },
+    bindinput(e){
+        this.ye = parseFloat(this.ye)
+        e=parseFloat(e)
+        if(e>this.ye){
+          this.tostYe = true
+          return
+        }
+        
+        this.tostYe = false
+        
+    },
+    gobankList(){
+      ui.redirectTo(
+        {
+            url:'pages/bankCardlist'
+          }
+      )
+      // ui.navigateTo(
+      //     {
+      //       url:'pages/bankCardlist'
+      //     }
+      //   )
+    },
+    getBankList(){
+      this.$http('POST',ui.getApp().apis.BANKLIST,{},(res)=>{
+          if(res.code == 200 && res.result){
+            console.log(res);
+            res.result.forEach((item,index) => {
+              if(index==ui.getApp().bankIndex){
+                item.checked = true
+              }else{
+                item.checked = false
+              }
+              item.swipeOutVal = 'off'
+            });
+            this.bankList = res.result
+          }
+      })
+    },
+    TX() {//                                             银行卡号          开户行         提现方式
+        var v = this
+        // let bank =v.bankList[v.bankListIndex].id
+        if (v.bankList.length == 0) {
+          ui.showToast({ title: '请绑定银行卡' })
+          return
+        }
+        if (this.txmoney) {
+          this.txmoney = parseInt(this.number)
+
+          this.$http('POST',ui.getApp().apis.TX,{'ttje': this.number * 100,'yhkid': v.bankList[v.banlIndex].id},(res)=>{
+              if (res.code == 200) {
+                ui.navigateTo(
+                  {
+                    url:'center/bill2'
+                  }
+                )
+              }
+              ui.showToast({ title: res.message })
+              v.txmoney = ''
+          })
+        } else {
+          ui.showToast({ title: '提现金额不能为空' })
+        }
+      },
+  },
+  mounted() {},
+  created () {
+    this.zhye()
+    this.getBankList()
+  }
+}
+</script>
+
+<style lang="less">
+  .addBankList{
+    text-align: right;
+     font-size: 26rpx; 
+     color:#ff550c;
+    .Add{
+      font-size: 32rpx;
+    }
+  }
+  .yeTostSty{
+    color:#f00;
+    font-size: 30rpx;
+  }
+  .txButSty{
+    padding: 25rpx;
+  }
+  .paddLR{
+    padding: 10rpx 25rpx;
+    background-color: #fff;
+    margin: 20rpx 0;
+  }
+  .bankCard{
+    .bankCardNumber{
+      padding-left: 25rpx;
+    }
+  }
+  .ui-virtual-input{
+    border: none;
+    height: 70rpx;
+    margin: 0;
+    padding: 0;
+    font-size: 45rpx;
+    .virtual-cursor , .virtual-value{
+      font-size: 45rpx;
+    }
+  }
+</style>

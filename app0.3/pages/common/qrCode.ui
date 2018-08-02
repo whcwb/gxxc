@@ -1,0 +1,124 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+      <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" width="60" bindtap="back">
+          <ui-icon type="left1" font-size="24"></ui-icon>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">邀请码</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
+    <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+      <ui-view class="box_col_auto codeBox">
+          <ui-view class="codeSty" style="{{ {'margin-top':martop + 'px'} }}">
+              <ui-view class="box_row">
+                <ui-view class="titImg">
+                    <ui-image src="static/img/login/logo.png"></ui-image>
+                </ui-view>
+                <ui-view class="box_row_100 userMessSty">
+                    <ui-view class="userName">
+                      用户:{{usermess.yhXm}}
+                    </ui-view>
+                    <ui-view class="phone">
+                      电话:{{usermess.yhZh}}
+                    </ui-view>
+                </ui-view>
+
+              </ui-view>
+
+              <ui-view class="codeImg">
+                  <ui-image :src="usermess.yhZsyqmImg" ></ui-image>
+              </ui-view>
+              
+              <ui-view class="welTxt">
+                扫一扫上面的二维码图案，加入我们吧
+                <ui-view>
+                  二维码有效期至
+                  <ui-view>
+                    {{usermess.yhYqmgqsj}}
+                  </ui-view>
+                </ui-view>
+              </ui-view>
+
+          </ui-view>
+
+        
+      </ui-view>
+    </ui-view>
+
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"邀请码",
+    title:'邀请码',
+    backgroundColor:'#232323',
+    delay:false,//延迟加载
+  },
+  data() {
+    return {
+      height:ui.DEFAULT_CONTENT_HEIGHT/3*2,
+      martop:ui.DEFAULT_CONTENT_HEIGHT/7,
+      usermess:{}
+    }
+  },
+  methods: {
+    back(){
+      ui.switchTab({
+        url: ui.getApp().QRpage
+      })
+    }
+  },
+  mounted() {},
+  created () {
+    this.usermess = this.getUser()
+  }
+}
+</script>
+
+<style lang="less">
+.codeBox{
+  padding: 0 38rpx;
+  .codeSty{
+    background:#fff;
+    padding: 20rpx;
+    .titImg{
+      margin-right: 10rpx;
+      background-color: antiquewhite;
+      img{
+        width: 130rpx;
+      }
+    }
+    .userMessSty{
+      .userName{
+        font-size: 28rpx;
+        font-weight: 600;
+        padding:15rpx 10rpx;
+      }
+      .phone{
+        font-size: 26rpx;
+        padding:0 10rpx;
+      }
+    }
+    .codeImg{
+      padding: 40rpx;
+      .ui-image{
+        width: 100%;
+      }
+    }
+    .welTxt{
+      text-align: center;
+      padding: 15rpx;
+    }
+  }
+}
+</style>

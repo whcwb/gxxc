@@ -129,7 +129,7 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
                         }else if(object instanceof Integer ){
                             error_code =object+"";
                         }else {
-                            error_code="未知错误";
+                            error_code="错误";
                         }
                     }
                 }catch (Exception e){}
@@ -152,7 +152,7 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
                     }else if(StringUtils.equals(image_status,"over_exposure")){//
                         image_message="身份证关键字段反光或过曝";
                     }else if(StringUtils.equals(image_status,"unknown")){//
-                        image_message="证件识别失败-未知状态";
+                        image_message="证件识别失败";
                     }
                     if(idCardSide.equals("front")){//身份证正面
                         String xm="",xb="",mz="",csrq="",cfzh="",zz="";
@@ -229,7 +229,7 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
                     }else if(object instanceof Integer ){
                         error_code =object+"";
                     }else {
-                        error_code="未知错误";
+                        error_code="错误";
                     }
                 }
             }catch (Exception e){}
@@ -253,11 +253,11 @@ public class WjServiceImpl extends BaseServiceImpl<BizWj,java.lang.String> imple
                 }catch (Exception e){}
                 if(StringUtils.isEmpty(bank_card_number)){
                     retType=false;
-                    retMap.put("image_message","未能识别出信息");
+                    retMap.put("image_message","未能识别出银行卡信息");
                 }
                 if(StringUtils.isEmpty(bank_name)){
                     retType=false;
-                    retMap.put("image_message","未能识别出信息");
+                    retMap.put("image_message","未能识别出银行卡信息");
                 }
                 retMap.put("bank_card_number",bank_card_number);//银行卡卡号
                 retMap.put("bank_name",bank_name);//银行名，不能识别时为空

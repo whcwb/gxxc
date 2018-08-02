@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -21,6 +22,11 @@ import java.util.Map;
 @Service
 public class WechatServiceImpl implements WechatService {
     Logger log = LoggerFactory.getLogger("access_info");
+    /**
+     * 客服电话
+     */
+    @Value("${custom_service_tel}")
+    private String customServiceTel;
 
     @Autowired
     private WxMpService wxService;
@@ -116,8 +122,12 @@ public class WechatServiceImpl implements WechatService {
             templateParam="{\"userName\":\"" + userName + "\",\"operator\":\"" + operator + "\",\"dates\":\"" + dates + "\",\"cpName\":\"" + cpName + "\",\"cpType\":\"" + cpType + "\",\"cpMoney\":\"" + cpMoney + "\",\"parameter\":\"" + parameter + "\",\"code\":\"" + code + "\"}";
             sendSmsMap.put("templateParam",templateParam);
         }else if(StringUtils.equals(templateType,"2")){
+//            String customServiceTel="4000170520";//客服电话
 //            会员缴费成功  恭喜您成功加入学车联盟平台，平台客服电话${tel}，如果您有疑问可以与我们取得联系！
             String tel=smsMap.get("tel");//专员姓名
+            if(StringUtils.isNotEmpty(customServiceTel)){
+                tel=customServiceTel;
+            }
             templateParam="{\"tel\":\"" + tel + "\"}";
             sendSmsMap.put("templateParam",templateParam);
         }

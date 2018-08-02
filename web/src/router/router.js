@@ -379,6 +379,13 @@ export let appRouter = [
                 meta: { title: '待确认' },
 				component: () => import('@/views/whdx/tx/wait-confirm.vue')
 			},
+			{
+				path: 'tk',
+				icon: 'android-clipboard',
+				name: 'tk',
+                meta: { title: '退款管理' },
+				component: () => import('@/views/whdx/tk')
+			},
 		]
 	},
     {

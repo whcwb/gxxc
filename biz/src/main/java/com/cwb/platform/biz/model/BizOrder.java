@@ -173,8 +173,21 @@ public class BizOrder implements Serializable {
      */
     @Transient
     private BizPtyh userDetail;
+    /**
+     * 支付通道，APP为1 为空的话，为空 或者为0 公众号支付
+     */
+    @Transient
+    private String payTypeApp;
 
     private static final long serialVersionUID = 1L;
+
+    public String getPayTypeApp() {
+        return payTypeApp;
+    }
+
+    public void setPayTypeApp(String payTypeApp) {
+        this.payTypeApp = payTypeApp;
+    }
 
     public String getAgreementImgList() {
         return agreementImgList;

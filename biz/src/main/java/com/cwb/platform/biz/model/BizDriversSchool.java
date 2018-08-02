@@ -1,8 +1,11 @@
 package com.cwb.platform.biz.model;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
+/**
+ * 驾校表
+ */
 @Table(name = "biz_drivers_school")
 public class BizDriversSchool implements Serializable {
     /**
@@ -187,7 +190,11 @@ public class BizDriversSchool implements Serializable {
 
     private Double lat;
     private Double lng;
-
+    /**
+     * 距离
+     */
+    @Transient
+    private Double distance;
     /**
      * 经办人
      */
@@ -263,6 +270,14 @@ public class BizDriversSchool implements Serializable {
     }
 
     private static final long serialVersionUID = 1L;
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
 
     /**
      * 获取驾校代码

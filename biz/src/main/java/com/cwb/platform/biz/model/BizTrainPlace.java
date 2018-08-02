@@ -12,7 +12,11 @@ public class BizTrainPlace implements Serializable {
     @Column(name = "place_id")
     @GeneratedValue(generator = "JDBC")
     private String placeId;
-
+    /**
+     * 区县行政区划代码
+     */
+    @Column(name = "region_code")
+    private String regionCode;
     /**
      * 驾校代码
      */
@@ -138,11 +142,21 @@ public class BizTrainPlace implements Serializable {
      */
     @Column(name = "place_coordinate")
     private String placeCoordinate;
-
+    /**
+     * GPS点位的距离
+     */
     @Transient
     private Double distance;
 
     private static final long serialVersionUID = 1L;
+
+    public String getRegionCode() {
+        return regionCode;
+    }
+
+    public void setRegionCode(String regionCode) {
+        this.regionCode = regionCode;
+    }
 
     /**
      * 获取驾校编号+两位编码
@@ -589,6 +603,7 @@ public class BizTrainPlace implements Serializable {
         schoolName("school_name"),
         placeBeianimg("place_beianImg"),
         approvedCarNum("approved_car_num"),
+        regionCode("region_code"),
         placeCoordinate("place_coordinate");
 
         private final String column;

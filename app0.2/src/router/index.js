@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import routers from './routers'
 import Util from '../libs/apis';
 import {Toast } from 'mint-ui';
+import wechatUtil from '../libs/wechatUtil'
 Vue.use(Router)
 
 const router = new Router({
@@ -12,16 +13,27 @@ router.beforeEach((to, from, next) => {
   console.log('去',to)
   // console.log('来',from)
   Util.title(to.meta.title);
-
   let openid = localStorage.getItem("openid");
   let ISLOGIN = sessionStorage.getItem("ISLOGIN");
+  // if(openid == null){
+  //     let authCode = wechatUtil.getQueryString("code");
+  //
+  //     if (!authCode){
+  //       this.wechatUtil.getCode();
+  //
+  //     }else{
+  //         wechatUtil.vueParent = this;
+  //         wechatUtil.getOpenid(authCode,(res)=>{
+  //         localStorage.setItem("openid",res);
+  //         sessionStorage.setItem("ISLOGIN",true);
+  //         wechatUtil.initConfig();
+  //       });
+  //     }
+  // }
+
     // openid = "123123";
     // ISLOGIN=true;
 
-  let userToken = localStorage.getItem("userMess");
-  //if(openid!=null && userToken){ ISLOGIN=true;}
-  //   console.log(openicd);
-  //
   // 如果没有openid，则需要获取
   if ((ISLOGIN == null || openid == null) &&  to.path != '/index') {
     next({

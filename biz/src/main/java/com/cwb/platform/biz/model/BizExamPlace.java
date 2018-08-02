@@ -1,7 +1,10 @@
 package com.cwb.platform.biz.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
-import javax.persistence.*;
 
 @Table(name = "biz_exam_place")
 public class BizExamPlace implements Serializable {
@@ -18,6 +21,11 @@ public class BizExamPlace implements Serializable {
      * 地址
      */
     private String address;
+    /**
+     *区县行政区划代码
+     */
+    private String regioncode;
+
 
     /**
      * 创建时间
@@ -42,6 +50,11 @@ public class BizExamPlace implements Serializable {
      * 纬度
      */
     private Double lng;
+    /**
+     * 距离
+     */
+    @Transient
+    private Double distance;
 
     private static final long serialVersionUID = 1L;
 
@@ -59,6 +72,22 @@ public class BizExamPlace implements Serializable {
 
     public void setLng(Double lng) {
         this.lng = lng;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public String getRegioncode() {
+        return regioncode;
+    }
+
+    public void setRegioncode(String regioncode) {
+        this.regioncode = regioncode;
     }
 
     /**
@@ -171,6 +200,7 @@ public class BizExamPlace implements Serializable {
         address("address"),
         cjsj("cjsj"),
         cjr("cjr"),
+        regioncode("regioncode"),
         kskm("kskm");
 
         private final String column;

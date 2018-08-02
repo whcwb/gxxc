@@ -1,72 +1,320 @@
 <template>
-    <ui-page top="0">
-      <ui-view class="user_content">
-        <ui-row height="150" class="header_top">
-          <ui-col vertical-align="middle" align="center" width="90">
-            <ui-view class="head_portrait">
+    <ui-page style="overflow-y: hidden;"  pull-down="{{ pullDown }}">
+      <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#3399FF'} }}">
+        <!-- <ui-row height="46">
+          <ui-col vertical-align="middle" align="center" width="60">
+          </ui-col>
+          <ui-col vertical-align="middle" align="center">
+            <ui-view class="nav_title">我的</ui-view>
+          </ui-col>
+          <ui-col vertical-align="middle" align="center" width="60">
+          </ui-col>
+        </ui-row> -->
+      </ui-nav-bar>
+      <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px','background-color':'#f2f2f2'} }}">
+            <ui-view class="box_col_auto">
+                <ui-view class="userTop">
+                  <ui-row>
+                    <ui-col span="2" align="left" 
+                      vertical-align="middle" bindtap="goMyMess">
+                        <ui-view class="pageHello">
+                          <ui-image src="{{usermess.yhTx}}" width="60" height="60" style="border-radius: 30px;"></ui-image> 
+                        </ui-view>  
+                    </ui-col>
+                    <ui-col span="7" align="left" vertical-align="middle" space-left="20">
+                      <ui-view class="pageHello" >
+                        <ui-row height=26>
+                            <ui-col span='4'>
+                                {{usermess.yhXm | yhXm}}
+                            </ui-col>
+                            <ui-col ui:if="{{usermess.ddSfjx=='1'}}" class="userTyp" span='8' vertical-align="bottom">
+                                <!-- <ui-text class="userTyp">  -->
+                                  {{usermess.yhLx | yhLx}}  
+                                <!-- </ui-text> -->
+                            </ui-col>
+                        </ui-row>
+                      </ui-view>
+                      <ui-view class="pageHello">{{usermess.yhZh}}</ui-view>
+                    </ui-col>
+                    <ui-col span="3" align="right" 
+                      vertical-align="middle" space-right="20"
+                      bindtap="qrcode">
+                      <ui-icon type="erweima" size="36" color="#fff"></ui-icon>
+                    </ui-col>
+                  </ui-row>
+                </ui-view>
+
+                <ui-view class="userItem marB25">
+                  <ui-row>
+                    <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                      <ui-view>{{zhYE.yhZhye/100 | yhZhye}}元</ui-view>
+                      <ui-view>账户余额</ui-view>
+                    </ui-col>
+                    <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                      <ui-view>{{zhYE.yhZhye/100 | yhZhye}}元</ui-view>
+                      <ui-view>邀请奖励</ui-view>
+                    </ui-col> 
+                    <ui-col span="3" align="left" vertical-align="middle" space-left="40">
+                      <ui-view>
+                        <ui-button type="primary" size="default" bindtap="goProductList">缴费</ui-button>
+                      </ui-view>
+                    </ui-col>
+                    <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                      <ui-view>
+                        <ui-button type="primary" size="default" bindtap="tx">提现</ui-button>
+                      </ui-view>
+                    </ui-col>
+                  </ui-row>
+                </ui-view>
+                
+
+                <ui-view class="userItem marB5" bindtap="goBill">
+                  <ui-row>
+                    <ui-col width='20' vertical-align="middle">
+                      <ui-icon type="wenjian1" size="15" color="#3399FF"></ui-icon>
+                    </ui-col>
+                    <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
+                          <ui-view class="ftWt">
+                                我的账单
+                          </ui-view>
+                    </ui-col>
+                    <ui-col align="right" vertical-align="middle" space-right="10">
+                      <ui-icon type="right" size="20" color="#3399FF"></ui-icon>
+                    </ui-col>
+                  </ui-row>
+                </ui-view>
+
+                <ui-view class="userItem marB5"  bindtap="goMyTeam">
+                  <ui-row>
+                    <ui-col width='20' vertical-align="middle">
+                      <ui-icon type="tuandui" size="18" color="#3399FF"></ui-icon>
+                    </ui-col>
+                    <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
+                          <ui-view class="ftWt">
+                            我的团队
+                          </ui-view>
+                    </ui-col>
+                    <ui-col align="right" vertical-align="middle" space-right="10">
+                      <ui-icon type="right" size="20" color="#3399FF"></ui-icon>
+                    </ui-col>
+                  </ui-row>
+                </ui-view>
+
+                <ui-view class="userItem marB5" bindtap="goReallyname">
+                  <ui-row>
+                    <ui-col width='20' vertical-align="middle">
+                      <ui-icon type="anquan" size="18" color="#3399FF"></ui-icon>
+                    </ui-col>
+                    <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
+                        <ui-view class="ftWt">
+                            实名认证
+                        </ui-view>
+                    </ui-col>
+                    <ui-col align="right" vertical-align="middle" space-right="20">
+                      {{usermess.yhZt | yhZt}}
+                    </ui-col>
+                    <ui-col width="20" align="right" vertical-align="middle" space-right="10">
+                      <ui-icon type="right" size="20" color="#3399FF"></ui-icon>
+                    </ui-col>
+                  </ui-row>
+                </ui-view>
+
+                <ui-mask ui:if="{{showMask}}" ui:model="showMask" effect="scale-in" hide-on-tap=true hide-on-touch=true
+                  bindtap="showMask = false">
+                        <ui-image 
+                          style="position: absolute;top: 45%;left: 50%;transform: translate(-50%,-50%);"
+                          src="http://www.520xclm.com:8001//QRCode/20180625/460765622230319888.png" width="300"></ui-image>
+                </ui-mask>
             </ui-view>
-            <ui-image
-            src="{{ portraitUrl }}"
-            mode='aspectFill'
-            width="60"
-            height="60"
-            class="head_portrait"
-            ></ui-image>
-          </ui-col>
-          <ui-col vertical-align="middle" align="left">
-            <ui-view class="login">立即登录</ui-view>
-            <ui-view class="login_after">登录后可享受更多特权</ui-view>
-          </ui-col>
-          <ui-col vertical-align="middle" align="right" width="50" space-right="15">
-            <ui-icon name="arrow-right" size="18" color="#fff"></ui-icon>
-          </ui-col>
-        </ui-row>
-        
+
+
       </ui-view>
     </ui-page>
 </template>
 
 <script>
+import mixin from '#/static/ajax/mixin'
 export default {
   config: {
-    "navigationStyle": 'custom',
-    navigationBarTextStyle: 'white',
-    backgroundColor: '#F4F4F4'
+    navigationStyle: 'custom',
+    navigationBarBackgroundColor:"#3399FF",
+    navigationBarTitleText: "我的",
+    navigationBarTextStyle:"white",
+    title:'我的',
+    backgroundColor:'#3399FF',
+    delay:false,//延迟加载
   },
+  mixins:[mixin],
   data () {
     return {
-      portraitUrl: require('#/images/portrait_bg.png')
+      showMask:false,
+      portraitUrl: require('#/images/portrait_bg.png'),
+      pullDown:{
+        distance: 100,
+        onActive:this.handleLoadMore
+      },
+      usermess:'',
+      zhYE: {
+        yhZhye: 0
+      },
+      mapMess:{}
     }
   },
-  methods: {
+  watch:{
 
+  },
+  methods: {
+      handleLoadMore(){
+        this.getUserMess()
+        this.getYE((res)=>{
+          ui.showToast({ title: '用户信息更新成功', icon: 'success' })
+        })
+      },
+      WxPay(){
+        ui.requestPayment({
+            target: 'wxpay',
+            statement: {
+                "appId":'wxb01394ea85904296',     //公众号名称，由商户传入
+                "timeStamp":v.payMess.timeStamp,         //时间戳，自1970年以来的秒数
+                "nonceStr":v.payMess.nonceStr, //随机串
+                "package":v.payMess.package,  //
+                "signType":v.payMess.signType,         //微信签名方式：
+                "paySign":v.payMess.paySign //微信签名
+            },
+            success: function() {
+                console.log('支付成功')
+            },
+            fail: function() {
+                console.log('支付失败')
+            }
+        })
+      },
+
+
+      goMyMess(){
+        ui.navigateTo(
+          {
+            url:'center/info'
+          }
+        )
+      },
+      qrcode(){
+        if(this.usermess.ddSfjx!='1'){
+            ui.showToast({ title: '请先缴费' })
+            return
+        }
+        ui.getApp().QRpage = '/pages/user'
+        ui.navigateTo(
+          {
+            url:'/pages/common/qrCode'
+          }
+        )
+      },
+      goMyTeam(){
+        ui.navigateTo({
+          url: 'center/myTeam2'
+        })
+      },
+      goBill(){
+        ui.navigateTo(
+          {
+            url:'center/bill2'
+          }
+        )
+      },
+      goReallyname(){
+        ui.navigateTo(
+          {
+            url:'center/reallyName'
+          }
+        )
+      },
+      goProductList(){
+        if(this.usermess.yhZt!= '1'){
+            ui.showToast({ title: '请先实名认证' })
+            return
+        }
+        ui.navigateTo(
+          {
+            url:'/pages/product/index'
+          }
+        )
+      },
+      tx(){
+        ui.navigateTo(
+          {
+            url:'tx/index'
+          }
+        )
+      },
+      getYE(callback) {//获取账户余额
+        var v = this
+        this.$http('POST',ui.getApp().apis.USERZH,{},(res)=>{
+            if(res.code==200){
+              v.zhYE.yhZhye = res.result.yhZhye
+              callback && callback(true)
+            }else{
+              ui.showToast({ title:res.message})
+            }
+        })
+      }
+  },
+  mounted () {
+  },
+  created () {
+    this.getYE()
+    this.getUserMess((res)=>{
+      this.usermess = res
+    })
   }
 }
 
 </script>
 
 <style lang="less">
-
-.nav_bar {
-    background: @theme-color;
-    .nav_title {
-        color: #fff;
-    }
+.userTyp{
+  font-size: 25rpx;
+  font-weight: 700;
+  color:#ff6000;
+}
+.ftWt{
+  font-weight: 700;
+  color:#656565;
+  font-size: 28rpx;
+}
+.userItem{
+  background: #fff;
+  padding: 20rpx 20rpx;
+}
+.marB25{
+  margin-bottom:25rpx;
+}
+.marB5{
+  margin-bottom:5rpx;
+}
+.userTop{
+  background: #3399FF;
+  padding: 35rpx 20rpx;
 }
 
-.header_top {
-    background: @theme-color;
-    .head_portrait {
-      border-radius: 50%; 
-    }
-    .login {
-      color: #fff;
-      font-size: 18px;
-    }
-    .login_after {
-        color: #fff;
-        font-size: 12px;
-    }
-}
 
+
+.pageHello{
+  font-size: 35rpx;
+  color: aliceblue;
+  width:100%;
+
+}
+.lmw{
+  background-color:"#3399FF"
+}
+.content{
+  .mix-flex-center();
+}
+.sliderContent{
+  padding:50px 50px 0px 50px;
+}
+.buttonContent{
+  padding:50px;
+}
 </style>

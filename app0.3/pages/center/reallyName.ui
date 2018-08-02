@@ -1,0 +1,221 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+      <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}" ui:if="{{userMess.yhZt=='-1'}}">
+        <ui-view class="box_row zjModule">
+
+            <ui-view class="box_row_100 moduleItem zjzm" bindtap="getImg(0,10)">
+                <ui-image src="{{imgList.zm}}" width="100%"></ui-image>
+            </ui-view>
+            <ui-view class="box_row_100 moduleItem zjfm" bindtap="getImg(1,11)">
+                <ui-image src="{{imgList.bm}}" width="100%"></ui-image>
+            </ui-view>
+
+        </ui-view>
+
+        <ui-view class="jszsty">
+          <ui-view class="box_row">
+              <ui-view class="box_row_100 titline" style="{{{color:switchVal ? '#26a2ff'  : '#868686'}}}">
+                 {{switchVal ? '有驾驶证'  : '无驾驶证'}}
+              </ui-view>
+              <ui-view ui:if="{{switchVal!=null}}">
+                  <ui-switch value="{{ switchVal }}" bindchange="(res)=>{switchVal = res}"></ui-switch>
+              </ui-view>
+          </ui-view>
+        </ui-view>
+
+        <ui-view class="butSty" bindtap="uploadMess">
+          <ui-button type="primary">提交</ui-button>
+        </ui-view>
+
+      </ui-view>
+      <ui-view class="box_col typbox" style="{{ { height: pageHeight(0)+ 'px'} }}" ui:else>
+
+          <ui-view ui:if="userMess.yhZt=='0'">
+              <ui-image src="static/img/zjsh/zjsh0.png"></ui-image>
+              <ui-view class="mess">
+                  审核中
+              </ui-view>
+          </ui-view>
+          <ui-view ui:elif="userMess.yhZt=='1'">
+              <ui-image src="static/img/zjsh/zjsh1.png"></ui-image>
+              <ui-view class="mess">
+                  审核通过
+              </ui-view>
+              <ui-view class="box_row" style="padding:0 25px">
+                  <ui-view class="box_row_100" style="margin:10px">
+                      <ui-button bindtap="goback">个人中心</ui-button>
+                  </ui-view>
+                  <ui-view class="box_row_100" style="margin:10px">
+                      <ui-button type="primary"
+                        bindtap="goproductList"
+                        ui:if="{{userMess.ddSfjx=='0'&&userMess.yhZt=='1'}}"
+                        >去交费</ui-button>
+                      <ui-button type="primary"
+                        ui:elif="{{userMess.ddSfjx=='1'}}"
+                        >已交费</ui-button>
+                  </ui-view>
+              </ui-view>
+          </ui-view>
+          <ui-view ui:elif="userMess.yhZt=='2'">
+              <ui-image src="static/img/zjsh/zjsh2.png"></ui-image>
+              <ui-view class="mess">
+                  审核驳回
+              </ui-view>
+              <ui-view>
+                {{userMess.yhZtMs}}
+              </ui-view>
+              <ui-view style="padding:0 15%">
+                 <ui-button type="primary" bindtap="userMess.yhZt='-1'">重新提交</ui-button>
+              </ui-view>
+          </ui-view>
+      </ui-view>
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationBarBackgroundColor:"#26a2ff",
+      navigationBarTextStyle:"white",
+      navigationBarTitleText:"实名认证",
+      title:'实名认证',
+      backgroundColor:'#f2f2f2',
+      delay:false,//延迟加载
+  },
+  data() {
+    return {
+      userMess:{},
+      form:{
+        imgList:['-','-','-','-']
+      },
+      imgList:{
+        zm:'static/img/home/id_03.png',
+        bm:'static/img/home/id_05.png'
+      },
+      switchVal:null,
+    }
+  },
+  watch:{
+    switchVal:function (n,o) {
+      console.log('----+++',n)
+      console.log(o)
+      let a = 0
+      if(o==null){
+        return
+      }
+      if (n) {
+        a=1
+      }
+      this.$http('post',ui.getApp().apis.JSZZP,{yhSfyjz:a},(res)=>{
+        ui.showToast({ title: res.message })
+      })
+    }
+  },
+  methods: {
+    goproductList(){//去产品列表
+      ui.navigateTo({
+        url: '/pages/product/index'
+      })
+    },
+    goback(){
+      ui.navigateBack()
+    },
+    getImg(val,fileType){
+      var v = this
+      ui.getApp().wxUtil.chooseImage((imgID)=>{
+        ui.getApp().wxUtil.uploadImage(imgID[0],(httpID)=>{
+          v.UPIMG(httpID.serverId,val,fileType)
+        })
+      })
+    },
+    UPIMG(id,val,Type){
+      var v = this
+      this.$http('POST',ui.getApp().apis.WXIMGUP,{code:id,fileType:Type},(res)=>{
+        if (res.code==200){
+          if(val==0){
+            v.imgList.zm = ui.getApp().apis.getImgUrl+res.result.filePath
+            v.form.imgList[val]=res.result.filePath
+          }else if(val==1){
+            v.imgList.bm = ui.getApp().apis.getImgUrl+res.result.filePath
+            v.form.imgList[val]=res.result.filePath
+          }
+
+        }else{
+          console.log('图片上传错误');
+          if(res.code==200){
+            // v.rz()
+          }else {
+            ui.showToast({ title: res.message })
+          }
+        }
+      })
+    },
+    uploadMess(){
+      var v = this
+      this.$http('POST',ui.getApp().apis.IDRZ,{'imgList':v.form.imgList.join(',')},(res)=>{
+        if(res.code==200){
+          ui.showToast({ title: '认证成功' })
+          ui.navigateBack()
+        }else {
+          ui.showToast({ title: res.message })
+        }
+      })
+    }
+  },
+  mounted() {},
+  created () {
+    this.userMess = this.getUser()
+    if (this.userMess.yhSfyjz==0){
+      this.switchVal = false
+    }else if(this.userMess.yhSfyjz==1){
+      this.switchVal = true
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.typbox{
+  text-align: center;
+  background-color: #fff;
+  .ui-image{
+    padding-top:100rpx; 
+    margin: auto;
+  }
+  .mess{
+    padding: 40rpx 0;
+    font-size: 50rpx;
+    color: #9e9e9e;
+  }
+}
+.zjModule{
+  .moduleItem{
+    background: #fff;
+    // height: 180rpx;
+    background-size:100%; 
+    background-position: top;
+    background-repeat: no-repeat;
+  }
+  .zjzm{
+    // background-image: url('../../static/img/home/id_03.png');
+    margin: 65rpx 35rpx 65rpx 65rpx;
+  }
+  .zjfm{
+    // background-image: url('../../static/img/home/id_05.png');
+    margin: 65rpx 65rpx 65rpx 35rpx;
+  }
+}
+.jszsty{
+  margin: 0 65rpx;
+  padding-left: 15rpx;
+  background-color: #fff;
+  .titline{
+    line-height: 80rpx;
+  }
+}
+.butSty{
+  margin: 65rpx;
+}
+
+</style>

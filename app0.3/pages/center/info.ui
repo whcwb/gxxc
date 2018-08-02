@@ -1,0 +1,305 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+    <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+        <ui-view class="txItem">
+            <ui-row>
+              <ui-col vertical-align="middle">
+                  <ui-view>
+                    我的头像
+                  </ui-view>
+              </ui-col>
+              <ui-col vertical-align="middle" align="right" bindtap="getImg">
+                  <ui-view>
+                      <ui-image
+                          src="{{usermess.yhTx}}"
+                          mode='aspectFill'
+                          width="60"
+                          height="60"
+                          class="head_portrait"
+                          ></ui-image>
+                  </ui-view>
+              </ui-col>
+            </ui-row>
+        </ui-view>
+
+        <ui-view class="txItem">
+            <ui-row>
+              <ui-col vertical-align="middle">
+                  <ui-view>
+                    我的昵称
+                  </ui-view>
+              </ui-col>
+              <ui-col vertical-align="middle" align="right" bindtap="reviseName">
+                  <ui-view>
+                      <ui-text>{{usermess.yhBm}}</ui-text >
+                  </ui-view>
+              </ui-col>
+            </ui-row>
+        </ui-view>
+
+        <ui-view class="txItem">
+            <ui-row>
+              <ui-col vertical-align="middle">
+                  <ui-view>
+                    驾驶证件
+                  </ui-view>
+              </ui-col>
+              <ui-col vertical-align="middle" align="right" bindtap="">
+                  <ui-view>
+                      <ui-text>{{usermess.yhSfyjz | yhSfyjz}}</ui-text >
+                  </ui-view>
+              </ui-col>
+            </ui-row>
+        </ui-view>
+
+        <ui-view class="txItem" bindtap="popupShow=true">
+            <ui-row>
+              <ui-col vertical-align="middle">
+                  <ui-view>
+                    修改密码
+                  </ui-view>
+              </ui-col>
+              <ui-col vertical-align="middle" align="right">
+                  <ui-view>
+                      <ui-text>******</ui-text >
+                  </ui-view>
+              </ui-col>
+            </ui-row>
+        </ui-view>
+
+
+        <ui-view class="SignOut" bindtap="gouBack"> 
+          <ui-button type="warn">退出登录</ui-button>
+        </ui-view>
+
+        <ui-view class="box_col_100"></ui-view>
+
+        <ui-view class="copyright">
+            <ui-view>
+              Copyright@2017-2018
+            </ui-view>
+            <ui-view>
+              520学车联盟
+            </ui-view>
+            <ui-view>
+              武汉天弘腾创科技有限公司
+            </ui-view>
+        </ui-view>
+    </ui-view>
+    <ui-popup class="popupFixed" ui:model="{{popupShow}}" position='top' top=0 width=100%>
+        <ui-view class="tit">
+          修改密码
+        </ui-view>
+        <ui-view class="conterBody">
+          <ui-view class="inputSty">
+              <ui-input ui:model="{{ form.oldPwd }}" type="password" placeholder="请输入原始密码"></ui-input>
+          </ui-view>
+          <ui-view class="inputSty">
+              <ui-input ui:model="{{ form.newPwd }}" type="password" placeholder="请输入新的密码"></ui-input>
+          </ui-view>
+        </ui-view>
+        <ui-view class="box_row butSty">
+            <ui-view class="box_row_100 butbox bor" style="color:#9e9e9e" bindtap="popupShow=false">
+              放弃修改
+            </ui-view>
+            <ui-view class="box_row_100 butbox" style="color:#26a2ff" bindtap="upWorld">
+              确定修改
+            </ui-view>
+        </ui-view>
+    </ui-popup>
+  </ui-page>
+</template>
+
+<script>
+import mixin from '#/static/ajax/mixin'
+export default {
+  config: {
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"个人信息",
+    title:'个人信息',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
+  },
+  mixins:[mixin],
+  data() {
+    return {
+      popupShow:false,
+      form:{
+        oldPwd:'',
+        newPwd:'',
+      },
+      infoList:[
+        {
+          name:'我的头像',
+          val:'../../static/img/login/logo.png',
+          typ:'img',
+          link:'',
+        },{
+          name:'我的昵称',
+          val:'小明',
+          typ:'txt',
+          link:'',
+        },{
+          name:'驾驶证件',
+          val:'无驾驶证',
+          typ:'txt',
+          link:'',
+        },{
+          name:'修改密码',
+          val:'******',
+          typ:'txt',
+          link:'',
+        }
+      ],
+      usermess:''
+    }
+  },
+  methods: {
+    getImg(){
+      var v = this
+      ui.getApp().wxUtil.chooseImage((imgID)=>{
+        ui.getApp().wxUtil.uploadImage(imgID[0],(httpID)=>{
+          v.UPIMG(httpID.serverId)
+        })
+      })
+    },
+    UPIMG(id){
+      var v = this
+        this.$http('POST',ui.getApp().apis.WXIMGUP,{code:id,fileType:'-'},(res)=>{
+          this.getUserMess((res)=>{
+            this.usermess = res
+          })
+        })
+    },
+    reviseName(){//昵称修改
+        var v = this
+        ui.showPrompt({
+          title: '昵称修改',
+          placeholder: '请输昵称',
+          confirmButtonText: '确认修改',
+          cancelButtonText: '放弃修改',
+          value: this.usermess.yhBm,
+          success: (result) => {
+              if(result.confirm){
+                  v.$http('POST',ui.getApp().apis.CHUSERMESS,{yhBm:result.value},(res)=>{
+                      if(res.code==200){
+                        ui.showToast({
+                          title: '昵称修改成功'
+                        })
+                        v.usermess.yhBm = result.value
+                        v.getUserMess()
+                      }else{
+                        ui.showToast({
+                          title: '昵称修改失败'
+                        })
+                      }
+                  })
+              }else{
+
+              }
+          }
+        })
+    },
+    upWorld(){//密码修改
+      var v = this
+      if(v.form.oldPwd==""){
+          ui.showToast({
+            title: '请输入原始密码'
+          })
+          return
+      }else if(v.form.newPwd==""){
+          ui.showToast({
+            title: '请输入新的密码'
+          })
+          return
+      }else{
+          v.$http('POST',ui.getApp().apis.UPWORLD,v.form,(res)=>{
+            if(res.code==200){
+              ui.showToast({
+                title: '密码修改成功,重新登录！'
+              })
+              setTimeout(() => {
+                ui.navigateTo({
+                  url: '/pages/login'
+                })
+              }, 1*1000);
+            }else{
+              ui.showToast({
+                title:res.message
+              })
+            }
+          })
+      }
+    },
+
+    gouBack(){//退出登录
+      this.$http('GET',ui.getApp().apis.LOGOUT,{},()=>{})
+      ui.navigateTo({
+        url: '/pages/login'
+      })
+    },
+  },
+  mounted() {},
+  created () {
+    this.usermess = this.getUser()
+  }
+}
+</script>
+
+<style lang="less">
+  .popupFixed {
+    // left: 50%!important;
+    // transform: translate(-50%,-50%)!important;
+    text-align: center;
+    border-radius: 8rpx;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    .tit{
+        height: 46px;
+        line-height: 46px;
+        background-color: #fff;
+        text-align: center;
+        font-size: 16px;
+        color: #999;
+        border-bottom:#f2f2f2 1px solid;
+    }
+    .conterBody{
+        padding: 0.8em 1em;
+        color: #666;
+        font-size: 14px;
+        text-align: justify;
+        .inputSty{
+          padding: 15rpx 0;
+          border-bottom: #f2f2f2 3rpx solid;
+          .ui-input{
+            border: none;
+          }
+        }
+    }
+    .butSty{
+      .butbox{
+        margin: 0 8rpx;
+        text-align: center;
+        padding: 15rpx 0;
+      }
+      .bor{
+        border-right:#f2f2f2 2rpx solid; 
+      }
+    }
+  }
+  .copyright{
+    text-align: center;
+    padding-bottom: 120rpx;
+  }
+  .SignOut{
+    margin: 30rpx;
+  }
+  .txItem{
+    background-color: #fff;
+    padding: 25rpx 25rpx;
+    margin-bottom:5rpx;  
+    font-size: 30rpx;
+  }
+</style>

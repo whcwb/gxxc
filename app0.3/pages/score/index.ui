@@ -1,0 +1,264 @@
+<template>
+    <ui-page style="overflow-y: hidden;">
+      <!-- <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+        <ui-row height="46">
+          <ui-col vertical-align="middle" align="center" width="60">
+            
+          </ui-col>
+          <ui-col vertical-align="middle" align="center">
+            <ui-view class="nav_title">首页</ui-view>
+          </ui-col>
+          <ui-col vertical-align="middle" align="center" width="60">
+          </ui-col>
+        </ui-row>
+      </ui-nav-bar> -->
+        <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+            <ui-view class="pageTop">
+                <ui-view class="tx"  style="text-align: center;">
+                  <ui-icon type="zaixiaoxueyuan" size="40" color="#dadada"></ui-icon>
+                </ui-view>
+            </ui-view>
+            <ui-view class="userMess">
+                <ui-view class="userTyp">
+                      {{zyType | getType}}
+                </ui-view>
+                <ui-view class="userName">
+                      {{zymess.yhXm}}
+                </ui-view>
+                <ui-view class="star">
+                  <ui-row height="40">
+                      <ui-col align="center">
+                        <ui-view>
+                          <mystar :num="zymess.jlPf"></mystar> 
+                        </ui-view>
+                      </ui-col>
+                  </ui-row>
+                </ui-view>
+            </ui-view>
+
+            <ui-view class="box_col_auto">
+                <ui-view class="userDetails">
+                    <ui-view class="tit">
+                      专员详情
+                    </ui-view>
+                    <ui-view class="text">
+                      <ui-view>
+                          区域:{{zymess.jlQu | jlQu}}
+                      </ui-view>
+                      <ui-view>
+                          性别:男
+                      </ui-view>
+                      <ui-view>
+                          电话:{{zymess.yhSjhm}}
+                      </ui-view>
+                    </ui-view>
+                </ui-view>
+
+                <ui-view class="userDetails">
+                    <ui-view class="tit">
+                      学员评分
+                    </ui-view>
+                    <ui-view class="text box_row num">
+                      <ui-star 
+                        value="{{pf}}"
+                        readonly="{{pf_disabled}}"
+                        bindchange="getStarVal"
+                        star-width="30" 
+                        star-height=30></ui-star>
+                      <ui-view class="strNum box_row_100" ui:if="{{pf_disabled}}">
+                        {{zymess.yhFz}}
+                      </ui-view>
+                      <ui-view class="strNum box_row_100" ui:else>
+                        {{pf}}
+                      </ui-view>
+                      <ui-view class="submit" bindtap="setUp" ui:if="!pf_disabled">
+                        <ui-icon mode="wechat" type="success" size="24"></ui-icon>
+                      </ui-view>
+                    </ui-view>
+                </ui-view>
+
+            </ui-view>
+        </ui-view>
+    </ui-page>
+    <!-- ui.switchTab({
+        url: ui.getApp().QRpage
+      }) -->
+</template>
+<script>
+import mixin from '#/static/ajax/mixin'
+import mystar from '../common/star'
+export default {
+  config: {
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"专员详情",
+    title:'专员详情',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
+  },
+  mixins:[mixin],
+  components: {
+    mystar
+  },
+  data () {
+    return {
+      zymess:{
+        jlPf:0
+      },
+      zyType:0,
+      pf_disabled:false,
+      pf:0
+    }
+  },
+  watch: {
+    pf:(n,o)=>{
+        console.log('nnnnnnnnn',n);
+        console.log('ooooooooo',o);
+    }
+  },
+  created () {
+    console.log(ui.getApp().zyMess);
+    var v = this
+    if(ui.getApp().zyMess.yhId){
+      this.zymess = ui.getApp().zyMess
+      this.zyType = ui.getApp().zyMess.type
+      if(ui.getApp().zyMess.yhFz!=''){
+        v.pf_disabled = true
+        v.pf = ui.getApp().zyMess.yhFz
+      }
+    }else {
+      ui.navigateBack()
+    }
+    
+  },
+  methods: {
+    getStarVal(val){
+        this.pf = val
+        console.log('-----------',val);
+        
+    },
+    setUp(){
+      var v = this
+      this.$http('POST',ui.getApp().apis.PF_TEACHER,{yhFz:v.pf,yhPl:'文字评论',jlid:v.zymess.yhId,slType:v.zyType},(res)=>{
+        console.log(res);
+        if (res.code == 200) {
+          v.GETstudentPF()
+        } else {
+          Toast(res.message);
+        }
+      })
+    },
+    GETstudentPF(){
+      var v = this
+      this.$http('POST',ui.getApp().apis.GET_PF,{jlId:v.zymess.yhId,slType:v.zyType},(res)=>{
+        if (res.code == 200) {
+          if(res.result.id){
+            v.zymess.jlPf = parseInt(res.result.jlPjf)
+            v.pf=res.result.yhFz
+            v.pf_disabled = true
+          }
+        } else {
+          ui.showToast({ title:res.message})
+        }
+      })
+    }
+  }
+}
+
+</script>
+
+<style lang="less">
+  .userDetails{
+    background-color: #fff;
+    padding: 30rpx;
+    margin-bottom: 30rpx;
+    .tit{
+      padding-bottom: 15rpx;
+      font-size: 28rpx;
+    }
+    .text{
+      background-color: #f2f2f2;
+      padding: 25rpx;
+      border-radius: 30rpx;
+    }
+    .num{
+      .strNum{
+        line-height: 70rpx;
+        font-size: 35rpx;
+      }
+    }
+    .submit{
+      line-height: 70rpx;
+    }
+  }
+  .userMess{
+    background: #fff;
+    text-align: center;
+    padding: 100rpx 0 30rpx 0;
+    margin-bottom: 40rpx;
+  }
+
+  .pageTop{
+    height: 120rpx;
+    position: relative;
+    background-color: #26a2ff;
+    .tx{
+      width: 140rpx;
+      height: 140rpx;
+      border-radius:70rpx; 
+      border:#c7c7c7 4rpx solid;
+      background-color: #ffffff;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+  }
+
+
+.okBut{
+  width:100rpx;
+  height:100rpx;
+  background-color:#00FF33;
+  border-radius: 50%;
+  border: none;
+  color: #ffffff;
+}
+
+
+
+.pageHeght{
+  font-size: 25px;font-weight:450 
+}
+.lmw{
+  color:#FF9966;font-size: 20px;font-weight:700;
+}
+.lme{
+  color:#3399FF;font-size:25px;font-weight:700;
+}
+.lmm{
+  padding: 10px 0 10px 0;margin-bottom: 50px
+}
+.nav_bar {
+    background: @theme-color;
+    .nav_title {
+        color: #fff;
+    }
+}
+
+.header_top {
+    background: @theme-color;
+    .head_portrait {
+      border-radius: 50%; 
+    }
+    .login {
+      color: #fff;
+      font-size: 18px;
+    }
+    .login_after {
+        color: #fff;
+        font-size: 12px;
+    }
+}
+
+</style>

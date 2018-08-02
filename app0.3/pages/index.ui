@@ -1,11 +1,23 @@
 <template>
-  <ui-page top="0">
+  <ui-page>
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+      <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">首页</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
     <ui-view class="grid_box backF2">
-        <!-- module 1 -->
-        <ui-view class="demo demo3">
-            <ui-ex-swiper id="swiperdotsstyle" autoplay="{{ autoplay }}" pagination centered-slides loop space-between="5" slides-per-view="auto">
+        <!-- module 1 "{{ autoplay }}"-->
+        <ui-view class="swiperSty">
+            <ui-ex-swiper id="swiperdotsstyle" autoplay= false
+            pagination centered-slides loop space-between="5" slides-per-view="auto">
                 <ui-ex-swiper-item ui:for="{{items}}" ui:for-item="item" ui:for-index="index">
-                  <ui-image src="{{ item.src }}" mode="simple"></ui-image>
+                  <ui-image width=100% height=100%  src="{{ item.hdTpdz }}" mode="simple"></ui-image>
                 </ui-ex-swiper-item>
             </ui-ex-swiper>
         </ui-view>
@@ -17,7 +29,7 @@
             <ui-view class="funcFloat box_row">
                 <ui-view class="box_row_100" bindtap="goBill">
                   <ui-view class="itemVal">
-                      0元
+                      {{zhYE.yhZhye/100 | yhZhye}}元
                   </ui-view>
                   <ui-view class="itemTxt">
                       累计奖励
@@ -25,70 +37,95 @@
                 </ui-view>
                 <ui-view class="box_row_100" style="text-align:center" bindtap="goMyTeam">
                   <ui-view class="itemVal">
-                      0人
+                      {{usermess.userInviteCount}}人
                   </ui-view>
                   <ui-view class="itemTxt">
                       已邀请
                   </ui-view>
                 </ui-view>
-                <ui-view class="box_row_100" style="text-align:right" bindtap="showMask=true">
-                  <ui-icon type="user" size="36" color="#fff"></ui-icon>
+                <ui-view class="box_row_100" style="text-align:right" bindtap="qrcode">
+                  <ui-icon type="erweima" size="28" color="#fff"></ui-icon>
                 </ui-view>
             </ui-view>
         </ui-view>
         <!-- 吸顶容器 -->
         <ui-view class="sticky-in-relative-container">
           <ui-sticky stick-on-tap  custom-style="{{ customStyle }}">
-            <ui-view>
-                <ui-row class="title">
-                    <ui-col>推荐</ui-col>
-                    <ui-col
-                    bindtap="showPopup"
-                    >{{checklist[0]}}</ui-col>
-                </ui-row>
+            <ui-view >
+                <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
+                    <ui-tab bindtap="tabsIndex=0">推荐</ui-tab>
+                    <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
+                </ui-tabs>
             </ui-view>
             <ui-view slot="sticky">
-              <ui-row class="title">
-                    <ui-col>推荐</ui-col>
-                    <ui-col
-                    bindtap="showPopup"
-                    >{{checklist[0]}}</ui-col>
-                </ui-row>
+                <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
+                    <ui-tab>推荐</ui-tab>
+                    <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
+                </ui-tabs>
+              <!-- <ui-row class="title">
+                  <ui-col>推荐</ui-col>
+                  <ui-col
+                  bindtap="showPopup"
+                  >{{checklist[0]}}</ui-col>
+              </ui-row> -->
             </ui-view>
           </ui-sticky>
         </ui-view>
-        <ui-view>
-          <ui-view ui:for="{{ itemlist }}" class='xlcList box_row'>
-              
-              <ui-view class="xlcItemImg">
-                <ui-image src="../static/img/home/car0000.png" width="100"></ui-image>
-              </ui-view>
-              <ui-view class="box_row_100 xlcItemMess">
-                <ui-row>
-                    <ui-col>驾校名称</ui-col>
-                    <ui-col align="right">2600.00</ui-col>
-                </ui-row>
-                <ui-row>
-                    <ui-col span='1'>0</ui-col>
-                    <ui-col>驾校地址</ui-col>
-                </ui-row>
-                <ui-row>
-                    <ui-col span='1'>0</ui-col>
-                    <ui-col>驾校交通</ui-col>
-                </ui-row>
-                <ui-row>
-                    <ui-col align="right"> >3000米</ui-col>
-                </ui-row>
-              </ui-view>
+        <!-- <ui-view> -->
+          <ui-scroll-view height="{{pageHeight(0)}}" scroll-y="scroll-y">
+              <ui-view class="content_list">
+                  <ui-view ui:if="itemlist.length==0" style="text-align: center; font-size: 22px;padding: 40px 0;">
+                      暂无训练场数据
+                  </ui-view>
+                  <ui-view ui:for="{{ itemlist }}" class='xlcList box_row' bindtap="goXlc(item)">
+                      
+                      <ui-view class="xlcItemImg">
+                        <ui-image src="static/img/home/car0000.png" width="100"></ui-image>
+                      </ui-view>
+                      <ui-view class="box_row_100 xlcItemMess">
+                        <ui-row>
+                            <ui-col>
+                              {{item.schoolName}}
+                            </ui-col>
+                            <ui-col align="right">￥2600.00</ui-col>
+                        </ui-row>
+                        <ui-row>
+                            <ui-col span='1'>
+                              <ui-icon type="dingwei" color="#3399ff"></ui-icon>
+                            </ui-col>
+                            <ui-col>{{item.address}}</ui-col>
+                        </ui-row>
+                        <ui-row>
+                            <ui-col span='1'>
+                              <ui-icon type="bus" color="#3399ff"></ui-icon>
+                            </ui-col>
+                            <ui-col>566、567、568</ui-col>
+                        </ui-row>
+                        <ui-row>
+                            <ui-col align="right" ui:if="{{item.distance == ''}}">无法获取位置信息</ui-col>
+                            <ui-col align="right" ui:else>{{item.distance}}米</ui-col>
+                        </ui-row>
+                      </ui-view>
 
-          </ui-view>
-        </ui-view>
+                  </ui-view>
+              </ui-view>
+              <ui-view style="width:200px;margin:0 auto;">
+                <ui-divider ui:show="{{!loadMore}}">没有新数据了</ui-divider>
+              </ui-view>
+          </ui-scroll-view>
+        <!-- </ui-view> -->
     </ui-view>
 
-    <ui-popup ui:model="{{popupshow}}" position="top" height="{{ height+46 }}">
+    <ui-popup ui:model="{{popupshow}}" position="top">
       <ui-view class="top_pop">
-        <ui-view class="checkTit">团队筛选</ui-view>
-        <ui-scroll-view scroll-y="scroll-y" height="{{height+46}}">
+        <ui-view class="checkTit">
+          <ui-tabs index="{{ tabsIndex }}"  bindchange="handleChange($event, 'current1')">
+              <ui-tab bindtap="tabsIndex=0,popupshow=false">推荐</ui-tab>
+              <ui-tab bindtap="showPopup">{{checklist[0] | jlQu}}</ui-tab>
+          </ui-tabs>
+        </ui-view>
+
+        <ui-scroll-view scroll-y="scroll-y">
           <ui-check-list max="1" 
           label-position="left" 
           options="{{ foodList }}" 
@@ -98,100 +135,204 @@
         </ui-scroll-view>
       </ui-view>
     </ui-popup>
-
-    <ui-mask ui:if="{{showMask}}" ui:model="showMask" effect="scale-in" hide-on-tap=true hide-on-touch=true
-      bindtap="closemask">
-      <!-- bindtap="handleShowMask9(false)" -->
-        <!-- <ui-view class="box_col" style="position: relative;"> -->
-            <ui-image 
-              style="position: absolute;top: 45%;left: 50%;transform: translate(-50%,-50%);"
-              src="http://www.520xclm.com:8001//QRCode/20180625/460765622230319888.png" width="300"></ui-image>
-        <!-- </ui-view> -->
-    </ui-mask>
-
-  </ui-page>
+   </ui-page>
 </template>
 
 <script>
+import mixin from '#/static/ajax/mixin'
 export default {
   config: {
-    "navigationStyle": 'custom',
+    navigationStyle: 'custom',
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTitleText: "首页",
+    navigationBarTextStyle:"white",
+    title:'首页',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
   },
+  mixins:[mixin],
   data () {
     return {
-      showMask:false,
+      usermess:'',
+      zhYE: {
+        yhZhye: 0
+      },
+      tabsIndex:0,
 
       popupshow:false,
-      checklist:['全部'],
+      checklist:['43'],
       foodList:[
-        '全部','一级用户','二级用户','学车用户','会员用户','已交费','未交费'
+        {key: '430014', value: '江岸区'},
+        {key: '4300001', value: '江汉区'},
+        {key: '4300002', value: '硚口区'},
+        {key: '430050', value: '汉阳区'},
+        {key: '4300003', value: '武昌区'},
+        {key: '430080', value: '青山区'},
+        {key: '430070', value: '洪山区'},
+        {key: '430040', value: '东西湖区'},
+        {key: '430090', value: '汉南区'},
+        {key: '430100', value: '蔡甸区'},
+        {key: '430200', value: '黄陂区'},
+        {key: '431400', value: '新洲区'},
+        {key: '43', value: '武汉市'}
       ],
-
+      
+      pullUp:{
+        distance: 50,
+        onBegin: () => {},
+        onActive: this.handleLoadMore,
+        onAfter: this.handlePullUpAfter
+      },
 
       height: ui.DEFAULT_CONTENT_HEIGHT,
-      items:[{
-        src: 'http://images.uileader.com/20171103/5906a28c-0f12-4b71-8df2-98791d8716f6.jpg',
-        title: '放肆玩乐，轻巧办公'
-      },
-      {
-        src: 'http://images.uileader.com/20171103/34795a1c-1365-4256-b9c1-6fb4af1de3da.jpg',
-        title: '高温保护，一路驰骋'
-      },
-      {
-        src: 'http://images.uileader.com/20171103/926a6fdc-80f6-4244-8354-860627c88115.jpg',
-        title: '七夕好货，独家礼赠'
-      }],
+      items:[{}],
       autoplay: {
         delay: 2.5*1000
       },
 
       itemlist: [],
+      count:0,
+      loadMore:true,
       offsetTop: ui.DEFAULT_HEADER_HEIGHT,
       customStyle:{
-        'background-color':'#eee',
-        'height': '46px',
-        'line-height': '46px'
+        'background-color':'#fff',
       }
     }
   },
   methods: {
-    change(val){
-      // debugger
+    getYE(callback) {//获取账户余额
+      var v = this
+      this.$http('POST',ui.getApp().apis.USERZH,{},(res)=>{
+          if(res.code==200){
+            v.zhYE.yhZhye = res.result.yhZhye
+            callback && callback(true)
+          }else{
+            ui.showToast({ title:res.message})
+          }
+      })
+    },
+    handleLoadMore () {
+      ui.showToast({
+          title: '上拉'
+        })
+      this.count ++
+      if(this.count > 10){
+        this.loadMore = false
+        return false
+      }else{
+        window.setTimeout(() => {
+          for (let i = this.bottom + 1; i <= this.bottom + 10; i++) {
+            this.items.push(`列表项目${i}`)
+          }
+          this.bottom += 10
+        }, 1500)
+      }
+    },
+    handlePullUpAfter (flag) {
+      ui.showToast({
+          title: flag
+        })
+      if (flag) {
+        ui.showToast({
+          title: '处理上拉刷新'
+        })
+      }
+    },
+    handleChange (index, key) {//tan选项卡
+    },
+    change(val){//check-list 单选 数据返回
       console.log(val);
       console.log(this.checklist);
       this.popupshow = false
-      
+      this.getGpsCode()
+      // this.XLC()
     },
     showPopup(){
+      this.tabsIndex = 1;
       this.popupshow = true
-    },
-    closemask(){
-      this.showMask = false
     },
     goMyTeam(){
       ui.navigateTo({
-        url: '/pages/center/myTeam'
+        url: 'center/myTeam2'
       })
     },
     goBill(){
       ui.navigateTo(
         {
-          url:'/pages/center/bill'
+          url:'center/bill2'
         }
       )
+    },
+    qrcode(){
+      if(this.usermess.ddSfjx!='1'){
+          ui.showToast({ title: '请先缴费' })
+          return
+      }
+      ui.getApp().QRpage = '/pages/index'
+      ui.navigateTo(
+        {
+          url:'/pages/common/qrCode'
+        }
+      )
+    },
+    goXlc(item){
+      ui.getApp().xlcMess = item
+      ui.navigateTo(
+        {
+          url:'home/xlcMess'
+        }
+      )
+    },
+    getSwiperImg(){//获取轮播图片
+      this.$http('POST',ui.getApp().apis.SWIPER,{hdSxs:0},(res)=>{
+            if(res.code==200){
+              this.items = res.page.list
+            }
+      })
+    },
+    getGpsCode(){
+      ui.getApp().wxUtil.getMapCode((res)=>{
+          this.XLC(res)
+      })
+    },
+    XLC(res){
+      var v = this
+      let gpsMess = ''
+      if(res){
+        if(res.latitude&&res.longitude){
+          gpsMess=res.latitude+','+res.longitude
+        }
+      }
+      this.$http('POST',ui.getApp().apis.XLC,{gps:gpsMess,inputRegionCode:v.checklist[0]},(res)=>{
+          if(res.code==200){
+            this.itemlist = res.page.list
+          }
+      })
     }
-
+  },
+  created () {
+    var v = this
+    this.getYE()
+    this.getUserMess((res)=>{
+      this.usermess = res
+    })
+    this.getSwiperImg()
+    if(localStorage.getItem("projectType") == 'true'){
+      v.getGpsCode()
+    }else{
+      v.XLC()
+    }
   },
   mounted() {
-    for (let i = 1; i <= 10; i++) {
-      this.itemlist.push(i + ' - 内容文本')
-    }
   }
 }
 
 </script>
 
 <style lang="less">
+.swiperSty{
+  height: 300rpx;
+}
 .xlcList{
   padding: 20rpx 0 0 0 ;
   background: #fff;
@@ -205,9 +346,9 @@ export default {
 }
 
 .checkTit{
-  text-align: center;
-  padding: 15rpx 0;
-  font-size: 40rpx;
+  // text-align: center;
+  padding: 10rpx 0;
+  font-size: 28rpx;
   font-weight: 700;
 }
 .ui-image-container{
@@ -230,7 +371,7 @@ export default {
 
 
 .module2{
-  margin: 30rpx 0 20rpx 0;
+  margin: 0rpx 0 20rpx 0;
   background: #fff;
   padding: 15rpx 20rpx;
   .price{
@@ -250,55 +391,6 @@ export default {
     }
     .itemTxt{
       color: #4aa3f7;
-    }
-  }
-}
-
-
-
-
-.swiper-slide {
-    .ui-image {
-      width: 100%;
-  }
-}
-#swiperdotsstyle{
-  .swiper-pagination-bullet {
-    width: 20rpx;
-    height: 3rpx;
-    background-color: #eee;
-    opacity: .5;
-    border-radius: 0;
-
-    &.swiper-pagination-bullet-active {
-      background-color: #fff;
-      opacity: 1;
-    }
-  }
-}
-.demo3{
-  .swiper-pagination {
-    bottom: 30rpx;
-  }
-  .swiper-lazy-preloader {
-      width: 24rpx;
-      height: 24rpx;
-      margin-left: -12rpx;
-      margin-top: -12rpx;
-    }
-  .swiper-slide {
-    position: relative;
-    .slide-title {
-      color:#fff;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      text-align: center;
-      height: 24rpx;
-      line-height: 24rpx;
-      font-size: 14rpx;
-      background-color: rgba(51, 51, 51, .2);
     }
   }
 }

@@ -146,3 +146,20 @@ baidu:
       app_key: LWlbEbioIv9aWIve9ZOZ583W
       secret_key: vcoxuovajxrtxj0MhhSRZGWxz3Iy3g9E
 
+# 支付宝支付接口 网关(gateway) 分正式环境：https://openapi.alipay.com/gateway.do  还有一个沙盒环境
+#  应用id(app_id)，应用私钥(private_key)，编码格式(charset)，支付宝公钥(alipay_public_key)，签名类型(sign_type)
+# billFileUrl  支付宝账单下载的地址
+alipay:
+  app_id: api1111111111
+  app_privaie_key: privaiwKey123456
+  charset: UTF-8
+  alipay_public_key: publicKey123456
+  gateway: https://openapi.alipay.com/gateway.do
+  sign_type: RSA2
+  notify_url: http://www.520xclm.com:8080/biz/alipay/orderFulfil
+  bill_file_path: D:\2003
+
+# 客服电话
+custom_service_tel:
+
+

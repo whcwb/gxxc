@@ -97,4 +97,6 @@ module.exports = {
   BANKCARDDELE:'/app/yhk/remove/',//删除银银行卡
 
   SIGN:'/app/ptyh/getqm',//签名
+
+  BACKMONEY:'/app/tk/save',//退款
 }

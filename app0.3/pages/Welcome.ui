@@ -1,0 +1,103 @@
+<!---->
+<template>
+  <ui-page top=0 class="welcomeSty" style="overflow:hidden">
+    <!-- <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff', 'background': 'linear-gradient(to right,#3799ee, #2890ea)'} }}"> -->
+      <!-- <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">登录</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row> -->
+    <!-- </ui-nav-bar> -->
+    <ui-view class="top_logo">
+      <ui-image src="static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
+    </ui-view>
+    <ui-view class="welcomeTit">
+      欢迎进入520学车联盟
+    </ui-view>
+    <ui-view class="progressSty">
+      <ui-progress percent="{{ percent }}" 
+      show-info border-radius="10" stroke-width="20" 
+      active-color="#FC8609, #f40" background-color="#FCD9C1"></ui-progress>
+    </ui-view>
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationStyle: 'custom',
+  },
+  data() {
+    return {
+      percent: 0,
+    }
+  },
+  watch:{
+    percent:(n,o)=>{
+      console.log('++++++++',n);
+      if(n==100){
+          let tok = localStorage.getItem("token")
+          console.log('-----------');
+          if(tok){
+            ui.navigateTo({
+              url: '/pages/index'
+            })
+          }else{
+            ui.navigateTo({
+              url: '/pages/login'
+            })
+          }
+      }
+    }
+  },
+  methods: {
+    handleProgressChange () {
+      if (this.percent > 0) {
+        this.percent = 0
+      }
+      let sid = window.setInterval(() => {
+        this.percent++
+        if (this.percent >= 100) {
+          this.disabled = false
+          window.clearInterval(sid)
+        }
+      }, 10)
+    }
+  },
+  mounted() {
+    this.handleProgressChange()
+  },
+  created () {
+  }
+}
+</script>
+
+<style lang="less">
+.welcomeSty{
+  background:url(../static/img/bank/bankbank.png)  no-repeat center center;
+}
+.top_logo{
+  text-align: center;
+  margin-top: 20%;
+  .ui-image-container{
+    margin: auto;
+  }
+}
+.welcomeTit{
+  padding: 20% 0; 
+  font-size: 60rpx;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+.progressSty{
+  padding: 0 30rpx;
+  position: fixed;
+  bottom: 50rpx;
+  width: 100%;
+}
+</style>

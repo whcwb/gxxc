@@ -1,0 +1,137 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+      <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" width="60" bindtap="navigateBack">
+          <ui-view class="nav_left">
+              <ui-icon type="left1" font-size="24"></ui-icon>
+          </ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">套餐</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
+      <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+          <ui-view class="box_col_auto">
+              <ui-view class="productItemSty" ui:for="{{productList}}">
+                  <ui-row>
+                      <ui-col span="9" vertical-align="middle">
+                          <ui-view class="tit">
+                            {{item.cpMc}}
+                          </ui-view>
+                      </ui-col>
+                      <ui-col span="3" space-left="20" align="center"  vertical-align="middle">
+                          <ui-view class="money">
+                            ￥{{item.cpJl/100}}
+                          </ui-view>
+                      </ui-col>
+                  </ui-row>
+                  <ui-row>
+                      <ui-col span="9"  vertical-align="middle">
+                        <ui-view class="mess">
+                            {{item.cpXx}}
+                        </ui-view>
+                      </ui-col>
+                      <ui-col span="3" space-left="20" align="center"  vertical-align="middle"
+                        bindtap="getPO(item)">
+                          <ui-button class="butSty" type="primary" full-width="false" size="mini">
+                            购买套餐
+                          </ui-button>
+                      </ui-col>
+                  </ui-row>
+              </ui-view>
+
+          </ui-view>
+      </ui-view>
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    "navigationStyle": 'custom',
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"套餐",
+    title:'套餐',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
+  },
+  data() {
+    return {
+      productList:[
+        {
+          link:'/pages/Agreement/learnCarFile'
+        },{
+          link:'/pages/Agreement/MemberFile'
+        }
+      ]
+    }
+  },
+  methods: {
+    navigateBack(){
+      ui.switchTab({
+        url: '/pages/user'
+      })
+    },
+    getPO(item){
+        ui.getApp().payMess = item
+        ui.navigateTo(
+          {
+            url:item.link
+          }
+        )
+    },
+    getPoList(){
+      var v = this
+      this.$http('POST',ui.getApp().apis.CPLIST,{},(res)=>{
+        if(res.code == 200 && res.result){
+          console.log('----------',res);
+          res.result.forEach((item,index) => {
+            if(item.cpType == 1){
+                item.link='/pages/Agreement/learnCarFile'
+            }else if(item.cpType == 3){
+                item.link='/pages/Agreement/MemberFile'
+            }
+          });
+          v.productList =  res.result
+        }
+      })
+    }
+  },
+  mounted() {},
+  created () {
+    this.getPoList()
+  }
+}
+</script>
+
+<style lang="less">
+.productItemSty{
+  background-color: #fff;
+  margin-bottom:15rpx;
+  padding: 15rpx 25rpx; 
+  .tit{
+    font-size: 36rpx;
+    font-weight: 700;
+    color: #26a2ff;
+  }
+  .money{
+    font-size: 36rpx;
+    font-weight: 600;
+    color: #eb873a;
+  }
+  .mess{
+    font-size: 28rpx;
+    color: #828282;
+  }
+  .butSty{
+    padding: 0 15rpx;
+    font-size: 26rpx;
+  }
+}
+</style>

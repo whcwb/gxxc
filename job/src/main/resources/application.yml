@@ -11,4 +11,5 @@ spring:
 logging:
   config: classpath:log4j2.xml
 url: http://xclm.xxpt123.com:8080/biz/job/orderFulfil
+tjUrl: http://xclm.xxpt123.com:8080/biz/job/tj
 

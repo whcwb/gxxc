@@ -16,12 +16,12 @@
 			<artifactId>sys</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-	  <!--&lt;!&ndash;支付宝jar包&ndash;&gt;-->
-	  <!--<dependency>-->
-		  <!--<groupId>com.alipay.sdk</groupId>-->
-		  <!--<artifactId>alipay-sdk-java</artifactId>-->
-		  <!--<version>3.0.1</version>-->
-	  <!--</dependency>-->
+	  <!--支付宝jar包-->
+      <dependency>
+          <groupId>com.alipay.sdk</groupId>
+          <artifactId>alipay-sdk-java</artifactId>
+          <version>3.3.4.ALL</version>
+      </dependency>
 		<!--身份证识别  主体识别-->
 	  <dependency>
 		  <groupId>com.baidu.aip</groupId>
@@ -46,6 +46,13 @@
 		  <artifactId>itextpdf</artifactId>
 		  <version>5.5.13</version>
 	  </dependency>
+	  <!-- zip 工具包https://mvnrepository.com/artifact/org.apache.ant/ant -->
+	  <dependency>
+		  <groupId>org.apache.ant</groupId>
+		  <artifactId>ant</artifactId>
+		  <version>1.8.2</version>
+	  </dependency>
+
 
 
 

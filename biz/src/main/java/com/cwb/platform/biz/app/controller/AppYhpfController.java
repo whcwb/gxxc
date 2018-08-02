@@ -29,6 +29,11 @@ public class AppYhpfController extends AppUserBaseController {
 
 //    query(entity)
 
+    /**
+     * 获取教练员的评分
+     * @param jlId
+     * @return
+     */
     @RequestMapping(value="/getjlpf", method={RequestMethod.POST})
     public ApiResponse<BizYhpf> getUserCoach(@RequestParam("jlId") String jlId){
         return yhpfService.getUserCoach(jlId);

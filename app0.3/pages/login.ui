@@ -1,13 +1,24 @@
 <!--登录-->
 <template>
-  <ui-page top="0">
+  <ui-page>
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff', 'background': 'linear-gradient(to right,#3799ee, #2890ea)'} }}">
+      <ui-row height="46">
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">登录</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
     <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
       <ui-view class="login_bg">
         <ui-view class="section">
           <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
             <!-- logo图展示区 -->
             <ui-view class="top_logo">
-              <ui-image src="../static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
+              <ui-image src="static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
             </ui-view>
             <!-- 数据表单区 -->
             <ui-view class="content_form">
@@ -20,17 +31,17 @@
                 </ui-view>
                 <ui-view class="input_padding">
                   <ui-row>
-                    <ui-col align="right" vertical-align="middle">
-                      <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1">
+                    <ui-col align="right" vertical-align="middle" bindtap="forgetpassword">
+                      <!-- <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1"> -->
                         <ui-text block class="reset_pwd">
                           忘记密码?
                         </ui-text>
-                      </ui-navigator>
+                      <!-- </ui-navigator> -->
                     </ui-col>
                   </ui-row>
                 </ui-view>
                 <ui-view class="input_padding">
-                  <ui-button class="submit_btn" bindtap="login">登录</ui-button>
+                  <ui-button class="submit_btn" bindtap="loginYZ">登录</ui-button>
                 </ui-view>
               </ui-form>
             </ui-view>
@@ -51,14 +62,17 @@
 <script>
 export default {
   config: {
-    "navigationStyle": 'custom',
-    "scrollType": "div",
-    "title":"登录",
-    "disableScroll":true
+    // "scrollType": "div",
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"登录",
+    title:'登录',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
   },
   data() {
     return {
-      height: ui.DEFAULT_CONTENT_HEIGHT + 46,
+      height: ui.DEFAULT_CONTENT_HEIGHT,
       form:{
         username:'',
         password:''
@@ -66,18 +80,84 @@ export default {
     }
   },
   methods: {
+    loginYZ(){
+      var v = this
+      if(v.form.username==''){
+        ui.showToast({ title: '请输入手机号码!'})
+        return
+      }else if(v.form.username.length!==11){
+        ui.showToast({ title: '请输入正确的手机号码!'})
+      }else if(v.form.password==''){
+        ui.showToast({ title: '请输入登录密码!'})
+        return
+      }else {
+        v.login()
+      }
+    },
     login(){
-      // alert('123')
-      ui.navigateTo({
-        url: '/pages/index'
-      })
+      var v = this
 
-      this.sayHello()
-      
+      this.$http('POST',ui.getApp().apis.LOGIN,v.form,(res)=>{
+          if(res.code==200){
+            localStorage.setItem("token",JSON.stringify(res.result.accessToken))
+            localStorage.setItem("phone",JSON.stringify(v.form.username))
+            v.getUserMess((res)=>{
+                  v.goIndex()
+            })//获取用户信息
+          }else{
+              ui.showToast({ title: res.message})
+          }
+      })
+    },
+    goIndex(){
+        ui.navigateTo({
+          url: '/pages/index'
+        })
     },
     reg(){
+      // ui.getApp().yqm='460765622230319188'
+      // ui.navigateTo({
+      //   url: '/pages/reg'
+      // })
+      console.log('项目？ 微信:App**********',ui.getApp().projectType);
+      if(ui.getApp().projectType){
+          this.wxSys()
+      }else{
+          this.sys()
+      }
+    },
+    wxSys(){//微信扫一扫
+      ui.getApp().wxUtil.qrScan((res)=>{
+          // v.codeyz(res)
+          console.log('邀请码',res);
+          ui.getApp().yqm = res
+          ui.navigateTo({
+            url: '/pages/reg'
+          })
+      })
+    },
+    sys(){//App扫一扫功能
+      ui.scanCode({
+        backgroundColor:'#39f',
+        color:'#4caf5',
+        onlyFromCamera: true,
+        success: (res) => {
+          console.log(res)
+          ui.showAlert({
+            content: res,
+            buttonText: '扫一扫',
+            success () {
+              ui.showToast({
+                title: '触发了解更多'
+              })
+            }
+          })
+        }
+      })
+    },
+    forgetpassword(){
       ui.navigateTo({
-        url: '/pages/reg'
+        url: '/pages/retrieveworld'
       })
     },
     formSubmit(){
@@ -89,6 +169,10 @@ export default {
   },
   mounted() {
     
+  },
+  created () {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usermess");
   }
 }
 </script>

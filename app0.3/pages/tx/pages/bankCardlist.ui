@@ -1,0 +1,212 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+      <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+        <ui-row height="46">
+          <ui-col vertical-align="middle" align="center" width="60" bindtap="navigateBack">
+            <ui-view class="nav_left">
+                <ui-icon type="left1" font-size="24"></ui-icon>完成
+            </ui-view>
+
+          </ui-col>
+          <ui-col vertical-align="middle" align="center">
+            <ui-view class="nav_title">选择银行卡</ui-view>
+          </ui-col>
+          <ui-col vertical-align="middle" align="center" width="60" bindtap="addBankCard">
+                <ui-icon type="add" size="24"></ui-icon>
+          </ui-col>
+        </ui-row>
+      </ui-nav-bar>
+      <ui-view>
+        
+      </ui-view>
+      <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
+          <ui-view class="box_col_auto listBox">
+
+              <ui-swipe-out class="swipe-out-dome-1" value="{{item.swipeOutVal}}"
+              operate-width="80" bindchange="swipeOutCh(item,index)"  ui:for="{{bankList}}">
+                  <ui-view  slot="content" class="listItem" bindtap="selectItem(item,index)">
+                      <ui-row>
+                          <ui-col>
+                              <ui-image src="{{item.yhkLogo}}"
+                                height="30"></ui-image>
+                      
+                              <ui-view class="bankCardNumber">
+                                {{item.yhkKh}}
+                              </ui-view>
+                          </ui-col>
+                          <ui-col width="30" vertical-align="middle" align="right">
+                            <ui-view ui:if="{{item.checked}}">
+                                  <ui-icon type="duihao" size="34" color="#00a763"></ui-icon>
+                            </ui-view>
+                          </ui-col>
+                      </ui-row>
+                  </ui-view>
+                  <ui-view slot="operate">
+                      <ui-view class="delete" bindtap="remove(item,index)">删除</ui-view>
+                  </ui-view>
+              </ui-swipe-out>
+          </ui-view>
+      </ui-view>
+  </ui-page>
+</template>
+
+<script>
+export default {
+  config: {
+    navigationStyle: 'custom',
+    navigationBarBackgroundColor:"#26a2ff",
+    navigationBarTextStyle:"white",
+    navigationBarTitleText:"选择银行卡",
+    title:'选择银行卡',
+    backgroundColor:'#f2f2f2',
+    delay:false,//延迟加载
+  },
+  data() {
+    return {
+      bankList:[]
+    }
+  },
+  methods: {
+    navigateBack(){
+      ui.navigateBack()
+    },
+    addBankCard(){
+      ui.navigateTo(
+          {
+            url:'addBankCard'
+          }
+        )
+    },
+    getBankList(){
+      this.$http('POST',ui.getApp().apis.BANKLIST,{},(res)=>{
+          if(res.code == 200 && res.result){
+            console.log(res);
+            res.result.forEach((item,index) => {
+              if(index==ui.getApp().bankIndex){
+                item.checked = true
+              }else{
+                item.checked = false
+              }
+              item.swipeOutVal = 'off'
+            });
+            this.bankList = res.result
+          }else{
+            ui.navigateTo(
+              {
+                url:'/pages/tx/index'
+              }
+            )
+          }
+      })
+    },
+    swipeOutCh(it,val){//list侧滑监听事件
+
+    },
+    selectItem(it,val){
+
+      ui.getApp().bankIndex=val
+      this.bankList.forEach((item,index) => {
+        if(index==val){
+          item.checked = true
+        }else{
+          item.checked = false
+        }
+      });
+    },
+    remove(item,index){
+      console.log('remove');
+      var v = this 
+      ui.showConfirm({
+        content: '<div style="text-align: center;color:#f00!important">你是否确定删除银行卡!!!</div>',
+        confirmButtonText: '删除',
+        cancelButtonText: '返回',
+        success (result) {
+          if(result.confirm){
+            v.$http('POST',ui.getApp().apis.BANKCARDDELE+item.id,{},(res)=>{
+                if(res.code==200){
+                    if(index==ui.getApp().bankIndex){
+                      ui.getApp().bankIndex = 0
+                    }
+                  ui.showToast({
+                    title: '银行移除成功'
+                  })
+                  v.getBankList()
+                }else{
+                  ui.showToast({
+                    title: res.message
+                  })
+                }
+            })
+          }
+        }
+      })
+    }
+  },
+  mounted() {},
+  created () {
+    this.getBankList()
+  }
+}
+</script>
+
+<style lang="less">
+  .listBox{
+    padding-top:25rpx; 
+    .listItem{
+        padding: 10rpx 25rpx;
+        background-color: #fff;
+        border-right: #f22 3rpx solid;
+        .bankCardNumber{
+          padding-left: 18rpx;
+          margin-top: 10rpx;
+        }
+    }
+  }
+
+   .swipe-out-dome-1{
+   transition: height .25s ease-in;
+   overflow: hidden;
+   border-bottom: 1px solid #efefef;
+ }
+.swipe-out-dome-1-content {
+  overflow: hidden;
+  background: #fff;
+  padding: 10px;
+
+  .text {
+    font-size: 14px;
+  }
+}
+.delete{
+  width: 80px;
+  text-align: center;
+  line-height: 67px;
+  font-size: 14px;
+  color: #fff;
+  background: #f22;
+  border:none;
+}
+.top_tip{
+  background-color: #fff;
+  .left_icon{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color:#FCB300; 
+    text-align: center;
+    line-height: 50px;
+  }
+  .text{
+    .ui-text{
+      font-size: 16px;
+      color: #313338;
+    }
+    .ui-view{
+      color: #9C9FA4;
+      font-size: 12px;
+      .mix-text-overflow();
+    }
+  }
+}
+</style>

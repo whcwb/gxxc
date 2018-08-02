@@ -1,0 +1,80 @@
+<!---->
+<template>
+  <ui-page style="overflow-y: hidden;">
+    <ui-nav-bar slot="nav-bar" custom-style="{{ {'color':'#fff','background-color':'#26a2ff'} }}">
+      <ui-row height="46">
+        <ui-col bindtap="goBack" vertical-align="middle" align="center" width="60">
+          <ui-view class="nav_left">
+              <ui-icon type="left1" font-size="24"></ui-icon>
+          </ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title">签字</ui-view>
+        </ui-col>
+        <ui-col vertical-align="middle" align="center" width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
+    <vuesigncanvas :options="options" 
+    @result="saveResult" @clear="clear" >
+    </vuesigncanvas>
+     <ui-fixed-view top="50" left="10">
+      <ui-view class="titColor">请将手机横屏放置</ui-view>
+    </ui-fixed-view>
+  </ui-page>
+</template>
+
+<script>
+import vuesigncanvas from 'vue-sign-canvas'
+require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
+export default {
+  config: {
+     backgroundColor:'#ffffff',
+  },
+  components:{
+    vuesigncanvas
+  },
+  data() {
+    return {
+      options:{
+        brushColor: '#ff2600',
+        brushWidth: ui.DEFAULT_CONTENT_HEIGHT,
+        brushType: 'marker',
+        width: 500,
+        height: 600,
+        shadowEnable: false,
+        shadowWidth: 1,
+        brushWidth:5,
+        canvasBackgroundColor: '#fff',
+      }
+    }
+  },
+  methods: {
+    saveResult (data) {
+      this.$http("POST",ui.getApp().apis.SIGN,{base64Data:data.substring(22)},(res)=>{
+        if(res.code==200){
+          ui.getApp().signUrl = res.result
+          this.goBack()
+          // window.location.href = ui.getApp().signUrl
+          //http://www.520xclm.com:8001//user_autograph/7cfb610a1ca04ac08e5fb9ae65175db6.png
+        }
+      })
+    },
+    clear () {
+    },
+    goBack(){
+        ui.navigateTo({
+          url:ui.getApp().backsignUrl
+        })
+    }
+  },
+  mounted() {}
+}
+</script>
+
+<style lang="less">
+.titColor{
+  font-size: 30rpx;
+  color:#FFA060;
+}
+</style>

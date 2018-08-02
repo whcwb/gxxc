@@ -9,6 +9,7 @@ import com.cwb.platform.sys.model.SysJs;
 import com.cwb.platform.sys.model.SysJsGn;
 import com.cwb.platform.sys.model.SysYh;
 import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.service.GnService;
 import com.cwb.platform.sys.service.JsService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
@@ -29,6 +30,8 @@ public class JsServiceImpl extends BaseServiceImpl<SysJs, String> implements JsS
 	private SysClkPtjsMapper roleMapper;
 	@Autowired
 	private SysClkPtyhMapper userMapper;
+	@Autowired
+	private GnService gnService;
 	@Autowired
 	private SysYhJsMapper userRoleMapper;
 	@Autowired
@@ -67,7 +70,7 @@ public class JsServiceImpl extends BaseServiceImpl<SysJs, String> implements JsS
 
 	/**
 	 * 由于iview模板功能限制 返回系统所有角色，并把用户拥有的角色 _checked属性标记为true，以便前台修改用户角色
-	 * 
+	 *
 	 * @param yhid
 	 * @return
 	 */
@@ -126,6 +129,7 @@ public class JsServiceImpl extends BaseServiceImpl<SysJs, String> implements JsS
 			userRole.setCjsj(DateUtils.getNowTime());
 			userRoleMapper.insert(userRole);
 		}
+		gnService.updateUserFunctins(user);
 		return ApiResponse.success();
 	}
 

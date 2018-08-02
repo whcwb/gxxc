@@ -36,6 +36,12 @@ public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String>
 
     @Override
     public boolean fillPagerCondition(LimitedCondition condition){
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()) .getRequest();
+        String regionCode = request.getParameter("inputRegionCode");//区县行政区划代码
+        if(StringUtils.isNotEmpty(regionCode)){
+            condition.startWith(BizTrainPlace.InnerColumn.regionCode.name(), regionCode + "%");
+        }
         condition.setOrderByClause("create_time desc");
         return true;
     }
@@ -47,13 +53,19 @@ public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String>
         String gps = request.getParameter("gps");
         if(StringUtils.isNotBlank(gps)){
             String[] gpses = gps.split(",");
-            double latitude = Double.parseDouble(gpses[0]);  // 纬度
-            double longitude = Double.parseDouble(gpses[1]); // 经度
+            double latitude = Double.parseDouble(gpses[1]);  // 纬度
+            double longitude = Double.parseDouble(gpses[0]); // 经度
 
 
             placeList.stream().forEach(bizTrainPlace -> {
-                double distance = GpsUtil.getDistance(longitude, latitude, bizTrainPlace.getLongitude(), bizTrainPlace.getLatitude());
-                bizTrainPlace.setDistance(distance);
+                if(bizTrainPlace.getLongitude()!=null&&bizTrainPlace.getLatitude()!=null){
+                    double distance = GpsUtil.getDistance(longitude, latitude, bizTrainPlace.getLongitude(), bizTrainPlace.getLatitude());
+                    bizTrainPlace.setDistance(distance);
+                }else{
+                    bizTrainPlace.setDistance(null);
+                }
+//                double distance = GpsUtil.getDistance(longitude, latitude, bizTrainPlace.getLongitude(), bizTrainPlace.getLatitude());
+//                bizTrainPlace.setDistance(distance);
             });
 //            GpsUtil.getDistance(longitude,latitude)
 
