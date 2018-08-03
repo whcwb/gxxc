@@ -47,21 +47,30 @@
                 <ui-view class="userItem marB25">
                   <ui-row>
                     <ui-col span="3" align="left" vertical-align="middle" space-left="20">
-                      <ui-view>{{zhYE.yhZhye/100 | yhZhye}}元</ui-view>
-                      <ui-view>账户余额</ui-view>
+                      <ui-view>
+                        {{zhYE.yhZhye/100 | yhZhye}}
+                        <ui-text class="Bsty">
+                          币
+                        </ui-text>
+                      </ui-view>
+                      <ui-view>S 币</ui-view>
                     </ui-col>
                     <ui-col span="3" align="left" vertical-align="middle" space-left="20">
-                      <ui-view>{{zhYE.yhZhye/100 | yhZhye}}元</ui-view>
+                      <ui-view>{{zhYE.yhZhye/100 | yhZhye}}
+                      <ui-text class="Bsty">
+                        币
+                      </ui-text>
+                      </ui-view>
                       <ui-view>邀请奖励</ui-view>
                     </ui-col> 
                     <ui-col span="3" align="left" vertical-align="middle" space-left="40">
                       <ui-view>
-                        <ui-button type="primary" size="default" bindtap="goProductList">缴费</ui-button>
+                        <ui-button type="primary" size="default" bindtap="goProductList">加盟</ui-button>
                       </ui-view>
                     </ui-col>
                     <ui-col span="3" align="left" vertical-align="middle" space-left="20">
                       <ui-view>
-                        <ui-button type="primary" size="default" bindtap="tx">提现</ui-button>
+                        <ui-button type="primary" size="default" bindtap="tx">兑换</ui-button>
                       </ui-view>
                     </ui-col>
                   </ui-row>
@@ -272,6 +281,11 @@ export default {
 </script>
 
 <style lang="less">
+.Bsty{
+  color:#26a2ff;
+  font-weight:700;
+  font-size:32rpx
+}
 .userTyp{
   font-size: 25rpx;
   font-weight: 700;
