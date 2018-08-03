@@ -118,9 +118,9 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         }
         BizTx tx = findById(bizTx.getId());
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(tx),"根据主键id无法查询到该提现明细");
-        RuntimeCheck.ifTrue(StringUtils.equals(tx.getTtShzt(),"1"),"该记录已经审核通过");
+        RuntimeCheck.ifTrue(StringUtils.equals(tx.getTtShzt(),"1"),"该记录已经审核通过");//0、 待审核 1、 审核通过 2、 审核拒绝)
         RuntimeCheck.ifTrue(StringUtils.equals(tx.getTtShzt(),"2"),"该记录已经被驳回");
-        RuntimeCheck.ifTrue(StringUtils.containsNone(tx.getTtFs(),"2"),"提现方式为人工转账才能审核");
+//        RuntimeCheck.ifTrue(StringUtils.containsNone(tx.getTtFs(),"2"),"提现方式为人工转账才能审核");
 
         BizTx newBizTx=new BizTx();
         newBizTx.setId(bizTx.getId());//订单ID
@@ -136,8 +136,8 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         bizYjmx.setId(tx.getYjId());
         //提现审核拒绝时，明细表中的申请也要是失败的
         if(StringUtils.equals(bizTx.getTtShzt(),"2")){
-            bizYjmx.setZjZt("2");
-            bizYjmx.setTxShZt("2");
+            bizYjmx.setZjZt("2");//设置提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 2、提现失败) 提现操作默认0 佣金操作默认1
+            bizYjmx.setTxShZt("2");//提现审核状态 该字段仅限提现业务 与biz_tx表中(TT_SHZT 提现审核状态)的审核字段同步   ZDCLK0049 (0、 待收取 1、 审核通过 2、 审核拒绝)
 
         }else {
             bizYjmx.setTxShZt("1");
