@@ -2,11 +2,16 @@ package com.cwb.platform.biz.app.controller;
 
 import com.cwb.platform.biz.app.service.AppOrderService;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.github.binarywang.wxpay.bean.entpay.EntPayRequest;
+import com.github.binarywang.wxpay.bean.entpay.EntPayResult;
+import com.github.binarywang.wxpay.exception.WxPayException;
+import com.github.binarywang.wxpay.service.WxPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +24,9 @@ import java.util.Map;
 public class TestAppController {
     @Autowired
     private AppOrderService service;
+
+    @Resource(name = "wxPayService")
+    private WxPayService wxService;
 
 
     /**
@@ -54,5 +62,33 @@ public class TestAppController {
 
 
     }
+
+    /**
+     * 微信-公司打款到余额
+     * @return
+     */
+    @RequestMapping("/tests")
+    public ApiResponse<String> pager(){
+        EntPayRequest request=new EntPayRequest();
+        request.setMchAppid("wxb01394ea85904296");
+        request.setMchId("1506987921");
+        request.setPartnerTradeNo("order20180803006");//订单ID
+//        request.setOpenid("oRPNG0hya_mZyLqoS-mUPJEt3fV8");//用户的open_id  羊祥
+        request.setOpenid("oRPNG0pmiE91Qt9qjas37mMpnz0I");//用户的open_id  赵虎
+        request.setCheckName("FORCE_CHECK");//校验用户姓名选项  FORCE_CHECK 强校验真实姓名  NO_CHECK：不校验真实姓名 
+        request.setReUserName("赵虎");//收款用户姓名
+        request.setAmount(1);//金额
+        request.setDescription("公司付款Test");
+        request.setSpbillCreateIp("27.16.192.155");//Ip地址   27.16.192.155
+        try {
+            EntPayResult aaa = wxService.getEntPayService().entPay(request);
+            System.out.println("-------------------------");
+        } catch (WxPayException e) {
+            e.printStackTrace();
+        }
+        return ApiResponse.success();
+    }
+
+
 
 }
