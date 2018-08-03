@@ -29,7 +29,7 @@
             <ui-view class="funcFloat box_row">
                 <ui-view class="box_row_100" bindtap="goBill">
                   <ui-view class="itemVal">
-                      {{zhYE.yhZhye/100 | yhZhye}}元
+                      {{zhYE.yhZhye/100 | yhZhye}} 币
                   </ui-view>
                   <ui-view class="itemTxt">
                       累计奖励

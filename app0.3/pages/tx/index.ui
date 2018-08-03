@@ -3,7 +3,7 @@
   <ui-page style="overflow-y: hidden;">
     <ui-view class="box_col" style="{{ { height: pageHeight(0)+ 'px'} }}">
 
-        <ui-view class="bankCard paddLR">
+        <ui-view class="bankCard paddLR" ui:if="{{false}}">
           <ui-view ui:if="bankList.length==0" class='addBankList' bindtap="addbankCard">
               点我<ui-text class="Add">添</ui-text>加银行卡
           </ui-view>
@@ -26,11 +26,11 @@
         <ui-view class="paddLR">
             <!-- <ui-view>提现金额</ui-view> -->
             <ui-row>
-                <ui-col align="left">
-                    提现金额
+                <ui-col align="left" class="titmess" vertical-alig="middle">
+                      兑换数量
                 </ui-col>
                 <ui-col align="right">
-                  <ui-button type="primary" size="mini" bindtap="txmoney = ye">全部提现</ui-button>
+                  <ui-button type="primary" size="mini" bindtap="txmoney = ye">全部兑换</ui-button>
                 </ui-col>
             </ui-row>
             <ui-row border-bottom=true space-bottom='10'>
@@ -45,7 +45,9 @@
             </ui-row>
             <ui-row ui:if="{{!tostYe}}">
                 <ui-col width="40">
-                    余额:
+                    <ui-view style="color:#26a2ff;font-weight:700">
+                        S币:
+                    </ui-view>
                 </ui-col>
                 <ui-col>
                   {{ye}}
@@ -59,7 +61,7 @@
 
         <ui-view class="box_col_100"></ui-view>
         <ui-view class='txButSty'>
-            <ui-button type="primary" bindtap="TX">提现</ui-button>
+            <ui-button type="primary" bindtap="TX">兑换</ui-button>
         </ui-view>
     
     </ui-view>
@@ -198,7 +200,10 @@ export default {
   .paddLR{
     padding: 10rpx 25rpx;
     background-color: #fff;
-    margin: 20rpx 0;
+    margin: 0 0 20rpx 0;
+    .titmess{
+      font-size: 32rpx;
+    }
   }
   .bankCard{
     .bankCardNumber{
