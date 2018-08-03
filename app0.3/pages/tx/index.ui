@@ -150,18 +150,18 @@ export default {
     TX() {//                                             银行卡号          开户行         提现方式
         var v = this
         // let bank =v.bankList[v.bankListIndex].id
-        if (v.bankList.length == 0) {
-          ui.showToast({ title: '请绑定银行卡' })
-          return
-        }
+        // if (v.bankList.length == 0) {
+        //   ui.showToast({ title: '请绑定银行卡' })
+        //   return
+        // }
         if (this.txmoney) {
-          this.txmoney = parseInt(this.number)
-
-          this.$http('POST',ui.getApp().apis.TX,{'ttje': this.number * 100,'yhkid': v.bankList[v.banlIndex].id},(res)=>{
+          this.txmoney = parseFloat(this.txmoney)
+          // v.bankList[v.banlIndex].id
+          this.$http('POST',ui.getApp().apis.TX,{'ttje': this.txmoney * 100,'yhkid': '',ttfs:1},(res)=>{
               if (res.code == 200) {
                 ui.navigateTo(
                   {
-                    url:'center/bill2'
+                    url:'/pages/center/bill2'
                   }
                 )
               }
