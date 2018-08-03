@@ -39,6 +39,7 @@ public class BizTx implements Serializable {
 
     /**
      * 提现方式 ZDCLK0047 (1、微信红包 2、人工转账)
+     * 1、微信提现  2、银行卡提现 3、人工提现
      */
     @Column(name = "TT_FS")
     private String ttFs;
@@ -230,7 +231,7 @@ public class BizTx implements Serializable {
     }
 
     /**
-     * 设置提现方式 ZDCLK0047 (1、微信红包 2、人工转账)
+     * 设置提现方式 ZDCLK0047 (1、微信红包 2、人工转账 1、微信提现  2、银行卡提现 3、人工提现)
      *
      * @param ttFs 提现方式 ZDCLK0047 (1、微信红包 2、人工转账)
      */

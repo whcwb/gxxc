@@ -19,7 +19,7 @@ public interface TxService extends BaseService<BizTx,java.lang.String>{
 
     ApiResponse<String> updateTxzt(BizTx bizTx);
 
-    ApiResponse<String> saveUserDraw(Double ttJe, String yhkid, BizYhk bizYhk, BizPtyh user);
+    ApiResponse<String> saveUserDraw(Double ttJe, String yhkid, BizYhk bizYhk, BizPtyh user, String ttfs);
 
     ApiResponse<List<String>> batchImport(String filePath);
 }

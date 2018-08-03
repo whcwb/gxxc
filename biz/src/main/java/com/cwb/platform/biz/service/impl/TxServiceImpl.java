@@ -215,24 +215,27 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
      * 用户提现
      * @param ttje  金额
      * @param user
+     * @param ttfs
      * @return
      */
-    public ApiResponse<String> saveUserDraw(Double ttje, String yhkid, BizYhk bizYhk, BizPtyh user){
-        String yhkh=bizYhk.getYhkKh();//银行卡号不能为空
+    public ApiResponse<String> saveUserDraw(Double ttje, String yhkid, BizYhk bizYhk, BizPtyh user, String ttfs){
+        BizTx newEntity=new BizTx();
+
         String userId=user.getId();//获取用户
         BizZh userZh=zhService.findById(userId);
         RuntimeCheck.ifFalse(userZh != null && userZh.getYhZhye() >= ttje,"提现金额不能大于余额");
-        RuntimeCheck.ifBlank(yhkh, "银行卡号不能为空");
-//        RuntimeCheck.ifBlank(khh, "开户行不能为空");
+        if(StringUtils.equals(ttfs,"2")){
+            String yhkh=bizYhk.getYhkKh();//银行卡号不能为空
+            RuntimeCheck.ifBlank(yhkh, "银行卡号不能为空");
+            newEntity.setTtYhkh(yhkh);
+            newEntity.setTtKhh(bizYhk.getYhkKhh());//设置用户开户行
+            newEntity.setTxXm(bizYhk.getYhkXm());//提现姓名
+            newEntity.setYhkid(bizYhk.getId());
+            newEntity.setTtSsyh(bizYhk.getYhkSsyh());//提现所属银行
+        }
 
         String yjid=genId();
-        BizTx newEntity=new BizTx();
-            newEntity.setTtFs("2");
-//        if(StringUtils.isEmpty(ttFs)){
-//            newEntity.setTtFs("2");
-//        }else {
-//            newEntity.setTtFs(ttFs);
-//        }
+        newEntity.setTtFs(ttfs);
         newEntity.setId(genId());
         newEntity.setYhId(userId);
         newEntity.setYhMc(user.getYhXm());
@@ -241,11 +244,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         newEntity.setTtSj(DateUtils.getNowTime());
         newEntity.setTtShzt("0");
         newEntity.setYjId(yjid);//流水表id
-        newEntity.setTtYhkh(yhkh);
-        newEntity.setTtKhh(bizYhk.getYhkKhh());//设置用户开户行
-        newEntity.setTxXm(bizYhk.getYhkXm());//提现姓名
-        newEntity.setYhkid(bizYhk.getId());
-        newEntity.setTtSsyh(bizYhk.getYhkSsyh());//提现所属银行
+
 
        int i= entityMapper.insert(newEntity);
        if(i==1){
@@ -268,11 +267,14 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
             userList.add(userId);
         }
         zhService.userAccountUpdate(userList);
-        //更新银行卡使用时间。
-        BizYhk updateYhkDate=new BizYhk();
-        updateYhkDate.setYhId(bizYhk.getId());
-        updateYhkDate.setYhkScsysj(DateUtils.getNowTime());
-        yhkService.update(updateYhkDate);
+
+        if(StringUtils.equals(ttfs,"2")){
+            //更新银行卡使用时间。
+            BizYhk updateYhkDate=new BizYhk();
+            updateYhkDate.setYhId(bizYhk.getId());
+            updateYhkDate.setYhkScsysj(DateUtils.getNowTime());
+            yhkService.update(updateYhkDate);
+        }
 
         return ApiResponse.success();
     }

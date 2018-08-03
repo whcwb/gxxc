@@ -32,18 +32,32 @@ public class AppTxController extends AppUserBaseController {
 
     /**
      * 用户提现操作
+     * @param ttje 提现金额
+     * @param yhkid 银行卡ID
+     * @param ttfs  1、微信提现  2、银行卡提现 3、人工提现
      * @return
      */
    @RequestMapping(value="/save", method={RequestMethod.POST})
-   public ApiResponse<String> save(String ttje, String yhkid){
-       RuntimeCheck.ifTrue(StringUtils.isEmpty(yhkid),"您好，请选择银行卡！");
-       BizYhk bizYhk=yhkService.findById(yhkid);
-       RuntimeCheck.ifNull(bizYhk,"您好，请选择银行卡！");
+   public ApiResponse<String> save(String ttje, String yhkid,String ttfs){
+       BizPtyh  user=getAppCurrentUser();
+
+       BizYhk bizYhk=new BizYhk();
+       if(StringUtils.equals(ttfs,"2")){
+           RuntimeCheck.ifTrue(StringUtils.isEmpty(yhkid),"您好，请选择银行卡！");
+           bizYhk=yhkService.findById(yhkid);
+           RuntimeCheck.ifNull(bizYhk,"您好，请选择银行卡！");
+       }else if(StringUtils.equals(ttfs,"1")){
+           String openId=user.getYhOpenId();
+           RuntimeCheck.ifNull(openId,"您好，当前账户无法使用微信提现！");
+       }else if(StringUtils.equals(ttfs,"3")){
+           //人工打电话去提现
+       }else{
+           RuntimeCheck.ifTrue(true,"无效的提现类型");
+       }
        RuntimeCheck.ifTrue(StringUtils.isEmpty(ttje),"您好，提现金额不能为空！");
        Double ttJe= Double.parseDouble(ttje);
        RuntimeCheck.ifFalse(ttje!=null && ttJe>0,"您好，提现金额不能小于0！");
-       BizPtyh  user=getAppCurrentUser();
-       return service.saveUserDraw(ttJe, yhkid,bizYhk,user);
+       return service.saveUserDraw(ttJe, yhkid,bizYhk,user,ttfs);
    }
 
     /**
