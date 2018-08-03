@@ -86,10 +86,11 @@ public class SubscribeHandler extends AbstractHandler {
 
 			WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
 //			item.setDescription("您已成为520学车联盟的学员，您的培训流程已启动，请注意接听客服电话。我们会及时安排您的培训流程！");
-			item.setDescription("您已成为520学车联盟的学员，您的培训流程已启动，请注意接听客服电话。我们会及时安排您的培训流程！");
+			item.setDescription("欢迎加入520学车联盟！");
 			item.setPicUrl("http://www.520xclm.com:8001/wechatImg.jpg");
 			item.setTitle("感谢关注");
-			item.setUrl("http://www.520xclm.com/wx");
+//			item.setUrl("http://www.520xclm.com/wx");
+			item.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect");
 
 			WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
 					.fromUser(wxMessage.getToUser())
