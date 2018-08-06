@@ -22,4 +22,6 @@ public interface TxService extends BaseService<BizTx,java.lang.String>{
     ApiResponse<String> saveUserDraw(Double ttJe, String yhkid, BizYhk bizYhk, BizPtyh user, String ttfs);
 
     ApiResponse<List<String>> batchImport(String filePath);
+
+    ApiResponse<String> wxEnterprisePay(BizTx bizTx);
 }

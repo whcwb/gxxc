@@ -45,6 +45,15 @@ public ApiResponse<List<BizTx>> pager(BizTx entity, Page<BizTx> pager){
    }
 
     /**
+     * 微信企业付款
+     * @param bizTx
+     * @return
+     */
+    @PostMapping("/wxEnterprisePay")
+    public ApiResponse<String> wxEnterprisePay(BizTx bizTx){
+        return service.wxEnterprisePay(bizTx);
+    }
+    /**
      * 上传excel文件，批量导入体现
      */
     @PostMapping("/batchImport")

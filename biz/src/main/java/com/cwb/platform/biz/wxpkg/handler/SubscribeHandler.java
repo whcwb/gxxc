@@ -86,7 +86,8 @@ public class SubscribeHandler extends AbstractHandler {
 
 			WxMpXmlOutNewsMessage.Item item = new WxMpXmlOutNewsMessage.Item();
 //			item.setDescription("您已成为520学车联盟的学员，您的培训流程已启动，请注意接听客服电话。我们会及时安排您的培训流程！");
-			item.setDescription("欢迎加入520学车联盟！");
+//			item.setDescription("欢迎加入520学车联盟！");
+			item.setDescription("520学车联盟，您身边的学车管家，邀请好友学车，享优惠！");
 			item.setPicUrl("http://www.520xclm.com:8001/wechatImg.jpg");
 			item.setTitle("感谢关注");
 //			item.setUrl("http://www.520xclm.com/wx");
