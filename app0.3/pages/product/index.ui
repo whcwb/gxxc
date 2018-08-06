@@ -26,7 +26,7 @@
                       </ui-col>
                       <ui-col span="3" space-left="20" align="center"  vertical-align="middle">
                           <ui-view class="money">
-                            ￥{{item.cpJl/100}}
+                            ￥{{item.cpJl/100}}元
                           </ui-view>
                       </ui-col>
                   </ui-row>
