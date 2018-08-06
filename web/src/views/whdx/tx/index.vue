@@ -13,11 +13,11 @@
                     <Icon type="arrow-return-left"></Icon>
                 </Button>
             </Tooltip>
-            <Tooltip content="批量打款" placement="bottom">
-                <Button type="success" @click="batchDk">
-                    <Icon type="checkmark-circled"></Icon>
-                </Button>
-            </Tooltip>
+            <!--<Tooltip content="批量打款" placement="bottom">-->
+                <!--<Button type="success" @click="batchDk">-->
+                    <!--<Icon type="checkmark-circled"></Icon>-->
+                <!--</Button>-->
+            <!--</Tooltip>-->
         </Row>
         <Row style="position: relative;">
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
