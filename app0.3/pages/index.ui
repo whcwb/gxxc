@@ -23,13 +23,13 @@
         </ui-view>
         <!-- module 2 -->
         <ui-view class="module2">
-            <ui-view class="price">
+            <!-- <ui-view class="price">
               听说邀请好友还有现金，速速围观
-            </ui-view>
+            </ui-view> -->
             <ui-view class="funcFloat box_row">
                 <ui-view class="box_row_100" bindtap="goBill">
                   <ui-view class="itemVal">
-                      {{zhYE.yhZhye/100 | yhZhye}} 币
+                      {{zhYE.yhZhye/100 | yhZhye}}
                   </ui-view>
                   <ui-view class="itemTxt">
                       累计奖励

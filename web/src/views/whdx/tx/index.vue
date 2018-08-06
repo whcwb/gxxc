@@ -8,11 +8,16 @@
             <Button type="info" @click="exportData">
                 <Icon type="ios-download-outline"></Icon>
             </Button>
-            <Tooltip content="批量导入" placement="top">
+            <Tooltip content="批量导入" placement="bottom">
                 <Button type="success" @click="componentName='batchImport'">
                     <Icon type="arrow-return-left"></Icon>
                 </Button>
             </Tooltip>
+            <!--<Tooltip content="批量打款" placement="bottom">-->
+                <!--<Button type="success" @click="batchDk">-->
+                    <!--<Icon type="checkmark-circled"></Icon>-->
+                <!--</Button>-->
+            <!--</Tooltip>-->
         </Row>
         <Row style="position: relative;">
         	<Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
@@ -72,7 +77,20 @@
                             }
                             if (params.row.ttShzt === '1' && params.row.ttZt == '0'){
                                 buttons.push(
-                                    this.util.buildButton(this,h,'success','checkmark-circled','确认',()=>{
+                                    h('Tooltip',
+                                        {props: {placement: 'top',content: '打款',}},
+                                        [
+                                            h('Button', {
+                                                props: {type: 'success',icon: 'checkmark-circled',shape: 'circle',size: 'small'},
+                                                style: {margin: '0 8px 0 0'},
+                                                on: {click:()=> {
+                                                        this.dk(params.row.id)
+                                                    }
+                                                }
+                                            }),
+                                        ]
+                                    ),
+                                    this.util.buildButton(this,h,'info','checkmark-circled','手动确认',()=>{
                                         this.choosedItem = params.row;
                                         this.componentName = 'confirm'
                                     }),
@@ -101,6 +119,22 @@
                     keys:'yhMc,ttFs,ttJe,ttSj,ttZt,ttYhkh,ttKhh,txXm'
                 }
                 window.open(this.apis.exportData+"?exportType=tx&cols="+params.cols+"&keys="+params.keys);
+            },
+            batchDk(){
+                this.dk();
+            },
+            dk(id){
+                let p = {};
+                if (id){
+                    p.id = id;
+                }
+                this.$http.post(this.apis.tx.dk,p).then((res)=>{
+                    if (res.code === 200){
+                        this.util.getPageData(this);
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
             }
         }
     }

@@ -155,6 +155,7 @@ module.exports = {
         audit:'/api/tx/updateShzt',
         confirm:'/api/tx/updateTxzt',
         batchImport:'/api/tx/batchImport',
+        dk:'/api/tx/wxEnterprisePay',
     },
     ROLE:{
         QUERY:'/api/js/pager',//角色管理
