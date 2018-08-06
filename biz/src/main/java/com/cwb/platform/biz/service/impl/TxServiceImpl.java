@@ -371,7 +371,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         request.setCheckName(wxCheckName);//校验用户姓名选项  FORCE_CHECK 强校验真实姓名  NO_CHECK：不校验真实姓名 
         request.setReUserName(userName);//收款用户姓名
         request.setAmount(amount);//金额
-        request.setDescription("公司付款Test");
+        request.setDescription(desc);
         request.setSpbillCreateIp(spbillCreateIp);//Ip地址   27.16.192.155
         String paymentNo="";//微信返回的支付订单号
         try {
