@@ -74,6 +74,22 @@
                   </ui-row>
                 </ui-view>
                 
+                <ui-view class="userItem marB25" bindtap="txN">
+                  <ui-row>
+                    <ui-col width='20' vertical-align="middle"
+                      style="color:#ff8300;font-weight:900;font-size: 18px;">
+                      S
+                    </ui-col>
+                    <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
+                          <ui-view class="ftWt">
+                                S币商城
+                          </ui-view>
+                    </ui-col>
+                    <ui-col align="right" vertical-align="middle" space-right="10">
+                      <ui-icon type="right" size="20" color="#3399FF"></ui-icon>
+                    </ui-col>
+                  </ui-row>
+                </ui-view>
 
                 <ui-view class="userItem marB5" bindtap="goBill">
                   <ui-row>
@@ -251,6 +267,13 @@ export default {
         ui.navigateTo(
           {
             url:'tx/index'
+          }
+        )
+      },
+      txN(){
+        ui.navigateTo(
+          {
+            url:'SB/SB_shopping'
           }
         )
       },
