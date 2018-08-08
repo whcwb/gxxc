@@ -1,15 +1,10 @@
 package com.cwb.platform.biz.service.impl;
 
 
+import com.cwb.platform.biz.mapper.BizTxJlMapper;
 import com.cwb.platform.biz.mapper.BizTxMapper;
-import com.cwb.platform.biz.model.BizTx;
-import com.cwb.platform.biz.model.BizYhk;
-import com.cwb.platform.biz.model.BizYjmx;
-import com.cwb.platform.biz.model.BizZh;
-import com.cwb.platform.biz.service.TxService;
-import com.cwb.platform.biz.service.YhkService;
-import com.cwb.platform.biz.service.YjmxService;
-import com.cwb.platform.biz.service.ZhService;
+import com.cwb.platform.biz.model.*;
+import com.cwb.platform.biz.service.*;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -20,6 +15,10 @@ import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.ExcelUtil;
 import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.binarywang.wxpay.bean.entpay.EntPayRequest;
+import com.github.binarywang.wxpay.bean.entpay.EntPayResult;
+import com.github.binarywang.wxpay.exception.WxPayException;
+import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +27,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> implements TxService{
+
+    @Resource(name = "wxPayService")
+    private WxPayService wxService;
+    @Autowired
+    private BizTxJlMapper txJlMapper;
+
     @Autowired
     private BizTxMapper entityMapper;
 
@@ -45,8 +51,23 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     private YhkService yhkService;
     @Autowired
     private ZdxmService zdxmService;
+
+    @Autowired
+    private PtyhService ptyhService;
+
+
     @Value("${staticPath}")
     private String staticPath;
+
+    @Value("${wechat.pay.appId}")
+    private String appid;
+    @Value("${wechat.pay.mchId}")
+    private String mchId;
+    @Value("${wx_checkname}")
+    private String wxCheckName;
+
+    @Value("${spbill_create_ip}")
+    private String spbillCreateIp;
 
     @Override
     public List<String> getSpecialCols() {
@@ -208,6 +229,164 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
     }
 
 
+    /**
+     * 提现ID
+     * @param bizTx
+   *                  提现ID
+     * @return
+     */
+    @Override
+    public ApiResponse<String> wxEnterprisePay(BizTx bizTx) {
+        //获取数据
+        String txId=bizTx.getId();//提现ID
+        txId=StringUtils.trim(txId);
+        List<BizTx> txList=new ArrayList<BizTx>();
+        if(StringUtils.isEmpty(txId)){
+            BizTx whereEntity=new BizTx();
+            whereEntity.setTtFs("1");//设置提现方式  1、微信红包
+            whereEntity.setTtZt("0");//提现状态 0 待提出
+            whereEntity.setTtShzt("1");//设置提现审核状态  0-待审核
+            txList=findByEntity(whereEntity);
+        }else{
+            BizTx find=findById(txId);
+            if(find!=null){
+                txList.add(find);
+            }
+        }
+
+        String ensembleFruit="2";//1支付成功  2支付失败
+        String ensembleFruitDesc="";//提现操作的记录
+        int fruitCount=0;//记录成功的笔数
+        //遍历提现列表
+        if(txList!=null&&txList.size()>0){
+            for(BizTx tx:txList){
+                String fruit="2";//1支付成功  2支付失败
+                String fruitDesc="";//提现操作的记录
+                BizTxJl txJl=new BizTxJl();//提现记录表
+                txJl.setPkId(genId());
+                txJl.setCjsj(DateUtils.getNowTime());//创建时间
+                txJl.setTxId(tx.getId());
+                txJl.setYhId(tx.getYhId());
+
+                String ttFs=tx.getTtFs();//提现方式 ZDCLK0047  1、微信提现  2、银行卡提现 3、人工提现
+                Double ttJe=tx.getTtJe();//提现金额(分)
+                String ttZt=tx.getTtZt();//提现状态 0 待收取 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请
+                String ttShzt=tx.getTtShzt();//提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)
+
+                txJl.setTxMoney(String.valueOf(ttJe));//提现金额
+                txJl.setTxType(ttFs);//提现方式
+                if(StringUtils.equals(ttShzt,"1")){//提现审核状态 ZDCLK0049 (0、 待审核 1、 审核通过 2、 审核拒绝)
+                    if(StringUtils.equals(ttFs,"1")){
+                        if(StringUtils.equals(ttZt,"0")){//提现状态为 待打款的申请才能进行操作
+                            BizPtyh user=  ptyhService.findById(tx.getYhId());//获取用户信息
+                            int payMoney=(int) Math.ceil(ttJe);
+                            if(ttJe-payMoney==0){
+                                ApiResponse<String> makeMoney = wxEnterprisePayRealize(tx.getId(),user.getYhOpenId(),payMoney,user.getYhXm(),"平台系统自动打款");
+                                if(makeMoney.isSuccess()){//打款成功
+                                    fruitCount++;
+                                    String paymentNo=makeMoney.getMessage();//微信返回的支付订单号
+                                    fruit="1";//1支付成功  2支付失败
+                                    fruitDesc="打款成功";//微信打款成功
+                                    txJl.setWxPaymentNo(paymentNo);//只有成功后，就会有这一条记录
+
+                                    BizTx bizTx1=new BizTx();
+                                    bizTx1.setId(tx.getId());
+                                    bizTx1.setTtZt("1");//设置提现状态 ZDCLK0048 (0 待审核 1、 已收取 2、 已经发送  3、 过期未收取 4、 无效申请)
+                                    bizTx1.setTtBz("平台系统自动打款。提现记录ID="+txJl.getPkId());//
+                                    ApiResponse<String> updTx=null;
+                                    try {
+                                        txJl.setFruit(fruit);
+                                        txJl.setTxDesc(fruitDesc);
+                                        txJlMapper.insert(txJl);
+                                        updTx=this.updateTxzt(bizTx1);
+                                    }catch (Exception e){}
+                                    if(updTx!=null){
+
+                                    }
+                                }else{
+                                    fruitDesc=makeMoney.getMessage();
+                                }
+                            }else{
+                                fruitDesc="该提现申请中存在小数，系统提现仅能精确到分，此订单无法自动打款！";
+                            }
+
+                        }else{
+                            fruitDesc="该提现申请不处于待打款状态，不能进行自动打款操作！";
+                        }
+                    }else{
+                        fruitDesc+="暂未开通其它的提款申请！";
+                    }
+                }else{
+                    fruitDesc="该提现申请还未审核通过，跳过此业务！";
+                }
+                if(StringUtils.equals(fruit,"2")){
+                    txJl.setFruit(fruit);
+                    txJl.setTxDesc(fruitDesc);
+                    txJlMapper.insert(txJl);
+                }
+
+                ensembleFruit=fruit;
+                ensembleFruitDesc=fruitDesc;
+            }
+        }
+        if(StringUtils.isEmpty(bizTx.getId())){
+            return ApiResponse.success("共"+txList.size()+"笔。成功了："+fruitCount+"笔。失败"+(txList.size()-fruitCount));
+        }else{
+            if(StringUtils.equals(ensembleFruit,"2")){
+                return ApiResponse.fail(ensembleFruitDesc);
+            }else {
+                return ApiResponse.success("支付成功");
+            }
+        }
+    }
+
+    /**
+     * 微信提现操作 实现
+     * @param orderId  支付的ID号，这里给的是提现表ID，因为同一个订单如果重复了，
+     * @param openID   付款的用户的微信OPEN_ID
+     * @param amount   支付的金额 单位是分
+     * @param userName   用户的真实姓名
+     * @return
+     */
+    public ApiResponse<String> wxEnterprisePayRealize(String orderId,String openID,int amount,String userName,String desc){
+        if (StringUtils.isBlank(orderId)){
+            return ApiResponse.fail("订单ID不能为空");
+        }
+        if (StringUtils.isBlank(openID)){
+            return ApiResponse.fail("用户的OPEN_ID不能为空");
+        }
+        if (amount>1*100&&amount<20000*100){
+            return ApiResponse.fail("微信提现仅支付1到20000元的付款，该金额已经超出限额");
+        }
+        if(StringUtils.equals(wxCheckName,"FORCE_CHECK")&&StringUtils.isEmpty(userName)){
+            return ApiResponse.fail("目前系统强制校验真实姓名，所以用户姓名不能为空");
+        }
+
+        EntPayRequest request=new EntPayRequest();
+        request.setMchAppid(appid);
+        request.setMchId(mchId);
+
+        request.setPartnerTradeNo(orderId);//订单ID
+        request.setOpenid(openID);//用户的open_id  赵虎
+        request.setCheckName(wxCheckName);//校验用户姓名选项  FORCE_CHECK 强校验真实姓名  NO_CHECK：不校验真实姓名 
+        request.setReUserName(userName);//收款用户姓名
+        request.setAmount(amount);//金额
+        request.setDescription(desc);
+        request.setSpbillCreateIp(spbillCreateIp);//Ip地址   27.16.192.155
+        String paymentNo="";//微信返回的支付订单号
+        try {
+            EntPayResult wxPayReturn = wxService.getEntPayService().entPay(request);
+            paymentNo=wxPayReturn.getPaymentNo();
+        } catch (WxPayException e) {
+            e.printStackTrace();
+            e.getMessage();
+            e.getErrCodeDes();
+            return ApiResponse.fail("微信打款失败："+e.getMessage());
+        }
+        return ApiResponse.success(paymentNo);
+    }
+
+
 
     //==============================================================APP端  开始===========
 
@@ -334,6 +513,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         result.setMessage("总共" + total + "行 ， 成功总数 ：" + success + " , 失败总数 ：" + fail);
         return result;
     }
+
 
 
 }

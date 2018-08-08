@@ -529,6 +529,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhYyyqm(), app_sendSMS_yyyqm), "邀请码错误，请重新注册");
 
         RuntimeCheck.ifBlank(entity.getYhMm(), "用户密码不能为空");
+        RuntimeCheck.ifTrue(entity.getYhMm().length()<6, "用户密码不能小于6位");
 //        RuntimeCheck.ifBlank(entity.getYhXm(),"用户姓名不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhZjhm(),"用户证件号码不能为空");
 
