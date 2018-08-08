@@ -46,7 +46,7 @@
 
                 <ui-view class="userItem marB25">
                   <ui-row>
-                    <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                    <ui-col span="4" align="left" vertical-align="middle" space-left="20">
                       <ui-view>
                         {{zhYE.yhZhye/100 | yhZhye}}
                         <ui-text class="Bsty">
@@ -54,23 +54,22 @@
                       </ui-view>
                       <ui-view>S 币</ui-view>
                     </ui-col>
-                    <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                    <ui-col span="4" align="left" vertical-align="middle" space-left="20">
                       <ui-view>{{zhYE.yhZhye/100 | yhZhye}}
                       <ui-text class="Bsty">
                       </ui-text>
                       </ui-view>
                       <ui-view>邀请奖励</ui-view>
                     </ui-col> 
-                    <ui-col span="3" align="left" vertical-align="middle" space-left="40">
-                      <ui-view>
-                        <ui-button type="primary" size="default" bindtap="goProductList">加盟</ui-button>
-                      </ui-view>
+                    <ui-col span="4" align="left" vertical-align="middle" space-left="40">
+                        <ui-button type="primary" size="default" full-width
+                        bindtap="goProductList">加盟</ui-button>
                     </ui-col>
-                    <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                    <!-- <ui-col span="3" align="left" vertical-align="middle" space-left="20">
                       <ui-view>
                         <ui-button type="primary" size="default" bindtap="tx">兑换</ui-button>
                       </ui-view>
-                    </ui-col>
+                    </ui-col> -->
                   </ui-row>
                 </ui-view>
                 
