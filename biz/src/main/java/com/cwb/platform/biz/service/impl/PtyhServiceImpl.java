@@ -1372,7 +1372,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         } else if (type == 2) {
             redisKey = appSendSMSResetting;
             //使用重置密码模板进行下发
-            map.put("templateCode", "SMS_136430180");//短信模板
+            map.put("templateCode", "SMS_141935095");//密码重置
         } else {
             //类型不存在，不能下发
             return false;
