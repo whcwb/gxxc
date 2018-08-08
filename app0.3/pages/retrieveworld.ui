@@ -21,7 +21,7 @@
                 <ui-row space="60">
                   <ui-col align="center">
                     <ui-view class="text">
-                     <ui-image src="../static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
+                     <ui-image src="static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
                     </ui-view>
                   </ui-col>
                 </ui-row>
