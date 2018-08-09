@@ -8,19 +8,24 @@
               </ui-view>
               <ui-view class="yeMess box_col_100">
                   <ui-view class="box_row boxlist">
-                      <ui-view class="box_row_100">
+                      <!-- <ui-view class="box_row_100">
                         
-                      </ui-view>
+                      </ui-view> -->
                       <ui-view class="box_row_100 borLR">
                           <ui-view class="tit">
-                              当前总积分
+                              当前总S币
                           </ui-view>
                           <ui-view class="num">
                             {{ye}}
                           </ui-view>
                       </ui-view>
-                      <ui-view class="box_row_100">
-                        
+                      <ui-view class="box_row_100" style="color:#7b6666">
+                        <ui-view class="tit">
+                              冻结S币
+                          </ui-view>
+                          <ui-view class="num">
+                            {{djye}}
+                          </ui-view>
                       </ui-view>
 
                   </ui-view>
@@ -111,6 +116,20 @@
                   </ui-view> 
               </ui-view>
           </ui-view>
+          <ui-view class="altmess">
+            <ui-view class="tit">
+              <ui-text class="w">*</ui-text>
+              现金兑换需知
+            </ui-view>
+            <ui-view class="mess">
+                <ui-view>
+                    1、积分兑换到您微信的零钱包中
+                </ui-view>
+                <ui-view>
+                    2、兑换必须,平台实名认证和微信实名认证一至才能兑换。
+                </ui-view>
+            </ui-view>
+          </ui-view>
       </ui-view>
   </ui-page>
 </template>
@@ -129,26 +148,7 @@ export default {
     return {
       borderStyCol:true,
       ye:0.00,
-      shopList:[
-        {
-          money:100,
-        },
-        {
-          money:300,
-        },
-        {
-          money:500,
-        },
-        {
-          money:600,
-        },
-        {
-          money:800,
-        },
-        {
-          money:1000,
-        }
-      ]
+      djye:0.00
     }
   },
   methods: {
@@ -157,8 +157,11 @@ export default {
         if (res.code == 200) {
           if(res.result.yhZhye == 0){
             this.ye = 0.00
+          }else if(res.result.yhTxdj == 0){
+
           }else{
             this.ye = res.result.yhZhye/100
+            this.djye = res.result.yhTxdj/100
           }
         }
       })
@@ -171,7 +174,7 @@ export default {
         }else{
           ui.showAlert({
             title: '',
-            content: '当前积分不足',
+            content: '当前S币不足',
             buttonText: '知道了',
             success () {
             }
@@ -284,6 +287,20 @@ export default {
       font-size: 38rpx;
       color:#adadad;
     }
+  }
+}
+.altmess{
+  padding:15rpx 45rpx;
+  .tit{
+      font-size: 34rpx;
+    .w{
+      font-size: 46rpx;
+      font-weight: 700;
+      color: #ff7745;
+    }
+  }
+  .mess{
+      font-size: 30rpx;
   }
 }
 </style>
