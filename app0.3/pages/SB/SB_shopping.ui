@@ -21,7 +21,7 @@
                       </ui-view>
                       <ui-view class="box_row_100" style="color:#7b6666">
                         <ui-view class="tit">
-                              冻结S币
+                              已冻结
                           </ui-view>
                           <ui-view class="num">
                             {{djye}}
@@ -140,7 +140,7 @@ export default {
     navigationBarBackgroundColor:"#fff",
     navigationBarTitleText: "S币商城",
     navigationBarTextStyle:"#ff8a5f",
-    title:'SB商城',
+    title:'S币商城',
     backgroundColor:'#fff',
     delay:false,//延迟加载
   },
