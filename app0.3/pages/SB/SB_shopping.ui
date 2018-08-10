@@ -42,38 +42,25 @@
                       <ui-view class="box_col">
                           <ui-view class="box_col_100" style="margin-bottom:8px">
                               <ui-view class="box_row">
-                                  <ui-view class="{{'box_row_100','spItemSty',ye>100?'ONcolor':'offcolor'}}"
-                                    bindtap="getShop(ye>100,100)">
+                                  <ui-view class="{{'box_row_100','spItemSty',ye>200?'ONcolor':'offcolor'}}"
+                                    bindtap="getShop(ye>200,200)">
                                       <ui-view>
-                                          100元
+                                          200元
                                       </ui-view>
                                       <ui-view>
-                                          100S币
-                                      </ui-view>
-                                  </ui-view>
-                                  <ui-view class="{{'box_row_100','spItemSty',ye>100?'ONcolor':'offcolor'}}"
-                                    bindtap="getShop(ye>300,300)">
-                                      <ui-view>
-                                          300元
-                                      </ui-view>
-                                      <ui-view>
-                                          300S币
+                                          200S币
                                       </ui-view>
                                   </ui-view>
-                                  <ui-view class="{{'box_row_100','spItemSty',ye>100?'ONcolor':'offcolor'}}"
-                                    bindtap="getShop(ye>500,500)">
+                                  <ui-view class="{{'box_row_100','spItemSty',ye>400?'ONcolor':'offcolor'}}"
+                                    bindtap="getShop(ye>400,400)">
                                       <ui-view>
-                                          500元
+                                          400元
                                       </ui-view>
                                       <ui-view>
-                                          500S币
+                                          400S币
                                       </ui-view>
                                   </ui-view>
-                              </ui-view>
-                          </ui-view>
-                          <ui-view class="box_col_100">
-                              <ui-view class="box_row">
-                                  <ui-view class="{{'box_row_100','spItemSty',ye>100?'ONcolor':'offcolor'}}"
+                                  <ui-view class="{{'box_row_100','spItemSty',ye>600?'ONcolor':'offcolor'}}"
                                     bindtap="getShop(ye>600,600)">
                                       <ui-view>
                                           600元
@@ -82,7 +69,11 @@
                                           600S币
                                       </ui-view>
                                   </ui-view>
-                                  <ui-view class="{{'box_row_100','spItemSty',ye>100?'ONcolor':'offcolor'}}"
+                              </ui-view>
+                          </ui-view>
+                          <ui-view class="box_col_100">
+                              <ui-view class="box_row">
+                                  <ui-view class="{{'box_row_100','spItemSty',ye>800?'ONcolor':'offcolor'}}"
                                     bindtap="getShop(ye>800,800)">
                                       <ui-view>
                                           800元
@@ -91,13 +82,22 @@
                                           800S币
                                       </ui-view>
                                   </ui-view>
-                                  <ui-view class="{{'box_row_100','spItemSty',ye>100?'ONcolor':'offcolor'}}"
+                                  <ui-view class="{{'box_row_100','spItemSty',ye>1000?'ONcolor':'offcolor'}}"
                                     bindtap="getShop(ye>1000,1000)">
                                       <ui-view>
                                           1000元
                                       </ui-view>
                                       <ui-view>
                                           1000S币
+                                      </ui-view>
+                                  </ui-view>
+                                  <ui-view class="{{'box_row_100','spItemSty',ye>0?'ONcolor':'offcolor'}}"
+                                    bindtap="getShop(ye>0,ye)">
+                                      <ui-view>
+                                          {{ye}}元
+                                      </ui-view>
+                                      <ui-view>
+                                          {{ye}}S币
                                       </ui-view>
                                   </ui-view>
                               </ui-view>
@@ -157,10 +157,14 @@ export default {
         if (res.code == 200) {
           if(res.result.yhZhye == 0){
             this.ye = 0.00
-          }else if(res.result.yhTxdj == 0){
-
+            console.log('1');
           }else{
             this.ye = res.result.yhZhye/100
+          }
+          
+          if(res.result.yhTxdj == 0){
+            this.djye = 0.00
+          }else{
             this.djye = res.result.yhTxdj/100
           }
         }
