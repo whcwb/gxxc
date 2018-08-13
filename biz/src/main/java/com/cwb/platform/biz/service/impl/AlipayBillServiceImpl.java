@@ -7,6 +7,7 @@ import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.cwb.platform.biz.mapper.BizBillContrastMapper;
 import com.cwb.platform.biz.model.BizBillContrast;
+import com.cwb.platform.biz.service.AlipayBillService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.*;
@@ -28,7 +30,8 @@ import java.util.List;
 /** 支付宝 对账方法
  * Created by Administrator on 2018/7/30.
  */
-public class AlipayBillServiceImpl extends BaseServiceImpl {
+@Service
+public class AlipayBillServiceImpl extends BaseServiceImpl implements AlipayBillService {
 
     Logger logger = LoggerFactory.getLogger("access_info");
 
@@ -39,26 +42,26 @@ public class AlipayBillServiceImpl extends BaseServiceImpl {
 
     //  应用id(app_id)
     @Value("${alipay.app_id}")
-    private static String alipayAppId;
+    private  String alipayAppId;
     //APPA应用私钥(private_key)
-    @Value("${alipay.app_privaie_key}")
-    private static String appPrivaieKey;
+    @Value("${alipay.app_privaie_key_pkcs8}")
+    private  String appPrivaieKey;
     //编码格式(charset)
     @Value("${alipay.charset}")
-    private static String charset;
+    private  String charset;
     //    支付宝公钥
     @Value("${alipay.alipay_public_key}")
-    private static String alipayPublicKey;
+    private  String alipayPublicKey;
     //    网关(gateway)请求支付的接口
     @Value("${alipay.gateway}")
-    private static String gateway;
+    private  String gateway;
     //  签名类型  默认为：RSA2
     @Value("${alipay.sign_type}")
-    private static String signType;
+    private  String signType;
     @Value("${alipay.notify_url}")//支付宝回调接口
     private String alipayNotifyUrl;
     @Value("${alipay.bill_file_path}")
-    private static String billFilePath;
+    private  String billFilePath;
 
     @Autowired
     private BizBillContrastMapper billContrastMapper;
@@ -84,8 +87,10 @@ public class AlipayBillServiceImpl extends BaseServiceImpl {
             String billDownloadUrl=response.getBillDownloadUrl();
             logger.info("==================支付宝返回文件下载地址："+billDownloadUrl);
             try {
-                downloadAlipayBills(billDownloadUrl,billDate);
-                retType = true;
+                if(billDownloadUrl!=null){
+                    downloadAlipayBills(billDownloadUrl,billDate);
+                    retType = true;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

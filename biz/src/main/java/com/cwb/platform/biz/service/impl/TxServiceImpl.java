@@ -281,7 +281,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
                             BizPtyh user=  ptyhService.findById(tx.getYhId());//获取用户信息
                             int payMoney=(int) Math.ceil(ttJe);
                             if(ttJe-payMoney==0){
-                                ApiResponse<String> makeMoney = wxEnterprisePayRealize(tx.getId(),user.getYhOpenId(),payMoney,user.getYhXm(),"平台系统自动打款");
+                                ApiResponse<String> makeMoney = wxEnterprisePayRealize(tx.getId(),user.getYhOpenId(),payMoney,user.getYhXm(),"平台系统打款：订单号"+tx.getId());
                                 if(makeMoney.isSuccess()){//打款成功
                                     fruitCount++;
                                     String paymentNo=makeMoney.getMessage();//微信返回的支付订单号
@@ -298,6 +298,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
                                         txJl.setFruit(fruit);
                                         txJl.setTxDesc(fruitDesc);
                                         txJlMapper.insert(txJl);
+                                        //提现返回的订单号:paymentNo
                                         updTx=this.updateTxzt(bizTx1);
                                     }catch (Exception e){}
                                     if(updTx!=null){
@@ -359,7 +360,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
             return ApiResponse.fail("微信提现仅支付1到20000元的付款，该金额已经超出限额");
         }
         if(StringUtils.equals(wxCheckName,"FORCE_CHECK")&&StringUtils.isEmpty(userName)){
-            return ApiResponse.fail("目前系统强制校验真实姓名，所以用户姓名不能为空");
+            return ApiResponse.fail("目前系统强制校验真实姓名，所以必须实名上传");
         }
 
         EntPayRequest request=new EntPayRequest();

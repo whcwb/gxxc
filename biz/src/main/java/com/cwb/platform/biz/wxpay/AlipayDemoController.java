@@ -18,7 +18,7 @@ public class AlipayDemoController {
     @Value("${alipay.app_id}")
     private static String appId;
     //APPA应用私钥(private_key)
-    @Value("${alipay.app_privaie_key}")
+    @Value("${alipay.app_privaie_key_pkcs8}")
     private static String appPrivaieKey;
     //编码格式(charset)
     @Value("${alipay.charset}")

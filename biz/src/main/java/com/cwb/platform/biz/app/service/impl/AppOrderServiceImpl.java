@@ -73,22 +73,22 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
 //支付宝 支付的参数配置-----------------
     //  应用id(app_id)
     @Value("${alipay.app_id}")
-    private static String alipayAppId;
+    private  String alipayAppId;
     //APPA应用私钥(private_key)
-    @Value("${alipay.app_privaie_key}")
-    private static String appPrivaieKey;
+    @Value("${alipay.app_privaie_key_pkcs8}")
+    private  String appPrivaieKey;
     //编码格式(charset)
     @Value("${alipay.charset}")
-    private static String charset;
+    private  String charset;
     //    支付宝公钥
     @Value("${alipay.alipay_public_key}")
-    private static String alipayPublicKey;
+    private  String alipayPublicKey;
     //    网关(gateway)请求支付的接口
     @Value("${alipay.gateway}")
-    private static String gateway;
+    private  String gateway;
     //  签名类型  默认为：RSA2
     @Value("${alipay.sign_type}")
-    private static String signType;
+    private  String signType;
     @Value("${alipay.notify_url}")
     private String alipayNotifyUrl;
 
