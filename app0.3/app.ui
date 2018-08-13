@@ -24,7 +24,7 @@ export default {
       "pages/product/index",
       "pages/Agreement/learnCarFile","pages/Agreement/MemberFile",
       "pages/common/signName","pages/common/qrCode",
-      "pages/score/index","pages/retrieveworld","pages/common/star","pages/myTeam/details"],
+      "pages/score/index","pages/retrieveworld","pages/common/star","pages/myTeam/details","pages/SB/SB_shopping"],
     "theme": {
       "theme-color": "#3399ff"
     },

@@ -119,7 +119,17 @@ ui.extend({
         }
       })
     },
-
+    getDateTime(){
+			var NowDate = new Date
+			let Year = NowDate.getFullYear()
+			let Month = NowDate.getMonth()+1
+			let Day = NowDate.getDate()
+			let Hours = NowDate.getHours()
+			let Minutes = NowDate.getMinutes()
+			let Seconds = NowDate.getSeconds()
+			let time = Year+'-'+Month+'-'+Day+' '+Hours+':'+Minutes+':'+Seconds
+			return time
+		},
 
 
 
