@@ -10,6 +10,6 @@ spring:
       awaitTerminationSeconds: 30
 logging:
   config: classpath:log4j2.xml
-url: http://xclm.xxpt123.com:8080/biz/job/orderFulfil
-tjUrl: http://xclm.xxpt123.com:8080/biz/job/tj
+url: http://www.520xclm.com:8080/biz/job/orderFulfil
+tjUrl: http://www.520xclm.com:8080/biz/job/tj
 
