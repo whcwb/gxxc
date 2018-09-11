@@ -1,40 +1,32 @@
 <!---->
 <template>
   <ui-page style="overflow-y: hidden;">
+    <ui-nav-bar slot="nav-bar">
+      <ui-row height="46">
+        <ui-col width="60">
+        </ui-col>
+        <ui-col vertical-align="middle" align="center">
+          <ui-view class="nav_title"
+            style="color: #f75d42;font-size: 0.65rem;font-weight: 700;"
+          >学车缴费协议</ui-view>
+        </ui-col>
+        <ui-col width="60">
+        </ui-col>
+      </ui-row>
+    </ui-nav-bar>
     <ui-view class="box_col agreeMess" style="{{ { height: pageHeight(0)+ 'px'} }}">
-        <ui-view style="text-align: center;position: relative">
-          <ui-view class="tit">学车缴费协议</ui-view>
-        </ui-view>
         <ui-view class="topBot">
-          <ui-view class="box_row">
-            <ui-view class="box_row_100">
-              <ui-view>
-                甲方:<ui-text class="decoration">{{usermess.yhXm}}</ui-text>
-              </ui-view>
-              <ui-view>
-                电话:<ui-text class="decoration">{{usermess.yhZh}}</ui-text>
-              </ui-view>
-              <ui-view>
-                证件号码: <ui-view class="decoration textAR">{{usermess.yhZjhm}}</ui-view>
-              </ui-view>
-            </ui-view>
-            <ui-view class="box_row_100">
-              <ui-view>
-                代表人:<ui-text class="decoration">腾创</ui-text>
-              </ui-view>
-              <ui-view>
-                电话: <ui-text class="decoration">13133446688</ui-text>
-              </ui-view>
-              <ui-view>
-                乙方:<ui-view class="decoration textAR">武汉天弘腾创科技有限公司</ui-view>
-              </ui-view>
+          <ui-view>
+            甲方（服务平台）：武汉天弘腾创科技有限公司 
+          </ui-view>
+          <ui-view>
+            <ui-view>乙方(会员):</ui-view>
+            <ui-view style="text-indent:50px">
+            跟据《中华人民共和国合同法》及相关法律法规的有规定， 甲、乙双方本着自愿、平等、诚实、信用的原则签立本服务协议 书，具体内容如下:
             </ui-view>
           </ui-view>
         </ui-view>
         <ui-view class="box_col_auto" style="padding: 0.35rem 0.5rem;">
-          <ui-view class="fontsty">
-            跟据《中华人民共和国合同法》及相关法律法规的有规定， 甲、乙双方本着自愿、平等、诚实、信用的原则签立本服务协议 书，具体内容如下:
-          </ui-view>
           <ui-view>
             <ui-view class="fonttit">一、总则</ui-view>
             <ui-view class="fontsty">
@@ -226,7 +218,8 @@
               <img src="{{apiUrl+saveResultUrl}}" alt="">
             </ui-view>
             <ui-view>
-              甲方代表:<ui-view class="textAR">{{usermess.yhXm}}</ui-view>
+              甲方:{{usermess.yhXm}}
+              <!-- <ui-view class="textAR">{{usermess.yhXm}}</ui-view> -->
             </ui-view>
             <ui-view bindtap="goSign">
               甲方（签章）:
