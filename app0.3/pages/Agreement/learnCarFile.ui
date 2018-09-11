@@ -222,26 +222,26 @@
               <!-- <ui-view class="textAR">{{usermess.yhXm}}</ui-view> -->
             </ui-view>
             <ui-view bindtap="goSign">
-              甲方（签章）:
+              经办人:
               <ui-button class="Pleasesign" ui:if="{{saveResultUrl==''}}" type="primary" size="mini">签名</ui-button>
               <ui-button class="OKsign" ui:elif="{{saveResultUrl!=''}}" type="primary" size="mini">已签名</ui-button>
             </ui-view>
             <ui-view>
-              时间:{{getdateStr(0)}}
+              签订日期:{{getdateStr(0)}}
             </ui-view>
           </ui-view>
           <ui-view class="box_row_100" style="position: relative">
             <img src="static/img/gz/thtc.png"
                 class="gzimg">
             <ui-view>
-              乙方代表:
+              乙方:
               <ui-view class="textAR">武汉天弘腾创科技有限公司</ui-view>
             </ui-view>
             <ui-view>
-              乙方（签章）:
+              经办人:
             </ui-view>
             <ui-view>
-              时间：{{getdateStr(0)}}
+              签订日期：{{getdateStr(0)}}
             </ui-view>
           </ui-view>
         </ui-view>
