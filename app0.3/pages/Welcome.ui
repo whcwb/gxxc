@@ -38,10 +38,10 @@ export default {
   },
   watch:{
     percent:(n,o)=>{
-      console.log('++++++++',n);
+      // console.log('++++++++',n);
       if(n==100){
           let tok = localStorage.getItem("token")
-          console.log('-----------');
+          // console.log('-----------');
           if(tok){
             ui.navigateTo({
               url: '/pages/index'
