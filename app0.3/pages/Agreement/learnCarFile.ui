@@ -8,7 +8,7 @@
         <ui-col vertical-align="middle" align="center">
           <ui-view class="nav_title"
             style="color: #f75d42;font-size: 0.65rem;font-weight: 700;"
-          >学车缴费协议</ui-view>
+          >会员服务协议</ui-view>
         </ui-col>
         <ui-col width="60">
         </ui-col>
@@ -212,54 +212,56 @@
               </ui-view>
             </ui-view>
         </ui-view>
-        <ui-view class="box_row" style="padding: 0.15rem 0.3rem">
-          <ui-view class="userSign" style="margin-right: 0.2rem">
-            <ui-view class="signImg"  v-show="saveResultUrl!=''">
-              <img src="{{apiUrl+saveResultUrl}}" alt="">
+        <ui-view style="overflow: auto;">
+          <ui-view class="box_row" style="padding: 0.15rem 0.3rem">
+            <ui-view class="userSign" style="margin-right: 0.2rem">
+              <ui-view class="signImg"  v-show="saveResultUrl!=''">
+                <img src="{{apiUrl+saveResultUrl}}" alt="">
+              </ui-view>
+              <ui-view>
+                甲方:{{usermess.yhXm}}
+                <!-- <ui-view class="textAR">{{usermess.yhXm}}</ui-view> -->
+              </ui-view>
+              <ui-view bindtap="goSign">
+                经办人:
+                <ui-button class="Pleasesign" ui:if="{{saveResultUrl==''}}" type="primary" size="mini">签名</ui-button>
+                <ui-button class="OKsign" ui:elif="{{saveResultUrl!=''}}" type="primary" size="mini">已签名</ui-button>
+              </ui-view>
+              <ui-view>
+                签订日期:{{getdateStr(0)}}
+              </ui-view>
             </ui-view>
-            <ui-view>
-              甲方:{{usermess.yhXm}}
-              <!-- <ui-view class="textAR">{{usermess.yhXm}}</ui-view> -->
-            </ui-view>
-            <ui-view bindtap="goSign">
-              经办人:
-              <ui-button class="Pleasesign" ui:if="{{saveResultUrl==''}}" type="primary" size="mini">签名</ui-button>
-              <ui-button class="OKsign" ui:elif="{{saveResultUrl!=''}}" type="primary" size="mini">已签名</ui-button>
-            </ui-view>
-            <ui-view>
-              签订日期:{{getdateStr(0)}}
+            <ui-view class="box_row_100" style="position: relative">
+              <img src="static/img/gz/thtc.png"
+                  class="gzimg">
+              <ui-view>
+                乙方:
+                <ui-view class="textAR">武汉天弘腾创科技有限公司</ui-view>
+              </ui-view>
+              <ui-view>
+                经办人:
+              </ui-view>
+              <ui-view>
+                签订日期：{{getdateStr(0)}}
+              </ui-view>
             </ui-view>
           </ui-view>
-          <ui-view class="box_row_100" style="position: relative">
-            <img src="static/img/gz/thtc.png"
-                class="gzimg">
-            <ui-view>
-              乙方:
-              <ui-view class="textAR">武汉天弘腾创科技有限公司</ui-view>
-            </ui-view>
-            <ui-view>
-              经办人:
-            </ui-view>
-            <ui-view>
-              签订日期：{{getdateStr(0)}}
-            </ui-view>
-          </ui-view>
-        </ui-view>
 
-        <ui-view class="box_row">
-          <ui-view class="box_row_100" style="padding: 0.2rem">
-            <ui-button type="primary" full-width="false"
-                      bindtap="agreeShowOk"
-                      style="width: 100%;font-size: 0.4rem">
-              同意
-            </ui-button>
-          </ui-view>
-          <ui-view class="box_row_100" style="padding: 0.2rem">
-            <ui-button type="warn" full-width="false"
-                      bindtap="closeBack"
-                      style="width: 100%;font-size: 0.4rem">
-              拒绝
-            </ui-button>
+          <ui-view class="box_row"  style="{{ {paddingBottom:iphone ? '80px' :'0px'} }}">
+            <ui-view class="box_row_100" style="padding: 0.2rem">
+              <ui-button type="primary" full-width="false"
+                        bindtap="agreeShowOk"
+                        style="width: 100%;font-size: 0.4rem">
+                同意
+              </ui-button>
+            </ui-view>
+            <ui-view class="box_row_100" style="padding: 0.2rem">
+              <ui-button type="warn" full-width="false"
+                        bindtap="closeBack"
+                        style="width: 100%;font-size: 0.4rem">
+                拒绝
+              </ui-button>
+            </ui-view>
           </ui-view>
         </ui-view>
     </ui-view>
@@ -284,7 +286,8 @@ export default {
         yhXm:'小名',
         yhZh:'13164799764',
         yhZjhm:'646448521232569654'
-      }
+      },
+      iphone:false
     }
   },
   methods: {
@@ -307,12 +310,26 @@ export default {
       ui.navigateTo({
         url:'/pages/product/index'
       })
+    },
+    getSP(){
+      var v = this
+      ui.getSystemInfo({
+        success: function (res) {
+          if(res.model =='iPhone'){
+            // ui.showAlert({title: res.model,
+            // content:res.system + '______' +res.platform
+            // })
+            v.iphone = true
+          }
+        }
+      })
     }
   },
   mounted() {
     
   },
   created () {
+    this.getSP()
     this.saveResultUrl = ui.getApp().signUrl
     this.usermess = this.getUser()
   }
@@ -348,8 +365,8 @@ export default {
           position: relative;
           .signImg{
             position: absolute;
-            right: -0.2rem;
-            top: -0.5rem;
+            right: 0.8rem;
+            top: 0rem;
             z-index: 101;
             width: 1.6rem;
             height: 1.6rem;
@@ -365,7 +382,7 @@ export default {
           width: 1.8rem;
           position: absolute;
           right: -0.2rem;
-          top: -0.5rem;
+          top: 0rem;
         }
       }
 </style>

@@ -419,7 +419,7 @@ export default {
                       v.itemsTeam.push(item)
                   });
                 }else{
-                  ui.showToast({ title: '暂无团队信息' })
+                  // ui.showToast({ title: '暂无团队信息' })
                 }
               }
           })
