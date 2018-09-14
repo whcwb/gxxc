@@ -44,7 +44,7 @@ public class AlipayBillServiceImpl extends BaseServiceImpl implements AlipayBill
     @Value("${alipay.app_id}")
     private  String alipayAppId;
     //APPA应用私钥(private_key)
-    @Value("${alipay.app_privaie_key_pkcs8}")
+    @Value("${alipay.app_privaie_key}")
     private  String appPrivaieKey;
     //编码格式(charset)
     @Value("${alipay.charset}")

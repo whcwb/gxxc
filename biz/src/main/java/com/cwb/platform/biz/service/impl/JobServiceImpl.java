@@ -217,9 +217,9 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                             }
                         }
                         if(!type){
-                            log.debug("订单编号：" + l.getDdId() + ",已有分佣数据，不能再次进行分佣");
+                            log.debug("订单编号：" + l.getDdId() + ",已有分y数据，不能再次进行分y");
                             newBizOrder.setJobType("2");
-                            newBizOrder.setJobDescribe("订单编号：" + l.getDdId() + ",已有分佣数据，不能再次进行分佣");
+                            newBizOrder.setJobDescribe("订单编号：" + l.getDdId() + ",已有分数据，不能再次进行分");
                             retType = false;
 
                         }else{
@@ -272,7 +272,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
             }
         }else{
             newBizOrder.setJobType("1");// 定时任务操作成功
-            newBizOrder.setJobDescribe("订单编号：" + l.getDdId() +" 产品："+bizCp.getCpMc()+"，不参与分佣");
+            newBizOrder.setJobDescribe("订单编号：" + l.getDdId() +" 产品："+bizCp.getCpMc()+"，不参与分");
         }
 
         orderMapper.updateByPrimaryKeySelective(newBizOrder);

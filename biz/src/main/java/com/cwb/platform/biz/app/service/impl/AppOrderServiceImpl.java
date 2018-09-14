@@ -75,7 +75,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
     @Value("${alipay.app_id}")
     private  String alipayAppId;
     //APPA应用私钥(private_key)
-    @Value("${alipay.app_privaie_key_pkcs8}")
+    @Value("${alipay.app_privaie_key}")
     private  String appPrivaieKey;
     //编码格式(charset)
     @Value("${alipay.charset}")
@@ -459,8 +459,16 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
                 cpXyJson=cpXyJson.replaceAll("#addyyyy#",DateUtils.getToday("yyyy"));//订单创建的年   -MM-dd
                 cpXyJson=cpXyJson.replaceAll("#addmm#",DateUtils.getToday("MM"));//订单月
                 cpXyJson=cpXyJson.replaceAll("#adddd#",DateUtils.getToday("dd"));//订单日
-                cpXyJson=cpXyJson.replaceAll("#userQm#",userQm+order.getUserAutograph());//用户签字的图片
 
+                cpXyJson=cpXyJson.replaceAll("#userQm#",userQm+order.getUserAutograph());//用户签字的图片
+                //当前时间的下一年
+                Calendar c = Calendar.getInstance();
+                c.setTime(new Date());
+                c.add(Calendar.YEAR, 1);
+                Date y = c.getTime();
+                cpXyJson=cpXyJson.replaceAll("#yearlateryyyy#",DateUtils.getDateStr(y,"yyyy"));//下一年的年
+                cpXyJson=cpXyJson.replaceAll("#yearlatermm#",DateUtils.getDateStr(y,"MM"));//下一年的月
+                cpXyJson=cpXyJson.replaceAll("#yearlaterdd#",DateUtils.getDateStr(y,"dd"));//下一年的月
 
                 payInfo.debug("生成出来的JSON报文是："+cpXyJson);
 

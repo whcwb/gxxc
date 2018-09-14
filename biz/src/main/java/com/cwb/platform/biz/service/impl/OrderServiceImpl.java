@@ -185,11 +185,14 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             }
         }else  if(StringUtils.equals(bizCp.getCpType(),"1")){
             bizPtyh.setYhLx("1");
+
         }
         if(StringUtils.isNotEmpty(yhZsyqm)){
             bizPtyh.setYhZsyqm(yhZsyqm);//用户自己邀请码
             bizPtyh.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
         }
+        //支付成功后清除   用户表、用户明细表、约考的三张表  todo
+
         // 增加二维码有效期
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.now();
@@ -287,12 +290,22 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         } catch (WxErrorException e) {
             payInfo.error("发送微信模板消息异常", e);
         }
-        try {
-            // 缴费成功发送微信消息
-            WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已缴费成功，请留意接听客服电话，关注您的培训流程！").build();
-            wxMpService.getKefuService().sendKefuMessage(message);
-        } catch (WxErrorException e) {
-            payInfo.error("发送微信模板消息异常", e);
+        if(StringUtils.equals(cpType,"1")){//学员
+            try {
+                // 缴费成功发送微信消息
+                WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已缴费成功，请留意接听客服电话，关注您的培训流程！").build();
+                wxMpService.getKefuService().sendKefuMessage(message);
+            } catch (WxErrorException e) {
+                payInfo.error("发送微信模板消息异常", e);
+            }
+        }else if(StringUtils.equals(cpType,"3")){//会员
+            try {
+                // 缴费成功发送微信消息
+                WxMpKefuMessage message = WxMpKefuMessage .TEXT().toUser(ptyh.getYhOpenId()).content("您已缴费成功！").build();
+                wxMpService.getKefuService().sendKefuMessage(message);
+            } catch (WxErrorException e) {
+                payInfo.error("发送微信模板消息异常", e);
+            }
         }
 
 
