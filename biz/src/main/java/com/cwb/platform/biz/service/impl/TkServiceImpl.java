@@ -159,7 +159,7 @@ public class TkServiceImpl extends BaseServiceImpl<BizTk,String> implements TkSe
 
                     } catch (Exception e) {}
                     c.setTime(yhYqmgq);
-                    c.add(Calendar.YEAR, -1);
+                    c.add(Calendar.YEAR, -100);
                     Date y = c.getTime();
 
                     if(y.after(new Date())){//相减一年，还没有过期，就要将用户从学员变更成会员

@@ -19,24 +19,24 @@
           <ui-view class="box_col_auto">
               <ui-view class="productItemSty" ui:for="{{productList}}">
                   <ui-row>
-                      <ui-col span="9" vertical-align="middle">
+                      <ui-col span="8" vertical-align="middle">
                           <ui-view class="tit">
                             {{item.cpMc}}
                           </ui-view>
                       </ui-col>
-                      <ui-col span="3" space-left="20" align="center"  vertical-align="middle">
+                      <ui-col span="4" space-left="20" align="center"  vertical-align="middle">
                           <ui-view class="money">
                             ￥{{item.cpJl/100}}元
                           </ui-view>
                       </ui-col>
                   </ui-row>
                   <ui-row>
-                      <ui-col span="9"  vertical-align="middle">
+                      <ui-col span="8"  vertical-align="middle">
                         <ui-view class="mess">
                             {{item.cpXx}}
                         </ui-view>
                       </ui-col>
-                      <ui-col span="3" space-left="20" align="center"  vertical-align="middle"
+                      <ui-col span="4" space-left="20" align="center"  vertical-align="middle"
                         bindtap="getPO(item)">
                           <ui-button class="butSty" type="primary" full-width="false" size="mini">
                             购买套餐

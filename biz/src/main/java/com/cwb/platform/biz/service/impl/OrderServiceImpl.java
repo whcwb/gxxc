@@ -173,7 +173,6 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
 
 
-
         BizPtyh bizPtyh=new BizPtyh();
         bizPtyh.setId(order.getYhId());
         bizPtyh.setDdSfjx("1");
@@ -191,6 +190,12 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             bizPtyh.setYhZsyqm(yhZsyqm);//用户自己邀请码
             bizPtyh.setYhZsyqmImg("/"+yhZsyqmImg+yhZsyqm + ".png");//用户自己邀请码
         }
+
+        long plusYears=1;
+        if(StringUtils.equals(bizCp.getCpType(),"1")){
+            plusYears=100;//学员的会员的有效期是永久的。
+        }
+
         //支付成功后清除   用户表、用户明细表、约考的三张表  todo
 
         // 增加二维码有效期
@@ -198,17 +203,17 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         LocalDateTime dateTime = LocalDateTime.now();
         LocalDateTime years = null;
         if(StringUtils.isBlank(queryUser.getYhYqmgqsj())){ // 邀请码过期时间为空 , 添加过期时间为一年
-            years = dateTime.plusYears(1L);
+            years = dateTime.plusYears(plusYears);
             bizPtyh.setYhYqmgqsj(years.format(formatter));
         }else {
 
             // 验证有效期是否已经过了
             if(queryUser.getYhYqmgqsj().compareTo(dateTime.format(formatter)) > 0){
                 LocalDateTime localDateTime = LocalDateTime.parse(queryUser.getYhYqmgqsj(),formatter);
-                 years = localDateTime.plusYears(1L);
+                 years = localDateTime.plusYears(plusYears);
                 bizPtyh.setYhYqmgqsj(years.format(formatter));
             }else {
-                 years = dateTime.plusYears(1L);
+                 years = dateTime.plusYears(plusYears);
                 bizPtyh.setYhYqmgqsj(years.format(formatter));
             }
         }

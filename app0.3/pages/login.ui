@@ -43,15 +43,18 @@
                 <ui-view class="input_padding">
                   <ui-button class="submit_btn" bindtap="loginYZ">登录</ui-button>
                 </ui-view>
+                <ui-view class="bottom" bindtap="reg">
+                    <ui-text block class="reg">
+                      创建账号
+                    </ui-text>
+                </ui-view>
               </ui-form>
             </ui-view>
-            <ui-view class="bottom" bindtap="reg">
-              <!-- <ui-navigator url="/pages/componentDemo/navigator/navigator2?state=1"> -->
+            <!-- <ui-view class="bottom" bindtap="reg">
                 <ui-text block class="reg">
                   创建账号
                 </ui-text>
-              <!-- </ui-navigator> -->
-            </ui-view>
+            </ui-view> -->
           </ui-view>
         </ui-view>
       </ui-view>
@@ -193,7 +196,8 @@ export default {
   .mix-flex-center();
 }
 .bottom{
-  height: 320rpx;
+  // height: 320rpx;
+  margin-top: 20rpx;
   .mix-flex-center();
 }
 .content_form{
