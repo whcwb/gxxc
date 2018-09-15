@@ -356,7 +356,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
         if (StringUtils.isBlank(openID)){
             return ApiResponse.fail("用户的OPEN_ID不能为空");
         }
-        if (amount>1*100&&amount<20000*100){
+        if (amount<1*100||amount>20000*100){
             return ApiResponse.fail("微信提现仅支付1到20000元的付款，该金额已经超出限额");
         }
         if(StringUtils.equals(wxCheckName,"FORCE_CHECK")&&StringUtils.isEmpty(userName)){
