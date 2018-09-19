@@ -51,7 +51,7 @@ public class AppTxController extends AppUserBaseController {
            bizYhk=yhkService.findById(yhkid);
            RuntimeCheck.ifNull(bizYhk,"您好，请选择银行卡！");
        }else if(StringUtils.equals(ttfs,"1")){
-           RuntimeCheck.ifFalse( ttJe>=1 && ttJe<=20000,"您好，微信提现的限额为[1-20000]元");
+           RuntimeCheck.ifFalse( ttJe>=1 && ttJe<=800*100,"您好，微信提现的限额为[1-800]元");
            String openId=user.getYhOpenId();
            RuntimeCheck.ifNull(openId,"您好，当前账户无法使用微信提现！");
        }else if(StringUtils.equals(ttfs,"3")){
