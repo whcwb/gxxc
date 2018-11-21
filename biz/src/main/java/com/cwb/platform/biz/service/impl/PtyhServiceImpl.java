@@ -28,6 +28,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.Subscribe;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
@@ -69,12 +71,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Value("${debug_test}")
     private String debugTest;
 
+    @Value("${wxDomain}")
+    private String domain;
+
 
     @Value("${logo_file_url}")
     private String logoFileUrl;
     @Value("${qr_code_file_url}")
     private String qrCodeFileUrl;
 
+    @Autowired
+    private WxMpService wxMpService;
 
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
     private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -223,10 +230,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             condition.in(BizUser.InnerColumn.yhZjhm, zjhms);
         }
 
+        //这一批用户是种子用户，不在用户列表显示。
         List<String > notUrsrId=new ArrayList<>();
-        notUrsrId.add("460418231002202112");
-        notUrsrId.add("461211447838375937");
-        notUrsrId.add("461211447838375938");
+        notUrsrId.add("460418231002202112");//李总
+        notUrsrId.add("461211447838375937");//张总
+        notUrsrId.add("461211447838375939");//刘显斌
+        notUrsrId.add("461221447838375937");//谢涛
+
+
         condition.notIn(BizPtyh.InnerColumn.id,notUrsrId);
         return true;
     }
@@ -321,7 +332,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             bizPtyh.setYhMm("");
             bizPtyh.setYhOpenId("");
             bizPtyh.setYhAlipayId("");
-            bizPtyh.setYhZsyqm("");
             bizPtyh.setYhYyyqm("");
             if (StringUtils.isNotBlank(bizPtyh.getYhZjhm())) {
                 bizPtyh.setYhZjhm(bizPtyh.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
@@ -330,9 +340,34 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 bizPtyh.setYhTx(imgUrl + bizPtyh.getYhTx());
             }
 
-            if (StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && !StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
+            if (StringUtils.isNotBlank(bizPtyh.getYhZsyqm()) && StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg()) && !StringUtils.containsNone(bizPtyh.getYhZsyqmImg(), "http")) {
                 bizPtyh.setYhZsyqmImg(imgUrl + bizPtyh.getYhZsyqmImg());
             }
+
+//            if (StringUtils.isNotBlank(bizPtyh.getYhZsyqm()) && StringUtils.isNotBlank(bizPtyh.getYhZsyqmImg())) {
+//                String qrcodesFile="";
+//                try {
+//                    qrcodesFile = redisDao.boundValueOps("user_qrcode_"+bizPtyh.getId()).get();
+//                    if(StringUtils.isEmpty(qrcodesFile)){
+//                        WxMpQrcodeService wx = wxMpService.getQrcodeService();
+//                        WxMpQrCodeTicket wxMpQrCodeTicket = wx.qrCodeCreateTmpTicket(bizPtyh.getId(), 2592000);
+//                        String ticket=wxMpQrCodeTicket.getTicket();
+//                        String url=wxMpQrCodeTicket.getUrl();
+//                        redisDao.boundValueOps("url"+url).set(bizPtyh.getYhZsyqm(), 29, TimeUnit.DAYS);
+//                        qrcodesFile=wx.qrCodePictureUrl(ticket);
+//                        redisDao.boundValueOps("user_qrcode_"+bizPtyh.getId()).set(qrcodesFile, 29, TimeUnit.DAYS);
+//                    }
+//                }catch (WxErrorException e){
+//                    e.printStackTrace();
+//                }
+//                if(StringUtils.isNotEmpty(qrcodesFile)){
+//                    bizPtyh.setYhZsyqmImg(qrcodesFile);
+//                }else{
+//                    bizPtyh.setYhZsyqmImg("");
+//                }
+//
+//            }
+
             if (StringUtils.isNotBlank(bizPtyh.getYhZh())) {
                 bizPtyh.setYhZh(bizPtyh.getYhZh().replaceAll("(?<=[\\d]{3})\\d(?=[\\d]{4})", "*"));
             }
@@ -350,6 +385,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 }
             }
 
+
+            bizPtyh.setYhZsyqm("");
         }
     }
 
@@ -1834,5 +1871,45 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             return yks.get(0);
         }
         return null;
+    }
+
+    /**
+     * 注册邀请消息推送
+     * @param userId     邀请人ID
+     * @param openId     注册人的OPEN_ID
+     * @return
+     */
+    @Override
+    public void sendRegisterInvite(String userId, String openId){
+        payInfo.debug("时间" + DateUtils.getToday("yyyy-MM-dd HH:mm:ss"));
+        try{
+            Thread thread = Thread.currentThread();
+            thread.sleep(2*1000);//暂停2秒后程序继续执行
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        BizPtyh user=this.findById(userId);
+        String first="您的好友"+user.getYhXm()+"。邀请您注册！";
+        List<WxMpTemplateData> data = new ArrayList<>();
+        data.add(new WxMpTemplateData("first", first));
+        data.add(new WxMpTemplateData("keyword1", user.getYhXm()));
+        data.add(new WxMpTemplateData("keyword2", ""));
+        data.add(new WxMpTemplateData("keyword3", DateUtils.getNowTime()));
+        data.add(new WxMpTemplateData("remark", "点击查看  请求地址："+domain+"?id="+user.getYhZsyqm()));
+
+        WxMpTemplateMessage msg = new WxMpTemplateMessage();
+        msg.setToUser(openId);
+        msg.setTemplateId("RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o");
+        msg.setUrl(domain+"?id="+user.getYhZsyqm());//
+        msg.setData(data);
+        try {
+            wechatService.sendTemplateMsg(msg,null);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+//        Map<String,String> ret=new HashMap<>();
+//        ret.put("yhtx",user.getYhTx());
+//        ret.put("yhZsyqm",user.getYhZsyqm());
+//        return ret;
     }
 }

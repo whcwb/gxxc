@@ -84,4 +84,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<List<StatusModel>> statusQuery(BizPtyh entity, Page<BizPtyh> pager);
 
     ApiResponse<List<BizPtyh>> getZyList(String type);
+
+    void sendRegisterInvite(String userId, String openId);
 }

@@ -23,10 +23,9 @@ spring:
   #数据库连接配置信息
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-
-    url: jdbc:mysql://47.96.101.240:6088/gxxc?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://47.98.39.45:9097/gxxc_0816?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username: 'root'
-    password: 'THXC-DB**2018'
+    password: '123456'
     initialSize: 5
     minIdle: 5
     maxActive: 20
@@ -42,6 +41,11 @@ spring:
     filters: stat,wall,log4j
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     cachePrepStmts: true
+
+#        url: jdbc:mysql://47.96.101.240:6088/gxxc?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+#        username: 'root'
+#        password: 'THXC-DB**2018'
+
 #mybatis配置信息
 mybatis:
   configLocation: classpath:mybatis/MapperConfig.xml
@@ -126,6 +130,16 @@ wechat:
     domain: http://www.520xclm.com
     trade_type: JSAPI
     notify_url: http://www.520xclm.com:8080/biz/wxPay/notifyCallback
+  apppay:
+    appId: wxb8c7c134a416a3d1
+    mchId: 1510586751
+    mchKey: c5407b90f3f35009c3bddcc93e1979a6
+    subAppId:
+    subMchId:
+    keyPath: c://apiclient_cert.p12
+    domain: http://www.520xclm.com
+    trade_type: JSAPI
+    notify_url: http://www.520xclm.com:8080/biz/wxPay/notifyCallback
 
 
 #定时任务标识
@@ -147,17 +161,21 @@ baidu:
       secret_key: vcoxuovajxrtxj0MhhSRZGWxz3Iy3g9E
 
 # 支付宝支付接口 网关(gateway) 分正式环境：https://openapi.alipay.com/gateway.do  还有一个沙盒环境
+# 支付宝公钥(alipay_public_key) 这个是支付宝生成的公钥，不是我们自己生成的公钥。我们生成的公钥是给支付宝做验签的。我们给支付宝验签时，必须要用支付宝给我们的公钥进行
 #  应用id(app_id)，应用私钥(private_key)，编码格式(charset)，支付宝公钥(alipay_public_key)，签名类型(sign_type)
 # billFileUrl  支付宝账单下载的地址
+# app_privaie_key_pkcs8 是应用私钥(rsa_private_key_pkcs8文件中的) 此私钥仅用于获取账单文件接口  app_privaie_key 是应用私钥（rsa_private_key文件中的）此私钥仅用于支付接口
 alipay:
-  app_id: api1111111111
-  app_privaie_key: privaiwKey123456
+  app_id: 2018080860937512
+  app_privaie_key: MIIEogIBAAKCAQEAtdlEUGi+/wg9Xqn+vporywhem177DnBMjK9ifPDeNRbgAh3EmN02Q4Cn8KpquCkXTvl1HErCJ64cYDpsGZwP99OroDqOT7Vsv/zYamd5dRzFzqXU67mfCn8u74rJYd8YSHDUmSA5ppchVXk0db1P1n9cHY7pWL+/oyPL6ehx4HsPzLXoM340QYFOcMwr3SM/+Vjk6B8tkwF5RoCU9IARGEJ4+l7XpHddez6cdifLsPQ3/E9ER4ZYkjjPo+HiuAgDKmnif74wk2Cu+Ach+um4KTnUMPRoQu4m8NwvpAKYTrbq1SlGv9FM4Ms2HQe1/auuKNWgCk/sI1aJKeYqeqTCoQIDAQABAoIBACy+KYXTT/M2Fst87jX9fvr0szptUz5JOTyARq5RIYtUdoduxZmLDDftpuSbOajYS2jeDgeJCV50A31VwpVGhdNHXHoPDkbkb76JOsJrdUHwc2cV/F6HjG8rveOodUZEexgP0u9eM3EezE/Yg6TYkJVJPuPy7s0sWL2OKDUEQUim9GmHYNSesWBWMO+xZqeY904W1ocdRtVIB6XixgjZW35hO8wclb7dfzVs2ktkKqgtf/fc4JO41aSTX8EVDUEpLy/AIOATQFD2aoms/3D31V7FVY9E/8eJhlPVZBB9mhGnD/tOuE5tQQ5LYPre/DzwX2M2acrddv9nScTVmDK9wfECgYEA5aEF+6WJAA/YJvdZ9Gi1XmZsjHjRqQhuSPCsW9FUXe0Pg5tb6rZKuZ6iQRqLF4j4lspeoq9riypesGOkc/qbdUw4A6aOj5n1CWRBbn2+CRqk37XM6vTD5SeUODShDaBZ6Rbge3rasy8o1ygKbf8m4p7CaE1Tmx4s9Jul+HMEKKUCgYEAyruG3PLPPpefg13I7Pb7vAbAhJo8CgSBK7NpQI61Ur4GO6oZQ+hcI8qjYOULBmuETbamTw+1LKu8xy4AZmbUXJL4LuRMFpSATzHTLY9QAK59Q0egu8TNJYV2pL0xxyYM1sbs9Snq6HIjrSRlRGAtkTvHJ+fMjEFoPXE5ReKjFU0CgYAy71HNbP2DlwAiPJGmhidc5ilDy3TuIqGb6k7BGyC0qOXdEnQEDyVqIQbqnAGoWciSYhc1zOV0/BP+2ktbMoaTMTHnlWVf8w2IZMWixZ+Gk3No8AGhSGO/i9Tz1rC2vg/ThTCME0c5ocdUWlxd48/zSrXivuxBpyLfqzrYbmLIxQKBgB9OJd0ogWgg8bjPWp985BJ82G2hg3Pojim5Yp9dahKE1WGROqWJ0/CS8fecZr9vCtcVRUkgG9HyEwyOxfEKH/DLoRdcmYNDGy0ffISkhK4WQ7GH9gIIucT5fwChVnZyIblorl6NQoDyXx/1Zs3QLDkpCe/Xk3Z1Ayu5uCZagORhAoGASZv+dMmpeIGOU5Srgv3i8UGVoomx/qfFAFl0HWzIaIDfSPHYkeKeBS6EkQWK/ZK/dn0AtUwOveKRYJqbXbrgJJHePKfhWZgD8RbMe/rFGO8KA1F6rI7uqB++mL/gvhHsEuqHQnAy0hbejWwaYIzcF4M8PBC6FV5AxWbAiKwmVK8=
   charset: UTF-8
-  alipay_public_key: publicKey123456
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyFmtcAdIhy82E5n61hN/tHl3Pr+47rCtNaOH5XuGqP/rX8Ti4VbcY7y0zjcVNr9kL1iNHzxFb3FWh9Megqb00K9chDpzA42fH/wtuJfSrwMdClWWvF+gsn0/Ro5xyHsb0Q5MVhCMaN5Jp1zz38lw3wpo+ocgHlUVqvScG6wohwpr7fZY4oEs1vHOiMe5DUdvtTFJOSM4pt4ffPn+yHsnlmC4zhZQzGDRnLLNvhADNsXNzYEY5PGK2Hmi/+z3B1o/sv9Kf4jlK1U8XxhZXfwApgTywJH4d2VP+zjc2S5v3umsjx4ihlASCcXFPwyQF17WcpF2xIYUBe4VDJqbD0dTsQIDAQAB
   gateway: https://openapi.alipay.com/gateway.do
   sign_type: RSA2
   notify_url: http://www.520xclm.com:8080/biz/alipay/orderFulfil
   bill_file_path: D:\2003
+  app_privaie_key_pkcs8: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC12URQaL7/CD1eqf6+mivLCF6bXvsOcEyMr2J88N41FuACHcSY3TZDgKfwqmq4KRdO+XUcSsInrhxgOmwZnA/306ugOo5PtWy//NhqZ3l1HMXOpdTruZ8Kfy7vislh3xhIcNSZIDmmlyFVeTR1vU/Wf1wdjulYv7+jI8vp6HHgew/MtegzfjRBgU5wzCvdIz/5WOToHy2TAXlGgJT0gBEYQnj6Xtekd117Ppx2J8uw9Df8T0RHhliSOM+j4eK4CAMqaeJ/vjCTYK74ByH66bgpOdQw9GhC7ibw3C+kAphOturVKUa/0UzgyzYdB7X9q64o1aAKT+wjVokp5ip6pMKhAgMBAAECggEALL4phdNP8zYWy3zuNf1++vSzOm1TPkk5PIBGrlEhi1R2h27FmYsMN+2m5Js5qNhLaN4OB4kJXnQDfVXClUaF00dceg8ORuRvvok6wmt1QfBzZxX8XoeMbyu946h1RkR7GA/S714zcR7MT9iDpNiQlUk+4/LuzSxYvY4oNQRBSKb0aYdg1J6xYFYw77Fmp5j3ThbWhx1G1UgHpeLGCNlbfmE7zByVvt1/NWzaS2QqqC1/99zgk7jVpJNfwRUNQSkvL8Ag4BNAUPZqiaz/cPfVXsVVj0T/x4mGU9VkEH2aEacP+064Tm1BDktg+t78PPBfYzZpyt12/2dJxNWYMr3B8QKBgQDloQX7pYkAD9gm91n0aLVeZmyMeNGpCG5I8Kxb0VRd7Q+Dm1vqtkq5nqJBGosXiPiWyl6ir2uLKl6wY6Rz+pt1TDgDpo6PmfUJZEFufb4JGqTftczq9MPlJ5Q4NKENoFnpFuB7etqzLyjXKApt/ybinsJoTVObHiz0m6X4cwQopQKBgQDKu4bc8s8+l5+DXcjs9vu8BsCEmjwKBIErs2lAjrVSvgY7qhlD6FwjyqNg5QsGa4RNtqZPD7Usq7zHLgBmZtRckvgu5EwWlIBPMdMtj1AArn1DR6C7xM0lhXakvTHHJgzWxuz1KerociOtJGVEYC2RO8cn58yMQWg9cTlF4qMVTQKBgDLvUc1s/YOXACI8kaaGJ1zmKUPLdO4ioZvqTsEbILSo5d0SdAQPJWohBuqcAahZyJJiFzXM5XT8E/7aS1syhpMxMeeVZV/zDYhkxaLFn4aTc2jwAaFIY7+L1PPWsLa+D9OFMIwTRzmhx1RaXF3jz/NKteK+7EGnIt+rOthuYsjFAoGAH04l3SiBaCDxuM9an3zkEnzYbaGDc+iOKblin11qEoTVYZE6pYnT8JLx95xmv28K1xVFSSAb0fITDI7F8Qof8MuhF1yZg0MbLR98hKSErhZDsYf2Agi5xPl/AKFWdnIhuWiuXo1CgPJfH/VmzdAsOSkJ79eTdnUDK7m4JlqA5GECgYBJm/50yal4gY5TlKuC/eLxQZWiibH+p8UAWXQdbMhogN9I8diR4p4FLoSRBYr9kr92fQC1TA694pFgmptduuAkkd48p+FZmAPxFsx7+sUY7woDUXqsju6oH76Yv+C+EewS6odCcDLSFt6NbBpgjNwXgzw8ELoVXkDFZsCIrCZUrw==
+
 
 # 客服电话
 custom_service_tel: 4000170520

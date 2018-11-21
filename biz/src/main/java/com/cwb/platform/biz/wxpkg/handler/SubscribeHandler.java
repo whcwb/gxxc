@@ -1,5 +1,6 @@
 package com.cwb.platform.biz.wxpkg.handler;
 
+import com.cwb.platform.biz.service.impl.PtyhServiceImpl;
 import com.cwb.platform.biz.wxpkg.budiler.TextBuilder;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
@@ -11,6 +12,8 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +31,11 @@ public class SubscribeHandler extends AbstractHandler {
 	private String appId;
 	@Value("${wechat.domain}")
 	private String domain;
+	@Autowired
+	private PtyhServiceImpl ptyhService;
+
+//	@Autowired
+//	private WechatService wechatService;
 
 	@Override
 	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService weixinService,
@@ -52,6 +60,7 @@ public class SubscribeHandler extends AbstractHandler {
 		if (responseResult != null) {
 			return responseResult;
 		}
+		String ticket = wxMessage.getTicket();
 
 		try {
 			WxMenu wxMenu = new WxMenu();
@@ -98,6 +107,12 @@ public class SubscribeHandler extends AbstractHandler {
 					.toUser(wxMessage.getFromUser())
 					.addArticle(item)
 					.build();
+
+			String EventKey=wxMessage.getEventKey();
+			if(StringUtils.isNotEmpty(EventKey)){
+				ptyhService.sendRegisterInvite(EventKey.replace("qrscene_",""),wxMessage.getFromUser());
+			}
+			this.logger.info("设置菜单:2 " + wxButtons.size());
 			return m;
 		} catch (Exception e) {
 			this.logger.error(e.getMessage(), e);

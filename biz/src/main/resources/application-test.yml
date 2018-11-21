@@ -5,13 +5,13 @@ spring:
     port: 6379
   #数据库连接配置信息
   datasource:
-    url: jdbc:mysql://47.96.101.240:6088/gxxc?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://47.98.39.45:9097/gxxc_0816?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
     username: 'root'
-    password: 'THXC-DB**2018'
+    password: '123456'
 
 
 server:
-  port: 8080
+  port: 9006
 
 #测试调试 1 进行调试  0 正式  正式环境里不需要配置这个参数
 debug_test: 1

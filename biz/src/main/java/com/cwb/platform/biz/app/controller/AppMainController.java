@@ -171,7 +171,10 @@ public class AppMainController extends AppUserBaseController {
 //			RuntimeCheck.ifTrue(!codeID.equals(code),"验证码不正确！");
 //			request.getSession().removeAttribute(key);
 //		}
+		if(StringUtils.contains(yyyqm,"http")){
+			String url=redisDao.boundValueOps("url"+yyyqm).get();
 
+		}
 
 //		2、验证登录账户不能重复
 		SimpleCondition condition = new SimpleCondition(BizPtyh.class);
