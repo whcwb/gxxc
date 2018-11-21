@@ -1,6 +1,6 @@
 <script>
 import ajaxUrl from '#/static/ajax/url'
-// import wechatUtil from'./static/ajax/wechatUtil.js'
+// import wechatUtil from './static/ajax/wechatUtil.js'
 export default {
   config: {
     "pages": [
@@ -24,7 +24,8 @@ export default {
       "pages/product/index",
       "pages/Agreement/learnCarFile","pages/Agreement/MemberFile",
       "pages/common/signName","pages/common/qrCode",
-      "pages/score/index","pages/retrieveworld","pages/common/star","pages/myTeam/details","pages/SB/SB_shopping"],
+      "pages/score/index","pages/retrieveworld","pages/common/star","pages/myTeam/details","pages/SB/SB_shopping"
+      ],
     "theme": {
       "theme-color": "#3399ff"
     },
@@ -211,7 +212,7 @@ export default {
 
 
     //微信js 初始化
-    this.getWxJs()
+    // this.getWxJs()
     //微信js初始化END
 
 
