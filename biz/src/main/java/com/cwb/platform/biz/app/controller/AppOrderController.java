@@ -43,7 +43,7 @@ public class AppOrderController extends AppUserBaseController {
      * cpid//选择要支付的产品ID
      * @return
      */
-    @RequestMapping(value="/save", method={RequestMethod.POST})
+    @RequestMapping(value="/save", method={RequestMethod.POST,RequestMethod.GET})
     public ApiResponse<Map<String,String>> save(BizOrder entity,HttpServletRequest request){
         return service.saveAddOrder(entity,request);
     }
