@@ -122,7 +122,7 @@ public class CjdServiceImpl extends BaseServiceImpl<BizCjd,String> implements Cj
     public ApiResponse<Map<String,Object>> getUserMessage(String xyid){
         SimpleCondition condition = new SimpleCondition(BizCjd.class);
         BizPtyh user = getAppCurrentUser();
-        String yhLx=user.getYhLx();
+        String yhLx=user.getYhLx();//类型 ZDCLK0041(2、教练、1、学员)
         if(!StringUtils.equals(yhLx,"2")){//不等于教练
             xyid=user.getId();
         }else{

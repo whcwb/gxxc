@@ -6,6 +6,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 
+/**
+ * 考场信息
+ */
 @Table(name = "biz_exam_place")
 public class BizExamPlace implements Serializable {
     @Id

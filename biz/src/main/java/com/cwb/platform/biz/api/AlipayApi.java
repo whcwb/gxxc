@@ -108,7 +108,7 @@ public class AlipayApi {
         if(flag){//验证成功
             payLog.setZfPz(params.get("trade_no"));//支付凭证id
             orderCode=params.get("out_trade_no");
-            String receipt_amount=params.get("out_trade_no");//商家在交易中实际收到的款项，单位为元
+            String receipt_amount=params.get("buyer_pay_amount");//  商家在交易中实际收到的款项，单位为元  todo 支付宝实际支付金额需要从返回的报文里进行确认
             totalFee=(MathUtil.stringToDouble(receipt_amount)*100)+"";
             //支付宝支付成功
             if(StringUtils.equals(params.get("trade_status"),"TRADE_SUCCESS")||StringUtils.equals(params.get("trade_status"),"TRADE_FINISHED")){

@@ -208,7 +208,7 @@ public class JobServiceImpl extends BaseServiceImpl<BizOrder, String> implements
                     // 根据产品表判断是否 要分佣
                     if(StringUtils.equals(bizCp.getCpYj(),"1")){// 要分佣
 
-                        //查询该订单已分佣金额
+                        //查询该订单已分佣金额 检查该订单是否已分佣，防止一个订单被重复分佣
                         String types=userMapper.fyMoney(l.getDdId());
                         boolean type=true;
                         if(StringUtils.isNotEmpty(StringUtils.trim(types))){

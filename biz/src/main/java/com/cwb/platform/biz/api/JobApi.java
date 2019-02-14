@@ -52,7 +52,7 @@ public class JobApi {
      * 1、查询所有完成的订单。
      * 2、给用户明细表，下发佣金。
      * 3、下发完佣金后，需要更新账户表
-     * 4、给支付成功的用户生成邀请码，并生成二维码
+     * 4、给支付成功的用户生成邀请码，并生成二维码orderFulfil
      * @param key
      * @return
      */
@@ -95,6 +95,7 @@ public class JobApi {
             messaget = "未查询到订单";
         }
         for(BizOrder l:list){
+            //防止定时任务被并发处理，增加的业务锁处理。
             String value = redisDao.boundValueOps("order_"+l.getDdId()).get();
             if(StringUtils.isEmpty(value)){
                 try {
