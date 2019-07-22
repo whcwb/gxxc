@@ -9,6 +9,7 @@ import com.cwb.platform.biz.service.CpService;
 import com.cwb.platform.biz.service.OrderService;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.YjmxService;
+import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -23,6 +24,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,7 +154,14 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
             }
             //判断当前用户是否存在邀请码，如果存在邀请码将不会重新新的邀请码
             if(StringUtils.isEmpty(queryYhZsyqm)){
-                yhZsyqm = genId();
+                boolean flag = true;
+                while (flag){
+                    yhZsyqm = ShoreCode.createShareCode();
+                    List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, yhZsyqm);
+                    if(CollectionUtils.isEmpty(ptyhs)){
+                        flag = false;
+                    }
+                }
                 yhZsyqmImg = "QRCode/"+DateUtils.getToday("yyyyMMdd")+"/";
                 String userName="";
                 userName=order.getYhXm();
