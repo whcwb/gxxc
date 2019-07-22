@@ -1,7 +1,7 @@
-// let ajaxUrl = "http://www.520xclm.com";
+let ajaxUrl = "http://www.520xclm.com";
 // let ajaxUrl = "http://127.0.0.1"
 //   let ajaxUrl = "http://192.168.31.228"
-let ajaxUrl = "http://j2gbeq.natappfree.cc"//宋
+// let ajaxUrl = "http://j2gbeq.natappfree.cc"//宋
 
 module.exports = {
   url:ajaxUrl,

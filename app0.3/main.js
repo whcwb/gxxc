@@ -38,19 +38,21 @@ ui.extend({
         script.onload = function(){ // 微信js初始化 回调函数
             console.log('*****wx',wx)
             
+            // alert("wx1")
             // 微信js初始化成功后引用 微信功能方法
             ui.getApp().wxUtil = require('./static/ajax/wechatUtil.js').default
-
+            // alert("wx2")
             //获取Code 直
             let authCode = ui.getApp().wxUtil.getQueryString("code");
             console.log('获取code',authCode)
-            
+            // alert('获取code=      '+authCode);
             if(authCode){
               
               // 获取Openid
               ui.getApp().wxUtil.vueParent = this;
               ui.getApp().wxUtil.getOpenid(authCode,(res)=>{
                   console.log('openid-------',res)
+                  // alert("wx3+"+res);
                   localStorage.setItem("openid",res);//存储openid
                   ui.getApp().wxUtil.initConfig();//执行 微信 config
               });

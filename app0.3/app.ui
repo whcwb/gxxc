@@ -1,6 +1,6 @@
 <script>
 import ajaxUrl from '#/static/ajax/url'
-// import wechatUtil from './static/ajax/wechatUtil.js'
+//import wechatUtil from './static/ajax/wechatUtil.js'
 export default {
   config: {
     "pages": [
@@ -64,7 +64,8 @@ export default {
       ]
     },
     
-    "networkBaseUrl":'http://j2gbeq.natappfree.cc',
+    // "networkBaseUrl":'http://j2gbeq.natappfree.cc',
+      "networkBaseUrl":'http://www.520xclm.com:8080/biz',//正式接口地址配置
 
     "networkTimeout":"3000"
   },
@@ -214,7 +215,7 @@ export default {
 
 
     //微信js 初始化
-    // this.getWxJs()
+    this.getWxJs()
     //微信js初始化END
 
 

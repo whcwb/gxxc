@@ -32,10 +32,13 @@
               </ui-view>
               <ui-view>
                 <ui-row class="yqmles">
-                  {{usermess.yhZsyqm}}
+                  <span class="code-msg"></span>
+                  <span class="code-copy-btn" :data-clipboard-text="usermess.yhZsyqm" @click="copyCode">{{usermess.yhZsyqm}}</span>
                 </ui-row>
                 <ui-row>
-                  点击复制邀请码
+                  <span class="code-copy-btn" :data-clipboard-text="usermess.yhZsyqm" @click="copyCode">
+                    <ui-button type="default" style="border-radius: 20px" size="mini" plain="true">点击复制邀请码</ui-button>
+                  </span>
                 </ui-row>
               </ui-view>
               <ui-view class="codeImg">
@@ -62,6 +65,7 @@
 </template>
 
 <script>
+import ClipboardJS from '../../static/dist/clipboard.min.js' 
 export default {
   config: {
     navigationBarBackgroundColor:"#26a2ff",
@@ -79,6 +83,16 @@ export default {
     }
   },
   methods: {
+    copyCode () {
+      let clipboard = new ClipboardJS('.code-copy-btn')
+      clipboard.on('success', (e) => {
+        ui.showToast({ title: '复制成功' })
+      })
+      clipboard.on('error', (e) => {
+        ui.showToast({ title: '复制失败,请手动长按复制' })
+      })
+    },
+ 
     back(){
       ui.switchTab({
         url: ui.getApp().QRpage
@@ -117,14 +131,14 @@ export default {
       }
     }
     .codeImg{
-      padding: 40rpx;
+      padding: 20rpx;
       .ui-image{
         width: 100%;
       }
     }
     .yqmles{
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 26px;
+      font-weight: 900;
     }
     .welTxt{
       text-align: center;
