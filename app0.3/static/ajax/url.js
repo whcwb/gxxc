@@ -1,11 +1,11 @@
-let ajaxUrl = "http://www.520xclm.com";
+// let ajaxUrl = "http://www.520xclm.com";
 // let ajaxUrl = "http://127.0.0.1"
 //   let ajaxUrl = "http://192.168.31.228"
-// let ajaxUrl = "http://192.168.31.92"//宋
+let ajaxUrl = "http://j2gbeq.natappfree.cc"//宋
 
 module.exports = {
   url:ajaxUrl,
-  // port:'8080',
+  // port:'9006',
   port:'8080/biz',
   wechat:{
       getCode:'/wechat/message/getCode',

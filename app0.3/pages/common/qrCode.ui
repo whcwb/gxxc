@@ -30,7 +30,14 @@
                 </ui-view>
 
               </ui-view>
-
+              <ui-view>
+                <ui-row class="yqmles">
+                  {{usermess.yhZsyqm}}
+                </ui-row>
+                <ui-row>
+                  点击复制邀请码
+                </ui-row>
+              </ui-view>
               <ui-view class="codeImg">
                   <ui-image :src="usermess.yhZsyqmImg" ></ui-image>
               </ui-view>
@@ -67,7 +74,7 @@ export default {
   data() {
     return {
       height:ui.DEFAULT_CONTENT_HEIGHT/3*2,
-      martop:ui.DEFAULT_CONTENT_HEIGHT/7,
+      martop:ui.DEFAULT_CONTENT_HEIGHT/12,
       usermess:{}
     }
   },
@@ -114,6 +121,10 @@ export default {
       .ui-image{
         width: 100%;
       }
+    }
+    .yqmles{
+      font-size: 24px;
+      font-weight: 700;
     }
     .welTxt{
       text-align: center;

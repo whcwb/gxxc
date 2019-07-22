@@ -63,7 +63,9 @@ export default {
         }
       ]
     },
-    "networkBaseUrl":'http://www.520xclm.com:8080/biz',
+    
+    "networkBaseUrl":'http://j2gbeq.natappfree.cc',
+
     "networkTimeout":"3000"
   },
   data () {

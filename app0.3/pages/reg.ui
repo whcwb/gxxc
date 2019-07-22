@@ -38,10 +38,19 @@
                       ui:model="form.telIdentifying"
                       bindsend="handleSend"
                       second="120"
-                      init-text="验证码"></ui-sms-input>
+                      init-text="获取验证码"></ui-sms-input>
                 </ui-row>
                 <ui-row space="40">
                   <ui-input ui:model="form.yhMm" type="password" placeholder="请输入密码"></ui-input>
+                </ui-row>
+                <ui-row space="40" :class=" mesCode ? 'sms-code3' : ''">
+                  <ui-sms-input 
+                      style="border-radius:5px;width:100%"
+                      ui:model="form.yhYyyqm"
+                      bindsend="Smyqm"
+                      second="120"
+                      placeholder="请输入邀请码"
+                      init-text="扫描邀请码"></ui-sms-input>
                 </ui-row>
                 <ui-row space="40">
                   <ui-button bindtap="regYZ"
@@ -266,7 +275,7 @@ export default {
       mesCode:false,
       xy:true,//协议勾选
       form:{
-        yhYyyqm:ui.getApp().yqm,
+        yhYyyqm:'',
         yhZh:'',//帐号
         yhMm:'',//密码
         yhLx:'1',
@@ -285,14 +294,14 @@ export default {
     }
   },
   created () {
-    if(ui.getApp().yqm){
-      console.log(ui.getApp().yqm);
-    }else{
-      ui.showToast({
-         title: '请重新扫描邀请码！'
-      })
-      ui.navigateBack()
-    }
+    // if(ui.getApp().yqm){
+    //   console.log(ui.getApp().yqm);
+    // }else{
+    //   ui.showToast({
+    //      title: '请重新扫描邀请码！'
+    //   })
+    //   ui.navigateBack()
+    // }
   },
   mounted() {},
   methods: {
@@ -307,6 +316,40 @@ export default {
         
       }
       console.log(this.xy);
+    },
+    Smyqm(){
+     console.log('项目？ 微信:App**********',ui.getApp().projectType);
+       if(ui.getApp().projectType){
+          this.wxSys()
+      }else{
+          this.sys()
+      }
+    },
+    wxSys(){//微信扫一扫
+      ui.getApp().wxUtil.qrScan((res)=>{
+          // v.codeyz(res)
+          console.log('邀请码',res);
+          this.form.yhYyyqm = res
+      })
+    },
+    sys(){//App扫一扫功能
+      ui.scanCode({
+        backgroundColor:'#39f',
+        color:'#4caf5',
+        onlyFromCamera: true,
+        success: (res) => {
+          console.log(res)
+          ui.showAlert({
+            content: res,
+            buttonText: '扫一扫',
+            success () {
+              ui.showToast({
+                title: '触发了解更多'
+              })
+            }
+          })
+        }
+      })
     },
     handleSend (run) {
         var v = this
@@ -343,6 +386,9 @@ export default {
         return
       }else if(v.form.telIdentifying==''){
         ui.showToast({ title: '请输入短信验证码!'})
+        return
+      }else if(v.form.yhYyyqm==''){
+        ui.showToast({ title: '请输入邀请码!'})
         return
       }else if(v.form.yhMm==''){
         ui.showToast({ title: '请设置帐号密码!'})
@@ -398,6 +444,12 @@ export default {
     .ui-button {
       background-color: #04be02;
       border-color: #04be02;
+    }
+  }
+  .sms-code3 {
+    .ui-button {
+      background-color: #ffb400;
+      border-color: #ffb400;
     }
   }
   .grid_box{
