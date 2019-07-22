@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import urls from './url'
 
-// import wx from '#/static/ajax/jweixin-1.2.0.js'
-// var wx = require('#/static/ajax/jweixin-1.2.0.js')
+// import wx from '#/static/util/jweixin-1.2.0.js'
+// var wx = require('#/static/util/jweixin-1.2.0.js')
 // import router from '@/router'
 let wechatUtil = {}
 

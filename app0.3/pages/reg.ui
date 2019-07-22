@@ -44,13 +44,14 @@
                   <ui-input ui:model="form.yhMm" type="password" placeholder="请输入密码"></ui-input>
                 </ui-row>
                 <ui-row space="40" :class=" mesCode ? 'sms-code3' : ''">
-                  <ui-sms-input 
-                      style="border-radius:5px;width:100%"
-                      ui:model="form.yhYyyqm"
-                      bindsend="Smyqm"
+                  <input 
+                      style="border-radius:5px;width:80%;height:46px"
+                      v-model="form.yhYyyqm"
                       second="120"
                       placeholder="请输入邀请码"
-                      init-text="扫描邀请码"></ui-sms-input>
+                      ></input>
+                  <ui-button type="primary" full-width="false" bindtap='Smyqm'>扫描邀请码</ui-button>
+
                 </ui-row>
                 <ui-row space="40">
                   <ui-button bindtap="regYZ"
@@ -254,8 +255,8 @@
       </ui-view>
   </ui-page>
 </template>
-
 <script>
+
 export default {
   config: {
     navigationBarBackgroundColor:"#26a2ff",
@@ -315,24 +316,28 @@ export default {
         this.xy=false
         
       }
-      console.log(this.xy);
     },
     Smyqm(){
-     console.log('项目？ 微信:App**********',ui.getApp().projectType);
-       if(ui.getApp().projectType){
+       /*if(ui.getApp().projectType){
           this.wxSys()
       }else{
           this.sys()
-      }
+      }*/
+      this.wxSys();
     },
     wxSys(){//微信扫一扫
+      // alert(ui.getApp().wxUtil);
       ui.getApp().wxUtil.qrScan((res)=>{
+        
           // v.codeyz(res)
           console.log('邀请码',res);
           this.form.yhYyyqm = res
-      })
+          // this.$forceUpdate();
+      });
+
     },
-    sys(){//App扫一扫功能
+    sys(){
+      // alert(2)//App扫一扫功能
       ui.scanCode({
         backgroundColor:'#39f',
         color:'#4caf5',
@@ -450,6 +455,7 @@ export default {
     .ui-button {
       background-color: #ffb400;
       border-color: #ffb400;
+      border-radius: 25px;
     }
   }
   .grid_box{
