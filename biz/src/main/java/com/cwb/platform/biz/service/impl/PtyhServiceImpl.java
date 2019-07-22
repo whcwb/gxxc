@@ -384,9 +384,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
                 }
             }
-
-
-            bizPtyh.setYhZsyqm("");
         }
     }
 
