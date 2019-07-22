@@ -1,5 +1,12 @@
 package com.cwb.platform.biz.util;
 
+import com.cwb.platform.util.bean.SimpleCondition;
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
+import org.bouncycastle.crypto.engines.RC4Engine;
+import org.bouncycastle.jcajce.provider.symmetric.RC5;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,17 +42,18 @@ public class ShoreCode {
     }
 
     public static void main(String[] args) {
+        Supplier<RC4Engine> aNew = RC4Engine::new;
         long i = 36 * 36 * 36 * 36 ;
         int count = 0 ;
         List<String> ss = new ArrayList<>();
-        for (int j = 0 ; j < i ; j ++){
+        for (int j = 0 ; j < 10 ; j ++){
             String shareCode = createShareCode();
             System.out.println(shareCode);
-            if(ss.contains(shareCode)){
+            /*if(ss.contains(shareCode)){
                 System.out.println("第" + j + "次产生重复");
                 count++;
             }
-            ss.add(shareCode);
+            ss.add(shareCode);*/
         }
         System.out.println("总共" + i + "   重复" + count);
     }
