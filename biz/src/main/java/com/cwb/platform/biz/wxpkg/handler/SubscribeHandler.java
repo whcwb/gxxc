@@ -68,7 +68,7 @@ public class SubscribeHandler extends AbstractHandler {
 
 			WxMenuButton button1 = new WxMenuButton();
 			button1.setKey("button1");
-			button1.setName("进入联盟");//张总要求修改
+			button1.setName("进入平台");//张总要求修改
 			button1.setType(WxConsts.MenuButtonType.VIEW);
 			button1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect");
 
@@ -76,7 +76,7 @@ public class SubscribeHandler extends AbstractHandler {
 			button2.setKey("button2");
 			button2.setName("关于我们");
 			button2.setType(WxConsts.MenuButtonType.VIEW);
-			button2.setUrl("http://www.520xclm.com");
+			button2.setUrl("http://www.520xclm.com?t="+System.currentTimeMillis());
 
 			WxMenuButton button3 = new WxMenuButton();
 			button3.setKey("appdown");
