@@ -191,9 +191,9 @@ public class CpServiceImpl extends BaseServiceImpl<BizCp,String> implements CpSe
             smsMap.put("code", code1);
             smsMapList.add(smsMap);
             smsMap = new HashMap<String, String>();
-            smsMap.put("phoneNumbers", "15927183566");//  todo 刘总的电话
+            smsMap.put("phoneNumbers", "18086068808");//  todo 刘总的电话
             smsMap.put("templateType", "5");//给专员下发短信
-            smsMap.put("userName", "刘总");//姓名
+            smsMap.put("userName", "李总");//姓名
             smsMap.put("operator", sysYh.getXm());
             smsMap.put("dates", dates);
             smsMap.put("parameter", parameter);
