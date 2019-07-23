@@ -16,6 +16,8 @@
       <ui-view class="grid_box" style="{{ { height: height + 'px'} }}">
         <ui-view class="reg">
             <ui-view class="fromSty">
+              <ui-view class="fromStyW">
+              
                 <ui-row space="60">
                   <ui-col span="8" align="center">
                     <ui-view class="text">
@@ -44,13 +46,13 @@
                   <ui-input ui:model="form.yhMm" type="password" placeholder="请输入密码"></ui-input>
                 </ui-row>
                 <ui-row space="40" :class=" mesCode ? 'sms-code3' : ''">
-                  <input 
-                      style="border-radius:5px;width:80%;height:46px"
-                      v-model="form.yhYyyqm"
-                      second="120"
-                      placeholder="请输入邀请码"
-                      ></input>
-                  <ui-button type="primary" full-width="false" bindtap='Smyqm'>扫描邀请码</ui-button>
+                    <ui-input 
+                        style="border-radius:5px;width:80%;height:44px"
+                        ui:model="form.yhYyyqm"
+                        placeholder="请输入邀请码"
+                        >
+                    </ui-input>
+                  <ui-button style=" border-radius:25px;background-color:#ff8000" type="primary" full-width="false" bindtap='Smyqm'>扫描邀请码</ui-button>
 
                 </ui-row>
                 <ui-row space="40">
@@ -80,7 +82,7 @@
                       </ui-view>
                   </ui-col>
                 </ui-row>
-
+              </ui-view>
             </ui-view>
 
 
@@ -96,7 +98,7 @@
                     </ui-view>
                     <ui-view class='messcontent' style="overflow-y: auto;">
                         <ui-view class="fontsty">
-                          用户在注册之前，应当仔细阅读本协议，并同意遵守本协议后方可成为注册用户。一旦注册成功，则用户与520学车联盟之间自动形成协议关系，用户应当受本协议的约束。用户在使用特殊的服务或产品时，应当同意接受相关协议后方能使用。
+                          用户在注册之前，应当仔细阅读本协议，并同意遵守本协议后方可成为注册用户。一旦注册成功，则用户与吉驾无忧之间自动形成协议关系，用户应当受本协议的约束。用户在使用特殊的服务或产品时，应当同意接受相关协议后方能使用。
                         </ui-view>
                         <ui-view>
                           <ui-view class="fonttit">一、协议声明</ui-view>
@@ -295,6 +297,7 @@ export default {
     }
   },
   created () {
+    console.log(this.height)
     // if(ui.getApp().yqm){
     //   console.log(ui.getApp().yqm);
     // }else{
@@ -451,13 +454,6 @@ export default {
       border-color: #04be02;
     }
   }
-  .sms-code3 {
-    .ui-button {
-      background-color: #ffb400;
-      border-color: #ffb400;
-      border-radius: 25px;
-    }
-  }
   .grid_box{
     display:flex;
     flex-direction:column;
@@ -471,12 +467,16 @@ export default {
   }
   .fromSty{
     height: 100%;
-    padding: 0 60rpx;
-    margin-top: 50%;
+    // padding: 0 60rpx;
+    // margin-top: 50%;
     .text{
       color: #fff;
       font-size: 42rpx;
       font-weight: 700
+    }
+    .fromStyW{
+      margin: 0 60rpx!important;
+      padding-top: 50%;
     }
   }
   .checkbox{

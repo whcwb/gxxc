@@ -5,7 +5,7 @@ let util = {
 };
 
 util.title = function (title) {
-    title = title || '520学车联盟';
+    title = title || '吉驾无忧';
     window.document.title = title;
 };
 util.fillTableColumns = (v)=>{

@@ -16,7 +16,7 @@
       <ui-image src="static/img/login/logo.png" mode="widthFix" width="130"></ui-image>
     </ui-view>
     <ui-view class="welcomeTit">
-      欢迎进入520学车联盟
+      欢迎进入吉驾无忧
     </ui-view>
     <ui-view class="progressSty">
       <ui-progress percent="{{ percent }}" 
