@@ -21,7 +21,7 @@ order_money: 2500
 
 logo_file_url: /opt/gxxc/logo.png
 
-qr_code_file_url: d://2003/
+qr_code_file_url: d:/static/
 
 credentialsPath: d://2004/
 

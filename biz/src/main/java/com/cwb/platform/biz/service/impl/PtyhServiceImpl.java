@@ -5,6 +5,7 @@ import com.cwb.platform.biz.bean.StatusModel;
 import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
+import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
@@ -30,11 +31,15 @@ import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.Subscribe;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +57,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -81,6 +91,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private String logoFileUrl;
     @Value("${qr_code_file_url}")
     private String qrCodeFileUrl;
+
 
     @Autowired
     private WxMpService wxMpService;
@@ -117,9 +128,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Autowired
     private SysYhJsMapper userRoleMapper;
 
+    @Autowired
+    private YjmxService yjmxService;
+    @Autowired
+    private ZhService zhService;
+
+
     @PersistenceContext
     private EntityManager entityManager;
-
 
 
     AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
@@ -233,14 +249,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         }
 
         //这一批用户是种子用户，不在用户列表显示。
-        List<String > notUrsrId=new ArrayList<>();
+        List<String> notUrsrId = new ArrayList<>();
         notUrsrId.add("460418231002202112");//李总
         notUrsrId.add("461211447838375937");//张总
         notUrsrId.add("461211447838375939");//刘显斌
         notUrsrId.add("461221447838375937");//谢涛
 
 
-        condition.notIn(BizPtyh.InnerColumn.id,notUrsrId);
+        condition.notIn(BizPtyh.InnerColumn.id, notUrsrId);
         return true;
     }
 
@@ -248,70 +264,70 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     protected void afterPager(PageInfo<BizPtyh> resultPage) {
         List<BizPtyh> list = resultPage.getList();
-        if (list.size() == 0){
+        if (list.size() == 0) {
             return;
         }
 
         // 获取用户角色
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String showRoles = request.getParameter("showRoles");
-        if ("true".equals(showRoles)){
+        if ("true".equals(showRoles)) {
             List<String> idCardList = list.stream().map(BizPtyh::getYhZjhm).collect(Collectors.toList());
-            List<SysYh> sysUserList = yhService.findIn(SysYh.InnerColumn.zjhm,idCardList);
+            List<SysYh> sysUserList = yhService.findIn(SysYh.InnerColumn.zjhm, idCardList);
             if (sysUserList.size() == 0) return;
-            Map<String,String> idCardSysUserIdMap = sysUserList.stream().collect(Collectors.toMap(SysYh::getZjhm,SysYh::getYhid));
+            Map<String, String> idCardSysUserIdMap = sysUserList.stream().collect(Collectors.toMap(SysYh::getZjhm, SysYh::getYhid));
             for (BizPtyh ptyh : list) {
                 String idCard = ptyh.getYhZjhm();
                 String yhId = idCardSysUserIdMap.get(idCard);
-                if (StringUtils.isNotEmpty(yhId)){
+                if (StringUtils.isNotEmpty(yhId)) {
                     ptyh.setSysUserId(yhId);
                 }
             }
 
             List<String> sysUserIds = sysUserList.stream().map(SysYh::getYhid).collect(Collectors.toList());
             SimpleCondition condition = new SimpleCondition(SysYhJs.class);
-            condition.in(SysYhJs.InnerColumn.yhId,sysUserIds);
+            condition.in(SysYhJs.InnerColumn.yhId, sysUserIds);
             List<SysYhJs> userRoleList = userRoleMapper.selectByExample(condition);
             if (userRoleList.size() == 0) return;
-            Map<String,List<String>> sysIdRoleIdMap = new HashMap<>();
+            Map<String, List<String>> sysIdRoleIdMap = new HashMap<>();
             for (SysYhJs sysYhJs : userRoleList) {
                 String yhId = sysYhJs.getYhId();
-                if (sysIdRoleIdMap.containsKey(yhId)){
+                if (sysIdRoleIdMap.containsKey(yhId)) {
                     sysIdRoleIdMap.get(yhId).add(sysYhJs.getJsId());
-                }else{
-                    List<String> roleIdList= new ArrayList<>();
+                } else {
+                    List<String> roleIdList = new ArrayList<>();
                     roleIdList.add(sysYhJs.getJsId());
-                    sysIdRoleIdMap.put(yhId,roleIdList);
+                    sysIdRoleIdMap.put(yhId, roleIdList);
                 }
             }
 
             List<String> roleIds = userRoleList.stream().map(SysYhJs::getJsId).collect(Collectors.toList());
-            List<SysJs> roleList = jsService.findIn(SysJs.InnerColumn.jsId,roleIds);
+            List<SysJs> roleList = jsService.findIn(SysJs.InnerColumn.jsId, roleIds);
             if (roleList.size() == 0) return;
-            Map<String,SysJs> roleIdRoleMap = roleList.stream().collect(Collectors.toMap(SysJs::getJsId,p->p));
-            Map<String,List<String>> sysIdRoleNameMap = new HashMap<>();
+            Map<String, SysJs> roleIdRoleMap = roleList.stream().collect(Collectors.toMap(SysJs::getJsId, p -> p));
+            Map<String, List<String>> sysIdRoleNameMap = new HashMap<>();
             for (Map.Entry<String, List<String>> entry : sysIdRoleIdMap.entrySet()) {
                 List<String> roleIdList = entry.getValue();
                 List<String> roleNames = new ArrayList<>(roleIdList.size());
                 for (String s : roleIdList) {
                     SysJs role = roleIdRoleMap.get(s);
-                    if (role != null){
+                    if (role != null) {
                         roleNames.add(role.getJsmc());
                     }
                 }
-                sysIdRoleNameMap.put(entry.getKey(),roleNames);
+                sysIdRoleNameMap.put(entry.getKey(), roleNames);
             }
 
             for (BizPtyh ptyh : list) {
                 String sysId = ptyh.getSysUserId();
-                if (StringUtils.isEmpty(sysId))continue;
+                if (StringUtils.isEmpty(sysId)) continue;
                 List<String> roleNames = sysIdRoleNameMap.get(sysId);
                 String roleNameStr = "";
                 for (String name : roleNames) {
-                    roleNameStr += name+",";
+                    roleNameStr += name + ",";
                 }
-                if (roleNameStr.length() != 0){
-                    roleNameStr = roleNameStr.substring(0,roleNameStr.length() - 1);
+                if (roleNameStr.length() != 0) {
+                    roleNameStr = roleNameStr.substring(0, roleNameStr.length() - 1);
                 }
                 ptyh.setRoleNames(roleNameStr);
             }
@@ -555,17 +571,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String telIdentifying = entity.getTelIdentifying();//短信验证码
         RuntimeCheck.ifBlank(telIdentifying, "短信验证码不能为空");
         RuntimeCheck.ifBlank(entity.getYhYyyqm(), "用户应邀邀请码不能为空");
-
+        entity.setYhYyyqm(entity.getYhYyyqm().toUpperCase());
         SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
-        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),entity.getYhYyyqm());
-        newCondition.eq(BizPtyh.InnerColumn.yhSfsd.name(),"0");//用户没有锁定
-        newCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(),"1");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
+        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), entity.getYhYyyqm());
+        newCondition.eq(BizPtyh.InnerColumn.yhSfsd.name(), "0");//用户没有锁定
+//        newCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(), "1");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
 
         // 判断用户邀请码是否过期 todo
         List<BizPtyh> bizPtyhs = ptyhService.findByCondition(newCondition);
-        RuntimeCheck.ifEmpty(bizPtyhs,"用户邀请码失效!");
-        RuntimeCheck.ifBlank(bizPtyhs.get(0).getYhYqmgqsj(),"用户邀请码失效");
-        if( bizPtyhs.get(0).getYhYqmgqsj().compareTo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) < 0 ){
+        RuntimeCheck.ifEmpty(bizPtyhs, "用户邀请码失效!");
+//        RuntimeCheck.ifBlank(bizPtyhs.get(0).getYhYqmgqsj(), "用户邀请码失效");
+        if (bizPtyhs.get(0).getYhYqmgqsj().compareTo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) < 0) {
             return ApiResponse.fail("用户邀请码已过期");
         }
 
@@ -575,11 +591,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(validate.getCode() != 200, validate.getMessage());
 
 //      用户应邀邀请码存在造假的可能。是否需要验证,这里的验证是注册下发短信时，已经查了数据库
-        String app_sendSMS_yyyqm = redisDao.boundValueOps(appSendSMSRegister + "zh" +  yhZh).get();
+        String app_sendSMS_yyyqm = redisDao.boundValueOps(appSendSMSRegister + "zh" + yhZh).get();
         RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhZh(), app_sendSMS_yyyqm), "账号错误，请重新发送短信验证码");
 
         RuntimeCheck.ifBlank(entity.getYhMm(), "用户密码不能为空");
-        RuntimeCheck.ifTrue(entity.getYhMm().length()<6, "用户密码不能小于6位");
+        RuntimeCheck.ifTrue(entity.getYhMm().length() < 6, "用户密码不能小于6位");
 //        RuntimeCheck.ifBlank(entity.getYhXm(),"用户姓名不能为空");
 //        RuntimeCheck.ifBlank(entity.getYhZjhm(),"用户证件号码不能为空");
 
@@ -706,7 +722,23 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         redisDao.delete(appSendSMSRegister + "yyyqm" + yhZh);
         redisDao.delete(appSendSMSRegister + yhZh);
 
+        BizYjmx yjmx = new BizYjmx();
+        yjmx.setId(genId());
+        yjmx.setZjFs("-1");
+        yjmx.setZjZt("1");
+        yjmx.setZjJe(20000d);
+        yjmx.setYhId(newEntity.getId());
+        yjmx.setTxShZt("1");
+        yjmx.setMxlx("4");
+        yjmx.setCjsj(DateUtils.getNowTime());
+        yjmxService.save(yjmx);
+        zhService.userAccountUpdate(Arrays.asList(newEntity.getId()));
 
+        /*BizZh bizZh = new BizZh();
+        bizZh.setYhId(newEntity.getId());
+        bizZh.setYhTxdj(0d);
+        bizZh.setYhZhye(-20000d);
+        zhService.save(bizZh);*/
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
@@ -818,7 +850,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<String> updateUserReal(BizPtyh entity) {
+    public ApiResponse<String> updateUserReal(BizPtyh entity) throws WxErrorException, IOException {
         BizPtyh userRequest = getAppCurrentUser();
         if (userRequest == null) return ApiResponse.fail("用户不存在");
 
@@ -910,8 +942,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             wjMapper.deleteBatch(user.getId(), wjSxList);
             wjMapper.insertBatch(wjList);
         }
-
-        BizPtyh newEntity = new BizPtyh();
+       BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
         newEntity.setYhXm(entity.getYhXm());//用户姓名
         newEntity.setYhBm(entity.getYhBm());//用户别名
@@ -924,9 +955,40 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
         newEntity.setYhZt("0");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhZtMs("");//用户驾照状态不能为空
+        if(StringUtils.isBlank(user.getYhZsyqm())){
+            String yhZsyqm = "";
+            boolean flag = true;
+            while (flag) {
+                yhZsyqm = ShoreCode.createShareCode();
+                List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, yhZsyqm);
+                if (CollectionUtils.isEmpty(ptyhs)) {
+                    flag = false;
+                }
+            }
+            String filepath = "/QRCode/" + DateTime.now().toString("yyyyMMdd") + "/" + yhZsyqm + ".png";
+            WxMpQrCodeTicket ticket = wxMpService.getQrcodeService().qrCodeCreateLastTicket(user.getId());
+            String qrCode = ticket.getTicket();
+            String pictureUrl = wxMpService.getQrcodeService().qrCodePictureUrl(qrCode);
+            URL u = new URL(pictureUrl);
+
+            FileUtils.copyURLToFile(u,new File(qrCodeFileUrl+ filepath),5000,5000);
+
+            newEntity.setYhZsyqm(yhZsyqm);
+            newEntity.setYhZsyqmImg(filepath);
+        }
+
+
 
         int i = update(newEntity);
+        RuntimeCheck.ifTrue(i >= 0 , i +"");
         if (i > 0) {
+            // 实名认证成功 , 添加一条体现记录
+
+           /* BizZh bizZh = new BizZh();
+            bizZh.setYhId(user.getId());
+            bizZh.setYhTxdj(0d);
+            bizZh.setYhZhye(-20000d);
+            zhService.save(bizZh);*/
             userMapper.deleteByPrimaryKey(user.getId());
             //插入用户实名表  biz_user
             BizUser bizUser = new BizUser();
@@ -949,7 +1011,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @param user               用户的登录信息
      * @return
      */
-    private ApiResponse<String> updateUserRealAuditing(BizPtyh entity, String ocrRecognitionJson, BizPtyh user) {
+    private ApiResponse<String> updateUserRealAuditing(BizPtyh entity, String ocrRecognitionJson, BizPtyh user) throws WxErrorException, IOException {
 //        1、解析识别出来的报文
         Map<String, String> map = new HashMap<>();
         JSONObject jsonObject = new JSONObject(ocrRecognitionJson);
@@ -1076,8 +1138,34 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
         newEntity.setYhZt("1");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhBm(entity.getYhBm());//用户别名
-        i = update(newEntity);
+        if(StringUtils.isBlank(user.getYhZsyqm())){
+            String yhZsyqm = "";
+            boolean flag = true;
+            while (flag) {
+                yhZsyqm = ShoreCode.createShareCode();
+                List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, yhZsyqm);
+                if (CollectionUtils.isEmpty(ptyhs)) {
+                    flag = false;
+                }
+            }
+            String filepath = "/QRCode/" + DateTime.now().toString("yyyyMMdd") + "/" + yhZsyqm + ".png";
+            WxMpQrCodeTicket ticket = wxMpService.getQrcodeService().qrCodeCreateLastTicket(user.getId());
+            String qrCode = ticket.getTicket();
+            String pictureUrl = wxMpService.getQrcodeService().qrCodePictureUrl(qrCode);
+            URL u = new URL(pictureUrl);
 
+            FileUtils.copyURLToFile(u,new File(qrCodeFileUrl+ filepath),5000,5000);
+            newEntity.setYhZsyqm(yhZsyqm);
+            newEntity.setYhZsyqmImg(filepath);
+        }
+
+
+        i = update(newEntity);
+        /*BizZh bizZh = new BizZh();
+        bizZh.setYhId(user.getId());
+        bizZh.setYhTxdj(0d);
+        bizZh.setYhZhye(-20000d);
+        zhService.save(bizZh);*/
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
@@ -1294,7 +1382,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             String jlId = (String) map.get("jlId");
             String jlType = (String) map.get("jlType");
             SysYh user = (SysYh) map.get("user");
-            this.wxSendMessage(ids, jlId, jlType,user);
+            this.wxSendMessage(ids, jlId, jlType, user);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1307,7 +1395,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @param ids
      * @param jlId
      */
-    public void wxSendMessage(List<String> ids, String jlId, String jlType,SysYh user) {
+    public void wxSendMessage(List<String> ids, String jlId, String jlType, SysYh user) {
         String jlMessage = "专员您好，为您分配了" + ids.size() + "位学员。请您及时联系！";//给教练下发的记录
         payInfo.debug("分配学员-下发消息--------------------");
         System.out.println("------------------------------------------------------------------------------------------");
@@ -1336,7 +1424,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             jlSmsMap.put("userName", jlMsage.getYhXm());//专员姓名
 
             try {
-                res = wechatService.sendTemplateMsg(msg,null);
+                res = wechatService.sendTemplateMsg(msg, null);
             } catch (Exception e) {
             }
             payInfo.debug("sendMsg result :", res);
@@ -1383,10 +1471,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
                     jlSmsMap.put("studentUser", u.getYhXm());//学员姓名
                     jlSmsMap.put("studentTel", u.getYhZh());//学员电话
-                    List<Map<String, String>> smsMapList=new ArrayList<Map<String, String>>();
+                    List<Map<String, String>> smsMapList = new ArrayList<Map<String, String>>();
                     smsMapList.add(xlSmsMap);
                     smsMapList.add(jlSmsMap);
-                    res = wechatService.sendTemplateMsg(msg,smsMapList);
+                    res = wechatService.sendTemplateMsg(msg, smsMapList);
                 } catch (Exception e) {
                 }
                 payInfo.debug("sendMsg result :", res);
@@ -1725,25 +1813,25 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizUser bizUser = userService.findById(currentUser.getId());
         BizYhpf yhpf = new BizYhpf();
         yhpf.setYhId(bizUser.getYhId());
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid(),"0");  // 受理专员
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid1(),"1");  // 科目一
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid2(),"2");// 科目二
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid3(),"3");// 科目三
-        addBizjls(bizJls, yhpf, bizUser.getYhJlid4(),"4");// 科目四
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid(), "0");  // 受理专员
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid1(), "1");  // 科目一
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid2(), "2");// 科目二
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid3(), "3");// 科目三
+        addBizjls(bizJls, yhpf, bizUser.getYhJlid4(), "4");// 科目四
         return ApiResponse.success(bizJls);
     }
 
-    private void addBizjls(List<BizJl> bizJls, BizYhpf yhpf, String yhJlid,String slType) {
+    private void addBizjls(List<BizJl> bizJls, BizYhpf yhpf, String yhJlid, String slType) {
         if (StringUtils.isNotBlank(yhJlid)) { //
             BizJl bizJl = jlService.findById(yhJlid);
-            BizJl newBizJl =new BizJl();
+            BizJl newBizJl = new BizJl();
 //            DeepStudent s2 = (DeepStudent) s1.clone();
             yhpf.setJlId(bizJl.getYhId());
             yhpf.setSlType(slType);
             List<BizYhpf> entity = yhpfService.findByEntity(yhpf);
             if (CollectionUtils.isNotEmpty(entity)) {
                 newBizJl.setYhFz(entity.get(0).getYhFz());
-            }else{
+            } else {
                 newBizJl.setYhFz(null);
             }
             newBizJl.setYhZjhm(bizJl.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
@@ -1807,17 +1895,17 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         ApiResponse<List<StatusModel>> result = new ApiResponse<>();
         result.setPage(res.getPage());
         List<BizPtyh> list = res.getPage().getList();
-        if (list == null || list.size() == 0){
+        if (list == null || list.size() == 0) {
             return result;
         }
         List<String> userIds = list.stream().map(BizPtyh::getId).collect(Collectors.toList());
-        List<BizUser> userList = userService.findIn(BizUser.InnerColumn.yhId,userIds);
-        Map<String,BizUser> userMap = userList.stream().collect(Collectors.toMap(BizUser::getYhId,p->p));
+        List<BizUser> userList = userService.findIn(BizUser.InnerColumn.yhId, userIds);
+        Map<String, BizUser> userMap = userList.stream().collect(Collectors.toMap(BizUser::getYhId, p -> p));
 
         List<StatusModel> models = new ArrayList<>();
         for (BizPtyh ptyh : list) {
             BizUser user = userMap.get(ptyh.getId());
-            if (user == null)continue;
+            if (user == null) continue;
             StatusModel model = new StatusModel(ptyh);
             BizPtyh zy0 = ptyhService.findById(user.getYhJlid());
             model.setZy0(zy0);
@@ -1834,16 +1922,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             BizPtyh zy4 = ptyhService.findById(user.getYhJlid4());
             model.setZy0(zy4);
 
-            BizKsYk km1 = getYk(ptyh,"1");
+            BizKsYk km1 = getYk(ptyh, "1");
             model.setKm1(km1);
 
-            BizKsYk km2 = getYk(ptyh,"2");
+            BizKsYk km2 = getYk(ptyh, "2");
             model.setKm2(km2);
 
-            BizKsYk km3 = getYk(ptyh,"3");
+            BizKsYk km3 = getYk(ptyh, "3");
             model.setKm3(km3);
 
-            BizKsYk km4 = getYk(ptyh,"4");
+            BizKsYk km4 = getYk(ptyh, "4");
             model.setKm4(km4);
             models.add(model);
         }
@@ -1856,31 +1944,31 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<List<BizPtyh>> getZyList(String type) {
         SimpleCondition condition = new SimpleCondition(SysYhJs.class);
-        condition.eq(SysYhJs.InnerColumn.jsId,type);
+        condition.eq(SysYhJs.InnerColumn.jsId, type);
         List<SysYhJs> userRoleList = userRoleMapper.selectByExample(condition);
-        if (userRoleList.size() == 0){
+        if (userRoleList.size() == 0) {
             return new ApiResponse<>();
         }
 
         List<String> sysUserIds = userRoleList.stream().map(SysYhJs::getYhId).collect(Collectors.toList());
-        List<SysYh> sysUserList = yhService.findIn(SysYh.InnerColumn.yhid,sysUserIds);
-        if (sysUserList.size() == 0){
+        List<SysYh> sysUserList = yhService.findIn(SysYh.InnerColumn.yhid, sysUserIds);
+        if (sysUserList.size() == 0) {
             return new ApiResponse<>();
         }
-        List<String> idCardList =  sysUserList.stream().map(SysYh::getZjhm).collect(Collectors.toList());
-        List<BizPtyh> bizUserList = findIn(BizPtyh.InnerColumn.yhZjhm,idCardList);
+        List<String> idCardList = sysUserList.stream().map(SysYh::getZjhm).collect(Collectors.toList());
+        List<BizPtyh> bizUserList = findIn(BizPtyh.InnerColumn.yhZjhm, idCardList);
         ApiResponse<List<BizPtyh>> res = new ApiResponse<>();
         res.setResult(bizUserList);
         return res;
     }
 
-    private BizKsYk getYk(BizPtyh ptyh,String km){
+    private BizKsYk getYk(BizPtyh ptyh, String km) {
         SimpleCondition condition = new SimpleCondition(BizKsYk.class);
-        condition.eq(BizKsYk.InnerColumn.yhId,ptyh.getId());
-        condition.eq(BizKsYk.InnerColumn.kmCode,km);
+        condition.eq(BizKsYk.InnerColumn.yhId, ptyh.getId());
+        condition.eq(BizKsYk.InnerColumn.kmCode, km);
         condition.setOrderByClause(BizKsYk.InnerColumn.cjsj.desc());
         List<BizKsYk> yks = ksYkMapper.selectByExampleAndRowBounds(condition, new RowBounds(0, 1));
-        if (yks.size() != 0){
+        if (yks.size() != 0) {
             return yks.get(0);
         }
         return null;
@@ -1888,35 +1976,40 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     /**
      * 注册邀请消息推送
-     * @param userId     邀请人ID
-     * @param openId     注册人的OPEN_ID
+     *
+     * @param userId 邀请人ID
+     * @param openId 注册人的OPEN_ID
      * @return
      */
     @Override
-    public void sendRegisterInvite(String userId, String openId){
+    public void sendRegisterInvite(String userId, String openId) throws UnsupportedEncodingException {
         payInfo.debug("时间" + DateUtils.getToday("yyyy-MM-dd HH:mm:ss"));
-        try{
+        try {
             Thread thread = Thread.currentThread();
-            thread.sleep(2*1000);//暂停2秒后程序继续执行
-        }catch (InterruptedException e) {
+            thread.sleep(2 * 1000);//暂停2秒后程序继续执行
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        BizPtyh user=this.findById(userId);
-        String first="您的好友"+user.getYhXm()+"。邀请您注册！";
+        BizPtyh user = this.findById(userId);
+        String first = "";
         List<WxMpTemplateData> data = new ArrayList<>();
         data.add(new WxMpTemplateData("first", first));
-        data.add(new WxMpTemplateData("keyword1", user.getYhXm()));
-        data.add(new WxMpTemplateData("keyword2", ""));
-        data.add(new WxMpTemplateData("keyword3", DateUtils.getNowTime()));
-        data.add(new WxMpTemplateData("remark", "点击查看  请求地址："+domain+"?id="+user.getYhZsyqm()));
+        data.add(new WxMpTemplateData("keyword1", DateUtils.getNowTime()));
+        data.add(new WxMpTemplateData("keyword2", user.getYhXm()));
+//        data.add(new WxMpTemplateData("keyword3", DateUtils.getNowTime()));
+        data.add(new WxMpTemplateData("remark", "点击进入注册页面"));
 
         WxMpTemplateMessage msg = new WxMpTemplateMessage();
         msg.setToUser(openId);
-        msg.setTemplateId("RzaPPdugSVZJ_p3v6CexYAqmARPkBalAUX-oHzvA4-o");
-        msg.setUrl(domain+"?id="+user.getYhZsyqm());//
+        msg.setTemplateId("4VIWC4ezWgotUv1w4t7VHon1grV7OVu04C8mtkwBOP4");
+
+        String url = domain + "?page=reg&id=" + user.getYhZsyqm();
+        String encode = URLEncoder.encode(url,"UTF-8");
+        msg.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb01394ea85904296" +
+                "&redirect_uri="+encode+"&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect");//
         msg.setData(data);
         try {
-            wechatService.sendTemplateMsg(msg,null);
+            wechatService.sendTemplateMsg(msg, null);
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
@@ -1924,5 +2017,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 //        ret.put("yhtx",user.getYhTx());
 //        ret.put("yhZsyqm",user.getYhZsyqm());
 //        return ret;
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        String encode = URLEncoder.encode("http://www.520xclm.com/wx/?page=reg&id=RGPM0Z","UTF-8");
+        System.out.println(encode);
     }
 }

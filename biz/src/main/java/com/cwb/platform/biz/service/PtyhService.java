@@ -7,8 +7,12 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
+import me.chanjar.weixin.common.exception.WxErrorException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +42,7 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     ApiResponse<String> updateUserInfo(BizPtyh entity);
 
-    ApiResponse<String> updateUserReal(BizPtyh entity);
+    ApiResponse<String> updateUserReal(BizPtyh entity) throws WxErrorException, IOException;
 
     ApiResponse<String> updateYhRz(BizPtyh bizPtyh);
 
@@ -85,5 +89,5 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     ApiResponse<List<BizPtyh>> getZyList(String type);
 
-    void sendRegisterInvite(String userId, String openId);
+    void sendRegisterInvite(String userId, String openId) throws UnsupportedEncodingException;
 }
