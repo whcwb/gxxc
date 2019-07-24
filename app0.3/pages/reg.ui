@@ -45,7 +45,7 @@
                 <ui-row space="40">
                   <ui-input ui:model="form.yhMm" type="password" placeholder="请输入密码"></ui-input>
                 </ui-row>
-                <ui-row space="40" :class=" mesCode ? 'sms-code3' : ''">
+                <!-- <ui-row space="40" :class=" mesCode ? 'sms-code3' : ''">
                     <ui-input 
                         style="border-radius:5px;width:80%;height:44px"
                         ui:model="form.yhYyyqm"
@@ -54,7 +54,7 @@
                     </ui-input>
                   <ui-button style=" border-radius:25px;background-color:#ff8000" type="primary" full-width="false" bindtap='Smyqm'>扫描邀请码</ui-button>
 
-                </ui-row>
+                </ui-row> -->
                 <ui-row space="40">
                   <ui-button bindtap="regYZ"
                   style="background: linear-gradient(to top, #f3b222, rgb(251, 219, 72));
@@ -278,7 +278,7 @@ export default {
       mesCode:false,
       xy:true,//协议勾选
       form:{
-        yhYyyqm:'',
+        yhYyyqm:ui.getApp().yqm,
         yhZh:'',//帐号
         yhMm:'',//密码
         yhLx:'1',
@@ -298,14 +298,14 @@ export default {
   },
   created () {
     console.log(this.height)
-    // if(ui.getApp().yqm){
-    //   console.log(ui.getApp().yqm);
-    // }else{
-    //   ui.showToast({
-    //      title: '请重新扫描邀请码！'
-    //   })
-    //   ui.navigateBack()
-    // }
+    if(ui.getApp().yqm){
+      console.log(ui.getApp().yqm);
+    }else{
+      ui.showToast({
+         title: '请重新扫描邀请码！'
+      })
+      ui.navigateBack()
+    }
   },
   mounted() {},
   methods: {
