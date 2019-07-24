@@ -8,7 +8,7 @@
           <ui-col vertical-align="middle" align="center">
             <ui-view class="nav_title"
               style="color: #f75d42;font-size: 0.65rem;font-weight: 700;"
-            >会员服务协议</ui-view>
+            >学员服务协议</ui-view>
           </ui-col>
           <ui-col width="60">
           </ui-col>
@@ -17,12 +17,12 @@
       <ui-view class="box_col agreeMess" style="{{ { height: pageHeight(0)+ 'px'} }}">
           <ui-view class="topBot">
             <ui-view>
-              甲方（服务平台）：武汉天弘腾创科技有限公司
+              甲方（吉驾无忧）：武汉天弘腾创科技有限公司
             </ui-view>
             <ui-view>
-              <ui-view>乙方(会员):</ui-view>
+              <ui-view>乙方(学员):</ui-view>
               <ui-view style="text-indent:50px">
-              跟据《中华人民共和国合同法》及相关法律法规的有规定， 甲、乙双方本着自愿、平等、诚实、信用的原则签立本服务协议 书，具体内容如下:
+              根据《中华人民共和国合同法》及相关法律法规的有规定，甲、乙双方本着自愿、平等、诚实、信用的原则签立本服务协议书，具体内容如下：
               </ui-view>
             </ui-view>
           </ui-view>
@@ -31,162 +31,164 @@
               <ui-view class="fonttit">一、总则</ui-view>
               <ui-view class="fontsty">
               1.宗旨
-              安全驾驶，养成良好驾车习惯，做中国好司机! 拥护宪法，拥护中国共产党的领导，遵守国家法律法规，践行社会主义核心价值观。
+               安全驾驶，养成良好驾车习惯，做中国好司机! 
               </ui-view>
               <ui-view class="fontsty">
-                2.本服务平台采取会员制，会员享有本章程规定的各项权利，并承担本章程规定的各种责任和义务。
+               拥护宪法，拥护中国共产党的领导，遵守国家法律法规，践行社会主义核心价值观。
               </ui-view>
               <ui-view class="fontsty">
-                3.本协议书的签订即视为乙方自愿成为<u> 520 学车联盟服务平台 </u>会员。乙方应依照<u>《会员章程》</u>享受会员的权利和履行会员的义务。
+              2.本协议书的签订即视为乙方自愿成为<u> 吉驾无忧服务平台 </u>学员。甲方为乙方提供相应的学车、陪练服务及相应的平台权益。
               </ui-view>
             </ui-view>
 
             <ui-view>
-              <ui-view class="fonttit">二、入会须知</ui-view>
+              <ui-view class="fonttit">二、学员须知</ui-view>
               <ui-view class="fontsty">
-                1.会员入会需按要求如实填写会员申请协议，提供有效证身份证明，同时缴纳相关服务费。
+                1.学员需按要求如实填写学车所需的相关信息，提供有效证身份证明，同时缴纳相关服务费。
               </ui-view>
               <ui-view class="fontsty">
-                2.会员ID作为俱乐部唯一标识，可在本俱乐部所属特约经销商使用，享受本会员手册所提供的各项优惠服务。
+                2.乙方同意由甲方安排至第三方培训机构提供实际培训服务。
               </ui-view>
 
             </ui-view>
 
 
             <ui-view>
-              <ui-view class="fonttit">三、会员类别及会员特权</ui-view>
+              <ui-view class="fonttit">三、学员类别及特权</ui-view>
               <ui-view class="fontsty">
-                1、初次申请会员，需与平台签订《会员服务协议》，并支付相应服务费用后可成为平台会员，享受平台提供的相应服务。
+                1、甲方吉驾无忧平台学员采取A,B类之分，A类学员，无驾照，享受完整学车服务及吉驾无忧平台提供的各种特权及福利；B类学员针对已有驾照的学员，可享受本平台提供的上路陪练服务，享受吉驾无忧平台提供的各种特权及福利。乙方可以自愿选择成为A类或者B类学员，具体如下：
               </ui-view>
-              <ui-view class="fontsty">
-                2、本平台会员采取A,B类会员之分，A类会员享受完整学车服务及本服务平台提供的各种特权及福利；B类会员针对非学车用户或已有驾照的好司机可享受本平台提供的业务培训，享受本服务平台提供的各种特权及福利。乙方可以自愿选择成为A类或者B类会员，具体如下：
+              <ui-view class="fontsty"></ui-view>
+
                   <ui-view class="fontsty">
-                      A类会员：
+                      A类学员：
                   </ui-view>
                   <ui-view class="fontsty">
-                  （1）本平台提供专员全程贴身引导其完成学车事宜，并代缴相关费用，学车具体事项以另行签订的驾培合同为准；
+                  （1）吉驾无忧平台提供专员全程贴身引导其完成学车事宜，并代缴相关费用，学车具体事项以另行签订的驾培合同为准；
                   </ui-view>
 
                   <ui-view class="fontsty">
-                  （2）分享并成功推荐他人成为A类会员则奖励800积分；
+                  （2）分享并成功推荐他人成为A类学员则甲方给与乙方人民币（大写） 捌佰 元整（￥800元）商业返点；乙方推荐的A类学员又成功推荐他人成为A类学员则甲方给与乙方人民币（大写） 壹佰 元整（￥100元）商业返点；
                   </ui-view>
 
                   <ui-view class="fontsty">
-                  （3）其推荐的A类会员成功推荐他人成为A类会员则奖励200积分；
+                  （3）商业返点给付时间： 推荐的A类学员参加完科目一考试后的3个工作日之内；
                   </ui-view>
 
                   <ui-view class="fontsty">
-                  （4）所获积分可在本平台提供的S币商城上选购商品或服务。
+                  （4）A类学员在甲方吉驾无忧平台的权益期限为：三年（其中学车服务期限以驾培行业法律法规为准）。
+                   </ui-view>
+                  <!-- <ui-view class="fontsty">
+                  （5）A类学员的学员期限为：终身（其中学车服务期限以驾培行业法律法规为准）。
+                   </ui-view> -->
+
+                  <ui-view class="fontsty">
+                      B类学员：
+                  </ui-view>
+                  <ui-view class="fontsty">
+                  （1）乙方分享并成功推荐他人成为A类学员则甲方给与乙方人民币（大写） 捌佰 元整（￥800元）商业返点；乙方其推荐的A类学员又成功推荐他人成为A类学员则甲方给予乙方人民币（大写） 壹佰 元整（￥100元）商业返点；；
+                  </ui-view>
+
+                  <ui-view class="fontsty">
+                  （2）商业返点给付时间：推荐的A类学员参加完科目一考试后的3个工作日之内；
+                  </ui-view>
+
+                  <ui-view class="fontsty">
+                  （3）吉驾无忧平台提供专员对其推广平台所需的相关专业技能进行培训；
+                  </ui-view>
+
+                  <ui-view class="fontsty">
+                  （4）B类学员陪练服务时间为不超过：2学时，培训时间及路线由甲方安排。
                    </ui-view>
                   <ui-view class="fontsty">
-                  （5）A类会员的会员期限为：终身（其中学车服务期限以驾培行业法律法规为准）。
-                   </ui-view>
-
-                  <ui-view class="fontsty">
-                      B类会员：
-                  </ui-view>
-                  <ui-view class="fontsty">
-                  （1）本平台提供专员对其推广平台所需的相关专业技能进行培训；
-                  </ui-view>
-
-                  <ui-view class="fontsty">
-                  （2）分享并成功推荐他人成为A类会员则奖励800积分；
-                  </ui-view>
-
-                  <ui-view class="fontsty">
-                  （3）其推荐的A类会员成功推荐他人成为A类会员则奖励200积分；
-                  </ui-view>
-
-                  <ui-view class="fontsty">
-                  （4）所获积分可在本平台提供的S币商城上选购商品或服务。
-                   </ui-view>
-                  <ui-view class="fontsty">
-                  （5）B类会员的会员期限为：一年。
+                  （5）B类学员在甲方吉驾无忧学车平台的权益期限为：一年。
                    </ui-view>
 
               </ui-view>
-
-
-            </ui-view>
-            <ui-view>
+               <ui-view>
               <ui-view class="fonttit">四、费用及支付方式</ui-view>
               <ui-view class="fontsty">
-                1、A类会员基础服务费总计人民币（大写）<u> 贰仟陆百 </u>元整<u>（￥2600元）</u>；
+                1、A类学员基础服务费总计人民币（大写）<u> 贰仟陆百 </u>元整<u>（￥2600元）</u>；
               </ui-view>
               <ui-view class="fontsty">
-                2、 B类会员基础服务费为人民币（大写）<u> 贰佰 </u>元整<u>（￥200元）</u>；　
+                2、 B类学员基础服务费为人民币（大写）<u> 贰佰 </u>元整<u>（￥200元）</u>；　
               </ui-view>
               <ui-view class="fontsty">
                   3、会费应于签订本协议时一次性支付。
               </ui-view>
 
               <ui-view class="fontsty">
-                  4、关于会员遇特殊情况的退费处理：
-                     A类会员缴费后，完成科目一考试前遇到不可抗力等特殊情况无法继续学车的，可以退费，但应扣除1000元手续费；B类会员交费后不接受退费处理。
+                  4、关于学员遇特殊情况的退费处理：
+                     A类学员缴费后，未完成考试或遇到不可抗力等特殊情况无法继续学车的，可以按以下规则退费：
               </ui-view>
-
+              <ui-view class="fontsty">
+                  	    未参加科目一考试的应扣除人民币（大写） 贰佰肆拾 元整（￥240元）手续费；
+              </ui-view>
+              <ui-view class="fontsty">
+                        参加了科目一考试的应扣除人民币（大写） 壹仟 元整（￥1000元）手续费；
+              </ui-view>
+               <ui-view class="fontsty">
+                        参加了科目一考试的应扣除人民币（大写） 壹仟 元整（￥1000元）手续费；
+              </ui-view>
+               <ui-view class="fontsty">
+                      	参加了科目二考试的应扣除人民币（大写） 贰仟 元整（￥2000元）手续费；
+              </ui-view>
+               <ui-view class="fontsty">
+                       	参加了科目三培训或考试的不接受退费处理。B类学员交费后不接受退费处理。
+              </ui-view>
             </ui-view>
             <ui-view>
               <ui-view class="fonttit">五、附加服务</ui-view>
               <ui-view class="fontsty">
-                本平台所有的有效会员，除享受本平台提供的上述基本服务外，还享受其它附加服务，内容如下：
+                吉驾无忧平台所有的有效学员，除享受本平台提供的上述基本服务外，还享受其它附加服务，内容如下：
               </ui-view>
               <ui-view class="fontsty">
                1)咨询服务，提供最新的车辆维护常识、车辆保险常识、交通法规、交通安全知识等；
               </ui-view>
+          
               <ui-view class="fontsty">
-                2)提醒服务，积分商城的各项优惠活动通知、会员服务到期提醒等；
+               2)车辆维修，学员车辆前往指定维修站进行维修时，可享受学员价服务；
               </ui-view>
               <ui-view class="fontsty">
-               3)车辆维修，会员车辆前往指定维修站进行维修时，可享受会员价服务；
+                3)紧急救援，与合作方提供24小时紧急援油、现场抢修、事故拖车服务；
               </ui-view>
               <ui-view class="fontsty">
-                4)紧急救援，与合作方提供24小时紧急援油、现场抢修、事故拖车服务；
+                4)保险服务，保险咨询、车辆投保、保险理赔、验车、协助交通事故处理等；
               </ui-view>
               <ui-view class="fontsty">
-                5)保险服务，保险咨询、车辆投保、保险理赔、验车、协助交通事故处理等；
-              </ui-view>
-              <ui-view class="fontsty">
-                6)车证代办：代办证件年审、换证、补证、过户、转籍等手续。相关费用按有关部门收费标准由会员承担。
+                5)车证代办：代办证件年审、换证、补证、过户、转籍等手续。相关费用按有关部门收费标准由学员承担。
               </ui-view>
             </ui-view>
             <ui-view>
               <ui-view class="fonttit">六、乙方的权利与义务</ui-view>
               <ui-view class="fontsty">
-              1、甲乙双方保证对在讨论、签订、执行本协议过程中所获悉的属于对方的且无法自公开渠道获得的文件及资料（包括商业秘密、公司计划、运营活动、财务信息、技术信息、经营信息、折扣及其他涉密信息）予以保密。
+              1、乙方有权参加吉驾无忧平台组织的各种集会、联谊和培训等活动。
               </ui-view>
               <ui-view class="fontsty">
-              2.会员有权参加平台组织的各种集会、联谊和培训等活动。
+              2.乙方享有对吉驾无忧平台成员的投诉权。投诉电话：400-017-0520，甲方调查核实后三天内予以答复。
               </ui-view>
               <ui-view class="fontsty">
-              3.会员享有其他作为平台成员应该享受的权利。
+              3.乙方应自觉维护吉驾无忧平台的声誉和形象，在任何情况下均不得蓄意破坏吉驾无忧平台的形象。
               </ui-view>
-              <ui-view class="fontsty">
-              4.会员享有对平台成员的投诉权。投诉电话：<u>400-017-0520</u>，平台调查核实后三天内予以答复。
-              </ui-view>
-              <ui-view class="fontsty">
-              5.会员应自觉维护本平台的声誉和形象，在任何情况下均不得蓄意破坏平台的形象。
-              </ui-view>
+            
             </ui-view>
             <ui-view>
               <ui-view class="fonttit">七、甲方的权利和义务</ui-view>
               <ui-view class="fontsty">
-              1.本平台保留对《会员手册》和本章程的修改和解释的权利。
+              1.对有任何违背本协议的学员，甲方吉驾无忧平台有拒绝为其服务、甚至取消其学员资格，所有相关费用不予退还。
               </ui-view>
               <ui-view class="fontsty">
-              2.对有任何违背本章程的会员，本平台有拒绝为其服务、甚至取消其会员资格的权利，所有相关费用不予退还。
+              2.吉驾无忧平台依照本协议为学员提供完善、优质、快捷的服务，充分保障学员权利。
               </ui-view>
               <ui-view class="fontsty">
-              3.本平台依照本章程，为会员提供完善、优质、快捷的服务，充分保障会员权利。
+              3.吉驾无忧平台保障学员个人隐私及个人信息，非由法律规定或者非经学员同意，不得向任何第三人披露。
               </ui-view>
-              <ui-view class="fontsty">
-              4.本平台保障会员个人隐私及个人信息，非由法律规定或者非经会员同意，不得向任何第三人披露。
-              </ui-view>
+              
             </ui-view>
             <ui-view>
               <ui-view class="fonttit">八、协议有效期</ui-view>
               <ui-view class="fontsty">
-                本协议的生效与解除视为会员资格的生效与解除。A类会员为签订本协议之日起，终生有效。B类会员协议有效期限自<span style="color: red;">{{getdateStr(0)}}</span>起，至<span style="color: red;">{{getdateStr(1)}}</span>止（有效期一年）。本协议自双方当事人签字或盖章后正式成立并自签字之日起生效。
+                本协议的生效与解除视为学员资格的生效与解除。A类学员协议有效期限自<span style="color: red;">{{getdateStr(0)}}</span>起，至<span style="color: red;">{{getdateStr(3)}}</span>止（有效期三年）。B类学员协议有效期限自<span style="color: red;">{{getdateStr(0)}}</span>起，至<span style="color: red;">{{getdateStr(1)}}</span>止（有效期一年）。
               </ui-view>
             </ui-view>
             <ui-view>
@@ -195,7 +197,7 @@
                 1、任何一方违约，守约方有权向违约方主张赔偿，赔偿费用包括但不限于：直接损失，可预见的间接损失，诉讼费，律师费等相关费用。
               </ui-view>
               <ui-view class="fontsty">
-               2、甲方如遇政府主管部门责令停业或其他不可预见的因素而不能正常提供服务，不承担违约责任。
+                2、甲方如遇政府主管部门责令停业或其他不可预见的因素而不能正常提供服务，不承担违约责任。
               </ui-view>
             </ui-view>
 
@@ -212,6 +214,7 @@
                 </ui-view>
               </ui-view>
           </ui-view>
+
           <ui-view style="overflow: auto;">
             <ui-view class="box_row" style="padding: 0.15rem 0.3rem">
               <ui-view class="userSign" style="margin-right: 0.2rem">

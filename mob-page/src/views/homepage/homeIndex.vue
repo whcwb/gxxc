@@ -4,8 +4,8 @@
 <template>
       <div id="homeSty" class="box">
         <div class="tit">
-          520学车联盟
-          <!--<mt-header fixed title="520学车联盟"></mt-header>-->
+          吉驾无忧
+          <!--<mt-header fixed title="吉驾无忧"></mt-header>-->
         </div>
         <div class="swipe">
           <mt-swipe :auto="4000">

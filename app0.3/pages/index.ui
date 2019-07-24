@@ -361,10 +361,10 @@ export default {
       )
     },
     qrcode(){
-      if(this.usermess.ddSfjx!='1'){
-          ui.showToast({ title: '请先缴费' })
-          return
-      }
+      if(this.usermess.yhZt!= '1'){
+            ui.showToast({ title: '请先实名认证' })
+            return
+        }
       ui.getApp().QRpage = '/pages/index'
       ui.navigateTo(
         {
