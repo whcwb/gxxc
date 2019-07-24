@@ -162,7 +162,7 @@ public class AppMainController extends AppUserBaseController {
 	public ApiResponse<String> sendSMSRegister(@RequestParam(name = "zh") String zh,@RequestParam(name = "yyyqm") String yyyqm){
 //		1、验证参数不能为空
 		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(zh),"请填写正确的手机号");
-		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(yyyqm),"邀请码不能为空");
+//		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(yyyqm),"邀请码不能为空");
 		RuntimeCheck.ifFalse(StringDivUtils.isPhoneValid(zh),"请填写正确的手机号");
 //		RuntimeCheck.ifTrue(org.apache.commons.lang.StringUtils.isEmpty(codeID),"验证码不能为空");
 //		if(debugTest==null) {
@@ -171,10 +171,10 @@ public class AppMainController extends AppUserBaseController {
 //			RuntimeCheck.ifTrue(!codeID.equals(code),"验证码不正确！");
 //			request.getSession().removeAttribute(key);
 //		}
-		if(StringUtils.contains(yyyqm,"http")){
+		/*if(StringUtils.contains(yyyqm,"http")){
 			String url=redisDao.boundValueOps("url"+yyyqm).get();
 
-		}
+		}*/
 
 //		2、验证登录账户不能重复
 		SimpleCondition condition = new SimpleCondition(BizPtyh.class);
@@ -183,7 +183,7 @@ public class AppMainController extends AppUserBaseController {
 		RuntimeCheck.ifTrue(count > 0,"该手机号已注册，请使用其它手机号码");
 
 //		3、验证邀请码是否存在
-		SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+		/*SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
 		newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),yyyqm);
 		newCondition.eq(BizPtyh.InnerColumn.yhSfsd.name(),"0");//用户没有锁定
 		newCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(),"1");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
@@ -194,7 +194,7 @@ public class AppMainController extends AppUserBaseController {
 		RuntimeCheck.ifBlank(bizPtyhs.get(0).getYhYqmgqsj(),"用户邀请码失效");
 		if( bizPtyhs.get(0).getYhYqmgqsj().compareTo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) < 0 ){
 			return ApiResponse.fail("用户邀请码已过期");
-		}
+		}*/
 
 		/*count = ptyhService.countByCondition(newCondition);
 		RuntimeCheck.ifTrue(count == 0,"邀请码有误");*/
@@ -202,7 +202,7 @@ public class AppMainController extends AppUserBaseController {
 		String identifyingCode= StringDivUtils.getSix();//获取验证码
 		boolean sendType=ptyhService.sendSMS(zh,1,identifyingCode);
 		if(sendType){
-			redisDao.boundValueOps(appSendSMSRegister+"yyyqm"+zh).set(yyyqm, 1, TimeUnit.DAYS);//设备邀请码，为10分钟过期
+			redisDao.boundValueOps(appSendSMSRegister+ "zh"+zh).set(zh, 1, TimeUnit.DAYS);//设备邀请码，为10分钟过期
 			return  ApiResponse.success();
 		}else{
 			return  ApiResponse.fail("短信下发失败");

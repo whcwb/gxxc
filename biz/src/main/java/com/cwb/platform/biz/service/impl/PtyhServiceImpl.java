@@ -52,6 +52,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -554,13 +556,27 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifBlank(telIdentifying, "短信验证码不能为空");
         RuntimeCheck.ifBlank(entity.getYhYyyqm(), "用户应邀邀请码不能为空");
 
+        SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+        newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(),entity.getYhYyyqm());
+        newCondition.eq(BizPtyh.InnerColumn.yhSfsd.name(),"0");//用户没有锁定
+        newCondition.eq(BizPtyh.InnerColumn.ddSfjx.name(),"1");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
+
+        // 判断用户邀请码是否过期 todo
+        List<BizPtyh> bizPtyhs = ptyhService.findByCondition(newCondition);
+        RuntimeCheck.ifEmpty(bizPtyhs,"用户邀请码失效!");
+        RuntimeCheck.ifBlank(bizPtyhs.get(0).getYhYqmgqsj(),"用户邀请码失效");
+        if( bizPtyhs.get(0).getYhYqmgqsj().compareTo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) < 0 ){
+            return ApiResponse.fail("用户邀请码已过期");
+        }
+
+
         String yhZh = entity.getYhZh();
         ApiResponse<String> validate = this.validateSms(yhZh, telIdentifying, "1");
         RuntimeCheck.ifTrue(validate.getCode() != 200, validate.getMessage());
 
 //      用户应邀邀请码存在造假的可能。是否需要验证,这里的验证是注册下发短信时，已经查了数据库
-        String app_sendSMS_yyyqm = redisDao.boundValueOps(appSendSMSRegister + "yyyqm" + yhZh).get();
-        RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhYyyqm(), app_sendSMS_yyyqm), "邀请码错误，请重新注册");
+        String app_sendSMS_yyyqm = redisDao.boundValueOps(appSendSMSRegister + "zh" +  yhZh).get();
+        RuntimeCheck.ifFalse(StringUtils.equals(entity.getYhZh(), app_sendSMS_yyyqm), "账号错误，请重新发送短信验证码");
 
         RuntimeCheck.ifBlank(entity.getYhMm(), "用户密码不能为空");
         RuntimeCheck.ifTrue(entity.getYhMm().length()<6, "用户密码不能小于6位");
@@ -660,7 +676,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String yhSsjid = "";//上上级ID
 
         String yhYyyqm = entity.getYhYyyqm();//该用户的父级ID
-        SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+        newCondition = new SimpleCondition(BizPtyh.class);
         newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), yhYyyqm);
         List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
         if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
