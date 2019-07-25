@@ -580,7 +580,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         // 判断用户邀请码是否过期 todo
         List<BizPtyh> bizPtyhs = ptyhService.findByCondition(newCondition);
         RuntimeCheck.ifEmpty(bizPtyhs, "用户邀请码失效!");
-//        RuntimeCheck.ifBlank(bizPtyhs.get(0).getYhYqmgqsj(), "用户邀请码失效");
+        RuntimeCheck.ifBlank(bizPtyhs.get(0).getYhYqmgqsj(), "用户邀请码失效");
         if (bizPtyhs.get(0).getYhYqmgqsj().compareTo(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) < 0) {
             return ApiResponse.fail("用户邀请码已过期");
         }
@@ -955,6 +955,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
         newEntity.setYhZt("0");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhZtMs("");//用户驾照状态不能为空
+        newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
         if(StringUtils.isBlank(user.getYhZsyqm())){
             String yhZsyqm = "";
             boolean flag = true;
@@ -1138,6 +1139,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
         newEntity.setYhZt("1");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhBm(entity.getYhBm());//用户别名
+        newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
         if(StringUtils.isBlank(user.getYhZsyqm())){
             String yhZsyqm = "";
             boolean flag = true;
