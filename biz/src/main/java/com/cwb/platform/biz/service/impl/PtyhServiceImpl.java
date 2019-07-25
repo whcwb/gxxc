@@ -678,7 +678,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhIxySffp("0");//学员是否已分配
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
-
+//        newEntity.setYhTx("temp/logo.png");
 
         String bizptyhlog = "";
         try {

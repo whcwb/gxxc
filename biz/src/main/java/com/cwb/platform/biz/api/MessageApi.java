@@ -5,6 +5,7 @@ import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.exception.RuntimeCheck;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
@@ -66,4 +67,23 @@ public class MessageApi {
         ptyhService.update(bizPtyh);
         return ApiResponse.success();
     }
+
+    @GetMapping("/getUserInfo")
+    public ApiResponse<BizPtyh> getUserInfo(String id){
+        RuntimeCheck.ifBlank(id, "需要上传用户id");
+        BizPtyh bizPtyh = entityMapper.selectByPrimaryKey(id);
+        RuntimeCheck.ifNull(bizPtyh,"未找到用户信息");
+        BizPtyh ptyh = new BizPtyh();
+        ptyh.setYhZsyqm(bizPtyh.getYhZsyqm());
+        ptyh.setYhZsyqmImg("http://www.520xclm.com:8001/" + bizPtyh.getYhZsyqmImg());
+        ptyh.setYhTx("http://www.520xclm.com:8001/" + bizPtyh.getYhTx());
+        ptyh.setYhXm(bizPtyh.getYhXm());
+        return ApiResponse.success(ptyh);
+
+    }
+
+
+
+
+
 }
