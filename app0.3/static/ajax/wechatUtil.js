@@ -70,7 +70,14 @@ wechatUtil.config = function(){
         timestamp: wechatUtil.timestamp, // 必填，生成签名的时间戳
         nonceStr: wechatUtil.nonceStr, // 必填，生成签名的随机串
         signature: wechatUtil.sign,// 必填，签名
-        jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay'] // 必填，需要使用的JS接口列表
+        jsApiList: ['scanQRCode',
+        'chooseImage',
+        'uploadImage',
+        'previewImage',
+        'chooseWXPay',
+        'updateAppMessageShareData'
+              
+    ] // 必填，需要使用的JS接口列表
     });
     wechatUtil.refreshNonceStr();
 };
@@ -94,9 +101,8 @@ wechatUtil.pay = function(prepay,callback){
 };
 wechatUtil.checkJsApi = ()=>{
   wx.checkJsApi({
-    jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+    jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay','updateAppMessageShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
     success: function(res) {
-      console.log(res);
       // 以键值对的形式返回，可用的api值true，不可用为false
       // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
     }
@@ -115,6 +121,22 @@ wx.ready(function(){
       return;
     }
     wechatUtil.checkJsApi();
+    wechatUtil.share();                             
+    // wx.updateAppMessageShareData({
+    //     title: '邀请加入吉驾无忧', // 分享标题
+    //     desc: '123', // 分享描述
+    //     link: 'www.520xclm.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    //     imgUrl: '../../static/img/login/logo.png', // 分享图标
+    //     success: function () {
+    //     alert('chenggong')// 设置成功
+    //     },
+    //     cancel: function () {
+    //         // 用户取消分享后执行的回调函数
+    //     },
+    //     error:function(){
+    //         alert('shibai')
+    //     }
+    // })
     //window.location.href = "/wx/";
     // chooseImage();
     // wechatUtil.qrScan();
@@ -195,6 +217,28 @@ function randomString(len) {
         pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
     }
     return pwd;
+};
+wechatUtil.share= (id)=>{ 
+    // alert(0);
+    wx.updateAppMessageShareData({
+            title: '邀请您加入吉驾无忧', // 分享标题 张总要求改的
+            desc: '', // 分享描述
+            link: 'http://www.520xclm.com/wx/yqm.html?id='+id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://www.520xclm.com/images/icons/logo-02.png', // 分享图标
+            // type: 'link', // 分享类型,music、video或link，不填默认为link
+            //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            },
+            fail:function(){
+                // alert('shibai')
+            }
+        });
+        
+        // alert(1);
 }
 
 export default wechatUtil;

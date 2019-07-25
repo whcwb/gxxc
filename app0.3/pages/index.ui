@@ -8,6 +8,7 @@
           <ui-view class="nav_title">首页</ui-view>
         </ui-col>
         <ui-col vertical-align="middle" align="center" width="60">
+          
         </ui-col>
       </ui-row>
     </ui-nav-bar>
@@ -324,6 +325,11 @@ export default {
     }
   },
   methods: {
+    fx(){
+           //需在用户可能点击分享按钮前就先调用
+        ui.getApp().wxUtil.share(this.usermess.id)
+      
+    },
     getYE(callback) {//获取账户余额
       var v = this
       this.$http('POST',ui.getApp().apis.USERZH,{},(res)=>{
@@ -477,6 +483,12 @@ export default {
     // }
   },
   mounted() {
+     //ui.getApp().wxUtil.onMenuShareAppMessage()
+     setTimeout(()=>{
+       ui.getApp().wxUtil.checkJsApi();
+       ui.getApp().wxUtil.share(this.usermess.id);
+     }, 3000);
+
   }
 }
 
