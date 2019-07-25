@@ -12,12 +12,14 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -110,7 +112,7 @@ public class AppPtyhController extends AppUserBaseController {
      * @return
      */
     @RequestMapping(value="/updatesm", method={RequestMethod.POST})
-    public ApiResponse<String> updateUserReal(BizPtyh entity){
+    public ApiResponse<String> updateUserReal(BizPtyh entity) throws WxErrorException, IOException {
         return service.updateUserReal(entity);
     }
 

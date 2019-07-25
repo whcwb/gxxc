@@ -50,4 +50,7 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
             "</foreach>" +
             "</script>")
     void updateXyfpType(@Param("list")  List<String> list, @Param("type") String type);
+
+    @Update(" update biz_ptyh set YH_ZSYQM = #{qr} , YH_ZSYQM_IMG = #{path}")
+    void updateQr(@Param("qr") String qrCode,@Param("path") String img);
 }

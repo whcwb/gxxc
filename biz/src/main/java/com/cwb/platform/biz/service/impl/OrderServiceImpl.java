@@ -131,11 +131,12 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         newBizYjmx1.setMxlx("1");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
         yjmxService.save(newBizYjmx1);
 
-        newBizYjmx1.setId(genId());
-        newBizYjmx1.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
-        newBizYjmx1.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
-        yjmxService.save(newBizYjmx1);
-
+        if(!StringUtils.equals(order.getCpId(),"464480599185293312")){
+            newBizYjmx1.setId(genId());
+            newBizYjmx1.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
+            newBizYjmx1.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+            yjmxService.save(newBizYjmx1);
+        }
         BizCp bizCp = cpService.findById(order.getCpId());
         String yhZsyqm ="";
         String yhZsyqmImg ="";
@@ -153,7 +154,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
                 queryYhZsyqm=queryUser.getYhZsyqm();
             }
             //判断当前用户是否存在邀请码，如果存在邀请码将不会重新新的邀请码
-            if(StringUtils.isEmpty(queryYhZsyqm)){
+            /*if(StringUtils.isEmpty(queryYhZsyqm)){    邀请码现在在实名认证时生成
                 boolean flag = true;
                 while (flag){
                     yhZsyqm = ShoreCode.createShareCode();
@@ -171,7 +172,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
                 sendMap.put("yhZsyqmImg",yhZsyqmImg);
                 sendMap.put("userName",userName);
                 eventBus.post(sendMap);
-            }
+            }*/
         }
         Map<String,Object> sendMap=new HashMap<String,Object>();
         sendMap.put("type","2");
@@ -179,8 +180,6 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         sendMap.put("cpMc",bizCp.getCpMc());
         sendMap.put("cpType",bizCp.getCpType());//产品类型
         eventBus.post(sendMap);
-
-
 
         BizPtyh bizPtyh=new BizPtyh();
         bizPtyh.setId(order.getYhId());
