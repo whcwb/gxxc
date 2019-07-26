@@ -13,7 +13,7 @@
                       </ui-view> -->
                       <ui-view class="box_row_100 borLR">
                           <ui-view class="tit">
-                              当前总S币
+                              当前奖励
                           </ui-view>
                           <ui-view class="num">
                             {{ye}}
@@ -48,7 +48,7 @@
                                           200元
                                       </ui-view>
                                       <ui-view>
-                                          200S币
+                                          200币
                                       </ui-view>
                                   </ui-view>
                                   <ui-view class="{{'box_row_100','spItemSty',ye>400?'ONcolor':'offcolor'}}"
@@ -57,7 +57,7 @@
                                           400元
                                       </ui-view>
                                       <ui-view>
-                                          400S币
+                                          400币
                                       </ui-view>
                                   </ui-view>
                                   <ui-view class="{{'box_row_100','spItemSty',ye>600?'ONcolor':'offcolor'}}"
@@ -66,7 +66,7 @@
                                           600元
                                       </ui-view>
                                       <ui-view>
-                                          600S币
+                                          600币
                                       </ui-view>
                                   </ui-view>
                               </ui-view>
@@ -138,9 +138,9 @@
 export default {
   config: {
     navigationBarBackgroundColor:"#fff",
-    navigationBarTitleText: "S币商城",
+    navigationBarTitleText: "邀请奖励",
     navigationBarTextStyle:"#ff8a5f",
-    title:'S币商城',
+    title:'邀请奖励',
     backgroundColor:'#fff',
     delay:false,//延迟加载
   },

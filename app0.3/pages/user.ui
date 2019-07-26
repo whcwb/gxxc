@@ -77,11 +77,11 @@
                   <ui-row>
                     <ui-col width='20' vertical-align="middle"
                       style="color:#ff8300;font-weight:900;font-size: 18px;">
-                      S
+                      Y
                     </ui-col>
                     <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
                           <ui-view class="ftWt">
-                                S币商城
+                                邀请奖励
                           </ui-view>
                     </ui-col>
                     <ui-col align="right" vertical-align="middle" space-right="10">

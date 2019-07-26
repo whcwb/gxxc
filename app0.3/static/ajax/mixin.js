@@ -3,13 +3,13 @@ export default {
     yhLx: (val) => {//用戶类型
       switch (val) {
         case '1':
-          return '学员';
+          return 'A类学员';
           break;
         case '2':
           return '专员';
           break;
         case '3':
-          return '会员';
+          return 'B类学员';
           break;
         default:
           return '用户类型'
