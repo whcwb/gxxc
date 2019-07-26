@@ -75,7 +75,8 @@ wechatUtil.config = function(){
         'uploadImage',
         'previewImage',
         'chooseWXPay',
-        'updateAppMessageShareData'
+        'updateAppMessageShareData',
+        'onMenuShareAppMessage'
               
     ] // 必填，需要使用的JS接口列表
     });
@@ -101,7 +102,7 @@ wechatUtil.pay = function(prepay,callback){
 };
 wechatUtil.checkJsApi = ()=>{
   wx.checkJsApi({
-    jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay','updateAppMessageShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+    jsApiList: ['scanQRCode','chooseImage','uploadImage','previewImage','chooseWXPay','updateAppMessageShareData','onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
     success: function(res) {
       // 以键值对的形式返回，可用的api值true，不可用为false
       // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
@@ -121,7 +122,8 @@ wx.ready(function(){
       return;
     }
     wechatUtil.checkJsApi();
-    wechatUtil.share();                             
+    wechatUtil.share();
+    wechatUtil.andshare();                             
     // wx.updateAppMessageShareData({
     //     title: '邀请加入吉驾无忧', // 分享标题
     //     desc: '123', // 分享描述
@@ -235,6 +237,28 @@ wechatUtil.share= (id)=>{
             },
             fail:function(){
                 // alert('shibai')
+            }
+        });
+        
+        // alert(1);
+}
+wechatUtil.andshare= (id)=>{ 
+    // alert(0);
+    wx.onMenuShareAppMessage({
+            title: '邀请您加入吉驾无忧', // 分享标题 张总要求改的
+            desc: '', // 分享描述
+            link: 'http://www.520xclm.com/wx/yqm.html?id='+id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://www.520xclm.com/images/icons/logo-02.png', // 分享图标
+            // type: 'link', // 分享类型,music、video或link，不填默认为link
+            //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            },
+            fail:function(){
+                // alert('分享失败')
             }
         });
         

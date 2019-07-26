@@ -325,6 +325,20 @@ export default {
     }
   },
   methods: {
+    judgeClient() {
+      let u = navigator.userAgent;
+      let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;   //判断是否是 android终端
+      let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);     //判断是否是 iOS终端
+      console.log('是否是Android：' + isAndroid); //true,false
+      console.log('是否是iOS：' + isIOS);
+      if(isAndroid){
+        return 'Android';
+      }else if(isIOS){
+        return 'IOS';
+      }else{
+        return 'PC';
+      }
+    },
     fx(){
            //需在用户可能点击分享按钮前就先调用
         ui.getApp().wxUtil.share(this.usermess.id)
@@ -483,12 +497,22 @@ export default {
     // }
   },
   mounted() {
-     //ui.getApp().wxUtil.onMenuShareAppMessage()
-     setTimeout(()=>{
+    if(this.judgeClient() == 'Android' ){
+      setTimeout(()=>{
+       ui.getApp().wxUtil.checkJsApi();
+       ui.getApp().wxUtil.andshare(this.usermess.id);
+     }, 3000);
+    }else if(this.judgeClient() == 'IOS' ){
+      setTimeout(()=>{
        ui.getApp().wxUtil.checkJsApi();
        ui.getApp().wxUtil.share(this.usermess.id);
      }, 3000);
 
+    }else{
+      
+    }
+     //ui.getApp().wxUtil.onMenuShareAppMessage()
+     
   }
 }
 
