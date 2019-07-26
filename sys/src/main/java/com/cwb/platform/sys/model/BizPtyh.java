@@ -219,6 +219,10 @@ public class BizPtyh implements Serializable {
      */
     @Column(name = "YH_YQMGQSJ")
     private String yhYqmgqsj;
+
+    @Column(name = "YH_YQMKSSJ")
+    private String yhYqmkssj;
+
     /**
      * 手机验证码
      */

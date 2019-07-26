@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="author" content="m.ehaier.com">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+          name="viewport"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta content="false" id="twcClient" name="twcClient"/>
+    <link type="text/css" rel="stylesheet" href="css/v2/style.css">
+    <link rel="apple-touch-icon-precomposed" href="../../images/ehaier-icon.png"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/ehaier-icon.png"/>
+    <title>吉驾无忧</title>
+    <link type="text/css" rel="stylesheet" href="css/v2/member.css">
+</head>
+<body id="page" onload="f()">
+<header >
+
+</header>
+<span id="login_errorMsg" style="padding:10px;"></span>
+<div class="Login">
+    <div>
+        <div class="Login_bottom">
+            <form id="registForm">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td height="60" align="center" valign="top" style="padding-top: 30px">
+              <span style="width: 60px;">
+			      <image id="img" style="height: 60px;width:60px;border-radius: 30px" src=""></image>
+			  </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="40" align="center" valign="top">
+                            <span id="xm" style="font-size: 16px;font-weight: 700"></span>
+                        </td>
+                    </tr>
+                    <!--<tr>
+                        <td height="40" align="center" valign="bottom" style="padding-top: 30px">
+                            <span id="yqm" style="font-size: 24px;font-weight: 700"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="40" align="center" valign="top">
+                            <div><span class="btn" data-clipboard-action="copy" data-clipboard-target="#yqm" value=""
+                                       id="copy_btn" onclick="fz()">复制</span></div>
+                        </td>
+                    </tr>-->
+                    <tr>
+                        <td height="200" align="center" style="position: relative" valign="middle">
+							<div>
+								<img  style="position:relative;left:135px;top:-70px;height: 64px;width: 64px;" src="http://www.520xclm.com:8001/temp/logo.png"></img>
+								<img id="yqmImg" style="z-index:1;height: 200px;width: 200px;margin-right:64px" src="">
+									
+								</img>
+							</div>
+							
+							
+                        </td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td height="30">&nbsp;
+                            长按识别二维码
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+
+</footer>
+
+</body>
+
+<script type="text/javascript">
+    // http://www.520xclm.com:8001/temp/29e970e29537483b8ea57c4bf9ec303d.jpg
+    function f() {
+		console.log(document.getElementById("yqmImg"));
+        var url = window.location.href;
+        var param = url.split("?")[1]
+
+        let id = param.split("=")[1];
+
+        var ajaxObj = new XMLHttpRequest();
+
+        // （2）设置请求的参数。包括：请求的方法、请求的url。
+        ajaxObj.open('get', 'http://www.520xclm.com:8080/biz/pub/getUserInfo?id=' + id);
+
+        // （3）发送请求
+        ajaxObj.send();
+
+        //（4）注册事件。 onreadystatechange事件，状态改变时就会调用。
+        //如果要在数据完整请求回来的时候才调用，我们需要手动写一些判断的逻辑。
+        ajaxObj.onreadystatechange = function () {
+            // 为了保证 数据 完整返回，我们一般会判断 两个值
+            if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {
+                // 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
+                // 5.在注册的事件中 获取 返回的 内容 并修改页面的显示
+                console.log('数据返回成功');
+
+                // 数据是保存在 异步对象的 属性中
+                console.log(typeof ajaxObj.responseText);
+                var json = JSON.parse(ajaxObj.responseText)
+                console.log(json.result.yhTx);
+                if (json.result.yhTx == 'http://www.520xclm.com:8001/null' || json.result.yhTx == 'undefined') {
+                    json.result.yhTx = 'http://www.520xclm.com:8001/temp/logo.png'
+                }
+                // 修改页面的显示
+                document.getElementById("img").setAttribute("src", json.result.yhTx);
+                document.getElementById("xm").innerHTML = json.result.yhXm;
+                //document.getElementById("yqm").innerHTML = json.result.yhZsyqm;
+                document.getElementById("yqmImg").setAttribute("src", json.result.yhZsyqmImg);
+				
+            }
+        }
+    }
+
+    function fz() {
+        $(document).ready(function () {
+
+			
+            /*var targetText = $("#yqm").text();
+            var clipboard = new Clipboard('#copy_btn');
+
+            clipboard.on('success', function (e) {
+                console.info('Action:', e.action);
+                console.info('Text:', e.text);
+                console.info('Trigger:', e.trigger);
+                e.clearSelection();
+            });*/
+        });
+    }
+
+</script>
+</html>

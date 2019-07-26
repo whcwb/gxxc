@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -334,6 +335,12 @@ public class AppMainController extends AppUserBaseController {
 					res.setResult(retMap);
 					return res;
 				}
+				String ocrRecognitionJson = redisDao.boundValueOps(user.getId() + "-ocrRecognition-map").get();
+				JSONObject jsonObject = new JSONObject(ocrRecognitionJson);
+				String xm = jsonObject.getString("xm");
+				String cfzh = jsonObject.getString("cfzh");
+				retMap.put("xm",xm);
+				retMap.put("cfzh",cfzh);
 				log.debug("getWxFile------------7-2、截图操作"+fileUrl);
 	//			2、  切图
 				wjService.tailorSubjectImg(fileUrl);

@@ -201,7 +201,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
 
         long plusYears=1;
         if(StringUtils.equals(bizCp.getCpType(),"1")){
-            plusYears=100;//学员的会员的有效期是永久的。
+            plusYears=3;//学员的会员的有效期是永久的。
         }
 
         //支付成功后清除   用户表、用户明细表、约考的三张表  todo
