@@ -864,7 +864,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (StringUtils.equals(user.getYhSfsd(), "1")) {
             return ApiResponse.fail("用户已锁定，无法进行操作");
         }
-        if (StringUtils.isEmpty(entity.getImgList())) {
+        if (StringUtils.isEmpty(entity.getImgList()) && StringUtils.isBlank(entity.getYhZjhm())) {
             return ApiResponse.fail("请上传证件照片");
         }
 
@@ -877,6 +877,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         RuntimeCheck.ifBlank(entity.getYhXm(), "用户姓名不能为空");
         RuntimeCheck.ifBlank(entity.getYhZjhm(), "用户证件号码不能为空");
+        RuntimeCheck.ifTrue(entity.getYhZjhm().length() != 18, "证件号码格式不正确");
         String CardCode = entity.getYhZjhm();
         String sex;//获取性别 ZDCLK0042(1、男;2、女)
         if (Integer.parseInt(CardCode.substring(16).substring(0, 1)) % 2 == 0) {// 判断性别
@@ -956,6 +957,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhZt("0");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhZtMs("");//用户驾照状态不能为空
         newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
+        newEntity.setYhYqmkssj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        newEntity.setYhLx("3");
         if(StringUtils.isBlank(user.getYhZsyqm())){
             String yhZsyqm = "";
             boolean flag = true;
@@ -981,7 +984,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 
         int i = update(newEntity);
-        RuntimeCheck.ifTrue(i >= 0 , i +"");
         if (i > 0) {
             // 实名认证成功 , 添加一条体现记录
 
@@ -1140,6 +1142,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhZt("1");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhBm(entity.getYhBm());//用户别名
         newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
+        newEntity.setYhYqmkssj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        newEntity.setYhLx("3");
         if(StringUtils.isBlank(user.getYhZsyqm())){
             String yhZsyqm = "";
             boolean flag = true;
