@@ -108,7 +108,7 @@ export default {
         	SpinShow:false,
             form: {
                 username: 'admini',
-                password: '123456'
+                password: 'THXC-Web123**'
             },
             menus:[],
             rules: {

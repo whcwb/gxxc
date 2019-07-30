@@ -23,18 +23,23 @@
                     </ui-col>
                     <ui-col span="7" align="left" vertical-align="middle" space-left="20">
                       <ui-view class="pageHello" >
-                        <ui-row height=26>
-                            <ui-col span='4'>
+                        <ui-row height=60>
+                            <ui-col span='4' vertical-align="middle">
                                 {{usermess.yhXm | yhXm}}
                             </ui-col>
-                            <ui-col ui:if="{{usermess.ddSfjx=='1'}}" class="userTyp" span='8' vertical-align="bottom">
+                            <ui-col ui:if="{{usermess.ddSfjx=='1'||usermess.yhLx=='3'}}" class="userTyp" span='8' vertical-align="middle">
                                 <!-- <ui-text class="userTyp">  -->
                                   {{usermess.yhLx | yhLx}}  
                                 <!-- </ui-text> -->
                             </ui-col>
+                            <ui-col ui:else class="userTyp" span='8' vertical-align="middle">
+                                <!-- <ui-text class="userTyp">  -->
+                                  
+                                <!-- </ui-text> -->
+                            </ui-col>
                         </ui-row>
                       </ui-view>
-                      <ui-view class="pageHello">{{usermess.yhZh}}</ui-view>
+                      <!-- <ui-view class="pageHello">{{usermess.yhZh}}</ui-view> -->
                     </ui-col>
                     <ui-col span="3" align="right" 
                       vertical-align="middle" space-right="20"
@@ -44,8 +49,8 @@
                   </ui-row>
                 </ui-view>
 
-                <ui-view class="userItem marB25">
-                  <ui-row>
+                <!-- <ui-view class="userItem marB25">
+                  <ui-row style="height:50px">
                     <ui-col span="4" align="left" vertical-align="middle" space-left="20">
                       <ui-view>
                         {{zhYE.yhZhye/100 | yhZhye}}
@@ -61,27 +66,44 @@
                       </ui-view>
                       <ui-view>邀请奖励</ui-view>
                     </ui-col> 
-                    <ui-col span="4" align="left" vertical-align="middle" space-left="40">
-                        <ui-button type="primary" size="default" full-width
-                        bindtap="goProductList">加盟</ui-button>
+                    <ui-col span="" align="right" vertical-align="middle" space-left="40">
+                        <ui-button type="primary" size="20" full-width="false" style=" border-radius: 25px;"
+                        bindtap="goProductList">缴费</ui-button>
                     </ui-col>
-                    <!-- <ui-col span="3" align="left" vertical-align="middle" space-left="20">
+                    <ui-col span="3" align="left" vertical-align="middle" space-left="20">
                       <ui-view>
                         <ui-button type="primary" size="default" bindtap="tx">兑换</ui-button>
                       </ui-view>
-                    </ui-col> -->
+                    </ui-col>
+                  </ui-row>
+                </ui-view> -->
+                
+                  <ui-view class="userItem marB25" bindtap="goProductList" style="padding-top:25px">
+                  <ui-row>
+                    <ui-col width='20' vertical-align="middle"
+                      style="color:#ff8300;font-weight:900;font-size: 18px;">
+                      ¥
+                    </ui-col>
+                    <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
+                          <ui-view class="ftWt">
+                                立即缴费
+                          </ui-view>
+                    </ui-col>
+                    <ui-col align="right" vertical-align="middle" space-right="10">
+                      <ui-icon type="right" size="20" color="#3399FF"></ui-icon>
+                    </ui-col>
                   </ui-row>
                 </ui-view>
-                
+
                 <ui-view class="userItem marB25" bindtap="txN">
                   <ui-row>
                     <ui-col width='20' vertical-align="middle"
                       style="color:#ff8300;font-weight:900;font-size: 18px;">
-                      S
+                      Y
                     </ui-col>
                     <ui-col span="6" align="left" vertical-align="middle" space-left="10" style="padding:5px 0">
                           <ui-view class="ftWt">
-                                S币商城
+                                邀请奖励
                           </ui-view>
                     </ui-col>
                     <ui-col align="right" vertical-align="middle" space-right="10">

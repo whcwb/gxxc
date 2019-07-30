@@ -254,6 +254,22 @@ export let appRouter = [
 		]
     },
     {
+        path: '/chat',
+        icon: 'android-car',
+        name: 'chat',
+        meta: {title: '聊天管理'},
+        component: Main,
+        children: [
+            {
+                path: 'chatMessage',
+                icon: 'android-clipboard',
+                name: 'chatMessage',
+                meta: { title: '聊天内容' },
+                component: () => import('@/views/whdx/chat/chatMessage.vue')
+            }
+        ]
+    },
+    {
         path: '/commissioner',
         icon: 'android-car',
         name: 'commissioner',

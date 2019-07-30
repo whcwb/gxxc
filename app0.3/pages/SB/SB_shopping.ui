@@ -13,7 +13,7 @@
                       </ui-view> -->
                       <ui-view class="box_row_100 borLR">
                           <ui-view class="tit">
-                              当前总S币
+                              当前奖励
                           </ui-view>
                           <ui-view class="num">
                             {{ye}}
@@ -36,7 +36,7 @@
           <ui-view class="box_col_auto boxsty">
               <ui-view class="box_row boxstyItem">
                   <ui-view class="titbage">
-                      现金兑换
+                      奖励提现
                   </ui-view>
                   <ui-view class="box_row_100">
                       <ui-view class="box_col">
@@ -48,7 +48,7 @@
                                           200元
                                       </ui-view>
                                       <ui-view>
-                                          200S币
+                                          提现
                                       </ui-view>
                                   </ui-view>
                                   <ui-view class="{{'box_row_100','spItemSty',ye>400?'ONcolor':'offcolor'}}"
@@ -57,7 +57,7 @@
                                           400元
                                       </ui-view>
                                       <ui-view>
-                                          400S币
+                                          提现
                                       </ui-view>
                                   </ui-view>
                                   <ui-view class="{{'box_row_100','spItemSty',ye>600?'ONcolor':'offcolor'}}"
@@ -66,7 +66,7 @@
                                           600元
                                       </ui-view>
                                       <ui-view>
-                                          600S币
+                                          提现
                                       </ui-view>
                                   </ui-view>
                               </ui-view>
@@ -79,7 +79,7 @@
                                           800元
                                       </ui-view>
                                       <ui-view>
-                                          800S币
+                                          提现
                                       </ui-view>
                                   </ui-view>
                                   <ui-view class="{{'box_row_100','spItemSty',ye>1000?'ONcolor':'offcolor'}}"
@@ -88,7 +88,7 @@
                                           1000元
                                       </ui-view>
                                       <ui-view>
-                                          1000S币
+                                          提现
                                       </ui-view>
                                   </ui-view>
                                   <ui-view class="{{'box_row_100','spItemSty',ye>0?'ONcolor':'offcolor'}}"
@@ -97,7 +97,7 @@
                                           {{ye}}元
                                       </ui-view>
                                       <ui-view>
-                                          {{ye}}S币
+                                          当前可提现
                                       </ui-view>
                                   </ui-view>
                               </ui-view>
@@ -138,9 +138,9 @@
 export default {
   config: {
     navigationBarBackgroundColor:"#fff",
-    navigationBarTitleText: "S币商城",
+    navigationBarTitleText: "邀请奖励",
     navigationBarTextStyle:"#ff8a5f",
-    title:'S币商城',
+    title:'邀请奖励',
     backgroundColor:'#fff',
     delay:false,//延迟加载
   },
@@ -178,7 +178,7 @@ export default {
         }else{
           ui.showAlert({
             title: '',
-            content: '当前S币不足',
+            content: '当前奖励不足',
             buttonText: '知道了',
             success () {
             }

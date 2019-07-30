@@ -7,9 +7,9 @@
             <ui-view class="box_row_100 moduleItem zjzm" bindtap="getImg(0,10)">
                 <ui-image src="{{imgList.zm}}" width="100%"></ui-image>
             </ui-view>
-            <ui-view class="box_row_100 moduleItem zjfm" bindtap="getImg(1,11)">
+            <!-- <ui-view class="box_row_100 moduleItem zjfm" bindtap="getImg(1,11)">
                 <ui-image src="{{imgList.bm}}" width="100%"></ui-image>
-            </ui-view>
+            </ui-view> -->
 
         </ui-view>
 
@@ -23,6 +23,18 @@
               </ui-view>
           </ui-view>
         </ui-view>
+          <ui-view class="jszsty1">
+             <ui-view>
+               <ui-row>
+                 <ui-input type="text" ui:model='form.xm' placeholder-style="color:#e0e0e0" placeholder="请输入姓名"></ui-input>  
+               </ui-row>
+              </ui-view>
+              <ui-view>
+                <ui-row>
+                  <ui-input type="number" ui:model='form.cfzh' placeholder-style="color:#e0e0e0" placeholder="请输入身份证号码"></ui-input>
+                </ui-row>
+              </ui-view>
+           </ui-view>
 
         <ui-view class="butSty" bindtap="uploadMess">
           <ui-button type="primary">提交</ui-button>
@@ -87,8 +99,11 @@ export default {
     return {
       userMess:{},
       form:{
-        imgList:['-','-','-','-']
+        imgList:['-','-','-','-'],
+        xm:'',
+        cfzh:''
       },
+      yzzt:0,
       imgList:{
         zm:'static/img/home/id_03.png',
         bm:'static/img/home/id_05.png'
@@ -140,7 +155,9 @@ export default {
             v.imgList.bm = ui.getApp().apis.getImgUrl+res.result.filePath
             v.form.imgList[val]=res.result.filePath
           }
-
+            v.form.xm = res.result.xm;
+            v.form.cfzh = res.result.cfzh;
+           
         }else{
           console.log('图片上传错误');
           if(res.code==200){
@@ -153,15 +170,15 @@ export default {
     },
     uploadMess(){
       var v = this
-      this.$http('POST',ui.getApp().apis.IDRZ,{'imgList':v.form.imgList.join(',')},(res)=>{
-        if(res.code==200){
-          ui.showToast({ title: '认证成功' })
-          ui.navigateBack()
-        }else {
-          ui.showToast({ title: res.message })
-        }
-      })
-    }
+        this.$http('POST',ui.getApp().apis.IDRZ,{'imgList':v.form.imgList.join(','),'yhZjhm':v.form.cfzh,'yhXm':v.form.xm},(res)=>{
+          if(res.code==200){
+            ui.showToast({ title: '认证成功' })
+            ui.navigateBack()
+          }else {
+            ui.showToast({ title: res.message })
+          }
+        })
+    },
   },
   mounted() {},
   created () {
@@ -212,6 +229,17 @@ export default {
   background-color: #fff;
   .titline{
     line-height: 80rpx;
+  }
+}
+.jszsty1{
+  margin: 0 65rpx;
+  padding-top: 15rpx;
+  background-color: #fff;
+  .ui-input{
+    border:0;
+    background-color: transparent;
+    height: 50px;
+    color: #9e9e9e;
   }
 }
 .butSty{

@@ -1,9 +1,10 @@
 //网络请求地址前缀
 let serverDomain='http:///www.520xclm.com';
-let BASE_URL = serverDomain + ':8080/biz/';
+// let BASE_URL = serverDomain + ':8080/biz/';
 // let BASE_URL = 'http://127.0.0.1:9086';
 // let BASE_URL = 'http://192.168.31.35:9086';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
+let BASE_URL = 'http://192.168.123.69:9006';
 module.exports = {
     getImgUrl:'http://www.520xclm.com:8001/',
     url: BASE_URL,
@@ -64,6 +65,11 @@ module.exports = {
         DJF:'/api/ksjf/waitPaymentList',
         batchImport:'/api/ksjf/batchImport',
         EXPORT:'/pub/ksjf/export',
+    },
+    chat:{
+        QUERY:'/api/msg/getUserList',
+        USERMEASSAGE:'/api/msg/getUserMsg',
+        REPLY:'/api/msg/reply'
     },
     ksjg:{
         QUERY:'/api/ksjg/pager',//考试结果记录

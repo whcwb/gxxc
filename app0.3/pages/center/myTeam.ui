@@ -1,7 +1,7 @@
 <template>
   <ui-page style="overflow-y: hidden;">
       <ui-view class=box_col style="{{ { height: height+ 'px'} }}">
-          <ui-view class="tabSty">
+          <!-- <ui-view class="tabSty">
               <ui-segment bindchange="(index)=>{listViewVonfig.param.userGrade = index}">
                   <ui-segment-item>
                       全部
@@ -13,7 +13,7 @@
                       二级用户
                   </ui-segment-item>
               </ui-segment>
-          </ui-view>
+          </ui-view> -->
           <ui-view class="box_col_auto">
               <ui-list-view config="{{ listViewVonfig }}" bindchange="listViewChange"
                 enable-reach-bottom-load=true custom-tip=true> 
