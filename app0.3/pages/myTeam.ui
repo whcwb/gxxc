@@ -37,33 +37,19 @@
                 <ui-image src="{{item.userDetail.yhTx | yhTx}}" 
                  width="50" height="50"></ui-image>
             </ui-col>
-            <ui-col span="9">
-                <ui-row space-top='10' height="50">
-                    <ui-col span="6">
-                       {{item.yhXm | yhXm}}
-                    </ui-col>
-                    <ui-col span="5" align="right">
-                      <a :href="'tel:'+item.yhSjhm">{{item.yhSjhm}}</a>
-                    </ui-col>
-                </ui-row>
-                <ui-row height="30">
-                    <ui-col span="4">
-                      <ui-view style="{{{color:item.userDetail.ddSfjx=='1'?'#00b65f':'#ff8800'}}}">
-                        {{item.userDetail.ddSfjx | ddSfjx}}
-                      </ui-view>
-                    </ui-col>
-                    <ui-col span="4" align="left">
-                      <ui-view style="{{{color:item.userDetail.yhLx=='3'?'#ff000a':'#2d8cf0'}}}">
-                            <ui-text v-show="item.userDetail.ddSfjx=='1'">
-                              {{item.userDetail.yhLx | yhLx}}
-                            </ui-text>
-                      </ui-view>
-                    </ui-col>
-                    <ui-col span="3" align="right">
-                        {{item.userGrade | userGrade}}
-                    </ui-col>
-                </ui-row>
-            </ui-col>
+            <ui-col span="2"  align="center" vertical-align="middle">
+                     {{item.yhXm | yhXm}}
+                </ui-col>
+                 <ui-col span="3" align="center" vertical-align="middle">
+                          <ui-view style="{{{color:item.userDetail.yhLx=='3'?'#ff000a':'#2d8cf0'}}}">
+                                <ui-text v-show="item.userDetail.ddSfjx=='1'||item.userDetail.yhLx == '3'">
+                                  {{item.userDetail.yhLx | yhLx}}
+                                </ui-text>
+                          </ui-view>
+                </ui-col>
+                <ui-col span="4" align="center" vertical-align="middle" style="color:#2d8cf0">
+                         <u><a :href="'tel:'+item.yhSjhm">{{item.yhSjhm}}</a></u> 
+                </ui-col>
           </ui-row>
           <ui-view class="studentLine" v-if="item.userDetail.yhLx=='1' && item.userDetail.ddSfjx == '1'">
             学员当前进度  :  {{item.yhslZt | yhslZt}}
@@ -282,8 +268,7 @@
       // flag 为1表示执行了handleActive。为undefined代表handleActive没有执行。
       handlePullDownAfter (flag) {
           this.pageNum = 1
-          this.items = []
-          alert(this.csMess(this.Objmess))  
+          this.items = [] 
           this.getPageList(this.csMess(this.Objmess))
           ui.showToast({
             title: '处理下拉刷新'
