@@ -34,7 +34,7 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
 
     BizPtyh findByIdSelect(String userid);
 
-    ApiResponse<String> userEnroll (BizPtyh entity,HttpServletRequest request);
+    ApiResponse<String> userEnroll (BizPtyh entity,HttpServletRequest request) throws IOException, WxErrorException;
 
     ApiResponse<String> mdfPwd(String userId, String oldPwd, String newPwd);
 

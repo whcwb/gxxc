@@ -90,7 +90,7 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " <if test= \"yhxm !=null  \"> " +
             " AND u.YH_XM like '%${yhxm}%' " +
             " </if> " +
-            " AND u.YH_ID = p.ID ORDER BY ABS(p.YH_LX) asc,ABS(p.DD_SFJX) desc" +
+            " AND u.YH_ID = p.ID ORDER BY CJSJ desc , ABS(p.YH_LX) asc,ABS(p.DD_SFJX) desc" +
             " </script> ")
     List<BizUser> getYhIdByTerm(@Param("grade")String grade, @Param("userid") String userId, @Param("yhlx")String yhlx, @Param("sfjf") String sfjf, @Param("yhxm")String yhXm);
 

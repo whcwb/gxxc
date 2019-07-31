@@ -36,6 +36,7 @@ public class TransactionManagerConfigure {
         transactionAttributes.setProperty("remove*", "PROPAGATION_REQUIRED,-Exception");
         transactionAttributes.setProperty("update*", "PROPAGATION_REQUIRED,-Exception");
         transactionAttributes.setProperty("batch*", "PROPAGATION_REQUIRED,-Exception");
+        transactionAttributes.setProperty("user*", "PROPAGATION_REQUIRED,-Exception");
 
         transactionInterceptor.setTransactionAttributes(transactionAttributes);
         return transactionInterceptor;
