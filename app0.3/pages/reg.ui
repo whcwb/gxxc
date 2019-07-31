@@ -45,6 +45,12 @@
                 <ui-row space="40">
                   <ui-input ui:model="form.yhMm" type="password" placeholder="请输入密码"></ui-input>
                 </ui-row>
+                <ui-row space="40">
+                  <ui-input ui:model="form.yhXm"  placeholder="请输入真实姓名"></ui-input>
+                </ui-row>
+                <ui-row space="40">
+                  <ui-input ui:model="form.yhZjhm"  placeholder="请输入身份证号码"></ui-input>
+                </ui-row>
                 <ui-row ui:if="{{yam}}" space="40" :class=" mesCode ? 'sms-code3' : ''">
                     <ui-input 
                         style="border-radius:5px;width:100%;height:41px"
@@ -238,9 +244,9 @@
                                 
                               </ui-col>
                               <ui-col span="8">
-                                  <ui-view class="checkboxAm" bindtap="Agreement=true">
+                                  <ui-view class="checkboxAm">
                                       <span class='txt'>
-                                        我同意《 <span class="txtMess"> 注册协议 </span> 》
+                                        我同意《 <span class="txtMess"  bindtap="Agreement=true"> 注册协议 </span> 》
                                       </span> 
                                   </ui-view>
                               </ui-col>
@@ -281,6 +287,8 @@ export default {
         yhZh:'',//帐号
         yhMm:'',//密码
         yhLx:'1',
+        yhXm:'',
+        yhZjhm:'',
         addType:'3',
         telIdentifying:'',//验证码
       }
@@ -473,7 +481,7 @@ export default {
     }
     .fromStyW{
       margin: 0 60rpx!important;
-      padding-top: 50%;
+      padding-top: 30%;
     }
   }
   .checkbox{
