@@ -751,6 +751,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
             bizUser.setYhXm(entity.getYhXm());//姓名
             bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+            bizUser.setYhSjid(yhSjid);//设置上级ID
+            bizUser.setYhSsjid(yhSsjid);//上上级ID
         }else{
             //插入用户实名表  biz_user
 
@@ -1577,7 +1579,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         }
 //        查询当前KEY过期时间还有多少秒 超过120秒后，可以再次下发短信
         long identifying = redisDao.getExpire(redisKey + tel, TimeUnit.SECONDS);
-        if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
+        if (identifying != -1 && 24 * 60 * 60 - identifying < 300) {
             return true;
         }
         // TODO: 2018/5/19 调试模式。
