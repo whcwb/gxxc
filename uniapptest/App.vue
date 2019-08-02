@@ -1,5 +1,7 @@
 <script>
+	import ajaxUrl from 'static/ajax/url.js'
 	export default {
+		
 		onLaunch: function() {
 			console.log('App Launch')
 		},
@@ -10,6 +12,7 @@
 			console.log('App Hide')
 		}
 	}
+	
 </script>
 
 <style>
