@@ -1,19 +1,19 @@
 <template>
 	<view>
 		<view class="bg">
-			<img src="/static/index/1.png" style="width: 132upx;height: 132upx;margin: 36upx 0 0 64upx;">	
+			<img src="/static/index/1.png" style="border-radius: 50%;width: 132upx;height: 132upx;margin: 36upx 0 0 64upx;">	
 			<view style="font-size:28upx;font-family:PingFangSC-Regular;font-weight:400;color:rgba(255,255,255,1);float: right;margin-top: 66upx;margin-right: 344upx;">
 				<view style="margin-bottom: 10upx;">李文超</view>
 				<view>15496854152</view>
 			</view>			
 		</view>
 		<view class="btn">
-			<view class="item" v-for="item in btnList">
+			<view class="item" :style="{borderBottom:index===btnList.length-1?'none':'2upx solid #DFE7EE'}" v-for="(item,index) in btnList">
 				<view style="display: flex;	align-content: center;">
 					<img :src="item.src" style="margin-right:12upx;width: 48upx;height: 48upx;">
 					<text>{{item.text}}</text>
 				</view>
-				<text style="color: #DFE7EE;">></text>
+				<img src="/static/my/right.png" style="width: 70upx;height: 70upx;">
 			</view>
 		</view>
 	</view>
@@ -68,7 +68,6 @@
 .item{
 	width: 628upx;
 	height: 142upx;
-	border-bottom: 2upx solid #DFE7EE;
 	margin: 0 auto;
 	display: flex;
 	align-items: center;

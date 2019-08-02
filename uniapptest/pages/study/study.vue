@@ -2,7 +2,7 @@
 	<view style="background:rgba(245,246,249,1)">
 		<view class="bg">
 			<view class="person">
-				<img src="/static/my/1.png" style="width: 132upx;height: 132upx;">
+				<img src="/static/my/1.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">王刚教练</view>
 				<uni-rate value="4"></uni-rate>
 			</view>
@@ -25,7 +25,7 @@
 			<view style="padding-top: 1upx;margin-top: 14upx;background:rgba(254,255,255,1)">
 				<view class="lineC"></view>
 				<view class="tip">
-					<image src="/static/my/no.png" style="left: 12upx;width: 30upx;height: 30upx;"></image>
+					<image src="/static/my/no.png" style="border-radius: 50%;left: 12upx;width: 30upx;height: 30upx;"></image>
 					<text style="margin-left: 16upx;font-size:28upx;color:rgba(161,174,198,1);">
 						{{current==0?'受理成功可考试':'当前科目考试费'}}
 					</text>
@@ -36,7 +36,7 @@
 				<view v-for="item in itemList" style="margin:26upx 0 0 48upx;display: flex;align-items:flex-start">
 					<image :src="item.state==='已完成'||item.state==='合格'?'/static/my/ok.png':'/static/my/no.png'" style="top: 14upx;width: 36upx;height: 36upx;"></image>
 					<view class="item">
-						<view style="margin-top: 14upx;display: flex;justify-content: space-between">
+						<view style="padding:0 20upx;margin-top: 14upx;display: flex;justify-content: space-between">
 						  <text class="itemText">{{item.name}}</text>
 						  <text class="itemFinish" :style="{color:item.state==='已完成'?'':(item.state==='合格'?'#3E8715':'rgba(161,174,198,1)')}">{{item.state}}</text>   
 						</view>
@@ -239,6 +239,7 @@
 		font-weight:400;
 		color:rgba(102,102,102,1);
 		justify-content: center;
+		padding:0 20upx;
 		}
 		
 		.btnClass{
@@ -256,7 +257,7 @@
 			height:48upx;
 			border-radius:24upx;
 			float: right;
-			margin-top: 8upx;
+			margin: 7upx 8upx 0 0;
 			font-size:24upx;
 			font-family:PingFangSC-Regular;
 			font-weight:400;
