@@ -1,0 +1,58 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		}
+	    ,{
+            "path" : "pages/study/study",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/chat/chat",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/my/my",
+            "style" : {}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [{
+        "pagePath": "pages/index/index",
+        "iconPath": "static/index/tabbar1.png",
+        "selectedIconPath": "static/index/tabbar1.png",
+        "text": "首页"
+    }, {
+        "pagePath": "pages/study/study",
+        "iconPath": "static/index/tabbar2.png",
+        "selectedIconPath": "static/index/tabbar2Sel.png",
+        "text": "学车"
+    },
+	 {
+	    "pagePath": "pages/chat/chat",
+	    "iconPath": "static/index/tabbar3.png",
+	    "selectedIconPath": "static/index/tabbar3.png",
+	    "text": "客服"
+	},
+	 {
+	    "pagePath": "pages/my/my",
+	    "iconPath": "static/index/tabbar4.png",
+	    "selectedIconPath": "static/index/tabbar4.png",
+	    "text": "我的"
+	}
+	]
+}
+}
