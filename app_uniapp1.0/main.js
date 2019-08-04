@@ -10,6 +10,9 @@ Vue.prototype.$http = http
 import apis from './ajax/apis.js'
 Vue.prototype.apis = apis;
 
+import wxApi from  './libs/wechatUtil'
+Vue.prototype.wxApi = wxApi;
+
 // import iView from 'iview';
 // import 'iview/dist/styles/iview.css';
 // import 'common/iview.css'

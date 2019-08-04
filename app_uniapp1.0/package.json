@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "jquery": "^3.3.1",
     "iview": "^3.4.2"
   }
 }
