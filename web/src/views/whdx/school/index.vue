@@ -22,6 +22,7 @@ import chooseImg from '../components/chooseImgModal'
         components:{formData,chooseMapPoint,chooseImg},
         data() {
             return {
+                searchVal:'',
                 v:this,
                 SpinShow: true,
                 apiRoot:this.apis.school,

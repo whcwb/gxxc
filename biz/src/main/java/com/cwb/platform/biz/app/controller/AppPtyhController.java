@@ -52,7 +52,7 @@ public class AppPtyhController extends AppUserBaseController {
      * @return
      */
     @RequestMapping(value="/save", method={RequestMethod.POST})
-    public ApiResponse<String> save(BizPtyh entity,HttpServletRequest request){
+    public ApiResponse<String> save(BizPtyh entity,HttpServletRequest request) throws IOException, WxErrorException {
 //        String openId=request.getHeader("openid");
 //        entity.setYhOpenId(openId);
         return service.userEnroll(entity,request);

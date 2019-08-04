@@ -5,6 +5,7 @@ import com.cwb.platform.biz.bean.StatusModel;
 import com.cwb.platform.biz.mapper.*;
 import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
+import com.cwb.platform.biz.util.IDNameIdentify;
 import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -565,7 +566,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
      * @return
      */
     @Override
-    public ApiResponse<String> userEnroll(BizPtyh entity, HttpServletRequest request) {
+    public ApiResponse<String> userEnroll(BizPtyh entity, HttpServletRequest request) throws IOException, WxErrorException {
         RuntimeCheck.ifBlank(entity.getYhZh(), "用户账户不能为空");
 
         String telIdentifying = entity.getTelIdentifying();//短信验证码
@@ -668,7 +669,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhLx(entity.getYhLx());//用户类型
         newEntity.setYhXb(entity.getYhXb());//用户性别
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
-        newEntity.setYhZt("-1");//认证状态 ZDCLK0043(0 未认证、1 已认证)
+        newEntity.setYhZt("0");//认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setDdSfjx("0");//是否缴费 ZDCLK0045 (0 未缴费 1 已缴费)
         newEntity.setYhOpenId(yhOpenId);//微信OPEN_ID
         newEntity.setYhAlipayId(yhAlipayId);//支付宝ID
@@ -703,19 +704,72 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         if (pBizUser != null) {
             yhSsjid = pBizUser.getYhSjid();
         }
-
-        //插入用户实名表  biz_user
+        int i = 0;
         BizUser bizUser = new BizUser();
-        bizUser.setYhId(newEntity.getId());//用户ID
-        bizUser.setYhZjhm(newEntity.getYhZjhm());//用户证件号码
-        bizUser.setYhSjhm(newEntity.getYhZh());//用户账户
-        bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
-        bizUser.setYhXm(newEntity.getYhXm());//姓名
-        bizUser.setCjsj(DateUtils.getNowTime());//创建时间
-        bizUser.setYhSjid(yhSjid);//设置上级ID
-        bizUser.setYhSsjid(yhSsjid);//上上级ID
+        if (StringUtils.isNotBlank(entity.getYhZjhm())  && StringUtils.isNotBlank(entity.getYhXm()) ){
 
-        int i = entityMapper.insertSelective(newEntity);
+            String identify = IDNameIdentify.identify(entity.getYhZjhm(), entity.getYhXm());
+            RuntimeCheck.ifFalse(StringUtils.equals(identify,"200"), identify);
+                newEntity.setYhXm(entity.getYhXm());//用户姓名
+                newEntity.setYhBm(entity.getYhBm());//用户别名
+                newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
+                newEntity.setYhXb(entity.getYhXb());//用户性别
+                String yhSfyjz = "0";
+                if (StringUtils.isNotEmpty(entity.getYhSfyjz())) {
+                    yhSfyjz = entity.getYhSfyjz();
+                }
+                newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
+                newEntity.setYhZt("1");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
+                newEntity.setYhZtMs("");//用户驾照状态不能为空
+                newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
+                newEntity.setYhYqmkssj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+                newEntity.setYhLx("3");
+
+                String yhZsyqm = "";
+                boolean flag = true;
+                while (flag) {
+                    yhZsyqm = ShoreCode.createShareCode();
+                    List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, yhZsyqm);
+                    if (CollectionUtils.isEmpty(ptyhs)) {
+                        flag = false;
+                    }
+                }
+                String filepath = "/QRCode/" + DateTime.now().toString("yyyyMMdd") + "/" + yhZsyqm + ".png";
+                WxMpQrCodeTicket ticket = wxMpService.getQrcodeService().qrCodeCreateLastTicket(newEntity.getId());
+                String qrCode = ticket.getTicket();
+                String pictureUrl = wxMpService.getQrcodeService().qrCodePictureUrl(qrCode);
+                URL u = new URL(pictureUrl);
+
+                FileUtils.copyURLToFile(u,new File(qrCodeFileUrl+ filepath),5000,5000);
+
+                newEntity.setYhZsyqm(yhZsyqm);
+                newEntity.setYhZsyqmImg(filepath);
+
+            bizUser.setYhId(newEntity.getId());//用户ID
+            bizUser.setYhZjhm(entity.getYhZjhm());//用户证件号码
+            bizUser.setYhSjhm(newEntity.getYhZh());//用户账户
+            bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+            bizUser.setYhXm(entity.getYhXm());//姓名
+            bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+            bizUser.setYhSjid(yhSjid);//设置上级ID
+            bizUser.setYhSsjid(yhSsjid);//上上级ID
+        }else{
+            //插入用户实名表  biz_user
+
+            bizUser.setYhId(newEntity.getId());//用户ID
+            bizUser.setYhZjhm(newEntity.getYhZjhm());//用户证件号码
+            bizUser.setYhSjhm(newEntity.getYhZh());//用户账户
+            bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+            bizUser.setYhXm(newEntity.getYhXm());//姓名
+            bizUser.setCjsj(DateUtils.getNowTime());//创建时间
+            bizUser.setYhSjid(yhSjid);//设置上级ID
+            bizUser.setYhSsjid(yhSsjid);//上上级ID
+
+
+
+        }
+        entityMapper.insertSelective(newEntity);
+
         i = userMapper.insert(bizUser);
         RuntimeCheck.ifTrue(i != 1, "操作失败，请重新尝试");
 
@@ -943,7 +997,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             wjMapper.deleteBatch(user.getId(), wjSxList);
             wjMapper.insertBatch(wjList);
         }
-       BizPtyh newEntity = new BizPtyh();
+        String identify = IDNameIdentify.identify(CardCode, entity.getYhXm());
+        RuntimeCheck.ifFalse(StringUtils.equals(identify,"200"), identify);
+        BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
         newEntity.setYhXm(entity.getYhXm());//用户姓名
         newEntity.setYhBm(entity.getYhBm());//用户别名
@@ -954,7 +1010,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             yhSfyjz = entity.getYhSfyjz();
         }
         newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
-        newEntity.setYhZt("0");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
+        newEntity.setYhZt("1");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
         newEntity.setYhZtMs("");//用户驾照状态不能为空
         newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
         newEntity.setYhYqmkssj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
@@ -1523,7 +1579,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         }
 //        查询当前KEY过期时间还有多少秒 超过120秒后，可以再次下发短信
         long identifying = redisDao.getExpire(redisKey + tel, TimeUnit.SECONDS);
-        if (identifying != -1 && 24 * 60 * 60 - identifying < 120) {
+        if (identifying != -1 && 24 * 60 * 60 - identifying < 300) {
             return true;
         }
         // TODO: 2018/5/19 调试模式。
