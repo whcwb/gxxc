@@ -13,7 +13,7 @@
 							2800元
 						</div>
 					</div>
-					<img class="eCodeSty" src="./file/img/eCode.png" alt="" @click='toCode()'>
+					<img class="eCodeSty" src="./file/img/eCode.png" alt="">
 					<div>
 						<div class="titleSty">
 							累计奖励
@@ -114,7 +114,7 @@
 		computed: mapState(['hasLogin', 'userName']),
 		data(){
 			return {
-				userMess:false
+				userMess:true
 			}
 		},
 		onLoad() {
@@ -147,11 +147,6 @@
 			}
 		},
 		methods:{
-			toCode(){
-				uni.navigateTo({
-				    url: '/pages/main/user/code/code',				
-				});
-			},
 			ChangeUser(){
 				this.userMess = !this.userMess
 			},
