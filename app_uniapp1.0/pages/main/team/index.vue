@@ -45,14 +45,16 @@
 <script>
 	import mSearch from '@/components/mehaotian-search/mehaotian-search.vue';
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
+	import slFilter from '@/components/songlazy-sl-filter/sl-filter/sl-filter.vue';
 	export default{
 		name:"",
 		 components: {
-			mSearch,uniLoadMore
+			mSearch,uniLoadMore,slFilter
 		},
 		data(){
 			return {
 				val0: '',
+				menuList:[]
 			}
 		},
 		onShow(){
