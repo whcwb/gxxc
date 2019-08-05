@@ -17,6 +17,12 @@
         ,{
             "path" : "pages/my/my",
             "style" : {}
+        },{
+            "path" : "pages/Agreement/MemberFile",
+            "style" : {}
+        },{
+            "path" : "pages/Agreement/learnCarFile",
+            "style" : {}
         }
     ],
 	"globalStyle": {
