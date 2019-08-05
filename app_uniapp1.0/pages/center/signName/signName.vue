@@ -1,22 +1,22 @@
 <template>
 	<view>
 		<view>
-			<vuesigncanvas options="options" 
+			<!-- <vuesigncanvas options="options" 
 			@result="saveResult" @clear="clear" >
-			</vuesigncanvas>
+			</vuesigncanvas> -->
 		</view>
 	</view>
 </template>
 
 <script>
-	import vuesigncanvas from 'vue-sign-canvas'
-	require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
+	// import vuesigncanvas from 'vue-sign-canvas'
+	// require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
 	export default {
 		 config: {
 			 backgroundColor:'#ffffff',
 		  },
 		  components:{
-			vuesigncanvas
+			// vuesigncanvas
 		  },
 		data() {
 			return {
