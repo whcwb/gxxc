@@ -1,123 +1,120 @@
 {
-    "pages": [ //pages数组中第一项表示应用启动页,
-        {
-            "path": "pages/main/p_index/main",
-            "style": {
-                "navigationBarTitleText": "首页",
-				"h5":{
-					"titleNView":false
-				}
+	"pages": [ //pages数组中第一项表示应用启动页,
+		{
+			"path": "pages/main/p_index/main",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"h5": {
+					"titleNView": false
+				},
 				// "navigationBarBackgroundColor":"#3B93FD",
-				// "navigationStyle":"custom"
-            }
-        }, {
-            "path": "pages/login/login",
-            "style": {
-                "navigationBarTitleText": "登录",
-				"h5":{
-					"titleNView":false
-				}
-            }
-        }, {
-            "path": "pages/reg/reg",
-            "style": {
-                "navigationBarTitleText": "注册",
-				"h5":{
-					"titleNView":false
-				}
-            }
-        }, {
-            "path": "pages/pwd/pwd",
-            "style": {
-                "navigationBarTitleText": "找回密码",
-				"h5":{
-					"titleNView":false
-				}
-            }
-        }, {
-            "path": "pages/main/study_car/index",
-            "style": {
-                "navigationBarTitleText": "学车",
-				"h5":{
-					"titleNView":false
-				}
-            }
-        }, {
-            "path": "pages/main/user/user",
-            "style": {
-                "navigationBarTitleText": "我的",
-				"h5":{
-					"titleNView":false
-				}
-            }
-        }, {
-            "path": "pages/main/team/index",
-            "style": {
-                "navigationBarTitleText": "团队",
-				"h5":{
-					"titleNView":false
-				}
-            }
-        }
-        ,{
-            "path" : "pages/main/user/code/code",
-            "style" : {
-				 "navigationBarTitleText": "邀请码",
-				"h5":{
-					"titleNView":false
+				"navigationStyle":"custom"
+			}
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"h5": {
+					"titleNView": false
 				}
 			}
-        }
-        ,{
-            "path" : "pages/main/user/account/account",
-            "style" : {
+		}, {
+			"path": "pages/reg/reg",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/pwd/pwd",
+			"style": {
+				"navigationBarTitleText": "找回密码",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/main/study_car/index",
+			"style": {
+				"navigationBarTitleText": "学车",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/main/user/user",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/main/team/index",
+			"style": {
+				"navigationBarTitleText": "团队",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/main/user/code/code",
+			"style": {
+				"navigationBarTitleText": "邀请码",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/main/user/account/account",
+			"style": {
 				"navigationBarTitleText": "我的账单",
-				"h5":{
-					"titleNView":false
+				"h5": {
+					"titleNView": false
 				}
 			}
-        } ,{
-        "path" : "pages/center/signName/signName",
-        "style" : {
-          "navigationBarTitleText": "签名"
-        }
-      }
-    ,{
-        "path" : "pages/center/learnCarFile/learnCarFile",
-        "style" : {
-          "navigationBarTitleText": "学员服务协议"
-        }
-      }
-    ],
-    "tabBar": {
-        "color": "#7a7e83",
-        "selectedColor": "#8C91FA",
-        "backgroundColor": "#ffffff",
-        "list": [{
-            "pagePath": "pages/main/p_index/main",
-            "text": "首页",
-            "iconPath": "static/img/tabbar1.png",
-            "selectedIconPath": "static/img/tabbarSel1.png"
-        }, {
-            "pagePath": "pages/main/study_car/index",
-            "text": "学车",
-            "iconPath": "static/img/tabbar2.png",
-            "selectedIconPath": "static/img/tabbarSel2.png"
-        }, {
-            "pagePath": "pages/main/team/index",
-            "text": "客服",
-            "iconPath": "static/img/tabbar3.png",
-            "selectedIconPath": "static/img/tabbarSel3.png"
-        }, {
-            "pagePath": "pages/main/user/user",
-            "text": "我的",
-            "iconPath": "static/img/tabbar4.png",
-            "selectedIconPath": "static/img/tabbarSel4.png"
-        }]
-    },
-    "globalStyle": {
-        "navigationBarTextStyle": "white",
-        "navigationBarBackgroundColor": "#ff0000",
-        "backgroundColor": "#fbf9fe"
-    }
+		}, {
+			"path": "pages/center/signName/signName",
+			"style": {
+				"navigationBarTitleText": "签名"
+			}
+		}, {
+			"path": "pages/center/learnCarFile/learnCarFile",
+			"style": {
+				"navigationBarTitleText": "学员服务协议"
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#7a7e83",
+		"selectedColor": "#8C91FA",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/main/p_index/main",
+			"text": "首页",
+			"iconPath": "static/img/tabbar1.png",
+			"selectedIconPath": "static/img/tabbarSel1.png"
+		}, {
+			"pagePath": "pages/main/study_car/index",
+			"text": "学车",
+			"iconPath": "static/img/tabbar2.png",
+			"selectedIconPath": "static/img/tabbarSel2.png"
+		}, {
+			"pagePath": "pages/main/team/index",
+			"text": "客服",
+			"iconPath": "static/img/tabbar3.png",
+			"selectedIconPath": "static/img/tabbarSel3.png"
+		}, {
+			"pagePath": "pages/main/user/user",
+			"text": "我的",
+			"iconPath": "static/img/tabbar4.png",
+			"selectedIconPath": "static/img/tabbarSel4.png"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarBackgroundColor": "#ff0000",
+		"backgroundColor": "#fbf9fe"
+	}
 }
