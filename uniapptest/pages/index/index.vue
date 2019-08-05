@@ -42,8 +42,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="loading-text" style="margin-bottom: 110upx;">
-		{{loadingType === 0 ? contentText.contentdown : (loadingType === 1 ? contentText.contentrefresh : contentText.contentnomore)}}</view>
+		<view class="loading-text" style="margin-bottom: 120upx;">
+		{{loadingType === 0 ? contentText.contentdown : (loadingType === 1 ? contentText.contentrefresh : contentText.contentnomore)}}
+		</view>
 	</view>
 </template>
 
