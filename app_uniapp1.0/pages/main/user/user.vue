@@ -45,6 +45,11 @@
 				btnList:[
 					{
 						src:'/static/my/my/3.png',
+						text:'立即缴费',
+						toPath:'/pages/goMoney/goMoney'
+					},
+					{
+						src:'/static/my/my/3.png',
 						text:'实名认证',
 						toPath:'/pages/rellyName/rellyName'
 					},

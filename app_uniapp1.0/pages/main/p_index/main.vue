@@ -13,7 +13,7 @@
 							2800元
 						</div>
 					</div>
-					<img class="eCodeSty" src="./file/img/eCode.png" alt="">
+					<img class="eCodeSty" src="./file/img/eCode.png" alt="" @click='toCode()'>
 					<div>
 						<div class="titleSty">
 							累计奖励
@@ -147,6 +147,11 @@
 			}
 		},
 		methods:{
+			toCode(){
+				uni.navigateTo({
+				    url: '/pages/main/user/code/code',				
+				});
+			},
 			ChangeUser(){
 				this.userMess = !this.userMess
 			},

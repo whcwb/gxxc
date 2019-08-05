@@ -100,7 +100,13 @@
 				"navigationBarTitleText": "我的-我的团队"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/goMoney/goMoney",
+            "style" : {
+				"navigationBarTitleText": "立即缴费"
+			}
+        }
+    ],
 	"tabBar": {
 		"color": "#7a7e83",
 		"selectedColor": "#8C91FA",
