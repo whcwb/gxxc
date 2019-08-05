@@ -12,7 +12,7 @@
 				<view class="teamListBox">
 					<view class="itemSty box_row" v-for="(it,index) in 10" :key="index">
 						<!-- <view class="avaSty"> -->
-							<img src="./flie/img/jkzn.png" alt="">
+							<img src="./file/img/jkzn.png" alt="">
 						<!-- </view> -->
 						<view class="messBox">
 							<view class="box_row colCenter">
