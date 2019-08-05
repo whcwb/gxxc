@@ -2,8 +2,8 @@
 	<view class="box_col pager-index">
 		<view class="status_bar"></view>
 		<view class="pagerTit-Box">
-			<view class="funcBox">
-				<div class=" box_row colCenter rowBetween haveUser">
+			<view class="funcBox" v-show="userMess">
+				<div class="box_row colCenter rowBetween haveUser">
 					<div>
 						<div class="titleSty">
 							累计奖励
@@ -25,12 +25,19 @@
 					</div>
 				</div>
 			</view>
-			<!-- <view class="funcBox noUser">
-			
-			</view> -->
+			<view class="funcBox" v-show="!userMess">
+				<div class="noUser box_row rowCenter colBottom">
+					<div class="text">
+						您尚未实名认证
+					</div>
+					<div class="goAutSty" @click="goAut">
+						点击去认证
+					</div>
+				</div>
+			</view>
 		</view>
 
-		<div class="advbox">
+		<div class="advbox" @click="ChangeUser">
 			<img src="./file/img/advimg.png" alt="">
 		</div>
 
@@ -60,11 +67,13 @@
 				</view>
 			</view>
 		</view>
-		<view class="teamTitBox">
-			学员信息
+		<view class="teamTitBox box_row colCenter">
+			<view class="hline"></view>
+			<div class="titText">
+				学员信息
+			</div>
 		</view>
 		<view class="teamListBox">
-
 			<view class="itemSty box_row" v-for="(it,index) in 10" :key="index">
 				<img src="./file/img/jkzn.png" alt="">
 				<view class="messBox">
@@ -103,6 +112,11 @@
 
 	export default {
 		computed: mapState(['hasLogin', 'userName']),
+		data(){
+			return {
+				userMess:false
+			}
+		},
 		onLoad() {
 			return
 			if (!this.hasLogin) {
@@ -131,6 +145,14 @@
 					}
 				});
 			}
+		},
+		methods:{
+			ChangeUser(){
+				this.userMess = !this.userMess
+			},
+			goAut(){
+				alert("去认证")
+			}
 		}
 	}
 </script>
@@ -138,7 +160,8 @@
 <style lang="less">
 	.pager-index {
 		width: 100%;
-		height: 100vh;
+		// height: 100vh;
+		overflow-y: auto;
 		background-color: #F5F6F9;
 
 		.status_bar {
@@ -195,20 +218,36 @@
 			}
 		}
 
+		.noUser{
+			height: 100%;
+			.text{
+				margin-bottom: 22rpx;
+				font-size:28rpx;
+				font-family:PingFangSC-Regular;
+				font-weight:400;
+				color:rgba(153,153,153,1);
+				border-bottom: rgba(255,255,255,0) solid 1px;
+			}
+			.goAutSty{
+				margin-bottom: 22rpx;
+				font-size:28rpx;
+				font-family:PingFangSC-Regular;
+				font-weight:400;
+				color:rgba(80,144,241,1);
+				border-bottom: rgba(80,144,241,1) solid 1px;
+			}
+		}
+
 		.butBox {
 			height: 232rpx;
 			background-color: #ffffff;
 			margin-top: 20rpx;
-			margin-bottom: 18rpx;
-
 			.butItenSty {
 				text-align: center;
-
 				img {
 					width: 120rpx;
 					height: 120rpx;
 				}
-
 				.text {
 					font-size: 14px;
 					font-family: PingFangSC-Regular;
@@ -219,12 +258,21 @@
 		}
 
 		.teamTitBox {
-			font-size: 44rpx;
-			font-family: PingFangSC-Medium;
-			font-weight: 500;
-			color: rgba(51, 51, 51, 1);
-			background-color: #ffffff;
-			padding: 28rpx 36rpx;
+			padding: 0 36rpx;
+			height: 116rpx;
+			.hline{
+				margin-right: 12rpx;
+				width:8rpx;
+				height:30rpx;
+				background:linear-gradient(132deg,rgba(59,147,253,1) 0%,rgba(60,128,253,1) 41%,rgba(55,84,252,1) 100%);
+			}
+			.titText{
+				font-size: 44rpx;
+				font-family: PingFangSC-Medium;
+				font-weight: 500;
+				color: rgba(51, 51, 51, 1);
+				background-color:grba(255,255,255,0); 
+			}
 		}
 
 		.advbox {
@@ -242,7 +290,7 @@
 			flex: 1;
 			overflow-y: auto;
 			padding: 0 36rpx;
-
+			max-height: 50vh;
 			.itemSty {
 				border-bottom: solid 2rpx #DFE7EE;
 				padding: 30rpx 0;
