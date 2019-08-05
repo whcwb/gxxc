@@ -5,7 +5,7 @@
 			"style": {
 				"navigationBarTitleText": "首页",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				},
 				// "navigationBarBackgroundColor":"#3B93FD",
 				"navigationStyle":"custom"
@@ -15,7 +15,7 @@
 			"style": {
 				"navigationBarTitleText": "登录",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -23,7 +23,7 @@
 			"style": {
 				"navigationBarTitleText": "注册",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -31,7 +31,7 @@
 			"style": {
 				"navigationBarTitleText": "找回密码",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -39,7 +39,7 @@
 			"style": {
 				"navigationBarTitleText": "学车",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -47,7 +47,7 @@
 			"style": {
 				"navigationBarTitleText": "我的",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -55,7 +55,7 @@
 			"style": {
 				"navigationBarTitleText": "团队",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -63,7 +63,7 @@
 			"style": {
 				"navigationBarTitleText": "邀请码",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -71,7 +71,7 @@
 			"style": {
 				"navigationBarTitleText": "我的账单",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -83,6 +83,21 @@
 			"path": "pages/center/learnCarFile/learnCarFile",
 			"style": {
 				"navigationBarTitleText": "学员服务协议"
+			}
+		},{
+			"path": "pages/rellyName/rellyName",
+			"style": {
+				"navigationBarTitleText": "实名认证"
+			}
+		},{
+			"path": "pages/yqJl/yqJl",
+			"style": {
+				"navigationBarTitleText": "邀请奖励"
+			}
+		},{
+			"path": "pages/myTeam/myTeam",
+			"style": {
+				"navigationBarTitleText": "我的-我的团队"
 			}
 		}
 	],
@@ -102,7 +117,7 @@
 			"selectedIconPath": "static/img/tabbarSel2.png"
 		}, {
 			"pagePath": "pages/main/team/index",
-			"text": "客服",
+			"text": "团队",
 			"iconPath": "static/img/tabbar3.png",
 			"selectedIconPath": "static/img/tabbarSel3.png"
 		}, {

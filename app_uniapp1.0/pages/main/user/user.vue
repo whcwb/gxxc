@@ -46,12 +46,12 @@
 					{
 						src:'/static/my/my/3.png',
 						text:'实名认证',
-						toPath:''
+						toPath:'/pages/rellyName/rellyName'
 					},
 					{
 						src:'/static/my/my/1.png',
 						text:'邀请奖励',
-						toPath:''
+						toPath:'/pages/yqJl/yqJl'
 					},
 					{
 						src:'/static/my/my/2.png',
@@ -61,7 +61,7 @@
 					{
 						src:'/static/my/my/4.png',
 						text:'我的团队',
-						toPath:''
+						toPath:'/pages/myTeam/myTeam'
 					}
 				]
 			}
@@ -90,6 +90,7 @@
 				});
 			},
 			toPage(item){
+				console.log(item);
 				uni.navigateTo({
 				    url: item.toPath,				
 				});
