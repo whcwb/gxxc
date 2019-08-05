@@ -38,6 +38,18 @@
                 "navigationBarTitleText": "团队"
             }
         }
+        ,{
+            "path" : "pages/center/signName/signName",
+            "style" : {
+				"navigationBarTitleText": "签名"
+			}
+        }
+        ,{
+            "path" : "pages/center/learnCarFile/learnCarFile",
+            "style" : {
+				"navigationBarTitleText": "学员服务协议"
+			}
+        }
     ],
     "tabBar": {
         "color": "#7a7e83",
