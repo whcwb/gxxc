@@ -3,30 +3,58 @@
 		<view class="status_bar"></view>
 		<view class="pagerTit-Box">
 			<view class="funcBox">
-
+				<div class=" box_row colCenter rowBetween haveUser">
+					<div>
+						<div class="titleSty">
+							累计奖励
+						</div>
+						<div class="linesty"></div>
+						<div class="valSty">
+							2800元
+						</div>
+					</div>
+					<img class="eCodeSty" src="./file/img/eCode.png" alt="">
+					<div>
+						<div class="titleSty">
+							累计奖励
+						</div>
+						<div class="linesty"></div>
+						<div class="valSty">
+							20人
+						</div>
+					</div>
+				</div>
 			</view>
+			<!-- <view class="funcBox noUser">
+			
+			</view> -->
 		</view>
+
+		<div class="advbox">
+			<img src="./file/img/advimg.png" alt="">
+		</div>
+
 		<view class="butBox box_row rowAuto colCenter">
 			<view class="butItenSty">
-				<img src="./flie/img/jkzn.png" alt="">
+				<img src="./file/img/jkzn.png" alt="">
 				<view class="text">
 					驾考指南
 				</view>
 			</view>
 			<view class="butItenSty">
-				<img src="./flie/img/bkjf.png" alt="">
+				<img src="./file/img/bkjf.png" alt="">
 				<view class="text">
 					补考缴费
 				</view>
 			</view>
 			<view class="butItenSty">
-				<img src="./flie/img/plfw.png" alt="">
+				<img src="./file/img/plfw.png" alt="">
 				<view class="text">
 					陪练服务
 				</view>
 			</view>
 			<view class="butItenSty">
-				<img src="./flie/img/kcfb.png" alt="">
+				<img src="./file/img/kcfb.png" alt="">
 				<view class="text">
 					考场分布
 				</view>
@@ -38,9 +66,7 @@
 		<view class="teamListBox">
 
 			<view class="itemSty box_row" v-for="(it,index) in 10" :key="index">
-				<!-- <view class="avaSty"> -->
-					<img src="./flie/img/jkzn.png" alt="">
-				<!-- </view> -->
+				<img src="./file/img/jkzn.png" alt="">
 				<view class="messBox">
 					<view class="box_row colCenter">
 						<view class="name">
@@ -113,7 +139,7 @@
 	.pager-index {
 		width: 100%;
 		height: 100vh;
-		background-color: antiquewhite;
+		background-color: #F5F6F9;
 
 		.status_bar {
 			//app 内嵌样式
@@ -123,12 +149,10 @@
 		}
 
 		.pagerTit-Box {
-
 			background-color: #3B93FD;
 			height: 350rpx;
 			position: relative;
 			margin-bottom: 109upx;
-
 		}
 
 		.funcBox {
@@ -142,10 +166,39 @@
 			border-radius: 8px;
 		}
 
+		.haveUser {
+			text-align: center;
+			height: 100%;
+			padding: 0 40px;
+			.titleSty {
+				font-size: 32rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: rgba(80, 144, 241, 1);
+			}
+
+			.valSty {
+				font-size:20px;
+				font-family:PingFangSC-Regular;
+				font-weight:400;
+				color:rgba(80,144,241,1);
+			}
+			.linesty{
+				width:52rpx;
+				height:4rpx;
+				background-color: #BBC7EC;
+				margin: 10rpx auto;
+			}
+			.eCodeSty {
+				width: 112rpx;
+				height: 112rpx;
+			}
+		}
+
 		.butBox {
 			height: 232rpx;
 			background-color: #ffffff;
-			margin-top: 40rpx;
+			margin-top: 20rpx;
 			margin-bottom: 18rpx;
 
 			.butItenSty {
@@ -174,6 +227,16 @@
 			padding: 28rpx 36rpx;
 		}
 
+		.advbox {
+			text-align: center;
+
+			img {
+				width: 90.67%;
+				height: 172rpx;
+				margin: 14rpx auto 0;
+			}
+		}
+
 		.teamListBox {
 			background-color: #ffffff;
 			flex: 1;
@@ -184,14 +247,12 @@
 				border-bottom: solid 2rpx #DFE7EE;
 				padding: 30rpx 0;
 
-				// .avaSty {
-					img {
-						margin-right: 30rpx;
-						width: 96rpx;
-						height: 96rpx;
-						border-radius: 100%;
-					}
-				// }
+				img {
+					margin-right: 30rpx;
+					width: 96rpx;
+					height: 96rpx;
+					border-radius: 100%;
+				}
 
 				.name {
 					font-size: 36rpx;
@@ -228,14 +289,14 @@
 				}
 
 				.SuserTyp {
-					background:rgba(100,146,244,1);
+					background: rgba(100, 146, 244, 1);
 				}
-				
-				.phoneSty{
-					font-size:28rpx;
-					font-family:PingFangSC-Regular;
-					font-weight:400;
-					color:rgba(102,102,102,1);
+
+				.phoneSty {
+					font-size: 28rpx;
+					font-family: PingFangSC-Regular;
+					font-weight: 400;
+					color: rgba(102, 102, 102, 1);
 				}
 			}
 		}
