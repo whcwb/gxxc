@@ -42,7 +42,7 @@
 		</div>
 
 		<view class="butBox box_row rowAuto colCenter">
-			<view class="butItenSty">
+			<view class="butItenSty" @click="goJkzn">
 				<img src="./file/img/jkzn.png" alt="">
 				<view class="text">
 					驾考指南
@@ -157,6 +157,11 @@
 			toCode(){
 				uni.navigateTo({
 					url: '/pages/main/user/code/code'
+				});
+			},
+			goJkzn(){
+				uni.navigateTo({
+					url: '/pages/main/p_index/jkzn/jkzn'
 				});
 			}
 		}
