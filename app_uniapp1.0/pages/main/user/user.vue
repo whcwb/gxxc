@@ -113,7 +113,7 @@
 
 .btn{
 	width:678upx;
-	height:580upx;
+	height:740upx;
 	background:rgba(255,255,255,1);
 	box-shadow:4upx 4upx 16upx 0upx rgba(179,190,233,0.5);
 	border-radius:16upx;
