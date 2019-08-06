@@ -88,70 +88,70 @@
 				btnListAll: [
 					[{
 							text: '报名条件',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/bmtj.png'
 						},
 						{
 							text: '学车费用',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/xcfy.png'
 						},
 						{
 							text: '学车流程',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/xclc.png'
 						},
 					],
 					[{
 							text: '顺序练习',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/sxlx.png'
 						},
 						{
 							text: '章节练习',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/zjlx.png'
 						},
 						{
 							text: '专项练习',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/zxlx.png'
 						},
 					],
 					[{
 							text: '合格标准',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/hgbz.png'
 						},
 						{
 							text: '侧方停车',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/cftc.png'
 						},
 						{
 							text: '曲线行驶',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/qxxs.png'
 						},
 						{
 							text: '直角转弯',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/zjzw.png'
 						},
 						{
 							text: '上坡起步',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/spqb.png'
 						},
 						{
 							text: '倒车入库',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/dcrk.png'
 						},
 					],
 					[{
 							text: '评判标准',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/ppbz.png'
 						},
 						{
 							text: '语言指令',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/yyzl.png'
 						},
 						{
 							text: '灯光操作',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/dgcz.png'
 						},
 						{
 							text: '考试口诀',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/kskj.png'
 						},
 						{
 							text: '',
@@ -164,15 +164,15 @@
 					],
 					[{
 							text: '顺序练习',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/sxlx.png'
 						},
 						{
 							text: '章节练习',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/zjlx.png'
 						},
 						{
 							text: '专项练习',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/zxlx.png'
 						}
 					]
 				],

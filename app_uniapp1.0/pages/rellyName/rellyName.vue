@@ -9,8 +9,9 @@
 			<view class="personMess">身份证正反面照</view>
 			<view class="IDPhoto">
 				<view class="text">温馨提示：请上传原始比例的身份证正反面，请勿裁剪涂改，保证身份证信息清晰显示</view>
-				<robby-image-upload v-model="imageData" @delete="deleteImage" @add="addImage" :enable-drag="enableDrag" :enable-del="enableDel"
-				 :enable-add="enableAdd" :limit="limitNumber"></robby-image-upload>
+				<!-- <robby-image-upload v-model="imageData" @delete="deleteImage" @add="addImage" :enable-drag="enableDrag" :enable-del="enableDel"
+				 :enable-add="enableAdd" :limit="limitNumber"></robby-image-upload> -->
+				 <robby-image-upload v-model="imageData"></robby-image-upload>
 				<view style="margin-bottom: 14upx;font-size:24upx;font-weight:400;color:rgba(153,153,153,1);">示例</view>
 				<img src="/static/img/my/exp.png" style="width: 132upx;height: 84upx;">
 			</view>
@@ -37,7 +38,8 @@
 		},
 		data() {
 			return {
-				isDone: false //认证控制
+				isDone: false, //认证控制
+				imageData:''
 			}
 		},
 		methods: {
