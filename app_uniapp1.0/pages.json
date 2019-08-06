@@ -15,9 +15,9 @@
 				"navigationBarTitleText": "首页",
 				"h5": {
 					"titleNView": true
-				},
+				}
 				// "navigationBarBackgroundColor":"#3B93FD",
-				"navigationStyle":"custom"
+				// "navigationStyle":"custom"
 			}
 		}, {
 			"path": "pages/reg/reg",
@@ -136,7 +136,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarBackgroundColor": "#ff0000",
+		"navigationBarBackgroundColor": "#3B93FD",
 		"backgroundColor": "#f5f5f5"
 	}
 }

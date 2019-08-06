@@ -4,7 +4,7 @@
 		<view class="pagerTit-Box">
 			<view class="funcBox" v-show="userMess">
 				<div class="box_row colCenter rowBetween haveUser">
-					<div>
+					<div @click='toTx'>
 						<div class="titleSty">
 							累计奖励
 						</div>
@@ -13,10 +13,10 @@
 							2800元
 						</div>
 					</div>
-					<img class="eCodeSty" src="./file/img/eCode.png" alt="">
+					<img class="eCodeSty" src="./file/img/eCode.png" alt="" @click='toCode'>
 					<div>
 						<div class="titleSty">
-							累计奖励
+							累计邀请
 						</div>
 						<div class="linesty"></div>
 						<div class="valSty">
@@ -147,12 +147,22 @@
 			}
 		},
 		methods:{
+			toTx(){
+				uni.navigateTo({
+					url: '/pages/yqJl/yqJl'
+				});
+			},
 			ChangeUser(){
 				this.userMess = !this.userMess
 			},
 			goAut(){
 				uni.navigateTo({
 					url: '/pages/rellyName/rellyName'
+				});
+			},
+			toCode(){
+				uni.navigateTo({
+					url: '/pages/main/user/code/code'
 				});
 			}
 		}

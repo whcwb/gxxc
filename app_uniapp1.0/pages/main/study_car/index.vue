@@ -39,7 +39,7 @@
 						{{current==0?'受理成功可考试':'当前科目考试费'}}
 					</text>
 					<view v-if="current!=0" class="toPayBtn" :style="{backgroundColor:alreayPay[current-1]?'#6CA5FF':'rgba(237,103,103,1)'}">
-						{{alreayPay[current-1]?'已缴费':'去缴费 >'}}
+						{{alreayPay[current-1]?'已缴费':'未缴费'}}
 					</view>
 				</view>
 				<view v-for="item in itemList" style="margin:26upx 0 0 48upx;display: flex;align-items:flex-start">
