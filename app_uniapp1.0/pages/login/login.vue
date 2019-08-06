@@ -7,7 +7,7 @@
 				<input class="uni-input input"  v-for="item in inputList" :placeholder="item.placeholder" v-model="item.val"/>
 			</view>
 			<view style="margin-bottom: 136upx;text-align: right;width: 678upx;font-size:32upx;color:rgba(37,128,222,1);">忘记密码？</view>
-			<view class="btn">
+			<view class="btn" @tap="toIndex">
 				登录
 			</view>
 			<view class="createAccount" @tap="toReg">
@@ -37,7 +37,13 @@
 				uni.navigateTo({
 					url: '/pages/reg/reg'
 				})
-			}
+			},
+			toIndex(){
+				console.log('index');
+				uni.switchTab({
+					url: '/pages/main/p_index/main'
+				})
+			},
 		}
 	}
 </script>

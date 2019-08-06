@@ -42,11 +42,14 @@
 		},
 		methods: {
 			toPay(){
+				
 				if(this.isDone){
 					uni.navigateTo({
 					    url: '/pages/goMoney/goMoney',
 					});
-				}else return
+				}else{
+					this.isDone = true
+				}
 			}
 		}
 	}

@@ -216,7 +216,7 @@
 agreeMess{
         background-color: #fff;
         .topBot{
-          padding: 10rpx 36rpx;
+          padding: 10rpx 36rpx 100px;
           border-bottom: #f2f2f2 3rpx solid;
         }
         .textAR{
