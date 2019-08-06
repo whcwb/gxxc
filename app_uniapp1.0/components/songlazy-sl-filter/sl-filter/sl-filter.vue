@@ -64,7 +64,7 @@
 
 		computed: {
 			itemWidth() {
-				return 'calc(100%/2)'
+				return '80%'
 			},
 			menuListTemp: {
 				get() {

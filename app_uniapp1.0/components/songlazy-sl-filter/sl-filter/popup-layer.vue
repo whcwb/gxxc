@@ -107,7 +107,7 @@
 		position: absolute;
 		z-index: 999999;
 		background: rgba(0, 0, 0, .3);
-		height: calc(100% - 50px);
+		height: calc(100%);
 		width: 100%;
 		left: 0px;
 		overflow: hidden;
