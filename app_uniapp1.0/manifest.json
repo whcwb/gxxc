@@ -74,5 +74,9 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "吉驾无忧",
+        "domain" : ""
     }
 }
