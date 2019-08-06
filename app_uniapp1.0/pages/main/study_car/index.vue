@@ -22,8 +22,8 @@
 			</view>
 		</view>
 		<view style="width:748upx;height:136upx;background:rgba(254,255,255,1);">
-			<!-- <segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" @clickItem="onClickItem"></segmented-control> -->
-			<vTab :data="data" @select="select"></vTab>
+			<segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" @clickItem="onClickItem"></segmented-control>
+			<!-- <vTab :data="data" @select="select"></vTab> -->
 		</view>
 
 		<view class="btnClass">
