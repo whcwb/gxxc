@@ -24,6 +24,10 @@
             "path" : "pages/Agreement/learnCarFile",
             "style" : {}
         }
+        ,{
+            "path" : "pages/Agreement/signName/signName",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

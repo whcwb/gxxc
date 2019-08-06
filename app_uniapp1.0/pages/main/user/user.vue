@@ -5,17 +5,17 @@
             <button v-if="hasLogin" type="default" @tap="bindLogout">退出登录</button>
         </view>
     </view> -->
-	
-	
+
+
 	<view>
 		<view class="bg">
 			<view style="display: flex;align-content: center;margin: 48upx 0 0 64upx;">
-				<img src="/static/img/my/1.png" style="border-radius: 50%;width: 132upx;height: 132upx;">	
+				<img src="/static/img/my/1.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view class="personMessage">
 					<view style="margin-bottom: 10upx;">李文超</view>
 					<view style="">15496854152</view>
-				</view>	
-				<img src="/static/img/my/code.png" @tap="toCode" style="position: absolute;width: 74upx;height: 74upx;top: 86upx;right:56upx ;">	
+				</view>
+				<img src="/static/img/my/code.png" @tap="toCode" style="position: absolute;width: 74upx;height: 74upx;top: 86upx;right:56upx ;">
 			</view>
 		</view>
 		<view class="btn">
@@ -45,13 +45,18 @@
 				btnList:[
 					{
 						src:'/static/img/my/smrz.png',
+						text:'立即缴费',
+						toPath:'/pages/goMoney/goMoney'
+					},
+					{
+						src:'/static/img/my/smrz.png',
 						text:'实名认证',
-						toPath:''
+						toPath:'/pages/rellyName/rellyName'
 					},
 					{
 						src:'/static/img/my/yqjl.png',
 						text:'邀请奖励',
-						toPath:''
+						toPath:'/pages/yqJl/yqJl'
 					},
 					{
 						src:'/static/img/my/wdzd.png',
@@ -61,7 +66,7 @@
 					{
 						src:'/static/img/my/wdtd.png',
 						text:'我的团队',
-						toPath:''
+						toPath:'/pages/myTeam/myTeam'
 					}
 				]
 			}
@@ -86,12 +91,12 @@
             },
 			toCode(){
 				uni.navigateTo({
-				    url: 'code/code',				
+				    url: 'code/code',
 				});
 			},
 			toPage(item){
 				uni.navigateTo({
-				    url: item.toPath,				
+				    url: item.toPath,
 				});
 			}
         }

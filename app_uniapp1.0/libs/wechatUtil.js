@@ -1,5 +1,5 @@
-import $ from 'jquery';
-import urls from './url'
+// import $ from 'jquery';
+// import urls from './url'
 
 // import wx from '#/static/util/jweixin-1.2.0.js'
 // var wx = require('#/static/util/jweixin-1.2.0.js')
