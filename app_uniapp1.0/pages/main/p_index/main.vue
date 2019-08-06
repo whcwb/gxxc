@@ -173,7 +173,7 @@
 
 		.pagerTit-Box {
 			background-color: #3B93FD;
-			height: 350rpx;
+			height: 460rpx;
 			position: relative;
 			margin-bottom: 109upx;
 		}
