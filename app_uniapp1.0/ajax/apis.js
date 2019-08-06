@@ -20,9 +20,6 @@ export default {
 
 		// 证件识别
 	  ZJSB:'/app/zjsb',
-
-
-	  LOGIN:'/app/login',//登录接口
 	  LOGOUT:'/app/logout',//退出用戶
 	  USERMESS:'/app/ptyh/get',//用户信息
 	  USERIMGMESS:'/app/wj/getCondition',//获取用户图片
