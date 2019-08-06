@@ -63,7 +63,7 @@ export default {
           query.select('#sc-' + that.current).boundingClientRect();
           query.exec(res => {
 						console.log(res)
-            that.offsetLeft = res[0].left + 30;
+            that.offsetLeft = res[0].left + 22;
             that.lineWidth = 30;
           });
         }, 500);
@@ -82,7 +82,7 @@ export default {
             const query = uni.createSelectorQuery();
             query.select('#sc-' + newValue).boundingClientRect();
             query.exec(res => {
-              that.offsetLeft = res[0].left +30;
+              that.offsetLeft = res[0].left +22;
               that.lineWidth = 30;
             });
       }
@@ -92,7 +92,7 @@ export default {
 
 <style lang="less">
 .segmented {
-  position: absolute;
+  position: relative;
 	height: 136upx;
 	line-height: 136upx
 }
