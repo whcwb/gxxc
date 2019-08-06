@@ -10,12 +10,12 @@
 	<view>
 		<view class="bg">
 			<view style="display: flex;align-content: center;margin: 48upx 0 0 64upx;">
-				<img src="/static/index/1.png" style="border-radius: 50%;width: 132upx;height: 132upx;">	
+				<img src="/static/img/my/1.png" style="border-radius: 50%;width: 132upx;height: 132upx;">	
 				<view class="personMessage">
 					<view style="margin-bottom: 10upx;">李文超</view>
 					<view style="">15496854152</view>
 				</view>	
-				<img src="/static/img/code.png" @tap="toCode" style="position: absolute;width: 74upx;height: 74upx;top: 86upx;right:56upx ;">	
+				<img src="/static/img/my/code.png" @tap="toCode" style="position: absolute;width: 74upx;height: 74upx;top: 86upx;right:56upx ;">	
 			</view>
 		</view>
 		<view class="btn">
@@ -24,7 +24,7 @@
 					<img :src="item.src" style="margin-right:12upx;width: 40upx;height: 40upx;">
 					<text>{{item.text}}</text>
 				</view>
-				<img src="/static/my/right.png" style="width: 70upx;height: 70upx;">
+				<img src="/static/img/my/right.png" style="width: 70upx;height: 70upx;">
 			</view>
 		</view>
 	</view>
@@ -44,22 +44,22 @@
 			return {
 				btnList:[
 					{
-						src:'/static/my/my/3.png',
+						src:'/static/img/my/smrz.png',
 						text:'实名认证',
 						toPath:''
 					},
 					{
-						src:'/static/my/my/1.png',
+						src:'/static/img/my/yqjl.png',
 						text:'邀请奖励',
 						toPath:''
 					},
 					{
-						src:'/static/my/my/2.png',
+						src:'/static/img/my/wdzd.png',
 						text:'我的账单',
 						toPath:'account/account'
 					},
 					{
-						src:'/static/my/my/4.png',
+						src:'/static/img/my/wdtd.png',
 						text:'我的团队',
 						toPath:''
 					}

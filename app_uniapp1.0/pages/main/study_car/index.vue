@@ -10,7 +10,7 @@
 	<view style="background:rgba(245,246,249,1)">
 		<view class="bg">
 			<view class="person">
-				<img src="/static/my/1.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
+				<img src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">王刚教练</view>
 				<uni-rate value="3"></uni-rate>
 			</view>
@@ -82,70 +82,70 @@
 				btnListAll: [
 					[{
 							text: '报名条件',
-							src: '/static/my/1.png'
+							src: '/static/img/my/1.png'
 						},
 						{
 							text: '学车费用',
-							src: '/static/my/2.png'
+							src: '/static/img/my/2.png'
 						},
 						{
 							text: '学车流程',
-							src: '/static/my/3.png'
+							src: '/static/img/my/3.png'
 						},
 					],
 					[{
 							text: '顺序练习',
-							src: '/static/my/1.png'
+							src: '/static/img/my/1.png'
 						},
 						{
 							text: '章节练习',
-							src: '/static/my/2.png'
+							src: '/static/img/my/2.png'
 						},
 						{
 							text: '专项练习',
-							src: '/static/my/3.png'
+							src: '/static/img/my/3.png'
 						},
 					],
 					[{
 							text: '合格标准',
-							src: '/static/my/1.png'
+							src: '/static/img/my/1.png'
 						},
 						{
 							text: '侧方停车',
-							src: '/static/my/2.png'
+							src: '/static/img/my/2.png'
 						},
 						{
 							text: '曲线行驶',
-							src: '/static/my/3.png'
+							src: '/static/img/my/3.png'
 						},
 						{
 							text: '直角转弯',
-							src: '/static/my/1.png'
+							src: '/static/img/my/1.png'
 						},
 						{
 							text: '上坡起步',
-							src: '/static/my/2.png'
+							src: '/static/img/my/2.png'
 						},
 						{
 							text: '倒车入库',
-							src: '/static/my/3.png'
+							src: '/static/img/my/3.png'
 						},
 					],
 					[{
 							text: '评判标准',
-							src: '/static/my/1.png'
+							src: '/static/img/my/1.png'
 						},
 						{
 							text: '语言指令',
-							src: '/static/my/2.png'
+							src: '/static/img/my/2.png'
 						},
 						{
 							text: '灯光操作',
-							src: '/static/my/3.png'
+							src: '/static/img/my/3.png'
 						},
 						{
 							text: '考试口诀',
-							src: '/static/my/3.png'
+							src: '/static/img/my/3.png'
 						},
 						{
 							text: '',
@@ -158,15 +158,15 @@
 					],
 					[{
 							text: '顺序练习',
-							src: '/static/my/1.png'
+							src: '/static/img/my/1.png'
 						},
 						{
 							text: '章节练习',
-							src: '/static/my/2.png'
+							src: '/static/img/my/2.png'
 						},
 						{
 							text: '专项练习',
-							src: '/static/my/3.png'
+							src: '/static/img/my/3.png'
 						}
 					]
 				],
