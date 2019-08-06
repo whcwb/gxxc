@@ -6,7 +6,7 @@
 				<view style="margin: 15upx 0 5upx;font-size:36upx;">李文超</view>
 				<text style="font-size:36upx;">15686526352</text>
 			</view>
-			<img src="/static/img/code.png" style="margin-top: 42upx;width: 396upx;height: 396upx;">
+			<img src="/static/img/my/code.png" style="margin-top: 42upx;width: 396upx;height: 396upx;">
 			<text style="display: block;margin-top: 38upx;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：IC9TCW</text>
 			<view class="copybtn">
 				点此复制邀请码

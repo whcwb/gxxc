@@ -10,9 +10,15 @@
 	<view style="background:rgba(245,246,249,1)">
 		<view class="bg">
 			<view class="person">
+				<view class="headTip">
+					安全教学{{safeTeach}}次
+				</view>
 				<img src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">王刚教练</view>
-				<uni-rate value="3"></uni-rate>
+				<uni-rate value="3" v-if="isPJ"></uni-rate>
+				<view v-else style="border-bottom: 2upx solid #FFFFFF;margin-top: 18upx;font-size:28upx;font-weight:400;color:rgba(255,255,255,1);">
+					评价教练>
+				</view>
 			</view>
 		</view>
 		<view style="width:748upx;height:136upx;background:rgba(254,255,255,1);">
@@ -75,7 +81,7 @@
 			return {
 				appMess: [],
 
-
+				isPJ:true,				//是否评价，控制显示星星
 				items: ['受理进度', '科一', '科二', '科三', '科四'],
 				current: 0,
 				btnList: [],
@@ -216,7 +222,8 @@
 						tip: '',
 						date: '',
 					}]
-				]
+				],
+				safeTeach:'340'
 			}
 		},
 		onLaunch() {
@@ -263,7 +270,7 @@
 <style>
 	.bg {
 		width: 750upx;
-		height: 524upx;
+		height: 350upx;
 		background: linear-gradient(132deg, rgba(59, 147, 253, 1) 0%, rgba(60, 128, 253, 1) 41%, rgba(55, 84, 252, 1) 100%);
 		display: flex;
 		justify-content: center;
@@ -272,6 +279,26 @@
 	
 	.person {
 		text-align: center;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	.headTip{
+		width:172upx;
+		height:40upx;
+		background:rgba(220,166,36,1);
+		border-radius:20upx;
+		border:2upx solid rgba(255,255,255,1);
+		position: absolute;
+		margin: 98upx auto 0;
+		font-size:20upx;
+		font-weight:400;
+		color:rgba(255,255,255,1);
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	
 	.lineC{
