@@ -41,11 +41,11 @@
 	.Bbox{
 		width:100%;
 		height: 160px;
-		 background-color: #F0AD4E;
-		 box-shadow:0px 2px 8px 0px rgba(185,73,23,0.5);
-		 border-radius:8px;
+		background-color: #F0AD4E;
+		box-shadow:0px 2px 8px 0px rgba(185,73,23,0.5);
+		border-radius:8px;
 		 
-		.Tit{
+		.tit{
 			padding-top: 12px;
 			padding-left: 26px;
 			font-size:22px;
