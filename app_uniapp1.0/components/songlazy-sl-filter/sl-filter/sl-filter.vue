@@ -147,7 +147,7 @@
 			return {
 				down: 'sl-down',
 				up: 'sl-up',
-				tabHeight: 50,
+				tabHeight: 46,
 				statusList: [],
 				selectedIndex: '',
 				titleList: [],

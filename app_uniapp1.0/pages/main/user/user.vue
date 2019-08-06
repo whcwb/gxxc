@@ -12,7 +12,11 @@
 			<view style="display: flex;align-content: center;margin: 48upx 0 0 64upx;">
 				<img src="/static/img/my/1.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view class="personMessage">
-					<view style="margin-bottom: 10upx;">李文超</view>
+					<view style="margin-bottom: 10upx;font-size:20px;
+						font-family:PingFangSC-Regular;
+						font-weight:400;
+						color:rgba(255,255,255,1);
+						line-height:28px;">李文超</view>
 					<view style="">15496854152</view>
 				</view>
 				<img src="/static/img/my/code.png" @tap="toCode" style="position: absolute;width: 74upx;height: 74upx;top: 86upx;right:56upx ;">
@@ -113,7 +117,7 @@
 
 .btn{
 	width:678upx;
-	height:740upx;
+	height:600upx;
 	background:rgba(255,255,255,1);
 	box-shadow:4upx 4upx 16upx 0upx rgba(179,190,233,0.5);
 	border-radius:16upx;
@@ -122,7 +126,7 @@
 
 .item{
 	width: 628upx;
-	height: 142upx;
+	height: 120upx;
 	margin: 0 auto;
 	display: flex;
 	align-items: center;
