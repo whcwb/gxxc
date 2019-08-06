@@ -37,16 +37,19 @@
 		},
 		data() {
 			return {
-				isDone: true //认证控制
+				isDone: false //认证控制
 			}
 		},
 		methods: {
 			toPay(){
+				
 				if(this.isDone){
 					uni.navigateTo({
 					    url: '/pages/goMoney/goMoney',
 					});
-				}else return
+				}else{
+					this.isDone = true
+				}
 			}
 		}
 	}

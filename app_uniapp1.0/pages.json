@@ -1,5 +1,14 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页,
+		 {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"h5": {
+					"titleNView": true
+				}
+			}
+		},
 		{
 			"path": "pages/main/p_index/main",
 			"style": {
@@ -9,14 +18,6 @@
 				},
 				// "navigationBarBackgroundColor":"#3B93FD",
 				"navigationStyle":"custom"
-			}
-		}, {
-			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "登录",
-				"h5": {
-					"titleNView": true
-				}
 			}
 		}, {
 			"path": "pages/reg/reg",

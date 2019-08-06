@@ -151,7 +151,9 @@
 				this.userMess = !this.userMess
 			},
 			goAut(){
-				alert("去认证")
+				uni.navigateTo({
+					url: '/pages/rellyName/rellyName'
+				});
 			}
 		}
 	}
