@@ -2,10 +2,10 @@
 		<view class="box_col">
 			<view class="box_row">
 				<view class="box_row_100">
-					<mSearch :mode="2" button="inside" @search="search($event,2)"></mSearch>
+					<mSearch :mode="2" button="inside" @search="search($event,2)" placeholder='请输入姓名'></mSearch>
 				</view>
 				<view  style="width: 80px;">
-					<sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
+					 <sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
 				</view>
 			</view>
 			<view class="box_col_100">
@@ -54,9 +54,27 @@
 		data(){
 			return {
 				val0: '',
-				themeColor: '#000000',
+				themeColor: '#3B93FD',
+				independence:true,
                 filterResult: '',
-                menuList: []
+                menuList: [
+					{
+						'title':'筛选',
+						'isMutiple': false,
+						'key': 'key_1',
+						'isSort': true,
+						'detailList': [
+						{
+							'title': '已缴费',
+							'value': 'val_1_1'
+						},
+						{
+							'title': '未交费',
+							'value': 'val_1_2'
+						}
+					]
+					}
+				]
 			}
 		},
 		onShow(){
