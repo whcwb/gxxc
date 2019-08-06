@@ -2,7 +2,7 @@
 		<view class="box_col" style="width: 100%;">
 			<view class="box_row">
 				<view class="box_row_100">
-					<mSearch :mode="2" button="inside" @search="search($event,2)" placeholder='请输入姓名'></mSearch>
+					<mSearch :show='false' :mode="2" button="inside" @search="search($event,2)" placeholder='请输入姓名'></mSearch>
 				</view>
 				<view  style="width: 80px;">
 					 <sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
