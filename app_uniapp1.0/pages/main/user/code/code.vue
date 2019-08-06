@@ -2,7 +2,7 @@
 	<view style="font-family:PingFangSC-Regular;width: 100%;">
 		<view class="bg">
 			<view class="personBG">
-				<img src="/static/index/1.png" style="border-radius: 50%;width: 96upx;height: 96upx;">
+				<img src="/static/img/qq.png" style="border-radius: 50%;width: 96upx;height: 96upx;">
 				<view style="margin: 15upx 0 5upx;font-size:36upx;">李文超</view>
 				<text style="font-size:36upx;">15686526352</text>
 			</view>
