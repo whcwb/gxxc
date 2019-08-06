@@ -37,7 +37,7 @@
 		},
 		data() {
 			return {
-				isDone: true //认证控制
+				isDone: false //认证控制
 			}
 		},
 		methods: {
