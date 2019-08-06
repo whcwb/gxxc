@@ -1,5 +1,5 @@
 <template>
-		<view style="width: 100%;padding-top: 1upx;">
+		<view style="width: 100%;padding-top: 1upx;background: rgba(255,255,255,1);">
 			<view style="margin: 102upx 0 140upx;text-align: center;">
 				<img src="/static/img/head.png" style="width:136upx;height: 136upx;">
 			</view>

@@ -10,13 +10,20 @@
 	<view style="background:rgba(245,246,249,1)">
 		<view class="bg">
 			<view class="person">
+				<view class="headTip">
+					安全教学{{safeTeach}}次
+				</view>
 				<img src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">王刚教练</view>
-				<uni-rate value="3"></uni-rate>
+				<uni-rate value="3" v-if="isPJ"></uni-rate>
+				<view v-else style="border-bottom: 2upx solid #FFFFFF;margin-top: 18upx;font-size:28upx;font-weight:400;color:rgba(255,255,255,1);">
+					评价教练>
+				</view>
 			</view>
 		</view>
 		<view style="width:748upx;height:136upx;background:rgba(254,255,255,1);">
 			<segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" @clickItem="onClickItem"></segmented-control>
+			<!-- <vTab :data="data" @select="select"></vTab> -->
 		</view>
 
 		<view class="btnClass">
@@ -43,7 +50,7 @@
 					</view>
 				</view>
 				<view v-for="item in itemList" style="margin:26upx 0 0 48upx;display: flex;align-items:flex-start">
-					<image :src="item.state==='已完成'||item.state==='合格'?'/static/my/ok.png':'/static/my/no.png'" style="top: 14upx;width: 36upx;height: 36upx;"></image>
+					<image :src="item.state==='已完成'||item.state==='合格'?'/static/img/ok.png':'/static/img/no.png'" style="top: 14upx;width: 36upx;height: 36upx;"></image>
 					<view class="item">
 						<view style="padding:0 20upx;margin-top: 14upx;display: flex;justify-content: space-between">
 							<text class="itemText">{{item.name}}</text>
@@ -64,88 +71,91 @@
 <script>
 	import uniRate from "@/components/uni-rate/uni-rate.vue"
 	import segmentedControl from "@/components/seg/segmented-control.vue";
+	import vTab from "@/components/v-tab/v-tab.vue"
 	
 	export default {
 		name: "study",
 		components: {
 			uniRate,
-			segmentedControl
+			segmentedControl,
+			vTab
 		},
 		data() {
 			return {
 				appMess: [],
 
-
+				isPJ:true,				//是否评价，控制显示星星
+				data: [{name:'受理进度'}, {name:'科一'},{name: '科二'}, {name:'科三'}, {name:'科四'}],
 				items: ['受理进度', '科一', '科二', '科三', '科四'],
 				current: 0,
 				btnList: [],
 				btnListAll: [
 					[{
 							text: '报名条件',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/bmtj.png'
 						},
 						{
 							text: '学车费用',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/xcfy.png'
 						},
 						{
 							text: '学车流程',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/xclc.png'
 						},
 					],
 					[{
 							text: '顺序练习',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/sxlx.png'
 						},
 						{
 							text: '章节练习',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/zjlx.png'
 						},
 						{
 							text: '专项练习',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/zxlx.png'
 						},
 					],
 					[{
 							text: '合格标准',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/hgbz.png'
 						},
 						{
 							text: '侧方停车',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/cftc.png'
 						},
 						{
 							text: '曲线行驶',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/qxxs.png'
 						},
 						{
 							text: '直角转弯',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/zjzw.png'
 						},
 						{
 							text: '上坡起步',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/spqb.png'
 						},
 						{
 							text: '倒车入库',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/dcrk.png'
 						},
 					],
 					[{
 							text: '评判标准',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/ppbz.png'
 						},
 						{
 							text: '语言指令',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/yyzl.png'
 						},
 						{
 							text: '灯光操作',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/dgcz.png'
 						},
 						{
 							text: '考试口诀',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/kskj.png'
 						},
 						{
 							text: '',
@@ -158,15 +168,15 @@
 					],
 					[{
 							text: '顺序练习',
-							src: '/static/img/my/1.png'
+							src: '/static/img/studybtn/sxlx.png'
 						},
 						{
 							text: '章节练习',
-							src: '/static/img/my/2.png'
+							src: '/static/img/studybtn/zjlx.png'
 						},
 						{
 							text: '专项练习',
-							src: '/static/img/my/3.png'
+							src: '/static/img/studybtn/zxlx.png'
 						}
 					]
 				],
@@ -216,7 +226,8 @@
 						tip: '',
 						date: '',
 					}]
-				]
+				],
+				safeTeach:'340'
 			}
 		},
 		onLaunch() {
@@ -255,6 +266,14 @@
 						this.btnList = Object.assign(this.btnListAll[index])
 						this.itemList = Object.assign(this.itemListAll[index])
 				}
+			},
+			
+			select(index){
+				if (this.current !== index) {					
+					this.current = index;
+					this.btnList = Object.assign(this.btnListAll[index])
+					this.itemList = Object.assign(this.itemListAll[index])
+				}
 			}
 		}
 	}
@@ -263,7 +282,7 @@
 <style>
 	.bg {
 		width: 750upx;
-		height: 524upx;
+		height: 350upx;
 		background: linear-gradient(132deg, rgba(59, 147, 253, 1) 0%, rgba(60, 128, 253, 1) 41%, rgba(55, 84, 252, 1) 100%);
 		display: flex;
 		justify-content: center;
@@ -272,6 +291,26 @@
 	
 	.person {
 		text-align: center;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	.headTip{
+		width:172upx;
+		height:40upx;
+		background:rgba(220,166,36,1);
+		border-radius:20upx;
+		border:2upx solid rgba(255,255,255,1);
+		position: absolute;
+		margin: 98upx auto 0;
+		font-size:20upx;
+		font-weight:400;
+		color:rgba(255,255,255,1);
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	
 	.lineC{
