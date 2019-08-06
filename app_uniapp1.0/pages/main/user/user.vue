@@ -44,7 +44,7 @@
 			return {
 				btnList:[
 					{
-						src:'/static/img/my/smrz.png',
+						src:'/static/img/my/ljjf.png',
 						text:'立即缴费',
 						toPath:'/pages/goMoney/goMoney'
 					},
