@@ -1,219 +1,92 @@
 <template>
-	<view class="content">
-		<view class="input-group">
-			<view class="input-row border">
-				<text class="title">账号：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入账号"></m-input>
+		<view style="width: 100%;padding-top: 1upx;">
+			<view style="margin: 102upx 0 140upx;text-align: center;">
+				<img src="/static/img/head.png" style="width:136upx;height: 136upx;">
 			</view>
-			<view class="input-row">
-				<text class="title">密码：</text>
-				<m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
+			<view class="inputMess">
+				<input class="uni-input input"  v-for="item in inputList" :placeholder="item.placeholder" v-model="item.val"/>
 			</view>
-		</view>
-		<view class="btn-row">
-			<button type="primary" class="primary" @tap="bindLogin">登录</button>
-		</view>
-		<view class="action-row">
-			<navigator url="../reg/reg">注册账号</navigator>
-			<text>|</text>
-			<navigator url="../pwd/pwd">忘记密码</navigator>
-		</view>
-		<view class="" v-for="(it,index) in appMess"  :key="index">
-			{{it}}
-		</view>
-		<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}">
-			<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
-				<image :src="provider.image" @tap="oauth(provider.value)"></image>
+			<view style="margin-bottom: 136upx;text-align: right;width: 678upx;font-size:32upx;color:rgba(37,128,222,1);">忘记密码？</view>
+			<view class="btn">
+				登录
+			</view>
+			<view class="createAccount" @tap="toReg">
+				创建账号
 			</view>
 		</view>
-	</view>
 </template>
 
 <script>
-	import service from '../../service.js';
-	import {
-		mapState,
-		mapMutations
-	} from 'vuex'
-	import mInput from '../../components/m-input.vue'
-
 	export default {
-		components: {
-			mInput
-		},
 		data() {
-			return {
-				providerList: [],
-				hasProvider: false,
-				account: '18672368676',
-				password: '123456',
-				positionTop: 0,
-				appMess:[]
+			return {				
+				inputList:[						//验证、提交可let临时数组or对象,若有新属性，可添加
+					{
+						placeholder:'请输入手机号',
+						val:''
+					},
+					{
+						placeholder:'请输入密码',
+						val:''
+					}
+				]
 			}
 		},
-		computed: mapState(['hasLogin']),
 		methods: {
-			...mapMutations(['login']),
-			initProvider() {
-				const filters = ['weixin', 'qq', 'sinaweibo'];
-				uni.getProvider({
-					service: 'oauth',
-					success: (res) => {
-						this.appMess = res.provider
-						console.log(res.provider)
-						if (res.provider && res.provider.length) {
-							for (let i = 0; i < res.provider.length; i++) {
-								if (~filters.indexOf(res.provider[i])) {
-									this.providerList.push({
-										value: res.provider[i],
-										image: '../../static/img/' + res.provider[i] + '.png'
-									});
-								}
-							}
-							this.hasProvider = true;
-						}
-					},
-					fail: (err) => {
-						console.error('获取服务供应商失败：' + JSON.stringify(err));
-					}
-				});
-			},
-			initPosition() {
-				/**
-				 * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
-				 * 反向使用 top 进行定位，可以避免此问题。
-				 */
-				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
-			},
-			bindLogin() {
-				var v = this
-				/**
-				 * 客户端对账号信息进行一些必要的校验。
-				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
-				 */
-				if (this.account.length < 5) {
-					uni.showToast({
-						icon: 'none',
-						title: '账号最短为 5 个字符'
-					});
-					return;
-				}
-				if (this.password.length < 6) {
-					uni.showToast({
-						icon: 'none',
-						title: '密码最短为 6 个字符'
-					});
-					return;
-				}
-				/**
-				 * 下面简单模拟下服务端的处理
-				 * 检测用户账号密码是否在已注册的用户列表中
-				 * 实际开发中，使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
-				 */
-				const data = {
-					username: this.account,
-					password: this.password
-				};
-				
-				this.$http.post(this.apis.LOGIN,data).then(res=>{
-					if(res.code == 200){
-						let userInfo = JSON.stringify(res.result.accessToken)
-						v.login(userInfo)
-						
-						console.log(this.hasLogin)
-						this.toMain();
-					}else{
-						uni.showToast({
-							icon: 'none',
-							title: res.message
-						});
-					}
-				}).catch(err=>{})
-				
-				// const validUser = service.getUsers().some(function(user) {
-				// 	return data.account === user.account && data.password === user.password;
-				// });
-				// if (validUser) {
-				// 	this.toMain(this.account);
-				// } else {
-				// 	uni.showToast({
-				// 		icon: 'none',
-				// 		title: '用户账号或密码不正确',
-				// 	});
-				// }
-			},
-			oauth(value) {
-				uni.login({
-					provider: value,
-					success: (res) => {
-						uni.getUserInfo({
-							provider: value,
-							success: (infoRes) => {
-								/**
-								 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
-								 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
-								 */
-								this.toMain(infoRes.userInfo.nickName);
-							}
-						});
-					},
-					fail: (err) => {
-						console.error('授权登录失败：' + JSON.stringify(err));
-					}
-				});
-			},
-			toMain() {
-				/**
-				 * 强制登录时使用reLaunch方式跳转过来
-				 * 返回首页也使用reLaunch方式
-				 */
-				uni.reLaunch({
-					url: '../main/p_index/main',
-				});
-
+			toReg(){
+				uni.navigateTo({
+					url: '/pages/reg/reg'
+				})
 			}
-		},
-		onReady() {
-			this.initPosition();
-			this.initProvider();
 		}
 	}
 </script>
 
 <style>
-	.action-row {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-	}
-
-	.action-row navigator {
-		color: #007aff;
-		padding: 0 20upx;
-	}
-
-	.oauth-row {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		position: absolute;
-		top: 0;
-		left: 0;
+	.inputMess {
 		width: 100%;
+		background: rgba(255, 255, 255, 1);
+		margin-bottom: 28upx;
 	}
-
-	.oauth-image {
-		width: 100upx;
-		height: 100upx;
-		border: 1upx solid #dddddd;
-		border-radius: 100upx;
-		margin: 0 40upx;
-		background-color: #ffffff;
+	
+	.input {
+		height: 122upx;
+		width: 678upx;
+		border-bottom: 2upx solid #DFE7EE;
+		margin: 0 auto;
 	}
-
-	.oauth-image image {
-		width: 60upx;
-		height: 60upx;
-		margin: 20upx;
+	
+	.btn {
+		width: 592upx;
+		height: 104upx;
+		background: linear-gradient(132deg, rgba(59, 147, 253, 1) 0%, rgba(60, 128, 253, 1) 41%, rgba(55, 84, 252, 1) 100%);
+		box-shadow: 0 8upx 16upx 0 rgba(69, 124, 232, 0.5);
+		border-radius: 52upx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0 auto 40upx;
+		font-size: 40upx;
+		font-weight: 400;
+		color: rgba(255, 255, 255, 1);
+	}
+	
+	.createAccount{
+		width:160upx;
+		height:56upx;
+		font-size:40upx;
+		font-weight:400;
+		color:rgba(51,51,51,1);
+		margin: 0 auto;
+	}
+	
+	/deep/ .input-placeholder {
+		font-size: 32upx;
+		font-weight: 400;
+		color: rgba(200, 200, 200, 1);
+	}
+	
+	/deep/ .uni-input {
+		padding: 0
 	}
 </style>

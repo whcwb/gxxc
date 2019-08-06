@@ -26,8 +26,11 @@
 		<view class="btn">
 			立即注册
 		</view>
-		<view style="text-align: center;">
-			我已阅读并同意<text style="font-size:28upx;font-weight:400;color:rgba(51,128,168,1);">《注册协议》</text>
+		<view style="margin-bottom: 114upx;display: flex;justify-content: center;align-items: center;">
+			<checkbox value="cb" />我已阅读并同意
+			<text style="font-size:28upx;font-weight:400;color:rgba(51,128,168,1);">
+				《注册协议》
+			</text>
 		</view>
 	</view>
 </template>
