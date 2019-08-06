@@ -22,7 +22,8 @@
 			</view>
 		</view>
 		<view style="width:748upx;height:136upx;background:rgba(254,255,255,1);">
-			<segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" @clickItem="onClickItem"></segmented-control>
+			<!-- <segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" @clickItem="onClickItem"></segmented-control> -->
+			<vTab :data="data" @select="select"></vTab>
 		</view>
 
 		<view class="btnClass">
@@ -49,7 +50,7 @@
 					</view>
 				</view>
 				<view v-for="item in itemList" style="margin:26upx 0 0 48upx;display: flex;align-items:flex-start">
-					<image :src="item.state==='已完成'||item.state==='合格'?'/static/my/ok.png':'/static/my/no.png'" style="top: 14upx;width: 36upx;height: 36upx;"></image>
+					<image :src="item.state==='已完成'||item.state==='合格'?'/static/img/ok.png':'/static/img/no.png'" style="top: 14upx;width: 36upx;height: 36upx;"></image>
 					<view class="item">
 						<view style="padding:0 20upx;margin-top: 14upx;display: flex;justify-content: space-between">
 							<text class="itemText">{{item.name}}</text>
@@ -70,18 +71,21 @@
 <script>
 	import uniRate from "@/components/uni-rate/uni-rate.vue"
 	import segmentedControl from "@/components/seg/segmented-control.vue";
+	import vTab from "@/components/v-tab/v-tab.vue"
 	
 	export default {
 		name: "study",
 		components: {
 			uniRate,
-			segmentedControl
+			segmentedControl,
+			vTab
 		},
 		data() {
 			return {
 				appMess: [],
 
 				isPJ:true,				//是否评价，控制显示星星
+				data: [{name:'受理进度'}, {name:'科一'},{name: '科二'}, {name:'科三'}, {name:'科四'}],
 				items: ['受理进度', '科一', '科二', '科三', '科四'],
 				current: 0,
 				btnList: [],
@@ -261,6 +265,14 @@
 						this.current = index;
 						this.btnList = Object.assign(this.btnListAll[index])
 						this.itemList = Object.assign(this.itemListAll[index])
+				}
+			},
+			
+			select(index){
+				if (this.current !== index) {					
+					this.current = index;
+					this.btnList = Object.assign(this.btnListAll[index])
+					this.itemList = Object.assign(this.itemListAll[index])
 				}
 			}
 		}
