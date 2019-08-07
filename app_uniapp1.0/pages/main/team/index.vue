@@ -33,6 +33,7 @@
 				       </view>
 					</view>
 			</view>
+			<uni-load-more :status="loadingType" :loadingType="1"></uni-load-more>
 		</view>
 </template>
 
@@ -47,6 +48,10 @@
 		},
 		data(){
 			return {
+				loadingType: 'more' ,
+				// more = contentdown: "上拉显示更多",
+            // loading =contentrefresh: "正在加载...",
+            // nomore = contentnomore: "没有更多数据了"
 				val0: '',
 				themeColor: '#3B93FD',
 				independence:true,
@@ -71,6 +76,15 @@
 				]
 			}
 		},
+		onReachBottom() {
+			console.log("上滑动");
+			// more = contentdown: "上拉显示更多",
+			// loading =contentrefresh: "正在加载...",
+			// nomore = contentnomore: "没有更多数据了"
+			// 在此进行上拉刷新的业务逻辑
+		 
+		},
+
 		onShow(){
 			// console.log('onShow')
 		},
