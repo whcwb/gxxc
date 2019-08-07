@@ -107,6 +107,30 @@
 				"navigationBarTitleText": "立即缴费"
 			}
         }
+        ,{
+            "path" : "pages/main/p_index/jkzn/jkzn",
+            "style" : {
+				"navigationBarTitleText": "驾考指南"
+			}
+        }
+        ,{
+            "path" : "pages/main/p_index/bkjf/bkjf",
+            "style" : {
+				"navigationBarTitleText": "补考缴费"
+			}
+        }
+        ,{
+            "path" : "pages/main/p_index/plfw/plfw",
+            "style" : {
+				"navigationBarTitleText": "陪练服务"
+			}
+        }
+        ,{
+            "path" : "pages/main/p_index/kcfb/kcfb",
+            "style" : {
+				"navigationBarTitleText": "考场分布"
+			}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",

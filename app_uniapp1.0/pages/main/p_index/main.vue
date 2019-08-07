@@ -42,7 +42,7 @@
 		</div>
 
 		<view class="butBox box_row rowAuto colCenter">
-			<view class="butItenSty">
+			<view class="butItenSty" @click="goJkzn">
 				<img src="./file/img/jkzn.png" alt="">
 				<view class="text">
 					驾考指南
@@ -86,12 +86,6 @@
 						</view>
 						<view class="butTyp offMoney">
 							未缴费
-						</view>
-						<view class="butTyp FuserTyp">
-							直介
-						</view>
-						<view class="butTyp SuserTyp">
-							转介
 						</view>
 					</view>
 					<view class="phoneSty">
@@ -163,6 +157,11 @@
 			toCode(){
 				uni.navigateTo({
 					url: '/pages/main/user/code/code'
+				});
+			},
+			goJkzn(){
+				uni.navigateTo({
+					url: '/pages/main/p_index/jkzn/jkzn'
 				});
 			}
 		}

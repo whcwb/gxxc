@@ -25,12 +25,6 @@
 								<view class="butTyp offMoney">
 									未缴费
 								</view>
-								<view class="butTyp FuserTyp">
-									直介
-								</view>
-								<view class="butTyp SuserTyp">
-									转介
-								</view>
 							</view>
 							<view class="phoneSty">
 								13112345678
