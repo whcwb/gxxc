@@ -1,13 +1,17 @@
 <template>
 	<view style="width: 100%;">
-		<!-- <img src="/static/img/head.png" style="width: 176upx;height: 176upx;margin-top: -56upx;"> -->
 		<!-- <image src="/static/img/welcome.png" :style="{width: '100%',height:imgheight*2+'upx'}"></image> -->
-		<image src="/static/img/welcome.png" style="width: 100%;height: 1454upx;"></image>
+		<image src="/static/img/welcome.png" style="width: 100vw;height: 100vh;"></image>
+		<w-loading text="加载中.." mask="false" click="true" ref="loading"></w-loading>
 	</view>
 </template>  
 
 <script>
+	import wLoading from "@/components/w-loading/w-loading.vue";
 	export default {
+		components:{
+			wLoading
+		},
 		data() {
 			return {
 				imgheight:200
@@ -20,19 +24,13 @@
 				});
 			}
 		},
-		onLoad() {
+		onReady() {
+			this.$refs.loading.open()
 			setTimeout((val,index,arr)=>{
 				uni.navigateTo({
 				    url: '/pages/login/login',
 				});
 			},3000)
-			
-			var v=this
-			uni.getSystemInfo({
-				success:function (res) {
-						v.imgheight=res.windowHeight
-					}
-			})
 		}
 	}
 </script>
