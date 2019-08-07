@@ -135,6 +135,10 @@
             "path" : "pages/xgpwd/xgpwd",
             "style" : {}
         }
+        ,{
+            "path" : "pages/myMess/myMess",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",

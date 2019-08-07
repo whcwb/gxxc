@@ -176,6 +176,7 @@
 						</view>
 					</view>
 				</view>
+				<button type="primary" @click="closePopup()">我已阅读并同意</button>
 			</view>
 		</uni-popup>
 	</view>

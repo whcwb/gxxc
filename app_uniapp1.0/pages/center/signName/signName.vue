@@ -9,8 +9,8 @@
 </template>
 
 <script>
-	// import vuesigncanvas from 'vue-sign-canvas'
-	// require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
+	import vuesigncanvas from 'vue-sign-canvas'
+	require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
 	export default {
 		 config: {
 			 backgroundColor:'#ffffff',

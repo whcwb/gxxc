@@ -288,6 +288,11 @@
 			}
 		}
 	}
+	.loading-text{
+		text-align: center;
+		font-size: 24rpx;
+		margin-top: 24rpx
+	}
 	// @import "../../../common/iview.css";
 	// .ivu-btn-success {
 	// 	color: #fff;
