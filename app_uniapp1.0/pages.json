@@ -137,6 +137,10 @@
 				"navigationBarTitleText": "考场分布"
 			}
         }
+        ,{
+            "path" : "pages/xgpwd/xgpwd",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",
