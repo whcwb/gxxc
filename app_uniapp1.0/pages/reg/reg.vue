@@ -323,19 +323,20 @@
 		right: 48upx;
 		top: 50%;
 		transform: translateY(-50%);
-		font-size: 32upx;
+		font-size: 28upx;
 		font-weight: 400;
 		color: rgba(37, 128, 222, 1);
 	}
 
 	/deep/ .input-placeholder {
-		font-size: 32upx;
+		font-size: 28upx;
 		font-weight: 400;
 		color: rgba(200, 200, 200, 1);
 	}
 
 	/deep/ .uni-input {
-		padding: 0
+		padding: 0;
+		font-size: 24upx
 	}
 	
 	.AgreementMessSty{

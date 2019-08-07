@@ -1,8 +1,8 @@
 <template>
 	<view style="width: 100%;">
 		<!-- <img src="/static/img/head.png" style="width: 176upx;height: 176upx;margin-top: -56upx;"> -->
-		<!-- <image src="/static/img/welcome.png" :style="{width: '100%',height:imgheight*2+'upx'}"></image> -->
-		<image src="/static/img/welcome.png" style="width: 100%;height: 1454upx;"></image>
+		<image src="/static/img/welcome.png" :style="{width: '100%',height:imgheight*2+'upx'}"></image>
+		<!-- <image src="/static/img/welcome.png" style="width: 100%;height: 1454upx;"></image> -->
 	</view>
 </template>  
 

@@ -6,7 +6,7 @@
 			<view class="inputMess">
 				<input class="uni-input input"  v-for="item in inputList" :placeholder="item.placeholder" v-model="item.val"/>
 			</view>
-			<view style="margin-bottom: 136upx;text-align: right;width: 678upx;font-size:32upx;color:rgba(37,128,222,1);" @click="topwd">忘记密码？</view>
+			<view style="margin-bottom: 136upx;text-align: right;width: 678upx;font-size:28upx;color:rgba(37,128,222,1);" @click="topwd">忘记密码？</view>
 			<view class="btn" @tap="toIndex">
 				登录
 			</view>
@@ -83,9 +83,9 @@
 	}
 	
 	.createAccount{
-		width:160upx;
+		width:128upx;
 		height:56upx;
-		font-size:40upx;
+		font-size:32upx;
 		font-weight:400;
 		color:rgba(51,51,51,1);
 		margin: 0 auto;
