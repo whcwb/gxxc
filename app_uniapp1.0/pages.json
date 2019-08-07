@@ -1,5 +1,11 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页,
+	    {
+	    "path" : "pages/welcome/welcome",
+	    "style" : {
+			"navigationStyle":"custom"
+		}
+		},
 		 {
 			"path": "pages/login/login",
 			"style": {

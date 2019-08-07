@@ -2,7 +2,7 @@
 	<view>
 		<view class="page">
 			<view class="image-list">
-					<view class="image-content" style="padding: 40rpx;">
+					<view class="image-content" style="padding:26upx 40rpx;">
 						<view style="position: relative;" v-for="item in list">
 							<view style="margin: 32upx 0 0 44upx;position: absolute;">
 								<view class="title">
