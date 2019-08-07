@@ -20,8 +20,9 @@
     </view> -->
 	<view style="width: 100%;background:rgba(255,255,255,1);">
 	<img src="/static/img/banner.png" style="height: 336upx;width: 750upx;">
-		<view class="inputMess">
-			<input class="uni-input input"  v-for="item in inputList" :placeholder="item.placeholder" v-model="item.val"/>
+		<view class="inputMess" v-for="item in inputList" >
+			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val"/>
+			<view v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 		</view>
 		<view class="btn">
 			立即注册
@@ -125,9 +126,9 @@
 
 <style>
 	.inputMess {
+		position: relative;
 		width: 100%;
 		background: rgba(255, 255, 255, 1);
-		margin-bottom: 58upx;
 	}
 	
 	.input {
@@ -146,10 +147,20 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 0 auto 40upx;
+		margin: 58upx auto 40upx;
 		font-size: 40upx;
 		font-weight: 400;
 		color: rgba(255, 255, 255, 1);
+	}
+	
+	.inputCodeTip{
+		position: absolute;
+		right: 48upx;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size:32upx;
+		font-weight:400;
+		color:rgba(37,128,222,1);
 	}
 	
 	/deep/ .input-placeholder {
