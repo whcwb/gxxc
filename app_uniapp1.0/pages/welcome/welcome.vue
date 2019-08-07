@@ -1,8 +1,11 @@
 <template>
-	<view style="width: 100%;">
-		<!-- <img src="/static/img/head.png" style="width: 176upx;height: 176upx;margin-top: -56upx;"> -->
-		<image src="/static/img/welcome.png" :style="{width: '100%',height:imgheight*2+'upx'}"></image>
-		<!-- <image src="/static/img/welcome.png" style="width: 100%;height: 1454upx;"></image> -->
+	<view class="welcome box_col">
+		<!-- #ifdef APP-PLUS -->
+		<view class="status_bar"></view>
+		<!-- #endif -->
+		<view class="box_col_100 bodyBox">
+			<img src="./file/welcome.png" alt="">
+		</view>
 	</view>
 </template>  
 
@@ -37,6 +40,21 @@
 	}
 </script>
 
-<style>
-
+<style lang="less">
+	.welcome{
+		width: 100%;
+		height: 100vh;
+		background-color: #007AFF;
+		.status_bar {
+			//app 内嵌样式
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+		.bodyBox{
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
 </style>
