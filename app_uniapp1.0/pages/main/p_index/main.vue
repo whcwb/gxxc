@@ -48,19 +48,19 @@
 					驾考指南
 				</view>
 			</view>
-			<view class="butItenSty">
+			<view class="butItenSty" @click="gobkjf">
 				<img src="./file/img/bkjf.png" alt="">
 				<view class="text">
 					补考缴费
 				</view>
 			</view>
-			<view class="butItenSty">
+			<view class="butItenSty" @click="goplfw">
 				<img src="./file/img/plfw.png" alt="">
 				<view class="text">
 					陪练服务
 				</view>
 			</view>
-			<view class="butItenSty">
+			<view class="butItenSty" @click="gokcfb">
 				<img src="./file/img/kcfb.png" alt="">
 				<view class="text">
 					考场分布
@@ -162,6 +162,21 @@
 			goJkzn(){
 				uni.navigateTo({
 					url: '/pages/main/p_index/jkzn/jkzn'
+				});
+			},
+			gobkjf(){
+				uni.navigateTo({
+					url: '/pages/main/p_index/bkjf/bkjf'
+				});
+			},
+			goplfw(){
+				uni.navigateTo({
+					url: '/pages/main/p_index/plfw/plfw'
+				});
+			},
+			gokcfb(){
+				uni.navigateTo({
+					url: '/pages/main/p_index/kcfb/kcfb'
 				});
 			}
 		}

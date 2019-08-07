@@ -10,7 +10,7 @@
 			</view>
 			<view class="box_col_100">
 				<view class="teamListBox">
-					<view class="itemSty box_row" v-for="(it,index) in 10" :key="index">
+					<view class="itemSty box_row" v-for="(it,index) in studentList" :key="index">
 						<!-- <view class="avaSty"> -->
 							<img src="./file/img/jkzn.png" alt="">
 						<!-- </view> -->
@@ -33,7 +33,9 @@
 				       </view>
 					</view>
 			</view>
-			<uni-load-more :status="loadingType" :loadingType="1"></uni-load-more>
+			<view class="loading-text" style="margin-bottom: 120upx;">
+			{{loadingType === 0 ? contentText.contentdown : (loadingType === 1 ? contentText.contentrefresh : contentText.contentnomore)}}
+			</view>
 		</view>
 </template>
 
@@ -41,6 +43,8 @@
 	import mSearch from '@/components/mehaotian-search/mehaotian-search.vue';
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 	import slFilter from '@/components/songlazy-sl-filter/sl-filter/sl-filter.vue';
+	var  _self,
+	page = 1;
 	export default{
 		name:"",
 		 components: {
@@ -48,7 +52,6 @@
 		},
 		data(){
 			return {
-				loadingType: 'more' ,
 				// more = contentdown: "上拉显示更多",
             // loading =contentrefresh: "正在加载...",
             // nomore = contentnomore: "没有更多数据了"
@@ -73,15 +76,133 @@
 						}
 					]
 					}
-				]
+				],
+				studentJson:[
+					{
+						name:'李文超',
+						phone:'158769452',
+						pay:true,
+						straight:true,
+						src:'/static/index/1.png'
+					},
+					{
+						name:'岳琴琴',
+						phone:'135953252',
+						pay:false,
+						straight:false,
+						src:'/static/index/2.png'
+					},
+					{
+						name:'李彬彬',
+						phone:'168232340',
+						pay:false,
+						straight:false,
+						src:'/static/index/3.png'
+					},
+					{
+						name:'李文超',
+						phone:'158769452',
+						pay:true,
+						straight:true,
+						src:'/static/index/1.png'
+					},
+					{
+						name:'岳琴琴',
+						phone:'135953252',
+						pay:false,
+						straight:false,
+						src:'/static/index/2.png'
+					},
+					{
+						name:'李彬彬',
+						phone:'168232340',
+						pay:false,
+						straight:false,
+						src:'/static/index/3.png'
+					},
+					{
+						name:'李文超',
+						phone:'158769452',
+						pay:true,
+						straight:true,
+						src:'/static/index/1.png'
+					},
+					{
+						name:'岳琴琴',
+						phone:'135953252',
+						pay:false,
+						straight:false,
+						src:'/static/index/2.png'
+					},
+					{
+						name:'李彬彬',
+						phone:'168232340',
+						pay:false,
+						straight:false,
+						src:'/static/index/3.png'
+					},
+					{
+						name:'李文超',
+						phone:'158769452',
+						pay:true,
+						straight:true,
+						src:'/static/index/1.png'
+					},
+					{
+						name:'岳琴琴',
+						phone:'135953252',
+						pay:false,
+						straight:false,
+						src:'/static/index/2.png'
+					},
+					{
+						name:'李彬彬',
+						phone:'168232340',
+						pay:false,
+						straight:false,
+						src:'/static/index/3.png'
+					}
+				],
+				studentList:[],
+				loadingType: 0,
+				pageNum:8,
+				contentText: {
+					contentdown: "上拉显示更多",
+					contentrefresh: "正在加载...",
+					contentnomore: "没有更多数据了"
+				}
 			}
 		},
+		onLoad: function (options) {
+			_self = this;
+			this.studentJson.map((val,index,arr)=>{						//模拟获取数据，模拟为一次显示4条
+				if(index<this.pageNum)
+					this.studentList[this.studentList.length]=val
+			})
+			console.log(this.studentJson.length)
+		},
 		onReachBottom() {
-			console.log("上滑动");
-			// more = contentdown: "上拉显示更多",
-			// loading =contentrefresh: "正在加载...",
-			// nomore = contentnomore: "没有更多数据了"
-			// 在此进行上拉刷新的业务逻辑
+			var v=this
+			// console.log(_self.newsList.length);
+			if (_self.loadingType != 0) {//loadingType!=0;直接返回
+				return false;
+			}
+			_self.loadingType = 1;
+			//设置一个定时器，能看出加载的效果
+			setTimeout(()=>{
+				var pageNum1=v.pageNum+4
+				v.studentJson.map((val,index,arr)=>{						//模拟获取数据，模拟为一次显示4条
+					if(index>=v.pageNum&&index<pageNum1)
+						v.studentList.push(val)
+				})
+				console.log(v.studentList)
+				if(v.studentList.length>=v.studentJson.length){
+								_self.loadingType = 2;
+								return false;
+				}
+				v.pageNum=pageNum1
+				_self.loadingType = 0;
+			},2000)
 		 
 		},
 

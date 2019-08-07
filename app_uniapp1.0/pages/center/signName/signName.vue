@@ -16,7 +16,7 @@
 			 backgroundColor:'#ffffff',
 		  },
 		  components:{
-			// vuesigncanvas
+			vuesigncanvas
 		  },
 		data() {
 			return {
