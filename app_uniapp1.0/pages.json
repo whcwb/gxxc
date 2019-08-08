@@ -145,6 +145,40 @@
             "path" : "pages/myMess/myMess",
             "style" : {}
         }
+        ,{
+            "path" : "pages/chooseBank/chooseBank",
+            "style" : {
+				"navigationBarTitleText": "选择提现银行卡",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "提现",
+							"fontSize": "17px"
+							// "color": "#999999"
+						}]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/addBankCard/addBankCard",
+            "style" : {
+				"navigationBarTitleText": "添加银行卡",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "添加",
+							"fontSize": "17px"
+							// "color": "#999999"
+						}]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/pay/pay",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",

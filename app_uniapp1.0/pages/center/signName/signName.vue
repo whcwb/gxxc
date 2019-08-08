@@ -1,26 +1,30 @@
 <template>
 	<view>
 		<view>
-			<!-- <vuesigncanvas options="options" 
-			@result="saveResult" @clear="clear" >
-			</vuesigncanvas> -->
+			<vuesigncanvas options="options" @result="saveResult" @clear="clear">
+			</vuesigncanvas>
 		</view>
 	</view>
 </template>
 
 <script>
-	// import vuesigncanvas from 'vue-sign-canvas'
-	// require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+	import vuesigncanvas from 'vue-sign-canvas'
+	require('vue-sign-canvas/dist/vue-sign-canvas.min.css')
 	export default {
-		 config: {
-			 backgroundColor:'#ffffff',
-		  },
-		  components:{
+		config: {
+			backgroundColor: '#ffffff',
+		},
+		computed: mapState(['signUrl']),
+		components: {
 			vuesigncanvas
-		  },
+		},
 		data() {
 			return {
-				 options:{
+				options: {
 					brushColor: '#ff2600',
 					brushWidth: 800,
 					brushType: 'marker',
@@ -28,32 +32,34 @@
 					height: 600,
 					shadowEnable: false,
 					shadowWidth: 1,
-					brushWidth:5,
+					brushWidth: 5,
 					canvasBackgroundColor: '#fff',
-				  }
+				}
 			}
 		},
 		methods: {
-			 saveResult (data) {
-			 //  this.$http("POST",ui.getApp().apis.SIGN,{base64Data:data.substring(22)},(res)=>{
-				// if(res.code==200){
-				//   ui.getApp().signUrl = res.result
-				uni.navigateBack({
-					
+			...mapMutations(['setSignUrl']),
+			saveResult(data) {
+				this.$http.post(this.apis.SIGN, {
+					base64Data: data.substring(22)
+				}).then(res => {
+					if (res.code == 200) {
+						this.setSignUrl(res.result)
+						uni.navigateBack({
+
+						})
+					}
 				})
-				// }
-			 //  })
-			 
+
 			},
-			clear () {
-			},
+			clear() {},
 		}
 	}
 </script>
 
 <style lang="less">
-.titColor{
-  font-size: 30rpx;
-  color:#FFA060;
-}
+	.titColor {
+		font-size: 30rpx;
+		color: #FFA060;
+	}
 </style>
