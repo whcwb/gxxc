@@ -112,6 +112,10 @@
 			}
 		},
 		onLoad() {
+			var userInfo = this.Met.getUserInfo()
+			if(!userInfo){
+				return false
+			}
 			return
 			if (!this.hasLogin) {
 				uni.showModal({
@@ -225,7 +229,6 @@
 				font-weight: 400;
 				color: rgba(80, 144, 241, 1);
 			}
-
 			.valSty {
 				font-size:28upx;
 				font-family:PingFangSC-Regular;
