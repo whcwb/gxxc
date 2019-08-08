@@ -955,8 +955,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String yhSfyjz = "0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
-        List<BizWj> wjList = new ArrayList<BizWj>();
-        List<String> wjSxList = new ArrayList<String>();
+        List<BizWj> wjList = new ArrayList<>();
+        List<String> wjSxList = new ArrayList<>();
         if (imgList != null && imgList.length > 0) {
             if (StringUtils.trimToNull(imgList[2]) != null && !StringUtils.equals(imgList[2], "-")) {
                 yhSfyjz = "1";
