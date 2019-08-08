@@ -2,6 +2,11 @@
 	<view class="box_col pager-index">
 		<view class="status_bar"></view>
 		<view class="pagerTit-Box">
+			<swiper class="swiper" :autoplay="true" style="height: 100%;">
+                <swiper-item v-for="item in items">
+					   <image style="width: 100%;height: 100%;" :src='item.hdTpdz' mode="widthFix"></image>
+                </swiper-item>
+             </swiper>
 			<view class="funcBox" v-show="userMess">
 				<div class="box_row colCenter rowBetween haveUser">
 					<div @click='toTx'>
@@ -10,7 +15,7 @@
 						</div>
 						<div class="linesty"></div>
 						<div class="valSty">
-							2800元
+							{{zhYE.yhZhye/100 | yhZhye}}元
 						</div>
 					</div>
 					<img class="eCodeSty" src="./file/img/eCode.png" alt="" @click='toCode'>
@@ -108,7 +113,11 @@
 		computed: mapState(['hasLogin', 'userName']),
 		data(){
 			return {
-				userMess:true
+				userMess:true,
+				zhYE: {
+					yhZhye: 0   //账户余额
+				},
+				items:[{}], //banner图
 			}
 		},
 		onLoad() {
@@ -144,7 +153,29 @@
 				});
 			}
 		},
+		created() {
+			this.getbanner()
+		},
 		methods:{
+			getbanner(){//获取轮播图
+				this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{
+					console.log(res)
+					if(res.code==200){
+					  this.items = res.page.list
+					}
+				})
+			},
+			getYE(callback) {//获取账户余额
+			  var v = this
+			  this.$http.post(this.apis.USERZH,{}).then((res)=>{
+				  if(res.code==200){
+					v.zhYE.yhZhye = res.result.yhZhye
+					callback && callback(true)
+				  }else{
+					uni.showToast({ title:res.message})
+				  }
+			  })
+			},
 			toTx(){
 				uni.navigateTo({
 					url: '/pages/yqJl/yqJl'
@@ -203,7 +234,7 @@
 
 		.pagerTit-Box {
 			background-color: #3B93FD;
-			height: 460rpx;
+			height: 388rpx;
 			position: relative;
 			margin-bottom: 109upx;
 		}
