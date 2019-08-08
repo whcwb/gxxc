@@ -387,9 +387,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 //
 //            }
 
-            if (StringUtils.isNotBlank(bizPtyh.getYhZh())) {
-                bizPtyh.setYhZh(bizPtyh.getYhZh().replaceAll("(?<=[\\d]{3})\\d(?=[\\d]{4})", "*"));
-            }
+//            if (StringUtils.isNotBlank(bizPtyh.getYhZh())) {
+//                bizPtyh.setYhZh(bizPtyh.getYhZh().replaceAll("(?<=[\\d]{3})\\d(?=[\\d]{4})", "*"));
+//            }
 
             // 查询该用户是否有所属教练
             BizUser bizUser = userService.findById(bizPtyh.getId());
