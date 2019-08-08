@@ -2,12 +2,12 @@
 	<view style="font-family:PingFangSC-Regular;width: 100%;">
 		<view class="bg">
 			<view class="personBG">
-				<img src="/static/img/qq.png" style="border-radius: 50%;width: 96upx;height: 96upx;">
-				<view style="margin: 15upx 0 5upx;font-size:36upx;">李文超</view>
-				<text style="font-size:36upx;">15686526352</text>
+				<img :src="user.yhTx" style="border-radius: 50%;width: 96upx;height: 96upx;">
+				<view style="margin: 15upx 0 5upx;font-size:36upx;">{{user.yhXm}}</view>
+				<text style="font-size:36upx;">{{user.yhZh}}</text>
 			</view>
-			<img src="/static/img/my/code.png" style="margin-top: 42upx;width: 396upx;height: 396upx;">
-			<text style="display: block;margin-top: 38upx;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：IC9TCW</text>
+			<img :src="user.yhZsyqmImg" style="margin-top: 42upx;width: 396upx;height: 396upx;">
+			<text style="display: block;margin-top: 38upx;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：{{user.yhZsyqm}}</text>
 			<view class="copybtn">
 				点此复制邀请码
 			</view>
@@ -22,11 +22,20 @@
 	export default {
 		data() {
 			return {
-
+				user:{}
 			}
 		},
 		methods: {
 
+		},
+		onLoad() {
+			this.$http.post(this.apis.USERMESS).then(res => {
+				if(res.code==200){
+					this.user=res.result
+				}else{
+					
+				}
+			}).catch(err => {})
 		}
 	}
 </script>

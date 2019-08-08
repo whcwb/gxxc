@@ -13,10 +13,22 @@ let ajax = {}
 //     });
 //     return encrypted.toString();
 // }
-function genToken(){
-    return "";
+
+//取token
+var token='';
+var userId=''
+function getToken(){
+	uni.getStorage({
+	    key: 'token',
+	    success: function (res) {
+	        token=res.data.token
+			userId=res.data.userId
+	    }
+	});
 }
+
 ajax.post = (httpUrl,data) => {
+	getToken();
 	return new Promise(function(resolve, reject) {
 		uni.request({
 			url: apis.url+httpUrl, 
@@ -24,8 +36,8 @@ ajax.post = (httpUrl,data) => {
 			method:'POST',
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded',
-				'token':genToken(),
-				'userid':uni.getStorageSync('userID')
+				'token':token,
+				'userid':userId
 			},
 			success: (res) => {
 				if(res.statusCode == 200){
@@ -46,8 +58,8 @@ ajax.get = (url,data) => {
 			method:'GET',
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded',
-				'token':genToken(),
-				'userid':store.state.userID
+				'token':token,
+				'userid':userId
 			},
 			success: (res) => {
 				if(res.statusCode == 200){

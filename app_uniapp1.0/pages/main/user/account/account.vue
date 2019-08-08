@@ -4,13 +4,13 @@
 			<view class="left">
 				<img src="/static/img/money.png" style="width: 90upx;height: 90upx;">
 				<view style="display: inline-block;margin-left: 28upx;">
-					<view>{{item.name}}</view>
-					<view>{{item.date}}</view>
+					<view>{{mx[item.mxlx]}}</view>
+					<view>{{item.cjsj}}</view>
 				</view>
 			</view>
-			<view class="">
+			<view>
 				<view style="display: inline-block;">
-					<view style="text-align: right;">{{item.add?'+':'-'}}{{item.money}}</view>
+					<view style="text-align: right;">{{item.mxlx=='2'?'+':'-'}}{{item.zjJe/100}}</view>
 					<view style="color:rgba(86,150,51,1);">{{item.state=='finish'?'处理成功':'未处理'}}</view>
 				</view>
 			</view>
@@ -22,33 +22,29 @@
 	export default {
 		data() {
 			return {
-				itemList:[
-					{
-						name:'兑换',
-						date:'2019.08.05',
-						add:false,						
-						money:'500',
-						state:'finish'
-					},
-					{
-						name:'兑换',
-						date:'2019.08.05',
-						add:false,						
-						money:'500',
-						state:'finish'
-					},
-					{
-						name:'兑换',
-						date:'2019.08.05',
-						add:false,						
-						money:'500',
-						state:'finish'
-					}
-				]
+				itemList:[],
+				mx:['','付款','分佣','消费','提现']
 			}
 		},
 		methods: {
-
+			getMess(){
+				var v=this
+				this.$http.post(this.apis.ZDLIST,{pageSize:10,pageNum:1}).then(res=>{
+				  if(res.code==200){
+					  v.itemList=res.page.list
+				        // v.pages = res.page.pages
+				        // if(res.page.list){
+				        //   res.page.list.forEach((item,index) => {
+				        //       v.items.push(item)
+				        //   });
+				        // }
+				  }
+				  
+				})
+			}
+		},
+		onLoad() {
+			this.getMess()
 		}
 	}
 </script>
