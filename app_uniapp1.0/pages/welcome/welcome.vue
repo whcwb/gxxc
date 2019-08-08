@@ -4,7 +4,7 @@
 		<image src="/static/img/welcome.png" style="width: 100vw;height: 100vh;"></image>
 		<w-loading text="加载中.." mask="false" click="true" ref="loading"></w-loading>
 	</view>
-</template>  
+</template>
 
 <script>
 	import wLoading from "@/components/w-loading/w-loading.vue";
@@ -35,6 +35,21 @@
 	}
 </script>
 
-<style>
-
+<style lang="less">
+	.welcome{
+		width: 100%;
+		height: 100vh;
+		background-color: #007AFF;
+		.status_bar {
+			//app 内嵌样式
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+		.bodyBox{
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
 </style>

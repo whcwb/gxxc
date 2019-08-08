@@ -220,14 +220,14 @@
 			height: 100%;
 			padding: 0 40px;
 			.titleSty {
-				font-size: 32rpx;
+				font-size: 24upx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: rgba(80, 144, 241, 1);
 			}
 
 			.valSty {
-				font-size:20px;
+				font-size:28upx;
 				font-family:PingFangSC-Regular;
 				font-weight:400;
 				color:rgba(80,144,241,1);
