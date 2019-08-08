@@ -3,7 +3,7 @@
 		<view class="page">
 			<view class="image-list">
 				<view class="image-content" style="padding:26upx 40rpx;">
-					<view style="position: relative;" v-for="item in list">
+					<view style="position: relative;" v-for="(item,index) in list" @tap="toFile(item)">
 						<view style="margin: 32upx 0 0 44upx;position: absolute;">
 							<view class="title">
 								{{item.cpMc}}
@@ -15,7 +15,7 @@
 								{{item.cpJl}}元
 							</view>
 						</view>
-						<img style="width: 680upx; height: 324upx; background-color: #eeeeee;" :src="item.imgSrc">
+						<img style="width: 680upx; height: 324upx; background-color: #eeeeee;" :src="'/static/img/goMoney/jf2'+(index+1)+'.png'">
 					</view>
 				</view>
 			</view>
@@ -24,28 +24,41 @@
 </template>
 
 <script>
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {
 				list: []
 			}
 		},
+		computed: mapState([
+			'payMess',
+			'signUrl'
+		]),
 		methods: {
+			...mapMutations(['setPayMess', 'setSignUrl']),
 			imageError: function(e) {
 				console.error('image发生error事件，携带值为' + e.detail.errMsg)
 			},
-			getUser(){
+			getUser() {
 				var v = this
-				this.$http.post(this.apis.CPLIST, {}).then(res=> {
+				this.$http.post(this.apis.CPLIST, {}).then(res => {
 					if (res.code == 200 && res.result) {
-							this.list=res.result
-							console.log(this.list)
-							this.list.map((val,index,arr)=>{
-								// console.log(val.cpXyJson)
-								console.log(JSON.parse(val.cpXyJson)) 
-								// v.list[index]
-							})
+						this.list = res.result
+						console.log(this.list)
+						this.list.map((val, index, arr) => {
+							console.log(JSON.parse(val.cpXyJson))
+						})
 					}
+				})
+			},
+			toFile(item) {
+				this.setPayMess(item)
+				uni.navigateTo({
+					url: '/pages/center/learnCarFile/learnCarFile'
 				})
 			}
 		},

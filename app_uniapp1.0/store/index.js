@@ -12,7 +12,9 @@ const store = new Vuex.Store({
         forcedLogin: false,
         hasLogin: false,
         userName: "",
-		userID:""
+		userID:"",
+		payMess:null,//支付信息
+		signUrl:'444'	 //签名
     },
     mutations: {
 		// login(state, userName) {
@@ -27,7 +29,13 @@ const store = new Vuex.Store({
         },
         logout(state) {
             state.hasLogin = false;
-        }
+        },
+		setPayMess(state,data){
+			state.payMess=data
+		},
+		setSignUrl(state,data){
+			state.signUrl=data
+		}
     }
 })
 
