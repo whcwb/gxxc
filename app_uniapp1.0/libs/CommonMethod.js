@@ -1,5 +1,18 @@
 let Met={
 }
+Met.getUserInfo = (callback)=>{
+    let userInfo = uni.getStorage({
+    	 key: 'userInfo'
+    })
+	if(userInfo && userInfo!=''&&userInfo!=undefined){
+		callback && callback(userInfo)
+	}else{
+		uni.navigateTo({
+			url:'/pages/login/login.vue'
+		})
+	}
+	
+}
 Met.WindowListener = (callback)=>{
   // window.onresize = function(val) {
   //   console.log('+++++++++++++++++++',val)

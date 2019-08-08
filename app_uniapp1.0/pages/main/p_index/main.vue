@@ -45,25 +45,25 @@
 			<view class="butItenSty" @click="goJkzn">
 				<img src="./file/img/jkzn.png" alt="">
 				<view class="text">
-					驾考指南
+					法律法规
 				</view>
 			</view>
 			<view class="butItenSty" @click="gobkjf">
 				<img src="./file/img/bkjf.png" alt="">
 				<view class="text">
-					补考缴费
+					驾考指南
 				</view>
 			</view>
 			<view class="butItenSty" @click="goplfw">
 				<img src="./file/img/plfw.png" alt="">
 				<view class="text">
-					陪练服务
+					交通标志
 				</view>
 			</view>
 			<view class="butItenSty" @click="gokcfb">
 				<img src="./file/img/kcfb.png" alt="">
 				<view class="text">
-					考场分布
+					学车流程
 				</view>
 			</view>
 		</view>
@@ -112,6 +112,10 @@
 			}
 		},
 		onLoad() {
+			var userInfo = this.Met.getUserInfo()
+			if(!userInfo){
+				return false
+			}
 			return
 			if (!this.hasLogin) {
 				uni.showModal({
@@ -225,7 +229,6 @@
 				font-weight: 400;
 				color: rgba(80, 144, 241, 1);
 			}
-
 			.valSty {
 				font-size:28upx;
 				font-family:PingFangSC-Regular;

@@ -197,10 +197,20 @@
 				password: '',
 				email: '',
 				cb:false,
+				form:{
+					yhYyyqm:'',
+					yhZh:'',//帐号
+					yhMm:'',//密码
+					yhLx:'1',
+					yhXm:'',
+					yhZjhm:'',
+					addType:'3',
+					telIdentifying:'',//验证码
+				},
 				inputList: [ //验证、提交可let临时数组or对象,若有新属性，可添加
 					{
 						placeholder: '请输入手机号',
-						val: ''
+						val: 'form.yhZh'
 					},
 					{
 						placeholder: '请输入验证码',
@@ -227,6 +237,7 @@
 		},
 		methods: {
 			reg(){
+				console.log(this.form);
 				if(this.cb == false){
 					this.openPopup()
 				}else{

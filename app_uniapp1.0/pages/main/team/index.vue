@@ -17,17 +17,17 @@
 						<view class="messBox">
 							<view class="box_row colCenter">
 								<view class="name">
-									李 文
+									{{it.yhXm}}
 								</view>
-								<view class="butTyp onMoney">
+								<view v-if="it.userDetail.ddSfjx == '1'" class="butTyp onMoney">
 									已缴费
 								</view>
-								<view class="butTyp offMoney">
+								<view v-else class="butTyp offMoney">
 									未缴费
 								</view>
 							</view>
 							<view class="phoneSty">
-								13112345678
+								{{it.yhSjhm}}
 							</view>
 						</view>
 				       </view>
@@ -77,92 +77,7 @@
 					]
 					}
 				],
-				studentJson:[
-					{
-						name:'李文超',
-						phone:'158769452',
-						pay:true,
-						straight:true,
-						src:'/static/index/1.png'
-					},
-					{
-						name:'岳琴琴',
-						phone:'135953252',
-						pay:false,
-						straight:false,
-						src:'/static/index/2.png'
-					},
-					{
-						name:'李彬彬',
-						phone:'168232340',
-						pay:false,
-						straight:false,
-						src:'/static/index/3.png'
-					},
-					{
-						name:'李文超',
-						phone:'158769452',
-						pay:true,
-						straight:true,
-						src:'/static/index/1.png'
-					},
-					{
-						name:'岳琴琴',
-						phone:'135953252',
-						pay:false,
-						straight:false,
-						src:'/static/index/2.png'
-					},
-					{
-						name:'李彬彬',
-						phone:'168232340',
-						pay:false,
-						straight:false,
-						src:'/static/index/3.png'
-					},
-					{
-						name:'李文超',
-						phone:'158769452',
-						pay:true,
-						straight:true,
-						src:'/static/index/1.png'
-					},
-					{
-						name:'岳琴琴',
-						phone:'135953252',
-						pay:false,
-						straight:false,
-						src:'/static/index/2.png'
-					},
-					{
-						name:'李彬彬',
-						phone:'168232340',
-						pay:false,
-						straight:false,
-						src:'/static/index/3.png'
-					},
-					{
-						name:'李文超',
-						phone:'158769452',
-						pay:true,
-						straight:true,
-						src:'/static/index/1.png'
-					},
-					{
-						name:'岳琴琴',
-						phone:'135953252',
-						pay:false,
-						straight:false,
-						src:'/static/index/2.png'
-					},
-					{
-						name:'李彬彬',
-						phone:'168232340',
-						pay:false,
-						straight:false,
-						src:'/static/index/3.png'
-					}
-				],
+				studentJson:[],
 				studentList:[],
 				loadingType: 0,
 				pageNum:8,
@@ -209,7 +124,23 @@
 		onShow(){
 			// console.log('onShow')
 		},
+		created() {
+			this.getPagerList(['','','','',1]);
+		},
 		methods:{
+			getPagerList(Arr){
+				this.$http.post(this.apis.TEAMMESS,{yhxm:Arr[0],grade:Arr[1],yhlx:Arr[2],sfjf:Arr[3],pageNum:Arr[4],pageSize:10}).then((res)=>{
+					if(res.code == 200){
+						this.studentList = res.page.list
+					}else{
+						uni.showToast({
+							title:res.message,
+							icon:'none',
+							duration: 1500
+						});
+					}
+				})
+			},
 			search(e, val) {
 				console.log(e, val);
 				this['val'+val] = e;

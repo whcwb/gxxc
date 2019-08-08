@@ -116,34 +116,38 @@
         ,{
             "path" : "pages/main/p_index/jkzn/jkzn",
             "style" : {
-				"navigationBarTitleText": "驾考指南"
+				"navigationBarTitleText": "法律法规"
 			}
         }
         ,{
             "path" : "pages/main/p_index/bkjf/bkjf",
             "style" : {
-				"navigationBarTitleText": "补考缴费"
+				"navigationBarTitleText": "驾考指南"
 			}
         }
         ,{
             "path" : "pages/main/p_index/plfw/plfw",
             "style" : {
-				"navigationBarTitleText": "陪练服务"
+				"navigationBarTitleText": "交通标志"
 			}
         }
         ,{
             "path" : "pages/main/p_index/kcfb/kcfb",
             "style" : {
-				"navigationBarTitleText": "考场分布"
+				"navigationBarTitleText": "学车流程"
 			}
         }
         ,{
             "path" : "pages/xgpwd/xgpwd",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "修改密码"
+			}
         }
         ,{
             "path" : "pages/myMess/myMess",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "个人信息"
+			}
         }
         ,{
             "path" : "pages/chooseBank/chooseBank",

@@ -53,6 +53,29 @@
                         "appid" : "wxb01394ea85904296"
                     }
                 }
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/72.png",
+                    "xhdpi" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/96.png",
+                    "xxhdpi" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/114.png",
+                    "xxxhdpi" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/192.png"
+                },
+                "ios" : {
+                    "appstore" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/1024.png",
+                    "iphone" : {
+                        "app@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/120.png",
+                        "app@3x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/180.png",
+                        "spotlight@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/80.png",
+                        "spotlight@3x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/120.png",
+                        "settings@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/58.png"
+                    },
+                    "ipad" : {
+                        "settings" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/29.png",
+                        "settings@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/58.png",
+                        "spotlight@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/80.png"
+                    }
+                }
             }
         }
     },

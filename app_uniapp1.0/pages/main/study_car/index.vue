@@ -27,7 +27,7 @@
 		</view>
 
 		<view class="btnClass">
-			<view v-for="item in btnList" style="margin: 38upx 0;text-align: center;width: 30%;">
+			<view v-for="item in btnList" style="margin: 38upx 0;text-align: center;width: 30%;" @click="gouTxt(item.url)">
 				<img v-if="item.src!=''" :src="item.src" style="width: 116upx;height: 116upx;">
 				<view v-else style="width: 116upx;height: 116upx;"></view>
 				<view style="font-size:28upx;font-weight:400;color: #333333;">
@@ -92,70 +92,86 @@
 				btnListAll: [
 					[{
 							text: '报名条件',
-							src: '/static/img/studybtn/bmtj.png'
+							src: '/static/img/studybtn/bmtj.png',
+							url:'http://m.jxedt.com/info_1_2/'
 						},
 						{
 							text: '学车费用',
-							src: '/static/img/studybtn/xcfy.png'
+							src: '/static/img/studybtn/xcfy.png',
+							url:'http://m.jxedt.com/info_1_4/'
 						},
 						{
 							text: '学车流程',
-							src: '/static/img/studybtn/xclc.png'
+							src: '/static/img/studybtn/xclc.png',
+							url:'http://m.jxedt.com/info_1_8/'
 						},
 					],
 					[{
 							text: '顺序练习',
-							src: '/static/img/studybtn/sxlx.png'
+							src: '/static/img/studybtn/sxlx.png',
+							url:'http://m.jxedt.com/mnks/ckm1/sxlx/'
 						},
 						{
 							text: '章节练习',
-							src: '/static/img/studybtn/zjlx.png'
+							src: '/static/img/studybtn/zjlx.png',
+							url:'http://m.jxedt.com/mnks/ckm1/zjlx/'
 						},
 						{
 							text: '专项练习',
-							src: '/static/img/studybtn/zxlx.png'
+							src: '/static/img/studybtn/zxlx.png',
+							url:'http://m.jxedt.com/mnks/ckm1/zxlx/'
 						},
 					],
 					[{
 							text: '合格标准',
-							src: '/static/img/studybtn/hgbz.png'
+							src: '/static/img/studybtn/hgbz.png',
+							url:'http://m.jxedt.com/km2_82_212'
 						},
 						{
 							text: '侧方停车',
-							src: '/static/img/studybtn/cftc.png'
+							src: '/static/img/studybtn/cftc.png',
+							url:'http://m.jxedt.com/km2_82_603/'
 						},
 						{
 							text: '曲线行驶',
-							src: '/static/img/studybtn/qxxs.png'
+							src: '/static/img/studybtn/qxxs.png',
+							url:'http://m.jxedt.com/km2_82_604/'
 						},
 						{
 							text: '直角转弯',
-							src: '/static/img/studybtn/zjzw.png'
+							src: '/static/img/studybtn/zjzw.png',
+							url:'http://m.jxedt.com/km2_82_605/'
 						},
 						{
 							text: '上坡起步',
-							src: '/static/img/studybtn/spqb.png'
+							src: '/static/img/studybtn/spqb.png',
+							url:'http://m.jxedt.com/km2_82_602/'
 						},
 						{
 							text: '倒车入库',
-							src: '/static/img/studybtn/dcrk.png'
+							src: '/static/img/studybtn/dcrk.png',
+							url:'http://m.jxedt.com/km2_82_606'
 						},
 					],
 					[{
 							text: '评判标准',
-							src: '/static/img/studybtn/ppbz.png'
+							src: '/static/img/studybtn/ppbz.png',
+							url:'http://m.jxedt.com/km3_607_608/'
 						},
 						{
 							text: '语言指令',
-							src: '/static/img/studybtn/yyzl.png'
+							src: '/static/img/studybtn/yyzl.png',
+							url:'http://m.jxedt.com/km3/yyzl/'
 						},
 						{
 							text: '灯光操作',
-							src: '/static/img/studybtn/dgcz.png'
+							src: '/static/img/studybtn/dgcz.png',
+							url:'http://m.jxedt.com/km3/dgcz/'
 						},
 						{
 							text: '考试口诀',
-							src: '/static/img/studybtn/kskj.png'
+							src: '/static/img/studybtn/kskj.png',
+							url:'http://m.jxedt.com/km3_607_627/'
 						},
 						{
 							text: '',
@@ -168,15 +184,18 @@
 					],
 					[{
 							text: '顺序练习',
-							src: '/static/img/studybtn/sxlx.png'
+							src: '/static/img/studybtn/sxlx.png',
+							url:'http://m.jxedt.com/mnks/ckm1/sxlx/'
 						},
 						{
 							text: '章节练习',
-							src: '/static/img/studybtn/zjlx.png'
+							src: '/static/img/studybtn/zjlx.png',
+							url:'http://m.jxedt.com/mnks/ckm1/zjlx/'
 						},
 						{
 							text: '专项练习',
-							src: '/static/img/studybtn/zxlx.png'
+							src: '/static/img/studybtn/zxlx.png',
+							url:'http://m.jxedt.com/mnks/ckm1/zxlx/'
 						}
 					]
 				],
@@ -241,6 +260,9 @@
 			this.itemList=Object.assign(this.itemListAll[0])
 		},
 		methods: {
+			gouTxt(url){
+			  window.location.href=url
+			},
 			pay() {
 				// 获取 支付方式
 				uni.getProvider({

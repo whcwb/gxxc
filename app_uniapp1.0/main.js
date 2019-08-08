@@ -10,9 +10,8 @@ Vue.prototype.$http = http
 import apis from './ajax/apis.js'
 Vue.prototype.apis = apis;
 
-// import wxUtil from './libs/wechatUtil.js'
-// Vue.prototype.wxUtil = wxUtil;
-// 
+import Met from './libs/CommonMethod.js'
+Vue.prototype.Met = Met;
 // import wxApi from  './libs/wechatUtil'
 // Vue.prototype.wxApi = wxApi;
 
