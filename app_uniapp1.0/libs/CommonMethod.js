@@ -1,12 +1,13 @@
 let Met={
 }
 Met.getUserInfo = (callback)=>{
-    let userInfo = uni.getStorage({
-    	 key: 'userInfo'
-    })
+    let userInfo = uni.getStorage({ key: 'token'})
 	if(userInfo && userInfo!=''&&userInfo!=undefined){
 		callback && callback(userInfo)
 	}else{
+		uni.showToast({
+			title:'用户权限丢失!请重新登录'
+		})
 		uni.navigateTo({
 			url:'/pages/login/login.vue'
 		})

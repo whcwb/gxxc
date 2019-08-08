@@ -72,7 +72,7 @@
 	import uniRate from "@/components/uni-rate/uni-rate.vue"
 	import segmentedControl from "@/components/seg/segmented-control.vue";
 	import vTab from "@/components/v-tab/v-tab.vue"
-	
+	import mixin from '@/common/mixin.js'
 	export default {
 		name: "study",
 		components: {
@@ -80,10 +80,11 @@
 			segmentedControl,
 			vTab
 		},
+		mixins:[mixin],
 		data() {
 			return {
 				appMess: [],
-
+                usermess:{},
 				isPJ:true,				//是否评价，控制显示星星
 				data: [{name:'受理进度'}, {name:'科一'},{name: '科二'}, {name:'科三'}, {name:'科四'}],
 				items: ['受理进度', '科一', '科二', '科三', '科四'],
@@ -246,20 +247,86 @@
 						date: '',
 					}]
 				],
-				safeTeach:'340'
+				safeTeach:'340',
+				zyMess:{//专员信息
+					yhXm:""
+				  },
+				  zyMwssList:[//专员信息列表
+					{
+					  yhXm:""
+					}
+				  ],
+				showStar:false,
+				payInfo:{},//缴费信息
+				examInfo:[],//考试信息
+				handleStatus:[],
 			}
 		},
 		onLaunch() {
 			console.log('onLaunch')
 		},
 		onShow() {
-			console.log('onShow')
+			// this.usermess.userId = uni.getStorage({
+			// 	key:'token',
+			// 	success: function (res) {
+			// 		console.log('this.usermess',res.data);
+			// 	}
+			// })
+			this.getZYmess()//获取专员信息
+			this.getHandleStatus()// 获取受理状态信息
+			this.getPayInfo()// 缴费信息
+			this.getExamInfo()//考试信息
 		},
 		onLoad() {
 			this.btnList=Object.assign(this.btnListAll[0])
 			this.itemList=Object.assign(this.itemListAll[0])
 		},
 		methods: {
+			
+			getZYmess(){//获取专员信息
+			  var v = this
+			  this.$http.post(this.apis.getZYmess,{}).then((res)=>{
+				  console.log('zhuanyuan',res);
+				  if(res.code==200 && res.result){
+					  res.result.forEach((item,index)=>{
+						if(item.jlPf){
+						  item.jlPf = parseInt(item.jlPf)
+						}
+					  })
+					  v.zyMwssList = res.result
+					  v.zyMess = v.zyMwssList[v.timeline]
+					  v.showStar = true;
+				  }
+			  })
+			},
+			 getHandleStatus(){// 获取受理状态信息
+			  this.$http.post(this.apis.getHandleStatus,{yhId: this.usermess.userId}).then((res)=>{
+				  console.log('获取受理状态信息-',res)
+				if (res.code == 200 && res.result){
+				  this.handleStatus = res.result;
+				  // this.thisIndex = parseInt(res.message);
+				}
+			  })
+			},
+			getPayInfo() {// 缴费信息
+			  this.$http.post(this.apis.getPayInfo,{yhId: this.usermess.userId}).then((res)=>{
+				if (res.code == 200 && res.result) {
+				  console.log('缴费信息',res);
+				  
+				  this.payInfo = res.result;
+				}
+			  })
+			},
+			getExamInfo() {// 考试信息
+			  let v = this;
+			  this.$http.get(this.apis.getExamInfo,{yhId: this.usermess.userId}).then((res)=>{
+				  console.log('考试信息',res);
+				  
+				  if (res.code == 200 && res.result) {
+					this.examInfo = res.result;
+				  }
+			  })
+			},
 			gouTxt(url){
 			  window.location.href=url
 			},

@@ -7,7 +7,7 @@
 			<input class="uni-input input" placeholder="请输入手机号" v-model="form.username" />
 			<input class="uni-input input" placeholder="请输入密码" v-model="form.password" />
 		</view>
-		<view style="margin-bottom: 136upx;text-align: right;width: 678upx;font-size:32upx;color:rgba(37,128,222,1);" @click="topwd">忘记密码？</view>
+		<view style="margin-bottom: 136upx;text-align: right;width: 678upx;font-size:28rpx;color:rgba(37,128,222,1);" @click="topwd">忘记密码？</view>
 		<view class="btn" @tap="login">
 			登录
 		</view>
@@ -26,6 +26,11 @@
 					password: '123456'
 				}
 			}
+		},
+		onShow() {
+		   console.log(uni.getStorage({
+		   	    key:'token'
+		   }));
 		},
 		methods: {
 			login() {
@@ -92,7 +97,8 @@
 	.createAccount {
 		width: 160upx;
 		height: 56upx;
-		font-size: 40upx;
+		font-size: 16px;
+		text-align: center;
 		font-weight: 400;
 		color: rgba(51, 51, 51, 1);
 		margin: 0 auto;
