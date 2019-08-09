@@ -14,7 +14,7 @@ const store = new Vuex.Store({
         userName: "",
 		userID:"",
 		payMess:null,//支付信息
-		signUrl:'444'	 //签名
+		signUrl:''	 //签名
     },
     mutations: {
 		// login(state, userName) {

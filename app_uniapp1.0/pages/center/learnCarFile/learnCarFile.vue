@@ -14,7 +14,7 @@
 					</view>
 				</view>
 
-				<scroll-view scroll-y="true" class="box_col_auto" style="padding: 0.35rem 0.5rem;height: 300px;">
+				<scroll-view scroll-y="true" class="box_col_auto" style="width: 96%;height: 300px;margin: 0 auto;">
 					<view>
 						<view class="fonttit">
 							一、总则
@@ -129,8 +129,9 @@
 					</view>
 					<view>
 						<view class="fonttit">八、协议有效期</view>
-						<view class="fontsty">本协议的生效与解除视为学员资格的生效与解除。A类学员协议有效期限自<span style="color: red;"></span>起，至<span style="color: red;"></span>止（有效期三年）。B类学员协议有效期限自<span
-							 style="color: red;"></span>起，至<span style="color: red;"></span>止（有效期一年）。</view>
+						<view class="fontsty">本协议的生效与解除视为学员资格的生效与解除。A类学员协议有效期限自<span style="color: red;">{{getdateStr(0)}}</span>起，至<span
+							 style="color: red;">{{getdateStr(3)}}</span>止（有效期三年）。B类学员协议有效期限自<span style="color: red;">{{getdateStr(0)}}</span>起，至<span
+							 style="color: red;">{{getdateStr(1)}}</span>止（有效期一年）。</view>
 
 					</view>
 					<view>
@@ -148,24 +149,23 @@
 			</view>
 			<view style="overflow: auto;">
 				<view class="box_row" style="padding: 0.15rem 0.3rem;">
-					<view class="userSign" style="margin-right: 0.2rem">
-						<view class="signImg">
-
+					<view class="userSign" style="width: 50%;margin-right: 0.2rem;position: relative;">
+						<view class="signImg" v-show="saveResultUrl!=''" style="top: 18%;right: 30upx;position: absolute;display: inline-block;">
+							<img v-if="saveResultUrl!=''" :src="apis.ajaxBaseUrl+saveResultUrl" style="width: 70upx;height: 70upx;">
 						</view>
 						<view>
 							乙方:{{usermess.yhXm}}
 						</view>
-						<view>
-							经办人:
-							<button class="Pleasesign" type="primary" v-if="" style="width: 100%;font-size: 0.4rem" @click="goSign()">签名</button>
-							<!-- <button class="Pleasesign">已签名</button> -->
+						<view style="display: flex;justify-content: flex-start;align-items: center;">
+							<text>经办人:</text>
+							<button class="Pleasesign" type="primary" v-if="" style="margin-left: 20upx;width: 40%;font-size: 0.4rem" @click="goSign()">{{saveResultUrl==''?'签名':'已签名'}}</button>
 						</view>
 						<view>
-							签订日期:
+							签订日期:{{getdateStr(0)}}
 						</view>
 					</view>
 					<view class="box_row_100" style="position: relative;">
-						<!-- <img src="static/img/gz/thtc.png" class="gzimg"> -->
+						<img src="static/img/gz/thtc.png" class="gzimg" style="width: 100upx;position: absolute;right: -3.2px;top: 0px;">
 						<view>
 							甲方
 							<view class="textAR">武汉天弘腾创科技有限公司</view>
@@ -174,16 +174,16 @@
 							经办人:
 						</view>
 						<view>
-							签订日期：
+							签订日期：{{getdateStr(0)}}
 						</view>
 					</view>
 				</view>
 				<view class="box_row">
 					<view class="box_row_100" style="padding: 0.2rem;" @tap="toPay">
-						<button type="primary" style="width: 100%;font-size: 0.4rem;">同意</button>
+						<button type="primary" style="width: 80%;font-size: 0.4rem;">同意</button>
 					</view>
-					<view class="box_row_100" style="padding: 0.2rem;">
-						<button type="warn" style="width: 100%;font-size: 0.4rem;">拒绝</button>
+					<view class="box_row_100" style="padding: 0.2rem;" @tap="toBack">
+						<button type="warn" style="width: 80%;font-size: 0.4rem;">拒绝</button>
 					</view>
 				</view>
 			</view>
@@ -192,17 +192,19 @@
 </template>
 
 <script>
+	import mixin from '@/common/mixin.js'
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex'
 	export default {
+		mixins: [mixin],
 		data() {
 			return {
 				usermess: {
-					yhXm: '小名',
-					yhZh: '13164799764',
-					yhZjhm: '646448521232569654'
+					yhXm: '',
+					yhZh: '',
+					yhZjhm: ''
 				},
 				iphone: false,
 				saveResultUrl: ''
@@ -211,7 +213,7 @@
 		computed: mapState([
 			'payMess',
 			'signUrl'
-			]),
+		]),
 		methods: {
 			...mapMutations(['setPayMess', 'setSignUrl']),
 			goSign() {
@@ -220,13 +222,45 @@
 				});
 			},
 			toPay() {
+				if (this.saveResultUrl) {
+					uni.navigateTo({
+						url: '/pages/pay/pay'
+					});
+				} else {
+					console.log('请先签名')
+				}
+			},
+			toBack(){
+				this.setSignUrl('');			//先清空
 				uni.navigateTo({
-					url: '/pages/pay/pay'
+					url: '/pages/goMoney/goMoney'
 				});
+			},
+			getSP() {
+				var v = this
+				uni.getSystemInfo({
+					success: function(res) {
+						if (res.model == 'iPhone') {
+							v.iphone = true
+						}
+					}
+				})
+			},
+			getUser() {
+				this.$http.post(this.apis.USERMESS).then(res => {
+					if (res.code == 200) {
+						this.usermess = res.result
+					} else {
+
+					}
+				}).catch(err => {})
 			}
 		},
-		onLoad() {
-			console.log(this.signUrl)
+		onLoad() { //只执行一次
+			this.getSP()
+			this.getUser()
+		},
+		onShow() { //每次进入页面都会执行
 			this.saveResultUrl = this.signUrl
 		}
 	}
@@ -263,10 +297,16 @@
 			margin-top: 15rpx;
 		}
 
+		.sign {
+			width: 30upx;
+			height: 30upx;
+		}
+
 		.userSign {
 			position: relative;
 
 			.signImg {
+				display: inline-block;
 				position: absolute;
 				right: 0.8rem;
 				top: 0rem;
@@ -277,8 +317,8 @@
 				border: #f54d55 0.03rem solid;
 
 				img {
-					width: 100%;
-					height: 100%;
+					width: 30upx;
+					height: 30upx;
 				}
 			}
 		}

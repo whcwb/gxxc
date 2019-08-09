@@ -56,26 +56,35 @@
 				})
 			},
 			upload() {
+				if(this.isDone){						//若已完成认证，则去缴费
+					this.toPay()
+					return
+				}
+				
 				var v = this
 				this.$http.post(this.apis.IDRZ, {
 					'yhZjhm': v.form.sfz,
 					'yhXm': v.form.name
 				}).then(res => {
 					if (res.code == 200) {
-						
+						this.isDone=true
 					} else {
-						
+						uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon:'none'
+						});
 					}
 				})
 			},
 			toPay() {
-				// if(this.isDone){
-				// 	uni.navigateTo({
-				// 	    url: '/pages/goMoney/goMoney',
-				// 	});
-				// }else{
-				// 	this.isDone = true
-				// }
+				if(this.isDone){
+					uni.navigateTo({
+					    url: '/pages/goMoney/goMoney',
+					});
+				}else{
+					this.isDone = true
+				}
 			}
 		}
 	}

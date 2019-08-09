@@ -64,11 +64,16 @@
 				this.$http.post(this.apis.USERZH).then(res => {
 					if (res.code == 200) {
 						if (res.result.yhZhye == 0) {
-							this.ye = 0.00
+							this.ye = '0.00'
 							console.log('1');
 						} else {
 							this.ye = res.result.yhZhye / 100
 						}
+					}else{
+						uni.showToast({
+							title: res.message,
+							duration: 2000
+						});
 					}
 				})
 
@@ -76,17 +81,28 @@
 				this.$http.post(this.apis.ZDLIST, {zjFs: -1,pageSize: 10,pageNum: 1}).then(res => {
 					if (res.code == 200) {
 						this.mxList=res.page.list
-						console.log(this.mxList)
 					}else{
-						//提示框
+						uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon:'none'
+						});
 					}
 
 				})
 			},
 			toChooseBank(){
-				uni.navigateTo({
-					url: '/pages/chooseBank/chooseBank',
-				});
+				if(this.ye = '0.00'){
+					uni.showToast({
+						title: '暂无余额可提现',
+						duration: 2000
+					});
+				}
+				else{
+					uni.navigateTo({
+						url: '/pages/chooseBank/chooseBank',
+					});
+				}
 			}
 		},
 		onLoad() {

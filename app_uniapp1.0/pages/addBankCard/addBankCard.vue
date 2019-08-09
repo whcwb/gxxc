@@ -21,31 +21,50 @@
 		},
 		methods: {
 			saveBankCard() {
-				console.log('绑定中')
+				uni.showLoading({
+					title:'绑定中'
+				})
 				this.$http.post(this.apis.ADDBANK, this.form).then(res => {
 					if (res.code == 200) {
-						console.log('绑定成功')
+						uni.hideLoading()
+						uni.showToast({
+							title: '绑定成功',
+							duration: 2000
+						});
 					} else {
-						console.log('绑定失败')
+						uni.showToast({
+							title: '绑定失败',
+							duration: 2000
+						});
 					}
 				})
 			}
 		},
 		onNavigationBarButtonTap() { //点击了添加按钮,验证银行卡
 			if (this.form.yhkXm == '' || this.form.yhkKh == '' || this.form.dn == '') {
-				console.log('填写不完整')
+				uni.showToast({
+					title: '填写不完整',
+					duration: 2000,
+					icon:'none'
+				});
 				return
 			}
 
 			var v = this
 			this.$http.post(this.apis.YZYHK, this.form).then(res => {
 				if (res.code == 200) {
-					console.log("验证成功")
+					uni.showToast({
+						title: '验证成功',
+						duration: 2000
+					});
 					setTimeout(() => {
 						v.saveBankCard()
-					}, 1500);
+					}, 2000);
 				} else {
-					console.log('验证失败')
+					uni.showToast({
+						title: res.message,
+						duration: 2000
+					});
 				}
 			})
 

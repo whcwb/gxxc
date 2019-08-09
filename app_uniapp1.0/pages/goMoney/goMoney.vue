@@ -48,15 +48,16 @@
 				this.$http.post(this.apis.CPLIST, {}).then(res => {
 					if (res.code == 200 && res.result) {
 						this.list = res.result
-						console.log(this.list)
-						this.list.map((val, index, arr) => {
-							console.log(JSON.parse(val.cpXyJson))
-						})
+					}else{
+						uni.showToast({
+							title: res.message,
+							duration: 2000
+						});
 					}
 				})
 			},
 			toFile(item) {
-				this.setPayMess(item)
+				this.setPayMess(item)						//将此套餐存入vuex中
 				uni.navigateTo({
 					url: '/pages/center/learnCarFile/learnCarFile'
 				})

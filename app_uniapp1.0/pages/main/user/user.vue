@@ -47,7 +47,7 @@
 		},
 		data() {
 			return {
-				user:{},
+				user: {},
 				btnList: [{
 						src: '/static/img/my/ljjf.png',
 						text: '立即缴费',
@@ -97,22 +97,17 @@
 					url: '../../login/login',
 				});
 			},
-			getUser(){
+			getUser() {
 				//获取基本信息
 				this.$http.post(this.apis.USERMESS).then(res => {
-					if(res.code==200){
-						this.user=res.result
-					}else{
-						
-					}
-				}).catch(err => {})
-				
-				//获取头像
-				this.$http.post(this.apis.USERIMGMESS).then(res => {
-					if(res.code==200){
-						
-					}else{
-						
+					if (res.code == 200) {
+						this.user = res.result
+					} else {
+						uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon:'none'
+						});
 					}
 				}).catch(err => {})
 			},
@@ -122,7 +117,7 @@
 				});
 			},
 			toPage(item) {
-				if(item.text=='立即缴费'&&this.user.yhZt!= '1'){				//源控制语句
+				if (item.text == '立即缴费' && this.user.yhZt != '1') { //源控制语句
 					//弹出提示框
 					return
 				}

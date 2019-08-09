@@ -12,6 +12,10 @@ Vue.prototype.apis = apis;
 
 import Met from './libs/CommonMethod.js'
 Vue.prototype.Met = Met;
+
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard);
 // import wxApi from  './libs/wechatUtil'
 // Vue.prototype.wxApi = wxApi;
 
