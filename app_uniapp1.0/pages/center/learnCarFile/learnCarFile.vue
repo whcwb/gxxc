@@ -192,11 +192,13 @@
 </template>
 
 <script>
+	import mixin from '@/common/mixin.js'
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex'
 	export default {
+		mixins:[mixin],
 		data() {
 			return {
 				usermess: {
@@ -211,7 +213,7 @@
 		computed: mapState([
 			'payMess',
 			'signUrl'
-			]),
+		]),
 		methods: {
 			...mapMutations(['setPayMess', 'setSignUrl']),
 			goSign() {
@@ -223,11 +225,23 @@
 				uni.navigateTo({
 					url: '/pages/pay/pay'
 				});
+			},
+			getSP() {
+				var v = this
+				uni.getSystemInfo({
+					success: function(res) {
+						console.log(res)
+						if (res.model == 'iPhone') {
+							v.iphone = true
+						}
+					}
+				})
 			}
 		},
 		onLoad() {
-			console.log(this.signUrl)
+			this.getSP()
 			this.saveResultUrl = this.signUrl
+			console.log(this.getUser)
 		}
 	}
 </script>

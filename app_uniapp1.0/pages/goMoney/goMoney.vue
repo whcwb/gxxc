@@ -56,7 +56,7 @@
 				})
 			},
 			toFile(item) {
-				this.setPayMess(item)
+				this.setPayMess(item)						//将此套餐存入vuex中
 				uni.navigateTo({
 					url: '/pages/center/learnCarFile/learnCarFile'
 				})
