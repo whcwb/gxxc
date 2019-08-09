@@ -16,7 +16,9 @@ export default {
 					break;
 			}
 		},
-
+		jljxsl:(val) =>{
+			return 0
+		},
 		yhXm: (val) => { //用户姓名
 			if (val) {
 				return val

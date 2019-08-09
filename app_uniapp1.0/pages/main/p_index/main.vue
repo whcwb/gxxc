@@ -48,25 +48,25 @@
 
 		<view class="butBox box_row rowAuto colCenter">
 			<view class="butItenSty" @click="goJkzn">
-				<img src="./file/img/jkzn.png" alt="">
+				<img src="./file/img/flfg2.png" alt="">
 				<view class="text">
 					法律法规
 				</view>
 			</view>
 			<view class="butItenSty" @click="gobkjf">
-				<img src="./file/img/bkjf.png" alt="">
+				<img src="./file/img/jkzn2.png" alt="">
 				<view class="text">
 					驾考指南
 				</view>
 			</view>
 			<view class="butItenSty" @click="goplfw">
-				<img src="./file/img/plfw.png" alt="">
+				<img src="./file/img/jtbs2.png" alt="">
 				<view class="text">
 					交通标志
 				</view>
 			</view>
 			<view class="butItenSty" @click="gokcfb">
-				<img src="./file/img/kcfb.png" alt="">
+				<img src="./file/img/xllc2.png" alt="">
 				<view class="text">
 					学车流程
 				</view>
