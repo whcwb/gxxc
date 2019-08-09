@@ -14,6 +14,7 @@ import com.cwb.platform.biz.wxpkg.service.WechatService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.MathUtil;
 import com.cwb.platform.util.commonUtil.ZXingCode;
@@ -26,6 +27,8 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -130,13 +134,18 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         newBizYjmx1.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
         newBizYjmx1.setMxlx("1");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
         yjmxService.save(newBizYjmx1);
-
-        if(!StringUtils.equals(order.getCpId(),"464480599185293312")){
+        BizPtyh queryUser=ptyhService.findById(order.getYhId());
+        long time = DateTime.now().toDate().getTime();
+        org.joda.time.format.DateTimeFormatter pattern = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        long kssj = DateTime.parse(queryUser.getYhYqmkssj(), pattern).plusYears(1).toDate().getTime();
+        long ti = time - kssj;
+        if(!(queryUser.getDdSfjx().equals("0") && order.getCpId().equals("464480599185293312") && ti < 0)){
             newBizYjmx1.setId(genId());
             newBizYjmx1.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
             newBizYjmx1.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
             yjmxService.save(newBizYjmx1);
         }
+
         BizCp bizCp = cpService.findById(order.getCpId());
         String yhZsyqm ="";
         String yhZsyqmImg ="";
@@ -145,7 +154,7 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         order.setPayMoney(l.getPayMoney());
         order.setDdZftd(l.getDdZftd());
 
-        BizPtyh queryUser=ptyhService.findById(order.getYhId());
+
 
         // 判断订单产品是否属于学费，只有学费才生成邀请码
         if(StringUtils.equals(bizCp.getCpType(),"1")||StringUtils.equals(bizCp.getCpType(),"3")) { // 产品类型为会员、学员时 ， 需要生成邀请码

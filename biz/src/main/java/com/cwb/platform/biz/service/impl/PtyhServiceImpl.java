@@ -679,7 +679,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhIxySffp("0");//学员是否已分配
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
-//        newEntity.setYhTx("temp/logo.png");
+        newEntity.setYhTx("temp/logo.png");
 
         String bizptyhlog = "";
         try {
@@ -1424,6 +1424,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         // 进行分配操作
         if (CollectionUtils.isNotEmpty(ids)) {
+            entityMapper.updateJxsl(jlId, ids.size());
             userService.updateJlId(ids, jlId, jlType);
             entityMapper.updateJlFp(ids, "该学员于：" + DateUtils.getNowTime() + " 分配给受理专员：" + users.getYhXm() + "");
         }
@@ -1912,8 +1913,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             newBizJl.setJlMs(bizJl.getJlMs());
             newBizJl.setJlShZt(bizJl.getJlShZt());
             newBizJl.setJlShMs(bizJl.getJlShMs());
-
-
+            newBizJl.setJlJxsl(bizJl.getJlJxsl());
             bizJls.add(newBizJl);
         } else {
             bizJls.add(null);

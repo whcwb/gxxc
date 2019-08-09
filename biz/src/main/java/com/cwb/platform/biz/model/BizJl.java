@@ -106,6 +106,12 @@ public class BizJl implements Serializable {
     private String jlShMs;
 
     /**
+     * 教练安全教学数量
+     */
+    @Column(name = "JL_JXSL")
+    private Integer jlJxsl;
+
+    /**
      * 上传个人文件，以","进行分隔。
      */
     @Transient
@@ -127,6 +133,14 @@ public class BizJl implements Serializable {
      */
     @Transient
     private Integer yhFz;
+
+    public Integer getJlJxsl() {
+        return jlJxsl;
+    }
+
+    public void setJlJxsl(Integer jlJxsl) {
+        this.jlJxsl = jlJxsl;
+    }
 
     public Integer getYhFz() {
         return yhFz;
