@@ -2,6 +2,11 @@
 	<view class="box_col pager-index">
 		<view class="status_bar"></view>
 		<view class="pagerTit-Box">
+			<swiper class="swiper" :autoplay="true" style="height: 100%;">
+                <swiper-item v-for="(item,index) in items" :key='index'>
+					   <image style="width: 100%;height: 100%;" :src='item.hdTpdz' mode="widthFix"></image>
+                </swiper-item>
+             </swiper>
 			<view class="funcBox" v-show="userMess">
 				<div class="box_row colCenter rowBetween haveUser">
 					<div @click='toTx'>
@@ -10,7 +15,7 @@
 						</div>
 						<div class="linesty"></div>
 						<div class="valSty">
-							2800元
+							{{zhYE.yhZhye/100}}元
 						</div>
 					</div>
 					<img class="eCodeSty" src="./file/img/eCode.png" alt="" @click='toCode'>
@@ -20,7 +25,7 @@
 						</div>
 						<div class="linesty"></div>
 						<div class="valSty">
-							20人
+							{{USERMESS.userInviteCount}}人
 						</div>
 					</div>
 				</div>
@@ -37,7 +42,7 @@
 			</view>
 		</view>
 
-		<div class="advbox" @click="ChangeUser">
+		<div v-if='USERMESS.yhLx != 1' class="advbox" @click="ChangeUser">
 			<img src="./file/img/advimg.png" alt="">
 		</div>
 
@@ -108,7 +113,12 @@
 		computed: mapState(['hasLogin', 'userName']),
 		data(){
 			return {
-				userMess:true
+				userMess:true,
+				USERMESS:'',//用户信息
+				zhYE: {
+					yhZhye: 0   //账户余额
+				},
+				items:[{}], //banner图
 			}
 		},
 		onLoad() {
@@ -116,42 +126,58 @@
 			if(!userInfo){
 				return false
 			}
-			return
-			if (!this.hasLogin) {
-				uni.showModal({
-					title: '未登录',
-					content: '您未登录，需要登录后才能继续',
-					/**
-					 * 如果需要强制登录，不显示取消按钮
-					 */
-					showCancel: false,
-					success: (res) => {
-						if (res.confirm) {
-							/**
-							 * 如果需要强制登录，使用reLaunch方式
-							 */
-							if (this.hasLogin) {
-								uni.reLaunch({
-									url: '../../login/login'
-								});
-							} else {
-								uni.navigateTo({
-									url: '../../login/login'
-								});
-							}
-						}
-					}
-				});
+			
+		},
+		onShow() {
+			this.getbanner()
+			this.getYE()
+			this.getUsermess()
+			var userInfo = this.Met.getUserInfo()
+			if(!userInfo){
+				return false
 			}
+		   console.log(uni.getStorage({
+		   	    key:'token'
+		   }));
+		},
+		created() {
+			
 		},
 		methods:{
+			getUsermess(){
+				this.$http.post(this.apis.USERMESS,{}).then((res)=>{
+					if(res.code == 200){
+						this.USERMESS = res.result
+					}
+				})
+			},
+			getbanner(){//获取轮播图
+				this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{
+					console.log(res)
+					if(res.code==200){
+					  this.items = res.page.list
+					}
+				})
+			},
+			getYE() {//获取账户余额
+			  var v = this
+			  this.$http.post(this.apis.USERZH,{}).then((res)=>{
+				  if(res.code==200){
+					v.zhYE.yhZhye = res.result.yhZhye
+				  }else{
+					uni.showToast({ title:res.message})
+				  }
+			  })
+			},
 			toTx(){
 				uni.navigateTo({
 					url: '/pages/yqJl/yqJl'
 				});
 			},
 			ChangeUser(){
-				this.userMess = !this.userMess
+				uni.navigateTo({
+					url:'/pages/goMoney/goMoney'
+				})
 			},
 			goAut(){
 				uni.navigateTo({
@@ -203,7 +229,7 @@
 
 		.pagerTit-Box {
 			background-color: #3B93FD;
-			height: 460rpx;
+			height: 350rpx;
 			position: relative;
 			margin-bottom: 109upx;
 		}
@@ -296,7 +322,7 @@
 				background:linear-gradient(132deg,rgba(59,147,253,1) 0%,rgba(60,128,253,1) 41%,rgba(55,84,252,1) 100%);
 			}
 			.titText{
-				font-size: 44rpx;
+				font-size: 32rpx;
 				font-family: PingFangSC-Medium;
 				font-weight: 500;
 				color: rgba(51, 51, 51, 1);
@@ -332,7 +358,7 @@
 				}
 
 				.name {
-					font-size: 36rpx;
+					font-size: 32rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: rgba(51, 51, 51, 1);

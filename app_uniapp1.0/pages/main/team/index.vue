@@ -1,18 +1,20 @@
 <template>
-		<view class="box_col" style="width: 100%;">
-			<view class="box_row">
-				<view class="box_row_100">
-					<mSearch :show='false' :mode="2" @search="search($event,2)" placeholder='请输入姓名'></mSearch>
-				</view>
-				<view  style="width: 80px;">
-					 <sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
+		<view class="box_col" style="width: 100%">
+			<view class="box_col_100">
+				<view class="box_row">
+					<view class="box_row_100">
+						<mSearch :show='false' :mode="2" @search="search($event,2)" placeholder='请输入姓名'></mSearch>
+					</view>
+					<view  style="width: 80px;">
+						 <sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
+					</view>
 				</view>
 			</view>
 			<view class="box_col_100">
 				<view class="teamListBox">
-					<view class="itemSty box_row" v-for="(it,index) in studentList" :key="index">
+					<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
 						<!-- <view class="avaSty"> -->
-							<img src="./file/img/jkzn.png" alt="">
+							<img :src="it.userDetail.yhTx" alt="">
 						<!-- </view> -->
 						<view class="messBox">
 							<view class="box_row colCenter">
@@ -33,9 +35,7 @@
 				       </view>
 					</view>
 			</view>
-			<view class="loading-text" style="margin-bottom: 120upx;">
-			{{loadingType === 0 ? contentText.contentdown : (loadingType === 1 ? contentText.contentrefresh : contentText.contentnomore)}}
-			</view>
+			<uni-load-more  :loadingType="loadingType" :contentText="contentText" ></uni-load-more>
 		</view>
 </template>
 
@@ -43,8 +43,9 @@
 	import mSearch from '@/components/mehaotian-search/mehaotian-search.vue';
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 	import slFilter from '@/components/songlazy-sl-filter/sl-filter/sl-filter.vue';
-	var  _self,
-	page = 1;
+	var _self,
+	page = 1,
+	timer = null;
 	export default{
 		name:"",
 		 components: {
@@ -52,9 +53,6 @@
 		},
 		data(){
 			return {
-				// more = contentdown: "上拉显示更多",
-            // loading =contentrefresh: "正在加载...",
-            // nomore = contentnomore: "没有更多数据了"
 				val0: '',
 				themeColor: '#3B93FD',
 				independence:true,
@@ -68,70 +66,105 @@
 						'detailList': [
 						{
 							'title': '已缴费',
-							'value': 'val_1_1'
+							'value': 1
 						},
 						{
 							'title': '未交费',
-							'value': 'val_1_2'
+							'value': 0
 						}
 					]
 					}
 				],
-				studentJson:[],
-				studentList:[],
-				loadingType: 0,
-				pageNum:8,
+				newsList: [],
+				loadingText: '加载中...',
+				loadingType: 0,//定义加载方式 0---contentdown  1---contentrefresh 2---contentnomore
 				contentText: {
-					contentdown: "上拉显示更多",
-					contentrefresh: "正在加载...",
-					contentnomore: "没有更多数据了"
+					contentdown:'上拉显示更多',
+					contentrefresh: '正在加载...',
+					contentnomore: '没有更多数据了'
 				}
 			}
 		},
-		onLoad: function (options) {
-			_self = this;
-			this.studentJson.map((val,index,arr)=>{						//模拟获取数据，模拟为一次显示4条
-				if(index<this.pageNum)
-					this.studentList[this.studentList.length]=val
-			})
-			console.log(this.studentJson.length)
+		onLoad: function() {
+        _self = this;
+				//页面一加载时请求一次数据
+        this.getnewsList();
 		},
-		onReachBottom() {
-			var v=this
-			// console.log(_self.newsList.length);
-			if (_self.loadingType != 0) {//loadingType!=0;直接返回
-				return false;
+		onPullDownRefresh: function() {
+					//下拉刷新的时候请求一次数据
+			this.getnewsList();
+		},
+		onReachBottom: function() {
+				//触底的时候请求数据，即为上拉加载更多
+				//为了更加清楚的看到效果，添加了定时器
+			if (timer != null) {
+				clearTimeout(timer);
 			}
-			_self.loadingType = 1;
-			//设置一个定时器，能看出加载的效果
-			setTimeout(()=>{
-				var pageNum1=v.pageNum+4
-				v.studentJson.map((val,index,arr)=>{						//模拟获取数据，模拟为一次显示4条
-					if(index>=v.pageNum&&index<pageNum1)
-						v.studentList.push(val)
-				})
-				console.log(v.studentList)
-				if(v.studentList.length>=v.studentJson.length){
-								_self.loadingType = 2;
-								return false;
-				}
-				v.pageNum=pageNum1
-				_self.loadingType = 0;
-			},2000)
-		 
+			timer = setTimeout(function() {
+				_self.getmorenews();
+			}, 1000);
+					
+					// 正常应为:
+					// _self.getmorenews();
 		},
 
 		onShow(){
+			this.getPagerList(['','','','',1]);
 			// console.log('onShow')
 		},
 		created() {
-			this.getPagerList(['','','','',1]);
+			
 		},
 		methods:{
-			getPagerList(Arr){
-				this.$http.post(this.apis.TEAMMESS,{yhxm:Arr[0],grade:Arr[1],yhlx:Arr[2],sfjf:Arr[3],pageNum:Arr[4],pageSize:10}).then((res)=>{
+			getmorenews: function() {
+				if (_self.loadingType !== 0) {//loadingType!=0;直接返回
+					return false;
+				}
+				_self.loadingType = 1;
+				uni.showNavigationBarLoading();//显示加载动画
+				this.$http.post(this.apis.TEAMMESS,{yhxm:'',grade:'',yhlx:'',sfjf:'',pageNum:page,pageSize:8}).then((res)=>{
 					if(res.code == 200){
-						this.studentList = res.page.list
+						this.newsList = res.page.list
+						page++;//得到数据之后page+1
+						_self.newsList = res.data.split('');
+						uni.hideNavigationBarLoading();
+						uni.stopPullDownRefresh();//得到数据后停止下拉刷新
+					}else{
+						uni.showToast({
+							title:res.message,
+							icon:'none',
+							duration: 1500
+						});
+					}
+				})
+			},
+			getnewsList: function(Arr) {//第一次回去数据
+				page = 1;
+				this.loadingType = 0;
+				uni.showNavigationBarLoading();
+				    
+					this.$http.post(this.apis.TEAMMESS,{yhxm:'',grade:'',yhlx:'',sfjf:'',pageNum:page,pageSize:8}).then((res)=>{
+						if(res.code == 200){
+							this.newsList = res.page.list
+							page++;//得到数据之后page+1
+							_self.newsList = res.data.split('');
+							uni.hideNavigationBarLoading();
+							uni.stopPullDownRefresh();//得到数据后停止下拉刷新
+						}else{
+							uni.showToast({
+								title:res.message,
+								icon:'none',
+								duration: 1500
+							});
+						}
+					})
+			},
+
+			getPagerList(Arr){
+				this.$http.post(this.apis.TEAMMESS,{yhxm:Arr[0],grade:Arr[1],yhlx:Arr[2],sfjf:Arr[3],pageNum:Arr[4],pageSize:8}).then((res)=>{
+					if(res.code == 200){
+						this.newsList = res.page.list
+						
 					}else{
 						uni.showToast({
 							title:res.message,
@@ -144,10 +177,11 @@
 			search(e, val) {
 				console.log(e, val);
 				this['val'+val] = e;
+				this.getPagerList([e,'','','',1])
 			},
 			 result(val) {
-                console.log('filter_result:' + JSON.stringify(val));
                 this.filterResult = JSON.stringify(val, null, 2)
+				this.getPagerList(['','','',val.key_1,1])
             }
 		}
 	}
