@@ -148,6 +148,11 @@
 				this.$http.post(this.apis.USERMESS,{}).then((res)=>{
 					if(res.code == 200){
 						this.USERMESS = res.result
+						if(this.USERMESS.yhZt == 1){
+							this.userMess = true
+						}else{
+							this.userMess = false
+						}
 					}
 				})
 			},

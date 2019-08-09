@@ -11,11 +11,12 @@
 		<view class="bg">
 			<view class="person">
 				<view class="headTip">
-					安全教学{{safeTeach}}次
+					安全教学{{zyMess.jljxsl | jljxsl}}次
 				</view>
-				<img src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
-				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">王刚教练</view>
-				<uni-rate value="3" v-if="isPJ"></uni-rate>
+				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;">
+				<img v-else src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
+				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">{{zyMess.yhXm | yhXmZY}}</view>
+				<uni-rate :value="zyMess.jlPf" v-if="isPJ">{{zyMess.jlPf}}</uni-rate>
 				<view v-else style="border-bottom: 2upx solid #FFFFFF;margin-top: 18upx;font-size:28upx;font-weight:400;color:rgba(255,255,255,1);">
 					评价教练>
 				</view>
@@ -27,7 +28,7 @@
 		</view>
 
 		<view class="btnClass">
-			<view v-for="item in btnList" style="margin: 38upx 0;text-align: center;width: 30%;" @click="gouTxt(item.url)">
+			<view v-for="(item,index) in btnList" :key='index' style="margin: 38upx 0;text-align: center;width: 30%;" @click="gouTxt(item.url)">
 				<img v-if="item.src!=''" :src="item.src" style="width: 116upx;height: 116upx;">
 				<view v-else style="width: 116upx;height: 116upx;"></view>
 				<view style="font-size:28upx;font-weight:400;color: #333333;">
@@ -49,7 +50,7 @@
 						{{alreayPay[current-1]?'已缴费':'未缴费'}}
 					</view>
 				</view>
-				<view v-for="item in itemList" style="margin:26upx 0 0 48upx;display: flex;align-items:flex-start">
+				<view v-for="(item,index) in itemList" :key='index' style="margin:26upx 0 0 48upx;display: flex;align-items:flex-start">
 					<image :src="item.state==='已完成'||item.state==='合格'?'/static/img/ok.png':'/static/img/no.png'" style="top: 14upx;width: 36upx;height: 36upx;"></image>
 					<view class="item">
 						<view style="padding:0 20upx;margin-top: 14upx;display: flex;justify-content: space-between">
@@ -83,9 +84,11 @@
 		mixins:[mixin],
 		data() {
 			return {
+				imgUrl:'http://www.520xclm.com:8001/',
 				appMess: [],
                 usermess:{},
-				isPJ:true,				//是否评价，控制显示星星
+				isPJ:true,	//是否评价，控制显示星星
+				star:0,
 				data: [{name:'受理进度'}, {name:'科一'},{name: '科二'}, {name:'科三'}, {name:'科四'}],
 				items: ['受理进度', '科一', '科二', '科三', '科四'],
 				current: 0,
@@ -200,18 +203,18 @@
 						}
 					]
 				],
-				alreayPay: [true, false, false, false], //科一~四缴费情况
+				alreayPay: [false, false, false, false], //科一~四缴费情况
 				itemList: [], //装item的list，以下的list数据在对接接口时可直接写成一个数组
 				itemListAll: [
 					[{
 							name: '医院体检',
-							state: '已完成',
+							state: '待完成',
 							tip: '湖北省中医院',
 							date: '2019年7月30日'
 						},
 						{
 							name: '入网面签',
-							state: '已完成',
+							state: '待完成',
 							tip: '蓝盾驾校',
 							date: '2019年7月31日'
 						},
@@ -220,13 +223,19 @@
 							state: '待完成',
 							tip: '蓝盾驾校',
 							date: '2019年8月1日'
+						},
+						{
+							name: '受理成功',
+							state: '待完成',
+							tip: '蓝盾驾校',
+							date: '2019年8月1日'
 						}
 					],
 					[{
-						name: '东山考场',
+						name: '',
 						state: '合格',
 						tip: '第一次考试',
-						date: '2019年7月30日',
+						date: '',
 					}],
 					[{
 						name: '东山考场',
@@ -266,12 +275,7 @@
 			console.log('onLaunch')
 		},
 		onShow() {
-			// this.usermess.userId = uni.getStorage({
-			// 	key:'token',
-			// 	success: function (res) {
-			// 		console.log('this.usermess',res.data);
-			// 	}
-			// })
+			this.usermess = uni.getStorageSync('token')
 			this.getZYmess()//获取专员信息
 			this.getHandleStatus()// 获取受理状态信息
 			this.getPayInfo()// 缴费信息
@@ -282,7 +286,6 @@
 			this.itemList=Object.assign(this.itemListAll[0])
 		},
 		methods: {
-			
 			getZYmess(){//获取专员信息
 			  var v = this
 			  this.$http.post(this.apis.getZYmess,{}).then((res)=>{
@@ -294,8 +297,8 @@
 						}
 					  })
 					  v.zyMwssList = res.result
-					  v.zyMess = v.zyMwssList[v.timeline]
-					  v.showStar = true;
+					  v.zyMess = v.zyMwssList[v.current]
+					  console.log(v.zyMess.jlPf,'zyMess');
 				  }
 			  })
 			},
@@ -304,16 +307,31 @@
 				  console.log('获取受理状态信息-',res)
 				if (res.code == 200 && res.result){
 				  this.handleStatus = res.result;
+				  let a = this.itemListAll[0]
+				  for(var key in res.result){
+					  a[key-1].tip = res.result[key].name
+					  a[key-1].date = res.result[key].slSj
+					  a[key-1].state ='已完成'
+					  // name: '医院体检',
+					  // state: '已完成',
+					  // tip: '湖北省中医院',
+					  // date: '2019年7月30日'
+				  }
 				  // this.thisIndex = parseInt(res.message);
 				}
 			  })
-			},
+			}, 
 			getPayInfo() {// 缴费信息
 			  this.$http.post(this.apis.getPayInfo,{yhId: this.usermess.userId}).then((res)=>{
 				if (res.code == 200 && res.result) {
 				  console.log('缴费信息',res);
-				  
 				  this.payInfo = res.result;
+				  if(this.payInfo&&this.payInfo!=''){
+					  for (var key in res.result) {
+						  if(res.result[key] == '已缴')
+					  	 this.alreayPay[key-1] = true
+					  }
+				  }
 				}
 			  })
 			},
@@ -321,9 +339,62 @@
 			  let v = this;
 			  this.$http.get(this.apis.getExamInfo,{yhId: this.usermess.userId}).then((res)=>{
 				  console.log('考试信息',res);
-				  
 				  if (res.code == 200 && res.result) {
 					this.examInfo = res.result;
+					let a = this.itemListAll;
+					
+					for(var key in res.result){
+					    let b = {name: '',
+					    		 state: '',
+					    		 tip: '',
+					    		date: '',}
+								let k = res.result[key].kmCode
+								
+						console.log(res.result[key].kmCode+'123')
+						a[k][0].name = res.result[key].schoolName
+						a[k][0].date = res.result[key].ykSj
+						if (res.result[key].cj1 == ""){
+							a[k][0].state= "未考试"
+						}else{
+						if(res.result[key].kmCode!='2'){
+							if(res.result[key].cj1>=90){
+								a[k][0].state = '合格'
+							}else{
+								a[k][0].state = '不合格'
+								b.name = res.result[key].schoolName
+								b.date = res.result[key].ykSj
+								b.tip = '第二次考试'
+								if(res.result[key].cj2>=90){
+									b.state = '合格'
+								}else{
+									b.state = '不合格'
+								}
+								a[k][1] = b
+							}
+							
+						}else{
+							if(res.result[key].cj1>=80){
+								a[k][0].state = '合格'
+							}else{
+								a[k][0].state = '不合格'
+								b.name = res.result[key].schoolName
+								b.date = res.result[key].ykSj
+								b.tip = '第二次考试'
+								if(res.result[key].cj2>=80){
+									b.state = '合格'
+								}else{
+									b.state = '不合格'
+								}
+								a[k][1] = b
+							}
+						}
+						a[k][0].tip = '第一次考试'
+						}
+						
+						
+					}
+					this.itemListAll = a 
+					console.log(this.itemListAll,'this.itemListAll');
 				  }
 			  })
 			},
@@ -350,6 +421,13 @@
 
 
 			onClickItem(index) {
+				console.log(index)
+				this.zyMess = this.zyMwssList[index] //板块切换 专员信息 随之切换
+				if(this.zyMess.yhXm == ''){
+					this.isPJ = false
+				}else{
+					this.isPJ = true
+				}
 				if (this.current !== index) {					
 						this.current = index;
 						this.btnList = Object.assign(this.btnListAll[index])
