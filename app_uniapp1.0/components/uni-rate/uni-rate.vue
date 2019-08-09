@@ -57,6 +57,7 @@
 				valueSync: this.value
 			}
 		},
+		watch:{ 'value':function(value){ this.valueSync = value; } } ,
 		computed: {
 			stars() {
 				const max = Number(this.maxSync) ? Number(this.maxSync) : 5
@@ -79,6 +80,7 @@
 						})
 					}
 				}
+				
 				return starList
 			}
 		},
