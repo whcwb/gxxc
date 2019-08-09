@@ -1,7 +1,7 @@
 <template>
 	<view style="width: 100%;height: 100vh;background-color: #F5F6F9;">
-		<view class="addBank" @tap="toAddCard">
-			<view style="margin: 0 auto;width: 60upx;font-size: 70upx;font-weight: 400;">+</view>
+		<view class="addBank">
+			<view @tap="toAddCard" style="margin: 0 auto;width: 60upx;font-size: 70upx;font-weight: 400;">+</view>
 		</view>
 		<view v-if="bankList.length==0" class="none">暂无银行卡，请添加</view>
 		<view v-if="bankList.length!=0" :class="index==bankListIndex?'MyMoneyBox choose':'MyMoneyBox'" v-for="(item,index) in bankList"
@@ -42,9 +42,20 @@
 				ttfs: 1
 			}).then(res => {
 				if (res.code == 200) {
-					// 提示提现成功
-					uni.navigateTo({
-						url: '/pages/yqJl/yqJl',
+					uni.showToast({
+						title: '提现成功',
+						duration: 2000
+					});
+					setTimeout(()=>{
+						uni.navigateTo({
+							url: '/pages/yqJl/yqJl',
+						});
+					},2000) 
+				}else{
+					 uni.showToast({
+						title: res.message,
+						duration: 2000,
+						icon:'none'
 					});
 				}
 			})
@@ -69,6 +80,11 @@
 				this.$http.post(this.apis.USERZH).then(res => {
 					if (res.code == 200) {
 						this.ye = res.result.yhZhye / 100
+					}else{
+						uni.showToast({
+							title: res.message,
+							duration: 2000
+						});
 					}
 				})
 			},

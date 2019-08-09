@@ -35,7 +35,13 @@
 				  if(res.code==200){
 					  v.itemList=res.page.list
 				  }
-				  
+				  else{
+					  uni.showToast({
+					  	title: res.message,
+					  	duration: 2000,
+						icon:'none'
+					  });
+				  }
 				})
 			}
 		},

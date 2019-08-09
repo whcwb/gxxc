@@ -8,7 +8,8 @@
 			</view>
 			<img :src="user.yhZsyqmImg" style="margin-top: 42upx;width: 396upx;height: 396upx;">
 			<text style="display: block;margin-top: 38upx;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：{{user.yhZsyqm}}</text>
-			<view class="copybtn">
+			<view class="copybtn" v-clipboard:copy="user.yhZsyqm" v-clipboard:success="(type) => onCopyResult('success')"
+			 v-clipboard:error="(type) => onCopyResult('error')">
 				点此复制邀请码
 			</view>
 			<view class="sharebtn">
@@ -22,18 +23,31 @@
 	export default {
 		data() {
 			return {
-				user:{}
+				user: {}
 			}
 		},
 		methods: {
-
+			onCopyResult(type) {
+				if (type === 'success') {
+					uni.showToast({
+						title: '复制成功',
+						duration: 2000
+					});
+				} else {
+					uni.showToast({
+						title: '复制失败,请手动长按复制',
+						duration: 2000,
+						icon:'none'
+					});
+				}
+			}
 		},
 		onLoad() {
 			this.$http.post(this.apis.USERMESS).then(res => {
-				if(res.code==200){
-					this.user=res.result
-				}else{
-					
+				if (res.code == 200) {
+					this.user = res.result
+				} else {
+
 				}
 			}).catch(err => {})
 		}
