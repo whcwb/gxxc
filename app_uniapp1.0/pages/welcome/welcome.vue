@@ -21,24 +21,30 @@
 		},
 		onReady() {
 			// #ifdef H5
-			this.getWxJs()
+			// this.getWxJs()
 			// #endif
+			this.toLogin()
 			this.$refs.loading.open()
-			// setTimeout((val, index, arr) => {
-			// 	uni.navigateTo({
-			// 		url: '/pages/login/login',
-			// 	});
-			// }, 3000)
 		},
 		methods: {
 			toLogin() {
-				uni.navigateTo({
-					url: '/pages/login/login',
-				});
+				var  token = uni.getStorageSync('token');
+				if(token){
+					uni.switchTab({
+						url: '/pages/main/p_index/main'
+					});
+				}else{
+					uni.navigateTo({
+						url: '../login/login',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+				
 			},
 			getWxJs() {
 				var v = this
-				console.log("============================getWxJs")
 				// 微信js初始化 
 				var script = document.createElement("script")
 				script.type = "text/javascript"
@@ -46,24 +52,21 @@
 				document.body.appendChild(script)
 
 				script.onload = function() { // 微信js初始化 回调函数
-					console.log('*****wx', wx)
+					// console.log('*****wx', wx)
 // 					// 微信js初始化成功后引用 微信功能方法
 // 					//获取Code 直
 					let authCode = v.wxApi.getQueryString("code");
-					console.log('获取code', authCode)
-					alert('获取code=      '+authCode);
+					// console.log('获取code', authCode)
 					if (authCode) {
-
 						// 获取Openid
 						v.wxApi.vueParent = this;
 						v.wxApi.getOpenid(authCode, (res) => {
-							console.log('openid-------', res)
-							// alert("wx3+"+res);
+							// console.log('openid-------', res)
 							localStorage.setItem("openid", res); //存储openid
 							v.wxApi.initConfig(); //执行 微信 config
+							v.toLogin()
 						});
 					} else {
-						alert('1')
 						v.wxApi.getCode()
 						return
 					}

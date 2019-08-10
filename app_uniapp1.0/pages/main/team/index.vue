@@ -124,9 +124,17 @@
 				uni.showNavigationBarLoading();//显示加载动画
 				this.$http.post(this.apis.TEAMMESS,{yhxm:'',grade:'',yhlx:'',sfjf:'',pageNum:page,pageSize:8}).then((res)=>{
 					if(res.code == 200){
+						if(res.page.list == null){
+							 _self.loadingType = 2;
+							uni.hideNavigationBarLoading();//关闭加载动画
+							return;
+						}
 						this.newsList = res.page.list
 						page++;//得到数据之后page+1
-						_self.newsList = res.data.split('');
+						res.page.list.forEach((item,index) => {
+							  v.newsList.push(item)
+						 });
+						_self.loadingType = 2;
 						uni.hideNavigationBarLoading();
 						uni.stopPullDownRefresh();//得到数据后停止下拉刷新
 					}else{
@@ -147,7 +155,7 @@
 						if(res.code == 200){
 							this.newsList = res.page.list
 							page++;//得到数据之后page+1
-							_self.newsList = res.data.split('');
+							// _self.newsList = res.page.list.split('--hcSplitor--');
 							uni.hideNavigationBarLoading();
 							uni.stopPullDownRefresh();//得到数据后停止下拉刷新
 						}else{
@@ -208,6 +216,7 @@
 			// }
 	
 			.name {
+				width: 112rpx;
 				font-size: 36rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
