@@ -10,14 +10,14 @@
 	<view>
 		<view class="bg">
 			<view style="display: flex;align-content: center;margin: 48upx 0 0 64upx;">
-				<img :src="user.yhTx" style="border-radius: 50%;width: 132upx;height: 132upx;">
+				<img :src="user.yhTx" style="border-radius: 50%;width: 132upx;height: 132upx;" @tap='tomymess()'>
 				<view class="personMessage">
 					<view style="margin-bottom: 10upx;font-size:20px;
 						font-family:PingFangSC-Regular;
 						font-weight:400;
 						color:rgba(255,255,255,1);
-						line-height:28px;">{{user.yhXm}}</view>
-					<view>{{user.yhZh}}</view>
+						line-height:28px;" @click="tomymess()">{{user.yhXm}}</view>
+					<view @click="tomymess()">{{user.yhZh}}</view>
 				</view>
 				<img :src="user.yhZsyqmImg" @tap="toCode" style="position: absolute;width: 74upx;height: 74upx;top: 86upx;right:56upx ;">
 			</view>
@@ -80,6 +80,11 @@
 			this.getUser()
 		},
 		methods: {
+			tomymess(){
+				uni.navigateTo({
+					url: '../../myMess/myMess',
+				})
+			},
 			...mapMutations(['logout']),
 			bindLogin() {
 				uni.navigateTo({
