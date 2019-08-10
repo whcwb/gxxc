@@ -6,7 +6,10 @@
 			</view>
 			<view class="box_row rowBetween center allMoney">
 				<view class="moneyVal">
-					￥{{ye}}
+					<view class="yeCode">
+						￥
+					</view>
+					<input class="inputSty" v-model="ye" type="number">
 				</view>
 				<view class="moneyBut" @tap="toChooseBank"></view>
 			</view>
@@ -53,8 +56,8 @@
 	export default {
 		data() {
 			return {
-				ye: '' ,//余额
-				mxList:[]			//提现明细
+				ye: 0.00 ,//余额
+				mxList:[]//提现明细
 			}
 		},
 		mixins:[mixin],
@@ -144,10 +147,28 @@
 					font-family: PingFangSC-Medium;
 					font-weight: 500;
 					color: rgba(45, 45, 45, 1);
+					position: relative;
+					.yeCode{
+						position: absolute;
+						left: 0;
+						top: 0;
+						font-size: 52rpx;
+						font-family: PingFangSC-Medium;
+						font-weight: 500;
+						color: rgba(45, 45, 45, 1);
+					}
+					.inputSty{
+						height: 70rpx;
+						padding-left: 80rpx;
+						font-size: 52rpx;
+						font-family: PingFangSC-Medium;
+						font-weight: 500;
+						color: rgba(45, 45, 45, 1);
+					}
 				}
 
 				.moneyBut {
-					width: 86px;
+					width: 240rpx;
 					height: 30px;
 					background-image: url("./file/img/tx.png");
 					background-position: center;
