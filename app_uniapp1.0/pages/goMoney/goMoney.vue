@@ -12,7 +12,7 @@
 								{{item.cpXx}}
 							</view>
 							<view class="money">
-								{{item.cpJl}}元
+								{{item.cpJl/100}}元
 							</view>
 						</view>
 						<img style="width: 680upx; height: 324upx; background-color: #eeeeee;" :src="'/static/img/goMoney/jf2'+(index+1)+'.png'">
