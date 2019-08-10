@@ -40,6 +40,34 @@
 						console.log('失败')
 					}
 				})
+			},
+			WxPay(){
+				var v = this
+				  WeixinJSBridge.invoke(
+					'getBrandWCPayRequest', {
+					  "appId":mess.appId,     //公众号名称，由商户传入
+					  "timeStamp":mess.timeStamp,         //时间戳，自1970年以来的秒数
+					  "nonceStr":mess.nonceStr, //随机串
+					  "package":mess.package,
+					  "signType":mess.signType,         //微信签名方式：
+					  "paySign":mess.paySign //微信签名
+					},
+					function(res){
+					  console.log(res)
+					  if(res.err_msg=='get_brand_wcpay_request:ok'){
+						uni.showToast({ title: '支付成功' })
+						// signUrl = ''
+						uni.switchTab({
+							url:'/pages/main/user/user'
+						})
+					  }else if(res.err_msg=='get_brand_wcpay_request::fail'){
+						uni.showToast({ title: '支付失败' })
+						uni.navigateBack()
+					  }else if(res.err_msg=='get_brand_wcpay_request:cancel'){
+						uni.showToast({ title: '支付取消' })
+					  }
+					}
+				  );
 			}
 		},
 		onLoad() {
