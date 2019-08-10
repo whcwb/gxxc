@@ -14,10 +14,11 @@ import Met from './libs/CommonMethod.js'
 Vue.prototype.Met = Met;
 
 import VueClipboard from 'vue-clipboard2'
-
 Vue.use(VueClipboard);
+// #ifdef H5
 import wxApi from  './libs/wechatUtil'
 Vue.prototype.wxApi = wxApi;
+// #endif
 
 
 Vue.config.productionTip = false

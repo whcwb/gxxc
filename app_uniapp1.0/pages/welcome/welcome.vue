@@ -20,8 +20,10 @@
 		onShow(){
 		},
 		onReady() {
+			// #ifdef H5
 			this.getWxJs()
-			// this.$refs.loading.open()
+			// #endif
+			this.$refs.loading.open()
 			// setTimeout((val, index, arr) => {
 			// 	uni.navigateTo({
 			// 		url: '/pages/login/login',
@@ -45,13 +47,11 @@
 
 				script.onload = function() { // 微信js初始化 回调函数
 					console.log('*****wx', wx)
-					
-// 					// alert("wx1")
 // 					// 微信js初始化成功后引用 微信功能方法
 // 					//获取Code 直
 					let authCode = v.wxApi.getQueryString("code");
 					console.log('获取code', authCode)
-// 					// alert('获取code=      '+authCode);
+					alert('获取code=      '+authCode);
 					if (authCode) {
 
 						// 获取Openid
@@ -63,6 +63,8 @@
 							v.wxApi.initConfig(); //执行 微信 config
 						});
 					} else {
+						alert('1')
+						v.wxApi.getCode()
 						return
 					}
 				}

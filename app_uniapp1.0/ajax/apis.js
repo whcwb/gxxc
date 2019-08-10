@@ -6,6 +6,7 @@ let ajaxUrl = "http://www.520xclm.com";
 export default {
 	ajaxBaseUrl:ajaxUrl+':8001/',	//图片访问路径
 	url: ajaxUrl+":8080/biz",
+	wxUrl:ajaxUrl,
 	// url: ajaxUrl+":9006",
 	LOGIN:'/app/login',//登录接口
 	wechat:{

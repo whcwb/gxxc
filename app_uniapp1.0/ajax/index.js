@@ -1,18 +1,6 @@
 import apis from './apis.js'
-// import CryptoJS from 'crypto-js'
-// import store from '../store/index.js'
-// let clientId = "app"
-// let secret = '12341234'
 let ajax = {}
 
-// function encryptByDES(message, key){
-//     const keyHex = CryptoJS.enc.Utf8.parse(key);
-//     const encrypted = CryptoJS.DES.encrypt(message, keyHex, {
-//         mode: CryptoJS.mode.ECB,
-//         padding: CryptoJS.pad.Pkcs7
-//     });
-//     return encrypted.toString();
-// }
 
 //取token
 var token='';
@@ -41,7 +29,14 @@ ajax.post = (httpUrl,data) => {
 			},
 			success: (res) => {
 				if(res.statusCode == 200){
-					resolve(res.data)
+					if(res.data.code == 403){
+						uni.showToast("请重新登录")
+						uni.navigateTo({
+							url: '/pages/login/login',
+						});
+					}else{
+						resolve(res.data)
+					}
 				}else{
 					reject(res)
 				}
@@ -63,7 +58,14 @@ ajax.get = (url,data) => {
 			},
 			success: (res) => {
 				if(res.statusCode == 200){
-					resolve(res.data)
+					if(res.data.code == 403){
+						uni.showToast("请重新登录")
+						uni.navigateTo({
+							url: '/pages/login/login',
+						});
+					}else{
+						resolve(res.data)
+					}
 				}else{
 					reject(res)
 				}
