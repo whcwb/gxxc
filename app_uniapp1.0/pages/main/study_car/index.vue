@@ -233,26 +233,26 @@
 					],
 					[{
 						name: '',
-						state: '合格',
-						tip: '第一次考试',
-						date: '',
-					}],
-					[{
-						name: '东山考场',
 						state: '',
 						tip: '暂无信息',
 						date: '',
 					}],
 					[{
-						name: '未预约',
+						name: '',
 						state: '',
-						tip: '',
+						tip: '暂无信息',
 						date: '',
 					}],
 					[{
-						name: '未预约',
+						name: '',
 						state: '',
-						tip: '',
+						tip: '暂无信息',
+						date: '',
+					}],
+					[{
+						name: '',
+						state: '',
+						tip: '暂无信息',
 						date: '',
 					}]
 				],
