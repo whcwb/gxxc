@@ -1,5 +1,5 @@
-// import $ from 'jquery';
-// import urls from './url'
+import $ from 'jquery';
+import urls from '../ajax/apis.js'
 
 // import wx from '#/static/util/jweixin-1.2.0.js'
 // var wx = require('#/static/util/jweixin-1.2.0.js')
@@ -14,7 +14,8 @@ wechatUtil.sign = '';
 wechatUtil.code = '';
 wechatUtil.openid = '';
 wechatUtil.nonceStr = randomString(16);
-wechatUtil.baseUrl = urls.url+':8080/biz/';
+wechatUtil.baseUrl = urls.url
+// +':8080/biz/';
 wechatUtil.authLoginUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+wechatUtil.appId+'&redirect_uri='+urls.url+'/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect';
 
 wechatUtil.afterReady = '';
@@ -109,46 +110,49 @@ wechatUtil.checkJsApi = ()=>{
     }
   });
 };
-wx.ready(function(){
-    localStorage.setItem("projectType",true)//微信js加载成功
-    if (typeof wechatUtil.afterReady == 'function'){
-        wechatUtil.afterReady('wx');
-        return;
-    }
-    //微信jsapi使用，不允许页面切换，所以这里使用router来做页面跳转，不再使用location强制跳页面
-    if (wechatUtil.vueParent){
-    //   wechatUtil.vueParent.$router.push({name:'indexName'});
-    console.log('页面跳转')
-      return;
-    }
-    wechatUtil.checkJsApi();
-    wechatUtil.share();
-    wechatUtil.andshare();                             
-    // wx.updateAppMessageShareData({
-    //     title: '邀请加入吉驾无忧', // 分享标题
-    //     desc: '123', // 分享描述
-    //     link: 'www.520xclm.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-    //     imgUrl: '../../static/img/login/logo.png', // 分享图标
-    //     success: function () {
-    //     alert('chenggong')// 设置成功
-    //     },
-    //     cancel: function () {
-    //         // 用户取消分享后执行的回调函数
-    //     },
-    //     error:function(){
-    //         alert('shibai')
-    //     }
-    // })
-    //window.location.href = "/wx/";
-    // chooseImage();
-    // wechatUtil.qrScan();
-    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-});
 
-wx.error(function(res){
-    console.log('error',res);
-    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-});
+wx.ready = ()=>{
+	{
+	    localStorage.setItem("projectType",true)//微信js加载成功
+	    if (typeof wechatUtil.afterReady == 'function'){
+	        wechatUtil.afterReady('wx');
+	        return;
+	    }
+	    //微信jsapi使用，不允许页面切换，所以这里使用router来做页面跳转，不再使用location强制跳页面
+	    if (wechatUtil.vueParent){
+	    //   wechatUtil.vueParent.$router.push({name:'indexName'});
+	    console.log('页面跳转')
+	      return;
+	    }
+	    wechatUtil.checkJsApi();
+	    wechatUtil.share();
+	    wechatUtil.andshare();                             
+	    // wx.updateAppMessageShareData({
+	    //     title: '邀请加入吉驾无忧', // 分享标题
+	    //     desc: '123', // 分享描述
+	    //     link: 'www.520xclm.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+	    //     imgUrl: '../../static/img/login/logo.png', // 分享图标
+	    //     success: function () {
+	    //     alert('chenggong')// 设置成功
+	    //     },
+	    //     cancel: function () {
+	    //         // 用户取消分享后执行的回调函数
+	    //     },
+	    //     error:function(){
+	    //         alert('shibai')
+	    //     }
+	    // })
+	    //window.location.href = "/wx/";
+	    // chooseImage();
+	    // wechatUtil.qrScan();
+	    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+	}
+}
+wx.error = (res)=>{
+	console.log('error',res);
+	// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+
+}
 //--------------------------------------------------------------------------
 //以上功能方法 是调用微信开发功能的前期准备*******调用wechatUtil.getAccessToken()
 //---------------------------------------------------------------------------
