@@ -122,23 +122,12 @@
 			}
 		},
 		onLoad() {
-			var userInfo = this.Met.getUserInfo()
-			if(!userInfo){
-				return false
-			}
-			
 		},
 		onShow() {
+			this.Met.getUserInfo()
 			this.getbanner()
 			this.getYE()
 			this.getUsermess()
-			var userInfo = this.Met.getUserInfo()
-			if(!userInfo){
-				return false
-			}
-		   console.log(uni.getStorage({
-		   	    key:'token'
-		   }));
 		},
 		created() {
 			
@@ -158,7 +147,6 @@
 			},
 			getbanner(){//获取轮播图
 				this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{
-					console.log(res)
 					if(res.code==200){
 					  this.items = res.page.list
 					}

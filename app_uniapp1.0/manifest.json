@@ -100,13 +100,15 @@
     },
     "h5" : {
         "title" : "吉驾无忧",
-        "domain" : "www.520xclm.com/wx",
+        "domain" : "www.520xclm.com",
         "router" : {
-            "base" : "/wx/",
-            "mode" : "hash"
+            "base" : ""
         },
         "devServer" : {
             "https" : false
+        },
+        "sdkConfigs" : {
+            "maps" : {}
         }
     }
 }

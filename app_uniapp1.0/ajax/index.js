@@ -29,11 +29,19 @@ ajax.post = (httpUrl,data) => {
 			},
 			success: (res) => {
 				if(res.statusCode == 200){
-					if(res.data.code == 403){
-						uni.showToast("请重新登录")
-						uni.navigateTo({
-							url: '/pages/login/login',
-						});
+					if(res.data.code == 403 || res.data.code == 500){
+						uni.showToast({
+							icon:"none",
+							title:"请重新登录",
+							duration:1555,
+							complete:function(){
+								setTimeout(()=>{
+									uni.navigateTo({
+										url: '/pages/login/login',
+									});
+								},1600)
+							}
+						})
 					}else{
 						resolve(res.data)
 					}
@@ -58,11 +66,19 @@ ajax.get = (url,data) => {
 			},
 			success: (res) => {
 				if(res.statusCode == 200){
-					if(res.data.code == 403){
-						uni.showToast("请重新登录")
-						uni.navigateTo({
-							url: '/pages/login/login',
-						});
+					if(res.data.code == 403 || res.data.code == 500){
+						uni.showToast({
+							icon:"none",
+							title:"请重新登录",
+							duration:1555,
+							complete:function(){
+								setTimeout(()=>{
+									uni.navigateTo({
+										url: '/pages/login/login',
+									});
+								},1600)
+							}
+						})
 					}else{
 						resolve(res.data)
 					}
