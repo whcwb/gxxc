@@ -22,29 +22,22 @@
 		onReady() {
 			this.$refs.loading.open()
 			// #ifdef H5
-			 this.getWxJs()
+			 // this.getWxJs()
 			// #endif
 			// #ifdef APP-PLUS
 			// app执行
 			this.toLogin()
 			// #endif
+			this.toLogin()
 		},
-		// // #ifdef H5
-		// mounted(){
-		// 	 this.$nextTick(() => {
-		// 		 this.getWxJs()
-		// 	 })
-		// },
-		// // #endif
 		methods: {
 			toLogin() {
 				var  token = uni.getStorageSync('token');
 				setTimeout(()=>{
 					if(token){
-							uni.switchTab({
-								url: '/pages/main/p_index/main'
-							});
-					
+						uni.switchTab({
+							url: '/pages/main/p_index/main'
+						});
 					}else{
 						uni.navigateTo({
 							url: '../login/login'
