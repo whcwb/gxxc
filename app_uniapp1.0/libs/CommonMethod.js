@@ -1,7 +1,7 @@
 let Met={
 }
 Met.getUserInfo = (callback)=>{
-    let userInfo = uni.getStorage({ key: 'token'})
+    let userInfo = uni.getStorageSync('token')
 	if(userInfo && userInfo!=''&&userInfo!=undefined){
 		callback && callback(userInfo)
 	}else{
