@@ -4,7 +4,7 @@
 				<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" />
 				<view v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 			</view>
-			<view class="btn">
+			<view class="btn" @click="upWorld">
 				立即修改
 			</view>
 	   
@@ -32,11 +32,54 @@
 						placeholder: '请再输入新密码',
 						val: ''
 					},
-				]
+				],
+				 form:{
+					oldPwd:'',
+					newPwd:'',
+				 },
 			}
 		},
 		methods: {
-			
+			upWorld(){//密码修改
+				var v = this
+			  v.form.oldPwd = v.inputList[0].val
+			  v.form.newPwd = v.inputList[2].val
+			  if(v.form.oldPwd==""){
+				  uni.showToast({
+					title: '请输入原始密码',
+					icon:"none"
+				  })
+				  return
+			  }else if(v.form.newPwd==""){
+				  uni.showToast({
+					title: '请输入新的密码'
+				  })
+				  return
+			  }else{
+				  v.$http.post(this.apis.UPWORLD,v.form).then((res)=>{
+					if(res.code==200){
+					  uni.showToast({
+						title: '密码修改成功,重新登录！',
+						duration:1555,
+						complete:function(){
+							uni.navigateTo({
+								url:'../login/login'
+							})
+						}
+					  })
+					  setTimeout(() => {
+						uni.navigateTo({
+						  url: '/pages/login'
+						})
+					  }, 1*1000);
+					}else{
+					  uni.showToast({
+						title:res.message
+					  })
+					}
+				  })
+			  }
+			},
 		}
 	}
 </script>
