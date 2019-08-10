@@ -20,10 +20,15 @@
 		onShow(){
 		},
 		onReady() {
+			this.$refs.loading.open()
+
 			// #ifdef H5
 			this.getWxJs()
 			// #endif
-			this.$refs.loading.open()
+			
+			// #ifdef APP-PLUS
+			this.toLogin()
+			// #endif
 			// setTimeout((val, index, arr) => {
 			// 	uni.navigateTo({
 			// 		url: '/pages/login/login',
@@ -33,21 +38,18 @@
 		methods: {
 			toLogin() {
 				var  token = uni.getStorageSync('token');
-				if(token){
-
-						uni.switchTab({
-							url: '/pages/main/p_index/main'
+				setTimeout(()=>{
+					if(token){
+							uni.switchTab({
+								url: '/pages/main/p_index/main'
+							});
+					
+					}else{
+						uni.navigateTo({
+							url: '../login/login'
 						});
-
-				}else{
-					uni.navigateTo({
-						url: '../login/login',
-						success: res => {},
-						fail: () => {},
-						complete: () => {}
-					});
-				}
-				
+					}
+				},3000)
 			},
 			getWxJs() {
 				var v = this
