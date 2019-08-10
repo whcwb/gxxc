@@ -21,22 +21,21 @@
 		},
 		onReady() {
 			this.$refs.loading.open()
-
 			// #ifdef H5
-			this.getWxJs()
+			 this.getWxJs()
 			// #endif
-			
 			// #ifdef APP-PLUS
 			// app执行
 			this.toLogin()
-			
 			// #endif
-			// setTimeout((val, index, arr) => {
-			// 	uni.navigateTo({
-			// 		url: '/pages/login/login',
-			// 	});
-			// }, 3000)
 		},
+		// // #ifdef H5
+		// mounted(){
+		// 	 this.$nextTick(() => {
+		// 		 this.getWxJs()
+		// 	 })
+		// },
+		// // #endif
 		methods: {
 			toLogin() {
 				var  token = uni.getStorageSync('token');
@@ -58,7 +57,7 @@
 				// 微信js初始化 
 				var script = document.createElement("script")
 				script.type = "text/javascript"
-				script.src = "../../libs/jweixin-1.2.0.js"
+				script.src = "http://res.wx.qq.com/open/js/jweixin-1.4.0.js"
 				document.body.appendChild(script)
 
 				script.onload = function() { // 微信js初始化 回调函数
