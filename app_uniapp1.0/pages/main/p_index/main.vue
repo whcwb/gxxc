@@ -1,6 +1,6 @@
 <template>
 	<view class="box_col pager-index">
-		<view class="status_bar"></view>
+		<!-- <view class="status_bar"></view> -->
 		<view class="pagerTit-Box">
 			<swiper class="swiper" :autoplay="true" style="height: 100%;">
                 <swiper-item v-for="(item,index) in items" :key='index'>

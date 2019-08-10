@@ -14,18 +14,11 @@ import Met from './libs/CommonMethod.js'
 Vue.prototype.Met = Met;
 
 import VueClipboard from 'vue-clipboard2'
-
 Vue.use(VueClipboard);
-// import wxApi from  './libs/wechatUtil'
-// Vue.prototype.wxApi = wxApi;
-
-// import iView from 'iview';
-// import 'iview/dist/styles/iview.css';
-// import 'common/iview.css'
-// Vue.use(iView);
-
-// import { Button } from 'iview';
-// Vue.component('Button', Button);
+// #ifdef H5
+import wxApi from  './libs/wechatUtil'
+Vue.prototype.wxApi = wxApi;
+// #endif
 
 
 Vue.config.productionTip = false
