@@ -6,10 +6,16 @@ Met.getUserInfo = (callback)=>{
 		callback && callback(userInfo)
 	}else{
 		uni.showToast({
-			title:'用户权限丢失!请重新登录'
-		})
-		uni.navigateTo({
-			url:'/pages/login/login.vue'
+			icon:"none",
+			title:'用户权限丢失!请重新登录',
+			duration:1555,
+			complete:function(){
+				setTimeout(()=>{
+					uni.navigateTo({
+						url: '/pages/login/login',
+					});
+				},1600)
+			}
 		})
 	}
 	

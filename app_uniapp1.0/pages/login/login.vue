@@ -32,6 +32,13 @@
 		   	    key:'token'
 		   }));
 		},
+		onReady() {
+			try {
+				uni.clearStorageSync();
+			} catch (e) {
+				// error
+			}
+		},
 		methods: {
 			login() {
 				var v = this
