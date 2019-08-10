@@ -1,5 +1,5 @@
 <template>
-		<view class="box_col" style="width: 100%">
+		<view class="box_col" style="width: 100%;background:rgba(245,246,249,1);">
 			<view class="box_col_100">
 				<view class="box_row">
 					<view class="box_row_100">
@@ -11,7 +11,11 @@
 				</view>
 			</view>
 			<view class="box_col_100">
-				<view class="teamListBox">
+				<view v-if="newsList.length == 0" style="text-align: center;">
+					<image src="../../../static/img/zanwu.png" mode="scaleToFill"></image>
+					<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
+				</view>
+				<view v-else class="teamListBox">
 					<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
 						<!-- <view class="avaSty"> -->
 							<img :src="it.userDetail.yhTx" alt="">
@@ -33,9 +37,9 @@
 							</view>
 						</view>
 				       </view>
+					   <uni-load-more  :loadingType="loadingType" :contentText="contentText" ></uni-load-more>
 					</view>
 			</view>
-			<uni-load-more  :loadingType="loadingType" :contentText="contentText" ></uni-load-more>
 		</view>
 </template>
 
@@ -117,6 +121,7 @@
 		},
 		methods:{
 			getmorenews: function() {
+				var v = this
 				if (_self.loadingType !== 0) {//loadingType!=0;直接返回
 					return false;
 				}
@@ -134,6 +139,7 @@
 						res.page.list.forEach((item,index) => {
 							  v.newsList.push(item)
 						 });
+						 console.log('v.newsList',v.newsList);
 						_self.loadingType = 2;
 						uni.hideNavigationBarLoading();
 						uni.stopPullDownRefresh();//得到数据后停止下拉刷新
