@@ -21,18 +21,19 @@
 		},
 		onReady() {
 			// #ifdef H5
-			// this.getWxJs()
+			this.getWxJs()
 			// #endif
-			this.toLogin()
 			this.$refs.loading.open()
 		},
 		methods: {
 			toLogin() {
 				var  token = uni.getStorageSync('token');
 				if(token){
-					uni.switchTab({
-						url: '/pages/main/p_index/main'
-					});
+					
+						uni.switchTab({
+							url: '/pages/main/p_index/main'
+						});
+					
 				}else{
 					uni.navigateTo({
 						url: '../login/login',
