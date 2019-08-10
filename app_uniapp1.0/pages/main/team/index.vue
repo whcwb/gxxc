@@ -136,9 +136,7 @@
 						}
 						this.newsList = res.page.list
 						page++;//得到数据之后page+1
-						res.page.list.forEach((item,index) => {
-							  v.newsList.push(item)
-						 });
+						 v.newsList.concat(res.page.list)
 						 console.log('v.newsList',v.newsList);
 						_self.loadingType = 2;
 						uni.hideNavigationBarLoading();
