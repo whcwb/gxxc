@@ -11,7 +11,7 @@
 			"style": {
 				"navigationBarTitleText": "登录",
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 			}
 		},
@@ -20,7 +20,7 @@
 			"style": {
 				"navigationBarTitleText": "首页",
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 				// "navigationBarBackgroundColor":"#3B93FD",
 				// "navigationStyle":"custom"
@@ -30,7 +30,7 @@
 			"style": {
 				"navigationBarTitleText": "注册",
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 			}
 		}, {
@@ -38,7 +38,7 @@
 			"style": {
 				"navigationBarTitleText": "找回密码",
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 			}
 		}, {
@@ -46,7 +46,7 @@
 			"style": {
 				"navigationBarTitleText": "学车",
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 			}
 		}, {
@@ -54,7 +54,7 @@
 			"style": {
 				"navigationBarTitleText": "我的",
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 			}
 		}, {
@@ -63,7 +63,7 @@
 				"navigationBarTitleText": "团队",
 				"enablePullDownRefresh": true,//就是这个
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 			}
 		}, {
@@ -71,7 +71,7 @@
 			"style": {
 				"navigationBarTitleText": "邀请码",
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 			}
 		}, {
@@ -79,7 +79,7 @@
 			"style": {
 				"navigationBarTitleText": "我的账单",
 				"h5": {
-					"titleNView": true
+					"titleNView": false
 				}
 			}
 		}, {
@@ -117,31 +117,46 @@
         ,{
             "path" : "pages/main/p_index/jkzn/jkzn",
             "style" : {
-				"navigationBarTitleText": "法律法规"
+				"navigationBarTitleText": "法律法规",
+				"h5": {
+					"titleNView": false
+				}
 			}
         }
         ,{
             "path" : "pages/main/p_index/bkjf/bkjf",
             "style" : {
-				"navigationBarTitleText": "驾考指南"
+				"navigationBarTitleText": "驾考指南",
+				"h5": {
+					"titleNView": false
+				}
 			}
         }
         ,{
             "path" : "pages/main/p_index/plfw/plfw",
             "style" : {
-				"navigationBarTitleText": "交通标志"
+				"navigationBarTitleText": "交通标志",
+				"h5": {
+					"titleNView": false
+				}
 			}
         }
         ,{
             "path" : "pages/main/p_index/kcfb/kcfb",
             "style" : {
-				"navigationBarTitleText": "学车流程"
+				"navigationBarTitleText": "学车流程",
+				"h5": {
+					"titleNView": false
+				}
 			}
         }
         ,{
             "path" : "pages/xgpwd/xgpwd",
             "style" : {
-				"navigationBarTitleText": "修改密码"
+				"navigationBarTitleText": "修改密码",
+				"h5": {
+					"titleNView": false
+				}
 			}
         }
         ,{
