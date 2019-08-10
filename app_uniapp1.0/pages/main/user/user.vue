@@ -126,9 +126,16 @@
 					//弹出提示框
 					return
 				}
-				uni.navigateTo({
-					url: item.toPath,
-				});
+				if(item.toPath == '/pages/myTeam/myTeam'){
+					uni.switchTab({
+						url:'../team/index'
+					})
+				}else{
+					uni.navigateTo({
+						url: item.toPath,
+					});
+				}
+				
 			}
 		}
 	}

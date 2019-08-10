@@ -7,7 +7,7 @@
 			<cmd-cell-item title="修改密码" brief="" arrow @click='toxgpwd'/>
 		</view>
 		<view style="margin: 60rpx;">
-			<button type="warn">退出登录</button>
+			<button type="warn" @click="tologin">退出登录</button>
 		</view>
 		
 		<view class="box_col_100">
@@ -35,10 +35,18 @@
 		components: {cmdCellItem},
 		data() {
 			return {
-				
+				usermess:{},//个人信息
 			}
 		},
 		methods: {
+			getusermess(){
+				
+			},
+			tologin(){
+				uni.reLaunch({
+					url:'../login/login'
+				})
+			},
 			upTx(){
 				uni.chooseImage({
 					count: 1, //默认9
