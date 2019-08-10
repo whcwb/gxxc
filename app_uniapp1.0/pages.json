@@ -71,7 +71,7 @@
 			"style": {
 				"navigationBarTitleText": "邀请码",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -79,7 +79,7 @@
 			"style": {
 				"navigationBarTitleText": "我的账单",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {
@@ -119,7 +119,7 @@
             "style" : {
 				"navigationBarTitleText": "法律法规",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
         }
@@ -128,7 +128,7 @@
             "style" : {
 				"navigationBarTitleText": "驾考指南",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
         }
@@ -137,7 +137,7 @@
             "style" : {
 				"navigationBarTitleText": "交通标志",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
         }
@@ -146,7 +146,7 @@
             "style" : {
 				"navigationBarTitleText": "学车流程",
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
         }
