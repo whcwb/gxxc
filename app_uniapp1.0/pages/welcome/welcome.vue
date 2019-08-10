@@ -27,7 +27,9 @@
 			// #endif
 			
 			// #ifdef APP-PLUS
+			// app执行
 			this.toLogin()
+			
 			// #endif
 			// setTimeout((val, index, arr) => {
 			// 	uni.navigateTo({
