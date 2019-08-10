@@ -24,16 +24,21 @@
 			this.getWxJs()
 			// #endif
 			this.$refs.loading.open()
+			// setTimeout((val, index, arr) => {
+			// 	uni.navigateTo({
+			// 		url: '/pages/login/login',
+			// 	});
+			// }, 3000)
 		},
 		methods: {
 			toLogin() {
 				var  token = uni.getStorageSync('token');
 				if(token){
-					
+
 						uni.switchTab({
 							url: '/pages/main/p_index/main'
 						});
-					
+
 				}else{
 					uni.navigateTo({
 						url: '../login/login',
