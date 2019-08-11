@@ -5,7 +5,7 @@
 		</view>
 		<view class="inputMess">
 			<input class="uni-input input" placeholder="请输入手机号" v-model="form.username" />
-			<input class="uni-input input" placeholder="请输入密码" v-model="form.password" />
+			<input class="uni-input input" password placeholder="请输入密码" v-model="form.password" />
 		</view>
 		<view style="margin-bottom: 136upx;text-align: right;width: 678upx;font-size:28rpx;color:rgba(37,128,222,1);" @click="topwd">忘记密码？</view>
 		<view class="btn" @tap="login">
@@ -22,8 +22,8 @@
 		data() {
 			return {
 				form: {
-					username: '18672368676',
-					password: '123456'
+					username: '',
+					password: ''
 				}
 			}
 		},
@@ -34,7 +34,7 @@
 		},
 		onReady() {
 			try {
-				uni.removeStorageSync('token');
+				uni.clearStorageSync();
 			} catch (e) {
 				// error
 			}

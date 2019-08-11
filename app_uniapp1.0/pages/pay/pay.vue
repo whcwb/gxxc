@@ -41,7 +41,7 @@
 					}
 				})
 			},
-			WxPay(){
+			WxPay(mess){
 				var v = this
 				  WeixinJSBridge.invoke(
 					'getBrandWCPayRequest', {
@@ -61,10 +61,10 @@
 							url:'/pages/main/user/user'
 						})
 					  }else if(res.err_msg=='get_brand_wcpay_request::fail'){
-						uni.showToast({ title: '支付失败' })
+						uni.showToast({ title: '支付失败',icon:"none"})
 						uni.navigateBack()
 					  }else if(res.err_msg=='get_brand_wcpay_request:cancel'){
-						uni.showToast({ title: '支付取消' })
+						uni.showToast({ title: '支付取消',icon:"none" })
 					  }
 					}
 				  );
