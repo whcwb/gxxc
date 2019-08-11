@@ -19,7 +19,7 @@
 		onShow(){
 		},
 		onReady() {
-			this.toLogin()
+			// this.toLogin()
 			this.$refs.loading.open()
 			// #ifdef H5
 			 this.getWxJs()
