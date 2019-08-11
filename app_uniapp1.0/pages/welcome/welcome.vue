@@ -13,12 +13,13 @@
 		},
 		data() {
 			return {
-				imgheight: 200
+				imgheight: 200,
 			}
 		},
 		onShow(){
 		},
 		onReady() {
+			this.toLogin()
 			this.$refs.loading.open()
 			// #ifdef H5
 			 this.getWxJs()

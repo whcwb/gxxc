@@ -5,6 +5,7 @@ let ajax = {}
 //取token
 var token='';
 var userId=''
+var openid = ''
 function getToken(){
 	uni.getStorage({
 	    key: 'token',
@@ -13,7 +14,9 @@ function getToken(){
 			userId=res.data.userId
 	    }
 	});
+	openid = localStorage.getItem("openid");
 }
+
 
 ajax.post = (httpUrl,data) => {
 	getToken();
@@ -25,11 +28,12 @@ ajax.post = (httpUrl,data) => {
 			header: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 				'token':token,
-				'userid':userId
+				'userid':userId,
+				'openid': openid
 			},
 			success: (res) => {
 				if(res.statusCode == 200){
-					if(res.data.code == 403 || res.data.code == 500){
+					if(res.data.code == 403){
 						uni.showToast({
 							icon:"none",
 							title:"请重新登录",
@@ -66,7 +70,7 @@ ajax.get = (url,data) => {
 			},
 			success: (res) => {
 				if(res.statusCode == 200){
-					if(res.data.code == 403 || res.data.code == 500){
+					if(res.data.code == 403){
 						uni.showToast({
 							icon:"none",
 							title:"请重新登录",
