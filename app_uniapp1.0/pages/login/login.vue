@@ -34,7 +34,7 @@
 		},
 		onReady() {
 			try {
-				uni.clearStorageSync();
+				uni.removeStorageSync('token');
 			} catch (e) {
 				// error
 			}
