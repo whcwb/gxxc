@@ -1,0 +1,112 @@
+{
+    "name" : "studyCar",
+    "appid" : "__UNI__52EB5D0",
+    "description" : "登录模板",
+    "versionName" : "1.0.0",
+    "versionCode" : "100",
+    "transformPx" : false,
+    /* 5+App特有相关 */
+    "app-plus" : {
+        "usingComponents" : true,
+        /* 模块配置 */
+        "modules" : {
+            "Payment" : {}
+        },
+        /* 应用发布信息 */
+        "distribute" : {
+            /* android打包配置 */
+            "android" : {
+                "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                ]
+            },
+            /* ios打包配置 */
+            "ios" : {},
+            /* SDK配置 */
+            "sdkConfigs" : {
+                "payment" : {
+                    "alipay" : {},
+                    "weixin" : {
+                        "appid" : "wxb01394ea85904296"
+                    }
+                }
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/72.png",
+                    "xhdpi" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/96.png",
+                    "xxhdpi" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/114.png",
+                    "xxxhdpi" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/192.png"
+                },
+                "ios" : {
+                    "appstore" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/1024.png",
+                    "iphone" : {
+                        "app@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/120.png",
+                        "app@3x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/180.png",
+                        "spotlight@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/80.png",
+                        "spotlight@3x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/120.png",
+                        "settings@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/58.png"
+                    },
+                    "ipad" : {
+                        "settings" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/29.png",
+                        "settings@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/58.png",
+                        "spotlight@2x" : "E:/wechat/WeChat Files/quan341204/FileStorage/File/2019-08/吉驾icon(1)/吉驾icon/80.png"
+                    }
+                }
+            }
+        }
+    },
+    /* 快应用特有相关 */
+    "quickapp" : {},
+    /* 小程序特有相关 */
+    "mp-weixin" : {
+        "appid" : "",
+        "setting" : {
+            "urlCheck" : false
+        },
+        "usingComponents" : true
+    },
+    "mp-alipay" : {
+        "usingComponents" : true
+    },
+    "mp-baidu" : {
+        "usingComponents" : true
+    },
+    "mp-toutiao" : {
+        "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "吉驾无忧",
+        "domain" : "www.520xclm.com/wx/",
+        "router" : {
+            "base" : "/wx/",
+            "mode" : "hash"
+        },
+        "devServer" : {
+            "https" : false
+        }
+    }
+}

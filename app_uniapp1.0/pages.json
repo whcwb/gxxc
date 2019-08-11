@@ -1,0 +1,234 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页,
+	    {
+	    "path" : "pages/welcome/welcome",
+	    "style" : {
+			"navigationStyle":"custom"
+		}
+		},
+		 {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/main/p_index/main",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"h5": {
+					"titleNView": false
+				}
+				// "navigationBarBackgroundColor":"#3B93FD",
+				// "navigationStyle":"custom"
+			}
+		}, {
+			"path": "pages/reg/reg",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/pwd/pwd",
+			"style": {
+				"navigationBarTitleText": "找回密码",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/main/study_car/index",
+			"style": {
+				"navigationBarTitleText": "学车",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/main/user/user",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"h5": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/main/team/index",
+			"style": {
+				"navigationBarTitleText": "团队",
+				"enablePullDownRefresh": true,//就是这个
+				"h5": {
+					"titleNView": true
+				}
+			}
+		}, {
+			"path": "pages/main/user/code/code",
+			"style": {
+				"navigationBarTitleText": "邀请码",
+				"h5": {
+					"titleNView": true
+				}
+			}
+		}, {
+			"path": "pages/main/user/account/account",
+			"style": {
+				"navigationBarTitleText": "我的账单",
+				"h5": {
+					"titleNView": true
+				}
+			}
+		}, {
+			"path": "pages/center/signName/signName",
+			"style": {
+				"navigationBarTitleText": "签名"
+			}
+		}, {
+			"path": "pages/center/learnCarFile/learnCarFile",
+			"style": {
+				"navigationBarTitleText": "学员服务协议"
+			}
+		},{
+			"path": "pages/rellyName/rellyName",
+			"style": {
+				"navigationBarTitleText": "实名认证"
+			}
+		},{
+			"path": "pages/yqJl/yqJl",
+			"style": {
+				"navigationBarTitleText": "邀请奖励"
+			}
+		},{
+			"path": "pages/myTeam/myTeam",
+			"style": {
+				"navigationBarTitleText": "我的-我的团队"
+			}
+		}
+	    ,{
+            "path" : "pages/goMoney/goMoney",
+            "style" : {
+				"navigationBarTitleText": "立即缴费"
+			}
+        }
+        ,{
+            "path" : "pages/main/p_index/jkzn/jkzn",
+            "style" : {
+				"navigationBarTitleText": "法律法规",
+				"h5": {
+					"titleNView": true
+				}
+			}
+        }
+        ,{
+            "path" : "pages/main/p_index/bkjf/bkjf",
+            "style" : {
+				"navigationBarTitleText": "驾考指南",
+				"h5": {
+					"titleNView": true
+				}
+			}
+        }
+        ,{
+            "path" : "pages/main/p_index/plfw/plfw",
+            "style" : {
+				"navigationBarTitleText": "交通标志",
+				"h5": {
+					"titleNView": true
+				}
+			}
+        }
+        ,{
+            "path" : "pages/main/p_index/kcfb/kcfb",
+            "style" : {
+				"navigationBarTitleText": "学车流程",
+				"h5": {
+					"titleNView": true
+				}
+			}
+        }
+        ,{
+            "path" : "pages/xgpwd/xgpwd",
+            "style" : {
+				"navigationBarTitleText": "修改密码",
+				"h5": {
+					"titleNView": true
+				}
+			}
+        }
+        ,{
+            "path" : "pages/myMess/myMess",
+            "style" : {
+				"navigationBarTitleText": "个人信息"
+			}
+        }
+        ,{
+            "path" : "pages/chooseBank/chooseBank",
+            "style" : {
+				"navigationBarTitleText": "选择提现银行卡",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "提现",
+							"fontSize": "17px"
+							// "color": "#999999"
+						}]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/addBankCard/addBankCard",
+            "style" : {
+				"navigationBarTitleText": "添加银行卡",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "添加",
+							"fontSize": "17px"
+							// "color": "#999999"
+						}]
+					}
+				}
+			}
+        }
+        ,{
+            "path" : "pages/pay/pay",
+            "style" : {}
+        }
+    ],
+	"tabBar": {
+		"color": "#7a7e83",
+		"selectedColor": "#8C91FA",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/main/p_index/main",
+			"text": "首页",
+			"iconPath": "static/img/tabbar1.png",
+			"selectedIconPath": "static/img/tabbarSel1.png"
+		}, {
+			"pagePath": "pages/main/study_car/index",
+			"text": "学车",
+			"iconPath": "static/img/tabbar2.png",
+			"selectedIconPath": "static/img/tabbarSel2.png"
+		}, {
+			"pagePath": "pages/main/team/index",
+			"text": "团队",
+			"iconPath": "static/img/tabbar3.png",
+			"selectedIconPath": "static/img/tabbarSel3.png"
+		}, {
+			"pagePath": "pages/main/user/user",
+			"text": "我的",
+			"iconPath": "static/img/tabbar4.png",
+			"selectedIconPath": "static/img/tabbarSel4.png"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarBackgroundColor": "#3B93FD",
+		"backgroundColor": "#f5f5f5"
+	}
+}
