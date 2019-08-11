@@ -90,7 +90,7 @@
 				isPJ:false,	//是否评价，控制显示星星
 				star:0,
 				data: [{name:'受理进度'}, {name:'科一'},{name: '科二'}, {name:'科三'}, {name:'科四'}],
-				items: ['受理', '科目一', '科目二', '科目三', '科目四'],
+				items: ['受理', '科一', '科二', '科三', '科四'],
 				current: 0,
 				btnList: [],
 				btnListAll: [

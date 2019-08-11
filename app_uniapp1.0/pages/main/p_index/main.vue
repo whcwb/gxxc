@@ -155,7 +155,7 @@
 			if (this.judgeClient() == 'Android') {
 				setTimeout(() => {
 					this.wxApi.checkJsApi();
-					this.wxApi.andshare(this.USERMESS.id);
+					this.wxApi.share(this.USERMESS.id);
 				}, 3000);
 			} else if (this.judgeClient() == 'IOS') {
 				setTimeout(() => {
