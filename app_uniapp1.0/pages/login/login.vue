@@ -48,7 +48,9 @@
 						uni.setStorage({key: 'phone',data: v.form.username});
 						v.toIndex()
 					} else {
-						//弹框提示错误
+						uni.showToast({
+							title: res.message
+						})
 					}
 				})
 			},

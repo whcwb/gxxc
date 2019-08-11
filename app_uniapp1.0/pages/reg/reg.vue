@@ -28,7 +28,7 @@
 			立即注册
 		</view>
 		<view style="margin-bottom: 114upx;display: flex;justify-content: center;align-items: center;">
-			<checkbox value="c" checked='cb' />我已阅读并同意
+			<checkbox :checked='agree' @click="changeAgree"/>我已阅读并同意
 			<text style="font-size:28upx;font-weight:400;color:rgba(51,128,168,1);" @click="openPopup">
 				《注册协议》
 			</text>
@@ -193,7 +193,7 @@
 		},
 		data() {
 			return {
-				cb: false,
+				agree: false,
 				form: { //在这里存放非inoput的字段属性
 					yhLx: '1',
 					addType: '3',
@@ -245,8 +245,12 @@
 			}
 		},
 		methods: {
+			changeAgree(){						//由于uniapp的checked不能更改，所以只能click更改
+				this.agree=!this.agree
+			},
 			reg() {
-				if (this.cb == false) { //首先判断同意协议
+				console.log(this.agree)
+				if (!this.agree) { //首先判断同意协议
 					this.openPopup()
 					return
 				}
@@ -256,14 +260,14 @@
 				})
 
 				//输入验证
-				if (this.form[yhZh].length < 5) {
+				if (this.form.yhZh.length < 5) {
 					uni.showToast({
 						icon: 'none',
 						title: '账号最短为 5 个字符'
 					});
 					return;
 				}
-				if (this.form[yhMm].length < 6) {
+				if (this.form.yhMm.length < 6) {
 					uni.showToast({
 						icon: 'none',
 						title: '密码最短为 6 个字符'
@@ -320,8 +324,8 @@
 				this.$refs.popup.open()
 			},
 			closePopup() {
+				this.agree=true
 				this.$refs.popup.close()
-				this.cb = true
 			},
 			toHt() {
 				uni.navigateTo({
