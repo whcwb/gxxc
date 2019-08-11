@@ -75,8 +75,8 @@
 			},
 			getImg(val, fileType) {
 				var v = this
-				this.wxUtil.chooseImage((imgID) => {
-					this.wxUtil.uploadImage(imgID[0], (httpID) => {
+				this.wxApi.chooseImage((imgID) => {
+					this.wxApi.uploadImage(imgID[0], (httpID) => {
 						v.upImg(httpID.serverId, val, fileType)
 					})
 				})
