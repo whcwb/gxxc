@@ -78,28 +78,33 @@
 				学员信息
 			</div>
 		</view>
-		<view class="teamListBox">
-			<view class="itemSty box_row" v-for="(it,index) in 10" :key="index">
-				<img src="./file/img/jkzn.png" alt="">
+		<view v-if="newsList.length == 0" style="text-align: center;">
+			<image src="../../../static/img/zanwu.png" mode="scaleToFill"></image>
+			<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
+		</view>
+		<view v-else class="teamListBox">
+			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
+				<!-- <view class="avaSty"> -->
+					<img :src="it.userDetail.yhTx" alt="">
+				<!-- </view> -->
 				<view class="messBox">
 					<view class="box_row colCenter">
 						<view class="name">
-							李文差
+							{{it.yhXm}}
 						</view>
-						<view class="butTyp onMoney">
+						<view v-if="it.userDetail.ddSfjx == '1'" class="butTyp onMoney">
 							已缴费
 						</view>
-						<view class="butTyp offMoney">
+						<view v-else class="butTyp offMoney">
 							未缴费
 						</view>
 					</view>
 					<view class="phoneSty">
-						13112345678
+						{{it.yhSjhm}}
 					</view>
 				</view>
-
+		       </view>
 			</view>
-		</view>
 
 	</view>
 </template>
@@ -119,6 +124,7 @@
 					yhZhye: 0   //账户余额
 				},
 				items:[{}], //banner图
+				newsList:[]
 			}
 		},
 		onLoad() {
@@ -128,11 +134,28 @@
 			this.getbanner()
 			this.getYE()
 			this.getUsermess()
+			this.getnewsList()
 		},
 		created() {
 			
 		},
 		methods:{
+			getnewsList() {//第一次回去数据
+					this.$http.post(this.apis.TEAMMESS,{yhxm:'',grade:'',yhlx:'',sfjf:'',pageNum:1,pageSize:20}).then((res)=>{
+						if(res.code == 200){
+							this.newsList = res.page.list
+							// _self.newsList = res.page.list.split('--hcSplitor--');
+							//得到数据后停止下拉刷新
+						}else{
+							uni.showToast({
+								title:res.message,
+								icon:'none',
+								duration: 1500
+							});
+						}
+					})
+			},
+			
 			getUsermess(){
 				this.$http.post(this.apis.USERMESS,{}).then((res)=>{
 					if(res.code == 200){
@@ -351,6 +374,7 @@
 				}
 
 				.name {
+					width: 192rpx;
 					font-size: 32rpx;
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
