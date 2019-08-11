@@ -1,7 +1,7 @@
 <template>
 	<view class="box_col teamPagerBox">
 		<view class="seacherBox">
-			<mSearch :show='false' :mode="2" @search="search($event,2)" placeholder='请输入姓名'></mSearch>
+			<mSearch :show='false' :mode="2" @search="search($event)" placeholder='请输入姓名'></mSearch>
 		</view>
 		<view  class="box_col_100 noData" v-if="newsList.length == 0" style="text-align: center;">
 			<image src="../../../static/img/zanwu.png" mode="scaleToFill"></image>
@@ -28,7 +28,10 @@
 					</view>
 				</view>
 		</view>
-				<uni-load-more :loadingType="loadingType" :contentText="contentText"></uni-load-more>
+		<view class="loadingbox" style="text-align: center;">
+			{{contentText[loadingType]}}
+		</view>
+				<!-- <uni-load-more :loadingType="loadingType" :contentText="contentText"></uni-load-more> -->
 	</view>
 </template>
 
@@ -70,11 +73,12 @@
 				newsList: [],
 				loadingText: '加载中...',
 				// 上啦加载
-				loadingType: 1, //定义加载方式 0---contentdown  1---contentrefresh 2---contentnomore
+				loadingType: 0, //定义加载方式 0---contentdown  1---contentrefresh 2---contentnomore
 				contentText: {
-					contentdown: "上拉显示更多",
-					contentrefresh: "正在加载...",
-					contentnomore: "没有更多数据了"},
+					'0': "上拉显示更多",
+					'1': "正在加载...",
+					'2': "没有更多数据了",
+				},
 				params:{
 					yhxm: "",
 					pageNum: 1,
@@ -83,34 +87,23 @@
 				nextPage:null
 			}
 		},
-		watch:{
-			"newsList":function(n,o){
-				console.log('1111',n)
-				console.log('2222',this.nextPage)
-			}
-		},
 		onPullDownRefresh: function() {
 			//下拉刷新的时候请求一次数据
 			this.newsList = []
-			this.getnewsList();
+			this.params.pageNum = 1
+			this.params.yhxm = ""
+			this.getPagerList();
 		},
 		onReachBottom() {
 			//触底的时候请求数据，即为上拉加载更多
 			//为了更加清楚的看到效果，添加了定时器
 			if(this.nextPage > 0){
-				this.params.pageNum = this.nextPage
-				this.getPagerList();
+				this.loadingType = 1
+				setTimeout(()=>{
+					this.params.pageNum = this.nextPage
+					this.getPagerList();
+				},1500)
 			}
-			
-			// if (timer != null) {
-			// 	clearTimeout(timer);
-			// }
-			// timer = setTimeout(function() {
-				// _self.getmorenews();
-			// }, 3000);
-
-			// 正常应为:
-			// _self.getmorenews();
 		},
 
 		onShow() {
@@ -120,72 +113,6 @@
 
 		},
 		methods: {
-			getmorenews: function() {
-				var v = this
-				if (_self.loadingType !== 0) { //loadingType!=0;直接返回
-					return false;
-				}
-				_self.loadingType = 1;
-				uni.showNavigationBarLoading(); //显示加载动画
-				this.$http.post(this.apis.TEAMMESS, {
-					yhxm: '',
-					grade: '',
-					yhlx: '',
-					sfjf: '',
-					pageNum: page,
-					pageSize: 8
-				}).then((res) => {
-					if (res.code == 200) {
-						if (res.page.list == null) {
-							_self.loadingType = 2;
-							uni.hideNavigationBarLoading(); //关闭加载动画
-							return;
-						}
-						this.newsList = res.page.list
-						page++; //得到数据之后page+1
-						v.newsList.concat(res.page.list)
-						console.log('v.newsList', v.newsList);
-						_self.loadingType = 2;
-						uni.hideNavigationBarLoading();
-						uni.stopPullDownRefresh(); //得到数据后停止下拉刷新
-					} else {
-						uni.showToast({
-							title: res.message,
-							icon: 'none',
-							duration: 1500
-						});
-					}
-				})
-			},
-			getnewsList: function(Arr) { //第一次回去数据
-				page = 1;
-				this.loadingType = 0;
-				uni.showNavigationBarLoading();
-
-				this.$http.post(this.apis.TEAMMESS, {
-					yhxm: '',
-					grade: '',
-					yhlx: '',
-					sfjf: '',
-					pageNum: page,
-					pageSize: 8
-				}).then((res) => {
-					if (res.code == 200) {
-						this.newsList = res.page.list
-						page++; //得到数据之后page+1
-						// _self.newsList = res.page.list.split('--hcSplitor--');
-						uni.hideNavigationBarLoading();
-						uni.stopPullDownRefresh(); //得到数据后停止下拉刷新
-					} else {
-						uni.showToast({
-							title: res.message,
-							icon: 'none',
-							duration: 1500
-						});
-					}
-				})
-			},
-
 			getPagerList() {
 				this.$http.post(this.apis.TEAMMESS, this.params).then((res) => {
 					if (res.code == 200) {
@@ -195,6 +122,10 @@
 							this.newsList = this.newsList.concat(res.page.list)
 						}
 						this.nextPage = res.page.nextPage
+						this.loadingType = 1
+						if(res.page.nextPage == 0){
+							this.loadingType = 2
+						}
 					} else {
 						uni.showToast({
 							title: res.message,
@@ -204,14 +135,9 @@
 					}
 				})
 			},
-			search(e, val) {
-				console.log(e, val);
-				this['val' + val] = e;
-				this.getPagerList([e, '', '', '', 1])
-			},
-			result(val) {
-				this.filterResult = JSON.stringify(val, null, 2)
-				this.getPagerList(['', '', '', val.key_1, 1])
+			search(e) {
+				this.params.yhxm = e
+				this.getPagerList()
 			}
 		}
 	}
@@ -308,10 +234,10 @@
 		margin-top: 24rpx
 	}
 
-	// @import "../../../common/iview.css";
-	// .ivu-btn-success {
-	// 	color: #fff;
-	// 	background-color: #19be6b;
-	// 	border-color: #19be6b
-	// }
+	.loadingbox{
+		text-align: center;
+		padding: 16rpx;
+		font-size: 36rpx;
+	}
+	
 </style>
