@@ -28,7 +28,7 @@
 			// app执行
 			this.toLogin()
 			// #endif
-			// this.toLogin()
+			this.toLogin()
 		},
 		methods: {
 			toLogin() {
