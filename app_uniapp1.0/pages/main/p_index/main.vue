@@ -3,10 +3,10 @@
 		<!-- <view class="status_bar"></view> -->
 		<view class="pagerTit-Box">
 			<swiper class="swiper" :autoplay="true" style="height: 100%;">
-                <swiper-item v-for="(item,index) in items" :key='index'>
-					   <image style="width: 100%;height: 100%;" :src='item.hdTpdz' mode="widthFix"></image>
-                </swiper-item>
-             </swiper>
+				<swiper-item v-for="(item,index) in items" :key='index'>
+					<image style="width: 100%;height: 100%;" :src='item.hdTpdz' mode="widthFix"></image>
+				</swiper-item>
+			</swiper>
 			<view class="funcBox" v-show="userMess">
 				<div class="box_row colCenter rowBetween haveUser">
 					<div @click='toTx'>
@@ -85,13 +85,13 @@
 		<view v-else class="teamListBox">
 			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
 				<!-- <view class="avaSty"> -->
-				
-					
+
+
 				<!-- </view> -->
 				<view class="messBox">
 					<view class="box_row colCenter" style="height: 100%;">
 						<view style="background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
-							 <b>{{index+1}}</b>
+							<b>{{index+1}}</b>
 						</view>
 						<img :src="it.userDetail.yhTx" alt="">
 						<view class="name">
@@ -100,7 +100,7 @@
 						<view class="" @click="phone(it.yhSjhm)">
 							<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
 						</view>
-						
+
 						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
 							A类学员
 						</view>
@@ -110,14 +110,14 @@
 						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
 							未认证
 						</view>
-						
+
 					</view>
 					<!-- <view class="phoneSty">
 						{{it.yhSjhm}}
 					</view> -->
 				</view>
-		       </view>
 			</view>
+		</view>
 
 	</view>
 </template>
@@ -126,149 +126,162 @@
 	import {
 		mapState
 	} from 'vuex'
-import uniBadge from "@/components/uni-badge/uni-badge.vue"
-import uniIcon from "@/components/uni-icon/uni-icon.vue"
+	import uniBadge from "@/components/uni-badge/uni-badge.vue"
+	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	export default {
-		components: {uniBadge,uniIcon},
+		components: {
+			uniBadge,
+			uniIcon
+		},
 		computed: mapState(['hasLogin', 'userName']),
-		data(){
+		data() {
 			return {
-				userMess:true,
-				USERMESS:'',//用户信息
+				userMess: true,
+				USERMESS: '', //用户信息
 				zhYE: {
-					yhZhye: 0   //账户余额
+					yhZhye: 0 //账户余额
 				},
-				items:[{}], //banner图
-				newsList:[]
+				items: [{}], //banner图
+				newsList: []
 			}
 		},
-		onLoad() {
-		},
+		onLoad() {},
 		onShow() {
 			this.Met.getUserInfo()
 			this.getbanner()
 			this.getYE()
 			this.getUsermess()
 			this.getnewsList()
-			if(this.judgeClient() == 'Android' ){
-			  setTimeout(()=>{
-			   this.wxApi.checkJsApi();
-			   this.wxApi.andshare(this.USERMESS.id);
-			 }, 3000);
-			}else if(this.judgeClient() == 'IOS' ){
-			  setTimeout(()=>{
-			  this.wxApi.checkJsApi();
-			  this.wxApi.share(this.USERMESS.id);
-			 }, 3000);
+			if (this.judgeClient() == 'Android') {
+				setTimeout(() => {
+					this.wxApi.checkJsApi();
+					this.wxApi.andshare(this.USERMESS.id);
+				}, 3000);
+			} else if (this.judgeClient() == 'IOS') {
+				setTimeout(() => {
+					this.wxApi.checkJsApi();
+					this.wxApi.share(this.USERMESS.id);
+				}, 3000);
 
-			}else{
-			  
+			} else {
+
 			}
 		},
 		created() {
-			
+
 		},
-		methods:{
-			phone(id){
+		methods: {
+			phone(id) {
 				uni.makePhoneCall({
 					phoneNumber: id //仅为示例
 				});
 			},
 			judgeClient() {
-			  let u = navigator.userAgent;
-			  let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;   //判断是否是 android终端
-			  let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);     //判断是否是 iOS终端
-			  console.log('是否是Android：' + isAndroid); //true,false
-			  console.log('是否是iOS：' + isIOS);
-			  if(isAndroid){
-				return 'Android';
-			  }else if(isIOS){
-				return 'IOS';
-			  }else{
-				return 'PC';
-			  }
+				let u = navigator.userAgent;
+				let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //判断是否是 android终端
+				let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //判断是否是 iOS终端
+				console.log('是否是Android：' + isAndroid); //true,false
+				console.log('是否是iOS：' + isIOS);
+				if (isAndroid) {
+					return 'Android';
+				} else if (isIOS) {
+					return 'IOS';
+				} else {
+					return 'PC';
+				}
 			},
-			getnewsList() {//第一次回去数据
-					this.$http.post(this.apis.TEAMMESS,{yhxm:'',grade:'',yhlx:'',sfjf:'',pageNum:1,pageSize:20}).then((res)=>{
-						if(res.code == 200){
-							this.newsList = res.page.list
-							// _self.newsList = res.page.list.split('--hcSplitor--');
-							//得到数据后停止下拉刷新
-						}else{
-							uni.showToast({
-								title:res.message,
-								icon:'none',
-								duration: 1500
-							});
-						}
-					})
+			getnewsList() { //第一次回去数据
+				this.$http.post(this.apis.TEAMMESS, {
+					yhxm: '',
+					grade: '',
+					yhlx: '',
+					sfjf: '',
+					pageNum: 1,
+					pageSize: 20
+				}).then((res) => {
+					if (res.code == 200) {
+						this.newsList = res.page.list
+						// _self.newsList = res.page.list.split('--hcSplitor--');
+						//得到数据后停止下拉刷新
+					} else {
+						uni.showToast({
+							title: res.message,
+							icon: 'none',
+							duration: 1500
+						});
+					}
+				})
 			},
-			
-			getUsermess(){
-				this.$http.post(this.apis.USERMESS,{}).then((res)=>{
-					if(res.code == 200){
+
+			getUsermess() {
+				this.$http.post(this.apis.USERMESS, {}).then((res) => {
+					if (res.code == 200) {
 						this.USERMESS = res.result
-						if(this.USERMESS.yhZt == 1){
+						if (this.USERMESS.yhZt == 1) {
 							this.userMess = true
-						}else{
+						} else {
 							this.userMess = false
 						}
 					}
 				})
 			},
-			getbanner(){//获取轮播图
-				this.$http.post(this.apis.SWIPER,{hdSxs:0}).then((res)=>{
-					if(res.code==200){
-					  this.items = res.page.list
+			getbanner() { //获取轮播图
+				this.$http.post(this.apis.SWIPER, {
+					hdSxs: 0
+				}).then((res) => {
+					if (res.code == 200) {
+						this.items = res.page.list
 					}
 				})
 			},
-			getYE() {//获取账户余额
-			  var v = this
-			  this.$http.post(this.apis.USERZH,{}).then((res)=>{
-				  if(res.code==200){
-					v.zhYE.yhZhye = res.result.yhZhye
-				  }else{
-					uni.showToast({ title:res.message})
-				  }
-			  })
+			getYE() { //获取账户余额
+				var v = this
+				this.$http.post(this.apis.USERZH, {}).then((res) => {
+					if (res.code == 200) {
+						v.zhYE.yhZhye = res.result.yhZhye
+					} else {
+						uni.showToast({
+							title: res.message
+						})
+					}
+				})
 			},
-			toTx(){
+			toTx() {
 				uni.navigateTo({
 					url: '/pages/yqJl/yqJl'
 				});
 			},
-			ChangeUser(){
+			ChangeUser() {
 				uni.navigateTo({
-					url:'/pages/goMoney/goMoney'
+					url: '/pages/goMoney/goMoney'
 				})
 			},
-			goAut(){
+			goAut() {
 				uni.navigateTo({
 					url: '/pages/rellyName/rellyName'
 				});
 			},
-			toCode(){
+			toCode() {
 				uni.navigateTo({
 					url: '/pages/main/user/code/code'
 				});
 			},
-			goJkzn(){
+			goJkzn() {
 				uni.navigateTo({
 					url: '/pages/main/p_index/jkzn/jkzn'
 				});
 			},
-			gobkjf(){
+			gobkjf() {
 				uni.navigateTo({
 					url: '/pages/main/p_index/bkjf/bkjf'
 				});
 			},
-			goplfw(){
+			goplfw() {
 				uni.navigateTo({
 					url: '/pages/main/p_index/plfw/plfw'
 				});
 			},
-			gokcfb(){
+			gokcfb() {
 				uni.navigateTo({
 					url: '/pages/main/p_index/kcfb/kcfb'
 				});
@@ -313,47 +326,53 @@ import uniIcon from "@/components/uni-icon/uni-icon.vue"
 			text-align: center;
 			height: 100%;
 			padding: 0 40px;
+
 			.titleSty {
 				font-size: 24upx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: rgba(80, 144, 241, 1);
 			}
+
 			.valSty {
-				font-size:28upx;
-				font-family:PingFangSC-Regular;
-				font-weight:400;
-				color:rgba(80,144,241,1);
+				font-size: 28upx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: rgba(80, 144, 241, 1);
 			}
-			.linesty{
-				width:52rpx;
-				height:4rpx;
+
+			.linesty {
+				width: 52rpx;
+				height: 4rpx;
 				background-color: #BBC7EC;
 				margin: 10rpx auto;
 			}
+
 			.eCodeSty {
 				width: 112rpx;
 				height: 112rpx;
 			}
 		}
 
-		.noUser{
+		.noUser {
 			height: 100%;
-			.text{
+
+			.text {
 				margin-bottom: 22rpx;
-				font-size:28rpx;
-				font-family:PingFangSC-Regular;
-				font-weight:400;
-				color:rgba(153,153,153,1);
-				border-bottom: rgba(255,255,255,0) solid 1px;
+				font-size: 28rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: rgba(153, 153, 153, 1);
+				border-bottom: rgba(255, 255, 255, 0) solid 1px;
 			}
-			.goAutSty{
+
+			.goAutSty {
 				margin-bottom: 22rpx;
-				font-size:28rpx;
-				font-family:PingFangSC-Regular;
-				font-weight:400;
-				color:rgba(80,144,241,1);
-				border-bottom: rgba(80,144,241,1) solid 1px;
+				font-size: 28rpx;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: rgba(80, 144, 241, 1);
+				border-bottom: rgba(80, 144, 241, 1) solid 1px;
 			}
 		}
 
@@ -361,12 +380,15 @@ import uniIcon from "@/components/uni-icon/uni-icon.vue"
 			height: 232rpx;
 			background-color: #ffffff;
 			margin-top: 20rpx;
+
 			.butItenSty {
 				text-align: center;
+
 				img {
 					width: 120rpx;
 					height: 120rpx;
 				}
+
 				.text {
 					font-size: 14px;
 					font-family: PingFangSC-Regular;
@@ -379,18 +401,20 @@ import uniIcon from "@/components/uni-icon/uni-icon.vue"
 		.teamTitBox {
 			padding: 0 36rpx;
 			height: 116rpx;
-			.hline{
+
+			.hline {
 				margin-right: 12rpx;
-				width:8rpx;
-				height:30rpx;
-				background:linear-gradient(132deg,rgba(59,147,253,1) 0%,rgba(60,128,253,1) 41%,rgba(55,84,252,1) 100%);
+				width: 8rpx;
+				height: 30rpx;
+				background: linear-gradient(132deg, rgba(59, 147, 253, 1) 0%, rgba(60, 128, 253, 1) 41%, rgba(55, 84, 252, 1) 100%);
 			}
-			.titText{
+
+			.titText {
 				font-size: 32rpx;
 				font-family: PingFangSC-Medium;
 				font-weight: 500;
 				color: rgba(51, 51, 51, 1);
-				background-color:grba(255,255,255,0); 
+				background-color: grba(255, 255, 255, 0);
 			}
 		}
 
@@ -410,6 +434,7 @@ import uniIcon from "@/components/uni-icon/uni-icon.vue"
 			overflow-y: auto;
 			padding: 0 36rpx;
 			max-height: 50vh;
+
 			.itemSty {
 				border-bottom: solid 2rpx #DFE7EE;
 				padding: 30rpx 0;

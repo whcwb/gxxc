@@ -22,8 +22,8 @@
 		data() {
 			return {
 				form: {
-					username: '',
-					password: ''
+					username: '18672368676',
+					password: '123456'
 				}
 			}
 		},
@@ -49,6 +49,7 @@
 						v.toIndex()
 					} else {
 						uni.showToast({
+							icon:"none",
 							title: res.message
 						})
 					}
