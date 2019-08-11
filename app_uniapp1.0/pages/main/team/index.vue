@@ -78,7 +78,7 @@
 				params:{
 					yhxm: "",
 					pageNum: 1,
-					pageSize: 6
+					pageSize: 10
 				},
 				nextPage:null
 			}
@@ -190,7 +190,7 @@
 				this.$http.post(this.apis.TEAMMESS, this.params).then((res) => {
 					if (res.code == 200) {
 						if(this.newsList.length == 0){
-							this.newsList = res.page.list.concat(res.page.list)
+							this.newsList = res.page.list
 						}else{
 							this.newsList = this.newsList.concat(res.page.list)
 						}
