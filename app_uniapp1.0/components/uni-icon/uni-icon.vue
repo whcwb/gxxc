@@ -1,5 +1,5 @@
 <template>
-	<view class="uni-icon"  :class="['uni-icon-'+type]" :style="{color:color,'font-size':fontSize}" @click="onClick()">
+	<view class="uni-icon" :style="{color:color,'font-size':fontSize}" @click="onClick()">
 		&#xe6b9;
 	</view>
 </template>

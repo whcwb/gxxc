@@ -85,23 +85,36 @@
 		<view v-else class="teamListBox">
 			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
 				<!-- <view class="avaSty"> -->
-					<img :src="it.userDetail.yhTx" alt="">
+				
+					
 				<!-- </view> -->
 				<view class="messBox">
-					<view class="box_row colCenter">
+					<view class="box_row colCenter" style="height: 100%;">
+						<view style="background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
+							 <b>{{index+1}}</b>
+						</view>
+						<img :src="it.userDetail.yhTx" alt="">
 						<view class="name">
 							{{it.yhXm}}
 						</view>
-						<view v-if="it.userDetail.ddSfjx == '1'" class="butTyp onMoney">
-							已缴费
+						<view class="" @click="phone(it.yhSjhm)">
+							<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
 						</view>
-						<view v-else class="butTyp offMoney">
-							未缴费
+						
+						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
+							A类学员
 						</view>
+						<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
+							B类学员
+						</view>
+						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
+							未认证
+						</view>
+						
 					</view>
-					<view class="phoneSty">
+					<!-- <view class="phoneSty">
 						{{it.yhSjhm}}
-					</view>
+					</view> -->
 				</view>
 		       </view>
 			</view>
@@ -113,8 +126,10 @@
 	import {
 		mapState
 	} from 'vuex'
-
+import uniBadge from "@/components/uni-badge/uni-badge.vue"
+import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	export default {
+		components: {uniBadge,uniIcon},
 		computed: mapState(['hasLogin', 'userName']),
 		data(){
 			return {
@@ -135,11 +150,44 @@
 			this.getYE()
 			this.getUsermess()
 			this.getnewsList()
+			if(this.judgeClient() == 'Android' ){
+			  setTimeout(()=>{
+			   this.wxApi.checkJsApi();
+			   this.wxApi.andshare(this.USERMESS.id);
+			 }, 3000);
+			}else if(this.judgeClient() == 'IOS' ){
+			  setTimeout(()=>{
+			  this.wxApi.checkJsApi();
+			  this.wxApi.share(this.USERMESS.id);
+			 }, 3000);
+
+			}else{
+			  
+			}
 		},
 		created() {
 			
 		},
 		methods:{
+			phone(id){
+				uni.makePhoneCall({
+					phoneNumber: id //仅为示例
+				});
+			},
+			judgeClient() {
+			  let u = navigator.userAgent;
+			  let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;   //判断是否是 android终端
+			  let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);     //判断是否是 iOS终端
+			  console.log('是否是Android：' + isAndroid); //true,false
+			  console.log('是否是iOS：' + isIOS);
+			  if(isAndroid){
+				return 'Android';
+			  }else if(isIOS){
+				return 'IOS';
+			  }else{
+				return 'PC';
+			  }
+			},
 			getnewsList() {//第一次回去数据
 					this.$http.post(this.apis.TEAMMESS,{yhxm:'',grade:'',yhlx:'',sfjf:'',pageNum:1,pageSize:20}).then((res)=>{
 						if(res.code == 200){
