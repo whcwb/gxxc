@@ -180,10 +180,10 @@
 				</view>
 				<view class="box_row">
 					<view class="box_row_100" style="padding: 0.2rem;" @tap="toPay">
-						<button type="primary" style="width: 80%;font-size: 0.4rem;">同意</button>
+						<button type="primary" style="width: 80%;height: 70upx;line-height: 70upx;font-size: 0.4rem;">同意</button>
 					</view>
 					<view class="box_row_100" style="padding: 0.2rem;" @tap="toBack">
-						<button type="warn" style="width: 80%;font-size: 0.4rem;">拒绝</button>
+						<button type="warn" style="width: 80%;height: 70upx;line-height: 70upx;font-size: 0.4rem;">拒绝</button>
 					</view>
 				</view>
 			</view>

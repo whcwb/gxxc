@@ -289,7 +289,7 @@
 							
 							setTimeout(()=>{
 								uni.navigateTo({
-									url: '/pages/login/login'
+									url: '/pages/welcome/welcome'
 								})
 							},2000)
 						} else {

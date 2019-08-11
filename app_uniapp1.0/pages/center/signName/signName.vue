@@ -37,6 +37,12 @@
 				}
 			}
 		},
+		mounted() {
+			this.$refs.sign.$el.childNodes[2].childNodes[0].style.width = '80px';
+			this.$refs.sign.$el.childNodes[2].childNodes[2].style.width = '80px';
+			this.$refs.sign.$el.childNodes[2].childNodes[0].style.height = '50px';
+			this.$refs.sign.$el.childNodes[2].childNodes[2].style.height = '50px';
+		},
 		methods: {
 			...mapMutations(['setSignUrl']),
 			saveResult(data) {
