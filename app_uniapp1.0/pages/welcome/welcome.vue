@@ -42,13 +42,13 @@
 			// this.toLogin()
 			this.$refs.loading.open()
 			// #ifdef H5
-			 // this.getWxJs()
+			 this.getWxJs()
 			// #endif
 			// #ifdef APP-PLUS
 			// app执行
 			this.toLogin()
 			// #endif
-			this.toLogin()
+			// this.toLogin()
 		},
 		methods: {
 			toLogin() {
