@@ -21,8 +21,8 @@
 	<view style="width: 100%;background:rgba(255,255,255,1);">
 		<img src="/static/img/banner.png" style="height: 336upx;width: 750upx;">
 		<view class="inputMess" v-for="item in inputList">
-			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" />
-			<view v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
+			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false"/>
+			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 		</view>
 		<view class="btn" @click="reg">
 			立即注册
@@ -193,56 +193,128 @@
 		},
 		data() {
 			return {
-				account: '',
-				password: '',
-				email: '',
-				cb:false,
-				form:{
-					yhYyyqm:'',
-					yhZh:'',//帐号
-					yhMm:'',//密码
-					yhLx:'1',
-					yhXm:'',
-					yhZjhm:'',
-					addType:'3',
-					telIdentifying:'',//验证码
+				cb: false,
+				form: { //在这里存放非inoput的字段属性
+					yhLx: '1',
+					addType: '3',
+					// yhZh:'',
+					// yhYyyqm:'',
+					// telIdentifying:'',
+					// yhMm:'',
+					// yhXm:'',
+					// yhZjhm:''						
 				},
-				inputList: [ //验证、提交可let临时数组or对象,若有新属性，可添加
+				inputList: [ //验证、提交时放入form对象,动态绑定type样式就失效了，是uniapp的bug！！
 					{
 						placeholder: '请输入手机号',
-						val: 'form.yhZh'
-					},
-					{
-						placeholder: '请输入验证码',
-						val: ''
-					},
-					{
-						placeholder: '请输入密码',
-						val: ''
-					},
-					{
-						placeholder: '请输入真实姓名',
-						val: ''
-					},
-					{
-						placeholder: '请输入身份证号',
+						key: 'yhZh',
+						type:'number',
 						val: ''
 					},
 					{
 						placeholder: '请输入邀请码',
+						key: 'yhYyyqm',
+						type:'number',
+						val: ''
+					},
+					{
+						placeholder: '请输入验证码',
+						key: 'telIdentifying',
+						type:'number',
+						val: ''
+					},
+					{
+						placeholder: '请输入密码',
+						key: 'yhMm',
+						type:'password',
+						val: ''
+					},
+					{
+						placeholder: '请输入真实姓名',
+						key: 'yhXm',
+						type:'text',
+						val: ''
+					},
+					{
+						placeholder: '请输入身份证号',
+						key: 'yhZjhm',
+						type:'idcard',
 						val: ''
 					}
 				]
 			}
 		},
 		methods: {
-			reg(){
-				console.log(this.form);
-				if(this.cb == false){
+			reg() {
+				if (this.cb == false) { //首先判断同意协议
 					this.openPopup()
-				}else{
-					cconsole.log(this.cb);
+					return
 				}
+
+				this.inputList.map((val, index, arr) => { //form对象
+					this.form[val.key] = val.val
+				})
+
+				//输入验证
+				if (this.form[yhZh].length < 5) {
+					uni.showToast({
+						icon: 'none',
+						title: '账号最短为 5 个字符'
+					});
+					return;
+				}
+				if (this.form[yhMm].length < 6) {
+					uni.showToast({
+						icon: 'none',
+						title: '密码最短为 6 个字符'
+					});
+					return;
+				}
+				
+				this.$http.post(this.apis.USERSAVE,	this.form).then(res=> {
+						if (res.code == 200) {
+							uni.showToast({
+								title: '用户注册成功'
+							})
+							
+							setTimeout(()=>{
+								uni.navigateTo({
+									url: '/pages/login/login'
+								})
+							},2000)
+						} else {
+							uni.showToast({
+								title: res.message
+							})
+						}
+					}
+				)
+			},
+			getYZM() {
+				var zh = this.inputList[0].val //只需两个，若需要多个可拓展循环数组找到val
+				var yqm = this.inputList[1].val
+				if (zh == '' || yqm == '') {
+					uni.showToast({
+						title: '请填写手机号和邀请码！'
+					})
+					return
+				}
+				
+
+				//获取邀请码
+				var v = this
+				this.$http.post(this.apis.PHINECODE, {'zh': zh,'yyyqm': yqm}).then(res => 
+				{
+					if (res.code == 200) {
+						uni.showToast({
+							title: '验证码已发送'
+						})
+					} else {
+						uni.showToast({
+							title: res.message
+						})
+					}
+				})
 			},
 			openPopup() {
 				this.$refs.popup.open()
@@ -255,46 +327,6 @@
 				uni.navigateTo({
 					url: '../center/learnCarFile/learnCarFile'
 				})
-			},
-			register() {
-				/**
-				 * 客户端对账号信息进行一些必要的校验。
-				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
-				 */
-				if (this.account.length < 5) {
-					uni.showToast({
-						icon: 'none',
-						title: '账号最短为 5 个字符'
-					});
-					return;
-				}
-				if (this.password.length < 6) {
-					uni.showToast({
-						icon: 'none',
-						title: '密码最短为 6 个字符'
-					});
-					return;
-				}
-				if (this.email.length < 3 || !~this.email.indexOf('@')) {
-					uni.showToast({
-						icon: 'none',
-						title: '邮箱地址不合法'
-					});
-					return;
-				}
-
-				const data = {
-					account: this.account,
-					password: this.password,
-					email: this.email
-				}
-				service.addUser(data);
-				uni.showToast({
-					title: '注册成功'
-				});
-				uni.navigateBack({
-					delta: 1
-				});
 			}
 		}
 	}
@@ -337,6 +369,7 @@
 		font-size: 28upx;
 		font-weight: 400;
 		color: rgba(37, 128, 222, 1);
+		z-index: 999
 	}
 
 	/deep/ .input-placeholder {
@@ -349,45 +382,48 @@
 		padding: 0;
 		font-size: 24upx
 	}
-	
-	.AgreementMessSty{
-		  background-color: #fff;
-		  height: 100%;
-		  font-size: 48rpx;
-		  line-height: 1.8;
-		  display:flex;
-		  flex-direction:column;
-		  justify-content:space-between;
-		  
-		  .messTop{
+
+	.AgreementMessSty {
+		background-color: #fff;
+		height: 100%;
+		font-size: 48rpx;
+		line-height: 1.8;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		.messTop {
 			font-size: 50rpx;
 			font-weight: 700;
 			text-align: center;
 			color: #f75d42;
 			padding: 35rpx 0;
 			position: relative;
-			
-			.close{
-			  position: absolute;
-			  top: 10rpx;
-			  left: 10rpx;
-			  font-size: 30rpx!important;
+
+			.close {
+				position: absolute;
+				top: 10rpx;
+				left: 10rpx;
+				font-size: 30rpx !important;
 			}
-		  }
-		  .messcontent{
-			flex-grow:1;
+		}
+
+		.messcontent {
+			flex-grow: 1;
 			padding: 15rpx 20rpx;
-			.fonttit{
-			  text-align: left;
-			  font-weight: 700;
-			  font-size: 32rpx;
-			}
-			.fontsty{
+
+			.fonttit {
 				text-align: left;
-			  font-size: 28rpx;
-			  text-indent:50rpx;
-			  margin-top: 15rpx;
+				font-weight: 700;
+				font-size: 32rpx;
 			}
-		  }
+
+			.fontsty {
+				text-align: left;
+				font-size: 28rpx;
+				text-indent: 50rpx;
+				margin-top: 15rpx;
+			}
+		}
 	}
 </style>
