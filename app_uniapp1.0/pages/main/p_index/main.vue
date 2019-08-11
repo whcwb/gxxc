@@ -98,9 +98,9 @@
 							{{it.yhXm}}
 						</view>
 						<view class="" @click="phone(it.yhSjhm)">
-							
+							<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
 						</view>
-						<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
+						
 						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
 							A类学员
 						</view>
@@ -153,7 +153,7 @@ import uniIcon from "@/components/uni-icon/uni-icon.vue"
 			if(this.judgeClient() == 'Android' ){
 			  setTimeout(()=>{
 			   this.wxApi.checkJsApi();
-			   ui.getApp().wxUtil.andshare(this.USERMESS.id);
+			   this.wxApi.andshare(this.USERMESS.id);
 			 }, 3000);
 			}else if(this.judgeClient() == 'IOS' ){
 			  setTimeout(()=>{
