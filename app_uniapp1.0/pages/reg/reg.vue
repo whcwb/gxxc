@@ -193,43 +193,40 @@
 		},
 		data() {
 			return {
-				account: '',
-				password: '',
-				email: '',
 				cb:false,
-				form:{
-					yhYyyqm:'',
-					yhZh:'',//帐号
-					yhMm:'',//密码
+				form:{					//在这里存放非inoput的字段属性
 					yhLx:'1',
-					yhXm:'',
-					yhZjhm:'',
 					addType:'3',
-					telIdentifying:'',//验证码
 				},
-				inputList: [ //验证、提交可let临时数组or对象,若有新属性，可添加
+				inputList: [ //验证、提交时放入form对象
 					{
 						placeholder: '请输入手机号',
-						val: 'form.yhZh'
+						key:'yhZh',
+						val: ''
 					},
 					{
 						placeholder: '请输入验证码',
+						key:'telIdentifying',
 						val: ''
 					},
 					{
 						placeholder: '请输入密码',
+						key:'yhMm',
 						val: ''
 					},
 					{
 						placeholder: '请输入真实姓名',
+						key:'yhXm',
 						val: ''
 					},
 					{
 						placeholder: '请输入身份证号',
+						key:'yhZjhm',
 						val: ''
 					},
 					{
 						placeholder: '请输入邀请码',
+						key:'yhYyyqm',
 						val: ''
 					}
 				]
@@ -237,12 +234,17 @@
 		},
 		methods: {
 			reg(){
-				console.log(this.form);
-				if(this.cb == false){
-					this.openPopup()
-				}else{
-					cconsole.log(this.cb);
-				}
+				this.inputList.map((val,index,arr)=>{
+					this.form[val.key]=val.val
+				})
+				
+				console.log(this.form)
+				
+				// if(this.cb == false){
+				// 	this.openPopup()
+				// }else{
+				// 	cconsole.log(this.cb);
+				// }
 			},
 			openPopup() {
 				this.$refs.popup.open()

@@ -11,7 +11,7 @@
 		<view class="bg">
 			<view class="person">
 				<view class="headTip">
-					安全教学{{zyMess.jljxsl | jljxsl}}次
+					安全教学{{zyMess.jlJxsl}}次
 				</view>
 				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<img v-else src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
@@ -289,7 +289,7 @@
 			getZYmess(){//获取专员信息
 			  var v = this
 			  this.$http.post(this.apis.getZYmess,{}).then((res)=>{
-				  console.log('zhuanyuan',res);
+				  // console.log('zhuanyuan',res);
 				  if(res.code==200 && res.result){
 					  res.result.forEach((item,index)=>{
 						if(item.jlPf){
@@ -298,7 +298,7 @@
 					  })
 					  v.zyMwssList = res.result
 					  v.zyMess = v.zyMwssList[v.current]
-					  console.log(v.zyMess.jlPf,'zyMess');
+					  console.log(v.zyMess,'zyMess');
 				  }
 			  })
 			},
