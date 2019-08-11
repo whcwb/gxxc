@@ -10,10 +10,7 @@
 			<view class="IDPhoto">
 				<view class="text">温馨提示：请上传原始比例的身份证正反面，请勿裁剪涂改，保证身份证信息清晰显示</view>
 				<view style="display: flex;justify-content: space-around;align-items: center;">
-					<!-- <robby-image-upload v-model="zm" limit=1 @click="getImg(0,10)"></robby-image-upload> -->
-					<!-- <robby-image-upload v-model="fm" limit=1 @click="getImg(1,11)"></robby-image-upload> -->
 					<img :src="imgList.zm" @click="getImg(0,10)" style="width: 300upx;height: 180upx;">
-					<img :src="imgList.bm" @click="getImg(1,11)" style="width: 300upx;height: 180upx;">
 				</view>
 				<view style="margin-bottom: 14upx;font-size:24upx;font-weight:400;color:rgba(153,153,153,1);">示例</view>
 				<img src="/static/img/my/exp.png" style="width: 132upx;height: 84upx;">
@@ -88,13 +85,8 @@
 					fileType: Type
 				}).then(res => {
 					if (res.code == 200) {
-						if (val == 0) {
-							v.imgList.zm =this.apis.getImgUrl + res.result.filePath
-							v.form.imgList[val] = res.result.filePath
-						} else if (val == 1) {
-							v.imgList.bm = this.apis.getImgUrl + res.result.filePath
-							v.form.imgList[val] = res.result.filePath
-						}
+						v.imgList.zm = this.apis.getImgUrl + res.result.filePath
+						v.form.imgList[val] = res.result.filePath
 						v.form.xm = res.result.xm;
 						v.form.cfzh = res.result.cfzh;
 
@@ -118,7 +110,7 @@
 
 				var v = this
 				this.$http.post(this.apis.IDRZ, {
-					'imgList':v.form.imgList.join(','),
+					'imgList': v.form.imgList.join(','),
 					'yhZjhm': v.form.sfz,
 					'yhXm': v.form.name
 				}).then(res => {
