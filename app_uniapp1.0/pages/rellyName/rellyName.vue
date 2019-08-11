@@ -9,8 +9,12 @@
 			<view class="personMess">身份证正反面照</view>
 			<view class="IDPhoto">
 				<view class="text">温馨提示：请上传原始比例的身份证正反面，请勿裁剪涂改，保证身份证信息清晰显示</view>
-				<robby-image-upload v-model="zm" limit=1></robby-image-upload>
-				<!-- <robby-image-upload v-model="fm" limit=1></robby-image-upload> -->
+				<view style="display: flex;justify-content: space-around;align-items: center;">
+					<!-- <robby-image-upload v-model="zm" limit=1 @click="getImg(0,10)"></robby-image-upload> -->
+					<!-- <robby-image-upload v-model="fm" limit=1 @click="getImg(1,11)"></robby-image-upload> -->
+					<img :src="imgList.zm" @click="getImg(0,10)" style="width: 300upx;height: 180upx;">
+					<img :src="imgList.bm" @click="getImg(1,11)" style="width: 300upx;height: 180upx;">
+				</view>
 				<view style="margin-bottom: 14upx;font-size:24upx;font-weight:400;color:rgba(153,153,153,1);">示例</view>
 				<img src="/static/img/my/exp.png" style="width: 132upx;height: 84upx;">
 			</view>
@@ -38,51 +42,103 @@
 		data() {
 			return {
 				isDone: false, //认证控制
-				zm:'',
-				fm:'',
-				form:{
+				zm: '',
+				fm: '',
+				imgList: {
+					zm: 'static/img/id_03.png',
+					bm: 'static/img/id_05.png'
+				},
+				form: {
 					sfz: '',
-					name: ''
+					name: '',
+					imgList: ['-', '-', '-', '-']
 				}
 			}
 		},
+		onShow() {
+			this.getUser()
+		},
 		methods: {
-			getImg(val, fileType) {
-				var v = this
-				this.wxUtil.chooseImage((imgID) => {
-					this.wxUtil.uploadImage(imgID[0], (httpID) => {
-						v.upload(httpID.serverId, val, fileType)
-					})
-				})
-			},
-			upload() {
-				if(this.isDone){						//若已完成认证，则去缴费
-					this.toPay()
-					return
-				}
-				
-				var v = this
-				this.$http.post(this.apis.IDRZ, {
-					'yhZjhm': v.form.sfz,
-					'yhXm': v.form.name
-				}).then(res => {
+			getUser() {
+				//获取基本信息
+				this.$http.post(this.apis.USERMESS).then(res => {
 					if (res.code == 200) {
-						this.isDone=true
+						this.isDone = res.result.yhSfyjz == 0 ? false : true
 					} else {
 						uni.showToast({
 							title: res.message,
 							duration: 2000,
-							icon:'none'
+							icon: 'none'
+						});
+					}
+				}).catch(err => {})
+			},
+			getImg(val, fileType) {
+				var v = this
+				this.wxUtil.chooseImage((imgID) => {
+					this.wxUtil.uploadImage(imgID[0], (httpID) => {
+						v.upImg(httpID.serverId, val, fileType)
+					})
+				})
+			},
+			upImg(id, val, Type) {
+				var v = this
+				this.$http.post(this.apis.WXIMGUP, {
+					code: id,
+					fileType: Type
+				}).then(res => {
+					if (res.code == 200) {
+						if (val == 0) {
+							v.imgList.zm =this.apis.getImgUrl + res.result.filePath
+							v.form.imgList[val] = res.result.filePath
+						} else if (val == 1) {
+							v.imgList.bm = this.apis.getImgUrl + res.result.filePath
+							v.form.imgList[val] = res.result.filePath
+						}
+						v.form.xm = res.result.xm;
+						v.form.cfzh = res.result.cfzh;
+
+					} else {
+						console.log('图片上传错误');
+						if (res.code == 200) {
+							// v.rz()
+						} else {
+							uni.showToast({
+								title: res.message
+							})
+						}
+					}
+				})
+			},
+			upload() {
+				if (this.isDone) { //若已完成认证，则去缴费
+					this.toPay()
+					return
+				}
+
+				var v = this
+				this.$http.post(this.apis.IDRZ, {
+					'imgList':v.form.imgList.join(','),
+					'yhZjhm': v.form.sfz,
+					'yhXm': v.form.name
+				}).then(res => {
+					if (res.code == 200) {
+						this.isDone = true
+					} else {
+						uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon: 'none'
 						});
 					}
 				})
 			},
 			toPay() {
-				if(this.isDone){
+				if (this.isDone) {
 					uni.navigateTo({
-					    url: '/pages/goMoney/goMoney',
+						url: '/pages/goMoney/goMoney',
 					});
-				}else{
+				} else {
 					this.isDone = true
 				}
 			}
