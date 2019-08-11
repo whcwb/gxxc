@@ -93,6 +93,9 @@
 			this.params.pageNum = 1
 			this.params.yhxm = ""
 			this.getPagerList();
+			setInterval(()=>{
+				uni.stopPullDownRefresh();
+			},2000)
 		},
 		onReachBottom() {
 			//触底的时候请求数据，即为上拉加载更多
