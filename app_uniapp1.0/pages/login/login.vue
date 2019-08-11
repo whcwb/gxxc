@@ -22,8 +22,8 @@
 		data() {
 			return {
 				form: {
-					username: '',
-					password: ''
+					username: '18672368676',
+					password: '123456'
 				}
 			}
 		},
