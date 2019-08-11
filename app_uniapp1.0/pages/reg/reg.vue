@@ -244,6 +244,12 @@
 				]
 			}
 		},
+		onShow() {
+			var yqm = uni.getStorageSync('yqm')
+			if(yqm && yqm!=''&&yqm!=undefined){
+				this.inputList[1].val = yqm
+			}
+		},
 		methods: {
 			changeAgree(){						//由于uniapp的checked不能更改，所以只能click更改
 				this.agree=!this.agree

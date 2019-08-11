@@ -1,7 +1,7 @@
 <template>
 	<view style="width: 100%;padding-top: 1upx;background: rgba(255,255,255,1);">
 		<view style="margin: 102upx 0 140upx;text-align: center;">
-			<img src="/static/img/head.png" style="width:136upx;height: 136upx;">
+			<img src="/static/img/head.png" style="width:170upx;height: 170upx;">
 		</view>
 		<view class="inputMess">
 			<input class="uni-input input" placeholder="请输入手机号" v-model="form.username" />
@@ -28,9 +28,9 @@
 			}
 		},
 		onShow() {
-		   console.log(uni.getStorage({
-		   	    key:'token'
-		   }));
+			console.log(uni.getStorage({
+				key: 'token'
+			}));
 		},
 		onReady() {
 			try {
@@ -42,15 +42,21 @@
 		methods: {
 			login() {
 				var v = this
-				this.$http.post(this.apis.LOGIN, v.form).then(res=> {
+				this.$http.post(this.apis.LOGIN, v.form).then(res => {
 					if (res.code == 200) {
-						uni.setStorage({key: 'token',data: res.result.accessToken});
-						uni.setStorage({key: 'phone',data: v.form.username});
+						uni.setStorage({
+							key: 'token',
+							data: res.result.accessToken
+						});
+						uni.setStorage({
+							key: 'phone',
+							data: v.form.username
+						});
 						v.toIndex()
 					} else {
 						uni.showToast({
-							icon:"none",
-							title: res.message
+							title: res.message,
+							icon: 'none'
 						})
 					}
 				})
