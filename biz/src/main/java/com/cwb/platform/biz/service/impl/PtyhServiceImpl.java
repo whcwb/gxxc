@@ -615,7 +615,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 //        注册类型  1、微信注册  2、支付宝注册 3、web页面注册
         String addType = entity.getAddType();
-        RuntimeCheck.ifBlank(addType, "注册类型不能为空");//注册类型  1、微信注册  2、支付宝注册 3、web页面注册
+        RuntimeCheck.ifBlank(addType, "注册类型不能为空");
         if (StringUtils.containsNone(addType, new char[]{'1', '2', '3'})) {
             return ApiResponse.fail("请输入正确注册类型");
         }
@@ -679,7 +679,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhIxySffp("0");//学员是否已分配
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
-        newEntity.setYhTx("temp/logo.png");
+        newEntity.setYhTx("temp/192.png");
 
         String bizptyhlog = "";
         try {
@@ -2082,7 +2082,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String encode = URLEncoder.encode("http://www.520xclm.com/wx/?page=reg&id=RGPM0Z","UTF-8");
+        String encode = URLEncoder.encode("http://www.520xclm.com/wx/?page=reg&id=000000","UTF-8");
         System.out.println(encode);
     }
 }

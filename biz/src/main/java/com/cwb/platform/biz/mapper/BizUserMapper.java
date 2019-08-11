@@ -69,7 +69,7 @@ public interface BizUserMapper extends Mapper<BizUser> {
     void updateJlid4(@Param("list") List<String> list, @Param("jlId") String jlId);
 
     @Select(" <script> " +
-            " SELECT u.* FROM BIZ_USER u , BIZ_PTYH p where " +
+            " SELECT u.* FROM BIZ_USER u , BIZ_PTYH p where yh_LX in ('1','3') AND " +
             " <choose>" +
             " <when test=\"grade == 1 \"> " +
             " u.YH_SJID = #{userid} " +
