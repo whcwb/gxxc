@@ -2,6 +2,17 @@
 	<view class="box_col teamPagerBox">
 		<view class="seacherBox">
 			<mSearch :show='false' :mode="2" @search="search($event)" placeholder='请输入姓名'></mSearch>
+			<view class="box_row studentBox">
+				<view class="box_row_100 studentAll" :class="params.yhlx==''?'setItem':''" @click="setYhlx('')">
+					全部学员
+				</view>
+				<view class="box_row_100 studentA" :class="params.yhlx=='1'?'setItem':''" @click="setYhlx('1')">
+					A类学员
+				</view>
+				<view class="box_row_100 studentB" :class="params.yhlx=='3'?'setItem':''" @click="setYhlx('3')">
+					B类学员
+				</view>
+			</view>
 		</view>
 		<view  class="box_col_100 noData" v-if="newsList.length == 0" style="text-align: center;">
 			<image src="../../../static/img/zanwu.png" mode="scaleToFill"></image>
@@ -80,6 +91,7 @@
 					'2': "没有更多数据了",
 				},
 				params:{
+					yhlx:"",
 					yhxm: "",
 					pageNum: 1,
 					pageSize: 10
@@ -92,6 +104,7 @@
 			this.newsList = []
 			this.params.pageNum = 1
 			this.params.yhxm = ""
+			this.params.yhlx = ""
 			this.getPagerList();
 			setInterval(()=>{
 				uni.stopPullDownRefresh();
@@ -116,6 +129,12 @@
 
 		},
 		methods: {
+			setYhlx(typ){
+				this.newsList = []
+				this.params.yhlx = typ
+				this.params.pageNum = 1
+				this.getPagerList();
+			},
 			getPagerList() {
 				this.$http.post(this.apis.TEAMMESS, this.params).then((res) => {
 					if (res.code == 200) {
@@ -154,13 +173,39 @@
 	.teamPagerBox{
 		background:rgba(245,246,249,1);
 		width: 100%;
-		padding-top: 88rpx;
+		padding-top: 168rpx;
 		.seacherBox{
 			position: fixed;
 			left: 0;
 			top:0;
 			right: 0;
 			margin-top:88rpx;
+			.studentBox{
+				background-color: #ffffff;
+				text-align: center;
+				.item{
+					font-size: 36rpx;
+					border-bottom: #ededed 6rpx solid;
+					padding: 18rpx 0;
+				}
+				.studentAll{
+					.item;
+					border-right: #ededed 2rpx solid;
+				}
+				.studentA{
+					.item;
+					border-left: #ededed 2rpx solid;
+					border-right: #ededed 2rpx solid;
+				}
+				.studentB{
+					.item;
+					border-left: #ededed 2rpx solid;
+				}
+				.setItem{
+					color: rgb(59, 147, 253);
+					border-bottom: rgb(59, 147, 253) 6rpx solid;
+				}
+			}
 		}
 	}
 	.teamListBox {
