@@ -147,7 +147,7 @@
 					</view>
 				</scroll-view>
 			</view>
-			<view style="overflow: auto;">
+			<view style="overflow: auto;margin-top: 20upx;">
 				<view class="box_row" style="padding: 0.15rem 0.3rem;">
 					<view class="userSign" style="width: 50%;margin-right: 0.2rem;position: relative;">
 						<view class="signImg" v-show="saveResultUrl!=''" style="top: 18%;right: 30upx;position: absolute;display: inline-block;">
@@ -178,12 +178,12 @@
 						</view>
 					</view>
 				</view>
-				<view class="box_row">
+				<view class="box_row" style="margin-top: 50upx;">
 					<view class="box_row_100" style="padding: 0.2rem;" @tap="toPay">
-						<button type="primary" style="width: 80%;font-size: 0.4rem;">同意</button>
+						<button type="primary" style="width: 80%;height: 70upx;line-height: 70upx;font-size: 0.4rem;">同意</button>
 					</view>
 					<view class="box_row_100" style="padding: 0.2rem;" @tap="toBack">
-						<button type="warn" style="width: 80%;font-size: 0.4rem;">拒绝</button>
+						<button type="warn" style="width: 80%;height: 70upx;line-height: 70upx;font-size: 0.4rem;">拒绝</button>
 					</view>
 				</view>
 			</view>

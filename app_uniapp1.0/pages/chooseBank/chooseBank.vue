@@ -94,7 +94,7 @@
 				});
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.getYe() //获取余额
 			this.getBankList() //获取银行卡列表
 		}

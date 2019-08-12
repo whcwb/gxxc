@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view>
-			<vuesigncanvas options="options" @result="saveResult" @clear="clear">
+			<vuesigncanvas ref="sign" options="options" @result="saveResult" @clear="clear">
 			</vuesigncanvas>
 		</view>
 	</view>
@@ -37,6 +37,12 @@
 				}
 			}
 		},
+		mounted() {
+			this.$refs.sign.$el.childNodes[2].childNodes[0].style.width='80px';
+			this.$refs.sign.$el.childNodes[2].childNodes[2].style.width='80px';
+			this.$refs.sign.$el.childNodes[2].childNodes[0].style.height='50px';
+			this.$refs.sign.$el.childNodes[2].childNodes[2].style.height='50px';
+		},
 		methods: {
 			...mapMutations(['setSignUrl']),
 			saveResult(data) {
@@ -56,10 +62,26 @@
 		}
 	}
 </script>
-
-<style lang="less">
+<style>
+	.vueSignCanvas__btn{
+		width: 1000px;
+		height: 200px
+	}
+</style>
+<style>
 	.titColor {
 		font-size: 30rpx;
 		color: #FFA060;
+	}
+	
+	.ss{
+		width: 160upx;
+		height: 100upx;
+		font-size: 40upx;
+	}
+	
+	/deep/ .vueSignCanvas__btn button{
+		width: 1000px;
+		height: 200px
 	}
 </style>
