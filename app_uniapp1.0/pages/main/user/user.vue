@@ -88,6 +88,12 @@
 						text: '我的团队',
 						toPath: '/pages/myTeam/myTeam'
 				})
+			}else if((data.yhLx == '3' && this.btnList[this.btnList.length-1].text != '我的团队')){
+				this.btnList.push({
+						src: '/static/img/my/wdtd.png',
+						text: '我的团队',
+						toPath: '/pages/myTeam/myTeam'
+				})
 			}
 		},
 		methods: {

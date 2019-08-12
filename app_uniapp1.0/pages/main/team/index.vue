@@ -121,7 +121,6 @@
 				},1500)
 			}
 		},
-
 		onShow() {
 			this.getPagerList();
 		},
@@ -150,6 +149,27 @@
 				this.params.pageNum = 1
 				this.getPagerList();
 			},
+			deteleObject(obj) { //数组去重复
+			    var uniques = [];
+			    var stringify = {};
+			    for (var i = 0; i < obj.length; i++) {
+			        var keys = Object.keys(obj[i]);
+			        keys.sort(function(a, b) {
+			            return (Number(a) - Number(b));
+			        });
+			        var str = '';
+			        for (var j = 0; j < keys.length; j++) {
+			            str += JSON.stringify(keys[j]);
+			            str += JSON.stringify(obj[i][keys[j]]);
+			        }
+			        if (!stringify.hasOwnProperty(str)) {
+			            uniques.push(obj[i]);
+			            stringify[str] = true;
+			        }
+			    }
+			    uniques = uniques;
+			    return uniques;
+			},
 			getPagerList() {
 				this.$http.post(this.apis.TEAMMESS, this.params).then((res) => {
 					if (res.code == 200) {
@@ -157,6 +177,7 @@
 							this.newsList = res.page.list
 						}else{
 							this.newsList = this.newsList.concat(res.page.list)
+							this.newsList = this.deteleObject(this.newsList)
 						}
 						this.nextPage = res.page.nextPage
 						this.loadingType = 1
