@@ -19,7 +19,7 @@
 			<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
 		</view>
 		<view v-else class=" teamListBox">
-				<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
+				<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index" @click="toXymess(it)">
 					<img :src="it.userDetail.yhTx" alt="">
 					<view class="messBox">
 						<view class="box_row colCenter">
@@ -129,6 +129,21 @@
 
 		},
 		methods: {
+			toXymess(item){//查看学员详情  只能看A类学员
+			    console.log('item',item);
+				if(item.userDetail.yhLx != '1' || item.userDetail.ddSfjx!= '1'){
+					
+				}else{
+					uni.setStorage({
+						key:'xymess',
+						data:item
+					})
+					uni.navigateTo({
+						url:"../../xymess/xymess"
+					})
+					
+				}
+			},
 			setYhlx(typ){
 				this.newsList = []
 				this.params.yhlx = typ
