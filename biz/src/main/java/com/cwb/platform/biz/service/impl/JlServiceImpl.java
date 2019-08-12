@@ -304,6 +304,9 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
 //        5、教练表入库
         entity.setYhId(newEntity.getId());
         entity.setJlShZt("1");
+        if(StringUtils.isBlank(entity.getJlImg())){
+            entity.setJlImg("temp/192.png");
+        }
         entityMapper.insertSelective(entity);
 
         String[] imgList = StringUtils.split(entity.getImgList(), ",");
