@@ -20,7 +20,7 @@
 			
 		},
 		onReady() {
-			// this.toLogin()
+			this.toLogin()
 			this.$refs.loading.open()
 			this.isYqm()
 			
@@ -58,15 +58,15 @@
 			toLogin() {
 				var  token = uni.getStorageSync('token');
 				setTimeout(()=>{
-				if(token){
-				uni.switchTab({
-				url: '/pages/main/p_index/main'
-				});
-				}else{
-				uni.navigateTo({
-				url: '../login/login'
-				});
-				}
+					if(token){
+						uni.switchTab({
+							url: '/pages/main/p_index/main'
+						});
+					}else{
+						uni.navigateTo({
+							url: '../login/login'
+						});
+					}
 				},3000)
 			},
 			getWxJs() {

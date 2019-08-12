@@ -56,7 +56,7 @@
 	export default {
 		data() {
 			return {
-				ye: 0.00 ,//余额
+				ye: 0 ,//余额
 				mxList:[]//提现明细
 			}
 		},
@@ -66,8 +66,8 @@
 			getMoney() {
 				this.$http.post(this.apis.USERZH).then(res => {
 					if (res.code == 200) {
-						if (res.result.yhZhye == 0) {
-							this.ye = '0.00'
+						if (res.result.yhZhye == 0||res.result.yhZhye < 0||res.result.yhZhye <20000) {		//如果余额小于200，则为0
+							this.ye = 0
 							console.log('1');
 						} else {
 							this.ye = res.result.yhZhye / 100
@@ -95,7 +95,8 @@
 				})
 			},
 			toChooseBank(){
-				if(this.ye = '0.00'){
+				console.log(this.ye)
+				if(this.ye = 0){
 					uni.showToast({
 						title: '暂无余额可提现',
 						duration: 2000
@@ -108,7 +109,7 @@
 				}
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.getMoney()
 		}
 	}

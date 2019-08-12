@@ -43,7 +43,9 @@
 		</view>
 
 		<div v-if='USERMESS.yhLx != 1' class="advbox" @click="ChangeUser">
-			<img src="./file/img/advimg.png" alt="">
+			<view style="position: absolute;left: 50%;transform: translateX(-50%);top: 45upx;">报名学车</view>
+			<view style="position: absolute;left: 50%;top: 90upx;">只需2600</view>
+			<img src="./file/img/index_banner.png">
 		</div>
 
 		<view class="butBox box_row rowAuto colCenter">
@@ -84,20 +86,18 @@
 		</view>
 		<view v-else class="teamListBox">
 			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
-				<!-- <view class="avaSty"> -->
-
-
-				<!-- </view> -->
-				<view class="messBox">
-					<view class="box_row colCenter" style="height: 100%;">
-						<view style="background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
+					<view style="display: flex;flex-direction:row;align-items: center;">
+						<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
 							<b>{{index+1}}</b>
 						</view>
 						<img :src="it.userDetail.yhTx" alt="">
 						<view class="name">
 							{{it.yhXm}}
 						</view>
-						<view class="" @click="phone(it.yhSjhm)">
+					</view>	
+					
+					<view style="display: flex;flex-direction:row;align-items: center;">	
+						<view style="margin-right: 15upx;" @click="phone(it.yhSjhm)">
 							<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
 						</view>
 
@@ -110,13 +110,11 @@
 						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
 							未认证
 						</view>
-
 					</view>
+				</view>
 					<!-- <view class="phoneSty">
 						{{it.yhSjhm}}
 					</view> -->
-				</view>
-			</view>
 		</view>
 
 	</view>
@@ -217,6 +215,10 @@
 				this.$http.post(this.apis.USERMESS, {}).then((res) => {
 					if (res.code == 200) {
 						this.USERMESS = res.result
+						uni.setStorage({
+							key:'usermess',
+							data:res.result
+						})
 						if (this.USERMESS.yhZt == 1) {
 							this.userMess = true
 						} else {
@@ -238,7 +240,11 @@
 				var v = this
 				this.$http.post(this.apis.USERZH, {}).then((res) => {
 					if (res.code == 200) {
-						v.zhYE.yhZhye = res.result.yhZhye
+						if( res.result.yhZhye < 0){
+							v.zhYE.yhZhye = 0
+						}else{
+							v.zhYE.yhZhye = res.result.yhZhye
+						}
 					} else {
 						uni.showToast({
 							title: res.message
@@ -419,8 +425,16 @@
 		}
 
 		.advbox {
+			position: relative;
 			text-align: center;
 
+			view{
+				font-size:44upx;
+				font-family:FZZDHJW--GB1-0;
+				font-weight:normal;
+				color:rgba(255,255,255,1);
+			}
+			
 			img {
 				width: 90.67%;
 				height: 172rpx;
@@ -438,6 +452,9 @@
 			.itemSty {
 				border-bottom: solid 2rpx #DFE7EE;
 				padding: 30rpx 0;
+				display: flex;
+				justify-content: space-between;
+				align-content: center;
 
 				img {
 					margin-right: 30rpx;
@@ -452,12 +469,12 @@
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: rgba(51, 51, 51, 1);
-					margin-right: 46rpx;
+					margin-right: 15upx;
 				}
 
 				.butTyp {
 					height: 38rpx;
-					width: 88rpx;
+					width: 90rpx;
 					text-align: center;
 					border-radius: 2px;
 					font-size: 22rpx;
@@ -466,6 +483,8 @@
 					color: rgba(255, 255, 255, 1);
 					line-height: 38rpx;
 					margin-right: 14rpx;
+					padding: 7upx 15upx;
+					border-radius: 20upx
 				}
 
 				.onMoney {
@@ -474,7 +493,7 @@
 				}
 
 				.offMoney {
-					background-color: #B4B4B4;
+					background-color:rgba(180,180,180, 0.7);
 				}
 
 				.FuserTyp {

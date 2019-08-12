@@ -60,21 +60,17 @@
 					if(res.code==200){
 					  uni.showToast({
 						title: '密码修改成功,重新登录！',
-						duration:1555,
-						complete:function(){
-							uni.navigateTo({
-								url:'../login/login'
-							})
-						}
+						duration:1555
 					  })
 					  setTimeout(() => {
 						uni.navigateTo({
 						  url: '/pages/login'
 						})
-					  }, 1*1000);
+					  }, 1555);
 					}else{
 					  uni.showToast({
-						title:res.message
+						title:res.message,
+						icon:'none'
 					  })
 					}
 				  })
