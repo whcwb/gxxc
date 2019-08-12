@@ -215,6 +215,10 @@
 				this.$http.post(this.apis.USERMESS, {}).then((res) => {
 					if (res.code == 200) {
 						this.USERMESS = res.result
+						uni.setStorage({
+							key:'usermess',
+							data:res.result
+						})
 						if (this.USERMESS.yhZt == 1) {
 							this.userMess = true
 						} else {
@@ -236,7 +240,11 @@
 				var v = this
 				this.$http.post(this.apis.USERZH, {}).then((res) => {
 					if (res.code == 200) {
-						v.zhYE.yhZhye = res.result.yhZhye
+						if( res.result.yhZhye < 0){
+							v.zhYE.yhZhye = 0
+						}else{
+							v.zhYE.yhZhye = res.result.yhZhye
+						}
 					} else {
 						uni.showToast({
 							title: res.message

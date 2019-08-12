@@ -276,10 +276,17 @@
 		},
 		onShow() {
 			this.usermess = uni.getStorageSync('token')
+			console.log('this.curr',this.current);
+			var a = uni.getStorageSync('usermess').yhDqzt
+			this.current = parseInt(a)
 			this.getZYmess()//获取专员信息
 			this.getHandleStatus()// 获取受理状态信息
 			this.getPayInfo()// 缴费信息
 			this.getExamInfo()//考试信息
+			setTimeout(()=>{
+				this.onClickItem(this.current-1)
+			},1000)
+			
 		},
 		onLoad() {
 			this.btnList=Object.assign(this.btnListAll[0])
@@ -440,12 +447,13 @@
 
 
 			onClickItem(index) {
-				console.log(index)
+				console.log('index',index)
+				console.log(this.current,'current')
 				this.zyMess = this.zyMwssList[index] //板块切换 专员信息 随之切换
 				if(this.zyMess.yhXm == ''){
-					this.isPJ = false
-				}else{
 					this.isPJ = true
+				}else{
+					this.isPJ = false
 				}
 				if (this.current !== index) {					
 						this.current = index;
