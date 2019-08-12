@@ -16,9 +16,9 @@
 				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<img v-else src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">{{zyMess.yhXm | yhXmZY}}</view>
-				<uni-rate :value="zyMess.jlPf" v-if="isPJ">{{zyMess.jlPf}}</uni-rate>
-				<view v-else style="border-bottom: 2upx solid #FFFFFF;margin-top: 18upx;font-size:28upx;font-weight:400;color:rgba(255,255,255,1);">
-					评价教练>
+				<uni-rate :value="zyMess.jlPf" @change='pjJl'></uni-rate>
+				<view v-if="isPJ" style="border-bottom: 2upx solid #FFFFFF;margin-top: 18upx;font-size:28upx;font-weight:400;color:rgba(255,255,255,1);" @click="upPj">
+					提交评价>
 				</view>
 			</view>
 		</view>
@@ -50,7 +50,7 @@
 						{{alreayPay[current-1]?'已缴费':'未缴费'}}
 					</view>
 				</view>
-				<view v-for="(item,index) in itemList" :key='index' style="margin:26upx 0 0 48upx;display: flex;align-items:flex-start">
+				<view v-for="(item,index) in itemList" :key='index' style="margin:26upx 0 0 48upx;display: flex;align-items:flex-start" v-if="item.state != ''">
 					<image :src="item.state==='已完成'||item.state==='合格'?'/static/img/ok.png':'/static/img/no.png'" style="top: 14upx;width: 36upx;height: 36upx;"></image>
 					<view class="item">
 						<view style="padding:0 20upx;margin-top: 14upx;display: flex;justify-content: space-between">
@@ -87,10 +87,10 @@
 				imgUrl:'http://www.520xclm.com:8001/',
 				appMess: [],
                 usermess:{},
-				isPJ:true,	//是否评价，控制显示星星
+				isPJ:false,	//是否评价，控制显示星星
 				star:0,
 				data: [{name:'受理进度'}, {name:'科一'},{name: '科二'}, {name:'科三'}, {name:'科四'}],
-				items: ['受理进度', '科一', '科二', '科三', '科四'],
+				items: ['受理', '科一', '科二', '科三', '科四'],
 				current: 0,
 				btnList: [],
 				btnListAll: [
@@ -209,50 +209,50 @@
 					[{
 							name: '医院体检',
 							state: '待完成',
-							tip: '湖北省中医院',
-							date: '2019年7月30日'
+							tip: '',
+							date: ''
 						},
 						{
 							name: '入网面签',
 							state: '待完成',
-							tip: '蓝盾驾校',
-							date: '2019年7月31日'
+							tip: '',
+							date: ''
 						},
 						{
 							name: '档案采集',
 							state: '待完成',
-							tip: '蓝盾驾校',
-							date: '2019年8月1日'
+							tip: '',
+							date: ''
 						},
 						{
 							name: '受理成功',
 							state: '待完成',
-							tip: '蓝盾驾校',
-							date: '2019年8月1日'
+							tip: '',
+							date: ''
 						}
 					],
 					[{
 						name: '',
 						state: '',
-						tip: '暂无信息',
+						tip: '',
 						date: '',
 					}],
 					[{
 						name: '',
 						state: '',
-						tip: '暂无信息',
+						tip: '',
 						date: '',
 					}],
 					[{
 						name: '',
 						state: '',
-						tip: '暂无信息',
+						tip: '',
 						date: '',
 					}],
 					[{
 						name: '',
 						state: '',
-						tip: '暂无信息',
+						tip: '',
 						date: '',
 					}]
 				],
@@ -286,6 +286,25 @@
 			this.itemList=Object.assign(this.itemListAll[0])
 		},
 		methods: {
+			pjJl(val){
+				console.log(val,'val');
+				this.isPJ = true
+				this.star = val.value
+			},
+			upPj(){
+				this.$http.post(this.apis.PF_TEACHER,{slType:this.current,yhFz:this.star,jlid:this.zyMess.yhId}).then((res)=>{
+					if(res.code == 200){
+						uni.showToast({
+							title:'评价成功!'
+						})
+					}else{
+						uni.showToast({
+							title:res.message
+						})
+					}
+					this.isPJ = false
+				})
+			},
 			getZYmess(){//获取专员信息
 			  var v = this
 			  this.$http.post(this.apis.getZYmess,{}).then((res)=>{

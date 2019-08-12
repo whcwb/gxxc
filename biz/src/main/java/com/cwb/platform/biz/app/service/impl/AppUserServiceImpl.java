@@ -173,9 +173,7 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
         String userId = currentUser.getId();
 
         if (StringUtils.isBlank(grade)) {
-
             grade = null;
-
         }
         if (StringUtils.isBlank(yhlx)) {
             yhlx = null;

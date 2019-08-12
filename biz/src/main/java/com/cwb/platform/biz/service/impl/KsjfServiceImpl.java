@@ -128,15 +128,23 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         Map<String, BizKsJf> payMap = new HashMap<>(4);
         if (list1.size() != 0) {
             payMap.put("1", list1.get(0));
+        }else {
+            payMap.put("1",null);
         }
         if (list2.size() != 0) {
             payMap.put("2", list2.get(0));
+        }else{
+            payMap.put("2",null);
         }
         if (list3.size() != 0) {
             payMap.put("3", list3.get(0));
+        }else{
+            payMap.put("3",null);
         }
         if (list4.size() != 0) {
             payMap.put("4", list4.get(0));
+        }else{
+            payMap.put("4",null);
         }
 
         ApiResponse<Map<String, BizKsYk>> examListRes = ykService.getUserExamInfo(yhId);

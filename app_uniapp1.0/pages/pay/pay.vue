@@ -38,6 +38,10 @@
 						this.WxPay(res.result)
 					} else {
 						console.log('失败')
+						uni.showToast({
+							title:res.message,
+							icon:"none"
+						})
 					}
 				})
 			},

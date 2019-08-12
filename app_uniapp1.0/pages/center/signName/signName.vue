@@ -62,26 +62,10 @@
 		}
 	}
 </script>
-<style>
-	.vueSignCanvas__btn{
-		width: 1000px;
-		height: 200px
-	}
-</style>
-<style>
+
+<style lang="less">
 	.titColor {
 		font-size: 30rpx;
 		color: #FFA060;
-	}
-	
-	.ss{
-		width: 160upx;
-		height: 100upx;
-		font-size: 40upx;
-	}
-	
-	/deep/ .vueSignCanvas__btn button{
-		width: 1000px;
-		height: 200px
 	}
 </style>

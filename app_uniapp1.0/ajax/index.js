@@ -14,7 +14,9 @@ function getToken(){
 			userId=res.data.userId
 	    }
 	});
+	// #ifndef APP-PLUS
 	openid = localStorage.getItem("openid");
+	// #endif
 }
 
 

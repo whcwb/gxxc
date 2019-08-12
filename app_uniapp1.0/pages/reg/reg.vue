@@ -21,14 +21,14 @@
 	<view style="width: 100%;background:rgba(255,255,255,1);">
 		<img src="/static/img/banner.png" style="height: 336upx;width: 750upx;">
 		<view class="inputMess" v-for="item in inputList">
-			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false"/>
+			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
 			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 		</view>
 		<view class="btn" @click="reg">
 			立即注册
 		</view>
 		<view style="margin-bottom: 114upx;display: flex;justify-content: center;align-items: center;">
-			<checkbox :checked='agree' @click="changeAgree"/>我已阅读并同意
+			<checkbox :checked='agree' @click="changeAgree" />我已阅读并同意
 			<text style="font-size:28upx;font-weight:400;color:rgba(51,128,168,1);" @click="openPopup">
 				《注册协议》
 			</text>
@@ -208,45 +208,51 @@
 					{
 						placeholder: '请输入手机号',
 						key: 'yhZh',
-						type:'number',
+						type: 'number',
 						val: ''
 					},
 					{
 						placeholder: '请输入邀请码',
 						key: 'yhYyyqm',
-						type:'number',
+						type: 'number',
 						val: ''
 					},
 					{
 						placeholder: '请输入验证码',
 						key: 'telIdentifying',
-						type:'number',
+						type: 'number',
 						val: ''
 					},
 					{
 						placeholder: '请输入密码',
 						key: 'yhMm',
-						type:'password',
+						type: 'password',
 						val: ''
 					},
 					{
 						placeholder: '请输入真实姓名',
 						key: 'yhXm',
-						type:'text',
+						type: 'text',
 						val: ''
 					},
 					{
 						placeholder: '请输入身份证号',
 						key: 'yhZjhm',
-						type:'idcard',
+						type: 'idcard',
 						val: ''
 					}
 				]
 			}
 		},
+		onShow() {
+			var yqm = uni.getStorageSync('yqm')
+			if (yqm && yqm != '' && yqm != undefined) {
+				this.inputList[1].val = yqm
+			}
+		},
 		methods: {
-			changeAgree(){						//由于uniapp的checked不能更改，所以只能click更改
-				this.agree=!this.agree
+			changeAgree() { //由于uniapp的checked不能更改，所以只能click更改
+				this.agree = !this.agree
 			},
 			reg() {
 				console.log(this.agree)
@@ -274,26 +280,62 @@
 					});
 					return;
 				}
-				
-				this.$http.post(this.apis.USERSAVE,	this.form).then(res=> {
-						if (res.code == 200) {
-							uni.showToast({
-								title: '用户注册成功'
-							})
-							
-							setTimeout(()=>{
-								uni.navigateTo({
-									url: '/pages/login/login'
-								})
-							},2000)
-						} else {
-							uni.showToast({
-								title: res.message
-							})
-						}
+
+				this.$http.post(this.apis.USERSAVE, this.form).then(res => {
+					if (res.code == 200) {
+						uni.showToast({
+							title: '用户注册成功',
+							duration: 1000
+						});
+						this.getWxJs()
+					} else {
+						uni.showToast({
+							title: res.message
+						})
 					}
-				)
+				})
 			},
+			getWxJs() {
+							var v = this
+							// 微信js初始化 
+							var script = document.createElement("script")
+							script.type = "text/javascript"
+							script.src = "http://res.wx.qq.com/open/js/jweixin-1.4.0.js"
+							document.body.appendChild(script)
+			
+							script.onload = function() { // 微信js初始化 回调函数
+								// console.log('*****wx', wx)
+			// 					// 微信js初始化成功后引用 微信功能方法
+			// 					//获取Code 直
+								let authCode = v.wxApi.getQueryString("code");
+								// console.log('获取code', authCode)
+								if (authCode) {
+									// 获取Openid
+									v.wxApi.vueParent = this;
+									v.wxApi.getOpenid(authCode, (res) => {
+										// console.log('openid-------', res)
+										localStorage.setItem("openid", res); //存储openid
+										v.wxApi.initConfig(); //执行 微信 config
+										v.toLogin()
+									});
+								} else {
+									v.wxApi.getCode()
+									return
+								}
+							}
+						},
+						toLogin() {
+							var  token = uni.getStorageSync('token');
+							if(token){
+							uni.switchTab({
+							url: '/pages/main/p_index/main'
+							});
+							}else{
+							uni.navigateTo({
+							url: '../login/login'
+							});
+							}
+						},
 			getYZM() {
 				var zh = this.inputList[0].val //只需两个，若需要多个可拓展循环数组找到val
 				var yqm = this.inputList[1].val
@@ -303,12 +345,14 @@
 					})
 					return
 				}
-				
+
 
 				//获取邀请码
 				var v = this
-				this.$http.post(this.apis.PHINECODE, {'zh': zh,'yyyqm': yqm}).then(res => 
-				{
+				this.$http.post(this.apis.PHINECODE, {
+					'zh': zh,
+					'yyyqm': yqm
+				}).then(res => {
 					if (res.code == 200) {
 						uni.showToast({
 							title: '验证码已发送'
@@ -324,7 +368,7 @@
 				this.$refs.popup.open()
 			},
 			closePopup() {
-				this.agree=true
+				this.agree = true
 				this.$refs.popup.close()
 			},
 			toHt() {

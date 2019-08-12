@@ -53,4 +53,7 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
 
     @Update(" update biz_ptyh set YH_ZSYQM = #{qr} , YH_ZSYQM_IMG = #{path}")
     void updateQr(@Param("qr") String qrCode,@Param("path") String img);
+
+    @Update(" update biz_jl set JL_JXSL = (JL_JXSL + #{size}) where YH_ID = #{jlId}")
+    void updateJxsl(@Param("jlId") String jlId,@Param("size") int size);
 }

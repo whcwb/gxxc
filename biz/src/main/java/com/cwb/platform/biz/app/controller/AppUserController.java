@@ -42,10 +42,11 @@ public class AppUserController extends AppUserBaseController {
                                              @RequestParam(value = "yhlx",required = false) String yhlx,
                                              @RequestParam(value = "sfjf" ,required =  false) String sfjf,
                                              @RequestParam(value = "yhxm",required = false)String yhXm,
+                                             @RequestParam(value =  "yhZt",required =  false)String yhZt,
                                              Page<BizUser> page){
 
 
-         return  service.myTeam(grade, yhlx, sfjf, yhXm, page);
+         return  service.myTeam(grade, yhlx ,sfjf, yhXm, page);
 
     }
 

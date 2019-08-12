@@ -387,9 +387,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 //
 //            }
 
-            if (StringUtils.isNotBlank(bizPtyh.getYhZh())) {
-                bizPtyh.setYhZh(bizPtyh.getYhZh().replaceAll("(?<=[\\d]{3})\\d(?=[\\d]{4})", "*"));
-            }
+//            if (StringUtils.isNotBlank(bizPtyh.getYhZh())) {
+//                bizPtyh.setYhZh(bizPtyh.getYhZh().replaceAll("(?<=[\\d]{3})\\d(?=[\\d]{4})", "*"));
+//            }
 
             // 查询该用户是否有所属教练
             BizUser bizUser = userService.findById(bizPtyh.getId());
@@ -615,7 +615,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
 //        注册类型  1、微信注册  2、支付宝注册 3、web页面注册
         String addType = entity.getAddType();
-        RuntimeCheck.ifBlank(addType, "注册类型不能为空");//注册类型  1、微信注册  2、支付宝注册 3、web页面注册
+        RuntimeCheck.ifBlank(addType, "注册类型不能为空");
         if (StringUtils.containsNone(addType, new char[]{'1', '2', '3'})) {
             return ApiResponse.fail("请输入正确注册类型");
         }
@@ -679,7 +679,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         newEntity.setYhIxySffp("0");//学员是否已分配
         newEntity.setYhSfyjz(entity.getYhSfyjz());//学员是否有驾照
         newEntity.setYhSfsd("0");//用户是否锁定 ZDCLK0046 (0 否  1 是)
-//        newEntity.setYhTx("temp/logo.png");
+        newEntity.setYhTx("temp/192.png");
 
         String bizptyhlog = "";
         try {
@@ -955,8 +955,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String yhSfyjz = "0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)
 
-        List<BizWj> wjList = new ArrayList<BizWj>();
-        List<String> wjSxList = new ArrayList<String>();
+        List<BizWj> wjList = new ArrayList<>();
+        List<String> wjSxList = new ArrayList<>();
         if (imgList != null && imgList.length > 0) {
             if (StringUtils.trimToNull(imgList[2]) != null && !StringUtils.equals(imgList[2], "-")) {
                 yhSfyjz = "1";
@@ -1424,6 +1424,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         // 进行分配操作
         if (CollectionUtils.isNotEmpty(ids)) {
+            entityMapper.updateJxsl(jlId, ids.size());
             userService.updateJlId(ids, jlId, jlType);
             entityMapper.updateJlFp(ids, "该学员于：" + DateUtils.getNowTime() + " 分配给受理专员：" + users.getYhXm() + "");
         }
@@ -1912,8 +1913,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             newBizJl.setJlMs(bizJl.getJlMs());
             newBizJl.setJlShZt(bizJl.getJlShZt());
             newBizJl.setJlShMs(bizJl.getJlShMs());
-
-
+            newBizJl.setJlJxsl(bizJl.getJlJxsl());
             bizJls.add(newBizJl);
         } else {
             bizJls.add(null);
@@ -2082,7 +2082,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String encode = URLEncoder.encode("http://www.520xclm.com/wx/?page=reg&id=RGPM0Z","UTF-8");
+        String encode = URLEncoder.encode("http://www.520xclm.com/wx/?page=reg&id=000000","UTF-8");
         System.out.println(encode);
     }
 }

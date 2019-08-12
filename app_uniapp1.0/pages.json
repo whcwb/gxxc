@@ -63,7 +63,7 @@
 				"navigationBarTitleText": "团队",
 				"enablePullDownRefresh": true,//就是这个
 				"h5": {
-					"titleNView": false
+					"titleNView": true
 				}
 			}
 		}, {

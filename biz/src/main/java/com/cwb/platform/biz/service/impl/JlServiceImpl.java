@@ -202,7 +202,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         newEntity = new BizPtyh();
         newEntity.setId(genId());
         newEntity.setYhZh(entity.getYhSjhm());//用户手机号码
-       // newEntity.setYhMm(yhMmEncrypt);//用户加密的密码
+        newEntity.setYhMm(yhMmEncrypt);//用户加密的密码
         newEntity.setYhZjhm(entity.getYhZjhm());//用户证件号码
         newEntity.setYhCjr(user.getYhid());//用户ID
         newEntity.setCjsj(DateUtils.getNowTime());//创建时间
