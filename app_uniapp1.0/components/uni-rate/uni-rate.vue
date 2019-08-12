@@ -3,7 +3,8 @@
 		<view class="uni-rate-icon" v-for="(star,index) in stars" :key="index" :style="{marginLeft:margin+'px'}" @click="onClick(index)">
 			<uni-icon :size="size" :color="color" :type="isFill === false || isFill === 'false' ? 'star' : 'star-filled'"></uni-icon>
 			<view class="uni-rate-icon-on" :style="{width:star.activeWitch}">
-				<uni-icon :size="size" :color="activeColor" type="star-filled"></uni-icon>
+				<uni-icon :size="size" :color="activeColor" type="star-filled" >
+				</uni-icon>
 			</view>
 		</view>
 	</view>
@@ -98,7 +99,20 @@
 	}
 </script>
 
+<style>
+	@font-face {
+	    font-family: 'uniicons';
+	    src: url('https://at.alicdn.com/t/font_1334332_4ppjgir5dsu.ttf') format('truetype');
+	}
+	
+	.test {
+	    font-family: uniicons;
+	    margin-left: 20upx;
+	}
+</style>
+
 <style lang="scss">
+	
 	.uni-rate {
 		line-height: 0;
 		font-size: 0;
