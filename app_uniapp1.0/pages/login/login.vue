@@ -47,9 +47,10 @@
 						v.toIndex()
 					} else {
 						uni.showToast({
-							title:res.message
-						})
-						//弹框提示错误
+							title: res.message,
+							duration: 2000,
+							icon:'none'
+						});
 					}
 				})
 			},

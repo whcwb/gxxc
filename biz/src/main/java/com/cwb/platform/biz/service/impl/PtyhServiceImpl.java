@@ -1866,13 +1866,15 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
 
     @Override
-    public ApiResponse<List<BizJl>> getJls() {
-        BizPtyh currentUser = getAppCurrentUser();
+    public ApiResponse<List<BizJl>> getJls(String yhId) {
+        BizPtyh currentUser ;
+        if (StringUtils.isBlank(yhId)) {
+            currentUser = getAppCurrentUser();
+        }else{
+            currentUser = ptyhService.findById(yhId);
+        }
 
         List<BizJl> bizJls = new ArrayList<>();
-
-        Map<String, BizJl> bizJlMap = new HashMap<>();
-
         BizUser bizUser = userService.findById(currentUser.getId());
         BizYhpf yhpf = new BizYhpf();
         yhpf.setYhId(bizUser.getYhId());

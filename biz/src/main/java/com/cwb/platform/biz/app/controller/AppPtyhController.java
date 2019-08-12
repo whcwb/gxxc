@@ -210,8 +210,8 @@ public class AppPtyhController extends AppUserBaseController {
      * 查询用户受理专员列表
      */
     @PostMapping("/getJls")
-    public ApiResponse<List<BizJl>> getJls(){
-        return service.getJls();
+    public ApiResponse<List<BizJl>> getJls(String yhId){
+        return service.getJls(yhId);
     }
 
 

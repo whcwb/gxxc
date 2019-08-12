@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view>
-			<vuesigncanvas options="options" @result="saveResult" @clear="clear">
+			<vuesigncanvas ref="sign" options="options" @result="saveResult" @clear="clear">
 			</vuesigncanvas>
 		</view>
 	</view>
@@ -38,10 +38,10 @@
 			}
 		},
 		mounted() {
-			this.$refs.sign.$el.childNodes[2].childNodes[0].style.width = '80px';
-			this.$refs.sign.$el.childNodes[2].childNodes[2].style.width = '80px';
-			this.$refs.sign.$el.childNodes[2].childNodes[0].style.height = '50px';
-			this.$refs.sign.$el.childNodes[2].childNodes[2].style.height = '50px';
+			this.$refs.sign.$el.childNodes[2].childNodes[0].style.width='80px';
+			this.$refs.sign.$el.childNodes[2].childNodes[2].style.width='80px';
+			this.$refs.sign.$el.childNodes[2].childNodes[0].style.height='50px';
+			this.$refs.sign.$el.childNodes[2].childNodes[2].style.height='50px';
 		},
 		methods: {
 			...mapMutations(['setSignUrl']),
