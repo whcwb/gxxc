@@ -20,23 +20,32 @@
 		</view>
 		<view v-else class=" teamListBox">
 				<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index" @click="toXymess(it)">
-					<img :src="it.userDetail.yhTx" alt="">
-					<view class="messBox">
-						<view class="box_row colCenter">
+					<view style="display: flex;flex-direction:row;align-items: center;">
+							<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
+								<b>{{index+1}}</b>
+							</view>
+							<img :src="it.userDetail.yhTx" alt="">
 							<view class="name">
 								{{it.yhXm}}
 							</view>
-							<view v-if="it.userDetail.ddSfjx == '1'" class="butTyp onMoney">
-								已缴费
+						</view>	
+						
+						<view style="display: flex;flex-direction:row;align-items: center;">	
+							<view style="margin-right: 15upx;" @click="phone(it.yhSjhm)">
+								<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
 							</view>
-							<view v-else class="butTyp offMoney">
-								未缴费
+					
+							<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
+								A类
+							</view>
+							<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
+								B类
+							</view>
+							<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
+								未认证
 							</view>
 						</view>
-						<view class="phoneSty">
-							{{it.yhSjhm}}
-						</view>
-					</view>
+				
 				</view>
 		</view>
 		<view class="loadingbox" style="text-align: center;">
@@ -50,6 +59,7 @@
 	import mSearch from '@/components/mehaotian-search/mehaotian-search.vue';
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 	import slFilter from '@/components/songlazy-sl-filter/sl-filter/sl-filter.vue';
+	import uniIcon from "@/components/uni-icon/uni-icon.vue";
 	var _self,
 		page = 1,
 		timer = null;
@@ -58,7 +68,8 @@
 		components: {
 			mSearch,
 			uniLoadMore,
-			slFilter
+			slFilter,
+			uniIcon
 		},
 		data() {
 			return {
