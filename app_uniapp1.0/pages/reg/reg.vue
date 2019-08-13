@@ -23,7 +23,7 @@
 		<view v-if="yqrxm!=''" class="inputMess">
 			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm"/>
 		</view>
-		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.key!='yhYyyqm' || item.val!=''">
+		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.key!='yhYyyqm' || item.val == ''">
 			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
 			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 		</view>
