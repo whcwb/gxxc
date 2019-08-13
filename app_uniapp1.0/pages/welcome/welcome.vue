@@ -45,15 +45,10 @@
 								}
 							});
 						} else {
-							// #ifdef H5
 							this.getWxJs()
-							// #endif
-							// #ifdef APP-PLUS
-							// app执行
-							this.toLogin()
-							// #endif
-							// this.toLogin()
 						}
+					}else{
+						// this.toLogin()
 					}
 				// #endif
 				// #ifdef APP-PLUS
