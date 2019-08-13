@@ -15,6 +15,18 @@
 export default {
   name: 'segmented-control',
   props: {
+	offsetLeftParam:{
+		type: Number,
+		default(){
+		  return 3;
+		}
+	},
+	lineWidth:{
+		type: Number,
+		default(){
+		  return 3;
+		}
+	},
     values: { // 要显示的数组
       type: Array,
       default() {
@@ -36,7 +48,7 @@ export default {
   },
   data() {
     return {
-      lineWidth: 0, // 线的宽度
+      //lineWidth: 0, // 线的宽度
       offsetLeft: 0 // 相对左边的距离
     };
   },
@@ -53,18 +65,18 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted() {	  
     let that = this;
     if (that.values) {
       if (that.values && that.values[that.current]) {
-        that.lineWidth = 0;
+        //that.lineWidth = 0;
         setTimeout(() => { // 延时获取线的宽度和左边距离
           const query = uni.createSelectorQuery();
           query.select('#sc-' + that.current).boundingClientRect();
           query.exec(res => {
 						console.log(res)
-            that.offsetLeft = res[0].left + 22;
-            that.lineWidth = 30;
+            that.offsetLeft = res[0].left + this.offsetLeftParam;
+            //that.lineWidth = this.lineWidth;
           });
         }, 500);
       }
@@ -82,8 +94,8 @@ export default {
             const query = uni.createSelectorQuery();
             query.select('#sc-' + newValue).boundingClientRect();
             query.exec(res => {
-              that.offsetLeft = res[0].left +22;
-              that.lineWidth = 30;
+              that.offsetLeft = res[0].left +this.offsetLeftParam;
+              //that.lineWidth = this.lineWidth;
             });
       }
   },
