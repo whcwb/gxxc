@@ -67,17 +67,34 @@
 						src: '/static/img/my/wdzd.png',
 						text: '我的账单',
 						toPath: 'account/account'
-					},
-					{
-						src: '/static/img/my/wdtd.png',
-						text: '我的团队',
-						toPath: '/pages/myTeam/myTeam'
 					}
 				]
 			}
 		},
 		onLoad() {
 			this.getUser()
+		},
+		onShow() {
+			var data = uni.getStorageSync('usermess')
+			if(data.yhLx == 'zy' && this.btnList[this.btnList.length-1].text != '我的学员'){
+				this.btnList.push({
+						src: '/static/img/my/wdtd.png',
+						text: '我的学员',
+						toPath: '/pages/main/user/mystudent/mystudent'
+					})
+			}else if((data.yhLx == '1' && this.btnList[this.btnList.length-1].text != '我的团队')){
+				this.btnList.push({
+						src: '/static/img/my/wdtd.png',
+						text: '我的团队',
+						toPath: '/pages/myTeam/myTeam'
+				})
+			}else if((data.yhLx == '3' && this.btnList[this.btnList.length-1].text != '我的团队')){
+				this.btnList.push({
+						src: '/static/img/my/wdtd.png',
+						text: '我的团队',
+						toPath: '/pages/myTeam/myTeam'
+				})
+			}
 		},
 		methods: {
 			tomymess(){

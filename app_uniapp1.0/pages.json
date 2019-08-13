@@ -199,6 +199,14 @@
             "path" : "pages/pay/pay",
             "style" : {}
         }
+        ,{
+            "path" : "pages/xymess/xymess",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/main/user/mystudent/mystudent",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",

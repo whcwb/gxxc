@@ -20,7 +20,10 @@
     </view> -->
 	<view style="width: 100%;background:rgba(255,255,255,1);">
 		<img src="/static/img/banner.png" style="height: 336upx;width: 750upx;">
-		<view class="inputMess" v-for="item in inputList">
+		<view v-if="yqrxm!=''" class="inputMess">
+			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm"/>
+		</view>
+		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.key!='yhYyyqm' || item.val == ''">
 			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
 			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 		</view>
@@ -194,8 +197,9 @@
 		data() {
 			return {
 				agree: false,
+				yqrxm:'',
 				form: { //在这里存放非inoput的字段属性
-					yhLx: '1',
+					yhLx: '3',
 					addType: '3',
 					// yhZh:'',
 					// yhYyyqm:'',
@@ -247,10 +251,21 @@
 		onShow() {
 			var yqm = uni.getStorageSync('yqm')
 			if (yqm && yqm != '' && yqm != undefined) {
-				this.inputList[1].val = yqm
+				this.getName(yqm)
+				this.yqrxm ='邀请人:'+' '+this.yqrxm  +'邀请码:'+' '+yqm 
+				console.log(this.yqrxm);
+				this.form.yhYyyqm = yqm
+				this.inputList[1].val = yqm;
 			}
 		},
 		methods: {
+			getName(code){//根据邀请码 获取邀请人姓名
+				this.$http.get('/pub/getName',{code:code}).then((res)=>{
+					if(res.code == 200){
+						this.yqrxm = res.message
+					}
+				})
+			},
 			changeAgree() { //由于uniapp的checked不能更改，所以只能click更改
 				this.agree = !this.agree
 			},
@@ -280,7 +295,7 @@
 					});
 					return;
 				}
-
+				
 				this.$http.post(this.apis.USERSAVE, this.form).then(res => {
 					if (res.code == 200) {
 						uni.showToast({
@@ -459,7 +474,6 @@
 		.messcontent {
 			flex-grow: 1;
 			padding: 15rpx 20rpx;
-
 			.fonttit {
 				text-align: left;
 				font-weight: 700;
