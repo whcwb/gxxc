@@ -254,7 +254,8 @@
 				this.getName(yqm)
 				this.yqrxm ='邀请人:'+' '+this.yqrxm  +'邀请码:'+' '+yqm 
 				console.log(this.yqrxm);
-				this.inputList[1].val = yqm
+				this.form.yhYyyqm = yqm
+				this.inputList[1].val = yqm;
 			}
 		},
 		methods: {
