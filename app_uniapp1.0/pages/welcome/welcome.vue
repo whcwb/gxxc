@@ -67,7 +67,7 @@
 							url: '../login/login'
 						});
 					}
-				},3000)
+				},1000)
 			},
 			getWxJs() {
 				var v = this

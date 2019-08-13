@@ -102,10 +102,10 @@
 						</view>
 
 						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
-							A类学员
+							A类
 						</view>
 						<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
-							B类学员
+							B类
 						</view>
 						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
 							未认证

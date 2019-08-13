@@ -14,7 +14,7 @@
 				<view class="moneyBut" @tap="toChooseBank"></view>
 			</view>
 			<view class="lable">
-				每天最多提现500元！
+				
 			</view>
 		</view>
 
