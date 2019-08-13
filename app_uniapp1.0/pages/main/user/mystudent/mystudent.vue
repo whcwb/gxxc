@@ -127,6 +127,11 @@
 
 		},
 		methods: {
+			phone(id) {
+				uni.makePhoneCall({
+					phoneNumber: id //仅为示例
+				});
+			},
 			toXymess(item){//查看学员详情  只能看A类学员
 			    console.log('item',item);
 					uni.setStorage({

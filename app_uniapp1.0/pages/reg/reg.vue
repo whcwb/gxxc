@@ -21,7 +21,7 @@
 	<view style="width: 100%;background:rgba(255,255,255,1);">
 		<img src="/static/img/banner.png" style="height: 336upx;width: 750upx;">
 		<view v-if="yqrxm!=''" class="inputMess">
-			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm"/>
+			<input class="uni-input input" disabled="true" :placeholder="yqxx" v-model="yqxx" />
 		</view>
 		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.key!='yhYyyqm' || item.val == ''">
 			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
@@ -198,6 +198,7 @@
 			return {
 				agree: false,
 				yqrxm:'',
+				yqxx:'',
 				form: { //在这里存放非inoput的字段属性
 					yhLx: '3',
 					addType: '3',
@@ -251,11 +252,11 @@
 		onShow() {
 			var yqm = uni.getStorageSync('yqm')
 			if (yqm && yqm != '' && yqm != undefined) {
-				this.getName(yqm)
-				this.yqrxm ='邀请人:'+' '+this.yqrxm  +'邀请码:'+' '+yqm 
+				this.getName(yqm);
 				console.log(this.yqrxm);
-				this.form.yhYyyqm = yqm
+				this.form.yhYyyqm = yqm;
 				this.inputList[1].val = yqm;
+				console.log(this.yqxx);
 			}
 		},
 		methods: {
@@ -263,6 +264,8 @@
 				this.$http.get('/pub/getName',{code:code}).then((res)=>{
 					if(res.code == 200){
 						this.yqrxm = res.message
+						this.yqxx ='邀请人:'+' '+ this.yqrxm +'   ' +'邀请码:'+' '+code;
+						console.log(this.yqrxm)
 					}
 				})
 			},

@@ -110,6 +110,7 @@
 		},
 		onPullDownRefresh: function() {
 			//下拉刷新的时候请求一次数据
+			this.current = 0
 			this.newsList = []
 			this.params.pageNum = 1
 			this.params.yhxm = ""
