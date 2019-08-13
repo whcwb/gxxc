@@ -2,50 +2,44 @@
 	<view class="box_col teamPagerBox">
 		<view class="seacherBox">
 			<mSearch :show='false' :mode="2" @search="search($event)" placeholder='请输入姓名'></mSearch>
-			<view class="box_row studentBox">
-				<view class="box_row_100 studentAll" :class="params.yhlx==''?'setItem':''" @click="setYhlx('')">
-					全部学员
-				</view>
-				<view class="box_row_100 studentA" :class="params.yhlx=='1'?'setItem':''" @click="setYhlx('1')">
-					A类学员
-				</view>
-				<view class="box_row_100 studentB" :class="params.yhlx=='3'?'setItem':''" @click="setYhlx('3')">
-					B类学员
-				</view>
+			
+			
+			<view style="width:748upx;height:136upx;background:rgba(254,255,255,1);">
+				<segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" :offsetLeftParam="22" :lineWidth="50"  @clickItem="onClickItem"></segmented-control>
 			</view>
+			
 		</view>
-		<view  class="box_col_100 noData" v-if="newsList.length == 0" style="text-align: center;">
+		<view  class="box_col_100 noData" v-if="newsList.length == 0" style="text-align: center;margin-top: 60rpx;">
 			<image src="../../../static/img/zanwu.png" mode="scaleToFill"></image>
 			<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
 		</view>
 		<view v-else class=" teamListBox">
 				<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index" @click="toXymess(it)">
 					<view style="display: flex;flex-direction:row;align-items: center;">
-							<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
-								<b>{{index+1}}</b>
-							</view>
-							<img :src="it.userDetail.yhTx" alt="">
-							<view class="name">
-								{{it.yhXm}}
-							</view>
-						</view>	
-						
-						<view style="display: flex;flex-direction:row;align-items: center;">	
-							<view style="margin-right: 15upx;" @click="phone(it.yhSjhm)">
-								<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
-							</view>
-					
-							<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
-								A类
-							</view>
-							<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
-								B类
-							</view>
-							<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
-								未认证
-							</view>
+						<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
+							<b>{{index+1}}</b>
 						</view>
-				
+						<img :src="it.userDetail.yhTx" alt="">
+						<view class="name">
+							{{it.yhXm}}
+						</view>
+					</view>	
+					
+					<view style="display: flex;flex-direction:row;align-items: center;">	
+						<view style="margin-right: 15upx;" @click="phone(it.yhSjhm)">
+							<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
+						</view>
+					
+						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
+							A类
+						</view>
+						<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
+							B类
+						</view>
+						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
+							未认证
+						</view>
+					</view>
 				</view>
 		</view>
 		<view class="loadingbox" style="text-align: center;">
@@ -60,6 +54,7 @@
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 	import slFilter from '@/components/songlazy-sl-filter/sl-filter/sl-filter.vue';
 	import uniIcon from "@/components/uni-icon/uni-icon.vue";
+	import segmentedControl from "@/components/seg/segmented-control.vue";
 	var _self,
 		page = 1,
 		timer = null;
@@ -69,14 +64,17 @@
 			mSearch,
 			uniLoadMore,
 			slFilter,
-			uniIcon
+			uniIcon,
+			segmentedControl
 		},
 		data() {
 			return {
+				current:0,
 				val0: '',
 				themeColor: '#3B93FD',
 				independence: true,
 				filterResult: '',
+				items: ['全部', 'A类', 'B类'],
 				menuList: [{
 					'title': '筛选',
 					'isMutiple': false,
@@ -154,12 +152,6 @@
 					
 				}
 			},
-			setYhlx(typ){
-				this.newsList = []
-				this.params.yhlx = typ
-				this.params.pageNum = 1
-				this.getPagerList();
-			},
 			deteleObject(obj) { //数组去重复
 			    var uniques = [];
 			    var stringify = {};
@@ -207,6 +199,16 @@
 			search(e) {
 				this.params.yhxm = e
 				this.getPagerList()
+			},
+			onClickItem(index){
+				if (this.current !== index) {
+						this.current = index;
+						this.newsList = []				
+						let typ=index==0?'':(index==1?'1':'3')
+						this.params.yhlx = typ
+						this.params.pageNum = 1
+						this.getPagerList();
+				}
 			}
 		}
 	}
@@ -256,37 +258,39 @@
 		}
 	}
 	.teamListBox {
+		margin-top: 60rpx;
 		background-color: #ffffff;
-		// flex: 1;
-		// overflow-y: auto;
+		flex: 1;
+		overflow-y: auto;
 		padding: 0 36rpx;
-
+		// max-height: 50vh;
+		
 		.itemSty {
 			border-bottom: solid 2rpx #DFE7EE;
 			padding: 30rpx 0;
-
-			// .avaSty {
+			display: flex;
+			justify-content: space-between;
+			align-content: center;
+		
 			img {
 				margin-right: 30rpx;
 				width: 96rpx;
 				height: 96rpx;
 				border-radius: 100%;
 			}
-
-			// }
-
+		
 			.name {
-				width: 112rpx;
-				font-size: 36rpx;
+				width: 192rpx;
+				font-size: 32rpx;
 				font-family: PingFangSC-Regular;
 				font-weight: 400;
 				color: rgba(51, 51, 51, 1);
-				margin-right: 46rpx;
+				margin-right: 15upx;
 			}
-
+		
 			.butTyp {
 				height: 38rpx;
-				width: 88rpx;
+				width: 90rpx;
 				text-align: center;
 				border-radius: 2px;
 				font-size: 22rpx;
@@ -295,17 +299,18 @@
 				color: rgba(255, 255, 255, 1);
 				line-height: 38rpx;
 				margin-right: 14rpx;
+				padding: 7upx 15upx;
+				border-radius: 20upx
 			}
-
+		
 			.onMoney {
 				background: rgba(251, 164, 19, 1);
-
+		
 			}
-
+		
 			.offMoney {
-				background-color: #B4B4B4;
+				background-color:rgba(180,180,180, 0.7);
 			}
-
 			.FuserTyp {
 				background: rgba(47, 182, 170, 1);
 			}

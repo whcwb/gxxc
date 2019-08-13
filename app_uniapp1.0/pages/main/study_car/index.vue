@@ -23,7 +23,7 @@
 			</view>
 		</view>
 		<view style="width:748upx;height:136upx;background:rgba(254,255,255,1);">
-			<segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" @clickItem="onClickItem"></segmented-control>
+			<segmented-control id="tabbar" :values="items" :stickyTop="108" :offsetLeftParam="22" :lineWidth="30" :current="current" @clickItem="onClickItem"></segmented-control>
 			<!-- <vTab :data="data" @select="select"></vTab> -->
 		</view>
 
@@ -509,7 +509,7 @@
 	
 	.lineC{
 		width: 4upx;
-		height: 610upx;
+		height: 685upx;
 		background-color: #E8ECF4;
 		margin-left: 64upx;
 		position: absolute;
