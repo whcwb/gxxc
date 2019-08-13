@@ -177,17 +177,13 @@ public class AppUserServiceImpl extends BaseServiceImpl<BizUser, String> impleme
         }
         if (StringUtils.isBlank(yhlx)) {
             yhlx = null;
-        }else{
-            sfjf = "1";
         }
-        if (StringUtils.isBlank(sfjf)) {
-            sfjf = null;
-        }
+
         if (StringUtils.isBlank(yhXm)) {
             yhXm = null;
         }
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
-        List<BizUser> users = userMapper.getYhIdByTerm(grade, userId, yhlx, sfjf, yhXm);
+        List<BizUser> users = userMapper.getYhIdByTerm(grade, userId, yhlx, yhXm);
         PageInfo<BizUser> pageInfo = new PageInfo<>(users);
 
         afterPager(pageInfo);

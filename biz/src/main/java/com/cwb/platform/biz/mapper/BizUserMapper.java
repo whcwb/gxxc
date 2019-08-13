@@ -84,14 +84,11 @@ public interface BizUserMapper extends Mapper<BizUser> {
             " <if test=\"yhlx !=null  \"> " +
             " AND p.YH_LX = #{yhlx} " +
             " </if> " +
-            " <if test=\"sfjf !=null   \"> " +
-            " AND p.DD_SFJX = #{sfjf} " +
-            " </if> " +
             " <if test= \"yhxm !=null  \"> " +
             " AND u.YH_XM like '%${yhxm}%' " +
             " </if> " +
             " AND u.YH_ID = p.ID ORDER BY CJSJ desc , ABS(p.YH_LX) asc,ABS(p.DD_SFJX) desc" +
             " </script> ")
-    List<BizUser> getYhIdByTerm(@Param("grade")String grade, @Param("userid") String userId, @Param("yhlx")String yhlx, @Param("sfjf") String sfjf, @Param("yhxm")String yhXm);
+    List<BizUser> getYhIdByTerm(@Param("grade")String grade, @Param("userid") String userId, @Param("yhlx")String yhlx, @Param("yhxm")String yhXm);
 
 }

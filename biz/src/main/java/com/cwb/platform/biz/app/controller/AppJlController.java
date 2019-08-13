@@ -6,9 +6,7 @@ import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,4 +31,13 @@ public class AppJlController extends AppUserBaseController {
     public ApiResponse<List<BizJl>> pager(BizJl entity, Page<BizJl> pager){
         return service.pager(pager);
     }
+
+    /**
+     * 查询教练的学员列表
+     */
+    @GetMapping("/myStudent")
+    public ApiResponse<String> getMyStudent(String jz, String xm, @RequestParam(defaultValue = "1") int pageNum ,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getMyStudent(jz, xm, pageNum, pageSize);
+    }
+
 }
