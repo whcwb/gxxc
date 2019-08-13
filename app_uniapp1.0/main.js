@@ -20,7 +20,6 @@ import wxApi from  './libs/wechatUtil'
 Vue.prototype.wxApi = wxApi;
 // #endif
 
-
 Vue.config.productionTip = false
 
 

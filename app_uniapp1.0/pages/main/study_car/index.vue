@@ -509,7 +509,7 @@
 	
 	.lineC{
 		width: 4upx;
-		height: 610upx;
+		height: 685upx;
 		background-color: #E8ECF4;
 		margin-left: 64upx;
 		position: absolute;
