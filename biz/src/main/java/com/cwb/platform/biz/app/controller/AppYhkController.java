@@ -150,7 +150,7 @@ public class AppYhkController extends AppUserBaseController {
         //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
         headers.put("Authorization", "APPCODE " + appcode);
         RuntimeCheck.ifNull(queryUser,"该用户不存在");
-        Map<String, String> querys = new HashMap<String, String>();
+        Map<String, String> querys = new HashMap<>();
         querys.put("acct_name", queryUser.getYhXm());//用户姓名
         querys.put("acct_pan", entity.getYhkKh());//卡号
         querys.put("cert_id", queryUser.getYhZjhm());//用户证件号码
