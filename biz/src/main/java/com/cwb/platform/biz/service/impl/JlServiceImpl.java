@@ -7,9 +7,10 @@ import com.cwb.platform.biz.mapper.BizWjMapper;
 import com.cwb.platform.biz.model.BizJl;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizWj;
-import com.cwb.platform.biz.service.JlService;
-import com.cwb.platform.biz.service.PtyhService;
-import com.cwb.platform.biz.service.UserService;
+import com.cwb.platform.biz.model.BizYjmx;
+import com.cwb.platform.biz.service.*;
+import com.cwb.platform.biz.util.IDNameIdentify;
+import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.mapper.SysClkPtjsMapper;
 import com.cwb.platform.sys.mapper.SysClkPtyhMapper;
@@ -23,13 +24,25 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.EncryptUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -54,6 +67,17 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
     private SysClkPtjsMapper sysClkPtjsMapper;
     @Autowired
     private SysYhJsMapper sysYhJsMapper;
+
+    @Autowired
+    private WxMpService wxMpService;
+    @Value("${qr_code_file_url}")
+    private String qrCodeFileUrl;
+
+    @Autowired
+    private YjmxService yjmxService;
+    @Autowired
+    private ZhService zhService;
+
 
 
 
@@ -209,9 +233,6 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         newEntity.setYhXm(entity.getYhXm());//用户姓名
         newEntity.setYhLx("zy");
 
-
-
-
 // ------------新操作
         SysYh sysYh = new SysYh();
         // 用户密码
@@ -232,6 +253,35 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         // 检查角色信息是否存在
         SysJs sysJs = sysClkPtjsMapper.selectByPrimaryKey(entity.getJsId());
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(sysJs) , "用户角色信息不存在， 请重新选取角色");
+
+//        String card = IDNameIdentify.identify(entity.getYhZjhm(), entity.getYhXm());
+//        RuntimeCheck.ifFalse(StringUtils.equals(card,"200"), card);
+        String yhZsyqm = "";
+        boolean flag = true;
+        while (flag) {
+            yhZsyqm = ShoreCode.createShareCode();
+            List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, yhZsyqm);
+            if (CollectionUtils.isEmpty(ptyhs)) {
+                flag = false;
+            }
+        }
+        String filepath = "/QRCode/" + DateTime.now().toString("yyyyMMdd") + "/" + yhZsyqm + ".png";
+        WxMpQrCodeTicket ticket = null;
+        String pictureUrl = null;
+        try {
+            ticket = wxMpService.getQrcodeService().qrCodeCreateLastTicket(newEntity.getId());
+           String qrCode = ticket.getTicket();
+            pictureUrl = wxMpService.getQrcodeService().qrCodePictureUrl(qrCode);
+            URL u = new URL(pictureUrl);
+            newEntity.setQrcode(ticket.getUrl());
+            FileUtils.copyURLToFile(u, new File(qrCodeFileUrl + filepath), 5000, 5000);
+        } catch (Exception e) {
+            RuntimeCheck.ifTrue(true, "邀请码生成异常");
+        }
+        newEntity.setYhZsyqm(yhZsyqm);
+        newEntity.setYhZsyqmImg(filepath);
+        newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
+        newEntity.setYhYqmkssj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
 
 
         //通过证件号码识别用户性别
@@ -308,6 +358,19 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
             entity.setJlImg("temp/192.png");
         }
         entityMapper.insertSelective(entity);
+
+        BizYjmx yjmx = new BizYjmx();
+        yjmx.setId(genId());
+        yjmx.setZjFs("-1");
+        yjmx.setZjZt("1");
+        yjmx.setZjJe(20000d);
+        yjmx.setYhId(newEntity.getId());
+        yjmx.setTxShZt("1");
+        yjmx.setMxlx("4");
+        yjmx.setCjsj(DateUtils.getNowTime());
+        yjmxService.save(yjmx);
+        zhService.userAccountUpdate(Arrays.asList(newEntity.getId()));
+
 
         String[] imgList = StringUtils.split(entity.getImgList(), ",");
         String yhSfyjz="0";//设置是否有驾照 ZDCLK0046 (0 否  1 是)

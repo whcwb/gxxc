@@ -5,6 +5,7 @@ import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -62,6 +63,7 @@ public class MessageApi {
         URL u = new URL(pictureUrl);
 
         FileUtils.copyURLToFile(u,new File(qrCodeFileUrl+ filepath),5000,5000);
+        bizPtyh.setQrcode(ticket.getUrl());
         bizPtyh.setYhZsyqm(yhZsyqm);
         bizPtyh.setYhZsyqmImg(filepath);
         ptyhService.update(bizPtyh);
@@ -81,6 +83,32 @@ public class MessageApi {
         return ApiResponse.success(ptyh);
 
     }
+
+    @GetMapping("/getName")
+    public ApiResponse<String> getUserName(String code){
+        List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, code);
+        if(CollectionUtils.isNotEmpty(ptyhs)){
+            return ApiResponse.success(ptyhs.get(0).getYhXm());
+        }else{
+            return ApiResponse.fail("");
+        }
+    }
+
+    @GetMapping("/updateQrcode")
+    public ApiResponse<String> udpateQrcode() throws WxErrorException {
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.and().andIsNotNull(BizPtyh.InnerColumn.yhZsyqm.name());
+        List<BizPtyh> ptyhs = ptyhService.findByCondition(condition);
+        for (BizPtyh ptyh : ptyhs) {
+            WxMpQrCodeTicket ticket = wxMpService.getQrcodeService().qrCodeCreateLastTicket(ptyh.getId());
+            String url = ticket.getUrl();
+            ptyh.setQrcode(url);
+            ptyhService.update(ptyh);
+        }
+        return ApiResponse.success();
+    }
+
+
 
 
 

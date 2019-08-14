@@ -179,9 +179,10 @@
 			return {
 				agree: true,
 				yqrxm:'',
+				yqxx:'',
 				form: { //在这里存放非inoput的字段属性
 					yhLx: '3',
-					addType: '3'					
+					addType: '3'
 				},
 				inputList: [ //验证、提交时放入form对象,动态绑定type样式就失效了，是uniapp的bug！！
 					{
@@ -260,7 +261,6 @@
 				this.inputList.map((val, index, arr) => { //form对象
 					this.form[val.key] = val.val
 				})
-				
 
 				//输入验证
 				if (this.form.yhZh.length < 5) {
@@ -277,7 +277,7 @@
 					});
 					return;
 				}
-				
+
 				this.$http.post(this.apis.USERSAVE, this.form).then(res => {
 					if (res.code == 200) {
 						uni.showToast({
@@ -295,12 +295,12 @@
 			},
 			getWxJs() {
 							var v = this
-							// 微信js初始化 
+							// 微信js初始化
 							var script = document.createElement("script")
 							script.type = "text/javascript"
 							script.src = "http://res.wx.qq.com/open/js/jweixin-1.4.0.js"
 							document.body.appendChild(script)
-			
+
 							script.onload = function() { // 微信js初始化 回调函数
 								// console.log('*****wx', wx)
 			// 					// 微信js初始化成功后引用 微信功能方法
