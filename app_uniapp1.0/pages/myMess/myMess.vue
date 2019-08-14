@@ -5,8 +5,12 @@
 			<cmd-cell-item title="我的头像" slot-right @click='getTx' arrow>
 				<img :src="usermess.yhTx" style="width: 60upx;height: 60upx;border-radius: 50%;">
 			</cmd-cell-item>
-			<cmd-cell-item title="我的昵称" brief=""  :addon="usermess.yhBm" arrow @click='promptVisible=true'/>
-			<cmd-cell-item title="修改密码" brief="" arrow @click='toxgpwd'/>
+			<cmd-cell-item title="我的昵称" slot-right @click='promptVisible=true' arrow>
+				{{usermess.yhBm}}
+			</cmd-cell-item>
+			<cmd-cell-item title="修改密码" slot-right @click='toxgpwd' arrow></cmd-cell-item>
+			<!-- <cmd-cell-item title="我的昵称" brief=""  :addon="usermess.yhBm" arrow @click='promptVisible=true'/>
+			<cmd-cell-item title="修改密码" brief="" arrow @click='toxgpwd'/> -->
 		</view>
 		<view style="margin: 60rpx;">
 			<view class="btn" @tap="tologin">

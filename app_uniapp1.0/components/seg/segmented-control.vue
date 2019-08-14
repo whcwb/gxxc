@@ -48,7 +48,6 @@ export default {
   },
   data() {
     return {
-      //lineWidth: 0, // 线的宽度
       offsetLeft: 0 // 相对左边的距离
     };
   },
@@ -69,14 +68,12 @@ export default {
     let that = this;
     if (that.values) {
       if (that.values && that.values[that.current]) {
-        //that.lineWidth = 0;
         setTimeout(() => { // 延时获取线的宽度和左边距离
-          const query = uni.createSelectorQuery();
+          const query = uni.createSelectorQuery().in(that);
           query.select('#sc-' + that.current).boundingClientRect();
           query.exec(res => {
 						console.log(res)
             that.offsetLeft = res[0].left + this.offsetLeftParam;
-            //that.lineWidth = this.lineWidth;
           });
         }, 500);
       }
@@ -91,11 +88,10 @@ export default {
       current(newValue, oldValue) {
       let that = this;
             //监听当前选择的item变化,重新计算线的宽和左边的距离
-            const query = uni.createSelectorQuery();
+            const query = uni.createSelectorQuery().in(that);
             query.select('#sc-' + newValue).boundingClientRect();
             query.exec(res => {
               that.offsetLeft = res[0].left +this.offsetLeftParam;
-              //that.lineWidth = this.lineWidth;
             });
       }
   },
