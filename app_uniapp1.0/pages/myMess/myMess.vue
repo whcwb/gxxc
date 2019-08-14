@@ -5,11 +5,17 @@
 			<cmd-cell-item title="我的头像" slot-right @click='getTx' arrow>
 				<img :src="usermess.yhTx" style="width: 60upx;height: 60upx;border-radius: 50%;">
 			</cmd-cell-item>
-			<cmd-cell-item title="我的昵称" brief=""  :addon="usermess.yhBm" arrow @click='promptVisible=true'/>
-			<cmd-cell-item title="修改密码" brief="" arrow @click='toxgpwd'/>
+			<cmd-cell-item title="我的昵称" slot-right @click='promptVisible=true' arrow>
+				{{usermess.yhBm}}
+			</cmd-cell-item>
+			<cmd-cell-item title="修改密码" slot-right @click='toxgpwd' arrow></cmd-cell-item>
+			<!-- <cmd-cell-item title="我的昵称" brief=""  :addon="usermess.yhBm" arrow @click='promptVisible=true'/>
+			<cmd-cell-item title="修改密码" brief="" arrow @click='toxgpwd'/> -->
 		</view>
 		<view style="margin: 60rpx;">
-			<button type="warn" @click="tologin">退出登录</button>
+			<view class="btn" @tap="tologin">
+				退出登录
+			</view>
 		</view>
 		<view class="box_col_100">
 			
@@ -20,7 +26,7 @@
 				Copyright@2018-2019
 			</view>
 			<view>
-				吉驾无忧
+				吉驾无忧1.0
 			</view>
 			<view>
 				武汉天弘腾创科技有限公司
@@ -123,5 +129,20 @@
    .copyright{
     text-align: center;
     padding-bottom: 120rpx;
+  }
+  
+  .btn{
+	  	width: 592upx;
+	  	height: 104upx;
+	  	background:linear-gradient(90deg,rgba(254,128,101,1) 0%,rgba(238,70,68,1) 100%);
+	  	box-shadow: 0 8upx 16upx 0 rgba(254,128,101, 0.5);
+	  	border-radius: 52upx;
+	  	display: flex;
+	  	justify-content: center;
+	  	align-items: center;
+	  	margin: 0 auto;
+	  	font-size: 40upx;
+	  	font-weight: 400;
+	  	color: rgba(255, 255, 255, 1);
   }
 </style>

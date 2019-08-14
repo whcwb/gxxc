@@ -31,7 +31,8 @@
 				</div>
 			</view>
 			<view class="funcBox" v-show="!userMess">
-				<div class="noUser box_row rowCenter colBottom">
+				<img src="./file/img/idcard.png" style="left: 50%;transform: translateX(-50%);position: absolute;width: 188rpx;height: 188rpx;">
+				<div class="noUser box_row rowCenter colBottom" style="left: 50%;transform: translateX(-50%);position: absolute;">
 					<div class="text">
 						您尚未实名认证
 					</div>

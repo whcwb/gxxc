@@ -165,7 +165,7 @@
 						</view>
 					</view>
 					<view class="box_row_100" style="position: relative;">
-						<img src="static/img/gz/thtc.png" class="gzimg" style="width: 100upx;position: absolute;right: -3.2px;top: 0px;">
+						<img src="static/img/gz/thtc.png" class="gzimg" style="width: 100upx;height: 100upx;position: absolute;right: -3.2px;top: 0px;">
 						<view>
 							甲方
 							<view class="textAR">武汉天弘腾创科技有限公司</view>
@@ -178,12 +178,12 @@
 						</view>
 					</view>
 				</view>
-				<view class="box_row" style="margin-top: 50upx;">
+				<view class="box_row" style="margin: 40upx 0;">
 					<view class="box_row_100" style="padding: 0.2rem;" @tap="toPay">
-						<button type="primary" style="width: 80%;height: 70upx;line-height: 70upx;font-size: 0.4rem;">同意</button>
+						<button type="primary" style="width: 80%;height: 70upx;line-height: 70upx;font-size: 0.8rem;">同意</button>
 					</view>
 					<view class="box_row_100" style="padding: 0.2rem;" @tap="toBack">
-						<button type="warn" style="width: 80%;height: 70upx;line-height: 70upx;font-size: 0.4rem;">拒绝</button>
+						<button type="warn" style="width: 80%;height: 70upx;line-height: 70upx;font-size: 0.8rem;">拒绝</button>
 					</view>
 				</view>
 			</view>

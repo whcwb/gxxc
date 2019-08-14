@@ -1,8 +1,7 @@
 <template>
 	<view>
 		<view>
-			<vuesigncanvas ref="sign" options="options" @result="saveResult" @clear="clear">
-			</vuesigncanvas>
+			<vuesigncanvas ref="sign" options="options" @result="saveResult" @clear="clear"></vuesigncanvas>
 		</view>
 	</view>
 </template>

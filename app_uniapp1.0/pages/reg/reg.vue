@@ -1,29 +1,10 @@
 <template>
-	<!-- <view class="content">
-        <view class="input-group">
-            <view class="input-row border">
-                <text class="title">账号：</text>
-                <m-input type="text" focus clearable v-model="account" placeholder="请输入账号"></m-input>
-            </view>
-            <view class="input-row border">
-                <text class="title">密码：</text>
-                <m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
-            </view>
-            <view class="input-row">
-                <text class="title">邮箱：</text>
-                <m-input type="text" clearable v-model="email" placeholder="请输入邮箱"></m-input>
-            </view>
-        </view>
-        <view class="btn-row">
-            <button type="primary" class="primary" @tap="register">注册</button>
-        </view>
-    </view> -->
 	<view style="width: 100%;background:rgba(255,255,255,1);">
 		<img src="/static/img/banner.png" style="height: 336upx;width: 750upx;">
 		<view v-if="yqrxm!=''" class="inputMess">
 			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm"/>
 		</view>
-		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.key!='yhYyyqm' || item.val == ''">
+		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.show">
 			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
 			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 		</view>
@@ -196,52 +177,53 @@
 		},
 		data() {
 			return {
-				agree: false,
+				agree: true,
 				yqrxm:'',
+				yqxx:'',
 				form: { //在这里存放非inoput的字段属性
 					yhLx: '3',
-					addType: '3',
-					// yhZh:'',
-					// yhYyyqm:'',
-					// telIdentifying:'',
-					// yhMm:'',
-					// yhXm:'',
-					// yhZjhm:''						
+					addType: '3'
 				},
 				inputList: [ //验证、提交时放入form对象,动态绑定type样式就失效了，是uniapp的bug！！
 					{
 						placeholder: '请输入手机号',
 						key: 'yhZh',
 						type: 'number',
+						show:true,
 						val: ''
 					},
 					{
 						placeholder: '请输入邀请码',
 						key: 'yhYyyqm',
 						type: 'number',
-						val: ''
+						show:true,
+						val: '',
 					},
 					{
 						placeholder: '请输入验证码',
 						key: 'telIdentifying',
+						show:true,
 						type: 'number',
 						val: ''
 					},
 					{
 						placeholder: '请输入密码',
 						key: 'yhMm',
+						show:true,
 						type: 'password',
 						val: ''
 					},
 					{
 						placeholder: '请输入真实姓名',
 						key: 'yhXm',
+						show:true,
 						type: 'text',
 						val: ''
 					},
 					{
 						placeholder: '请输入身份证号',
 						key: 'yhZjhm',
+						show:true,
 						type: 'idcard',
 						val: ''
 					}
@@ -252,17 +234,18 @@
 			var yqm = uni.getStorageSync('yqm')
 			if (yqm && yqm != '' && yqm != undefined) {
 				this.getName(yqm)
-				this.yqrxm ='邀请人:'+' '+this.yqrxm  +'邀请码:'+' '+yqm 
-				console.log(this.yqrxm);
-				this.form.yhYyyqm = yqm
-				this.inputList[1].val = yqm;
+				 this.inputList[1].show=false			//隐藏邀请码输入字段
+				 this.inputList[1].val = yqm
 			}
+			else {
+				this.yqrxm=''
+				}
 		},
 		methods: {
 			getName(code){//根据邀请码 获取邀请人姓名
 				this.$http.get('/pub/getName',{code:code}).then((res)=>{
 					if(res.code == 200){
-						this.yqrxm = res.message
+						this.yqrxm=`邀请人:${res.message}  邀请码:${code}`
 					}
 				})
 			},
@@ -270,7 +253,6 @@
 				this.agree = !this.agree
 			},
 			reg() {
-				console.log(this.agree)
 				if (!this.agree) { //首先判断同意协议
 					this.openPopup()
 					return
@@ -295,7 +277,7 @@
 					});
 					return;
 				}
-				
+
 				this.$http.post(this.apis.USERSAVE, this.form).then(res => {
 					if (res.code == 200) {
 						uni.showToast({
@@ -305,19 +287,20 @@
 						this.getWxJs()
 					} else {
 						uni.showToast({
-							title: res.message
+							title: res.message,
+							icon:'none'
 						})
 					}
 				})
 			},
 			getWxJs() {
 							var v = this
-							// 微信js初始化 
+							// 微信js初始化
 							var script = document.createElement("script")
 							script.type = "text/javascript"
 							script.src = "http://res.wx.qq.com/open/js/jweixin-1.4.0.js"
 							document.body.appendChild(script)
-			
+
 							script.onload = function() { // 微信js初始化 回调函数
 								// console.log('*****wx', wx)
 			// 					// 微信js初始化成功后引用 微信功能方法

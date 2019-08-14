@@ -45,25 +45,19 @@
 		<view class="loadingbox" style="text-align: center;">
 			{{contentText[loadingType]}}
 		</view>
-				<!-- <uni-load-more :loadingType="loadingType" :contentText="contentText"></uni-load-more> -->
 	</view>
 </template>
 
 <script>
 	import mSearch from '@/components/mehaotian-search/mehaotian-search.vue';
-	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
-	import slFilter from '@/components/songlazy-sl-filter/sl-filter/sl-filter.vue';
+	// import slFilter from '@/components/songlazy-sl-filter/sl-filter/sl-filter.vue';
 	import uniIcon from "@/components/uni-icon/uni-icon.vue";
 	import segmentedControl from "@/components/seg/segmented-control.vue";
-	var _self,
-		page = 1,
-		timer = null;
 	export default {
 		name: "",
 		components: {
 			mSearch,
-			uniLoadMore,
-			slFilter,
+			// slFilter,
 			uniIcon,
 			segmentedControl
 		},
@@ -110,6 +104,7 @@
 		},
 		onPullDownRefresh: function() {
 			//下拉刷新的时候请求一次数据
+			this.current = 0
 			this.newsList = []
 			this.params.pageNum = 1
 			this.params.yhxm = ""
@@ -222,13 +217,13 @@
 	.teamPagerBox{
 		background:rgba(245,246,249,1);
 		width: 100%;
-		padding-top: 168rpx;
+		// padding-top: 168rpx;
 		.seacherBox{
-			position: fixed;
-			left: 0;
-			top:0;
-			right: 0;
-			margin-top:88rpx;
+			// position: fixed;
+			// left: 0;
+			// top:0;
+			// right: 0;
+			// margin-top:88rpx;
 			.studentBox{
 				background-color: #ffffff;
 				text-align: center;
@@ -258,13 +253,11 @@
 		}
 	}
 	.teamListBox {
-		margin-top: 60rpx;
+		// margin-top: 60rpx;
 		background-color: #ffffff;
 		flex: 1;
 		overflow-y: auto;
 		padding: 0 36rpx;
-		// max-height: 50vh;
-		
 		.itemSty {
 			border-bottom: solid 2rpx #DFE7EE;
 			padding: 30rpx 0;

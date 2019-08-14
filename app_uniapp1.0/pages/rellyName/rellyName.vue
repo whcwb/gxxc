@@ -60,7 +60,7 @@
 				//获取基本信息
 				this.$http.post(this.apis.USERMESS).then(res => {
 					if (res.code == 200) {
-						this.isDone = res.result.yhSfyjz == 0 ? false : true
+						this.isDone = res.result.yhZt == '0' ? false : true
 					} else {
 						uni.showToast({
 							title: res.message,
@@ -96,7 +96,8 @@
 							// v.rz()
 						} else {
 							uni.showToast({
-								title: res.message
+								title: res.message,
+								icon: 'none'
 							})
 						}
 					}

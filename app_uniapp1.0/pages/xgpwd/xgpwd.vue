@@ -1,7 +1,7 @@
 <template>
 	 <view style="width: 100%;background:rgba(255,255,255,1);">
 			<view class="inputMess" v-for="item in inputList">
-				<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" />
+				<input class="uni-input input" password :placeholder="item.placeholder" v-model="item.val" />
 				<view v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 			</view>
 			<view class="btn" @click="upWorld">
