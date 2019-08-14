@@ -20,7 +20,7 @@
 			
 		},
 		onReady() {
-			this.toLogin()
+			// this.toLogin()
 			this.$refs.loading.open()
 			this.isYqm()
 
@@ -48,6 +48,7 @@
 							this.getWxJs()
 						}
 					}else{
+						this.getWxJs()
 						// this.toLogin()
 					}
 				// #endif
@@ -89,7 +90,10 @@
 						v.wxApi.vueParent = this;
 						v.wxApi.getOpenid(authCode, (res) => {
 							// console.log('openid-------', res)
-							localStorage.setItem("openid", res); //存储openid
+							uni.setStorage({
+								key:'openid',
+								data:res
+							}); //存储openid
 							v.wxApi.initConfig(); //执行 微信 config
 							v.toLogin()
 						});
