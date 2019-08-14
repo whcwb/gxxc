@@ -11,10 +11,10 @@
 					</view>
 					<input class="inputSty" v-model="ye" type="number">
 				</view>
-				<view class="moneyBut" @tap="toChooseBank"></view>
+				<view class="moneyBut" @tap="Tx"></view>
 			</view>
 			<view class="lable">
-				
+				已冻结 {{dj}} 元
 			</view>
 		</view>
 
@@ -39,7 +39,7 @@
 							{{item.cjsj}}
 						</view>
 						<view class="detailState">
-							{{item.txShZt | txShZt}}
+							{{item.zjZt | zjZt}}
 						</view>
 					</view>
 				</view>
@@ -57,11 +57,38 @@
 		data() {
 			return {
 				ye: 0 ,//余额
+				dj:0,//冻结金额
 				mxList:[]//提现明细
 			}
 		},
 		mixins:[mixin],
 		methods: {
+			Tx() { //点击了提现按钮
+				var v = this
+				this.$http.post(this.apis.TX, {
+					'ttje': this.ye * 100,
+					ttfs: 1
+				}).then(res => {
+					if (res.code == 200) {
+						uni.showToast({
+							title: '提现成功',
+							duration: 1500
+						});
+						this.getMoney()
+						setTimeout(()=>{
+							uni.navigateTo({
+								url: '/pages/yqJl/yqJl',
+							});
+						},1500) 
+					}else{
+						 uni.showToast({
+							title: res.message,
+							duration: 2000,
+							icon:'none'
+						});
+					}
+				})
+			},
 			//获取余额
 			getMoney() {
 				this.$http.post(this.apis.USERZH).then(res => {
@@ -71,6 +98,7 @@
 							console.log('1');
 						} else {
 							this.ye = res.result.yhZhye / 100
+							this.dj = res.result.yhTxdj / 100
 						}
 					}else{
 						uni.showToast({
