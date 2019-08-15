@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="btn">
-			<view class="item" :style="{borderBottom:index===btnList.length-1?'none':'2upx solid #DFE7EE'}" v-for="(item,index) in btnList"
+			<view class="item" :style="{borderBottom:index===4?'none':'2upx solid #DFE7EE'}" v-for="(item,index) in btnList"
 			 @tap="toPage(item)">
 				<view style="display: flex;align-items: center;">
 					<img :src="item.src" style="margin-right:12upx;width: 40upx;height: 40upx;">

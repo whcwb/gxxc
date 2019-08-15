@@ -80,6 +80,7 @@
 					_self.imageList = []
 				} 
 				
+				
 				uni.chooseImage({
 					count: _self.limit ? (_self.limit - _self.imageList.length) : 999,
 					success: function(e){
@@ -101,31 +102,49 @@
 							}
 						}
 						
+						
 						for(let i=0; i<imagePathArr.length;i++){
 							_self.imageList.push(imagePathArr[i])
 						}
 						
+						// uni.showToast({
+						// 	title:this.serverUrl,
+						// 	icon:'none',
+						// 	mask: false,
+						// 	duration: 2000
+						// });
+
 						//检查服务器地址是否设置，设置即表示图片要上传到服务器
-						if(_self.serverUrl){
+						// if(_self.serverUrl){
+
 							
 							var remoteIndexStart = _self.imageList.length - imagePathArr.length
 							var promiseWorkList = []
 							var keyname = (_self.fileKeyName ? _self.fileKeyName : 'upload-images')
 							var completeImages = 0
 							
+							uni.showToast({
+								title: _self.apis.appUpImg,
+								icon:'none',
+								mask: false,
+								duration: 2000
+							});
+							
+							
 							for(let i=0; i<imagePathArr.length;i++){
 								promiseWorkList.push(new Promise((resolve, reject)=>{
 									let remoteUrlIndex = remoteIndexStart + i
 									uni.uploadFile({
-										url:_self.serverUrl,
+										url:_self.apis.appUpImg,
 										fileType: 'image',
 										formData:_self.formData,
 										filePath: imagePathArr[i], 
 										name: keyname,
 										success: function(res){
 											if(res.statusCode === 200){
+												_self.$emit('adds', JSON.parse(res.data).result.filePath); 
 												_self.imageList[remoteUrlIndex] = res.data 
-												completeImages ++
+												completeImages ++								
 												
 												if(_self.showUploadProgress){
 													uni.showToast({
@@ -156,13 +175,13 @@
 								})
 								_self.$emit('input', _self.imageList)
 							})
-						}else{
-							_self.$emit('add', {
-								currentImages: imagePathArr,
-								allImages: _self.imageList
-							})
-							_self.$emit('input', _self.imageList)
-						}
+						// }else{
+						// 	_self.$emit('add', {
+						// 		currentImages: imagePathArr,
+						// 		allImages: _self.imageList
+						// 	})
+						// 	_self.$emit('input', _self.imageList)
+						// }
 					}
 				})
 			},

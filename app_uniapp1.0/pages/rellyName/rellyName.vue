@@ -10,7 +10,8 @@
 			<view class="IDPhoto">
 				<view class="text">温馨提示：请上传原始比例的身份证正反面，请勿裁剪涂改，保证身份证信息清晰显示</view>
 				<view style="display: flex;justify-content: space-around;align-items: center;">
-					<img :src="imgList.zm" @click="getImg(0,10)" style="width: 300upx;height: 180upx;">
+					<img v-if="upImgControl" :src="imgList.zm" @click="getImg(0,10)" style="width: 300upx;height: 180upx;">
+					<robby-image-upload v-else @adds="add" v-model="imageData" fileKeyName="file" :server-url="apis.appUpImg" :form-data="formData" limit="1"></robby-image-upload>
 				</view>
 				<view style="margin-bottom: 14upx;font-size:24upx;font-weight:400;color:rgba(153,153,153,1);">示例</view>
 				<img src="/static/img/my/exp.png" style="width: 132upx;height: 84upx;">
@@ -38,12 +39,19 @@
 		},
 		data() {
 			return {
-				isDone: false, //认证控制
+				isDone: true, //认证控制
 				zm: '',
-				fm: '',
+				upImgControl:false,
+				imageData:'',
+				appImg:'',
 				imgList: {
 					zm: 'static/img/id_03.png',
 					bm: 'static/img/id_05.png'
+				},
+				formData:{
+					fileType:'10',
+					userid:'',
+					token:''
 				},
 				form: {
 					sfz: '',
@@ -54,8 +62,27 @@
 		},
 		onShow() {
 			this.getUser()
+
+			var v=this
+				uni.getStorage({
+				    key: 'token',
+				    success: function (res) {
+				        v.formData.token=res.data.token
+						v.formData.userid=res.data.userId
+				    }
+				});
+			
+			// #ifdef H5
+			this.upImgControl=true
+			// #endif
+			// #ifdef APP-PLUS
+			this.upImgControl=false
+			// #endif
 		},
 		methods: {
+			add(e){
+                this.appImg=e
+            },
 			getUser() {
 				//获取基本信息
 				this.$http.post(this.apis.USERMESS).then(res => {
@@ -108,10 +135,28 @@
 					this.toPay()
 					return
 				}
+				
+				 if(v.form.sfz==''||v.form.name==''){
+					 uni.showToast({
+					 	title: '请完整身份证号码和姓名',
+					 	duration: 2000,
+					 	icon: 'none'
+					 });
+					 return
+				 }
+				
+				//图片路径
+				var imgList=''
+				// #ifdef H5
+				imgList=v.form.imgList.join(',')
+				// #endif
+				// #ifdef APP-PLUS
+				 imgList=this.appImg
+				 // #endif
 
 				var v = this
 				this.$http.post(this.apis.IDRZ, {
-					'imgList': v.form.imgList.join(','),
+					'imgList': imgList,
 					'yhZjhm': v.form.sfz,
 					'yhXm': v.form.name
 				}).then(res => {
