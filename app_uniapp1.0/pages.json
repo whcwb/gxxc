@@ -111,7 +111,7 @@
 	    ,{
             "path" : "pages/goMoney/goMoney",
             "style" : {
-				"navigationBarTitleText": "立即缴费"
+				"navigationBarTitleText": "购买服务"
 			}
         }
         ,{
@@ -205,6 +205,10 @@
         }
         ,{
             "path" : "pages/main/user/mystudent/mystudent",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/center/appsignName/appsignName",
             "style" : {}
         }
     ],

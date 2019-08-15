@@ -20,10 +20,9 @@
 			
 		},
 		onReady() {
-			// this.toLogin()
-			this.$refs.loading.open()
+			this.toLogin()
+			// this.$refs.loading.open()
 			this.isYqm()
-
 		},
 		methods: {
 			isYqm() {
@@ -54,6 +53,7 @@
 				// #endif
 				// #ifdef APP-PLUS
 					// app执行
+					console.log('app');
 					this.toLogin()
 				// #endif
 			},

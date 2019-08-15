@@ -41,7 +41,7 @@
 				user: {},
 				btnList: [{
 						src: '/static/img/my/ljjf.png',
-						text: '立即缴费',
+						text: '购买服务',
 						toPath: '/pages/goMoney/goMoney'
 					},
 					{

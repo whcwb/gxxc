@@ -44,8 +44,8 @@
 		</view>
 
 		<div v-if='USERMESS.yhLx != 1' class="advbox" @click="ChangeUser">
-			<view style="position: absolute;left: 50%;transform: translateX(-50%);top: 45upx;">报名学车</view>
-			<view style="position: absolute;left: 50%;top: 90upx;">只需2600</view>
+			<view style="position: absolute;left: 50%;transform: translateX(-50%);top: 45upx;">吉驾伴侣</view>
+			<view style="position: absolute;left: 50%;top: 90upx;">合作共赢</view>
 			<img src="./file/img/index_banner.png">
 		</div>
 
