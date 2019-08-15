@@ -4,6 +4,7 @@
 			<text>支付金额</text>
 			<text>￥{{payMess.cpJl/100}}元</text>
 		</view>
+		<view>{{errdata}}</view>
 		<view class="btn" @tap="pay">
 			立即支付
 		</view>
@@ -19,7 +20,7 @@
 		computed: mapState(['payMess']),
 		data() {
 			return {
-
+				errdata:''
 			}
 		},
 		methods: {
@@ -39,6 +40,7 @@
 					cpId: v.payMess.id,
 					// userAutograph: ui.getApp().signUrl
 				}).then(res => {
+					console.log(res);
 					if (res.code == 200) {
 						// #ifdef APP-PLUS
 							this.AppWxPay(res.result)
@@ -57,13 +59,17 @@
 				})
 			},
 			AppWxPay(mess){
+				console.log(mess.noncestr);
+				var self = this;
 				uni.requestPayment({
 				    provider: 'wxpay',
-				    orderInfo: mess.nonceStr, //微信、支付宝订单数据
+				    orderInfo: mess.noncestr, //微信、支付宝订单数据
 				    success: function (res) {
+						self.errdata = JSON.stringify(res);
 				        console.log('success:' + JSON.stringify(res));
 				    },
 				    fail: function (err) {
+						self.errdata = JSON.stringify(err);
 				        console.log('fail:' + JSON.stringify(err));
 				    }
 				});

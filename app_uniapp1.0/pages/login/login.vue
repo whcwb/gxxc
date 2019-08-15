@@ -11,6 +11,9 @@
 		<view class="btn" @tap="login">
 			登录
 		</view>
+		<!-- <view class="btn" @tap="wxlogin">
+			微信登录
+		</view> -->
 		<view class="createAccount" @tap="toReg">
 			创建账号
 		</view>
@@ -38,6 +41,20 @@
 			}
 		},
 		methods: {
+			wxlogin(){
+				uni.login({
+				  provider: 'weixin',
+				  success: function (loginRes) {
+				    console.log(loginRes);
+					 uni.getUserInfo({
+					      provider: 'weixin',
+					      success: function (infoRes) {
+					        console.log('用户昵称为：',infoRes);
+					      }
+					});
+				  }
+				});
+			},
 			login() {
 				var v = this
 				this.$http.post(this.apis.LOGIN, v.form).then(res=> {

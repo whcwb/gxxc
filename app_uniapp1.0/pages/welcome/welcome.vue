@@ -20,8 +20,8 @@
 			
 		},
 		onReady() {
-			this.toLogin()
-			// this.$refs.loading.open()
+			// this.toLogin()
+			this.$refs.loading.open()
 			this.isYqm()
 		},
 		methods: {
