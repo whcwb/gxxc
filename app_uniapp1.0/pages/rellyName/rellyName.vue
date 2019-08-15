@@ -22,7 +22,7 @@
 			<view style="margin-top:234upx;">
 				<img src="/static/img/my/success.png" style="width: 240upx;height: 240upx;bottom: 78upx;">
 			</view>
-			<view style="margin-top: 78upx;font-size:40upx;font-weight:400;color:rgba(51,51,51,1);">审核通过</view>
+			<view style="margin-top: 78upx;font-size:40upx;font-weight:400;color:#3778FF;">已实名</view>
 		</view>
 
 		<view class="btn" @tap="upload">
@@ -87,8 +87,8 @@
 				//获取基本信息
 				this.$http.post(this.apis.USERMESS).then(res => {
 					if (res.code == 200) {
-						//this.isDone = res.result.yhZt == '0' ? false : true
-						this.isDone=false
+						this.isDone = res.result.yhZt == '0' ? false : true
+						// this.isDone=false
 					} else {
 						uni.showToast({
 							title: res.message,

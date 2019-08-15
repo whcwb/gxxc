@@ -78,7 +78,7 @@
 		<view class="teamTitBox box_row colCenter">
 			<view class="hline"></view>
 			<div class="titText">
-				学员信息
+				团队信息
 			</div>
 		</view>
 		<view v-if="newsList.length == 0" style="text-align: center;">
@@ -86,7 +86,7 @@
 			<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
 		</view>
 		<view v-else class="teamListBox">
-			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
+			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index" @click="toXymess(it)">
 					<view style="display: flex;flex-direction:row;align-items: center;">
 						<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
 							<b>{{index+1}}</b>
@@ -170,10 +170,25 @@
 
 		},
 		methods: {
-			phone(id) {
-				uni.makePhoneCall({
-					phoneNumber: id //仅为示例
-				});
+			toXymess(item){//查看学员详情  只能看A类学员
+			    console.log('item',item);
+				if(item.userDetail.yhLx != '1' || item.userDetail.ddSfjx!= '1'){
+					
+				}else{
+					uni.setStorage({
+						key:'xymess',
+						data:item
+					})
+					uni.navigateTo({
+						url:"../../xymess/xymess"
+					})
+					
+				}
+			},
+			phone(id){
+				 uni.makePhoneCall({
+				 	phoneNumber: id //仅为示例
+				 });
 			},
 			judgeClient() {
 				let u = navigator.userAgent;
