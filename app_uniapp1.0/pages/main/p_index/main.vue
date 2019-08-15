@@ -18,8 +18,8 @@
 							{{zhYE.yhZhye/100}}元
 						</div>
 					</div>
-					<img class="eCodeSty" src="./file/img/eCode.png" alt="" @click='toCode'>
-					<div>
+					<img class="eCodeSty" src="./file/img/eCode.png" @click='toCode'>
+					<div @tap='toTeam'>
 						<div class="titleSty">
 							累计邀请
 						</div>
@@ -98,8 +98,8 @@
 					</view>	
 					
 					<view style="display: flex;flex-direction:row;align-items: center;">	
-						<view style="margin-right: 15upx;" @click="phone(it.yhSjhm)">
-							<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
+						<view style="margin-right: 15upx;" @click.stop="phone(it.yhSjhm)">
+							<uni-icon type='phone' color='#007AFF' size="30"></uni-icon>
 						</view>
 
 						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
@@ -251,6 +251,11 @@
 							title: res.message
 						})
 					}
+				})
+			},
+			toTeam(){
+				uni.switchTab({
+					url: '/pages/main/team/index'
 				})
 			},
 			toTx() {

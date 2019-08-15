@@ -3,6 +3,7 @@
 		<view class="content" :style="{ 'border-radius': radius + 'px', border: border }">
 			<view class="content-box" :class="{ center: mode === 2 }">
 				<text class="icon icon-search">&#xe61c;</text>
+				<!-- <input class="input" :class="{ center: !active && mode === 2 }" :focus="isFocus" :placeholder="placeholder" v-model="inputVal" @focus="focus" @blur="blur" /> -->
 				<input class="input" :class="{ center: !active && mode === 2 }" :focus="isFocus" :placeholder="placeholder" v-model="inputVal" @focus="focus" @blur="blur" />
 				<!-- <view v-if="!active && mode === 2" class="input sub" @click="getFocus">请输入搜索内容</view> -->
 				<text v-if="isDelShow" class="icon icon-del" @click="clear">&#xe644;</text>
@@ -116,6 +117,7 @@ export default {
 			width: 100%;
 			display: flex;
 			align-items: center;
+			
 			&.center {
 				justify-content: center;
 			}
@@ -126,7 +128,7 @@ export default {
 				}
 			}
 			.input {
-				width: 100%;
+				width: 100% !important;
 				max-width: 100%;
 				line-height: 60upx;
 				height: 60upx;

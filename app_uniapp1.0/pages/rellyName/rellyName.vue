@@ -3,8 +3,8 @@
 		<view v-if="!isDone">
 			<view class="personMess">身份信息</view>
 			<view class="inputMess">
-				<input class="uni-input input" v-model="form.name" focus placeholder="请输入您的真实姓名" />
-				<input class="uni-input input" v-model="form.sfz" style="border-bottom: none;" focus placeholder="请输入您的身份证号码" />
+				<input class="uni-input input" v-model="form.name" placeholder="请输入您的真实姓名" />
+				<input class="uni-input input" v-model="form.sfz" style="border-bottom: none;" placeholder="请输入您的身份证号码" />
 			</view>
 			<view class="personMess">身份证正反面照</view>
 			<view class="IDPhoto">
@@ -87,7 +87,8 @@
 				//获取基本信息
 				this.$http.post(this.apis.USERMESS).then(res => {
 					if (res.code == 200) {
-						this.isDone = res.result.yhZt == '0' ? false : true
+						//this.isDone = res.result.yhZt == '0' ? false : true
+						this.isDone=false
 					} else {
 						uni.showToast({
 							title: res.message,
@@ -196,6 +197,7 @@
 		width: 100%;
 		height: 276upx;
 		background: rgba(255, 255, 255, 1);
+		margin-bottom: 65rpx;
 	}
 
 	.input {
@@ -240,7 +242,7 @@
 
 	.done {
 		width: 100%;
-		height: 1008upx;
+		height: 950upx;
 		background: rgba(255, 255, 255, 1);
 		margin-bottom: 84upx;
 		text-align: center;

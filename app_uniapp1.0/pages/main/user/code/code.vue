@@ -7,7 +7,7 @@
 				<text style="font-size:36upx;">{{user.yhZh}}</text>
 			</view>
 			<img :src="user.yhZsyqmImg" style="margin-top: 42upx;width: 396upx;height: 396upx;">
-			<text style="display: block;margin-top: 38upx;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：{{user.yhZsyqm}}</text>
+			<text style="display: block;margin-top: 15upx;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：{{user.yhZsyqm}}</text>
 			<view class="copybtn" v-clipboard:copy="user.yhZsyqm" v-clipboard:success="(type) => onCopyResult('success')"
 			 v-clipboard:error="(type) => onCopyResult('error')">
 				点此复制邀请码
@@ -57,7 +57,7 @@
 <style>
 	.bg {
 		width: 678upx;
-		height: 1132upx;
+		height: 1060upx;
 		background: rgba(255, 255, 255, 1);
 		box-shadow: 4upx 6upx 16upx 0upx rgba(174, 184, 224, 0.5);
 		border-radius: 16upx;
@@ -84,7 +84,7 @@
 		background: linear-gradient(132deg, rgba(59, 147, 253, 1) 0%, rgba(60, 128, 253, 1) 41%, rgba(55, 84, 252, 1) 100%);
 		box-shadow: 0 8upx 16upx 0 rgba(69, 124, 232, 0.5);
 		border-radius: 52upx;
-		margin: 74upx auto 28upx;
+		margin: 40upx auto 28upx;
 		font-size: 32upx;
 		font-weight: 400;
 		color: rgba(255, 255, 255, 1);
