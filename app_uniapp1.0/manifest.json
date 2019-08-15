@@ -10,8 +10,8 @@
         "usingComponents" : true,
         /* 模块配置 */
         "modules" : {
-            "Payment" : {},
-            "Share" : {}
+            "Share" : {},
+            "Payment" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -49,9 +49,8 @@
             /* SDK配置 */
             "sdkConfigs" : {
                 "payment" : {
-                    "alipay" : {},
                     "weixin" : {
-                        "appid" : "wxb01394ea85904296"
+                        "appid" : "wxb8c7c134a416a3d1"
                     }
                 }
             },

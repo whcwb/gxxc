@@ -21,9 +21,8 @@
 		},
 		onReady() {
 			this.toLogin()
-			this.$refs.loading.open()
+			// this.$refs.loading.open()
 			this.isYqm()
-
 		},
 		methods: {
 			isYqm() {
@@ -48,11 +47,13 @@
 							this.getWxJs()
 						}
 					}else{
+						this.getWxJs()
 						// this.toLogin()
 					}
 				// #endif
 				// #ifdef APP-PLUS
 					// app执行
+					console.log('app');
 					this.toLogin()
 				// #endif
 			},
@@ -89,7 +90,10 @@
 						v.wxApi.vueParent = this;
 						v.wxApi.getOpenid(authCode, (res) => {
 							// console.log('openid-------', res)
-							localStorage.setItem("openid", res); //存储openid
+							uni.setStorage({
+								key:'openid',
+								data:res
+							}); //存储openid
 							v.wxApi.initConfig(); //执行 微信 config
 							v.toLogin()
 						});

@@ -33,9 +33,13 @@
 					// userAutograph: ui.getApp().signUrl
 				}).then(res => {
 					if (res.code == 200) {
-						console.log(res.result)
-						// v.wxPayMess = res.result
-						this.WxPay(res.result)
+						// #ifdef APP-PLUS
+							this.AppWxPay(res.result)
+						// #endif
+						
+						// #ifdef H5
+							this.WxPay(res.result)
+						// #endif
 					} else {
 						console.log('失败')
 						uni.showToast({
@@ -44,6 +48,18 @@
 						})
 					}
 				})
+			},
+			AppWxPay(mess){
+				uni.requestPayment({
+				    provider: 'wxpay',
+				    orderInfo: mess.nonceStr, //微信、支付宝订单数据
+				    success: function (res) {
+				        console.log('success:' + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+				        console.log('fail:' + JSON.stringify(err));
+				    }
+				});
 			},
 			WxPay(mess){
 				var v = this

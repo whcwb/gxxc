@@ -193,6 +193,8 @@
 			},
 			search(e) {
 				this.params.yhxm = e
+				this.newsList = []
+				this.params.pageNum = 1
 				this.getPagerList()
 			},
 			onClickItem(index){

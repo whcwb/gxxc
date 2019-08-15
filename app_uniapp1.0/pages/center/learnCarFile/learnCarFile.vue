@@ -217,9 +217,19 @@
 		methods: {
 			...mapMutations(['setPayMess', 'setSignUrl']),
 			goSign() {
-				uni.navigateTo({
-					url: '/pages/center/signName/signName'
-				});
+				// #ifdef APP-PLUS
+					// app执行
+					uni.navigateTo({
+						url: '/pages/center/appsignName/appsignName'
+					});
+				// #endif
+				// #ifdef H5
+					// H5执行
+					uni.navigateTo({
+						url: '/pages/center/signName/signName'
+					});
+				// #endif
+				
 			},
 			toPay() {
 				if (this.saveResultUrl) {
