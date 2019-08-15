@@ -195,19 +195,27 @@
         }
         ,{
             "path" : "pages/pay/pay",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "支付"
+			}
         }
         ,{
             "path" : "pages/xymess/xymess",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "学员信息"
+			}
         }
         ,{
             "path" : "pages/main/user/mystudent/mystudent",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "我的学员"
+			}
         }
         ,{
             "path" : "pages/center/appsignName/appsignName",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "签名"
+			}
         }
     ],
 	"tabBar": {

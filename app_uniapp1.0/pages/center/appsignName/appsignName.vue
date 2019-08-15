@@ -1,7 +1,7 @@
 <template>
 	<view class='contents'>
-		<canvas v-if="canves" class='firstCanvas' canvas-id="firstCanvas" @touchmove='move' @touchstart='start($event)' @touchend='end'
-		 @touchcancel='cancel' @longtap='tap' disable-scroll='true' @error='error'>
+		<canvas v-if="canves" class='firstCanvas' canvas-id="firstCanvas" @touchmove='move' @touchstart='start($event)'
+		 @touchend='end' @touchcancel='cancel' @longtap='tap' disable-scroll='true' @error='error'>
 		</canvas>
 		<view class="caozuo">
 			<view class="chongqian" @tap='clearClick'>
@@ -36,34 +36,35 @@
 		data() {
 			return {
 				signImage: '',
-				isEnd: false ,// 是否签名
+				isEnd: false, // 是否签名
 				canves: false
 			}
 		},
-        onShow() {
-			setTimeout(()=>{
-			    this.canves = true
-			},200)
-        },
+		onShow() {
+			setTimeout(() => {
+				this.canves = true
+			}, 200)
+		},
 		methods: {
 			...mapMutations(['setSignUrl']),
-			uploadsign(){
+			uploadsign() {
 				this.$http.post(this.apis.SIGN, {
-					base64Data: this.signImage.substring()
+					base64Data: this.signImage
 				}).then(res => {
 					if (res.code == 200) {
 						this.setSignUrl(res.result)
 						uni.navigateBack({
-				
+
 						})
-					}else{
+					} else {
 						uni.showToast({
-							title:res.message,
-							icon:"none"
+							title: res.message,
+							icon: "none"
 						})
 					}
 				})
 			},
+
 			// ...mapMutations(['setSignUrl']),
 			overSign: function() {
 				if (this.isEnd) {
@@ -74,6 +75,7 @@
 							console.log(res.tempFilePath)
 							console.log('完成签名')
 							//设置图片
+							
 							_that.signImage = res.tempFilePath
 							_that.uploadsign()
 						}
@@ -144,7 +146,7 @@
 
 			//绘制
 			draw: function(touchs) {
-				console.log(touchs[0],touchs[1])
+				console.log(touchs[0], touchs[1])
 				let point1 = touchs[0]
 				let point2 = touchs[1]
 				touchs.shift()

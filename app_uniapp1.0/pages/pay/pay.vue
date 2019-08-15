@@ -26,9 +26,16 @@
 			...mapMutations(['setPayMess']),
 			pay() {
 				var v = this
-
+				// #ifdef APP-PLUS
+					var payTypeApp = '1'
+				// #endif
+					
+				// #ifdef H5
+					var payTypeApp = '0'
+				// #endif
 				this.$http.post(this.apis.CPPAY, {
 					ddZftd: 2,
+					payTypeApp:payTypeApp,
 					cpId: v.payMess.id,
 					// userAutograph: ui.getApp().signUrl
 				}).then(res => {
