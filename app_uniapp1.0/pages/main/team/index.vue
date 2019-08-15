@@ -1,15 +1,13 @@
 <template>
 	<view class="box_col teamPagerBox">
 		<view class="seacherBox">
-			<mSearch :show='false' :mode="2" @search="search($event)" placeholder='请输入姓名'></mSearch>
+			<mSearch :show='false' :mode="2" @search="search($event)" placeholder='请输入姓名'></mSearch>		
 			
-			
-			<view style="width:748upx;height:136upx;background:rgba(254,255,255,1);">
-				<segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" :offsetLeftParam="22" :lineWidth="50"  @clickItem="onClickItem"></segmented-control>
-			</view>
-			
+			<view style="width:748upx;background:rgba(254,255,255,1);">
+				<segmented-control id="tabbar" :values="items" :height="100" :stickyTop="108" :current="current" :offsetLeftParam="22" :lineWidth="50"  @clickItem="onClickItem"></segmented-control>
+			</view>	
 		</view>
-		<view  class="box_col_100 noData" v-if="newsList.length == 0" style="text-align: center;margin-top: 60rpx;">
+		<view  class="box_col_100 noData" v-if="newsList.length == 0" style="text-align: center;margin-top: 20rpx;">
 			<image src="../../../static/img/zanwu.png" mode="scaleToFill"></image>
 			<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
 		</view>
@@ -19,15 +17,15 @@
 						<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
 							<b>{{index+1}}</b>
 						</view>
-						<img :src="it.userDetail.yhTx" alt="">
+						<img :src="it.userDetail.yhTx">
 						<view class="name">
 							{{it.yhXm}}
 						</view>
 					</view>	
 					
 					<view style="display: flex;flex-direction:row;align-items: center;">	
-						<view style="margin-right: 15upx;" @click="phone(it.yhSjhm)">
-							<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
+						<view style="margin-right: 15upx;" @click.stop="phone(it.yhSjhm)">
+							<uni-icon type='phone' color='#007AFF' size="30"></uni-icon>
 						</view>
 					
 						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
@@ -146,6 +144,11 @@
 					})
 					
 				}
+			},
+			phone(id){
+				 uni.makePhoneCall({
+				 	phoneNumber: id //仅为示例
+				 });
 			},
 			deteleObject(obj) { //数组去重复
 			    var uniques = [];

@@ -102,7 +102,7 @@
 								duration: 1500
 							})
 							setTimeout(() => {
-								uni.navigateBack()
+								v.bindLogout()
 							}, 1500)
 						} else {
 							uni.showToast({
@@ -112,6 +112,11 @@
 						}
 					})
 				}
+			},
+			bindLogout() {
+				uni.navigateTo({
+					url: '/pages/login/',
+				});
 			},
 			findPassword() {
 				/**

@@ -17,6 +17,7 @@ export default {
 	},
 	getImgUrl:ajaxUrl+':8001/',//获取
 	upImgUrl:ajaxUrl+':8080/biz/upload',//上传
+	appUpImg: ajaxUrl+':8080/biz/app/getWxFile',
 	  // upImgUrl:ajaxUrl+':9086/upload',//上传
 		// 证件识别
 	  ZJSB:'/app/zjsb',
