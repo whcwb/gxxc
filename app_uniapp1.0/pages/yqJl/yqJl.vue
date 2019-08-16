@@ -64,6 +64,7 @@
 		mixins:[mixin],
 		methods: {
 			appTx(){
+				var self = this 
 				var openid = uni.getStorageSync('openid')
 				if(openid && openid!=''&& openid != undefined){
 				   this.Tx()
@@ -74,7 +75,7 @@
 					   confirmText:'去绑定',
 				       success: function (res) {
 				           if (res.confirm) {
-				              this.wxLog()
+				              self.wxLog()
 				           } else if (res.cancel) {
 				               console.log('用户点击取消');
 				           }
