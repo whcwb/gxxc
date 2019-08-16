@@ -3,7 +3,7 @@
 		<view style="margin: 102upx 0 140upx;text-align: center;">
 			<img src="/static/img/head.png" style="width:136upx;height: 136upx;">
 		</view>
-		<!-- <view>infoRes:{{infoRes}}</view>
+		<!-- <view>infoRes:{{infoRes}}</view> 
 		<view>loginRes:{{loginRes}}</view> -->
 		<view class="inputMess">
 			<input class="uni-input input" placeholder="请输入手机号" v-model="form.username" />
@@ -60,31 +60,6 @@
 					}
 				});
 			},
-			logout() {
-				var self = this
-				uni.getProvider({
-				    service: 'oauth',
-				    success: function (res) {
-				        console.log(res.provider)
-				        if (~res.provider.indexOf('weixin')) {
-				           uni.login({
-				           	provider: 'weixin',
-				           	success: function(loginRes) {
-				           		console.log(loginRes);
-				           		self.loginRes = JSON.stringify(loginRes)
-				           		uni.getUserInfo({
-				           			provider: 'weixin',
-				           			success: function(infoRes) {
-				           				self.infoRes = JSON.stringify(infoRes)
-				           				console.log('用户昵称为：', infoRes);
-				           			}
-				           		});
-				           	}
-				           });
-				        }
-				    }
-				});
-			},
 			login() {
 				var v = this
 				this.$http.post(this.apis.LOGIN, v.form).then(res => {
@@ -96,6 +71,10 @@
 						uni.setStorage({
 							key: 'phone',
 							data: v.form.username
+						});
+						uni.setStorage({
+							key: 'openid',
+							data: res.result.openid
 						});
 						v.toIndex()
 					} else {

@@ -2,7 +2,7 @@
 	<view style="width: 100%;background:rgba(255,255,255,1);">
 		<img src="/static/img/banner.png" style="height: 336upx;width: 750upx;">
 		<view v-if="yqrxm!=''" class="inputMess">
-			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm"/>
+			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm" />
 		</view>
 		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.show">
 			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
@@ -178,8 +178,8 @@
 		data() {
 			return {
 				agree: true,
-				yqrxm:'',
-				yqxx:'',
+				yqrxm: '',
+				yqxx: '',
 				form: { //在这里存放非inoput的字段属性
 					yhLx: '3',
 					addType: '3'
@@ -189,41 +189,41 @@
 						placeholder: '请输入手机号',
 						key: 'yhZh',
 						type: 'number',
-						show:true,
+						show: true,
 						val: ''
 					},
 					{
 						placeholder: '请输入邀请码',
 						key: 'yhYyyqm',
 						type: 'number',
-						show:true,
+						show: true,
 						val: '',
 					},
 					{
 						placeholder: '请输入验证码',
 						key: 'telIdentifying',
-						show:true,
+						show: true,
 						type: 'number',
 						val: ''
 					},
 					{
 						placeholder: '请输入密码',
 						key: 'yhMm',
-						show:true,
+						show: true,
 						type: 'password',
 						val: ''
 					},
 					{
 						placeholder: '请输入真实姓名',
 						key: 'yhXm',
-						show:true,
+						show: true,
 						type: 'text',
 						val: ''
 					},
 					{
 						placeholder: '请输入身份证号',
 						key: 'yhZjhm',
-						show:true,
+						show: true,
 						type: 'idcard',
 						val: ''
 					}
@@ -234,27 +234,31 @@
 			var yqm = uni.getStorageSync('yqm')
 			if (yqm && yqm != '' && yqm != undefined) {
 				this.getName(yqm)
-				 this.inputList[1].show=false			//隐藏邀请码输入字段
-				 this.inputList[1].val = yqm
+				this.inputList[1].show = false //隐藏邀请码输入字段
+				this.inputList[1].val = yqm
+			} else {
+				this.yqrxm = ''
 			}
-			else {
-				this.yqrxm=''
-				}
 		},
 		methods: {
-			getName(code){//根据邀请码 获取邀请人姓名
-				this.$http.get('/pub/getName',{code:code}).then((res)=>{
-					if(res.code == 200){
-						this.yqrxm=`邀请人:${res.message}  邀请码:${code}`
+			getName(code) { //根据邀请码 获取邀请人姓名
+				this.$http.get('/pub/getName', {
+					code: code
+				}).then((res) => {
+					if (res.code == 200) {
+						this.yqrxm = `邀请人:${res.message}  邀请码:${code}`
 					}
 				})
 			},
 			changeAgree() { //由于uniapp的checked不能更改，所以只能click更改
 				this.agree = !this.agree
 			},
-			toindex(){
+			toindex() {
 				var v = this
-				this.$http.post(this.apis.LOGIN, v.form).then(res => {
+				this.$http.post(this.apis.LOGIN, {
+					username: v.form.yhZh,
+					password: v.form.yhMm
+				}).then(res => {
 					if (res.code == 200) {
 						uni.setStorage({
 							key: 'token',
@@ -262,7 +266,11 @@
 						});
 						uni.setStorage({
 							key: 'phone',
-							data: v.form.username
+							data: v.form.yhZh
+						});
+						uni.setStorage({
+							key: 'openid',
+							data: res.result.openid
 						});
 						uni.navigateTo({
 							url: '../main/p_index/main'
@@ -273,15 +281,15 @@
 							duration: 1500,
 							icon: 'none'
 						});
-						setTimeout((res)=>{
+						setTimeout((res) => {
 							uni.navigateTo({
 								url: '../login/login'
 							})
-						},2000)
-						
+						}, 2000)
+
 					}
 				})
-				
+
 			},
 			reg() {
 				if (!this.agree) { //首先判断同意协议
@@ -309,7 +317,7 @@
 					return;
 				}
 				uni.showLoading({
-				    title: '请稍等 ...'
+					title: '请稍等 ...'
 				});
 				this.$http.post(this.apis.USERSAVE, this.form).then(res => {
 					if (res.code == 200) {
@@ -323,52 +331,52 @@
 						uni.hideLoading();
 						uni.showToast({
 							title: res.message,
-							icon:'none'
+							icon: 'none'
 						})
 					}
 				})
 			},
 			getWxJs() {
-							var v = this
-							// 微信js初始化
-							var script = document.createElement("script")
-							script.type = "text/javascript"
-							script.src = "http://res.wx.qq.com/open/js/jweixin-1.4.0.js"
-							document.body.appendChild(script)
+				var v = this
+				// 微信js初始化
+				var script = document.createElement("script")
+				script.type = "text/javascript"
+				script.src = "http://res.wx.qq.com/open/js/jweixin-1.4.0.js"
+				document.body.appendChild(script)
 
-							script.onload = function() { // 微信js初始化 回调函数
-								// console.log('*****wx', wx)
-			// 					// 微信js初始化成功后引用 微信功能方法
-			// 					//获取Code 直
-								let authCode = v.wxApi.getQueryString("code");
-								// console.log('获取code', authCode)
-								if (authCode) {
-									// 获取Openid
-									v.wxApi.vueParent = this;
-									v.wxApi.getOpenid(authCode, (res) => {
-										// console.log('openid-------', res)
-										localStorage.setItem("openid", res); //存储openid
-										v.wxApi.initConfig(); //执行 微信 config
-										v.toindex()
-									});
-								} else {
-									v.wxApi.getCode()
-									return
-								}
-							}
-						},
-						toLogin() {
-							var  token = uni.getStorageSync('token');
-							if(token){
-							uni.switchTab({
-							url: '/pages/main/p_index/main'
-							});
-							}else{
-							uni.navigateTo({
-							url: '../login/login'
-							});
-							}
-						},
+				script.onload = function() { // 微信js初始化 回调函数
+					// console.log('*****wx', wx)
+					// 					// 微信js初始化成功后引用 微信功能方法
+					// 					//获取Code 直
+					let authCode = v.wxApi.getQueryString("code");
+					// console.log('获取code', authCode)
+					if (authCode) {
+						// 获取Openid
+						v.wxApi.vueParent = this;
+						v.wxApi.getOpenid(authCode, (res) => {
+							// console.log('openid-------', res)
+							localStorage.setItem("openid", res); //存储openid
+							v.wxApi.initConfig(); //执行 微信 config
+							v.toindex()
+						});
+					} else {
+						v.wxApi.getCode()
+						return
+					}
+				}
+			},
+			toLogin() {
+				var token = uni.getStorageSync('token');
+				if (token) {
+					uni.switchTab({
+						url: '/pages/main/p_index/main'
+					});
+				} else {
+					uni.navigateTo({
+						url: '../login/login'
+					});
+				}
+			},
 			getYZM() {
 				var zh = this.inputList[0].val //只需两个，若需要多个可拓展循环数组找到val
 				var yqm = this.inputList[1].val
@@ -492,6 +500,7 @@
 		.messcontent {
 			flex-grow: 1;
 			padding: 15rpx 20rpx;
+
 			.fonttit {
 				text-align: left;
 				font-weight: 700;

@@ -71,7 +71,7 @@
 				}else{
 				   uni.showModal({
 				       title: '提示',
-				       content: '请先绑定微信账号',
+				       content: '首次提现需授权绑定微信账号',
 					   confirmText:'去绑定',
 				       success: function (res) {
 				           if (res.confirm) {
@@ -93,9 +93,22 @@
 				           uni.login({
 				           	provider: 'weixin',
 				           	success: function(loginRes) {
-				           		console.log(loginRes.rawData.openid);
-				           		self.loginRes = JSON.stringify(loginRes)
-				           		
+				           		console.log(loginRes.authResult.openid);
+								self.$http.post('/app/ptyh/bindOpenId',{openid:loginRes.authResult.openid}).then((res)=>{
+									if(res.code == 200){
+										uni.setStorage({
+											key:'openid',
+											data:loginRes.authResult.openid
+										})
+										uni.showToast({
+											title:'绑定成功'
+										})
+									}else{
+										uni.showToast({
+											title:res.message
+										})
+									}
+								})
 				           	}
 				           });
 				        }

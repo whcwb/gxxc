@@ -48,7 +48,7 @@
 			<view style="position: absolute;left: 50%;top: 90upx;">合作共赢</view>
 			<view class="join">
 				<img src="./file/img/join.png" style="margin: 0;height: 115upx;width: 115upx;">
-				<view style="position: absolute;width:56rpx;font-size:28rpx;font-weight:400;">点击报名</view>
+				<view style="position: absolute;width:56rpx;font-size:28rpx;font-weight:400;">我要加入</view>
 			</view>
 
 			<img src="./file/img/index_banner.png">
