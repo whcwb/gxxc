@@ -11,6 +11,7 @@
         /* 模块配置 */
         "modules" : {
             "Share" : {},
+            "OAuth" : {},
             "Payment" : {}
         },
         /* 应用发布信息 */
@@ -51,8 +52,7 @@
                 "payment" : {
                     "weixin" : {
                         "appid" : "wxb8c7c134a416a3d1"
-                    },
-                    "alipay" : {}
+                    }
                 },
                 "oauth" : {
                     "weixin" : {

@@ -252,6 +252,37 @@
 			changeAgree() { //由于uniapp的checked不能更改，所以只能click更改
 				this.agree = !this.agree
 			},
+			toindex(){
+				var v = this
+				this.$http.post(this.apis.LOGIN, v.form).then(res => {
+					if (res.code == 200) {
+						uni.setStorage({
+							key: 'token',
+							data: res.result.accessToken
+						});
+						uni.setStorage({
+							key: 'phone',
+							data: v.form.username
+						});
+						uni.navigateTo({
+							url: '../main/p_index/main'
+						});
+					} else {
+						uni.showToast({
+							title: res.message,
+							duration: 1500,
+							icon: 'none'
+						});
+						setTimeout((res)=>{
+							uni.navigateTo({
+								url: '../login/login'
+							})
+						},2000)
+						
+					}
+				})
+				
+			},
 			reg() {
 				if (!this.agree) { //首先判断同意协议
 					this.openPopup()
@@ -277,15 +308,19 @@
 					});
 					return;
 				}
-
+				uni.showLoading({
+				    title: '请稍等 ...'
+				});
 				this.$http.post(this.apis.USERSAVE, this.form).then(res => {
 					if (res.code == 200) {
+						uni.hideLoading();
 						uni.showToast({
 							title: '用户注册成功',
 							duration: 1000
 						});
 						this.getWxJs()
 					} else {
+						uni.hideLoading();
 						uni.showToast({
 							title: res.message,
 							icon:'none'
@@ -314,7 +349,7 @@
 										// console.log('openid-------', res)
 										localStorage.setItem("openid", res); //存储openid
 										v.wxApi.initConfig(); //执行 微信 config
-										v.toLogin()
+										v.toindex()
 									});
 								} else {
 									v.wxApi.getCode()

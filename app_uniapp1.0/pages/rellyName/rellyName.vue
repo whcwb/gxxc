@@ -132,6 +132,7 @@
 				})
 			},
 			upload() {
+				var v = this
 				if (this.isDone) { //若已完成认证，则去缴费
 					this.toPay()
 					return
@@ -155,7 +156,6 @@
 				 imgList=this.appImg
 				 // #endif
 
-				var v = this
 				this.$http.post(this.apis.IDRZ, {
 					'imgList': imgList,
 					'yhZjhm': v.form.sfz,

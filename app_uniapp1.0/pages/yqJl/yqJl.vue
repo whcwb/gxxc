@@ -63,6 +63,39 @@
 		},
 		mixins:[mixin],
 		methods: {
+			appTx(){
+				var openid = uni.getStorageSync('openid')
+				if(openid && openid!=''&& openid != undefined){
+				   this.Tx()
+				}else{
+					
+				}
+			},
+			wxLog() { //微信登录 绑定   获取openid
+				var self = this
+				uni.getProvider({
+				    service: 'oauth',
+				    success: function (res) {
+				        console.log(res.provider)
+				        if (~res.provider.indexOf('weixin')) {
+				           uni.login({
+				           	provider: 'weixin',
+				           	success: function(loginRes) {
+				           		console.log(loginRes.rawData);
+				           		self.loginRes = JSON.stringify(loginRes)
+				           		uni.getUserInfo({
+				           			provider: 'weixin',
+				           			success: function(infoRes) {
+				           				self.infoRes = JSON.stringify(infoRes)
+				           				console.log('用户昵称为：', infoRes);
+				           			}
+				           		});
+				           	}
+				           });
+				        }
+				    }
+				});
+			},
 			Tx() { //点击了提现按钮
 				var v = this
 				this.$http.post(this.apis.TX, {
