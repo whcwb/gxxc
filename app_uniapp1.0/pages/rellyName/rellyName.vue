@@ -132,7 +132,7 @@
 				})
 			},
 			upload() {
-				var v = this
+				var v=this
 				if (this.isDone) { //若已完成认证，则去缴费
 					this.toPay()
 					return
@@ -148,16 +148,16 @@
 				 }
 				
 				//图片路径
-				var imgList=''
+				var imgLists=''
 				// #ifdef H5
-				imgList=v.form.imgList.join(',')
+				imgLists=v.form.imgList.join(',')
 				// #endif
 				// #ifdef APP-PLUS
-				 imgList=this.appImg
+				 imgLists=this.appImg+',-,-,-'
 				 // #endif
 
 				this.$http.post(this.apis.IDRZ, {
-					'imgList': imgList,
+					'imgList': imgLists,
 					'yhZjhm': v.form.sfz,
 					'yhXm': v.form.name
 				}).then(res => {

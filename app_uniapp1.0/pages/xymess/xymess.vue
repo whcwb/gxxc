@@ -178,7 +178,7 @@
 			
 		},
 		onLoad() {
-			this.btnList=Object.assign(this.btnListAll[0])
+			//this.btnList=Object.assign(this.btnListAll[0])
 			this.itemList=Object.assign(this.itemListAll[0])
 		},
 		methods: {
@@ -326,7 +326,7 @@
 					this.isPJ = false
 				}
 				if (this.current !== index) {					
-						this.current = index;
+						this.current = index;						
 						// this.btnList = Object.assign(this.btnListAll[index])
 						this.itemList = Object.assign(this.itemListAll[index])
 				}

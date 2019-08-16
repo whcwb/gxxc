@@ -6,15 +6,18 @@
 				<view style="margin: 15upx 0 5upx;font-size:36upx;">{{user.yhXm}}</view>
 				<text style="font-size:36upx;">{{user.yhZh}}</text>
 			</view>
-			<img :src="user.yhZsyqmImg" style="margin-top: 42upx;width: 396upx;height: 396upx;">
-			<text style="display: block;margin-top: 15upx;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：{{user.yhZsyqm}}</text>
-			<view class="copybtn" v-clipboard:copy="user.yhZsyqm" v-clipboard:success="(type) => onCopyResult('success')"
-			 v-clipboard:error="(type) => onCopyResult('error')">
-				点此复制邀请码
+			<view style="height: 75%;">
+				<img :src="user.yhZsyqmImg" class="codeImg" id='imgs' :style="{height:height}">
+				<text style="display: block;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：{{user.yhZsyqm}}</text>
+				<view class="copybtn" v-clipboard:copy="user.yhZsyqm" v-clipboard:success="(type) => onCopyResult('success')"
+				 v-clipboard:error="(type) => onCopyResult('error')">
+					点此复制邀请码
+				</view>
+				<view class="sharebtn">
+					点击右上角分享给朋友
+				</view>
 			</view>
-			<view class="sharebtn">
-				点击右上角分享给朋友
-			</view>
+			
 		</view>
 	</view>
 </template>
@@ -23,8 +26,12 @@
 	export default {
 		data() {
 			return {
-				user: {}
+				user: {},
+				height:''
 			}
+		},
+		watch:{
+
 		},
 		methods: {
 			onCopyResult(type) {
@@ -42,7 +49,7 @@
 				}
 			}
 		},
-		onLoad() {
+		onLoad() {			
 			this.$http.post(this.apis.USERMESS).then(res => {
 				if (res.code == 200) {
 					this.user = res.result
@@ -50,6 +57,15 @@
 
 				}
 			}).catch(err => {})
+		},
+		mounted() {
+			//动态赋值二维码图片高度
+			var v=this
+			const query = uni.createSelectorQuery().in(v);
+			query.select('#imgs').boundingClientRect();
+			query.exec(res => {
+					v.height=res[0].width+'px'
+			});
 		}
 	}
 </script>
@@ -57,17 +73,22 @@
 <style>
 	.bg {
 		width: 678upx;
-		height: 1060upx;
+		height: 85%;
+		/* min-height: 886rpx; */
 		background: rgba(255, 255, 255, 1);
 		box-shadow: 4upx 6upx 16upx 0upx rgba(174, 184, 224, 0.5);
 		border-radius: 16upx;
 		margin: 30upx auto;
 		text-align: center;
 	}
+	
+	.codeImg{
+		width: 50%
+	}
 
 	.personBG {
 		width: 678upx;
-		height: 268upx;
+		height: 25%;
 		background: linear-gradient(180deg, rgba(59, 147, 253, 1) 0%, rgba(55, 84, 252, 1) 100%);
 		border-radius: 16upx 16upx 0upx 0upx;
 		display: flex;
@@ -79,7 +100,7 @@
 	}
 
 	.copybtn {
-		width: 476upx;
+		width:70%;
 		height: 80upx;
 		background: linear-gradient(132deg, rgba(59, 147, 253, 1) 0%, rgba(60, 128, 253, 1) 41%, rgba(55, 84, 252, 1) 100%);
 		box-shadow: 0 8upx 16upx 0 rgba(69, 124, 232, 0.5);
@@ -92,7 +113,7 @@
 	}
 
 	.sharebtn {
-		width: 476upx;
+		width: 70%;
 		height: 80upx;
 		box-shadow: 0 8upx 16upx 0 rgba(69, 124, 232, 0.5);
 		border-radius: 52upx;
