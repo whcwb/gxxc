@@ -14,7 +14,7 @@
 					点此复制邀请码
 				</view>
 				<view class="sharebtn">
-					点击右上角分享给朋友
+					点击右上角•••分享给朋友
 				</view>
 			</view>
 			

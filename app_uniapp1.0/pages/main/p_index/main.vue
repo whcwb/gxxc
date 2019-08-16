@@ -44,8 +44,8 @@
 		</view>
 
 		<div v-if='USERMESS.yhLx != 1' class="advbox" @click="ChangeUser">
-			<view style="position: absolute;left: 50%;transform: translateX(-50%);top: 45upx;">吉驾伴侣</view>
-			<view style="position: absolute;left: 50%;top: 90upx;">合作共赢</view>
+			<view style="position: absolute;left: 50%;transform: translateX(-50%);top: 45upx;font-family: STXingkai;padding-top: 10rpx;">吉驾伴侣</view>
+			<view style="position: absolute;left: 50%;top: 90upx;font-family: STXingkai;padding-top: 10rpx;">合作共赢</view>
 			<view class="join">
 				<img src="./file/img/join.png" style="margin: 0;height: 115upx;width: 115upx;">
 				<view style="position: absolute;width:56rpx;font-size:28rpx;font-weight:400;">我要加入</view>
