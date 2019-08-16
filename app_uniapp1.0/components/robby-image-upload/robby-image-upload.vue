@@ -136,7 +136,7 @@
 										name: keyname,
 										success: function(res){
 											if(res.statusCode === 200){
-												_self.$emit('adds', JSON.parse(res.data).result.filePath); 
+												_self.$emit('adds', JSON.parse(res.data)); 
 												_self.imageList[remoteUrlIndex] = res.data 
 												completeImages ++								
 												
@@ -148,10 +148,10 @@
 														duration: 1000
 													});
 												}
-												console.log('success to upload image: ' + res.data)
+												// console.log('success to upload image: ' + res.data)
 												resolve('success to upload image:' + remoteUrlIndex)
 											}else{
-												console.log('fail to upload image:'+res.data)
+												// console.log('fail to upload image:'+res.data)
 												reject('failt to upload image:' + remoteUrlIndex)
 											}
 										},
