@@ -120,11 +120,22 @@ public class BizUser implements Serializable {
     @Transient
     private String yhslZt;
 
+    @Transient
+    private String yhTx;
+
 
     @Transient
     private Map<String,Object> map;
 
     private static final long serialVersionUID = 1L;
+
+    public String getYhTx() {
+        return yhTx;
+    }
+
+    public void setYhTx(String yhTx) {
+        this.yhTx = yhTx;
+    }
 
     public String getYhslZt() {
         return yhslZt;

@@ -116,6 +116,12 @@ public class AppPtyhController extends AppUserBaseController {
         return service.updateUserReal(entity);
     }
 
+    @RequestMapping(value = "/bindOpenId")
+    public ApiResponse<String> bindOpenId(String openid){
+        return service.bindOpenId(openid);
+    }
+
+
     /**
      * 个人资料查询	获取登录人的头像、姓名(别名)
      * @return
@@ -242,7 +248,6 @@ public class AppPtyhController extends AppUserBaseController {
             newPtyh.setYhAutograph(fileUrl);
             newPtyh.setId(user.getId());
             service.update(newPtyh);*/
-
             ApiResponse<String> res = new ApiResponse<>();
             res.setMessage("操作成功");
             res.setResult(fileUrl);

@@ -91,4 +91,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<List<BizPtyh>> getZyList(String type);
 
     void sendRegisterInvite(String userId, String openId) throws UnsupportedEncodingException;
+
+    ApiResponse<String> bindOpenId(String openid);
 }

@@ -139,7 +139,12 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         org.joda.time.format.DateTimeFormatter pattern = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         long kssj = DateTime.parse(queryUser.getYhYqmkssj(), pattern).plusYears(1).toDate().getTime();
         long ti = time - kssj;
-        if(!(queryUser.getDdSfjx().equals("0") && order.getCpId().equals("464480599185293312") && ti < 0)){
+        // 查询当前用户有没有购买过产品 , 如果第一次购买 , 则只需要 1 不需要记录负1
+        SimpleCondition condition = new SimpleCondition(BizOrder.class);
+        condition.eq(BizOrder.InnerColumn.yhId, queryUser.getId());
+        condition.eq(BizOrder.InnerColumn.cpId, "464480599185293312");
+        List<BizOrder> orders = findByCondition(condition);
+        if(CollectionUtils.isNotEmpty(orders)){
             newBizYjmx1.setId(genId());
             newBizYjmx1.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
             newBizYjmx1.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
