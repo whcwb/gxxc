@@ -81,6 +81,7 @@
 		},
 		methods: {
 			add(e){
+				uni.hideLoading();
                 this.appImg=e.result.filePath
 				this.form.name = e.result.xm;
 				this.form.sfz = e.result.cfzh;
@@ -109,11 +110,15 @@
 				})
 			},
 			upImg(id, val, Type) {
+				uni.showLoading({
+				    title: '上传中'
+				});
 				var v = this
 				this.$http.post(this.apis.WXIMGUP, {
 					code: id,
 					fileType: Type
 				}).then(res => {
+					uni.hideLoading();
 					if (res.code == 200) {
 						v.imgList.zm = this.apis.getImgUrl + res.result.filePath
 						v.form.imgList[val] = res.result.filePath

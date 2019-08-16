@@ -128,6 +128,9 @@
 							for(let i=0; i<imagePathArr.length;i++){
 								promiseWorkList.push(new Promise((resolve, reject)=>{
 									let remoteUrlIndex = remoteIndexStart + i
+									uni.showLoading({
+									    title: '上传中'
+									});
 									uni.uploadFile({
 										url:_self.apis.appUpImg,
 										fileType: 'image',
