@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="btn">
-			<view class="item" :style="{borderBottom:index===btnList.length-1?'none':'2upx solid #DFE7EE'}" v-for="(item,index) in btnList"
+			<view class="item" :style="{borderBottom:index===4?'none':'2upx solid #DFE7EE'}" v-for="(item,index) in btnList"
 			 @tap="toPage(item)">
 				<view style="display: flex;align-items: center;">
 					<img :src="item.src" style="margin-right:12upx;width: 40upx;height: 40upx;">
@@ -42,7 +42,7 @@
 				user: {},
 				btnList: [{
 						src: '/static/img/my/ljjf.png',
-						text: '立即缴费',
+						text: '购买服务',
 						toPath: '/pages/goMoney/goMoney'
 					},
 					{
@@ -64,29 +64,30 @@
 			}
 		},
 		onLoad() {
-			this.getUser()
+			
 		},
 		onShow() {
-			var data = uni.getStorageSync('usermess')
-			if(data.yhLx == 'zy' && this.btnList[this.btnList.length-1].text != '我的学员'){
-				this.btnList.push({
-						src: '/static/img/my/wdtd.png',
-						text: '我的学员',
-						toPath: '/pages/main/user/mystudent/mystudent'
-					})
-			}else if((data.yhLx == '1' && this.btnList[this.btnList.length-1].text != '我的团队')){
-				this.btnList.push({
-						src: '/static/img/my/wdtd.png',
-						text: '我的团队',
-						toPath: '/pages/myTeam/myTeam'
-				})
-			}else if((data.yhLx == '3' && this.btnList[this.btnList.length-1].text != '我的团队')){
-				this.btnList.push({
-						src: '/static/img/my/wdtd.png',
-						text: '我的团队',
-						toPath: '/pages/myTeam/myTeam'
-				})
-			}
+			this.getUser()
+			// var data = uni.getStorageSync('usermess')
+			// if(data.yhLx == 'zy' && this.btnList[this.btnList.length-1].text != '我的学员'){
+			// 	this.btnList.push({
+			// 			src: '/static/img/my/wdtd.png',
+			// 			text: '我的学员',
+			// 			toPath: '/pages/main/user/mystudent/mystudent'
+			// 		})
+			// }else if((data.yhLx == '1' && this.btnList[this.btnList.length-1].text != '我的团队')){
+			// 	this.btnList.push({
+			// 			src: '/static/img/my/wdtd.png',
+			// 			text: '我的团队',
+			// 			toPath: '/pages/myTeam/myTeam'
+			// 	})
+			// }else if((data.yhLx == '3' && this.btnList[this.btnList.length-1].text != '我的团队')){
+			// 	this.btnList.push({
+			// 			src: '/static/img/my/wdtd.png',
+			// 			text: '我的团队',
+			// 			toPath: '/pages/myTeam/myTeam'
+			// 	})
+			// }
 		},
 		methods: {
 			tomymess(){
@@ -116,6 +117,26 @@
 				this.$http.post(this.apis.USERMESS).then(res => {
 					if (res.code == 200) {
 						this.user = res.result
+						var data = res.result
+						if(data.yhLx == 'zy' && this.btnList[this.btnList.length-1].text != '我的学员'){
+							this.btnList.push({
+									src: '/static/img/my/wdtd.png',
+									text: '我的学员',
+									toPath: '/pages/main/user/mystudent/mystudent'
+								})
+						}else if((data.yhLx == '1' && this.btnList[this.btnList.length-1].text != '我的团队')){
+							this.btnList.push({
+									src: '/static/img/my/wdtd.png',
+									text: '我的团队',
+									toPath: '/pages/myTeam/myTeam'
+							})
+						}else if((data.yhLx == '3' && this.btnList[this.btnList.length-1].text != '我的团队')){
+							this.btnList.push({
+									src: '/static/img/my/wdtd.png',
+									text: '我的团队',
+									toPath: '/pages/myTeam/myTeam'
+							})
+						}
 					} else {
 						uni.showToast({
 							title: res.message,
@@ -144,7 +165,7 @@
 						url: item.toPath,
 					});
 				}
-				
+
 			}
 		}
 	}

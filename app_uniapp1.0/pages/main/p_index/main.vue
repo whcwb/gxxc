@@ -18,8 +18,8 @@
 							{{zhYE.yhZhye/100}}元
 						</div>
 					</div>
-					<img class="eCodeSty" src="./file/img/eCode.png" alt="" @click='toCode'>
-					<div>
+					<img class="eCodeSty" src="./file/img/eCode.png" @click='toCode'>
+					<div @tap='toTeam'>
 						<div class="titleSty">
 							累计邀请
 						</div>
@@ -44,8 +44,13 @@
 		</view>
 
 		<div v-if='USERMESS.yhLx != 1' class="advbox" @click="ChangeUser">
-			<view style="position: absolute;left: 50%;transform: translateX(-50%);top: 45upx;">报名学车</view>
-			<view style="position: absolute;left: 50%;top: 90upx;">只需2600</view>
+			<view style="position: absolute;left: 50%;transform: translateX(-50%);top: 45upx;">吉驾伴侣</view>
+			<view style="position: absolute;left: 50%;top: 90upx;">合作共赢</view>
+			<view class="join">
+				<img src="./file/img/join.png" style="margin: 0;height: 115upx;width: 115upx;">
+				<view style="position: absolute;width:56rpx;font-size:28rpx;font-weight:400;">我要加入</view>
+			</view>
+
 			<img src="./file/img/index_banner.png">
 		</div>
 
@@ -78,7 +83,7 @@
 		<view class="teamTitBox box_row colCenter">
 			<view class="hline"></view>
 			<div class="titText">
-				学员信息
+				团队信息
 			</div>
 		</view>
 		<view v-if="newsList.length == 0" style="text-align: center;">
@@ -86,7 +91,7 @@
 			<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
 		</view>
 		<view v-else class="teamListBox">
-			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index">
+			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index" @click="toXymess(it)">
 					<view style="display: flex;flex-direction:row;align-items: center;">
 						<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
 							<b>{{index+1}}</b>
@@ -98,8 +103,8 @@
 					</view>	
 					
 					<view style="display: flex;flex-direction:row;align-items: center;">	
-						<view style="margin-right: 15upx;" @click="phone(it.yhSjhm)">
-							<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
+						<view style="margin-right: 15upx;" @click.stop="phone(it.yhSjhm)">
+							<uni-icon type='phone' color='#007AFF' size="30"></uni-icon>
 						</view>
 
 						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
@@ -170,10 +175,25 @@
 
 		},
 		methods: {
-			phone(id) {
-				uni.makePhoneCall({
-					phoneNumber: id //仅为示例
-				});
+			toXymess(item){//查看学员详情  只能看A类学员
+			    console.log('item',item);
+				if(item.userDetail.yhLx != '1' || item.userDetail.ddSfjx!= '1'){
+					
+				}else{
+					uni.setStorage({
+						key:'xymess',
+						data:item
+					})
+					uni.navigateTo({
+						url:"../../xymess/xymess"
+					})
+					
+				}
+			},
+			phone(id){
+				 uni.makePhoneCall({
+				 	phoneNumber: id //仅为示例
+				 });
 			},
 			judgeClient() {
 				let u = navigator.userAgent;
@@ -253,6 +273,11 @@
 					}
 				})
 			},
+			toTeam(){
+				uni.switchTab({
+					url: '/pages/main/team/index'
+				})
+			},
 			toTx() {
 				uni.navigateTo({
 					url: '/pages/yqJl/yqJl'
@@ -316,6 +341,19 @@
 			height: 350rpx;
 			position: relative;
 			margin-bottom: 109upx;
+		}
+		
+		.join{
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			align-content: center;
+			height: 115upx;
+			width: 115upx;
+			right: 58upx;
+			top: 50%;
+			transform: translateY(-47%)
 		}
 
 		.funcBox {

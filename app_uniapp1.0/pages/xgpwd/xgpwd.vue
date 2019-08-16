@@ -64,7 +64,7 @@
 					  })
 					  setTimeout(() => {
 						uni.navigateTo({
-						  url: '/pages/login'
+						  url: '/pages/login/login'
 						})
 					  }, 1555);
 					}else{

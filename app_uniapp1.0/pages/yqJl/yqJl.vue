@@ -11,7 +11,7 @@
 					</view>
 					<input class="inputSty" v-model="ye" type="number">
 				</view>
-				<view class="moneyBut" @tap="Tx"></view>
+				<view class="moneyBut" @tap="goTx"></view>
 			</view>
 			<view class="lable">
 				已冻结 {{dj}} 元
@@ -63,6 +63,66 @@
 		},
 		mixins:[mixin],
 		methods: {
+			appTx(){
+				var self = this 
+				var openid = uni.getStorageSync('openid')
+				if(openid && openid!=''&& openid != undefined){
+				   this.Tx()
+				}else{
+				   uni.showModal({
+				       title: '提示',
+				       content: '首次提现需授权绑定微信账号',
+					   confirmText:'去绑定',
+				       success: function (res) {
+				           if (res.confirm) {
+				              self.wxLog()
+				           } else if (res.cancel) {
+				               console.log('用户点击取消');
+				           }
+				       }
+				   });
+				}
+			},
+			wxLog() { //微信登录 绑定   获取openid
+				var self = this
+				uni.getProvider({
+				    service: 'oauth',
+				    success: function (res) {
+				        console.log(res.provider)
+				        if (~res.provider.indexOf('weixin')) {
+				           uni.login({
+				           	provider: 'weixin',
+				           	success: function(loginRes) {
+				           		console.log(loginRes.authResult.openid);
+								self.$http.post('/app/ptyh/bindOpenId',{openid:loginRes.authResult.openid}).then((res)=>{
+									if(res.code == 200){
+										uni.setStorage({
+											key:'openid',
+											data:loginRes.authResult.openid
+										})
+										uni.showToast({
+											title:'绑定成功'
+										})
+									}else{
+										uni.showToast({
+											title:res.message
+										})
+									}
+								})
+				           	}
+				           });
+				        }
+				    }
+				});
+			},
+			goTx(){
+				// #ifdef APP-PLUS
+				  this.appTx()
+				// #endif
+				// #ifdef H5
+				  this.Tx()
+				// #endif
+			},
 			Tx() { //点击了提现按钮
 				var v = this
 				this.$http.post(this.apis.TX, {

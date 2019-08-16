@@ -1,0 +1,28 @@
+app支付信息
+
+预留信息：520xclm
+
+商户号： 1510586751
+
+AppID：wxb8c7c134a416a3d1
+
+AppSecret：c5407b90f3f35009c3bddcc93e1979a6
+
+商户平台密钥：c5407b90f3f35009c3bddcc93e1979a6
+
+Android平台
+
+应用签名：8b3856c813f5b5618fd7c92471f796fe
+
+包名：com.cwb.gxxc
+
+证书别名: snake
+
+证书密码 ： libinbin
+
+ios
+
+密钥  123456
+
+使用ios证书.p12
+

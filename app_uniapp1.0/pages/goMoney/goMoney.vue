@@ -83,7 +83,7 @@
 
 	.mess {
 		margin-top: 4upx;
-		width: 384upx;
+		width: 390upx;
 		font-size: 24upx;
 		font-family: PingFangSC-Regular;
 		font-weight: 400;

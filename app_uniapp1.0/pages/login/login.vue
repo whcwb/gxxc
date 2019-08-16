@@ -3,6 +3,8 @@
 		<view style="margin: 102upx 0 140upx;text-align: center;">
 			<img src="/static/img/head.png" style="width:136upx;height: 136upx;">
 		</view>
+		<!-- <view>infoRes:{{infoRes}}</view> 
+		<view>loginRes:{{loginRes}}</view> -->
 		<view class="inputMess">
 			<input class="uni-input input" placeholder="请输入手机号" v-model="form.username" />
 			<input class="uni-input input" password placeholder="请输入密码" v-model="form.password" />
@@ -11,6 +13,12 @@
 		<view class="btn" @tap="login">
 			登录
 		</view>
+		<!-- <view class="btn" @tap="wxlogin">
+			微信登录
+		</view>
+		<view class="btn" @tap="logout">
+			退出微信登录
+		</view> -->
 		<view class="createAccount" @tap="toReg">
 			创建账号
 		</view>
@@ -24,32 +32,56 @@
 				form: {
 					username: '',
 					password: ''
-				}
+				},
+				infoRes: '',
+				loginRes: ''
 			}
 		},
 		onShow() {
-		   
+
 		},
 		onReady() {
 			try {
-				uni.clearStorageSync();
+				uni.removeStorageSync('token');
+				uni.removeStorageSync('phone');
+				uni.removeStorageSync('usermess');
 			} catch (e) {
 				// error
 			}
 		},
 		methods: {
+			wxlogin() {
+				var self = this
+				uni.logout({
+					provider: 'weixin',
+					success: function(loginRes) {
+						console.log(loginRes);
+						self.loginRes = JSON.stringify(loginRes)
+					}
+				});
+			},
 			login() {
 				var v = this
-				this.$http.post(this.apis.LOGIN, v.form).then(res=> {
+				this.$http.post(this.apis.LOGIN, v.form).then(res => {
 					if (res.code == 200) {
-						uni.setStorage({key: 'token',data: res.result.accessToken});
-						uni.setStorage({key: 'phone',data: v.form.username});
+						uni.setStorage({
+							key: 'token',
+							data: res.result.accessToken
+						});
+						uni.setStorage({
+							key: 'phone',
+							data: v.form.username
+						});
+						uni.setStorage({
+							key: 'openid',
+							data: res.result.openid
+						});
 						v.toIndex()
 					} else {
 						uni.showToast({
 							title: res.message,
 							duration: 2000,
-							icon:'none'
+							icon: 'none'
 						});
 					}
 				})

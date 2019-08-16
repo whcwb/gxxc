@@ -1,5 +1,5 @@
 <template>
-  <view id="segmented" class="segmented">
+  <view id="segmented" class="segmented" :style="{height:height+'upx',lineHeight:height+'upx'}">
     <view class="line" :style="{transform:'translateX('+offsetLeft+'px)',width:lineWidth+'px'}"></view>
     <view class="segmented-control">
         <view :id="'sc-'+index" :data-index="index" v-for="(item, index) in values" class="segmented-control-item" :key="index" :class="index === current ? 'active' : ''"
@@ -44,7 +44,13 @@ export default {
       default(){
         return 1;
       }
-    }
+    },
+	height:{
+		type: Number,
+		default(){
+		  return 1;
+		}
+	}
   },
   data() {
     return {
@@ -72,7 +78,6 @@ export default {
           const query = uni.createSelectorQuery().in(that);
           query.select('#sc-' + that.current).boundingClientRect();
           query.exec(res => {
-						console.log(res)
             that.offsetLeft = res[0].left + this.offsetLeftParam;
           });
         }, 500);
@@ -101,8 +106,8 @@ export default {
 <style lang="less">
 .segmented {
   position: relative;
-	height: 136upx;
-	line-height: 136upx
+	// height: 136upx;
+	// line-height: 136upx
 }
 .segmented-control {
   display: flex;

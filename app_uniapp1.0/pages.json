@@ -10,9 +10,7 @@
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录",
-				"h5": {
-					"titleNView": false
-				}
+				"navigationStyle":"custom"
 			}
 		},
 		{
@@ -111,7 +109,7 @@
 	    ,{
             "path" : "pages/goMoney/goMoney",
             "style" : {
-				"navigationBarTitleText": "立即缴费"
+				"navigationBarTitleText": "购买服务"
 			}
         }
         ,{
@@ -197,15 +195,28 @@
         }
         ,{
             "path" : "pages/pay/pay",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "支付"
+			}
         }
         ,{
             "path" : "pages/xymess/xymess",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "学员信息"
+			}
         }
         ,{
             "path" : "pages/main/user/mystudent/mystudent",
-            "style" : {}
+            "style" : {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "我的学员"
+			}
+        }
+        ,{
+            "path" : "pages/center/appsignName/appsignName",
+            "style" : {
+				"navigationBarTitleText": "签名"
+			}
         }
     ],
 	"tabBar": {

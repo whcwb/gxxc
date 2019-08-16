@@ -80,6 +80,7 @@
 					_self.imageList = []
 				} 
 				
+				
 				uni.chooseImage({
 					count: _self.limit ? (_self.limit - _self.imageList.length) : 999,
 					success: function(e){
@@ -101,31 +102,46 @@
 							}
 						}
 						
+						
 						for(let i=0; i<imagePathArr.length;i++){
 							_self.imageList.push(imagePathArr[i])
 						}
 						
+
 						//检查服务器地址是否设置，设置即表示图片要上传到服务器
-						if(_self.serverUrl){
+						// if(_self.serverUrl){
+
 							
 							var remoteIndexStart = _self.imageList.length - imagePathArr.length
 							var promiseWorkList = []
 							var keyname = (_self.fileKeyName ? _self.fileKeyName : 'upload-images')
 							var completeImages = 0
 							
+							// uni.showToast({
+							// 	title: _self.apis.appUpImg,
+							// 	icon:'none',
+							// 	mask: false,
+							// 	duration: 2000
+							// });
+							
+							
 							for(let i=0; i<imagePathArr.length;i++){
 								promiseWorkList.push(new Promise((resolve, reject)=>{
 									let remoteUrlIndex = remoteIndexStart + i
+									uni.showLoading({
+									    title: '上传中'
+									});
 									uni.uploadFile({
-										url:_self.serverUrl,
+										url:_self.apis.appUpImg,
 										fileType: 'image',
 										formData:_self.formData,
 										filePath: imagePathArr[i], 
 										name: keyname,
 										success: function(res){
 											if(res.statusCode === 200){
+												_self.$emit('adds', JSON.parse(res.data)); 
 												_self.imageList[remoteUrlIndex] = res.data 
-												completeImages ++
+												completeImages ++								
 												
 												if(_self.showUploadProgress){
 													uni.showToast({
@@ -135,10 +151,10 @@
 														duration: 1000
 													});
 												}
-												console.log('success to upload image: ' + res.data)
+												// console.log('success to upload image: ' + res.data)
 												resolve('success to upload image:' + remoteUrlIndex)
 											}else{
-												console.log('fail to upload image:'+res.data)
+												// console.log('fail to upload image:'+res.data)
 												reject('failt to upload image:' + remoteUrlIndex)
 											}
 										},
@@ -156,13 +172,13 @@
 								})
 								_self.$emit('input', _self.imageList)
 							})
-						}else{
-							_self.$emit('add', {
-								currentImages: imagePathArr,
-								allImages: _self.imageList
-							})
-							_self.$emit('input', _self.imageList)
-						}
+						// }else{
+						// 	_self.$emit('add', {
+						// 		currentImages: imagePathArr,
+						// 		allImages: _self.imageList
+						// 	})
+						// 	_self.$emit('input', _self.imageList)
+						// }
 					}
 				})
 			},

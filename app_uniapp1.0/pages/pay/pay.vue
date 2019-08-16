@@ -4,6 +4,7 @@
 			<text>支付金额</text>
 			<text>￥{{payMess.cpJl/100}}元</text>
 		</view>
+		<view>{{errdata}}</view>
 		<view class="btn" @tap="pay">
 			立即支付
 		</view>
@@ -19,23 +20,35 @@
 		computed: mapState(['payMess']),
 		data() {
 			return {
-
+				errdata:''
 			}
 		},
 		methods: {
 			...mapMutations(['setPayMess']),
 			pay() {
 				var v = this
-
+				// #ifdef APP-PLUS
+					var payTypeApp = '1'
+				// #endif
+					
+				// #ifdef H5
+					var payTypeApp = '0'
+				// #endif
 				this.$http.post(this.apis.CPPAY, {
 					ddZftd: 2,
+					payTypeApp:payTypeApp,
 					cpId: v.payMess.id,
 					// userAutograph: ui.getApp().signUrl
 				}).then(res => {
+					console.log(res);
 					if (res.code == 200) {
-						console.log(res.result)
-						// v.wxPayMess = res.result
-						this.WxPay(res.result)
+						// #ifdef APP-PLUS
+							this.AppWxPay(res.result)
+						// #endif
+						
+						// #ifdef H5
+							this.WxPay(res.result)
+						// #endif
 					} else {
 						console.log('失败')
 						uni.showToast({
@@ -44,6 +57,22 @@
 						})
 					}
 				})
+			},
+			AppWxPay(mess){
+				console.log(mess.noncestr);
+				var self = this;
+				uni.requestPayment({
+				    provider: 'wxpay',
+				    orderInfo: mess.noncestr, //微信、支付宝订单数据
+				    success: function (res) {
+						self.errdata = JSON.stringify(res);
+				        console.log('success:' + JSON.stringify(res));
+				    },
+				    fail: function (err) {
+						self.errdata = JSON.stringify(err);
+				        console.log('fail:' + JSON.stringify(err));
+				    }
+				});
 			},
 			WxPay(mess){
 				var v = this

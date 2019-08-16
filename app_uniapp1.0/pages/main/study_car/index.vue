@@ -23,7 +23,7 @@
 			</view>
 		</view>
 		<view style="width:748upx;height:136upx;background:rgba(254,255,255,1);">
-			<segmented-control id="tabbar" :values="items" :stickyTop="108" :offsetLeftParam="23" :lineWidth="30" :current="current" @clickItem="onClickItem"></segmented-control>
+			<segmented-control id="tabbar" :height="136" :values="items" :stickyTop="108" :offsetLeftParam="23" :lineWidth="30" :current="current" @clickItem="onClickItem"></segmented-control>
 		</view>
 
 		<view class="btnClass">

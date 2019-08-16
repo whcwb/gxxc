@@ -9,8 +9,6 @@
 				{{usermess.yhBm}}
 			</cmd-cell-item>
 			<cmd-cell-item title="修改密码" slot-right @click='toxgpwd' arrow></cmd-cell-item>
-			<!-- <cmd-cell-item title="我的昵称" brief=""  :addon="usermess.yhBm" arrow @click='promptVisible=true'/>
-			<cmd-cell-item title="修改密码" brief="" arrow @click='toxgpwd'/> -->
 		</view>
 		<view style="margin: 60rpx;">
 			<view class="btn" @tap="tologin">
@@ -91,7 +89,34 @@
 					url:'../login/login'
 				})
 			},
-			getTx(){
+			upImgAPP(){
+				var v=this
+				uni.chooseImage({
+				    success: (chooseImageRes) => {
+				        const tempFilePaths = chooseImageRes.tempFilePaths;
+				        uni.uploadFile({
+				            url: v.apis.upImgUrl, //仅为示例，非真实的接口地址
+				            filePath: tempFilePaths[0],
+				            name: 'file',				            
+				            success: (uploadFileRes) => {
+								v.updateTXAPP(JSON.parse(uploadFileRes.data).message)
+				            }
+				        });
+				    }
+				});
+			},
+			updateTXAPP(path){
+				this.$http.post(this.apis.CHUSERMESS,{yhTx:path}).then(res=>{
+				this.getusermess((res)=>{
+					this.usermess = res
+					})
+				})
+			},
+			getTx(){				
+				// #ifdef APP-PLUS
+				this.upImgAPP()
+				return
+				// #endif
 				var v = this
 				this.wxApi.chooseImage((imgID)=>{
 				this.wxApi.uploadImage(imgID[0],(httpID)=>{

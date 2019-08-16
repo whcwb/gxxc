@@ -10,8 +10,9 @@
         "usingComponents" : true,
         /* 模块配置 */
         "modules" : {
-            "Payment" : {},
-            "Share" : {}
+            "Share" : {},
+            "OAuth" : {},
+            "Payment" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -49,9 +50,14 @@
             /* SDK配置 */
             "sdkConfigs" : {
                 "payment" : {
-                    "alipay" : {},
                     "weixin" : {
-                        "appid" : "wxb01394ea85904296"
+                        "appid" : "wxb8c7c134a416a3d1"
+                    }
+                },
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wxb8c7c134a416a3d1",
+                        "appsecret" : "c5407b90f3f35009c3bddcc93e1979a6"
                     }
                 }
             },
