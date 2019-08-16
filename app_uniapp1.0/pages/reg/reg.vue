@@ -272,9 +272,9 @@
 							key: 'openid',
 							data: res.result.openid
 						});
-						uni.navigateTo({
+						uni.switchTab({
 							url: '../main/p_index/main'
-						});
+						})
 					} else {
 						uni.showToast({
 							title: res.message,
@@ -326,7 +326,12 @@
 							title: '用户注册成功',
 							duration: 1000
 						});
+						// #ifdef APP-PLUS
+						this.toindex()
+						// #endif
+						// #ifdef H5
 						this.getWxJs()
+						// #endif
 					} else {
 						uni.hideLoading();
 						uni.showToast({
