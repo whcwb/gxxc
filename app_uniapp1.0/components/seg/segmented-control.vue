@@ -78,7 +78,6 @@ export default {
           const query = uni.createSelectorQuery().in(that);
           query.select('#sc-' + that.current).boundingClientRect();
           query.exec(res => {
-						console.log(res)
             that.offsetLeft = res[0].left + this.offsetLeftParam;
           });
         }, 500);

@@ -208,6 +208,7 @@
         ,{
             "path" : "pages/main/user/mystudent/mystudent",
             "style" : {
+				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "我的学员"
 			}
         }

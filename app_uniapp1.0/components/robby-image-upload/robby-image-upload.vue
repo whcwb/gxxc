@@ -107,12 +107,6 @@
 							_self.imageList.push(imagePathArr[i])
 						}
 						
-						// uni.showToast({
-						// 	title:this.serverUrl,
-						// 	icon:'none',
-						// 	mask: false,
-						// 	duration: 2000
-						// });
 
 						//检查服务器地址是否设置，设置即表示图片要上传到服务器
 						// if(_self.serverUrl){
@@ -123,12 +117,12 @@
 							var keyname = (_self.fileKeyName ? _self.fileKeyName : 'upload-images')
 							var completeImages = 0
 							
-							uni.showToast({
-								title: _self.apis.appUpImg,
-								icon:'none',
-								mask: false,
-								duration: 2000
-							});
+							// uni.showToast({
+							// 	title: _self.apis.appUpImg,
+							// 	icon:'none',
+							// 	mask: false,
+							// 	duration: 2000
+							// });
 							
 							
 							for(let i=0; i<imagePathArr.length;i++){

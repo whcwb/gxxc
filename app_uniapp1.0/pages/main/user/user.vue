@@ -64,29 +64,30 @@
 			}
 		},
 		onLoad() {
-			this.getUser()
+			
 		},
 		onShow() {
-			var data = uni.getStorageSync('usermess')
-			if(data.yhLx == 'zy' && this.btnList[this.btnList.length-1].text != '我的学员'){
-				this.btnList.push({
-						src: '/static/img/my/wdtd.png',
-						text: '我的学员',
-						toPath: '/pages/main/user/mystudent/mystudent'
-					})
-			}else if((data.yhLx == '1' && this.btnList[this.btnList.length-1].text != '我的团队')){
-				this.btnList.push({
-						src: '/static/img/my/wdtd.png',
-						text: '我的团队',
-						toPath: '/pages/myTeam/myTeam'
-				})
-			}else if((data.yhLx == '3' && this.btnList[this.btnList.length-1].text != '我的团队')){
-				this.btnList.push({
-						src: '/static/img/my/wdtd.png',
-						text: '我的团队',
-						toPath: '/pages/myTeam/myTeam'
-				})
-			}
+			this.getUser()
+			// var data = uni.getStorageSync('usermess')
+			// if(data.yhLx == 'zy' && this.btnList[this.btnList.length-1].text != '我的学员'){
+			// 	this.btnList.push({
+			// 			src: '/static/img/my/wdtd.png',
+			// 			text: '我的学员',
+			// 			toPath: '/pages/main/user/mystudent/mystudent'
+			// 		})
+			// }else if((data.yhLx == '1' && this.btnList[this.btnList.length-1].text != '我的团队')){
+			// 	this.btnList.push({
+			// 			src: '/static/img/my/wdtd.png',
+			// 			text: '我的团队',
+			// 			toPath: '/pages/myTeam/myTeam'
+			// 	})
+			// }else if((data.yhLx == '3' && this.btnList[this.btnList.length-1].text != '我的团队')){
+			// 	this.btnList.push({
+			// 			src: '/static/img/my/wdtd.png',
+			// 			text: '我的团队',
+			// 			toPath: '/pages/myTeam/myTeam'
+			// 	})
+			// }
 		},
 		methods: {
 			tomymess(){
@@ -116,6 +117,26 @@
 				this.$http.post(this.apis.USERMESS).then(res => {
 					if (res.code == 200) {
 						this.user = res.result
+						var data = res.result
+						if(data.yhLx == 'zy' && this.btnList[this.btnList.length-1].text != '我的学员'){
+							this.btnList.push({
+									src: '/static/img/my/wdtd.png',
+									text: '我的学员',
+									toPath: '/pages/main/user/mystudent/mystudent'
+								})
+						}else if((data.yhLx == '1' && this.btnList[this.btnList.length-1].text != '我的团队')){
+							this.btnList.push({
+									src: '/static/img/my/wdtd.png',
+									text: '我的团队',
+									toPath: '/pages/myTeam/myTeam'
+							})
+						}else if((data.yhLx == '3' && this.btnList[this.btnList.length-1].text != '我的团队')){
+							this.btnList.push({
+									src: '/static/img/my/wdtd.png',
+									text: '我的团队',
+									toPath: '/pages/myTeam/myTeam'
+							})
+						}
 					} else {
 						uni.showToast({
 							title: res.message,

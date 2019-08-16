@@ -10,30 +10,30 @@
 		<view v-else class=" teamListBox">
 				<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index" @click="toXymess(it)">
 					<view style="display: flex;flex-direction:row;align-items: center;">
-							<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
-								<b>{{index+1}}</b>
-							</view>
-							<img :src="it.userDetail.yhTx" alt="">
-							<view class="name">
-								{{it.yhXm}}
-							</view>
-						</view>	
-						
-						<view style="display: flex;flex-direction:row;align-items: center;">	
-							<view style="margin-right: 15upx;" @click="phone(it.yhSjhm)">
-								<uni-icon type='phone' color='#007AFF' size="30" @click='phone(it.yhSjhm)'></uni-icon>
-							</view>
-					
-							<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
-								A类
-							</view>
-							<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
-								B类
-							</view>
-							<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
-								未认证
-							</view>
+						<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
+							<b>{{index+1}}</b>
 						</view>
+						<img :src="it.userDetail.yhTx">
+						<view class="name">
+							{{it.yhXm}}
+						</view>
+					</view>	
+					
+					<view style="display: flex;flex-direction:row;align-items: center;">	
+						<view style="margin-right: 15upx;" @click.stop="phone(it.yhSjhm)">
+							<uni-icon type='phone' color='#007AFF' size="30"></uni-icon>
+						</view>
+					
+						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
+							A类
+						</view>
+						<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
+							B类
+						</view>
+						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
+							未认证
+						</view>
+					</view>
 				</view>
 		</view>
 		<view class="loadingbox" style="text-align: center;">
@@ -194,6 +194,8 @@
 			},
 			search(e) {
 				this.params.yhxm = e
+				this.newsList = []
+				this.params.pageNum = 1
 				this.getPagerList()
 			}
 		}
@@ -208,13 +210,13 @@
 	.teamPagerBox{
 		background:rgba(245,246,249,1);
 		width: 100%;
-		padding-top: 80rpx;
+		// padding-top: 168rpx;
 		.seacherBox{
-			position: fixed;
-			left: 0;
-			top:0;
-			right: 0;
-			margin-top:88rpx;
+			// position: fixed;
+			// left: 0;
+			// top:0;
+			// right: 0;
+			// margin-top:88rpx;
 			.studentBox{
 				background-color: #ffffff;
 				text-align: center;
@@ -245,13 +247,16 @@
 	}
 	.teamListBox {
 		background-color: #ffffff;
-		// flex: 1;
-		// overflow-y: auto;
+		flex: 1;
+		overflow-y: auto;
 		padding: 0 36rpx;
 
 		.itemSty {
 			border-bottom: solid 2rpx #DFE7EE;
 			padding: 30rpx 0;
+			display: flex;
+			justify-content: space-between;
+			align-content: center;
 
 			// .avaSty {
 			img {
@@ -283,6 +288,7 @@
 				color: rgba(255, 255, 255, 1);
 				line-height: 38rpx;
 				margin-right: 14rpx;
+				border-radius: 20upx
 			}
 
 			.onMoney {
