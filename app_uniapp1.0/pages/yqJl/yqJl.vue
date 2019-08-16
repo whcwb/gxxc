@@ -11,7 +11,7 @@
 					</view>
 					<input class="inputSty" v-model="ye" type="number">
 				</view>
-				<view class="moneyBut" @tap="Tx"></view>
+				<view class="moneyBut" @tap="goTx"></view>
 			</view>
 			<view class="lable">
 				已冻结 {{dj}} 元
@@ -68,7 +68,18 @@
 				if(openid && openid!=''&& openid != undefined){
 				   this.Tx()
 				}else{
-					
+				   uni.showModal({
+				       title: '提示',
+				       content: '请先绑定微信账号',
+					   confirmText:'去绑定',
+				       success: function (res) {
+				           if (res.confirm) {
+				              this.wxLog()
+				           } else if (res.cancel) {
+				               console.log('用户点击取消');
+				           }
+				       }
+				   });
 				}
 			},
 			wxLog() { //微信登录 绑定   获取openid
@@ -81,20 +92,22 @@
 				           uni.login({
 				           	provider: 'weixin',
 				           	success: function(loginRes) {
-				           		console.log(loginRes.rawData);
+				           		console.log(loginRes.rawData.openid);
 				           		self.loginRes = JSON.stringify(loginRes)
-				           		uni.getUserInfo({
-				           			provider: 'weixin',
-				           			success: function(infoRes) {
-				           				self.infoRes = JSON.stringify(infoRes)
-				           				console.log('用户昵称为：', infoRes);
-				           			}
-				           		});
+				           		
 				           	}
 				           });
 				        }
 				    }
 				});
+			},
+			goTx(){
+				// #ifdef APP-PLUS
+				  this.appTx()
+				// #endif
+				// #ifdef H5
+				  this.Tx()
+				// #endif
 			},
 			Tx() { //点击了提现按钮
 				var v = this
