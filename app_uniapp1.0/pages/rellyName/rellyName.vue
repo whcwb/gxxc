@@ -81,7 +81,9 @@
 		},
 		methods: {
 			add(e){
-                this.appImg=e
+                this.appImg=e.result.filePath
+				this.form.name = e.result.xm;
+				this.form.sfz = e.result.cfzh;
             },
 			getUser() {
 				//获取基本信息
@@ -115,8 +117,8 @@
 					if (res.code == 200) {
 						v.imgList.zm = this.apis.getImgUrl + res.result.filePath
 						v.form.imgList[val] = res.result.filePath
-						v.form.xm = res.result.xm;
-						v.form.cfzh = res.result.cfzh;
+						v.form.name = res.result.xm;
+						v.form.sfz = res.result.cfzh;
 
 					} else {
 						console.log('图片上传错误');
@@ -137,15 +139,6 @@
 					this.toPay()
 					return
 				}
-				
-				 if(v.form.sfz==''||v.form.name==''){
-					 uni.showToast({
-					 	title: '请完整身份证号码和姓名',
-					 	duration: 2000,
-					 	icon: 'none'
-					 });
-					 return
-				 }
 				
 				//图片路径
 				var imgLists=''
