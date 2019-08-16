@@ -572,8 +572,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Override
     public ApiResponse<String> userEnroll(BizPtyh entity, HttpServletRequest request) throws IOException,
             WxErrorException {
-        RuntimeCheck.ifBlank(entity.getYhZh(), "用户账户不能为空");
 
+        RuntimeCheck.ifBlank(entity.getYhZh(), "用户账户不能为空");
+        String s = redisDao.boundValueOps(entity.getYhZh()).get();
+        if(StringUtils.isBlank(s)){
+            redisDao.boundValueOps(entity.getYhZh()).set("1",5, TimeUnit.SECONDS);
+        }else {
+            return ApiResponse.fail("操作频繁, 请稍后再试");
+        }
         String telIdentifying = entity.getTelIdentifying();//短信验证码
         RuntimeCheck.ifBlank(telIdentifying, "短信验证码不能为空");
         RuntimeCheck.ifBlank(entity.getYhYyyqm(), "用户应邀邀请码不能为空");
@@ -2093,6 +2099,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 //        ret.put("yhtx",user.getYhTx());
 //        ret.put("yhZsyqm",user.getYhZsyqm());
 //        return ret;
+    }
+
+    @Override
+    public ApiResponse<String> bindOpenId(String openid) {
+        RuntimeCheck.ifBlank(openid, "请上传openid");
+        BizPtyh user = getAppCurrentUser();
+        BizPtyh ptyh = findById(user.getId());
+        ptyh.setYhOpenId(openid);
+        update(ptyh);
+        return ApiResponse.success();
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {

@@ -14,7 +14,7 @@ public interface BizJlMapper extends Mapper<BizJl> {
             " </script>"})
     void updateJlPf(String list);
 
-    @Select("<script> select u.*,p.yh_xy_yk_type yhDqzt from biz_user u inner join biz_ptyh p on u.yh_id = p.id  <if test ='jz != null'> and p.yh_sfyjz = #{jz}</if> and substring(p.yh_xy_yk_type,1,1) in    <foreach collection='dqzts' index='index' item='item' open='(' separator=',' close=')' > #{item} </foreach>    where 1 = 1 <if test='xm != null'> and u.yh_xm like '%${xm}%'</if> and  (yh_jlid = #{jlid} or yh_jlid1= #{jlid} or yh_jlid2 = #{jlid} or yh_jlid3 = #{jlid} or yh_jlid4 = #{jlid}) " +
+    @Select("<script> select u.*,p.yh_xy_yk_type yhDqzt,p.yh_tx yhTx from biz_user u inner join biz_ptyh p on u.yh_id = p.id  <if test ='jz != null'> and p.yh_sfyjz = #{jz}</if> and substring(p.yh_xy_yk_type,1,1) in    <foreach collection='dqzts' index='index' item='item' open='(' separator=',' close=')' > #{item} </foreach>    where 1 = 1 <if test='xm != null'> and u.yh_xm like '%${xm}%'</if> and  (yh_jlid = #{jlid} or yh_jlid1= #{jlid} or yh_jlid2 = #{jlid} or yh_jlid3 = #{jlid} or yh_jlid4 = #{jlid}) " +
             "</script> ")
     List<BizUser> getMyStudent(@Param("jlid") String jlId,@Param("xm") String xm,@Param("jz") String jz, @Param("dqzts") List<String> dqzts);
 

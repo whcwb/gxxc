@@ -131,6 +131,7 @@ public class AppMainController extends AppUserBaseController {
                 aToken.setToken(token);
 
                 rMap.put("accessToken", aToken);
+                rMap.put("openid", item.getYhOpenId());
                 result.setResult(rMap);
             } catch (Exception e) {
                 result.setCode(ApiResponse.FAILED);
