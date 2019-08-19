@@ -7,6 +7,7 @@
 		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.show">
 			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
 			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
+			<view @click="toSys" v-if="item.placeholder==='请输入邀请码'&& isApp" class="inputCodeTip">扫描邀请码</view>
 		</view>
 		<view class="btn" @click="reg">
 			立即注册
@@ -177,6 +178,7 @@
 		},
 		data() {
 			return {
+				isApp:false,
 				agree: true,
 				yqrxm: '',
 				yqxx: '',
@@ -231,6 +233,9 @@
 			}
 		},
 		onShow() {
+			// #ifdef APP-PLUS
+			    this.isApp = true
+			// #endif
 			var yqm = uni.getStorageSync('yqm')
 			if (yqm && yqm != '' && yqm != undefined) {
 				this.getName(yqm)
@@ -240,7 +245,25 @@
 				this.yqrxm = ''
 			}
 		},
+		destroyed:function(){
+			uni.removeStorageSync('yqm')
+		},
 		methods: {
+			toSys(){
+				var v = this
+				uni.scanCode({
+				    success: function (res) {
+				      v.getYqmcode(res.result)
+				    }
+				});
+			},
+			getYqmcode(yqm){
+				this.$http.post('/app/ptyh/getCode',{qrcode:yqm}).then((res)=>{
+					if(res.code == 200){
+						this.inputList[1].val = res.message
+					}
+				})
+			},
 			getName(code) { //根据邀请码 获取邀请人姓名
 				this.$http.get('/pub/getName', {
 					code: code

@@ -19,6 +19,16 @@
 				"navigationBarTitleText": "首页",
 				"h5": {
 					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue61a",
+							"fontSrc": "/static/iconfont.ttf",
+							"fontSize": "22px"
+							// "color": "#999999"
+						}]
+					}
 				}
 				// "navigationBarBackgroundColor":"#3B93FD",
 				// "navigationStyle":"custom"
@@ -53,6 +63,16 @@
 				"navigationBarTitleText": "我的",
 				"h5": {
 					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue61a",
+							"fontSrc": "/static/iconfont.ttf",
+							"fontSize": "22px"
+							// "color": "#999999"
+						}]
+					}
 				}
 			}
 		}, {
@@ -70,6 +90,16 @@
 				"navigationBarTitleText": "邀请码",
 				"h5": {
 					"titleNView": true
+				},
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue61a",
+							"fontSrc": "/static/iconfont.ttf",
+							"fontSize": "22px"
+							// "color": "#999999"
+						}]
+					}
 				}
 			}
 		}, {

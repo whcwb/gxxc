@@ -47,9 +47,9 @@
 		},
 		methods: {
 			...mapMutations(['setSignUrl']),
-			uploadsign() {
+			uploadsign(a) {
 				this.$http.post(this.apis.SIGN, {
-					base64Data: this.signImage
+					base64Data: a
 				}).then(res => {
 					if (res.code == 200) {
 						this.setSignUrl(res.result)
@@ -64,7 +64,21 @@
 					}
 				})
 			},
-
+			imageToBase64 (file) {
+				  var self = this
+			      const reader = new FileReader()
+				  var f = new File([file],'aa.png')
+			      reader.readAsDataURL(f)
+			      reader.onload =function (){
+			        console.log('file 转 base64结果：' + reader.result)
+			        self.signImage = reader.result.substring(37)
+					self.uploadsign(reader.result.substring(37))
+			      }
+			      reader.onerror = function (error) {
+			        console.log('Error: ', error)
+			      }
+			
+			 },
 			// ...mapMutations(['setSignUrl']),
 			overSign: function() {
 				if (this.isEnd) {
@@ -77,7 +91,7 @@
 							//设置图片
 							
 							_that.signImage = res.tempFilePath
-							_that.uploadsign()
+							_that.imageToBase64(res.tempFilePath)
 						}
 					})
 				} else {

@@ -11,7 +11,7 @@
 		<view class="bg">
 			<view class="person">
 				<view class="headTip">
-					安全教学{{zyMess.jlJxsl}}次
+					安全教学{{zyMess.jlJxsl==undefined? 0:zyMess.jlJxsl }}次
 				</view>
 				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<img v-else src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
@@ -257,7 +257,8 @@
 				],
 				safeTeach:'340',
 				zyMess:{//专员信息
-					yhXm:""
+					yhXm:"",
+					jlJxsl:0
 				  },
 				  zyMwssList:[//专员信息列表
 					{
@@ -278,10 +279,11 @@
 			console.log('this.curr',this.current);
 			var a = uni.getStorageSync('usermess').yhDqzt
 			this.current = parseInt(a)
-			this.getZYmess()//获取专员信息
+			
 			this.getHandleStatus()// 获取受理状态信息
 			this.getPayInfo()// 缴费信息
 			this.getExamInfo()//考试信息
+			this.getZYmess()//获取专员信息
 			setTimeout(()=>{
 				this.onClickItem(this.current-1)
 			},1000)
@@ -314,7 +316,7 @@
 			getZYmess(){//获取专员信息
 			  var v = this
 			  this.$http.post(this.apis.getZYmess,{}).then((res)=>{
-				  // console.log('zhuanyuan',res);
+				  console.log('zhuanyuan',res);
 				  if(res.code==200 && res.result){
 					  res.result.forEach((item,index)=>{
 						if(item.jlPf){

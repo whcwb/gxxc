@@ -132,6 +132,7 @@
 	} from 'vuex'
 	import uniBadge from "@/components/uni-badge/uni-badge.vue"
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
+	import share from "@/common/share.js"
 	export default {
 		components: {
 			uniBadge,
@@ -148,6 +149,17 @@
 				items: [{}], //banner图
 				newsList: []
 			}
+		},
+		onBackPress() {
+			//监听back键，关闭弹出菜单
+			if (this.shareObj.shareMenu.isVisible()) {
+				this.shareObj.shareMenu.hide();
+				this.shareObj.alphaBg.hide();
+				return true
+			}
+		},
+		onNavigationBarButtonTap(){ //点击了分享
+			this.fenXpy()
 		},
 		onLoad() {},
 		onShow() {
@@ -317,6 +329,59 @@
 				uni.navigateTo({
 					url: '/pages/main/p_index/kcfb/kcfb'
 				});
+			},
+			fenXpy(){
+				var id = uni.getStorageSync('usermess').id
+				let shareInfo = {
+					href: 'http://www.520xclm.com/wx/yqm.html?id='+id,
+					title: "邀请您加入吉驾无忧",
+					desc: " ",
+					imgUrl:"http://www.520xclm.com/images/icons/logo-02.png"
+				};
+				let shareList=[
+					{
+						icon:"/static/sharemenu/wx.png",
+						text:"微信好友",
+					},
+					{
+						icon:"/static/sharemenu/pyq.png",
+						text:"朋友圈"
+					}
+				];
+				this.shareObj=share(shareInfo,shareList,function(index){
+					console.log("点击按钮的序号: " + index);
+					let shareObj={
+						href:shareInfo.href||"",
+						title:shareInfo.title||"",
+						summary:shareInfo.desc||"",
+						success:(res)=>{
+							console.log("success:" + JSON.stringify(res));
+						},
+						fail:(err)=>{
+							console.log("fail:" + JSON.stringify(err));
+						}
+					};
+					switch (index) {
+						case 0:
+							shareObj.provider="weixin";
+							shareObj.scene="WXSceneSession";
+							shareObj.type=0;
+							shareObj.imageUrl=shareInfo.imgUrl||"";
+							uni.share(shareObj);
+							break;
+						case 1:
+							shareObj.provider="weixin";
+							shareObj.scene="WXSenceTimeline";
+							shareObj.type=0;
+							shareObj.imageUrl=shareInfo.imgUrl||"";
+							uni.share(shareObj);
+							break;
+					}
+				});
+				this.$nextTick(()=>{
+					this.shareObj.alphaBg.show();
+					this.shareObj.shareMenu.show();
+				})
 			}
 		}
 	}

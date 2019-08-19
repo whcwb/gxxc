@@ -34,11 +34,14 @@
 					password: ''
 				},
 				infoRes: '',
-				loginRes: ''
+				loginRes: '',
+				isApp:false
 			}
 		},
 		onShow() {
-
+			// #ifdef APP-PLUS
+				this.isApp = true
+			// #endif
 		},
 		onReady() {
 			try {
@@ -136,7 +139,7 @@
 	}
 
 	.createAccount {
-		width: 160upx;
+		width: 280upx;
 		height: 56upx;
 		font-size: 16px;
 		text-align: center;
