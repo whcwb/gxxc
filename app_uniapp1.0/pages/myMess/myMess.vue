@@ -85,6 +85,7 @@
               }
 			},
 			tologin(){
+				uni.removeStorageSync('yqm')
 				uni.reLaunch({
 					url:'../login/login'
 				})

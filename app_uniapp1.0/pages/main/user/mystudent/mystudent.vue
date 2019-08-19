@@ -24,7 +24,7 @@
 							<uni-icon type='phone' color='#007AFF' size="30"></uni-icon>
 						</view>
 					
-						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
+						<!-- <view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
 							A类
 						</view>
 						<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
@@ -32,7 +32,7 @@
 						</view>
 						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
 							未认证
-						</view>
+						</view> -->
 					</view>
 				</view>
 		</view>

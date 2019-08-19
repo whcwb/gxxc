@@ -7,31 +7,31 @@
 			图解警告标志
 		</view>
 		<view style="text-align: center;">
-			<image src="http://www.qichejiashi.com/wp-content/uploads/2015/11/qichejiashi_2015-11-26_06-05-33.jpg" mode="widthFix"></image>
+			<image src="../file/img/one.jpg" mode="widthFix"></image>
 		</view>
 		<view class="tit">
 			图解禁令标志
 		</view>
 		<view style="text-align: center;">
-			<image src="http://www.qichejiashi.com/wp-content/uploads/2015/11/qichejiashi_2015-11-26_06-05-50.jpg" mode="widthFix"></image>
+			<image src="../file/img/two.jpg" mode="widthFix"></image>
 		</view>
 		<view class="tit">
 			图解指示标志
 		</view>
 		<view style="text-align: center;">
-			<image src="http://www.qichejiashi.com/wp-content/uploads/2015/11/qichejiashi_2015-11-26_06-06-32.jpg" mode="widthFix"></image>
+			<image src="../file/img/san.jpg" mode="widthFix"></image>
 		</view>
 		<view class="tit">
 			图解道路交通标线
 		</view>
 		<view style="text-align: center;">
-			<image src="http://www.qichejiashi.com/wp-content/uploads/2015/11/qichejiashi_2015-11-26_06-06-49.jpg" mode="widthFix"></image>
+			<image src="../file/img/si.jpg" mode="widthFix"></image>
 		</view>
 		<view class="tit">
 			图解高速公路指示标志
 		</view>
 		<view style="text-align: center;">
-			<image src="http://www.qichejiashi.com/wp-content/uploads/2015/11/qichejiashi_2015-11-26_06-07-05.jpg" mode="widthFix"></image>
+			<image src="../file/img/wu.jpg" mode="widthFix"></image>
 		</view>
 	</view>
 </template>
