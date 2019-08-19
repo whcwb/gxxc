@@ -13,6 +13,7 @@ import com.cwb.platform.util.commonUtil.FileUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.Page;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -256,5 +257,19 @@ public class AppPtyhController extends AppUserBaseController {
             return ApiResponse.fail("上传失败请重新尝试");
         }
     }
+
+
+    /**
+     * app扫码查询邀请码接口
+     */
+    @PostMapping("/getCode")
+    public ApiResponse<String> getCode(String qrcode){
+        List<BizPtyh> ptyhs = service.findEq(BizPtyh.InnerColumn.qrcode, qrcode);
+        RuntimeCheck.ifTrue(CollectionUtils.isEmpty(ptyhs), "未找到用户信息");
+        BizPtyh ptyh = ptyhs.get(0);
+        return ApiResponse.success(ptyh.getYhZsyqm());
+    }
+
+
 
 }

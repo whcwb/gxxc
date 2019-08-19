@@ -2,6 +2,7 @@ package com.cwb.platform.biz.wxpkg.handler;
 
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.sys.model.BizPtyh;
+import lombok.extern.log4j.Log4j2;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -21,6 +22,7 @@ import java.util.Map;
  * * @author Binary Wang(https://github.com/binarywang)
  */
 @Component
+@Log4j2
 public class ScanHandler extends AbstractHandler {
 	
 	@Autowired
@@ -38,6 +40,7 @@ public class ScanHandler extends AbstractHandler {
 			WxSessionManager sessionManager) {
 		String ticket = wxMessage.getTicket();
 		this.logger.info("新关注用户 ticket 扫码: " + wxMessage.getTicket());
+		log.info("新关注用户 ticket 扫码: " + wxMessage.getTicket());
 		if(org.apache.commons.lang.StringUtils.isNotEmpty(ticket)){
 			String EventKey=wxMessage.getEventKey();
 			if(StringUtils.isNotEmpty(EventKey)){
@@ -45,6 +48,7 @@ public class ScanHandler extends AbstractHandler {
 				List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhOpenId, fromUser);
 				if(CollectionUtils.isEmpty(ptyhs)){
 					try {
+						log.info(" EVENTKEY ---> " + EventKey);
 						ptyhService.sendRegisterInvite(EventKey,wxMessage.getFromUser());
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();

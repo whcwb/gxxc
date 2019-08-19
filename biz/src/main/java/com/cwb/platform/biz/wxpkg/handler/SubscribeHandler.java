@@ -2,6 +2,7 @@ package com.cwb.platform.biz.wxpkg.handler;
 
 import com.cwb.platform.biz.service.impl.PtyhServiceImpl;
 import com.cwb.platform.biz.wxpkg.budiler.TextBuilder;
+import lombok.extern.log4j.Log4j2;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
@@ -25,6 +26,7 @@ import java.util.Map;
  * * @author Binary Wang(https://github.com/binarywang)
  */
 @Component
+@Log4j2
 public class SubscribeHandler extends AbstractHandler {
 
 	@Value("${wechat.appId}")
@@ -42,7 +44,7 @@ public class SubscribeHandler extends AbstractHandler {
 			WxSessionManager sessionManager) throws WxErrorException {
 
 		this.logger.info("新关注用户 OPENID: " + wxMessage.getFromUser());
-
+		log.info("新关注用户 OPENID: " + wxMessage.getFromUser());
 		// 获取微信用户基本信息
 		WxMpUser userWxInfo = weixinService.getUserService().userInfo(wxMessage.getFromUser());
 
@@ -61,7 +63,7 @@ public class SubscribeHandler extends AbstractHandler {
 			return responseResult;
 		}
 		String ticket = wxMessage.getTicket();
-
+		log.info("新关注用户 ticket: " + wxMessage.getFromUser());
 		try {
 			WxMenu wxMenu = new WxMenu();
 			List<WxMenuButton> wxButtons = new ArrayList<>();
@@ -102,18 +104,21 @@ public class SubscribeHandler extends AbstractHandler {
 //			item.setUrl("http://www.520xclm.com/wx");
 //			item.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect");
 
-			WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
-					.fromUser(wxMessage.getToUser())
-					.toUser(wxMessage.getFromUser())
-					.addArticle(null)
-					.build();
-
 			String EventKey=wxMessage.getEventKey();
+//			log.info(EventKey + " :::::::::::::::::::::: eventKey");
 			if(StringUtils.isNotEmpty(EventKey)){
 				ptyhService.sendRegisterInvite(EventKey.replace("qrscene_",""),wxMessage.getFromUser());
 			}
+
+			/*WxMpXmlOutNewsMessage m = WxMpXmlOutMessage.NEWS()
+					.fromUser(wxMessage.getToUser())
+					.toUser(wxMessage.getFromUser())
+					.addArticle(null)
+					.build();*/
+
+
 			this.logger.info("设置菜单:2 " + wxButtons.size());
-			return m;
+			return null;
 		} catch (Exception e) {
 			this.logger.error(e.getMessage(), e);
 		}
