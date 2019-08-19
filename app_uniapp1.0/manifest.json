@@ -1,7 +1,7 @@
 {
     "name" : "吉驾无忧",
     "appid" : "__UNI__A54FF80",
-    "description" : "登录模板",
+    "description" : "吉驾无忧",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -58,6 +58,11 @@
                     "weixin" : {
                         "appid" : "wxb8c7c134a416a3d1",
                         "appsecret" : "c5407b90f3f35009c3bddcc93e1979a6"
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wxb8c7c134a416a3d1"
                     }
                 }
             },

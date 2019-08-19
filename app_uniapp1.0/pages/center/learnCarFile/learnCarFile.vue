@@ -272,6 +272,7 @@
 		},
 		onShow() { //每次进入页面都会执行
 			this.saveResultUrl = this.signUrl
+			console.log(this.apis.ajaxBaseUrl+this.saveResultUrl);
 		}
 	}
 </script>

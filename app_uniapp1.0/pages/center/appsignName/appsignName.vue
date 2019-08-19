@@ -31,6 +31,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	import { pathToBase64, base64ToPath } from 'image-tools'
 	export default {
 		computed: mapState(['signUrl']),
 		data() {
@@ -64,36 +65,31 @@
 					}
 				})
 			},
-			imageToBase64 (file) {
-				  var self = this
-			      const reader = new FileReader()
-				  var f = new File([file],'aa.png')
-			      reader.readAsDataURL(f)
-			      reader.onload =function (){
-			        console.log('file 转 base64结果：' + reader.result)
-			        self.signImage = reader.result.substring(37)
-					self.uploadsign(reader.result.substring(37))
-			      }
-			      reader.onerror = function (error) {
-			        console.log('Error: ', error)
-			      }
-			
-			 },
 			// ...mapMutations(['setSignUrl']),
 			overSign: function() {
+				var self = this
 				if (this.isEnd) {
 					uni.canvasToTempFilePath({
 						canvasId: 'firstCanvas',
-						success: function(res) {
+						success: function(res){
 							//打印图片路径
+							console.log(res,'res')
 							console.log(res.tempFilePath)
 							console.log('完成签名')
 							//设置图片
 							
 							_that.signImage = res.tempFilePath
-							_that.imageToBase64(res.tempFilePath)
+							pathToBase64(res.tempFilePath)
+							  .then(base64 => {
+							    console.log(base64)
+								self.uploadsign(base64.substring(22))
+							  })
+							  .catch(error => {
+							    console.error(error)
+							 })
+							
 						}
-					})
+					});
 				} else {
 					uni.showToast({
 						title: '请先完成签名',

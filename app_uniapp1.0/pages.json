@@ -248,6 +248,10 @@
 				"navigationBarTitleText": "签名"
 			}
         }
+        ,{
+            "path" : "pages/main/study_car/wbweb/wbweb",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",
