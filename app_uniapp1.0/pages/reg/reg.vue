@@ -5,7 +5,7 @@
 			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm" />
 		</view>
 		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.show">
-			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
+			<input class="uni-input input" style="font-size: 14px;height: 30px;margin: 10px 0;" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
 			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
 			<view @click="toSys" v-if="item.placeholder==='请输入邀请码'&& isApp" class="inputCodeTip">扫描邀请码</view>
 		</view>

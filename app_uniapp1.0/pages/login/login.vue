@@ -6,8 +6,8 @@
 		<!-- <view>infoRes:{{infoRes}}</view> 
 		<view>loginRes:{{loginRes}}</view> -->
 		<view class="inputMess">
-			<input class="uni-input input" placeholder="请输入手机号" v-model="form.username" />
-			<input class="uni-input input" password placeholder="请输入密码" v-model="form.password" />
+			<input class="uni-input input" style="font-size: 16px;height: 30px;margin: 10px 0;" placeholder="请输入手机号" v-model="form.username" />
+			<input class="uni-input input" style="font-size: 16px;height: 30px;margin: 10px 0;" password placeholder="请输入密码" v-model="form.password" />
 		</view>
 		<view style="margin-bottom: 136upx;text-align: right;width: 678upx;font-size:28rpx;color:rgba(37,128,222,1);" @click="topwd">忘记密码？</view>
 		<view class="btn" @tap="login">
@@ -155,6 +155,6 @@
 	}
 
 	/deep/ .uni-input {
-		padding: 0
+		padding: 0;
 	}
 </style>

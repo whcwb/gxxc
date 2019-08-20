@@ -250,7 +250,15 @@
         }
         ,{
             "path" : "pages/main/study_car/wbweb/wbweb",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "学车详情"
+			}
+        }
+        ,{
+            "path" : "pages/pay/payCg/payCg",
+            "style" : {
+				"navigationBarTitleText": "支付结果"
+			}
         }
     ],
 	"tabBar": {

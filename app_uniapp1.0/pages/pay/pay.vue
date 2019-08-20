@@ -67,10 +67,16 @@
 				    success: function (res) {
 						self.errdata = JSON.stringify(res);
 				        console.log('success:' + JSON.stringify(res));
+						uni.navigateTo({
+							url:"payCg/payCg"
+						})
 				    },
 				    fail: function (err) {
 						self.errdata = JSON.stringify(err);
 				        console.log('fail:' + JSON.stringify(err));
+						uni.navigateTo({
+							url:"payCg/payCg"
+						})
 				    }
 				});
 			},
