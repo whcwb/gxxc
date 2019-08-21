@@ -4,7 +4,7 @@
 			<text>支付金额</text>
 			<text>￥{{payMess.cpJl/100}}元</text>
 		</view>
-		<view>{{errdata}}</view>
+		<!-- <view>{{errdata}}</view> -->
 		<view class="btn" @tap="pay">
 			立即支付
 		</view>
@@ -63,7 +63,7 @@
 				var self = this;
 				uni.requestPayment({
 				    provider: 'wxpay',
-				    orderInfo: mess.noncestr, //微信、支付宝订单数据
+				    orderInfo: JSON.stringify(mess), //微信、支付宝订单数据
 				    success: function (res) {
 						self.errdata = JSON.stringify(res);
 				        console.log('success:' + JSON.stringify(res));
@@ -74,9 +74,6 @@
 				    fail: function (err) {
 						self.errdata = JSON.stringify(err);
 				        console.log('fail:' + JSON.stringify(err));
-						uni.navigateTo({
-							url:"payCg/payCg"
-						})
 				    }
 				});
 			},

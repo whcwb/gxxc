@@ -1,4 +1,5 @@
 <script>
+	
 	import {
 		mapMutations
 	} from 'vuex';
@@ -39,6 +40,7 @@
 
 <style lang="less">
 	@import "./common/uni.css";
+    @import "./common/eosfont.css";
 
 	/*每个页面公共css */
 	page {
