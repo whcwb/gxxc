@@ -1,10 +1,10 @@
 <template>
 	<view style="width: 100%;">
 		<view class="inputMess">
-			<input class="uni-input input" v-model="form.yhkXm" focus placeholder="请输入您的真实姓名" />
-			<input class="uni-input input" v-model="form.yhkSsyh" focus placeholder="银行卡所属银行" />
-			<input class="uni-input input" v-model="form.dn" style="border-bottom: none;" focus placeholder="请输入银行卡绑定的手机号码" />
-			<input class="uni-input input" v-model="form.yhkKh" style="border-bottom: none;" focus placeholder="请输入银行卡卡号" />
+			<input class="uni-input input" style="font-size: 16px;height: 40px;margin: 10px 0;" v-model="form.yhkXm" focus placeholder="请输入您的真实姓名" />
+			<input class="uni-input input" style="font-size: 16px;height: 40px;margin: 10px 0;" v-model="form.yhkSsyh" focus placeholder="银行卡所属银行" />
+			<input class="uni-input input" style="font-size: 16px;height: 40px;margin: 10px 0;" v-model="form.dn"  focus placeholder="请输入银行卡绑定的手机号码" />
+			<input class="uni-input input" style="font-size: 16px;height: 40px;margin: 10px 0;" v-model="form.yhkKh" focus placeholder="请输入银行卡卡号" />
 
 		</view>
 	</view>
@@ -64,7 +64,7 @@
 				duration: 1500
 			});
 			setTimeout(() => {
-				v.saveBankCard()
+				this.saveBankCard()
 			}, 2000);
 			// } else {
 			// uni.showToast({

@@ -260,6 +260,12 @@
 				"navigationBarTitleText": "支付结果"
 			}
         }
+        ,{
+            "path" : "pages/yqJl/wxBind/wxBind",
+            "style" : {
+				"navigationBarTitleText": "绑定指南"
+			}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",
