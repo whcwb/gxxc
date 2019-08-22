@@ -4,13 +4,18 @@
 			<view @tap="toAddCard" style="margin: 0 auto;width: 60upx;font-size: 70upx;font-weight: 400;">+</view>
 		</view>
 		<view v-if="bankList.length==0" class="none">暂无银行卡，请添加</view>
-		<view v-if="bankList.length!=0" :class="index==bankListIndex?'MyMoneyBox choose':'MyMoneyBox'" v-for="(item,index) in bankList"
+		<view v-if="bankList.length!=0" :class="index==bankListIndex?'MyMoneyBox choose':'MyMoneyBox'" v-for="(item,index) in bankList" :key="index"
 		 @tap="choose(index)">
-			<view>
-				<img src="/static/img/welcome.png" style="width: 100%;height: 80%;">
-				<view style="padding: 0.15rem 0.3rem;font-size: 0.33rem">
+			<view class="yhk">
+				<view style="padding: 20rpx 20px;font-size:24rpx;color: #FFFFFF;">
+					所属银行 : {{bankList[bankListIndex].yhkSsyh}}
+				</view>
+				<view style="padding: 20rpx 20px;font-size:48rpx;color: #FFFFFF;">
 					{{bankList[bankListIndex].yhkKh}}
 				</view>
+				<!-- <view style="padding: 20rpx 0.3rem;font-size:36rpx;color: #FFFFFF;">
+					持卡人 &nbsp;&nbsp;&nbsp; {{bankList[bankListIndex].yhkXm}}
+				</view> -->
 			</view>
 		</view>
 	</view>
@@ -22,7 +27,7 @@
 			return {
 				classControl: 'MyMoneyBox',
 				bankList: [],
-				bankListIndex: '-1',
+				bankListIndex: '0',
 				ye: ''
 			}
 		},
@@ -65,7 +70,7 @@
 				this.$http.post(this.apis.BANKLIST).then((res) => {
 					if (res.code == 200 && res.result) {
 						this.bankList = res.result
-						console.log(this.bankList)
+						console.log(JSON.stringify(this.bankList),'this.bankList')
 					} else {
 						this.bankList = []
 					}
@@ -126,5 +131,10 @@
 	.none {
 		font-size: 40upx;
 		text-align: center;
+	}
+	.yhk{
+		height: 100%;
+		width: 100%;
+		background-image: url('../../static/img/studybtn/card1.png');
 	}
 </style>
