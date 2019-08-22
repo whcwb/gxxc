@@ -30,13 +30,21 @@
 								</Select>
 							</FormItem>
 						</Col>
+						<Col span="12">
+							<FormItem label="培训车型" prop="jlCx">
+								<Select v-model="formItem.jlCx" multiple >
+									<Option value="C1">C1</Option>
+									<Option value="C2">C2</Option>
+								</Select>
+							</FormItem>
+						</Col>
 					</Row>
-					<Row style="text-align: center">
+				<!--	<Row style="text-align: center">
 						<img style="height: 120px" src="" alt="">
 						<Upload :action="apis.BASE_URL + '/upload'">
 							<Button icon="ios-cloud-upload-outline">上传头像</Button>
 						</Upload>
-					</Row>
+					</Row>-->
 				</Form>
 			</div>
 			<div slot='footer'>
@@ -58,7 +66,7 @@
 			return {
 			    v:this,
                 operate:'教练',
-				saveUrl:this.apis.teacher.ADD,
+				saveUrl:this.apis.teacher.ADDJL,
                 staticPath:this.apis.getImgUrl,
 				// uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
 				uploadPrivatePath:this.apis.UPLOAD,
@@ -71,7 +79,8 @@
                     licenceBack:''
                 },
 				formItem: {
-					jsId:[]
+					jsId:[],
+					jlCx:[]
 				},
                 formInputs:[
                     {label:'账号',prop:'yhZh',readonly:true},

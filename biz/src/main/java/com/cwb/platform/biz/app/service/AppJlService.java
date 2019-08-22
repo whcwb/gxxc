@@ -8,4 +8,6 @@ import com.cwb.platform.util.bean.ApiResponse;
 public interface AppJlService extends BaseService<BizJl,String>{
 
     ApiResponse<String> getMyStudent(String jz, String xm, int pageNum, int pageSize);
+
+    ApiResponse<String> getMyStudentNew(String jz, String xm, int pageNum, int pageSize);
 }

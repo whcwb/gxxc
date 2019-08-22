@@ -22,6 +22,7 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -121,6 +122,9 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
             state += "2";
         }
         user.setYhXyYkType(state);
+        if(StringUtils.equals(state,"11") && StringUtils.isBlank(user.getYhYxqz())){
+            user.setYhYxqz(DateTime.now().plusYears(3).toString("yyyy-MM-dd HH:mm:ss"));
+        }
         ptyhMapper.updateByPrimaryKeySelective(user);
     }
 

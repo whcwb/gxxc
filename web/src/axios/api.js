@@ -1,10 +1,10 @@
 //网络请求地址前缀
 let serverDomain='http:///www.520xclm.com';
-// let BASE_URL = serverDomain + ':8080/biz/';
+let BASE_URL = serverDomain + ':8080/biz/';
 // let BASE_URL = 'http://127.0.0.1:9086';
 // let BASE_URL = 'http://192.168.31.35:9086';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
-let BASE_URL = 'http://192.168.123.69:9006';
+// let BASE_URL = 'http://192.168.123.69:9006';
 module.exports = {
     getImgUrl:'http://www.520xclm.com:8001/',
     url: BASE_URL,
@@ -129,10 +129,12 @@ module.exports = {
     teacher:{
         QUERY:'/api/jl/pager',//平台用户管理
         ADD:'/api/jl/save',
+        ADDJL:'/api/jl/saveJl',
         CHANGE:'/api/jl/update',
         DELE:'/api/jl/removeIds',
         getById:'/api/jl/',
         updateyhrz:'/api/jl/updateyhrz',// 更新教练认证状态
+        updateJlZt: '/api/jl/updateJlzt'
     },
     user:{
         QUERY:'/api/user/pager',//用户实名表

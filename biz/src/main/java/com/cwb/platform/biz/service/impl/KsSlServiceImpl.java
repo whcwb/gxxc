@@ -91,6 +91,8 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         int i=0;
         //如果受理状态是完结状态，需要检查系统中已经入库的状态，对未入库的受理，系统自动受理
         if(StringUtils.equals(entity.getSlType(),"4")){
+
+
             List<BizKsSl> addList=new ArrayList<BizKsSl>();
 //          确认受理状态
             Example condition = new Example(BizKsSl.class);
@@ -169,6 +171,13 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         BizPtyh newPtyh=new BizPtyh();
         newPtyh.setId(entity.getYhId());
         newPtyh.setYhXySlType(entity.getSlType());
+        if(StringUtils.equals(entity.getSlType(),"4")){
+            RuntimeCheck.ifBlank(entity.getYhCx(), "学员培训车型不能为空");
+            newPtyh.setYhCx(entity.getYhCx());
+        }
+        if(StringUtils.equals(entity.getSlType(), "4") && StringUtils.isNotBlank(entity.getYhYwlx())){
+            newPtyh.setYhYwlx(entity.getYhYwlx());
+        }
         ptyhService.update(newPtyh);
 
         // 向微信用户发送消息

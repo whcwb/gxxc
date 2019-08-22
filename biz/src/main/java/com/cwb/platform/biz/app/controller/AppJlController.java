@@ -35,9 +35,17 @@ public class AppJlController extends AppUserBaseController {
     /**
      * 查询教练的学员列表
      */
-    @GetMapping("/myStudent")
+    @GetMapping("/myStudentOld")
     public ApiResponse<String> getMyStudent(String jz, String xm, @RequestParam(defaultValue = "1") int pageNum ,@RequestParam(defaultValue = "8") int pageSize){
         return service.getMyStudent(jz, xm, pageNum, pageSize);
+    }
+
+    /**
+     * 新查询
+     */
+    @GetMapping("/myStudent")
+    public ApiResponse<String> getMyStudentNew(String jz, String xm, @RequestParam(defaultValue = "1") int pageNum ,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getMyStudentNew(jz, xm, pageNum, pageSize);
     }
 
 }
