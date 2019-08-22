@@ -40,4 +40,11 @@ public class AppJlController extends AppUserBaseController {
         return service.getMyStudent(jz, xm, pageNum, pageSize);
     }
 
+    /**
+     * 新查询
+     */
+    public ApiResponse<String> getMyStudentNew(String jz, String xm, @RequestParam(defaultValue = "1") int pageNum ,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getMyStudentNew(jz, xm, pageNum, pageSize);
+    }
+
 }

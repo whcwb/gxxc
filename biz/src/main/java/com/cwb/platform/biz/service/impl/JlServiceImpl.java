@@ -424,4 +424,28 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
        entityMapper.updateByPrimaryKey(entity);
         return ApiResponse.success();
    }
+
+    @Override
+    public ApiResponse<String> saveJl(BizJl bizJl) {
+        RuntimeCheck.ifBlank(bizJl.getYhSjhm(), "用户手机号码不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlType(), "教练教学类别不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlCx(), "教练培训车型不能为空");
+        List<BizPtyh> bizPtyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZh, bizJl.getYhSjhm());
+        RuntimeCheck.ifFalse(CollectionUtils.isNotEmpty(bizPtyhs), "此用户不是平台用户,不能成为教练");
+        BizPtyh ptyh = bizPtyhs.get(0);
+        bizJl.setYhId(ptyh.getId());
+        if(StringUtils.isBlank(bizJl.getJlImg())){
+            bizJl.setJlImg(ptyh.getYhTx());
+        }
+        bizJl.setCjsj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        bizJl.setJlPf("5");
+        bizJl.setJlShZt("1");
+        bizJl.setJlZt("0");
+        bizJl.setJlJjlxrdh(bizJl.getYhSjhm());
+        bizJl.setJlJjlxr(bizJl.getYhSjhm());
+        save(bizJl);
+        ptyh.setYhJlsh(bizJl.getJlShZt());
+        ptyhService.update(ptyh);
+        return ApiResponse.success();
+    }
 }

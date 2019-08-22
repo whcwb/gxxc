@@ -61,4 +61,14 @@ public class JlController extends QueryController<BizJl,String> {
     public ApiResponse<String> update(BizJl entity){
         return service.updateEntity(entity);
     }
+
+    /**
+     * 新教练新增接口
+     */
+    @PostMapping("/saveJl")
+    public ApiResponse<String> saveJl(BizJl bizJl){
+        return service.saveJl(bizJl);
+    }
+
+
 }

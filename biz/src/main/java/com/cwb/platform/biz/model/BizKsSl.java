@@ -1,9 +1,6 @@
 package com.cwb.platform.biz.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -75,7 +72,20 @@ public class BizKsSl implements Serializable {
     @Column(name = "LSH")
     private String lsh;
 
+
+    @Transient
+    private String yhCx;
+
+
     private static final long serialVersionUID = 1L;
+
+    public String getYhCx() {
+        return yhCx;
+    }
+
+    public void setYhCx(String yhCx) {
+        this.yhCx = yhCx;
+    }
 
     public String getLsh() {
         return lsh;

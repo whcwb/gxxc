@@ -17,6 +17,7 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -108,5 +109,63 @@ public class AppJlServiceImpl extends BaseServiceImpl<BizJl, String> implements 
         ApiResponse<String> res = new ApiResponse<>();
         res.setPage(bizUsers);
         return res;
+    }
+
+    @Override
+    public ApiResponse<String> getMyStudentNew(String jz, String xm, int pageNum, int pageSize) {
+        BizPtyh user = getAppCurrentUser();
+        RuntimeCheck.ifNull(user, "未找到用户信息");
+        Map<String, String> m = new HashMap<>();
+        m.put("slzy", "0");
+        m.put("k1", "1");
+        m.put("k2", "2");
+        m.put("k3", "3");
+        m.put("k4", "4");
+        // 根据用户id 查到跟他有关的所有学员
+//        BizPtyh user = ptyhService.findById("605772682100736000");
+        if (StringUtils.isBlank(xm)) {
+            xm = null;
+        }
+        if (StringUtils.isBlank(jz)) {
+            jz = null;
+        }
+        SimpleCondition condition = new SimpleCondition(BizJl.class);
+        condition.eq(BizJl.InnerColumn.yhId, user.getId());
+        condition.eq(BizJl.InnerColumn.jlZt, "0");
+        List<BizJl> jls = findByCondition(condition);
+        if (CollectionUtils.isEmpty(jls)) {
+            return ApiResponse.success();
+        }
+        List<String> dqzts = new ArrayList<>();
+        BizJl jl = jls.get(0);
+        String jlType = jl.getJlType();
+        for (String s : jlType.split(",")) {
+             dqzts.add(m.get(s));
+        }
+
+        String finalJz = jz;
+        String finalXm = xm;
+        PageInfo<BizUser> bizUsers =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> entityMapper.getMyStudent(user.getId()
+                        , finalXm, finalJz, dqzts));
+
+        bizUsers.getList().forEach(bizUser -> {
+            String dqzt = bizUser.getYhDqzt();
+            if (dqzt.charAt(0) == '0') {
+                bizUser.setYhDqzt("0");
+            } else if (dqzt.charAt(0) == '1') {
+                bizUser.setYhDqzt("1");
+            } else if (dqzt.charAt(0) == '2') {
+                bizUser.setYhDqzt("2");
+            } else if (dqzt.charAt(0) == '3') {
+                bizUser.setYhDqzt("3");
+            } else {
+                bizUser.setYhDqzt("4");
+            }
+        });
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(bizUsers);
+        return res;
+
     }
 }
