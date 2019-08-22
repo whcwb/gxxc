@@ -426,7 +426,9 @@
 			  })
 			},
 			gouTxt(url){
-			  window.location.href=url
+			  uni.navigateTo({
+			  	url:'wbweb/wbweb?url='+url
+			  })
 			},
 			pay() {
 				// 获取 支付方式

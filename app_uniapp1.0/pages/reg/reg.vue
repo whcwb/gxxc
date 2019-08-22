@@ -5,9 +5,16 @@
 			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm" />
 		</view>
 		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.show">
-			<input class="uni-input input" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
-			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip">请获取验证码</view>
-			<view @click="toSys" v-if="item.placeholder==='请输入邀请码'&& isApp" class="inputCodeTip">扫描邀请码</view>
+			<input class="uni-input input" style="font-size: 14px;height: 30px;margin: 10px 0;" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
+			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip" v-show="show">
+				请获取验证码
+			</view>
+			<view v-if="item.placeholder==='请输入验证码'" class="inputCodeTip" v-show="!show">
+				{{count}}s
+			</view>
+			<view @click="toSys" v-if="item.placeholder==='请输入邀请码'&& isApp" class="inputCodeTip">
+				<text class="eosfont">&#xe691;</text>
+			</view>
 		</view>
 		<view class="btn" @click="reg">
 			立即注册
@@ -170,7 +177,7 @@
 <script>
 	import service from '../../service.js';
 	import mInput from '../../components/m-input.vue';
-	import uniPopup from "@/components/uni-popup/uni-popup.vue"
+	import uniPopup from "@/components/uni-popup/uni-popup.vue";
 	export default {
 		components: {
 			mInput,
@@ -178,6 +185,9 @@
 		},
 		data() {
 			return {
+				show: true,
+				count: '',
+				timer: null,
 				isApp:false,
 				agree: true,
 				yqrxm: '',
@@ -249,6 +259,22 @@
 			uni.removeStorageSync('yqm')
 		},
 		methods: {
+			getCode(){  //daojishi
+			     const TIME_COUNT = 60;
+			     if (!this.timer) {
+			       this.count = TIME_COUNT;
+			       this.show = false;
+			       this.timer = setInterval(() => {
+			       if (this.count > 0 && this.count <= TIME_COUNT) {
+			         this.count--;
+			        } else {
+			         this.show = true;
+			         clearInterval(this.timer);
+			         this.timer = null;
+			        }
+			       }, 1000)
+			      }
+			},  
 			toSys(){
 				var v = this
 				uni.scanCode({
@@ -410,7 +436,8 @@
 				var yqm = this.inputList[1].val
 				if (zh == '' || yqm == '') {
 					uni.showToast({
-						title: '请填写手机号和邀请码！'
+						title: '请填写手机号和邀请码！',
+						icon:"none"
 					})
 					return
 				}
@@ -426,9 +453,11 @@
 						uni.showToast({
 							title: '验证码已发送'
 						})
+						this.getCode()
 					} else {
 						uni.showToast({
-							title: res.message
+							title: res.message,
+							icon:"none"
 						})
 					}
 				})
@@ -481,12 +510,15 @@
 	.inputCodeTip {
 		position: absolute;
 		right: 48upx;
-		top: 50%;
+		top: 70%;
 		transform: translateY(-50%);
 		font-size: 28upx;
 		font-weight: 400;
 		color: rgba(37, 128, 222, 1);
-		z-index: 999
+		z-index: 999;
+		text-align: center;
+		vertical-align: middle;
+		height:100%;
 	}
 
 	/deep/ .input-placeholder {

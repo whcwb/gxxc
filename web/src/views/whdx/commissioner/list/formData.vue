@@ -21,15 +21,21 @@
 					<Row>
 						<form-items :parent="v"></form-items>
 						<Col span="12">
-							<FormItem label="专员类型" prop="jsId">
-								<Select v-model="formItem.jsId">
-									<Option value="slzy">受理专员</Option>
-									<Option value="k1">一阶段</Option>
-									<Option value="k2">二阶段</Option>
-									<Option value="k3">三阶段</Option>
+							<FormItem label="教练类型" prop="jsId">
+								<Select v-model="formItem.jsId" multiple >
+									<Option value="slzy">受理</Option>
+									<Option value="k1">科目一</Option>
+									<Option value="k2">科目二</Option>
+									<Option value="k3">科目三</Option>
 								</Select>
 							</FormItem>
 						</Col>
+					</Row>
+					<Row style="text-align: center">
+						<img style="height: 120px" src="" alt="">
+						<Upload :action="apis.BASE_URL + '/upload'">
+							<Button icon="ios-cloud-upload-outline">上传头像</Button>
+						</Upload>
 					</Row>
 				</Form>
 			</div>
@@ -51,7 +57,7 @@
 		data() {
 			return {
 			    v:this,
-                operate:'专员',
+                operate:'教练',
 				saveUrl:this.apis.teacher.ADD,
                 staticPath:this.apis.getImgUrl,
 				// uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
@@ -65,17 +71,17 @@
                     licenceBack:''
                 },
 				formItem: {
-
+					jsId:[]
 				},
                 formInputs:[
                     {label:'账号',prop:'yhZh',readonly:true},
-                    {label:'密码',prop:'yhMm'},
-                    {label:'姓名',prop:'yhXm'},
-                    {label:'身份证号码',prop:'yhZjhm'},
-                    {label:'手机号码',prop:'yhSjhm'},
+                    // {label:'密码',prop:'yhMm'},
+                    // {label:'姓名',prop:'yhXm'},
+                    // {label:'身份证号码',prop:'yhZjhm'},
+                    // {label:'手机号码',prop:'yhSjhm'},
                     {label:'区域',prop:'jlQu',dict:'ZDCLK0060'},
-                    {label:'联系电话',prop:'jlJjlxrdh'},
-                    {label:'专员地址',prop:'jlZz'},
+                    // {label:'联系电话',prop:'jlJjlxrdh'},
+                    {label:'教练地址',prop:'jlZz'},
 
                 ],
                 ruleInline:{

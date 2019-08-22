@@ -9,8 +9,11 @@
 			<view style="height: 75%;">
 				<img :src="user.yhZsyqmImg" class="codeImg" id='imgs' :style="{height:height}">
 				<text style="display: block;font-size:36upx;font-weight:400;color:rgba(51,51,51,1);">邀请码：{{user.yhZsyqm}}</text>
-				<view class="copybtn" v-clipboard:copy="user.yhZsyqm" v-clipboard:success="(type) => onCopyResult('success')"
+				<view v-if="!APP" class="copybtn" v-clipboard:copy="user.yhZsyqm" v-clipboard:success="(type) => onCopyResult('success')"
 				 v-clipboard:error="(type) => onCopyResult('error')">
+					点此复制邀请码
+				</view>
+				<view class="copybtn" v-else @click="appCopyClick">
 					点此复制邀请码
 				</view>
 				<view class="sharebtn">
@@ -28,7 +31,8 @@
 		data() {
 			return {
 				user: {},
-				height:''
+				height:'',
+				APP:false
 			}
 		},
 		watch:{
@@ -46,7 +50,30 @@
 			this.fenXpy()
 		},
 		methods: {
+			appCopyClick(){
+				uni.setClipboardData({
+				    data:this.user.yhZsyqm,
+				    success: function () {
+				        uni.showToast({
+				        	title: '复制成功',
+				        	duration: 2000,
+				        	icon:'none'
+				        });
+				    },
+					fail:function(){
+						uni.showToast({
+							title: '复制失败',
+							duration: 2000,
+							icon:'none'
+						});
+					}
+				});
+			},
 			onCopyResult(type) {
+				// #ifdef APP-PLUS
+				return
+				// #endif
+				
 				if (type === 'success') {
 					uni.showToast({
 						title: '复制成功',
@@ -54,7 +81,7 @@
 					});
 				} else {
 					uni.showToast({
-						title: '复制失败,请手动长按复制',
+						title: '复制失败',
 						duration: 2000,
 						icon:'none'
 					});
@@ -114,7 +141,15 @@
 				})
 			}
 		},
-		onLoad() {			
+		onLoad() {
+			// #ifdef APP-PLUS
+			this.APP=true
+			// #endif
+			// #ifdef H5
+			this.APP=false
+			// #endif
+			
+			
 			this.$http.post(this.apis.USERMESS).then(res => {
 				if (res.code == 200) {
 					this.user = res.result
@@ -131,6 +166,8 @@
 			query.exec(res => {
 					v.height=res[0].width+'px'
 			});
+			
+			
 		}
 	}
 </script>

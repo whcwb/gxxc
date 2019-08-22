@@ -248,6 +248,18 @@
 				"navigationBarTitleText": "签名"
 			}
         }
+        ,{
+            "path" : "pages/main/study_car/wbweb/wbweb",
+            "style" : {
+				"navigationBarTitleText": "学车详情"
+			}
+        }
+        ,{
+            "path" : "pages/pay/payCg/payCg",
+            "style" : {
+				"navigationBarTitleText": "支付结果"
+			}
+        }
     ],
 	"tabBar": {
 		"color": "#7a7e83",
