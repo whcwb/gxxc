@@ -32,6 +32,7 @@
                 tableColumns: [
                     {title: "#", type: 'index', width: 60},
                     {title: '姓名', key: 'yhXm', width: 100 ,searchKey: 'yhXmLike'},
+                    {title: '联系电话', key: 'yhZh', width: 100},
                     {title: '身份证号码', key: 'yhZjhm', width: 100, searchKey: 'yhZjhmLike'},
                     {title: '受理状态',key:'yhXySlType', width: 90,dict:'ZDCLK0071',searchType:'dict'},
                     {title: '考试状态', key: 'yhXyYkType', dict: 'ykzt', searchType: 'dict'},

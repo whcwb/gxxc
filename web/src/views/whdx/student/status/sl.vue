@@ -37,6 +37,13 @@
 								<Input v-model="formItem.lsh" placeholder="请输入流水号"></Input>
 							</FormItem>
 						</Col>
+						<Col span="12" v-if="showLsh" >
+							<FormItem prop='lsh' label='车型'>
+								<Select  filterable clearable  v-model="formItem.lsh" placeholder="请选择驾校...'" label-in-value @on-change="cxChange">
+									<Option v-for = '(item,index) in cxList' :value="item.value" :key="item.key" :label="item.val">{{item.value}}</Option>
+								</Select>
+							</FormItem>
+						</Col>
         			</Row>
 					<Row>
 						<Steps v-if="showSteps" :current="currentStep" size="small">
@@ -93,6 +100,7 @@
 				unitName:'',
                 showConfirm:false,
 				schoolList:[],
+				cxList:[],
 				showLsh:false,
 			}
 		},
@@ -103,6 +111,7 @@
 		    this.formItem.code = '';
             this.getHandleStatus();
             this.getSchoolList();
+            this.getcxList()
 		},
 		mounted(){
 		},
@@ -114,6 +123,9 @@
             schoolChange(o){
                 this.formItem.name = o.label;
             },
+			cxChange(o){
+				this.formItem.lsh = o.label;
+			},
             clickStep(index){
                 // alert(index);
             },
@@ -123,6 +135,10 @@
 		                this.schoolList = res.page.list;
 					}
 				})
+			},
+			getcxList(){
+				this.cxList = this.dictUtil.getValByCode(this,'chexing')
+				console.log(this.cxList);
 			},
 		    getUnitName(state){
                 return state === 0 ? '医院名称' : '驾校名称';

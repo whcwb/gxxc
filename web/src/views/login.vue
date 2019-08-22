@@ -63,7 +63,7 @@
 			<Row>
 				<div class="login-top">
 					<h2 style="color: white">用户登录</h2><br>
-					<img class="loginImg" src="/static/login-left.png" alt="" />
+					<img class="loginImg" src="/static/1024.png" alt="" />
 				</div>
 			</Row>
 			<Row>
@@ -92,6 +92,14 @@
 						</FormItem>
 					</Form>
 				</div>
+			</Row>
+		</div>
+		<div style="position: absolute;bottom:20px;color: #ffffff;text-align: center;width: 100%">
+			<Row style="text-align: center;font-size: 20px">
+				© Copyright Reserved 版权所有
+			</Row>
+			<Row style="text-align: center;font-size: 16px">
+				武汉天弘腾创科技有限公司
 			</Row>
 		</div>
     </div>
