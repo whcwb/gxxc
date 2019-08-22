@@ -143,6 +143,28 @@ public class BizJl implements Serializable {
     @Transient
     private Integer yhFz;
 
+    @Transient
+    private String yhZh;
+
+    @Transient
+    private String yhLx;
+
+    public String getYhZh() {
+        return yhZh;
+    }
+
+    public void setYhZh(String yhZh) {
+        this.yhZh = yhZh;
+    }
+
+    public String getYhLx() {
+        return yhLx;
+    }
+
+    public void setYhLx(String yhLx) {
+        this.yhLx = yhLx;
+    }
+
     public Integer getJlJxsl() {
         return jlJxsl;
     }

@@ -7,6 +7,7 @@ import com.cwb.platform.sys.base.QueryController;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationPid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,6 +69,11 @@ public class JlController extends QueryController<BizJl,String> {
     @PostMapping("/saveJl")
     public ApiResponse<String> saveJl(BizJl bizJl){
         return service.saveJl(bizJl);
+    }
+
+    @PostMapping("/updateJlzt")
+    public ApiResponse<String> updateJlzt(String yhId, String jlZt){
+        return service.updateJlZt(yhId, jlZt);
     }
 
 

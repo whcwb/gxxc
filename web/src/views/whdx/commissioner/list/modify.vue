@@ -9,7 +9,7 @@
 				<Form ref="form"
 						:model="formItem"
 						:rules="ruleInline"
-						:label-width="100"
+						:label-width="120"
 						:styles="{top: '20px'}">
 					<Row>
 						<form-items :parent="v"></form-items>
@@ -53,11 +53,12 @@
                 formInputs:[
                     {label:'姓名',prop:'yhXm'},
                     {label:'身份证号码',prop:'yhZjhm'},
-                    {label:'手机号码',prop:'yhSjhm',disables:true},
+                    {label:'手机号码',prop:'yhSjhm',disables:true,readonly:true},
                     {label:'区域',prop:'jlQu',dict:'ZDCLK0060'},
                     {label:'联系电话',prop:'jlJjlxrdh'},
                     {label:'地址',prop:'jlZz'},
-
+					{label:'培训科目',prop:'jlType',dict:'JLLX',type:'checkBox'},
+					{label:'培训车型',prop:'jlCx',dict:'chexing',type:'checkBox'}
                 ],
                 ruleInline:{
 				},

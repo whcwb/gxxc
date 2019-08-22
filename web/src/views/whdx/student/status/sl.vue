@@ -20,15 +20,15 @@
 								</Select>
 							</FormItem>
 						</Col>
-						<Col v-show="formItem.slType == '1'" span="12">
+						<Col v-if="formItem.slType == '1'" span="12">
 							<FormItem prop='name' label='医院名称'>
 								<Input v-model="formItem.name" placeholder="请输入医院名称"></Input>
 							</FormItem>
 						</Col>
-						<Col v-show="formItem.slType != '1'" span="12">
+						<Col v-if="formItem.slType != '1'" span="12">
 							<FormItem prop='name' label='驾校名称'>
-								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校...'" label-in-value @on-change="schoolChange">
-									<Option v-for = '(item,index) in schoolList' :value="item.schoolCode" :key="item.schoolCode" :label="item.schoolShortName">{{item.schoolShortName}}</Option>
+								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校..." label-in-value @on-change="schoolChange">
+									<Option v-for = '(item,index) in schoolList' :value="item.val" :key="item.key" :label="item.val">{{item.val}}</Option>
 								</Select>
 							</FormItem>
 						</Col>
@@ -38,9 +38,16 @@
 							</FormItem>
 						</Col>
 						<Col span="12" v-if="showLsh" >
-							<FormItem prop='lsh' label='车型'>
-								<Select  filterable clearable  v-model="formItem.lsh" placeholder="请选择驾校...'" label-in-value @on-change="cxChange">
-									<Option v-for = '(item,index) in cxList' :value="item.value" :key="item.key" :label="item.val">{{item.value}}</Option>
+							<FormItem prop='yhCx' label='车型'>
+								<Select  filterable clearable  v-model="formItem.yhCx" placeholder="请选择车型..." label-in-value @on-change="cxChange">
+									<Option v-for = '(item,index) in cxList' :value="item.val"  :key="item.key" :label="item.val">{{item.val}}</Option>
+								</Select>
+							</FormItem>
+						</Col>
+						<Col span="12" v-if="showLsh" >
+							<FormItem prop='yhCx' label='业务类型'>
+								<Select  filterable clearable  v-model="formItem.yhYwlx" placeholder="请选择业务类型..." label-in-value @on-change="ywChange">
+									<Option v-for = '(item,index) in ywList' :value="item.val"  :key="item.key" :label="item.val">{{item.val}}</Option>
 								</Select>
 							</FormItem>
 						</Col>
@@ -84,6 +91,9 @@
                 ],
                 ruleInline:{
 				},
+				ywList:[
+					{key:'初领',val:'初领'},{key:'增驾',val:'增驾'}
+				],
                 foreignList:{
                     code:{url:this.apis.school.QUERY,key:'schoolCode',val:'schoolName',items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
@@ -110,21 +120,27 @@
 		    this.formItem.name = '';
 		    this.formItem.code = '';
             this.getHandleStatus();
-            this.getSchoolList();
+            // this.getSchoolList();
             this.getcxList()
+			this.cxList = this.dictUtil.getByCode(this, "chexing")
+			this.schoolList = this.dictUtil.getByCode(this, "ZDCLK1017")
 		},
 		mounted(){
 		},
 		methods: {
             typeChange(o){
                 this.formItem.slType = o;
-                this.showLsh = o == '4'
+				this.showLsh = o == '4'
+				this.$forceUpdate()
             },
             schoolChange(o){
                 this.formItem.name = o.label;
             },
 			cxChange(o){
-				this.formItem.lsh = o.label;
+				this.formItem.yhCx = o.label;
+			},
+			ywChange(o){
+				this.formItem.yhYwlx = o.label;
 			},
             clickStep(index){
                 // alert(index);

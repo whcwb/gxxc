@@ -73,9 +73,19 @@ public class BizKsSl implements Serializable {
     private String lsh;
 
 
-    @Transient
+    @Column(name = "YH_CX")
     private String yhCx;
 
+    @Transient
+    private String yhYwlx;
+
+    public String getYhYwlx() {
+        return yhYwlx;
+    }
+
+    public void setYhYwlx(String yhYwlx) {
+        this.yhYwlx = yhYwlx;
+    }
 
     private static final long serialVersionUID = 1L;
 
