@@ -13,7 +13,7 @@
 				<view class="headTip">
 					安全教学{{zyMess.jlJxsl==undefined? 0:zyMess.jlJxsl }}次
 				</view>
-				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;">
+				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;" @click="phone(zyMess.jlJjlxrdh)">
 				<img v-else src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">{{zyMess.yhXm | yhXmZY}}</view>
 				<uni-rate :value="zyMess.jlPf" @change='pjJl'></uni-rate>
@@ -278,14 +278,14 @@
 			this.usermess = uni.getStorageSync('token')
 			console.log('this.curr',this.current);
 			var a = uni.getStorageSync('usermess').yhDqzt
-			this.current = parseInt(a)
+			
 			
 			this.getHandleStatus()// 获取受理状态信息
 			this.getPayInfo()// 缴费信息
 			this.getExamInfo()//考试信息
 			this.getZYmess()//获取专员信息
 			setTimeout(()=>{
-				this.onClickItem(this.current-1)
+				this.onClickItem(parseInt(a))
 			},1000)
 			
 		},
@@ -294,6 +294,11 @@
 			this.itemList=Object.assign(this.itemListAll[0])
 		},
 		methods: {
+			phone(id) {
+				uni.makePhoneCall({
+					phoneNumber: id //仅为示例
+				});
+			},
 			pjJl(val){
 				console.log(val,'val');
 				this.isPJ = true
@@ -462,6 +467,9 @@
 						this.current = index;
 						this.btnList = Object.assign(this.btnListAll[index])
 						this.itemList = Object.assign(this.itemListAll[index])
+				}else{
+					this.btnList = Object.assign(this.btnListAll[index])
+					this.itemList = Object.assign(this.itemListAll[index])
 				}
 			},
 			

@@ -37,6 +37,21 @@
 						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
 							未认证
 						</view>
+						<view v-if="it.yhDqzt == '0'&& it.userDetail.yhLx =='1'" class="butTyp slmoney">
+							受理
+						</view>
+						<view v-if="it.yhDqzt == '1'&& it.userDetail.yhLx =='1'" class="butTyp slmoney">
+							科一
+						</view>
+						<view v-if="it.yhDqzt == '2'&& it.userDetail.yhLx =='1'" class="butTyp slmoney">
+							科二
+						</view>
+						<view v-if="it.yhDqzt == '3'&& it.userDetail.yhLx =='1'" class="butTyp slmoney">
+							科三
+						</view>
+						<view v-if="it.yhDqzt == '4'&& it.userDetail.yhLx =='1'" class="butTyp slmoney">
+							科四
+						</view>
 					</view>
 				</view>
 		</view>
@@ -300,7 +315,9 @@
 				padding: 7upx 15upx;
 				border-radius: 20upx
 			}
-		
+		    .slmoney{
+				background: #5CACEE;
+			}
 			.onMoney {
 				background: rgba(251, 164, 19, 1);
 		
