@@ -1,7 +1,7 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<Select v-model="form.jlZt" style="width:100px" @on-change="changeZt">
+			<Select v-model="form.jlZtIn" style="width:100px" @on-change="changeZt">
 				<Option v-for="item in jlZtList" :value="item.key" :key="item.key">{{ item.value }}</Option>
 			</Select>
 				<search-items :parent="v" :label-with="100" :show-create-button="true"></search-items>
@@ -34,7 +34,7 @@
                 componentName: '',
                 choosedItem: null,
                 dateRange:'',
-				jlZtList: [{key:'0',value:'在职'},{key:'1',value:'停用'}],
+				jlZtList: [{key:'0,1',value:'全部'},{key:'0',value:'在职'},{key:'1',value:'停用'}],
                 tableColumns: [
                     {title: "",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
@@ -149,7 +149,7 @@
                     // yhLxIn:"slzy,k1,k2,k3",
 					// showRoles:'true',
                     yhLx:"3",
-					jlZt:'0',
+					jlZtIn:'0,1',
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
@@ -176,7 +176,7 @@
 				})
 			},
 			changeZt(key){
-            	this.form.jlZt = key
+            	this.form.jlZtIn = key
 				this.util.initTable(this)
 			},
 			changeJlZt(yhId, jlzt){
@@ -208,7 +208,7 @@
 			exportData(){
                 let params = {
                     exportType:'ptyh',
-                    cols:'姓名,账号,是否有驾驶证,认证状态,专员姓名,专员电话',
+                    cols:'姓名,账号,是否有驾驶证,认证状态,教练姓名,教练电话',
 					keys:'yhXm,yhZh,yhSfyjz,yhZt,jlxm,jldh'
 				}
 				window.open(this.apis.exportData+'?ddSfjx=1&exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);

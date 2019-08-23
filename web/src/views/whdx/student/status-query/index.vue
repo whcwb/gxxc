@@ -93,7 +93,7 @@
             buildRow(h,z,k){
                 let zy = '';
                 if (z) {
-                    zy += '专员：' + z.yhXm;
+                    zy += '教练：' + z.yhXm;
                 }
                 let yk = '';
                 let cj = '';
@@ -135,7 +135,7 @@
             exportData() {
                 let params = {
                     exportType: 'ptyh',
-                    cols: '姓名,账号,是否有驾驶证,认证状态,专员姓名,专员电话',
+                    cols: '姓名,账号,是否有驾驶证,认证状态,教练姓名,教练电话',
                     keys: 'yhXm,yhZh,yhSfyjz,yhZt,jlxm,jldh'
                 }
                 window.open(this.apis.exportData + '?ddSfjx=1&exportType=' + params.exportType + "&cols=" + params.cols + "&keys=" + params.keys);

@@ -1,6 +1,11 @@
 package com.cwb.platform.util.commonUtil;
 
+import jxl.format.Alignment;
+import jxl.format.Border;
+import jxl.format.BorderLineStyle;
+import jxl.format.VerticalAlignment;
 import jxl.write.Label;
+import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class ExcelUtil {
@@ -44,6 +50,31 @@ public class ExcelUtil {
                 List<String> row = data.get(r);
                 for (int c = 0; c < row.size(); c++) {
                     sheet.addCell(new Label(c, r + 1, row.get(c)));
+                }
+            }
+            workbook.write();
+            workbook.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void createSheet(OutputStream outputStream,String sheetName,  List<Map<Integer,String>> data){
+        try {
+            WritableCellFormat cellFormat = new WritableCellFormat();
+            cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN);//单元格设置边框
+            cellFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
+            cellFormat.setAlignment(Alignment.CENTRE);
+            WritableWorkbook workbook = jxl.Workbook.createWorkbook(outputStream);
+            WritableSheet sheet = workbook.createSheet(sheetName, 0);
+            Map<Integer,String> titleMap=data.get(0);
+            for	(int c = 0;c < titleMap.size();c++){
+                sheet.addCell(new Label(c, 0, titleMap.get(c)==null?titleMap.get(c+""):titleMap.get(c),cellFormat));
+            }
+            for (int r = 1;r < data.size();r++) {
+                Map<Integer,String> row = data.get(r);
+                for(int c = 0;c < row.size();c++){
+                    sheet.addCell(new Label(c, r, row.get(c+"")==null?row.get(c):row.get(c+""),cellFormat));
                 }
             }
             workbook.write();

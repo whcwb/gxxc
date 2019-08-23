@@ -720,7 +720,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizUser bizUser = new BizUser();
         if (StringUtils.isNotBlank(entity.getYhZjhm()) && StringUtils.isNotBlank(entity.getYhXm())) {
 
-            String identify = IDNameIdentify.identify(entity.getYhZjhm(), entity.getYhXm());
+            String identify = IDNameIdentify.indentifyIdCard(entity.getYhZjhm(), entity.getYhXm());
             RuntimeCheck.ifFalse(StringUtils.equals(identify, "200"), identify);
             newEntity.setYhXm(entity.getYhXm());//用户姓名
             newEntity.setYhBm(entity.getYhBm());//用户别名
@@ -1009,7 +1009,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             wjMapper.deleteBatch(user.getId(), wjSxList);
             wjMapper.insertBatch(wjList);
         }
-        String identify = IDNameIdentify.identify(CardCode, entity.getYhXm());
+        String identify = IDNameIdentify.indentifyIdCard(CardCode, entity.getYhXm());
         RuntimeCheck.ifFalse(StringUtils.equals(identify, "200"), identify);
         BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
@@ -1185,7 +1185,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             yhSfyjz = entity.getYhSfyjz();
         }
 
-        String identify = IDNameIdentify.identify(cfzh, xm);
+        String identify = IDNameIdentify.indentifyIdCard(cfzh, xm);
         RuntimeCheck.ifFalse(StringUtils.equals("200", identify), identify);
 
         //修改用户实名表  biz_user

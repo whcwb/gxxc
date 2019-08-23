@@ -1,10 +1,10 @@
 //网络请求地址前缀
 let serverDomain='http:///www.520xclm.com';
-let BASE_URL = serverDomain + ':8080/biz/';
+// let BASE_URL = serverDomain + ':8080/biz/';
 // let BASE_URL = 'http://127.0.0.1:9086';
 // let BASE_URL = 'http://192.168.31.35:9086';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
-// let BASE_URL = 'http://192.168.123.69:9006';
+let BASE_URL = 'http://192.168.123.69:9006';
 module.exports = {
     getImgUrl:'http://www.520xclm.com:8001/',
     url: BASE_URL,
@@ -64,7 +64,7 @@ module.exports = {
         DELE:'/api/ksjf/removeIds',
         DJF:'/api/ksjf/waitPaymentList',
         batchImport:'/api/ksjf/batchImport',
-        EXPORT:'/pub/ksjf/export',
+        EXPORT:'/pub/ksjf/exportKm',
     },
     chat:{
         QUERY:'/api/msg/getUserList',
@@ -124,7 +124,7 @@ module.exports = {
         getUserCoachEvaluate:'/api/ptyh/updateSfsd',//获取用户对教练的评分
         getPaymentRecord:'/api/ptyh/getPaymentRecord',//获取用户进度信息
         status_query:'/api/ptyh/status-query',//获取用户进度信息
-        getZyList:'/api/ptyh/getZyList',//获取专员列表
+        getZyList:'/api/ptyh/getZyList',//获取教练列表
     },
     teacher:{
         QUERY:'/api/jl/pager',//平台用户管理

@@ -58,7 +58,7 @@
 		data() {
 			return {
 			    v:this,
-                operate:'专员',
+                operate:'教练',
 				saveUrl:this.apis.teacher.ADD,
                 staticPath:this.apis.getImgUrl,
 				showModal: true,

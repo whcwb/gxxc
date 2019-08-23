@@ -22,7 +22,7 @@
                 <RadioGroup v-else-if="i.type === 'radio'" v-model="formItem[i.prop]">
                     <Radio v-for='(item,index) in parent.dictUtil.getByCode(parent,i.dict)' v-if="i.excludeDict == null || i.excludeDict.indexOf(item.key) < 0" :label="item.key">{{item.val}}</Radio>
                 </RadioGroup>
-                <CheckboxGroup v-else-if="i.type === 'checkBox'" v-model="formItem[i.prop]"  @on-change="changeBox">
+                <CheckboxGroup v-else-if="i.type === 'checkBox'" v-model="formItem[i.prop]" @on-change="changeBox">
                     <Checkbox v-for='(item,index) in parent.dictUtil.getByCode(parent,i.dict)' :label="item.key" >{{item.val}}</Checkbox>
                 </CheckboxGroup>
                 <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled">
@@ -107,7 +107,6 @@
             changeBox(p){
                 let prop = p[0]
                 let dict = p[1]
-                console.log("prop--->" , prop)
                 let d = this.parent.dictUtil.getByCode(this.parent,dict)
                 let a = []
                 a.push(prop)

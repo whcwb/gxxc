@@ -83,7 +83,7 @@
 					jlCx:[]
 				},
                 formInputs:[
-                    {label:'账号',prop:'yhZh',readonly:true},
+                    {label:'手机号码',prop:'yhZh',readonly:true},
                     // {label:'密码',prop:'yhMm'},
                     // {label:'姓名',prop:'yhXm'},
                     // {label:'身份证号码',prop:'yhZjhm'},
@@ -106,9 +106,9 @@
          jlZml:证明人
          jlJjlxr:紧急联系人
          jlJjlxrdh:联系电话
-         jlZz:专员地址
+         jlZz:教练地址
          jlImg:/aaa.jpg
-         jlMs:专员简界
+         jlMs:教练简界
          imgList:./aaa.jpg,./bbb.jpg,-,-
          yhMm:
          */

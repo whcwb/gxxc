@@ -238,6 +238,9 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_YWLX")
     private String yhYwlx;
 
+    @Column(name = "YH_LSH")
+    private String yhLsh;
+
     /**
      * 手机验证码
      */
@@ -347,7 +350,8 @@ public class BizPtyh implements Serializable {
         yhNum("YH_NUM"),
         yhYxqz("YH_YXQZ"),
         yhCx("YH_CX"),
-        yhYwlx("YH_YWLX");
+        yhYwlx("YH_YWLX"),
+        yhLsh("YH_LSH");
 
         private final String column;
 
