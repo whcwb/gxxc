@@ -173,6 +173,8 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         newPtyh.setYhXySlType(entity.getSlType());
         if(StringUtils.equals(entity.getSlType(),"4")){
             RuntimeCheck.ifBlank(entity.getYhCx(), "学员培训车型不能为空");
+            RuntimeCheck.ifBlank(entity.getLsh(), "学员流水号不能为空");
+            newPtyh.setYhLsh(entity.getLsh());
             newPtyh.setYhCx(entity.getYhCx());
         }
         if(StringUtils.equals(entity.getSlType(), "4") && StringUtils.isNotBlank(entity.getYhYwlx())){

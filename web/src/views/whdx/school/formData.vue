@@ -42,9 +42,9 @@
                     {label:'联系人',prop:'linkMan'},
                     {label:'联系电话',prop:'linkTel'},
                     {label:'可培训车型',prop:'trainableVehicleType'},
-                    {label:'专员总数',prop:'coachTotal'},
-                    {label:'专员车总数',prop:'carTotal'},
-                    {label:'专员场总面积',prop:'totalAreaJlc'},
+                    {label:'教练总数',prop:'coachTotal'},
+                    {label:'教练车总数',prop:'carTotal'},
+                    {label:'场总面积',prop:'totalAreaJlc'},
                     {label:'备注',prop:'remark'},
                 ],
                 ruleInline:{

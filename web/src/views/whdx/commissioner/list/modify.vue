@@ -34,7 +34,7 @@
 		data() {
 			return {
 			    v:this,
-                operate:'专员',
+                operate:'教练',
 				saveUrl:this.apis.teacher.CHANGE,
                 staticPath:this.apis.getImgUrl,
 				// uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
@@ -74,9 +74,9 @@
          jlZml:证明人
          jlJjlxr:紧急联系人
          jlJjlxrdh:联系电话
-         jlZz:专员地址
+         jlZz:教练地址
          jlImg:/aaa.jpg
-         jlMs:专员简界
+         jlMs:教练简界
          imgList:./aaa.jpg,./bbb.jpg,-,-
          yhMm:
          */

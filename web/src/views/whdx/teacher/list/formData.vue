@@ -69,7 +69,7 @@
 		data() {
 			return {
 			    v:this,
-                operate:'专员',
+                operate:'教练',
 				saveUrl:this.apis.teacher.ADD,
                 staticPath:this.apis.getImgUrl,
 				// uploadPrivatePath:this.apis.UPLOAD_PRIVATE,
@@ -96,9 +96,9 @@
                     {label:'证明人',prop:'jlZml'},
                     {label:'紧急联系人',prop:'jlJjlxr'},
                     {label:'联系电话',prop:'jlJjlxrdh'},
-                    {label:'专员地址',prop:'jlZz'},
+                    {label:'教练地址',prop:'jlZz'},
                     {label:'头像',prop:'jlImg'},
-                    {label:'专员简界',prop:'jlMs'},
+                    {label:'教练简界',prop:'jlMs'},
                 ],
                 ruleInline:{
 				}
@@ -113,9 +113,9 @@
          jlZml:证明人
          jlJjlxr:紧急联系人
          jlJjlxrdh:联系电话
-         jlZz:专员地址
+         jlZz:教练地址
          jlImg:/aaa.jpg
-         jlMs:专员简界
+         jlMs:教练简界
          imgList:./aaa.jpg,./bbb.jpg,-,-
          yhMm:
          */

@@ -45,7 +45,7 @@
 							</FormItem>
 						</Col>
 						<Col span="12" v-if="showLsh" >
-							<FormItem prop='yhCx' label='业务类型'>
+							<FormItem prop='yhYwlx' label='业务类型'>
 								<Select  filterable clearable  v-model="formItem.yhYwlx" placeholder="请选择业务类型..." label-in-value @on-change="ywChange">
 									<Option v-for = '(item,index) in ywList' :value="item.val"  :key="item.key" :label="item.val">{{item.val}}</Option>
 								</Select>
@@ -92,7 +92,7 @@
                 ruleInline:{
 				},
 				ywList:[
-					{key:'初领',val:'初领'},{key:'增驾',val:'增驾'}
+					{key:'初次申领',val:'初次申领'},{key:'增驾申请',val:'增驾申请'}
 				],
                 foreignList:{
                     code:{url:this.apis.school.QUERY,key:'schoolCode',val:'schoolName',items:[]},
@@ -119,11 +119,13 @@
 		    this.formItem.slSj = new Date().format('yyyy-MM-dd');
 		    this.formItem.name = '';
 		    this.formItem.code = '';
+		   // console.log(this.formItem.slType)
             this.getHandleStatus();
             // this.getSchoolList();
             this.getcxList()
 			this.cxList = this.dictUtil.getByCode(this, "chexing")
 			this.schoolList = this.dictUtil.getByCode(this, "ZDCLK1017")
+			this.$forceUpdate()
 		},
 		mounted(){
 		},

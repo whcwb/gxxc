@@ -5,7 +5,7 @@
 			<Button type="info" @click="exportData">
 				<Icon type="ios-download-outline"></Icon>
 			</Button>
-			<Tooltip content="批量导入" placement="top">
+			<Tooltip content="批量导入" placement="top" :transfer="true">
 				<Button type="success" @click="componentName='batchImport'">
 					<Icon type="arrow-return-left"></Icon>
 				</Button>
