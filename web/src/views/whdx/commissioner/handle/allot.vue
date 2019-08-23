@@ -60,6 +60,7 @@
 				readonly: false,
                 form: {
                     jlTypeLike:"slzy",
+                    jlZt:'0',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

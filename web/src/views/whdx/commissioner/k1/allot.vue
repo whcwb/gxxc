@@ -62,6 +62,7 @@
                 form: {
                     jlTypeLike:"k1",
                     total: 0,
+                    jlZt:'0',
                     pageNum: 1,
                     pageSize: 8,
                 },
