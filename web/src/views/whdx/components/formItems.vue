@@ -24,6 +24,8 @@
                 </RadioGroup>
                 <CheckboxGroup v-else-if="i.type === 'checkBox'" v-model="formItem[i.prop]" @on-change="changeBox">
                     <Checkbox v-for='(item,index) in parent.dictUtil.getByCode(parent,i.dict)' :label="item.key" >{{item.val}}</Checkbox>
+                    <Button type="primary" @click="selectAll(i.prop)">全选</Button>
+                    <Button type="warning" @click="cancelAll(i.prop)">取消全选</Button>
                 </CheckboxGroup>
                 <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled">
                     <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)'  v-if="i.excludeDict == null || i.excludeDict.indexOf(item.key) < 0"  :value="item.key" :key="item.key">{{item.val}}</Option>
@@ -120,6 +122,24 @@
                 }
                 this.formItem[prop] = a
                 console.log(this.formItem[prop])
+            },
+            selectAll(p){
+                let prop = this.formItem[p][0]
+                let di = this.formItem[p][1];
+                let d = this.parent.dictUtil.getByCode(this.parent,di)
+                this.formItem[p] = []
+                this.formItem[p].push(prop)
+                this.formItem[p].push(di)
+                for (let x in d) {
+                    this.formItem[p].push(d[x].key)
+                }
+            },
+            cancelAll(p){
+                let prop = this.formItem[p][0]
+                let di = this.formItem[p][1];
+                this.formItem[p] = []
+                this.formItem[p].push(prop)
+                this.formItem[p].push(di)
             }
         }
     }
