@@ -13,7 +13,7 @@
 						<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
 							<b>{{index+1}}</b>
 						</view>
-						<img :src="it.userDetail.yhTx">
+						<img :src="'http://www.520xclm.com:8001/'+it.yhTx">
 						<view class="name">
 							{{it.yhXm}}
 						</view>
@@ -23,7 +23,21 @@
 						<view style="margin-right: 15upx;" @click.stop="phone(it.yhSjhm)">
 							<uni-icon type='phone' color='#007AFF' size="30"></uni-icon>
 						</view>
-					
+					    <view v-if="it.yhDqzt == '0'" class="butTyp slmoney">
+					    	受理
+					    </view>
+					    <view v-if="it.yhDqzt == '1'" class="butTyp slmoney">
+					    	科一
+					    </view>
+					    <view v-if="it.yhDqzt == '2'" class="butTyp slmoney">
+					    	科二
+					    </view>
+					    <view v-if="it.yhDqzt == '3'" class="butTyp slmoney">
+					    	科三
+					    </view>
+					    <view v-if="it.yhDqzt == '4'" class="butTyp slmoney">
+					    	科四
+					    </view>
 						<!-- <view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
 							A类
 						</view>
@@ -290,7 +304,9 @@
 				margin-right: 14rpx;
 				border-radius: 20upx
 			}
-
+            .slmoney{
+            	background: #5CACEE;
+            }
 			.onMoney {
 				background: rgba(251, 164, 19, 1);
 

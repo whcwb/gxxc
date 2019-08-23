@@ -228,7 +228,7 @@
 					yhlx: '',
 					sfjf: '',
 					pageNum: 1,
-					pageSize: 20
+					pageSize: 9999
 				}).then((res) => {
 					if (res.code == 200) {
 						this.newsList = res.page.list
@@ -243,7 +243,6 @@
 					}
 				})
 			},
-
 			getUsermess() {
 				this.$http.post(this.apis.USERMESS, {}).then((res) => {
 					if (res.code == 200) {

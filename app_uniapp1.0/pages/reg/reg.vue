@@ -2,10 +2,10 @@
 	<view style="width: 100%;background:rgba(255,255,255,1);">
 		<img src="/static/img/banner.png" style="height: 336upx;width: 750upx;">
 		<view v-if="yqrxm!=''" class="inputMess">
-			<input class="uni-input input" disabled="true" :placeholder="yqrxm" v-model="yqrxm" />
+			<input class="uni-input input" style="font-size: 14px;height: 40px;margin: 10px 20rpx;" disabled="true" :placeholder="yqrxm" v-model="yqrxm" />
 		</view>
 		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.show">
-			<input class="uni-input input" style="font-size: 14px;height: 30px;margin: 10px 0;" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
+			<input class="uni-input input" style="font-size: 14px;height: 40px;margin: 10px 20rpx;" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
 			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip" v-show="show">
 				请获取验证码
 			</view>
@@ -487,7 +487,7 @@
 
 	.input {
 		height: 122upx;
-		width: 678upx;
+		width: 95%;
 		border-bottom: 2upx solid #DFE7EE;
 		margin: 0 auto;
 	}

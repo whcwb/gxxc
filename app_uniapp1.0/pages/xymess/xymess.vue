@@ -167,13 +167,12 @@
 			this.usermess = uni.getStorageSync('xymess')
 			console.log('this.curr',this.usermess);
 			var a = uni.getStorageSync('xymess').yhDqzt
-			this.current = parseInt(a)
 			this.getZYmess()//获取专员信息
 			this.getHandleStatus()// 获取受理状态信息
 			this.getPayInfo()// 缴费信息
 			this.getExamInfo()//考试信息
 			setTimeout(()=>{
-				this.onClickItem(this.current-1)
+				this.onClickItem(parseInt(a))
 			},1000)
 			
 		},
