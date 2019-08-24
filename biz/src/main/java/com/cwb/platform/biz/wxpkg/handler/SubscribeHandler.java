@@ -69,10 +69,27 @@ public class SubscribeHandler extends AbstractHandler {
 			List<WxMenuButton> wxButtons = new ArrayList<>();
 
 			WxMenuButton button1 = new WxMenuButton();
-			button1.setKey("button1");
-			button1.setName("进入平台");//张总要求修改
-			button1.setType(WxConsts.MenuButtonType.VIEW);
-			button1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect");
+			List<WxMenuButton> wxMenuButtons = new ArrayList<>();
+			// 进入平台
+			WxMenuButton pbutton = new WxMenuButton();
+			pbutton.setKey("pingtai");
+			pbutton.setName("进入平台");
+			pbutton.setType(WxConsts.MenuButtonType.VIEW);
+			pbutton.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect");
+
+			WxMenuButton wexinButton = new WxMenuButton();
+			wexinButton.setKey("bindWeixin");
+			wexinButton.setName("绑定微信");
+			wexinButton.setType(WxConsts.MenuButtonType.VIEW);
+			wexinButton.setUrl(domain+"/wx/qrcode/qrcode.html?openid=" +wxMessage.getFromUser());
+			wxMenuButtons.add(pbutton);
+			wxMenuButtons.add(wexinButton);
+			button1.setName("进入平台");
+			button1.setSubButtons(wxMenuButtons);
+//			button1.setKey("button1");
+//			button1.setName("进入平台");//张总要求修改
+//			button1.setType(WxConsts.MenuButtonType.VIEW);
+//			button1.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/wx&response_type=code&scope=snsapi_userinfo&state=debug&connect_redirect=1#wechat_redirect");
 
 			WxMenuButton button2 = new WxMenuButton();
 			button2.setKey("button2");
