@@ -1,7 +1,7 @@
 <template>
 	<view class="m-input-view">
 		<input :focus="focus_" :type="inputType" :value="value" @input="onInput" class="m-input-input" :placeholder="placeholder"
-		 :password="type==='password'&&!showPassword" @focus="onFocus" @blur="onBlur" style="font-size: 24px;height: 30px;margin: 10px 0;" />
+		 :password="type==='password'&&!showPassword" @focus="onFocus" @blur="onBlur"/>
 		<!-- 优先显示密码可见按钮 -->
 		<view v-if="clearable_&&!displayable_&&value.length" class="m-input-icon">
 			<m-icon color="#666666" type="clear" size="20" @click="clear"></m-icon>
