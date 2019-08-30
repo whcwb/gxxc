@@ -7,31 +7,35 @@
 			图解警告标志
 		</view>
 		<view style="text-align: center;">
-			<image src="../file/img/one.jpg" mode="widthFix"></image>
+			<!-- <image src="../file/img/one.jpg" mode="widthFix"></image> -->
+			<img src="../file/img/one.jpg" style="width: 90%;" alt="">
 		</view>
 		<view class="tit">
 			图解禁令标志
 		</view>
 		<view style="text-align: center;">
-			<image src="../file/img/two.jpg" mode="widthFix"></image>
+			<img src="../file/img/two.jpg" style="width: 90%;" alt="">
+			<!-- <image src="../file/img/two.jpg" mode="widthFix"></image> -->
 		</view>
 		<view class="tit">
 			图解指示标志
 		</view>
 		<view style="text-align: center;">
-			<image src="../file/img/san.jpg" mode="widthFix"></image>
+			<!-- <image src="../file/img/san.jpg" mode="widthFix"></image> -->
+			<img src="../file/img/san.jpg" style="width: 90%;" alt="">
 		</view>
 		<view class="tit">
 			图解道路交通标线
 		</view>
 		<view style="text-align: center;">
-			<image src="../file/img/si.jpg" mode="widthFix"></image>
+			<img src="../file/img/si.jpg" style="width: 90%;" alt="">
+			<!-- <image src="../file/img/si.jpg" mode="widthFix"></image> -->
 		</view>
 		<view class="tit">
 			图解高速公路指示标志
 		</view>
 		<view style="text-align: center;">
-			<image src="../file/img/wu.jpg" mode="widthFix"></image>
+			<img src="../file/img/wu.jpg" style="width: 90%;" alt="">
 		</view>
 	</view>
 </template>

@@ -1,5 +1,5 @@
 <template>
-	<view style="width: 100%;padding-top: 1upx;background: rgba(255,255,255,1);">
+	<view class="backgroundDiv" style="width: 100%;padding-top: 1upx;background: rgba(255,255,255,1)" :style="backgroundDiv">
 		<view style="margin: 102upx 0 140upx;text-align: center;">
 			<img src="/static/img/head.png" style="width:192upx;height: 192upx;">
 		</view>
@@ -29,6 +29,11 @@
 	export default {
 		data() {
 			return {
+				backgroundDiv: {
+					backgroundImage:'url(' + require('./file/loginbg.png') + ')',
+					backgroundRepeat:'no-repeat',
+					backgroundSize:'100% 100%'
+				},
 				form: {
 					username: '',
 					password: ''
@@ -110,6 +115,9 @@
 </script>
 
 <style>
+	.loginbg{
+		background-image: url('./file/loginbg.png');
+	}
 	.copybtn {
 		width:70%;
 		height: 80upx;
@@ -138,7 +146,7 @@
 	}
 	.inputMess {
 		width: 100%;
-		background: rgba(255, 255, 255, 1);
+		background: rgba(255, 255, 255, 0);
 		margin-bottom: 28upx;
 	}
 
@@ -147,6 +155,7 @@
 		width: 678upx;
 		border-bottom: 2upx solid #DFE7EE;
 		margin: 0 auto;
+		background: rgba(245,246,249,1);
 	}
 
 	.btn {

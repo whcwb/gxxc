@@ -174,7 +174,7 @@
 				})
 
 				//提现明细
-				this.$http.post(this.apis.ZDLIST, {zjFs: -1,pageSize: 10,pageNum: 1}).then(res => {
+				this.$http.post(this.apis.ZDLIST, {zjFs: -1,pageSize: 10,pageNum: 1,mxLx:'4'}).then(res => {
 					if (res.code == 200) {
 						this.mxList=res.page.list
 					}else{

@@ -241,7 +241,7 @@
 			console.log(option.yhYxqz,'option');
 			console.log(option.yhYwlx,'option');
 			this.yhYxqz = option.yhYxqz
-			this.yhYwlx = option.yhYwlx
+			this.yhYwlx = option.yhYwlx.substring(1,option.yhYwlx.length-1);
 		},
 		methods: {
 			barresult(){},
