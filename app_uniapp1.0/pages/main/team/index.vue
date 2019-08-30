@@ -155,7 +155,7 @@
 						data:item
 					})
 					uni.navigateTo({
-						url:"../../xymess/xymess"
+						url:"../../xymess/xymess?yhYwlx='"+item.userDetail.yhYwlx+"'&yhYxqz="+item.userDetail.yhYxqz
 					})
 					
 				}
