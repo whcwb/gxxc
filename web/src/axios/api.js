@@ -4,7 +4,10 @@ let serverDomain='http:///www.520xclm.com';
 // let BASE_URL = 'http://127.0.0.1:9086';
 // let BASE_URL = 'http://192.168.31.35:9086';
 // let BASE_URL = 'http://192.168.31.228:9086'//洋
-let BASE_URL = 'http://192.168.123.69:9006';
+
+// let BASE_URL = 'http://192.168.123.69:9006';
+let BASE_URL='http:///www.520xclm.com:8080/biz';
+
 module.exports = {
     getImgUrl:'http://www.520xclm.com:8001/',
     url: BASE_URL,
