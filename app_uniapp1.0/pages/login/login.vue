@@ -30,7 +30,7 @@
 		data() {
 			return {
 				backgroundDiv: {
-					// backgroundImage:'url(' + require('./file/loginbg.png') + ')',
+					backgroundImage:'url(' + require('./file/loginbg.png') + ')',
 					backgroundRepeat:'no-repeat',
 					backgroundSize:'100% 100%'
 				},
@@ -116,7 +116,7 @@
 
 <style>
 	.loginbg{
-		/* background-image: url('./file/loginbg.png'); */
+		background-image: url('./file/loginbg.png');
 	}
 	.copybtn {
 		width:70%;
