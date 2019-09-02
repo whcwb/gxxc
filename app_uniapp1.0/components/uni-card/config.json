@@ -1,0 +1,9 @@
+{
+	"id": "22",
+	"name": "Card",
+	"desc": "卡片",
+	"url": "card",
+	"edition": "1.1.2",
+	"path": "https://ext.dcloud.net.cn/plugin?id=22",
+    "update_log":"- 修复 依赖组件找不到的问题"
+}

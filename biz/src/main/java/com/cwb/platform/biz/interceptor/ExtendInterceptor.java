@@ -29,7 +29,8 @@ public class ExtendInterceptor extends BaseWebConfigure {
 						,"/app/cd/jxcpager"
 						,"/app/zdxm/getzdxm"
 						,"/app/validateSms"
-						,"/app/resetpwd");//白名单  (前台登录、用户注册、微信登录、下发手机验证码)
+						,"/app/resetpwd"
+						,"/app/wj/uploadWj");//白名单  (前台登录、用户注册、微信登录、下发手机验证码)
 		//SYS系统管理鉴权
 		registry.addInterceptor(new AccessInterceptor(redisDao))
 				.addPathPatterns("/api/**")

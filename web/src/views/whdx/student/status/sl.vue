@@ -20,21 +20,35 @@
 								</Select>
 							</FormItem>
 						</Col>
-						<Col v-show="formItem.slType == '1'" span="12">
+						<Col v-if="formItem.slType == '1'" span="12">
 							<FormItem prop='name' label='医院名称'>
 								<Input v-model="formItem.name" placeholder="请输入医院名称"></Input>
 							</FormItem>
 						</Col>
-						<Col v-show="formItem.slType != '1'" span="12">
+						<Col v-if="formItem.slType != '1'" span="12">
 							<FormItem prop='name' label='驾校名称'>
-								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校...'" label-in-value @on-change="schoolChange">
-									<Option v-for = '(item,index) in schoolList' :value="item.schoolCode" :key="item.schoolCode" :label="item.schoolShortName">{{item.schoolShortName}}</Option>
+								<Select  filterable clearable  v-model="formItem.code" placeholder="请选择驾校..." label-in-value @on-change="schoolChange">
+									<Option v-for = '(item,index) in schoolList' :value="item.val" :key="item.key" :label="item.val">{{item.val}}</Option>
 								</Select>
 							</FormItem>
 						</Col>
 						<Col span="12" v-if="showLsh" >
 							<FormItem prop='lsh' label='流水号'>
 								<Input v-model="formItem.lsh" placeholder="请输入流水号"></Input>
+							</FormItem>
+						</Col>
+						<Col span="12" v-if="showLsh" >
+							<FormItem prop='yhCx' label='车型'>
+								<Select  filterable clearable  v-model="formItem.yhCx" placeholder="请选择车型..." label-in-value @on-change="cxChange">
+									<Option v-for = '(item,index) in cxList' :value="item.val"  :key="item.key" :label="item.val">{{item.val}}</Option>
+								</Select>
+							</FormItem>
+						</Col>
+						<Col span="12" v-if="showLsh" >
+							<FormItem prop='yhYwlx' label='业务类型'>
+								<Select  filterable clearable  v-model="formItem.yhYwlx" placeholder="请选择业务类型..." label-in-value @on-change="ywChange">
+									<Option v-for = '(item,index) in ywList' :value="item.val"  :key="item.key" :label="item.val">{{item.val}}</Option>
+								</Select>
 							</FormItem>
 						</Col>
         			</Row>
@@ -77,6 +91,9 @@
                 ],
                 ruleInline:{
 				},
+				ywList:[
+					{key:'初次申领',val:'初次申领'},{key:'增驾申请',val:'增驾申请'}
+				],
                 foreignList:{
                     code:{url:this.apis.school.QUERY,key:'schoolCode',val:'schoolName',items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
@@ -93,6 +110,7 @@
 				unitName:'',
                 showConfirm:false,
 				schoolList:[],
+				cxList:[],
 				showLsh:false,
 			}
 		},
@@ -101,19 +119,31 @@
 		    this.formItem.slSj = new Date().format('yyyy-MM-dd');
 		    this.formItem.name = '';
 		    this.formItem.code = '';
+		   // console.log(this.formItem.slType)
             this.getHandleStatus();
-            this.getSchoolList();
+            // this.getSchoolList();
+            this.getcxList()
+			this.cxList = this.dictUtil.getByCode(this, "chexing")
+			this.schoolList = this.dictUtil.getByCode(this, "ZDCLK1017")
+			this.$forceUpdate()
 		},
 		mounted(){
 		},
 		methods: {
             typeChange(o){
                 this.formItem.slType = o;
-                this.showLsh = o == '4'
+				this.showLsh = o == '4'
+				this.$forceUpdate()
             },
             schoolChange(o){
                 this.formItem.name = o.label;
             },
+			cxChange(o){
+				this.formItem.yhCx = o.label;
+			},
+			ywChange(o){
+				this.formItem.yhYwlx = o.label;
+			},
             clickStep(index){
                 // alert(index);
             },
@@ -123,6 +153,10 @@
 		                this.schoolList = res.page.list;
 					}
 				})
+			},
+			getcxList(){
+				this.cxList = this.dictUtil.getValByCode(this,'chexing')
+				console.log(this.cxList);
 			},
 		    getUnitName(state){
                 return state === 0 ? '医院名称' : '驾校名称';

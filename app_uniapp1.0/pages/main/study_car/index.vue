@@ -13,7 +13,7 @@
 				<view class="headTip">
 					安全教学{{zyMess.jlJxsl==undefined? 0:zyMess.jlJxsl }}次
 				</view>
-				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;">
+				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;" @click="phone(zyMess.jlJjlxrdh)">
 				<img v-else src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">{{zyMess.yhXm | yhXmZY}}</view>
 				<uni-rate :value="zyMess.jlPf" @change='pjJl'></uni-rate>
@@ -37,8 +37,55 @@
 		</view>
 
 		<view>
+			<view v-if="current == 0  && Sl.lsh" style="padding-top: 1upx;margin-top: 14upx;background:#f8f8f8">
+				<view class="card-control" :style="{width: screenWidth+'px'}">
+					<view class="card-bg  bg-gradual-green text-white" style="box-shadow: 2px 2px 5px #888888;">
+						<view class="card-content">
+							<view class="padding text-xxl text-cut">
+								受理回执
+							</view>
+							<view class="padding"> </view>
+							<view>
+								{{Sl.slSj}}
+							</view>
+						</view>
+						<view v-if="onval" style="text-align: center;padding-top: 20rpx;">
+						    <tki-barcode
+						    ref="barcode"
+							:val="val"
+							:onval="true"
+						    @result="barresult" />
+						</view>
+						<view class="card-function flex justify-around">
+							<block>
+								姓名 : {{Sl.yhXm}}
+							</block>
+						</view>
+						<view class="card-function flex justify-around">
+							<block>
+								业务类型 : {{yhYwlx}}
+							</block>
+						</view>
+						<view class="card-function flex justify-around">
+							<block>
+								准驾车型 : {{Sl.yhCx}}
+							</block>
+						</view>
+						<view class="card-function flex justify-around">
+							<block>
+								驾校 : {{Sl.name}}
+							</block>
+						</view>
+						<view class="card-function flex justify-around">
+							<block>
+								有效期至 :  {{yhYxqz}}
+							</block>
+						</view>
+					</view>
+				</view>
+			</view>
 			<!-- 受理进度 -->
-			<view style="padding-top: 1upx;margin-top: 14upx;background:rgba(254,255,255,1)">
+			<view v-else style="padding-top: 1upx;margin-top: 14upx;background:rgba(254,255,255,1)">
 				<view class="lineC"></view>
 				<view class="tip">
 					<image src="/static/my/no.png" style="border-radius: 50%;left: 12upx;width: 30upx;height: 30upx;"></image>
@@ -73,16 +120,22 @@
 	import segmentedControl from "@/components/seg/segmented-control.vue";
 	import vTab from "@/components/v-tab/v-tab.vue"
 	import mixin from '@/common/mixin.js'
+	import tkiBarcode from "@/components/tki-barcode/tki-barcode.vue"
 	export default {
 		name: "study",
 		components: {
 			uniRate,
 			segmentedControl,
-			vTab
+			vTab,
+			tkiBarcode
 		},
 		mixins:[mixin],
 		data() {
 			return {
+				Sl:{},
+				val:'',
+				onval:false,
+				screenWidth: this.screenWidth,
 				imgUrl:'http://www.520xclm.com:8001/',
 				appMess: [],
                 usermess:{},
@@ -269,6 +322,8 @@
 				payInfo:{},//缴费信息
 				examInfo:[],//考试信息
 				handleStatus:[],
+				yhYxqz:'',
+				yhYwlx:''
 			}
 		},
 		onLaunch() {
@@ -276,24 +331,48 @@
 		},
 		onShow() {
 			this.usermess = uni.getStorageSync('token')
+			this.getSL()
 			console.log('this.curr',this.current);
 			var a = uni.getStorageSync('usermess').yhDqzt
-			this.current = parseInt(a)
+			
 			
 			this.getHandleStatus()// 获取受理状态信息
 			this.getPayInfo()// 缴费信息
 			this.getExamInfo()//考试信息
 			this.getZYmess()//获取专员信息
 			setTimeout(()=>{
-				this.onClickItem(this.current-1)
+				this.onClickItem(parseInt(a))
 			},1000)
-			
-		},
-		onLoad() {
+			this.onval = true
 			this.btnList=Object.assign(this.btnListAll[0])
 			this.itemList=Object.assign(this.itemListAll[0])
 		},
+		onLoad() {
+			
+		},
 		methods: {
+			barresult(){},
+			getSL(){
+				this.$http.get('/app/kssl/query',{yhId:this.usermess.userId,slType:'4'}).then((res)=>{
+					if(res.result){
+						this.Sl = res.result[0]
+						this.val = this.Sl.lsh
+						this.yhYxqz = this.usermess.yhYxqz
+						this.yhYwlx = this.usermess.yhYwlx
+						this.$nextTick(() => {
+							this.onval = true
+						})
+						console.log(this.val,'valvalval');
+					}else{
+						
+					}
+				})
+			},
+			phone(id) {
+				uni.makePhoneCall({
+					phoneNumber: id //仅为示例
+				});
+			},
 			pjJl(val){
 				console.log(val,'val');
 				this.isPJ = true
@@ -426,7 +505,9 @@
 			  })
 			},
 			gouTxt(url){
-			  window.location.href=url
+			  uni.navigateTo({
+			  	url:'wbweb/wbweb?url='+url
+			  })
 			},
 			pay() {
 				// 获取 支付方式
@@ -460,6 +541,9 @@
 						this.current = index;
 						this.btnList = Object.assign(this.btnListAll[index])
 						this.itemList = Object.assign(this.itemListAll[index])
+				}else{
+					this.btnList = Object.assign(this.btnListAll[index])
+					this.itemList = Object.assign(this.itemListAll[index])
 				}
 			},
 			
@@ -595,5 +679,42 @@
 		
 		.uni-view{
 			line-height: none;
+		}
+		.card-function {
+		
+			padding: 30upx 30upx 0 30upx;
+		}
+		
+		.card-function .item {}
+		
+		.card-content {
+			justify-content: space-between;
+			display: flex;
+			border-bottom: 1px solid #dbdbdb;
+			border-top: 0px;
+			border-left: 0px;
+			border-right: 0px;
+		}
+		
+		.card-title {
+			font-size: 70upx;
+			margin-top: 20upx;
+			margin-left: 20upx;
+		}
+		
+		.card-control {
+			padding: 20upx;
+		}
+		
+		.card-id {
+			padding: 10upx;
+		}
+		
+		.card-bg {
+		
+			padding: 10upx;
+			border-radius: 20upx 20upx;
+			min-height: 300upx;
+			background-color:#FFFFFF;
 		}
 </style>

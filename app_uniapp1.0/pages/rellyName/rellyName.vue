@@ -3,8 +3,8 @@
 		<view v-if="!isDone">
 			<view class="personMess">身份信息</view>
 			<view class="inputMess">
-				<input class="uni-input input" v-model="form.name" placeholder="请输入您的真实姓名" />
-				<input class="uni-input input" v-model="form.sfz" style="border-bottom: none;" placeholder="请输入您的身份证号码" />
+				<input class="uni-input input" style="font-size: 16px;height: 40px;margin: 10px 0;" v-model="form.name" placeholder="请输入您的真实姓名" />
+				<input class="uni-input input" style="font-size: 16px;height: 40px;margin: 10px 0; border-bottom: none;" v-model="form.sfz"  placeholder="请输入您的身份证号码" />
 			</view>
 			<view class="personMess">身份证正反面照</view>
 			<view class="IDPhoto">
@@ -193,7 +193,7 @@
 
 	.inputMess {
 		width: 100%;
-		height: 276upx;
+		height: 200upx;
 		background: rgba(255, 255, 255, 1);
 		margin-bottom: 65rpx;
 	}

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "image-tools": "^1.2.0",
     "iview": "^3.4.2",
     "jquery": "^3.3.1",
     "vue-clipboard2": "^0.3.0",

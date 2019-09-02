@@ -51,18 +51,20 @@
 			    v:this,
                 operate:'分配',
 				showModal: true,
-                pagerUrl:this.apis.student.getZyList,
+                pagerUrl:this.apis.teacher.QUERY,
 				readonly: false,
                 form: {
-                    type:"k4",
+                    jlTypeLike:"k4",
                     total: 0,
+                    jlZt:'0',
                     pageNum: 1,
                     pageSize: 8,
                 },
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '账号',key:'yhSjhm',searchKey:'yhSjhmLike'},
+                    {title: '培训车型',key:'jlCx',searchKey:'jlCxLike'},
                     {
                         title: '操作',
                         key: 'action',
@@ -70,7 +72,7 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildButton(this,h,'success','ribbon-b','分配',()=>{
-                                    this.confirm(params.row.id);
+                                    this.confirm(params.row.yhId);
                                 }),
                             ]);
                         }

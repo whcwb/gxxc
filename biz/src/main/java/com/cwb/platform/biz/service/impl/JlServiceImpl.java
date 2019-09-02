@@ -4,27 +4,20 @@ import com.cwb.platform.biz.mapper.BizJlMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.mapper.BizUserMapper;
 import com.cwb.platform.biz.mapper.BizWjMapper;
-import com.cwb.platform.biz.model.BizJl;
-import com.cwb.platform.biz.model.BizUser;
-import com.cwb.platform.biz.model.BizWj;
-import com.cwb.platform.biz.model.BizYjmx;
+import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
-import com.cwb.platform.biz.util.IDNameIdentify;
 import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.mapper.SysClkPtjsMapper;
 import com.cwb.platform.sys.mapper.SysClkPtyhMapper;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
-import com.cwb.platform.sys.model.BizPtyh;
-import com.cwb.platform.sys.model.SysJs;
-import com.cwb.platform.sys.model.SysYh;
-import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.mapper.SysZdxmMapper;
+import com.cwb.platform.sys.model.*;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.EncryptUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.commons.collections4.CollectionUtils;
@@ -38,12 +31,12 @@ import org.springframework.util.ObjectUtils;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlService {
@@ -67,6 +60,11 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
     private SysClkPtjsMapper sysClkPtjsMapper;
     @Autowired
     private SysYhJsMapper sysYhJsMapper;
+    @Autowired
+    private SysZdxmMapper sysZdxmMapper;
+
+    @Autowired
+    private TrainPlaceService placeService;
 
     @Autowired
     private WxMpService wxMpService;
@@ -421,7 +419,78 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
     }
 
    public ApiResponse<String> updateEntity(BizJl entity){
+       String jlCx = entity.getJlCx();
+       RuntimeCheck.ifBlank(jlCx, "培训车型不能为空");
+       String jlType = entity.getJlType();
+       RuntimeCheck.ifBlank(jlType, "培训科目不能为空");
+       SimpleCondition condition = new SimpleCondition(SysZdxm.class);
+       condition.eq(SysZdxm.InnerColumn.zdlmdm, "chexing");
+       condition.in(SysZdxm.InnerColumn.zddm,  Arrays.asList(jlCx.split(",")) );
+       List<SysZdxm> list = sysZdxmMapper.selectByExample(condition);
+       Set<String> collect = list.stream().map(SysZdxm::getZddm).collect(Collectors.toSet());
+       jlCx = String.join(",", collect);
+       entity.setJlCx(jlCx);
+       condition = new SimpleCondition(SysZdxm.class);
+       condition.eq(SysZdxm.InnerColumn.zdlmdm, "JLLX");
+       condition.in(SysZdxm.InnerColumn.zddm,  Arrays.asList(jlType.split(",")) );
+       list = sysZdxmMapper.selectByExample(condition);
+        collect = list.stream().map(SysZdxm::getZddm).collect(Collectors.toSet());
+       jlType = String.join(",", collect);
+       entity.setJlType(jlType);
+       if(StringUtils.isNotBlank(entity.getTrainId())){
+           BizTrainPlace place = placeService.findById(entity.getTrainId());
+           entity.setTrainName(place.getPlaceName());
+       }
        entityMapper.updateByPrimaryKey(entity);
         return ApiResponse.success();
    }
+
+    @Override
+    public ApiResponse<String> saveJl(BizJl bizJl) {
+
+        RuntimeCheck.ifBlank(bizJl.getYhZh(), "用户手机号码不能为空");
+        RuntimeCheck.ifBlank(bizJl.getYhLx(), "教练教学类别不能为空");
+        RuntimeCheck.ifBlank(bizJl.getJlCx(), "教练培训车型不能为空");
+        bizJl.setJlType(bizJl.getYhLx());
+        bizJl.setYhSjhm(bizJl.getYhZh());
+        List<BizJl> jls = findEq(BizJl.InnerColumn.yhSjhm, bizJl.getYhSjhm());
+        RuntimeCheck.ifTrue(CollectionUtils.isNotEmpty(jls), "此用户已添加教练信息 , 请勿重复添加");
+        List<BizPtyh> bizPtyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZh, bizJl.getYhSjhm());
+        RuntimeCheck.ifFalse(CollectionUtils.isNotEmpty(bizPtyhs), "此用户不是平台用户,不能成为教练");
+        BizPtyh ptyh = bizPtyhs.get(0);
+        RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhZt(), "1"), "当前用户尚未实名认证,不能成为教练");
+        bizJl.setYhId(ptyh.getId());
+        bizJl.setYhXm(ptyh.getYhXm());
+        bizJl.setYhZjhm(ptyh.getYhZjhm());
+
+        if(StringUtils.isNotBlank(bizJl.getTrainId())){
+            BizTrainPlace place = placeService.findById(bizJl.getTrainId());
+            RuntimeCheck.ifNull(place, "未找到训练场地信息");
+            bizJl.setTrainName(place.getPlaceName());
+        }
+        if(StringUtils.isBlank(bizJl.getJlImg())){
+            bizJl.setJlImg(ptyh.getYhTx());
+        }
+        bizJl.setCjsj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        bizJl.setJlPf("5");
+        bizJl.setJlShZt("1");
+        bizJl.setJlZt("0");
+        bizJl.setJlJjlxrdh(bizJl.getYhSjhm());
+        bizJl.setJlJjlxr(bizJl.getYhSjhm());
+        save(bizJl);
+        ptyh.setYhJlsh(bizJl.getJlShZt());
+        ptyhService.update(ptyh);
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> updateJlZt(String yhId, String jlZt) {
+        RuntimeCheck.ifBlank(yhId, "请选择教练");
+        List<BizJl> jls = findEq(BizJl.InnerColumn.yhId, yhId);
+        RuntimeCheck.ifTrue(CollectionUtils.isEmpty(jls), "未找到该教练的信息");
+        BizJl jl = jls.get(0);
+        jl.setJlZt(jlZt);
+        update(jl);
+        return ApiResponse.success();
+    }
 }

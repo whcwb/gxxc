@@ -12,10 +12,12 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -105,6 +107,19 @@ public class MessageApi {
             ptyh.setQrcode(url);
             ptyhService.update(ptyh);
         }
+        return ApiResponse.success();
+    }
+
+    @GetMapping("/bindWx")
+    public ApiResponse<String> bindWx(String yqm, String openid){
+        RuntimeCheck.ifBlank(yqm, "请填写邀请码");
+        RuntimeCheck.ifBlank(openid, "请填写openid");
+        List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, yqm);
+        RuntimeCheck.ifTrue(CollectionUtils.isEmpty(ptyhs), "未找到用户信息,请确认邀请码是否正确");
+        BizPtyh ptyh = ptyhs.get(0);
+        RuntimeCheck.ifTrue(StringUtils.isNotBlank(ptyh.getYhOpenId()), "您已绑定微信号,请勿重复绑定");
+        ptyh.setYhOpenId(openid);
+        ptyhService.update(ptyh);
         return ApiResponse.success();
     }
 

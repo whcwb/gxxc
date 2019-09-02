@@ -14,16 +14,16 @@
 			:mask-closable="false" :title="operate+''">
 			<div style="overflow: auto;height: 500px;">
 				<Tabs>
-					<Tab-pane v-if="state == 0" label="受理专员" icon="ios-download-outline">
+					<Tab-pane v-if="state == 0" label="受理教练" icon="ios-download-outline">
 						<allot1 :item="item" :parent="v"></allot1>
 					</Tab-pane>
-					<Tab-pane v-if="state == 1" label="科一专员" icon="ios-upload-outline">
+					<Tab-pane v-if="state == 1" label="科一教练" icon="ios-upload-outline">
 						<allot2 :item="item" :parent="v"></allot2>
 					</Tab-pane>
-					<Tab-pane v-if="state == 2" label="科二专员" icon="ios-upload-outline">
+					<Tab-pane v-if="state == 2" label="科二教练" icon="ios-upload-outline">
 						<allot3 :item="item" :parent="v"></allot3>
 					</Tab-pane>
-					<Tab-pane v-if="state == 3" label="科三专员" icon="ios-upload-outline">
+					<Tab-pane v-if="state == 3" label="科三教练" icon="ios-upload-outline">
 						<allot4 :item="item" :parent="v"></allot4>
 					</Tab-pane>
 				</Tabs>

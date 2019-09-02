@@ -111,6 +111,21 @@ public class BizJl implements Serializable {
     @Column(name = "JL_JXSL")
     private Integer jlJxsl;
 
+    @Column(name = "jl_type")
+    private String jlType;
+
+    @Column(name = "jl_zt")
+    private String jlZt;
+
+    @Column(name = "JL_CX")
+    private String jlCx;
+
+    @Column(name = "TRAIN_ID")
+    private String trainId;
+
+    @Column(name = "TRAIN_NAME")
+    private String trainName;
+
     /**
      * 上传个人文件，以","进行分隔。
      */
@@ -133,6 +148,44 @@ public class BizJl implements Serializable {
      */
     @Transient
     private Integer yhFz;
+
+    @Transient
+    private String yhZh;
+
+    @Transient
+    private String yhLx;
+
+    public String getYhZh() {
+        return yhZh;
+    }
+
+    public void setYhZh(String yhZh) {
+        this.yhZh = yhZh;
+    }
+
+    public String getTrainId() {
+        return trainId;
+    }
+
+    public void setTrainId(String trainId) {
+        this.trainId = trainId;
+    }
+
+    public String getTrainName() {
+        return trainName;
+    }
+
+    public void setTrainName(String trainName) {
+        this.trainName = trainName;
+    }
+
+    public String getYhLx() {
+        return yhLx;
+    }
+
+    public void setYhLx(String yhLx) {
+        this.yhLx = yhLx;
+    }
 
     public Integer getJlJxsl() {
         return jlJxsl;
@@ -190,6 +243,22 @@ public class BizJl implements Serializable {
 
     public void setJlShZt(String jlShZt) {
         this.jlShZt = jlShZt;
+    }
+
+    public String getJlType() {
+        return jlType;
+    }
+
+    public void setJlType(String jlType) {
+        this.jlType = jlType;
+    }
+
+    public String getJlZt() {
+        return jlZt;
+    }
+
+    public void setJlZt(String jlZt) {
+        this.jlZt = jlZt;
     }
 
     /**
@@ -444,6 +513,14 @@ public class BizJl implements Serializable {
         this.jlMs = jlMs;
     }
 
+    public String getJlCx() {
+        return jlCx;
+    }
+
+    public void setJlCx(String jlCx) {
+        this.jlCx = jlCx;
+    }
+
     public enum InnerColumn {
         yhId("YH_ID"),
         yhXm("YH_XM"),
@@ -458,7 +535,10 @@ public class BizJl implements Serializable {
         jlZz("JL_ZZ"),
         jlPf("JL_PF"),
         jlImg("JL_IMG"),
-        jlMs("JL_MS");
+        jlMs("JL_MS"),
+        jlType("JL_TYPE"),
+        jlZt("JL_ZT"),
+        jlCx("JL_CX");
 
         private final String column;
 

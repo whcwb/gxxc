@@ -67,7 +67,7 @@ module.exports = {
         DELE:'/api/ksjf/removeIds',
         DJF:'/api/ksjf/waitPaymentList',
         batchImport:'/api/ksjf/batchImport',
-        EXPORT:'/pub/ksjf/export',
+        EXPORT:'/pub/ksjf/exportKm',
     },
     chat:{
         QUERY:'/api/msg/getUserList',
@@ -127,15 +127,17 @@ module.exports = {
         getUserCoachEvaluate:'/api/ptyh/updateSfsd',//获取用户对教练的评分
         getPaymentRecord:'/api/ptyh/getPaymentRecord',//获取用户进度信息
         status_query:'/api/ptyh/status-query',//获取用户进度信息
-        getZyList:'/api/ptyh/getZyList',//获取专员列表
+        getZyList:'/api/ptyh/getZyList',//获取教练列表
     },
     teacher:{
         QUERY:'/api/jl/pager',//平台用户管理
         ADD:'/api/jl/save',
+        ADDJL:'/api/jl/saveJl',
         CHANGE:'/api/jl/update',
         DELE:'/api/jl/removeIds',
         getById:'/api/jl/',
         updateyhrz:'/api/jl/updateyhrz',// 更新教练认证状态
+        updateJlZt: '/api/jl/updateJlzt'
     },
     user:{
         QUERY:'/api/user/pager',//用户实名表

@@ -14,6 +14,7 @@ public class StatusModel {
     private String yhZjhm;
     private String yhXyYkType;
     private String yhXySlType;
+    private String cjsj;
 
     private BizKsYk km1;
     private BizKsYk km2;
@@ -27,6 +28,7 @@ public class StatusModel {
     private BizPtyh zy4; // 四阶段专员
 
     public StatusModel(BizPtyh ptyh){
+        this.cjsj = ptyh.getCjsj();
         this.id = ptyh.getId();
         this.yhXm = ptyh.getYhXm();
         this.yhZh = ptyh.getYhZh();

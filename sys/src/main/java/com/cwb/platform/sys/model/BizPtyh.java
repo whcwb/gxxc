@@ -226,6 +226,21 @@ public class BizPtyh implements Serializable {
     @Column(name = "QRCODE")
     private String qrcode;
 
+    @Column(name = "YH_NUM")
+    private String yhNum;
+
+    @Column(name = "YH_YXQZ")
+    private String yhYxqz;
+
+    @Column( name = "YH_CX")
+    private String yhCx;
+
+    @Column(name = "YH_YWLX")
+    private String yhYwlx;
+
+    @Column(name = "YH_LSH")
+    private String yhLsh;
+
     /**
      * 手机验证码
      */
@@ -331,7 +346,12 @@ public class BizPtyh implements Serializable {
         yhFpms("YH_FPMS"),
         yhXySlType("YH_XY_SL_TYPE"),
         yhSfsd("YH_SFSD"),
-        qrcode("QRCODE");
+        qrcode("QRCODE"),
+        yhNum("YH_NUM"),
+        yhYxqz("YH_YXQZ"),
+        yhCx("YH_CX"),
+        yhYwlx("YH_YWLX"),
+        yhLsh("YH_LSH");
 
         private final String column;
 

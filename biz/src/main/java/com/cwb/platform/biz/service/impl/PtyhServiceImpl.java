@@ -573,6 +573,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     public ApiResponse<String> userEnroll(BizPtyh entity, HttpServletRequest request) throws IOException,
             WxErrorException {
 
+
         RuntimeCheck.ifBlank(entity.getYhZh(), "用户账户不能为空");
         String s = redisDao.boundValueOps(entity.getYhZh()).get();
         if(StringUtils.isBlank(s)){
@@ -720,7 +721,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizUser bizUser = new BizUser();
         if (StringUtils.isNotBlank(entity.getYhZjhm()) && StringUtils.isNotBlank(entity.getYhXm())) {
 
-            String identify = IDNameIdentify.identify(entity.getYhZjhm(), entity.getYhXm());
+            String identify = IDNameIdentify.indentifyIdCard(entity.getYhZjhm(), entity.getYhXm());
             RuntimeCheck.ifFalse(StringUtils.equals(identify, "200"), identify);
             newEntity.setYhXm(entity.getYhXm());//用户姓名
             newEntity.setYhBm(entity.getYhBm());//用户别名
@@ -1009,7 +1010,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             wjMapper.deleteBatch(user.getId(), wjSxList);
             wjMapper.insertBatch(wjList);
         }
-        String identify = IDNameIdentify.identify(CardCode, entity.getYhXm());
+        String identify = IDNameIdentify.indentifyIdCard(CardCode, entity.getYhXm());
         RuntimeCheck.ifFalse(StringUtils.equals(identify, "200"), identify);
         BizPtyh newEntity = new BizPtyh();
         newEntity.setId(user.getId());
@@ -1052,23 +1053,37 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         int i = update(newEntity);
         if (i > 0) {
-            // 实名认证成功 , 添加一条体现记录
+            String yhSjid = "";//设置上级ID
+            String yhSsjid = "";//上上级ID
 
-           /* BizZh bizZh = new BizZh();
-            bizZh.setYhId(user.getId());
-            bizZh.setYhTxdj(0d);
-            bizZh.setYhZhye(-20000d);
-            zhService.save(bizZh);*/
-            userMapper.deleteByPrimaryKey(user.getId());
-            //插入用户实名表  biz_user
+            String yhYyyqm = user.getYhYyyqm();//该用户的父级ID
+            SimpleCondition newCondition = new SimpleCondition(BizPtyh.class);
+            newCondition.eq(BizPtyh.InnerColumn.yhZsyqm.name(), yhYyyqm);
+            List<BizPtyh> bizPtyhsList = ptyhService.findByCondition(newCondition);
+            if (bizPtyhsList == null) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+            if (bizPtyhsList.size() != 1) return ApiResponse.fail("用户资料存在异常，请联系管理处理!");
+            String pUserId = bizPtyhsList.get(0).getId();//获取出父级ID
+            yhSjid = pUserId;
+            BizUser pBizUser = userMapper.selectByPrimaryKey(yhSjid);//获取出上上级ID
+            if (pBizUser != null) {
+                yhSsjid = pBizUser.getYhSjid();
+            }
+            yhSfyjz = "0";
+            if (StringUtils.isNotEmpty(entity.getYhSfyjz())) {
+                yhSfyjz = entity.getYhSfyjz();
+            }
+
+            //修改用户实名表  biz_user
             BizUser bizUser = new BizUser();
             bizUser.setYhId(user.getId());//用户ID
             bizUser.setYhZjhm(entity.getYhZjhm());//用户证件号码
             bizUser.setYhSjhm(user.getYhZh());//用户账户
-            bizUser.setYhSfjsz(newEntity.getYhSfyjz());//设置是否有驾驶证(1:有 2:没有)
+            bizUser.setYhSfjsz(yhSfyjz);//设置是否有驾驶证(1:有 2:没有)
             bizUser.setYhXm(entity.getYhXm());//姓名
             bizUser.setCjsj(DateUtils.getNowTime());//创建时间
-            i = userMapper.insert(bizUser);
+            bizUser.setYhSjid(yhSjid);//设置上级ID
+            bizUser.setYhSsjid(yhSsjid);//上上级ID
+            userMapper.updateByPrimaryKey(bizUser);
         }
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
@@ -1185,7 +1200,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             yhSfyjz = entity.getYhSfyjz();
         }
 
-        String identify = IDNameIdentify.identify(cfzh, xm);
+        String identify = IDNameIdentify.indentifyIdCard(cfzh, xm);
         RuntimeCheck.ifFalse(StringUtils.equals("200", identify), identify);
 
         //修改用户实名表  biz_user

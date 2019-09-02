@@ -64,18 +64,23 @@
 		mixins:[mixin],
 		methods: {
 			appTx(){
+				// this.toChooseBank()  //提现到银行卡方式
+				
 				var self = this 
 				var openid = uni.getStorageSync('openid')
 				if(openid && openid!=''&& openid != undefined){
 				   this.Tx()
 				}else{
-				   uni.showModal({
+				   uni.showModal({ 
 				       title: '提示',
 				       content: '首次提现需授权绑定微信账号',
 					   confirmText:'去绑定',
 				       success: function (res) {
 				           if (res.confirm) {
-				              self.wxLog()
+				              // self.wxLog() //微信绑定方式
+							  uni.navigateTo({  //手动绑定方式
+							  	url:"wxBind/wxBind"
+							  })
 				           } else if (res.cancel) {
 				               console.log('用户点击取消');
 				           }
@@ -169,7 +174,7 @@
 				})
 
 				//提现明细
-				this.$http.post(this.apis.ZDLIST, {zjFs: -1,pageSize: 10,pageNum: 1}).then(res => {
+				this.$http.post(this.apis.ZDLIST, {zjFs: -1,pageSize: 10,pageNum: 1,mxLx:'4'}).then(res => {
 					if (res.code == 200) {
 						this.mxList=res.page.list
 					}else{

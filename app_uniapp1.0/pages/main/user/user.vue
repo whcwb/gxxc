@@ -151,13 +151,13 @@ import share from "@/common/share.js"
 				});
 			},
 			toPage(item) {
-				if(item.toPath=='/pages/main/user/mystudent/mystudent' && this.user.yhLx != 'zy'){
-					uni.showModal({
-						content: '您不是教练,无权访问!',
-						showCancel: false
-					});
-					return
-				}
+				// if(item.toPath=='/pages/main/user/mystudent/mystudent' && this.user.yhLx != 'zy'){
+				// 	uni.showModal({
+				// 		content: '您不是教练,无权访问!',
+				// 		showCancel: false
+				// 	});
+				// 	return
+				// }
 				if (item.text == '立即缴费' && this.user.yhZt != '1') { //源控制语句
 					//弹出提示框
 					return

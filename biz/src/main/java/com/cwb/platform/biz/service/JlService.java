@@ -12,4 +12,8 @@ public interface JlService extends BaseService<BizJl,String>{
     ApiResponse<String> updateYhRz(BizPtyh obd);
 
     ApiResponse<String> updateEntity(BizJl entity);
+
+    ApiResponse<String> saveJl(BizJl bizJl);
+
+    ApiResponse<String> updateJlZt(String yhId, String jlZt);
 }
