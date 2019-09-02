@@ -10,10 +10,10 @@
             </Select>
         </span>
         <Button v-if="showSearchButton" type="primary" @click="parent.util.getPageData(parent)">
-            <Icon type="search"></Icon>
+            <Icon type="md-search"></Icon>
         </Button>
         <Button v-if="showCreateButton" type="primary" @click="parent.util.add(parent)">
-            <Icon type="plus-round"></Icon>
+            <Icon type="md-add"></Icon>
         </Button>
     </span>
 </template>

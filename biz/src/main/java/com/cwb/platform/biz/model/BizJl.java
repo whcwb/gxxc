@@ -120,6 +120,12 @@ public class BizJl implements Serializable {
     @Column(name = "JL_CX")
     private String jlCx;
 
+    @Column(name = "TRAIN_ID")
+    private String trainId;
+
+    @Column(name = "TRAIN_NAME")
+    private String trainName;
+
     /**
      * 上传个人文件，以","进行分隔。
      */
@@ -155,6 +161,22 @@ public class BizJl implements Serializable {
 
     public void setYhZh(String yhZh) {
         this.yhZh = yhZh;
+    }
+
+    public String getTrainId() {
+        return trainId;
+    }
+
+    public void setTrainId(String trainId) {
+        this.trainId = trainId;
+    }
+
+    public String getTrainName() {
+        return trainName;
+    }
+
+    public void setTrainName(String trainName) {
+        this.trainName = trainName;
     }
 
     public String getYhLx() {
