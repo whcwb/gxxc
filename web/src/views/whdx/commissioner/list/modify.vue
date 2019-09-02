@@ -121,7 +121,7 @@
             handleSuccess(res, file) {
                 console.log(res);
                 console.log(file);
-                this.formItem.jlImg = res.mess
+                this.formItem.jlImg = res.message
             },
             getData(id) {
                 this.$http.get(this.apis.teacher.getById + id).then((res) => {
