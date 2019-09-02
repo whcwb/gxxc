@@ -1,246 +1,251 @@
 <style lang="less">
-	@import '../styles/common.less';
-    @import './login.less';
-	.loginForm{
-		width: 400px;
-		position:absolute;
-		top:250px;
-		right: 290px;
-		float: right;
-		display: inline-block;
-		background-image: url('/static/login-card.jpg');
-		background-size: cover;
-		padding: 16px;
-	}
-	.loginBg{
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
-		width: 100%;
-		height: 100%;
-		text-align: center;
-		background:rgba(0,0,0,0.5);
-	}
+      @import '../styles/common.less';
+      @import './login.less';
 
-	.login-top{
-		text-align: center;
-	}
-	.loginImg{
-		width: 50%;
-	}
-	.login{
-		background-color: rgba(0,0,0,0.5);
-	    .imgLeft{
-	    	position: relative;
-	    	.loginImg{
-	    		width: 90%;
-	    		position: absolute;
-	    		bottom: 0;
-			    border-radius: 50px;
-	    	}
-	    }
-	    .from{
-	    	/*position: relative;*/
-	    	.loginTiT{
-	    		/*position: absolute;*/
-	    		/*top: -50px;*/
-	    		text-align: center;
+      .loginForm {
+            width: 400px;
+            position: absolute;
+            top: 250px;
+            right: 290px;
+            float: right;
+            display: inline-block;
+            background-image: url('/static/login-card.jpg');
+            background-size: cover;
+            padding: 16px;
+      }
 
-	    	}
-	    	.fromList{
-	    		padding-top: 10px;
-	    	}
-	    }
+      .loginBg {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+      }
 
-    }
+      .login-top {
+            text-align: center;
+      }
+
+      .loginImg {
+            width: 50%;
+      }
+
+      .login {
+            background-color: rgba(0, 0, 0, 0.5);
+            .imgLeft {
+                  position: relative;
+                  .loginImg {
+                        width: 90%;
+                        position: absolute;
+                        bottom: 0;
+                        border-radius: 50px;
+                  }
+            }
+            .from {
+                  /*position: relative;*/
+                  .loginTiT {
+                        /*position: absolute;*/
+                        /*top: -50px;*/
+                        text-align: center;
+
+                  }
+                  .fromList {
+                        padding-top: 10px;
+                  }
+            }
+
+      }
 </style>
 
 <template>
-    <div class="login" @keydown.enter="handleSubmit" >
-		<div class="loginForm">
-			<Row>
-				<div class="login-top">
-					<h2 style="color: white">用户登录</h2><br>
-					<img class="loginImg" src="/static/login-left.png" alt="" />
-				</div>
-			</Row>
-			<Row>
-				<div class="body-O from">
-					<Form ref="loginForm" :model="form" :rules="rules">
-						<div class="fromList">
-							<FormItem prop="username">
-								<Input v-model="form.username" placeholder="请输入用户名"  >
-								<span slot="prepend">
+      <div class="login" @keydown.enter="handleSubmit">
+            <div class="loginForm">
+                  <Row>
+                        <div class="login-top">
+                              <h2 style="color: white">用户登录</h2><br>
+                              <img class="loginImg" src="/static/login-left.png" alt=""/>
+                        </div>
+                  </Row>
+                  <Row>
+                        <div class="body-O from">
+                              <Form ref="loginForm" :model="form" :rules="rules">
+                                    <div class="fromList">
+                                          <FormItem prop="username">
+                                                <Input v-model="form.username" placeholder="请输入用户名">
+                                                <span slot="prepend">
 		                                    <Icon :size="16" type="person"></Icon>
 		                                </span>
-								</Input>
-							</FormItem>
-						</div>
-						<div class="fromList">
-							<FormItem prop="password">
-								<Input type="password" v-model="form.password" placeholder="请输入密码"  >
-								<span slot="prepend">
+                                                </Input>
+                                          </FormItem>
+                                    </div>
+                                    <div class="fromList">
+                                          <FormItem prop="password">
+                                                <Input type="password" v-model="form.password" placeholder="请输入密码">
+                                                <span slot="prepend">
 		                                    <Icon :size="14" type="locked"></Icon>
 		                                </span>
-								</Input>
-							</FormItem>
-						</div>
-						<FormItem>
-							<Button @click="handleSubmit" type="primary" long>登录</Button>
-						</FormItem>
-					</Form>
-				</div>
-			</Row>
-		</div>
-    </div>
+                                                </Input>
+                                          </FormItem>
+                                    </div>
+                                    <FormItem>
+                                          <Button @click="handleSubmit" type="primary" long>登录</Button>
+                                    </FormItem>
+                              </Form>
+                        </div>
+                  </Row>
+            </div>
+      </div>
 </template>
 
 <script>
-import Cookies from 'js-cookie';
+    import Cookies from 'js-cookie';
 
-import menuList from '../data/list'
-import {appRouter} from '../router/router';
-export default {
-    data () {
-        return {
-        	SpinShow:false,
-            form: {
-                username: 'admini',
-                password: 'THXC-Web123**'
-            },
-            menus:[],
-            rules: {
-                username: [
-                    { required: true, message: '账号不能为空', trigger: 'blur' }
-                ],
-                password: [
-                    { required: true, message: '密码不能为空', trigger: 'blur' }
-                ]
+    import menuList from '../data/list'
+    import {appRouter} from '../router/router';
+
+    export default {
+        data() {
+            return {
+                SpinShow: false,
+                form: {
+                    username: 'admini',
+                    password: 'THXC-Web123**'
+                },
+                menus: [],
+                rules: {
+                    username: [
+                        {required: true, message: '账号不能为空', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '密码不能为空', trigger: 'blur'}
+                    ]
+                }
+            };
+        },
+        computed: {
+            title() {
+                return this.$store.state.app.title;
             }
-        };
-    },
-	computed:{
-		title(){
-		    return this.$store.state.app.title;
-		}
-	},
-    created(){
-        menuList.menuTree = [];
-    },
-    methods: {
-        handleSubmit () {
-        	var v = this
-            this.$refs.loginForm.validate((valid) => {
-                if (valid) {
-                	v.SpinShow = true
-                	v.$http.post(this.apis.LOGIN.QUERY, this.form).then((res) =>{
-                		if(res.code===200) {
-                            Cookies.set('usermess', this.form.username);
-                            Cookies.set('result', res.result);
-                            sessionStorage.setItem("userInfo",JSON.stringify(res.result.userInfo));
-                            v.initDict();
-                            v.getMenuTree();
+        },
+        created() {
+            menuList.menuTree = [];
+        },
+        methods: {
+            handleSubmit() {
+                var v = this
+                this.$refs.loginForm.validate((valid) => {
+                    if (valid) {
+                        v.SpinShow = true
+                        v.$http.post(this.apis.LOGIN.QUERY, this.form).then((res) => {
+                            if (res.code === 200) {
+                                Cookies.set('usermess', this.form.username);
+                                Cookies.set('result', res.result);
+                                sessionStorage.setItem("userInfo", JSON.stringify(res.result.userInfo));
+                                v.initDict();
+                                v.getMenuTree();
+                                v.SpinShow = false
+                            } else if (res.code === 500) {
+                                this.$Message.error(res.message);
+                                this.form.username = '';
+                                this.form.password = '';
+                            } else {
+                                this.$Message.error("用户登陆失败，请重试！");
+                                this.form.username = '';
+                                this.form.password = '';
+                            }
                             v.SpinShow = false
-                        }else if(res.code===500){
-                            this.$Message.error(res.message);
-                            this.form.username='';
-                            this.form.password='';
-                		}else{
-                            this.$Message.error("用户登陆失败，请重试！");
-                            this.form.username='';
-                            this.form.password='';
-                		}
-                		v.SpinShow = false
-                	}).catch((error) =>{
-                		v.SpinShow = false
-                		log('error',error)
-                	})
-                }
-            }),
-            setTimeout(()=>{
-            	v.SpinShow = false
-            },500)
-        },
-        getMenuTree(){
-        	var v = this
-        	this.$http.get(this.apis.USERROOT.GET_MENU_TREE).then((res) =>{
-        		if(res.code===200){
-                    v.session.setItem('menuList',res.result)
+                        }).catch((error) => {
+                            v.SpinShow = false
+                            log('error', error)
+                        })
+                    }
+                }),
+                    setTimeout(() => {
+                        v.SpinShow = false
+                    }, 500)
+            },
+            getMenuTree() {
+                var v = this
+                this.$http.get(this.apis.USERROOT.GET_MENU_TREE).then((res) => {
+                    if (res.code === 200) {
+                        v.session.setItem('menuList', res.result)
 //                  menuList.menuTree = res.result;
-                    this.addToMenuList(res.result);
-                    this.$router.push('home')
+                        this.addToMenuList(res.result);
+                        this.$router.push('home')
 
-                }
-        	}).catch((error) =>{
-        		log(error)
-        	})
-        },
-        addToMenuList(list){
-            for(let r of list){
-                menuList.menuList.push(r.name);
-                if (r.children){
-                    this.addToMenuList(r.children);
-                }
-            }
-        },
-        getMenuList(){
-        	this.$http.get(this.apis.USERROOT.GET_MENU_LIST).then((res) =>{
-        		if(res.code===200){
-                    menuList.menuList = res.result;
-        		    this.getMenuTree();
-                }
-        	}).catch((error) =>{
-        		log(error)
-        	})
-        },
-        addToList(list){
-            for (let r of list){
-                this.menus.push(r);
-                if (r.children){
-                    for (let c of r.children){
-                        c.pid = r.name;
                     }
-                    this.addToList(r.children);
+                }).catch((error) => {
+                    log(error)
+                })
+            },
+            addToMenuList(list) {
+                for (let r of list) {
+                    menuList.menuList.push(r.name);
+                    if (r.children) {
+                        this.addToMenuList(r.children);
+                    }
                 }
-            }
-        },
-        initDict(){
-            this.$http.get(this.apis.DICTIONARY.QUERY,{params:{pageSize:10000}}).then((res) =>{
-                if(res.code===200){
-                    let dictMap = new Map();
-                    for (let r of res.page.list){
-                        let a = [];
-                        for (let e of r.zdxmList){
-                            a.push({key:e.zddm,val:e.zdmc,color:e.by1});
+            },
+            getMenuList() {
+                this.$http.get(this.apis.USERROOT.GET_MENU_LIST).then((res) => {
+                    if (res.code === 200) {
+                        menuList.menuList = res.result;
+                        this.getMenuTree();
+                    }
+                }).catch((error) => {
+                    log(error)
+                })
+            },
+            addToList(list) {
+                for (let r of list) {
+                    this.menus.push(r);
+                    if (r.children) {
+                        for (let c of r.children) {
+                            c.pid = r.name;
                         }
-                        dictMap.set(r.lmdm,a)
+                        this.addToList(r.children);
                     }
-                    this.session.setItem('dictMap',dictMap)
                 }
-            }).catch((error) =>{
-                log(error)
-            })
-        },
-        initMenu(){
-            this.addToList(appRouter,this.menus);
-            for (let r of this.menus){
-                delete r.children;
-                delete r.component;
-            }
+            },
+            initDict() {
+                this.$http.get(this.apis.DICTIONARY.QUERY, {params: {pageSize: 10000}}).then((res) => {
+                    if (res.code === 200) {
+                        let dictMap = new Map();
+                        for (let r of res.page.list) {
+                            let a = [];
+                            for (let e of r.zdxmList) {
+                                a.push({key: e.zddm, val: e.zdmc, color: e.by1});
+                            }
+                            dictMap.set(r.lmdm, a)
+                        }
+                        this.session.setItem('dictMap', dictMap)
+                    }
+                }).catch((error) => {
+                    log(error)
+                })
+            },
+            initMenu() {
+                this.addToList(appRouter, this.menus);
+                for (let r of this.menus) {
+                    delete r.children;
+                    delete r.component;
+                }
 
-            let params = {menus:JSON.stringify(this.menus)}
-            this.$http.post(this.apis.USERROOT.INIT_MENU,params).then((res) =>{
-                if(res.code===200){
-                    log(res);
-                }
-            }).catch((error) =>{
-                log(error)
-            })
+                let params = {menus: JSON.stringify(this.menus)}
+                this.$http.post(this.apis.USERROOT.INIT_MENU, params).then((res) => {
+                    if (res.code === 200) {
+                        log(res);
+                    }
+                }).catch((error) => {
+                    log(error)
+                })
+            }
         }
-    }
-};
+    };
 </script>
 
 <style>
