@@ -4,12 +4,8 @@ import com.cwb.platform.biz.mapper.BizJlMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.mapper.BizUserMapper;
 import com.cwb.platform.biz.mapper.BizWjMapper;
-import com.cwb.platform.biz.model.BizJl;
-import com.cwb.platform.biz.model.BizUser;
-import com.cwb.platform.biz.model.BizWj;
-import com.cwb.platform.biz.model.BizYjmx;
+import com.cwb.platform.biz.model.*;
 import com.cwb.platform.biz.service.*;
-import com.cwb.platform.biz.util.IDNameIdentify;
 import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.mapper.SysClkPtjsMapper;
@@ -22,26 +18,19 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.EncryptUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bouncycastle.crypto.agreement.ECDHCUnifiedAgreement;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import tk.mybatis.mapper.common.Mapper;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +62,9 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
     private SysYhJsMapper sysYhJsMapper;
     @Autowired
     private SysZdxmMapper sysZdxmMapper;
+
+    @Autowired
+    private TrainPlaceService placeService;
 
     @Autowired
     private WxMpService wxMpService;
@@ -445,6 +437,10 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         collect = list.stream().map(SysZdxm::getZddm).collect(Collectors.toSet());
        jlType = String.join(",", collect);
        entity.setJlType(jlType);
+       if(StringUtils.isNotBlank(entity.getTrainId())){
+           BizTrainPlace place = placeService.findById(entity.getTrainId());
+           entity.setTrainName(place.getPlaceName());
+       }
        entityMapper.updateByPrimaryKey(entity);
         return ApiResponse.success();
    }
@@ -466,6 +462,12 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
         bizJl.setYhId(ptyh.getId());
         bizJl.setYhXm(ptyh.getYhXm());
         bizJl.setYhZjhm(ptyh.getYhZjhm());
+
+        if(StringUtils.isNotBlank(bizJl.getTrainId())){
+            BizTrainPlace place = placeService.findById(bizJl.getTrainId());
+            RuntimeCheck.ifNull(place, "未找到训练场地信息");
+            bizJl.setTrainName(place.getPlaceName());
+        }
         if(StringUtils.isBlank(bizJl.getJlImg())){
             bizJl.setJlImg(ptyh.getYhTx());
         }
