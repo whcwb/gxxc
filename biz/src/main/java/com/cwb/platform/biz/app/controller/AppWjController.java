@@ -6,22 +6,24 @@ import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
+import com.cwb.platform.util.commonUtil.SnowflakeIdWorker;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,29 @@ public class AppWjController extends AppUserBaseController {
     private String credentialsPath;
     @Autowired
     private StringRedisTemplate redisDao;
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
+
+
+    @PostMapping("/uploadWj")
+    public ApiResponse<String> uploadWj(@RequestParam("file") MultipartFile file, String  userId){
+        RuntimeCheck.ifBlank(userId, "请上传用户id");
+        //  上传学生证
+        String fileName = DateTime.now().toString("yyyy-MM-dd") + "/" +  userId  + "-"  + file.getOriginalFilename();
+        try {
+            InputStream stream = file.getInputStream();
+            FileUtils.copyInputStreamToFile(stream, new File(fileName));
+            BizWj bizWj = new BizWj();
+            bizWj.setId(snowflakeIdWorker.nextId() + "");
+            bizWj.setCjsj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+            bizWj.setWjTpdz(fileName);
+            bizWj.setWjSx("31");
+            service.save(bizWj);
+        } catch (IOException e) {
+            RuntimeCheck.ifTrue(true, "文件上传失败");
+        }
+        return  ApiResponse.success();
+    }
 
     /**
      * 根据对象字段值查询数据
