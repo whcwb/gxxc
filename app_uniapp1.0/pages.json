@@ -1,16 +1,16 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页,
-	    {
-	    "path" : "pages/welcome/welcome",
-	    "style" : {
-			"navigationStyle":"custom"
-		}
+		{
+			"path": "pages/welcome/welcome",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		},
-		 {
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录",
-				"navigationStyle":"custom"
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -79,7 +79,7 @@
 			"path": "pages/main/team/index",
 			"style": {
 				"navigationBarTitleText": "团队",
-				"enablePullDownRefresh": true,//就是这个
+				"enablePullDownRefresh": true, //就是这个
 				"h5": {
 					"titleNView": true
 				}
@@ -120,82 +120,79 @@
 			"style": {
 				"navigationBarTitleText": "学员服务协议"
 			}
-		},{
+		}, {
 			"path": "pages/rellyName/rellyName",
 			"style": {
 				"navigationBarTitleText": "实名认证"
 			}
-		},{
+		}, {
 			"path": "pages/yqJl/yqJl",
 			"style": {
 				"navigationBarTitleText": "邀请奖励"
 			}
-		},{
+		}, {
 			"path": "pages/myTeam/myTeam",
 			"style": {
 				"navigationBarTitleText": "我的-我的团队"
 			}
-		}
-	    ,{
-            "path" : "pages/goMoney/goMoney",
-            "style" : {
+		}, {
+			"path": "pages/goMoney/goMoney",
+			"style": {
 				"navigationBarTitleText": "购买服务"
 			}
-        }
-        ,{
-            "path" : "pages/main/p_index/jkzn/jkzn",
-            "style" : {
+		}, {
+			"path": "pages/upStudentImg/index",
+			"style": {
+				"navigationBarTitleText": "学生证上传"
+			}
+		}, {
+			"path": "pages/main/p_index/jkzn/jkzn",
+			"style": {
 				"navigationBarTitleText": "法律法规",
 				"h5": {
 					"titleNView": true
 				}
 			}
-        }
-        ,{
-            "path" : "pages/main/p_index/bkjf/bkjf",
-            "style" : {
+		}, {
+			"path": "pages/main/p_index/bkjf/bkjf",
+			"style": {
 				"navigationBarTitleText": "驾考指南",
 				"h5": {
 					"titleNView": true
 				}
 			}
-        }
-        ,{
-            "path" : "pages/main/p_index/plfw/plfw",
-            "style" : {
+		}, {
+			"path": "pages/main/p_index/plfw/plfw",
+			"style": {
 				"navigationBarTitleText": "交通标志",
 				"h5": {
 					"titleNView": true
 				}
 			}
-        }
-        ,{
-            "path" : "pages/main/p_index/kcfb/kcfb",
-            "style" : {
+		}, {
+			"path": "pages/main/p_index/kcfb/kcfb",
+			"style": {
 				"navigationBarTitleText": "学车流程",
 				"h5": {
 					"titleNView": true
 				}
 			}
-        }
-        ,{
-            "path" : "pages/xgpwd/xgpwd",
-            "style" : {
+		}, {
+			"path": "pages/xgpwd/xgpwd",
+			"style": {
 				"navigationBarTitleText": "修改密码",
 				"h5": {
 					"titleNView": true
 				}
 			}
-        }
-        ,{
-            "path" : "pages/myMess/myMess",
-            "style" : {
+		}, {
+			"path": "pages/myMess/myMess",
+			"style": {
 				"navigationBarTitleText": "个人信息"
 			}
-        }
-        ,{
-            "path" : "pages/chooseBank/chooseBank",
-            "style" : {
+		}, {
+			"path": "pages/chooseBank/chooseBank",
+			"style": {
 				"navigationBarTitleText": "选择提现银行卡",
 				"app-plus": {
 					"titleNView": {
@@ -207,10 +204,9 @@
 					}
 				}
 			}
-        }
-        ,{
-            "path" : "pages/addBankCard/addBankCard",
-            "style" : {
+		}, {
+			"path": "pages/addBankCard/addBankCard",
+			"style": {
 				"navigationBarTitleText": "添加银行卡",
 				"app-plus": {
 					"titleNView": {
@@ -222,51 +218,49 @@
 					}
 				}
 			}
-        }
-        ,{
-            "path" : "pages/pay/pay",
-            "style" : {
+		}, {
+			"path": "pages/pay/pay",
+			"style": {
 				"navigationBarTitleText": "支付"
 			}
-        }
-        ,{
-            "path" : "pages/xymess/xymess",
-            "style" : {
+		}, {
+			"path": "pages/xymess/xymess",
+			"style": {
 				"navigationBarTitleText": "学员信息"
 			}
-        }
-        ,{
-            "path" : "pages/main/user/mystudent/mystudent",
-            "style" : {
+		}, {
+			"path": "pages/main/user/mystudent/mystudent",
+			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "我的学员"
 			}
-        }
-        ,{
-            "path" : "pages/center/appsignName/appsignName",
-            "style" : {
+		}, {
+			"path": "pages/center/appsignName/appsignName",
+			"style": {
 				"navigationBarTitleText": "签名"
 			}
-        }
-        ,{
-            "path" : "pages/main/study_car/wbweb/wbweb",
-            "style" : {
+		}, {
+			"path": "pages/main/study_car/wbweb/wbweb",
+			"style": {
 				"navigationBarTitleText": "学车详情"
 			}
-        }
-        ,{
-            "path" : "pages/pay/payCg/payCg",
-            "style" : {
+		}, {
+			"path": "pages/main/study_car/mess/index",
+			"style": {
+				"navigationBarTitleText": "教练详情"
+			}
+		}, {
+			"path": "pages/pay/payCg/payCg",
+			"style": {
 				"navigationBarTitleText": "支付结果"
 			}
-        }
-        ,{
-            "path" : "pages/yqJl/wxBind/wxBind",
-            "style" : {
+		}, {
+			"path": "pages/yqJl/wxBind/wxBind",
+			"style": {
 				"navigationBarTitleText": "绑定指南"
 			}
-        }
-    ],
+		}
+	],
 	"tabBar": {
 		"color": "#7a7e83",
 		"selectedColor": "#8C91FA",
