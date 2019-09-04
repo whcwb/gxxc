@@ -27,7 +27,7 @@
 			</view>
 		</view>
 		<view class="mapBox">
-			<map style="width: 100%; height: 100%;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
+			<map style="width: 100%; height: 100%;" :scale="10" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
 		</view>
 	</view>
 </template>
@@ -59,9 +59,13 @@
 				latitude: 30.593001,
 				longitude: 114.304504,
 				covers: [{
+					id:'center',
+					title:"武汉市",
 					latitude: 30.593001,
 					longitude: 114.304504,
-					iconPath: './file/location.png'
+					// iconPath: 'http',
+					width:200,
+					height:200
 				}]
 			}
 		},
