@@ -4,8 +4,13 @@
 			<view class="IDPhoto">
 				<view class="text">温馨提示：请上传原始比例的学生证，请勿裁剪涂改，保证证件信息清晰显示</view>
 				<view style="display: flex;justify-content: space-around;align-items: center;" @click="upImg">
-					<view style="width: 400rpx;height: 400rpx;margin: auto;background: #0000FF;">
-						上传
+					<view class="upFlieBox" style="">
+						<span v-if="!upfile">
+							上传
+						</span>
+						<span v-else>
+							完成
+						</span>
 					</view>
 					<!-- <img v-if="upImgControl" :src="imgList.zm" @click="getImg(0,10)" style="width: 300upx;height: 180upx;"> -->
 					<!-- <robby-image-upload 
@@ -16,7 +21,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="btn" @tap="toPay">
+		<view v-if="upfile" class="btn" @tap="toPay">
 			去缴费
 		</view>
 	</view>
@@ -30,6 +35,7 @@
 		},
 		data() {
 			return {
+				upfile:false,
 				zm: '',
 				upImgControl:false,
 				imageData:'',
@@ -68,17 +74,18 @@
 				    success: (chooseImageRes) => {
 				        const tempFilePaths = chooseImageRes.tempFilePaths;
 				        uni.uploadFile({
-				            url: this.apis.url+'/api/wj/uploadWj  ', //仅为示例，非真实的接口地址
+				            url: this.apis.url+'/app/wj/uploadWj', //仅为示例，非真实的接口地址
 				            filePath: tempFilePaths[0],
 				            name: 'file',
 							header:{
 								token:this.formData.token
 							},
 				            formData:{
-								userid:this.formData.userid
+								userId:this.formData.userid
 							},
 				            success: (uploadFileRes) => {
 				                console.log(uploadFileRes.data);
+								this.upfile = true
 				            }
 				        });
 				    }
@@ -86,14 +93,27 @@
 			},
 			toPay() {
 				uni.navigateTo({
-					url: '/pages/goMoney/goMoney',
-				});
+					url: '/pages/center/learnCarFile/learnCarFile'
+				})
 			}
 		}
 	}
 </script>
 
 <style>
+	.upFlieBox{
+		width: 300rpx;
+		height: 300rpx;
+		margin: auto;
+		background: #FFFFFF;
+		border: 6rpx #ededed dashed;
+		text-align: center;
+		line-height: 300rpx;
+		font-size: 52rpx;
+		font-weight: 600;
+		color: #717171;
+	}
+	
 	.personMess {
 		margin: 16upx 0 16upx 44upx;
 		font-size: 36upx;
