@@ -26,7 +26,6 @@
 				{{zyMess[item.val]}}
 			</view>
 		</view>
-
 		<view class="mapBox">
 			<map style="width: 100%; height: 100%;" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
 		</view>
@@ -57,16 +56,12 @@
 						val: 'jlZz'
 					},
 				],
-				latitude: 39.909,
-				longitude: 116.39742,
+				latitude: 30.593001,
+				longitude: 114.304504,
 				covers: [{
-					latitude: 39.909,
-					longitude: 116.39742,
-					iconPath: '../../../static/location.png'
-				}, {
-					latitude: 39.90,
-					longitude: 116.39,
-					iconPath: '../../../static/location.png'
+					latitude: 30.593001,
+					longitude: 114.304504,
+					iconPath: './file/location.png'
 				}]
 			}
 		},

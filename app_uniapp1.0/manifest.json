@@ -114,7 +114,7 @@
         "title" : "吉驾无忧",
         "domain" : "www.520xclm.com/wx/",
         "router" : {
-            "base" : "",
+            "base" : "/wx/",
             "mode" : "hash"
         },
         "devServer" : {
