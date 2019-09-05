@@ -35,8 +35,8 @@
 					backgroundSize:'100% 100%'
 				},
 				form: {
-					username: '',
-					password: ''
+					username: '',//13387562927
+					password: ''//123456
 				},
 				infoRes: '',
 				loginRes: '',

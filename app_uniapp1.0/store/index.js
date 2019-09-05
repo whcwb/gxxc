@@ -14,13 +14,17 @@ const store = new Vuex.Store({
         userName: "",
 		userID:"",
 		payMess:null,//支付信息
-		signUrl:''	 //签名
+		signUrl:'',	 //签名
+		zyMess:{} //专员信息
     },
     mutations: {
 		// login(state, userName) {
 		//     state.userName = userName || '新用户';
 		//     state.hasLogin = true;
 		// },
+		setZyMess(state,data){
+			state.zyMess = data
+		},
         login(state,data) {
             // state.userName = userName || '新用户';
 			console.log('^',state)

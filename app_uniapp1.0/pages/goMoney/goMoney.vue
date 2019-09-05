@@ -15,7 +15,7 @@
 								{{item.cpJl/100}}元
 							</view>
 						</view>
-						<img style="width: 680upx; height: 324upx; background-color: #eeeeee;" :src="'/static/img/goMoney/jf2'+(index+1)+'.png'">
+						<img style="width: 680upx; height: 324upx; background-color: #eeeeee;" :src="'/static/img/goMoney/jf2'+(index%2+1)+'.png'">
 					</view>
 				</view>
 			</view>
@@ -58,9 +58,15 @@
 			},
 			toFile(item) {
 				this.setPayMess(item)						//将此套餐存入vuex中
-				uni.navigateTo({
-					url: '/pages/center/learnCarFile/learnCarFile'
-				})
+				if(item.id == '464480253394288641'){
+					uni.navigateTo({
+						url: '/pages/upStudentImg/index'
+					})
+				}else{
+					uni.navigateTo({
+						url: '/pages/center/learnCarFile/learnCarFile'
+					})
+				}
 			}
 		},
 		onLoad() {
