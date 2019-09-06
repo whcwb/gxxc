@@ -19,25 +19,35 @@
 		</view>
 		<view class="btn">
 			<view class="item" :style="{borderBottom:index===5?'none':'2upx solid #DFE7EE'}" v-for="(item,index) in btnList"
-			 :key=index>
+			 :key=index >
 				<view style="display: flex;align-items: center;">
 					<text>{{item.title}}</text>
 				</view>
-				{{zyMess[item.val]}}
+				{{zyMess.trainPlace.address}}
+			</view>
+			<view class="item" :style="{borderBottom:index===5?'none':'2upx solid #DFE7EE'}">
+				<view style="display: flex;align-items: center;">
+					<text>缩略图</text>
+				</view>
+				<view style="text-align: right;">
+					<uni-icon type="eye" size="30" @click="preview()"></uni-icon>
+				</view>
+				
 			</view>
 		</view>
 		<view class="mapBox">
-			<map style="width: 100%; height: 100%;" :scale="10" :latitude="latitude" :longitude="longitude" :markers="covers"></map>
-		</view>
+			<map style="width: 100%; height: 100%;" :scale="10" :latitude="latitude" :longitude="longitude" :markers="covers" @tap="daohang()"></map>
+		</view>  
 	</view>
 </template>
 
 <script>
+	import uniIcon from "@/components/uni-icon/uni-icon.vue"
 	import uniRate from "@/components/uni-rate/uni-rate.vue"
 	export default {
 		name: 'JLmess',
 		components: {
-			uniRate,
+			uniRate,uniIcon
 		},
 		computed: {
 			zyMess() {
@@ -47,17 +57,15 @@
 		data() {
 			return {
 				imgUrl: 'http://www.520xclm.com:8001/',
-				btnList: [{
-						title: '手机号码',
-						val: 'yhSjhm'
-					},
+				btnList: [
 					{
-						title: '教练地址',
-						val: 'jlZz'
+						title: '地址',
+						val: 'trainPlace.address'
 					},
 				],
 				latitude: 30.593001,
 				longitude: 114.304504,
+				tempFilePaths:[],
 				covers: [{
 					id:'center',
 					title:"武汉市",
@@ -69,7 +77,60 @@
 				}]
 			}
 		},
+		onShow() {
+			this.latitude = this.zyMess.trainPlace.latitude
+			this.longitude = this.zyMess.trainPlace.longitude
+			this.covers[0].latitude = this.latitude
+			this.covers[0].longitude = this.longitude
+			for(let a of this.zyMess.trainPlace.placeImg.split(',')) {
+				if(a!=""){
+					
+				this.tempFilePaths.push(a)
+				}
+			}
+		},
 		methods: {
+			preview(res){
+				
+				                uni.previewImage({  
+				                    urls:this.tempFilePaths,  
+				                    current:0
+				                })  
+				// var v = this
+				// console.log("112312312312");
+				//         uni.previewImage({
+				// 			current:1,
+				//             urls: v.tempFilePaths,
+				//             longPressActions: {
+				//                 itemList: ["保存图片"],
+				//                 success: function(data) {
+				//                     console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+				//                 },
+				//                 fail: function(err) {
+				//                     console.log(err.errMsg);
+				//                 }
+				//             }
+				//         });
+			},
+			daohang(){
+				var v = this
+				uni.openLocation({
+				    latitude: v.latitude,
+				    longitude: v.longitude,
+				    success: function () {
+				        console.log('success');
+				    }
+				});
+				// uni.getLocation({
+				//     type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+				//     success: function (res) {
+				//         const latitude = v.latitude;
+				//         const longitude = v.longitude;
+				// 		
+				//        
+				//     }
+				// });
+			},
 			phone(id) {
 				uni.makePhoneCall({
 					phoneNumber: id //仅为示例
