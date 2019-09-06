@@ -50,7 +50,7 @@
                             let buttons = [];
                             if (params.row.yhZt != '1'){
                                 buttons.push(
-                                    this.util.buildButton(this,h,'success','ribbon-b','认证',()=>{
+                                    this.util.buildButton(this,h,'success','md-ribbon','认证',()=>{
                                         this.choosedItem = params.row;
                                         this.componentName = 'audit'
                                     }),

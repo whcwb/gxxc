@@ -1,12 +1,9 @@
 package com.cwb.platform.biz.controller;
 
 import com.cwb.platform.biz.model.BizWj;
-import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.WjService;
 import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.base.QueryController;
-import com.cwb.platform.sys.model.BizPtyh;
-import com.cwb.platform.sys.service.YhService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.SnowflakeIdWorker;
 import com.cwb.platform.util.exception.RuntimeCheck;

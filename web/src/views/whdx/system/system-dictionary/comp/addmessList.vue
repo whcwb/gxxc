@@ -28,10 +28,10 @@
 							<Col span="8">
 								<Select v-if="colorType == 'select'" v-model="addmess.by1">
 									<Option value=""></Option>
-									<Option value="blue">blue</Option>
-									<Option value="green">green</Option>
-									<Option value="red">red</Option>
-									<Option value="yellow">yellow</Option>
+									<Option value="primary">primary</Option>
+									<Option value="success">success</Option>
+									<Option value="error">error</Option>
+									<Option value="warning">warning</Option>
 								</Select>
 							</Col>
 							<Col span="8">
@@ -45,7 +45,7 @@
 				</Form>
 			</div>
 			<div slot='footer'>
-				<Button type="ghost" @click="colse">取消</Button>
+				<Button type="default" @click="colse">取消</Button>
 				<Button type="primary" @click="addDicList">确定</Button>
 			</div>
 		</Modal>

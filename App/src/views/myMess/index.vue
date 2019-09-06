@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="rzMess">
-          <Button type="ghost" @click="$router.push({name:'rz'})">去认证</Button>
+          <Button type="default" @click="$router.push({name:'rz'})">去认证</Button>
         </div>
       </div>
       <div class="box-row" style="padding-top:0.2rem ">
@@ -48,7 +48,7 @@
         </div>
         <div class="body-O tixian">
           <Button type="success" v-if="jf">已交费</Button>
-          <Button type="ghost"
+          <Button type="default"
                   v-else
                   @click="$router.push({name:'pay'})">去交费</Button>
         </div>

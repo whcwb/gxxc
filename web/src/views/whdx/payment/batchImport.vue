@@ -24,23 +24,23 @@
                                       :on-format-error="handleFormatError"
                                       :on-success="handleSuccess"
                                       :on-error="handleError">
-                                    <Button type="ghost" icon="ios-cloud-upload-outline"
+                                    <Button type="default" icon="ios-cloud-upload-outline"
                                             size="small">上传文件</Button>
                               </Upload>
                               <div v-show="!upShow" class="box-row">
                                     <div class="body-O">
-                                          <Icon type="clipboard"></Icon>
+                                          <Icon type="md-clipboard"></Icon>
                                           {{file}}
                                     </div>
                                     <div style="padding: 0 8px">
                                           <Tooltip content="重新上传" placement="top">
                                                 <Button type="primary"
-                                                        shape="circle" icon="refresh"
+                                                        shape="circle" icon="md-refresh"
                                                         @click="file=''"></Button>
                                           </Tooltip>
                                           <Tooltip content="批量导入" placement="top">
                                                 <Button type="success"
-                                                        shape="circle" icon="arrow-up-a"
+                                                        shape="circle" icon="ios-arrow-up"
                                                         @click="save"></Button>
                                           </Tooltip>
                                     </div>
@@ -49,7 +49,7 @@
                   </div>
                   <div v-for="(item,index) in errors" style="color: red">{{item}}</div>
                   <div slot='footer'>
-                        <Button type="ghost" @click="close">取消</Button>
+                        <Button type="default" @click="close">取消</Button>
                         <!--<Button type="primary" @click="save">确定</Button>-->
                   </div>
             </Modal>

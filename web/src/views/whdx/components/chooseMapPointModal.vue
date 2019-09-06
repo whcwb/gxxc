@@ -26,7 +26,7 @@
 		</Row>
 
 		<div slot='footer'>
-			<Button type="ghost" @click="close">取消</Button>
+			<Button type="default" @click="close">取消</Button>
 			<Button type="primary" @click="ok">确定</Button>
 		</div>
 	</Modal>

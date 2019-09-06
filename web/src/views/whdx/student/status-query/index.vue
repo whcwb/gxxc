@@ -62,7 +62,7 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','card','学习进度',()=>{
+                                this.util.buildButton(this,h,'success','md-card','学习进度',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'status'
                                 }),

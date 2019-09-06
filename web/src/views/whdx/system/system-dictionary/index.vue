@@ -20,11 +20,11 @@
 					   @on-change="findMessList"></Input>
 			</div>
 			<Button type="primary" @click="findMessList()">
-				<Icon type="search"></Icon>
+				<Icon type="ios-search"></Icon>
 				<!--查询-->
 			</Button>
 			<Button type="primary" @click="AddDc()">
-				<Icon type="plus-round"></Icon>
+				<Icon type="md-add"></Icon>
 			</Button>
 		</Row>
 		<div class="body padding-auto margin-5">
@@ -37,11 +37,11 @@
 						</p>
 						<span slot="extra">
 					        <a href="#" @click.prevent="AddDcList(item,index)">
-					            <Icon type="plus-circled" size="24"></Icon>
+					            <Icon type="md-add" size="24"></Icon>
 								<!--新增-->
 					        </a>
 					        <a href="#" @click.prevent="removeDc(item,index)" style="color: red;">
-					            <Icon type="close-circled" size="24"></Icon>
+					            <Icon type="md-close" size="24"></Icon>
 								<!--删除-->
 					        </a>
 				        </span>
@@ -78,7 +78,7 @@
 										<span v-else>{{items.zdmc}}</span>
 									</div>
 									<div class="body-2" style="min-width: 50px;">
-										<Button type="error" size='small' shape="circle" icon="close" @click="removeDcList(item,items)"></Button>
+										<Button type="error" size='small' shape="circle" icon="md-close" @click="removeDcList(item,items)"></Button>
 									</div>
 								</div>
 							</div>
@@ -188,7 +188,7 @@
 				swal({
 				  title: "是删除数据?",
 				  text: "",
-				  icon: "warning",
+				  icon: "md-warning",
 				  buttons:['取消','确认'],
 				})
 				.then((willDelete) => {

@@ -10,7 +10,7 @@
             </Button>
             <Tooltip content="批量导入" placement="bottom">
                 <Button type="success" @click="componentName='batchImport'">
-                    <Icon type="arrow-return-left"></Icon>
+                    <Icon type="md-arrow-round-up"></Icon>
                 </Button>
             </Tooltip>
             <!--<Tooltip content="批量打款" placement="bottom">-->
@@ -69,7 +69,7 @@
                             let buttons = [];
                             if (params.row.ttShzt === '0'){
                                 buttons.push(
-                                    this.util.buildButton(this,h,'success','checkmark','审核',()=>{
+                                    this.util.buildButton(this,h,'success','md-checkmark','审核',()=>{
                                         this.choosedItem = params.row;
                                         this.componentName = 'audit'
                                     }),
@@ -81,7 +81,7 @@
                                         {props: {placement: 'top',content: '打款',}},
                                         [
                                             h('Button', {
-                                                props: {type: 'success',icon: 'checkmark-circled',shape: 'circle',size: 'small'},
+                                                props: {type: 'success',icon: 'md-checkmark-circle',shape: 'circle',size: 'small'},
                                                 style: {margin: '0 8px 0 0'},
                                                 on: {click:()=> {
                                                         this.dk(params.row.id)

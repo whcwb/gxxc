@@ -56,11 +56,11 @@
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','eye','查看协议',()=>{
+                                this.util.buildButton(this,h,'success','ios-eye','查看协议',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'showFiles';
                                 }),
-                                this.util.buildButton(this,h,'success','arrow-down-a','下载协议',()=>{
+                                this.util.buildButton(this,h,'success','md-download','下载协议',()=>{
                                     if (params.row.agreementPdfList){
                                         window.open(this.staticPath +'Agreement/'+ params.row.agreementPdfList)
                                     }else{

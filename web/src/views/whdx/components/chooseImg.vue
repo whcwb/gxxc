@@ -111,10 +111,10 @@
                 });
             },
             handleBeforeUpload() {
-                const check = this.fileList.length < 5;
+                const check = this.fileList.length < 7;
                 if (!check) {
                     this.$Notice.warning({
-                        title: '最多只能上传5个文件'
+                        title: '最多只能上传7个文件'
                     });
                 }
                 return check;

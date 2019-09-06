@@ -43,7 +43,7 @@
                             	</span>
                                 <span class="main-user-name">{{ userName }}</span>
                             </span>
-                            <Button type="primary" shape="circle" icon="person" @click="person" style="margin-right: 8px;"></Button>
+                            <Button type="primary" shape="circle" icon="md-person" @click="person" style="margin-right: 8px;"></Button>
                             <Button
                             	size="large"
                             	type="primary"

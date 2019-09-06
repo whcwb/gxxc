@@ -1,5 +1,7 @@
 package com.cwb.platform.biz.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -7,6 +9,7 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 
 @Table(name = "biz_jl")
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class BizJl implements Serializable {
     /**
      * 用户id
@@ -154,6 +157,18 @@ public class BizJl implements Serializable {
 
     @Transient
     private String yhLx;
+
+    @Transient
+    private BizTrainPlace trainPlace;
+
+
+    public BizTrainPlace getTrainPlace() {
+        return trainPlace;
+    }
+
+    public void setTrainPlace(BizTrainPlace trainPlace) {
+        this.trainPlace = trainPlace;
+    }
 
     public String getYhZh() {
         return yhZh;

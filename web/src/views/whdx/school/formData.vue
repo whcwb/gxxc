@@ -17,7 +17,7 @@
         		</Form>
         	</div>
         	<div slot='footer'>
-        		<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
+        		<Button type="default" @click="v.util.closeDialog(v)">取消</Button>
         		<Button type="primary" @click="v.util.save(v)">确定</Button>
         	</div>
         </Modal>
@@ -30,6 +30,7 @@
 		data() {
 			return {
 			    v:this,
+				apiRoot:this.apis.school,
                 operate:'新建',
 				showModal: true,
 				readonly: false,

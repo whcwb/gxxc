@@ -26,7 +26,7 @@
                 </Row>
 			</div>
 			<div slot='footer'>
-				<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
+				<Button type="default" @click="v.util.closeDialog(v)">取消</Button>
 				<Button type="primary" @click="confirm">确定</Button>
 			</div>
         </Modal>
@@ -71,7 +71,7 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','ribbon-b','分配',()=>{
+                                this.util.buildButton(this,h,'success','md-ribbon','分配',()=>{
                                     this.confirm(params.row.yhId);
                                 }),
                             ]);

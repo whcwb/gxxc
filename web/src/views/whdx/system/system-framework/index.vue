@@ -54,8 +54,8 @@
 								<b>
 									{{treeMess.title}}
 								</b>
-								<Button style="float: right;margin-right: 8px;" type="primary" shape="circle" icon="navicon-round" @click="edit(treeMess)"></Button>
-								<Button style="float: right;margin-right: 8px;" type="primary" shape="circle" icon="android-add" @click="rootAdd()"></Button>
+								<Button style="float: right;margin-right: 8px;" type="primary" shape="circle" icon="md-menu" @click="edit(treeMess)"></Button>
+								<Button style="float: right;margin-right: 8px;" type="primary" shape="circle" icon="md-add" @click="rootAdd()"></Button>
 							</div>
 							<div class="box-row-list" v-if="treeMess.children">
 								<Card class="bodyC" v-for="(item,index) in treeMess.children" :key="index">
@@ -65,8 +65,8 @@
 									</p>
 									<div slot="extra">
 										<!--<Button type="primary" shape="circle" icon="android-add" size="small" @click="add(item)"></Button>-->
-										<Button type="primary" shape="circle" icon="navicon-round" size="small" @click="edit(item)"></Button>
-										<Button type="error" shape="circle" icon="close" size="small" @click="del(item)"></Button>
+										<Button type="primary" shape="circle" icon="md-menu" size="small" @click="edit(item)"></Button>
+										<Button type="error" shape="circle" icon="md-close" size="small" @click="del(item)"></Button>
 									</div>
 									<div>
 										<div>

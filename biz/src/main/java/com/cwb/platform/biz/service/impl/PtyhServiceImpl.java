@@ -97,6 +97,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     @Autowired
     private WxMpService wxMpService;
 
+    @Autowired
+    private TrainPlaceService placeService;
+
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
     private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
             false);
@@ -1948,6 +1951,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             newBizJl.setJlShZt(bizJl.getJlShZt());
             newBizJl.setJlShMs(bizJl.getJlShMs());
             newBizJl.setJlJxsl(bizJl.getJlJxsl());
+            // 查询教练的训练场信息
+            BizTrainPlace place = placeService.findById(bizJl.getTrainId());
+            newBizJl.setTrainPlace(place);
             bizJls.add(newBizJl);
         } else {
             bizJls.add(null);

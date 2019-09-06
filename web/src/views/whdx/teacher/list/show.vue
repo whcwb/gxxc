@@ -46,7 +46,7 @@
 				</Form>
 			</div>
 			<div slot='footer'>
-				<Button type="ghost" @click="v.util.closeDialog(v)">确定</Button>
+				<Button type="default" @click="v.util.closeDialog(v)">确定</Button>
 			</div>
 		</Modal>
 	</div>
