@@ -61,7 +61,7 @@
                                 </RadioGroup>
                                 <div>
                                     <Button type="primary" @click="handleSaveOpenness">确认</Button>
-                                    <Button type="ghost" @click="cancelEditOpenness">取消</Button>
+                                    <Button type="default" @click="cancelEditOpenness">取消</Button>
                                 </div>
                             </div>
                         </transition>
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="margin-top-10">
                                     <Button type="primary" @click="handleSavePublishTime">确认</Button>
-                                    <Button type="ghost" @click="cancelEditPublishTime">取消</Button>
+                                    <Button type="default" @click="cancelEditPublishTime">取消</Button>
                                 </div>
                             </div>
                         </transition>
@@ -125,7 +125,7 @@
                                 </Select>
                             </Col>
                             <Col span="6" class="padding-left-10">
-                                <Button v-show="!addingNewTag" @click="handleAddNewTag" long type="ghost">新建</Button>
+                                <Button v-show="!addingNewTag" @click="handleAddNewTag" long type="default">新建</Button>
                             </Col>
                         </Row>
                         <transition name="add-new-tag">
@@ -137,7 +137,7 @@
                                     <Button @click="createNewTag" long type="primary">确定</Button>
                                 </Col>
                                 <Col span="5" class="padding-left-10">
-                                    <Button @click="cancelCreateNewTag" long type="ghost">取消</Button>
+                                    <Button @click="cancelCreateNewTag" long type="default">取消</Button>
                                 </Col>
                             </div>
                         </transition>

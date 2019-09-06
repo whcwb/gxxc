@@ -8,7 +8,7 @@
             <Col span="18">
                 <Card>
                     <label style="display: inline-block">文章标题：</label>
-                    <Input v-model="form.hdBt" icon="android-list"/>
+                    <Input v-model="form.hdBt" icon="md-list"/>
                     <div class="margin-top-20">
                         <textarea id="articleEditor"></textarea>
                     </div>
@@ -17,7 +17,7 @@
             <Col span="6" class="padding-left-10">
                 <Card>
                     <p slot="title">
-                        <Icon type="paper-airplane"></Icon>
+                        <Icon type="md-paper-airplane"></Icon>
                         发布
                     </p>
                     <Row>

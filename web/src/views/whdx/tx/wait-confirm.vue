@@ -10,7 +10,7 @@
             </Button>
             <Tooltip content="批量导入" placement="top">
                 <Button type="success" @click="componentName='batchImport'">
-                    <Icon type="arrow-return-left"></Icon>
+                    <Icon type="md-arrow-round-up"></Icon>
                 </Button>
             </Tooltip>
         </Row>
@@ -59,7 +59,7 @@
                             let buttons = [];
                             if (params.row.ttShzt === '0'){
                                 buttons.push(
-                                    this.util.buildButton(this,h,'success','checkmark','审核',()=>{
+                                    this.util.buildButton(this,h,'success','md-checkmark','审核',()=>{
                                         this.choosedItem = params.row;
                                         this.componentName = 'audit'
                                     }),
@@ -67,7 +67,7 @@
                             }
                             if (params.row.ttShzt === '1' && params.row.ttZt == '0'){
                                 buttons.push(
-                                    this.util.buildButton(this,h,'success','checkmark-circled','确认',()=>{
+                                    this.util.buildButton(this,h,'success','md-checkmark-circle','确认',()=>{
                                         this.choosedItem = params.row;
                                         this.componentName = 'confirm'
                                     }),

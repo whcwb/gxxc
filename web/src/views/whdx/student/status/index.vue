@@ -43,24 +43,24 @@
                         render: (h, params) => {
                             let buttons = [];
                             if (this.userType == 'su'){
-                                buttons.push(this.util.buildButton(this,h,'success','card','受理',()=>{
+                                buttons.push(this.util.buildButton(this,h,'success','md-card','受理',()=>{
                                     this.getSl(params.row.id);
                                 }));
-                                buttons.push(this.util.buildButton(this,h,'success','card','约考',()=>{
+                                buttons.push(this.util.buildButton(this,h,'success','md-card','约考',()=>{
                                     this.getYk(params.row.id);
                                 }));
-                                buttons.push(this.util.buildButton(this,h,'success','social-yen','缴费',()=>{
+                                buttons.push(this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
                                     this.getJf(params.row.id);
                                 }));
 							}else if (this.userType == 'slzy'){
-                                buttons.push(this.util.buildButton(this,h,'success','card','受理',()=>{
+                                buttons.push(this.util.buildButton(this,h,'success','md-card','受理',()=>{
                                     this.getSl(params.row.id);
                                 }));
 							}else if (this.userType == 'k1' || this.userType == 'k2' ||this.userType == 'k3' ){
-                                buttons.push(this.util.buildButton(this,h,'success','card','约考',()=>{
+                                buttons.push(this.util.buildButton(this,h,'success','md-card','约考',()=>{
                                     this.getYk(params.row.id);
                                 }));
-                                buttons.push(this.util.buildButton(this,h,'success','social-yen','缴费',()=>{
+                                buttons.push(this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
                                     this.getJf(params.row.id);
                                 }));
 							}

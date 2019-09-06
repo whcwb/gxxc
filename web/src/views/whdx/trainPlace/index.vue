@@ -44,7 +44,7 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','ios-location','地理位置',()=>{
+                                this.util.buildButton(this,h,'success','md-pin','地理位置',()=>{
                                     this.choosedItem = params.row;
                                     this.choosedPoint = {lat:params.row.latitude,lng:params.row.longitude};
                                     this.componentName = 'chooseMapPoint'

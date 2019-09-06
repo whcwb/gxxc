@@ -29,7 +29,7 @@
         		</Form>
         	</div>
         	<div slot='footer'>
-        		<Button type="ghost" @click="v.util.closeDialog(v)">取消</Button>
+        		<Button type="default" @click="v.util.closeDialog(v)">取消</Button>
         		<Button v-if="!showValidCode" type="primary" @click="v.save()">确定</Button>
         		<Button v-if="showValidCode" type="primary" @click="v.valid()">验证</Button>
         	</div>

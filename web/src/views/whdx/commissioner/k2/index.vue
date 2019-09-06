@@ -3,7 +3,7 @@
 		<Row style="padding-bottom: 16px;">
 				<search-items :parent="v" :label-with="100"></search-items>
 				<Button type="info" @click="allot">
-					<Icon type="person"></Icon>
+					<Icon type="md-person"></Icon>
 				</Button>
 		</Row>
 		<Row style="position: relative;">
@@ -43,7 +43,7 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
+                                this.util.buildButton(this,h,'success','md-card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),

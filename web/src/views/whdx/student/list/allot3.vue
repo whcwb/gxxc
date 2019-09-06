@@ -23,7 +23,7 @@
                 </Row>
 			</div>
 			<div slot='footer'>
-				<Button type="ghost" @click="v.util.closeDialog(parent)">取消</Button>
+				<Button type="default" @click="v.util.closeDialog(parent)">取消</Button>
 				<Button type="primary" @click="confirm">确定</Button>
 			</div>
 	</div>

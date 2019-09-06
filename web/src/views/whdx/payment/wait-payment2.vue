@@ -7,7 +7,7 @@
 			</Button>
 			<Tooltip content="批量导入" placement="top">
 				<Button type="success" @click="componentName='batchImport'">
-					<Icon type="arrow-return-left"></Icon>
+					<Icon type="md-arrow-up"></Icon>
 				</Button>
 			</Tooltip>
 		</Row>

@@ -10,10 +10,10 @@
 				<Input v-model="findMess[s.formKey]" :placeholder="'请输入'+s.label" style="width: 200px"></Input>
 			</div>
 			<Button type="primary" @click="findMessList">
-				<Icon type="search"></Icon>
+				<Icon type="ios-search"></Icon>
 			</Button>
 			<Button type="primary" @click="AddDataList">
-				<Icon type="plus-round"></Icon>
+				<Icon type="md-add"></Icon>
 			</Button>
 		</Row>
 			<Row style="position: relative;">
@@ -136,7 +136,7 @@
 							h('Button', {
 									props: {
 										type: 'success',
-										icon: 'edit',
+										icon: 'md-create',
 										shape: 'circle',
 										size: 'small'
 									},
@@ -161,7 +161,7 @@
 								[h('Button', {
 									props: {
 										type: 'primary',
-										icon: 'navicon-round',
+										icon: 'ios-person',
 										shape: 'circle',
 										size: 'small'
 									},
@@ -204,7 +204,7 @@
 								h('Button', {
 									props: {
 										type: 'error',
-										icon: 'close',
+										icon: 'md-close',
 										shape: 'circle',
 										size: 'small'
 									},

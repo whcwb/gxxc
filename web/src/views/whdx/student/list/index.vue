@@ -71,19 +71,19 @@
                         width: 150,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
+                                this.util.buildButton(this,h,'success','md-card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),
-                                this.util.buildButton(this,h,'success','card','学习进度',()=>{
+                                this.util.buildButton(this,h,'success','md-card','学习进度',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'status'
                                 }),
-                                this.util.buildButton(this,h,'info','network','查看下线',()=>{
+                                this.util.buildButton(this,h,'info','md-git-network','查看下线',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
                                 }),
-                                this.util.buildButton(this,h,'info','close','删除',()=>{
+                                this.util.buildButton(this,h,'info','md-close','删除',()=>{
                                     swal({
                                         title: "是否删除数据?",
                                         text: "",

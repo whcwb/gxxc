@@ -49,12 +49,12 @@ import chooseImg from '../components/chooseImgModal'
                         width: 150,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','image','驾校图片',()=>{
+                                this.util.buildButton(this,h,'success','md-image','驾校图片',()=>{
                                     this.choosedItem = params.row;
                                     this.choosedImgs = params.row.bgFileId
                                     this.componentName = 'chooseImg'
                                 }),
-                                this.util.buildButton(this,h,'success','ios-location','地理位置',()=>{
+                                this.util.buildButton(this,h,'success','ios-pin','地理位置',()=>{
                                     this.choosedItem = params.row;
                                     this.choosedPoint = {lat:params.row.lat,lng:params.row.lng};
                                     this.componentName = 'chooseMapPoint'

@@ -42,7 +42,7 @@
             </div>
             <div class="body-O tixian"
                  @click="$router.push({name:'yjtx'})">
-              <Button type="ghost">提现</Button>
+              <Button type="default">提现</Button>
             </div>
           </div>
         </div>
