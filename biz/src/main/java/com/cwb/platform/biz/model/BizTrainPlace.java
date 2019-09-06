@@ -131,6 +131,17 @@ public class BizTrainPlace implements Serializable {
     @Column(name = "place_beianImg")
     private String placeBeianimg;
 
+    @Column(name = "place_img")
+    private String placeImg;
+
+    public String getPlaceImg() {
+        return placeImg;
+    }
+
+    public void setPlaceImg(String placeImg) {
+        this.placeImg = placeImg;
+    }
+
     /**
      * 车辆数
      */

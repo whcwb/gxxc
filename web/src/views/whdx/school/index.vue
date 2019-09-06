@@ -60,7 +60,7 @@ import chooseImg from '../components/chooseImgModal'
                                     this.componentName = 'chooseMapPoint'
                                 }),
                                 this.util.buildEditButton(this,h,params),
-                                this.util.buildDeleteButton(this,h,params.row.id),
+                                this.util.buildDeleteButton(this,h,params.row.schoolCode),
                             ]);
                         }
                     }

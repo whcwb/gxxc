@@ -30,6 +30,7 @@
 		data() {
 			return {
 			    v:this,
+				apiRoot:this.apis.school,
                 operate:'新建',
 				showModal: true,
 				readonly: false,

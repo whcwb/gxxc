@@ -9,7 +9,7 @@
         <Row class="margin-top-10 pageSty">
 			<pager :parent="v"></pager>
         </Row>
-        <component :is="componentName" @choosePoint="choosePoint"></component>
+        <component :is="componentName" @choosePoint="choosePoint" @chooseImgFinish="chooseImgFinish"></component>
 	</div>
 </template>
 
@@ -17,8 +17,9 @@
 
     import formData from './formData'
     import chooseMapPoint from '../components/chooseMapPointModal'
+    import chooseImg from '../components/chooseImgModal'
     export default {
-        components:{formData,chooseMapPoint},
+        components:{formData,chooseMapPoint,chooseImg},
         name: 'trainPlace',
         data() {
             return {
@@ -28,6 +29,7 @@
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
+                choosedImgs:'',
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
                     {title:'训练场地名称',key:'placeName',searchKey:'placeNameLike'},
@@ -41,9 +43,14 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 120,
+                        width: 150,
                         render: (h, params) => {
                             return h('div', [
+                                this.util.buildButton(this,h,'success','md-image','训练场图片',()=>{
+                                    this.choosedItem = params.row;
+                                    this.choosedImgs = params.row.placeImg;
+                                    this.componentName = 'chooseImg'
+                                }),
                                 this.util.buildButton(this,h,'success','md-pin','地理位置',()=>{
                                     this.choosedItem = params.row;
                                     this.choosedPoint = {lat:params.row.latitude,lng:params.row.longitude};
@@ -70,6 +77,9 @@
             choosePoint(point){
                 this.updatePoint(point);
             },
+            chooseImgFinish(uploadList){
+                this.updateImg(uploadList);
+            },
             updatePoint(point){
                 let param = {
                     placeId:this.choosedItem.placeId,
@@ -85,6 +95,20 @@
                     }
                 })
             },
+            updateImg(uploadList){
+                let param = {
+                    placeId:this.choosedItem.placeId,
+                    placeImg:uploadList,
+                }
+                this.$http.post(this.apis.trainPlace.CHANGE,param).then((res)=>{
+                    if (res.code === 200){
+                        this.$Message.success(res.message);
+                        this.util.getPageData(this);
+                    }else{
+                        this.$Message.error(res.message);
+                    }
+                })
+            }
         }
     }
 </script>
