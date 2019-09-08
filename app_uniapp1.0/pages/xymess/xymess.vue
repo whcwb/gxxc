@@ -13,7 +13,7 @@
 				<!-- <view class="headTip">
 					安全教学{{zyMess.jlJxsl}}次
 				</view> -->
-				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;">
+				<img v-if="zyMess.yhXm" :src="imgUrl+zyMess.jlImg" style="border-radius: 50%;width: 132upx;height: 132upx;" @click="goMess(zyMess)">
 				<img v-else src="/static/img/qq.png" style="border-radius: 50%;width: 132upx;height: 132upx;">
 				<view style="color:rgba(255,255,255,1);margin: 18upx 0;">{{zyMess.yhXm | yhXmZY}}</view>
 				<!-- <uni-rate :value="zyMess.jlPf" @change='pjJl'></uni-rate>
@@ -124,6 +124,10 @@
 	import vTab from "@/components/v-tab/v-tab.vue"
 	import mixin from '@/common/mixin.js'
 	import uniCard from "@/components/uni-card/uni-card"
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	export default {
 		name: "study",
 		components: {
@@ -244,6 +248,14 @@
 			this.yhYwlx = option.yhYwlx.substring(1,option.yhYwlx.length-1);
 		},
 		methods: {
+			...mapMutations(['setZyMess']),
+			goMess(mess){
+				console.log('123',mess)
+				this.setZyMess(mess)
+				uni.navigateTo({
+					url: '../main/study_car/mess/index',
+				});
+			},
 			barresult(){},
 			getSL(){
 				this.$http.get('/app/kssl/query',{yhId:this.usermess.yhId,slType:'4'}).then((res)=>{
