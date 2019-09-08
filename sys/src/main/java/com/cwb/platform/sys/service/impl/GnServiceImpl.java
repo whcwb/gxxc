@@ -5,6 +5,7 @@ import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.Menu;
 import com.cwb.platform.sys.service.*;
 import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.JsonUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.cwb.platform.sys.mapper.*;
 import com.cwb.platform.sys.model.*;
@@ -12,6 +13,8 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import javafx.beans.property.SimpleListProperty;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSON;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -295,14 +298,19 @@ public class GnServiceImpl extends BaseServiceImpl<SysGn, String> implements GnS
         return list;
     }
     private List<Menu> buildMenuTree(List<Menu> menuList){
-        Map<String,Menu> menuIdMap = menuList.stream().collect(Collectors.toMap(Menu::getId,p->p));
+
+        Map<String, List<Menu>> menuIdMap = menuList.stream().collect(Collectors.groupingBy(Menu::getId));
         List<Menu> root = new ArrayList<>();
         for (Menu menu : menuList) {
             if (StringUtils.isEmpty(menu.getPid())){
                 root.add(menu);
                 continue;
             }
-            Menu father = menuIdMap.get(menu.getPid());
+            List<Menu> menus = menuIdMap.get(menu.getPid());
+            Menu father = null;
+            if(CollectionUtils.isNotEmpty(menus)){
+                father = menus.get(0);
+            }
             if (father == null)continue;
             if (father.getChildren() == null){
                 List<Menu> children = new ArrayList<>();
