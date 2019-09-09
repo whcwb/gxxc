@@ -29,6 +29,7 @@
     "iview": "^3.4.0",
     "iview-area": "^1.5.14",
     "js-cookie": "^2.2.0",
+    "jsbarcode": "^3.11.0",
     "rasterizehtml": "^1.2.4",
     "simplemde": "^1.11.2",
     "sockjs-client": "^1.1.4",

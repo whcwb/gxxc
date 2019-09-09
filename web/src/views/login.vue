@@ -102,7 +102,7 @@
 				武汉天弘腾创科技有限公司
 			</Row>
 			<Row style="text-align: center;font-size: 16px">
-				 2.0.1
+
 			</Row>
 		</div>
     </div>

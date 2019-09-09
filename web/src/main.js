@@ -16,7 +16,8 @@ import session from './libs/session';
 import pager from './views/whdx/components/pager'
 import formItems from './views/whdx/components/formItems'
 import searchItems from './views/whdx/components/searchItems'
-
+import VueBarcode from 'vue-barcode';
+Vue.component("barcode",VueBarcode)
 import swal from 'sweetalert'
 
 Vue.use(VueI18n);

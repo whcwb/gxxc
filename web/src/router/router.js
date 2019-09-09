@@ -5,7 +5,7 @@ export const loginRouter = {
     path: '/login',
     name: 'login',
     meta: {
-        title: '登录'
+        title: '吉驾无忧管理平台'
     },
     component: () => import('@/views/login.vue')
 };
@@ -360,6 +360,20 @@ export let appRouter = [
         meta: { title: '财务管理' },
         component: Main,
         children: [
+            {
+                path: 'kaoshifei',
+                icon: 'android-clipboard',
+                name: 'kaoshifei',
+                meta: { title: '待缴考试费' },
+                component: () => import('@/views/whdx/kaoshifei')
+            },
+            {
+                path: 'peixunfei',
+                icon: 'android-clipboard',
+                name: 'peixunfei',
+                meta: { title: '待付培训费' },
+                component: () => import('@/views/whdx/peixunfei')
+            },
             {
                 path: 'product',
                 icon: 'android-clipboard',

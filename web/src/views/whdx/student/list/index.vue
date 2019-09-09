@@ -10,7 +10,7 @@
 				</Button>
 		</Row>
 		<Row style="position: relative;">
-			<Table :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
+			<Table size="large" :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
 		</Row>
 		<Row class="margin-top-10 pageSty">
 			<pager :parent="v"></pager>
@@ -25,10 +25,10 @@
     import status from './status.vue'
     import audit from './audit.vue'
     import allot from './allot.vue'
-
+	import VueBarcode from 'vue-barcode'
     export default {
         name: 'byxxTable',
-        components: {formData,sublist,allot,audit,status},
+        components: {formData,sublist,allot,audit,status,'barcode': VueBarcode},
         data() {
             return {
                 v:this,
@@ -43,42 +43,66 @@
                     {title: "",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
-                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
-                    {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
+                    {title: '身份证号',key:'yhZjhm',searchKey:'yhZhLike'},
+                    // {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
+                    // {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
+                    // {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
                     {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
+                    {title: '流水号',key:'yhLsh'},
+                    {title: '流水号条码',key:'yhLsh',width:280,
+						render:(h,p)=>{
+                    	   return h('div',[
+
+							   h('barcode',
+										{
+										   style:{
+												   height:'80px'
+										   },
+											props:{
+												value:p.row.yhLsh,
+											}
+										}
+								)
+						   ],)
+
+						}
+					},
                     {title: '约考状态',key:'yhXyYkType',dict:'ykzt'},
-                    {title: '锁定',key:'yhSfsd',
-                        render:(h,p)=>{
-                            return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
-                                let rzt = value ? '1':'0'
-                                let v = this;
-                                this.$http.post(this.apis.student.updateSfsd,{'id':p.row.id,'yhSfsd':rzt}).then((res) =>{
-                                    if(res.code==200){
-                                        this.$Message.success(res.message);
-                                    }else{
-                                        this.$Message.error(res.message);
-                                    }
-                                    v.util.getPageData(v)
-                                })
-                            })
-                        }
-                    },
+                    // {title: '锁定',key:'yhSfsd',
+                    //     render:(h,p)=>{
+                    //         return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
+                    //             let rzt = value ? '1':'0'
+                    //             let v = this;
+                    //             this.$http.post(this.apis.student.updateSfsd,{'id':p.row.id,'yhSfsd':rzt}).then((res) =>{
+                    //                 if(res.code==200){
+                    //                     this.$Message.success(res.message);
+                    //                 }else{
+                    //                     this.$Message.error(res.message);
+                    //                 }
+                    //                 v.util.getPageData(v)
+                    //             })
+                    //         })
+                    //     }
+                    // },
                     {
                         title: '操作',
                         key: 'action',
-                        width: 150,
+                        width: 180,
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildButton(this,h,'success','md-card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),
-                                this.util.buildButton(this,h,'success','md-card','学习进度',()=>{
+                                this.util.buildButton(this,h,'success','ios-car','学习进度',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'status'
                                 }),
+								this.util.buildButton(this,h,'warning','md-create','修改教练',()=>{
+									this.choosedItem = params.row;
+									this.componentName = 'status'
+								}),
                                 this.util.buildButton(this,h,'info','md-git-network','查看下线',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'sublist'
@@ -114,6 +138,11 @@
             this.util.initTable(this)
         },
         methods: {
+			gettm(text){
+				JsBarcode("#barcode", text)
+				this.$nextTick()
+
+			},
             selectionChange(e){
 				this.choosedData = e;
 			},

@@ -57,9 +57,9 @@
                     {title:'提现状态',key:'ttZt',dict:'ZDCLK0048',searchType:'dict'},
                     {title:'审核人',key:'ttShr'},
                     {title:'提现审核状态',key:'ttShzt',dict:'ZDCLK0049'},
-                    {title:'银行卡号',key:'ttYhkh'},
-                    {title:'所属银行',key:'ttSsyh'},
-                    {title:'提现姓名',key:'txXm'},
+                    // {title:'银行卡号',key:'ttYhkh'},
+                    // {title:'所属银行',key:'ttSsyh'},
+                    // {title:'提现姓名',key:'txXm'},
                     {title:'备注',key:'ttBz'},
                     {
                         title: '操作',
@@ -90,7 +90,7 @@
                                             }),
                                         ]
                                     ),
-                                    this.util.buildButton(this,h,'info','checkmark-circled','手动确认',()=>{
+                                    this.util.buildButton(this,h,'info','md-checkmark-circle','手动确认',()=>{
                                         this.choosedItem = params.row;
                                         this.componentName = 'confirm'
                                     }),
