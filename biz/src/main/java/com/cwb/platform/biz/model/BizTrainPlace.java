@@ -134,6 +134,17 @@ public class BizTrainPlace implements Serializable {
     @Column(name = "place_img")
     private String placeImg;
 
+    @Column(name = "place_cover_img")
+    private String placeCoverImg;
+
+    public String getPlaceCoverImg() {
+        return placeCoverImg;
+    }
+
+    public void setPlaceCoverImg(String placeCoverImg) {
+        this.placeCoverImg = placeCoverImg;
+    }
+
     public String getPlaceImg() {
         return placeImg;
     }

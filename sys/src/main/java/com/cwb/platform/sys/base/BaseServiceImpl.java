@@ -109,6 +109,12 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
         return true;
     }
 
+    public String getRequestParameterAsString(String param){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String attribute = (String) request.getAttribute(param);
+        return attribute;
+    }
+
     protected abstract Mapper<T> getBaseMapper();
 
     /**
