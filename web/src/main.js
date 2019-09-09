@@ -13,12 +13,18 @@ import apis from './axios/api';
 import dictUtil from './libs/dictUtil';
 import session from './libs/session';
 
+import './accets/css/box.less'
+
 import pager from './views/whdx/components/pager'
 import formItems from './views/whdx/components/formItems'
 import searchItems from './views/whdx/components/searchItems'
 import VueBarcode from 'vue-barcode';
 Vue.component("barcode",VueBarcode)
-import swal from 'sweetalert'
+// import swal from 'sweetalert'
+
+//提示插件引入
+import swal from 'sweetalert2';
+Vue.prototype.swal = swal;
 
 Vue.use(VueI18n);
 Vue.use(iView);

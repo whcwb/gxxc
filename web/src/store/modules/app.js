@@ -28,6 +28,7 @@ const app = {
         menuTheme: 'dark', // 主题
         themeColor: '',
         pageOpenedList: [{
+            meta:{title: '首页'},
             title: '首页',
             path: '',
             name: 'home_index'
