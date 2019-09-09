@@ -121,4 +121,12 @@
             "https" : false
         }
     }
+    "plus": {  
+        "ads": {  
+            "push":"false",       
+            "splash":"false",     
+            "rp":"false",          
+            "spot":"false",       
+        }  
+    }
 }
