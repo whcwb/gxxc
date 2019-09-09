@@ -1457,6 +1457,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         // 进行分配操作
         if (CollectionUtils.isNotEmpty(ids)) {
+            // 如果是分配的科目二教练
             entityMapper.updateJxsl(jlId, ids.size());
             userService.updateJlId(ids, jlId, jlType);
             entityMapper.updateJlFp(ids, "该学员于：" + DateUtils.getNowTime() + " 分配给受理专员：" + users.getYhXm() + "");

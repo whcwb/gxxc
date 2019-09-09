@@ -3,6 +3,7 @@ package com.cwb.platform.biz.service.impl;
 import com.cwb.platform.biz.mapper.BizKsJfMapper;
 import com.cwb.platform.biz.model.BizKsJf;
 import com.cwb.platform.biz.model.BizKsYk;
+import com.cwb.platform.biz.model.BizSubSchool;
 import com.cwb.platform.biz.service.KsYkService;
 import com.cwb.platform.biz.service.KsjfService;
 import com.cwb.platform.biz.service.PtyhService;
@@ -17,6 +18,8 @@ import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.ExcelUtil;
 import com.cwb.platform.util.exception.RuntimeCheck;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
@@ -29,6 +32,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -80,6 +84,25 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             return ApiResponse.fail("用户已经缴过当前科目的费用");
         }
         int i = save(entity);
+        // 缴费成功 更新用户表中的缴费字段
+        String yhId = entity.getYhId();
+        BizPtyh ptyh = ptyhService.findById(yhId);
+        if(entity.getKmId().equals("1")){
+            if(StringUtils.equals(ptyh.getYhXyJfType(),entity.getKmId())){
+                ptyh.setYhXyJfType("2");
+            }
+        }else if(entity.getKmId().equals("2")){
+            if(StringUtils.equals(ptyh.getYhXyJfType(),entity.getKmId())){
+                ptyh.setYhXyJfType("3");
+            }
+        }
+        if(StringUtils.equals(entity.getKmId(), "3")){
+            if(ptyh != null){
+                ptyh.setK3jfzt(1);
+            }
+        }
+        ptyhService.update(ptyh);
+
         return i == 1 ? ApiResponse.success() : ApiResponse.fail();
     }
 
@@ -189,6 +212,9 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.k3jfzt,0);
         condition.eq(BizPtyh.InnerColumn.yhXySlType,"4");
+        if(km != null  && km != 0){
+            condition.startWith(BizPtyh.InnerColumn.yhXyYkType, km.toString());
+        }
         List<BizPtyh> userList = ptyhService.findByCondition(condition);
         if (userList.size() == 0){
             res.setResult(new ArrayList<>());
@@ -266,6 +292,30 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
                 //未找到该用户
             }
         }
+        return res;
+    }
+
+    @Override
+    public ApiResponse<String> waitPaymentListNew(String xm, String phone, String km, String idCard, int pageNum, int pageSize) {
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        ApiResponse<String> res = new ApiResponse<>();
+        condition.eq(BizPtyh.InnerColumn.k3jfzt,0);
+        condition.eq(BizPtyh.InnerColumn.yhXySlType,"4");
+        if(StringUtils.isNotBlank(xm)){
+            condition.like(BizPtyh.InnerColumn.yhXm, xm);
+        }
+        if(StringUtils.isNotBlank(phone)){
+            condition.like(BizPtyh.InnerColumn.yhZh, phone);
+        }
+        if(StringUtils.isNotBlank(km)){
+            condition.startWith(BizPtyh.InnerColumn.yhXyJfType, km);
+        }
+        if (StringUtils.isNotBlank(idCard)){
+            condition.like(BizPtyh.InnerColumn.yhZjhm, idCard);
+        }
+        PageInfo<BizPtyh> info =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+        res.setPage(info);
         return res;
     }
 

@@ -170,7 +170,6 @@ public class TkServiceImpl extends BaseServiceImpl<BizTk,String> implements TkSe
                         tkPtyhr.setDdSfjx("0");
                         yhYqmgqsj=" ";
                     }
-
                     tkPtyhr.setYhIxySffp("0");//学员是否已分配 ZDCLK0046 (0 否  1 是)
                     tkPtyhr.setYhFpms(" ");//学员分配描述
                     tkPtyhr.setK3jfzt(0);//科目三缴费状态  (0 否  1 是)

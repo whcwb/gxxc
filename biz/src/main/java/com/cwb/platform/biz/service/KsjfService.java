@@ -19,4 +19,7 @@ public interface KsjfService extends BaseService<BizKsJf,String> {
     List<List<String>> export(Integer km);
 
     ApiResponse<List<String>> batchImport(String filePath);
+
+    ApiResponse<String> waitPaymentListNew(String xm, String phone, String km, String idCard, int pageNum, int pageSzie);
+
 }
