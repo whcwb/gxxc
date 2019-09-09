@@ -28,6 +28,17 @@ public class BizZh implements Serializable {
     @Column(name = "YH_TXDJ")
     private Double yhTxdj;
 
+    @Column(name = "YH_YEDJ")
+    private Double yhYedj;
+
+    public Double getYhYedj() {
+        return yhYedj;
+    }
+
+    public void setYhYedj(Double yhYedj) {
+        this.yhYedj = yhYedj;
+    }
+
     private static final long serialVersionUID = 1L;
 
     /**

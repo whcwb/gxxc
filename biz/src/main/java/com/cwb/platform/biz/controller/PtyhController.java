@@ -101,7 +101,7 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
 
     /**
      * 教练-分配学员接口
-     * jlType  0、受理专员 1、科目一受理专员 2、科目二受理专员 3、科目一受理专员
+     * jlType  0、受理专员 1、科目一受理专员 2、科目二受理专员 3、科目三受理专员
      */
     @PostMapping("/assignStudents")
     public ApiResponse<List<String>> assignStudents(@RequestParam(name = "yhIds") String yhIds,@RequestParam(name = "jlid") String jlId,@RequestParam(name = "jlType") String jlType){

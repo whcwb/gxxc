@@ -307,6 +307,34 @@ public class BizPtyh implements Serializable {
     @Transient
     private long userInviteCount;
 
+    @Column(name = "YH_XY_JF_TYPE")
+    private String yhXyJfType;
+
+    @Column(name = "YH_K2_SUB_ID")
+    private String yhK2SubId;
+
+    @Column(name = "YH_K2_SUB_JE")
+    private Double yhK2SubJe;
+
+    @Column(name = "YH_K2_SUB_SJ")
+    private String yhK2SubSj;
+
+    @Column(name = "YH_K2_SUB_NAME")
+    private String yhK2SubName;
+
+    @Column(name = "YH_K3_SUB_ID")
+    private String yhK3SubId;
+
+    @Column(name = "YH_K3_SUB_JE")
+    private Double yhK3SubJe;
+
+    @Column(name = "YH_K3_SUB_SJ")
+    private String yhK3SubSj;
+
+    @Column(name = "YH_K3_SUB_NAME")
+    private String yhK3SubName;
+
+
 
     public Integer getK3jfzt() {
         return k3jfzt;
@@ -345,13 +373,23 @@ public class BizPtyh implements Serializable {
         yhSfyjz("YH_SFYJZ"),
         yhFpms("YH_FPMS"),
         yhXySlType("YH_XY_SL_TYPE"),
+        yhXyYkType("YH_XY_YK_TYPE"),
+        yhXyJfType("YH_XY_JF_TYPE"),
         yhSfsd("YH_SFSD"),
         qrcode("QRCODE"),
         yhNum("YH_NUM"),
         yhYxqz("YH_YXQZ"),
         yhCx("YH_CX"),
         yhYwlx("YH_YWLX"),
-        yhLsh("YH_LSH");
+        yhLsh("YH_LSH"),
+        yhK2SubId("YH_K2_SUB_ID"),
+        yhK2SubJe("YH_K2_SUB_JE"),
+        yhK2SubSj("YH_K2_SUB_SJ"),
+        yhK2SubName("YH_K2_SUB_NAME"),
+        yhK3SubId("YH_K3_SUB_ID"),
+        yhK3SubJe("YH_K3_SUB_JE"),
+        yhK3SubSj("YH_K3_SUB_SJ"),
+        yhK3SubName("YH_K3_SUB_NAME");
 
         private final String column;
 

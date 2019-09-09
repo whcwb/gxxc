@@ -11,10 +11,7 @@ import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.commonUtil.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -57,4 +54,9 @@ public class KsJfController extends QueryController<BizKsJf,String> {
     public ApiResponse<List<String>> batchImport(String filePath){
         return service.batchImport(filePath);
     }
+    @GetMapping("/waitPaymentListNew")
+    public ApiResponse<String> waitPaymentList(String xm, String phone, String km, String idCard, @RequestParam(defaultValue = "1") int pageNum , @RequestParam(defaultValue = "8") int pageSize){
+        return service.waitPaymentListNew(xm,phone,km,idCard,pageNum,pageSize);
+    }
+
 }
