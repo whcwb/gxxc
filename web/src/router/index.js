@@ -24,6 +24,9 @@ function hasPermission(list,name){
     return false;
 }
 router.beforeEach((to, from, next) => {
+
+    console.log(to);
+
     let matched = to.matched;
     let breadMenuTitles = [];
     for (let r of matched){
