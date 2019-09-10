@@ -25,10 +25,11 @@
     import status from './status.vue'
     import audit from './audit.vue'
     import allot from './allot.vue'
+    import xgjl from './xgjl.vue'
 	import VueBarcode from 'vue-barcode'
     export default {
         name: 'byxxTable',
-        components: {formData,sublist,allot,audit,status,'barcode': VueBarcode},
+        components: {formData,sublist,allot,audit,status,'barcode': VueBarcode,xgjl},
         data() {
             return {
                 v:this,
@@ -101,7 +102,7 @@
                                 }),
 								this.util.buildButton(this,h,'warning','md-create','修改教练',()=>{
 									this.choosedItem = params.row;
-									this.componentName = 'status'
+									this.componentName = 'xgjl'
 								}),
                                 this.util.buildButton(this,h,'info','md-git-network','查看下线',()=>{
                                     this.choosedItem = params.row;
