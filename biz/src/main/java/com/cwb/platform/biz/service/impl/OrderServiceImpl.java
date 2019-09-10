@@ -42,6 +42,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String> implements OrderService{
@@ -122,7 +123,17 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         this.update(newBizOrder);
 
         //支付成功后，生成二维码
-
+        BizPtyh queryUser=ptyhService.findById(order.getYhId());
+        //  缴费之后删除掉 注册时 的 -200 因为此时已经相当于缴费
+        SimpleCondition cond = new SimpleCondition(BizYjmx.class);
+        cond.eq(BizYjmx.InnerColumn.yhId, queryUser.getId());
+        cond.eq(BizYjmx.InnerColumn.zjJe, 20000);
+        cond.and().andIsNull(BizYjmx.InnerColumn.zjId.name());
+        List<BizYjmx> yjmxes = yjmxService.findByCondition(cond);
+        if(CollectionUtils.isNotEmpty(yjmxes)){
+            List<String> list = yjmxes.stream().map(BizYjmx::getId).collect(Collectors.toList());
+            list.forEach(s -> yjmxService.remove(s));
+        }
         //插入两条支付信息插入流水表
         BizYjmx newBizYjmx1 = new BizYjmx();
         newBizYjmx1.setId(genId());
@@ -134,23 +145,16 @@ public class OrderServiceImpl extends BaseServiceImpl<BizOrder,java.lang.String>
         newBizYjmx1.setZjZt("1");//提现状态 ZDCLK0054 (0、提现冻结  1、 处理成功 ) 提现操作默认0 佣金操作默认1
         newBizYjmx1.setMxlx("1");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
         yjmxService.save(newBizYjmx1);
-        BizPtyh queryUser=ptyhService.findById(order.getYhId());
+
         long time = DateTime.now().toDate().getTime();
         org.joda.time.format.DateTimeFormatter pattern = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         long kssj = DateTime.parse(queryUser.getYhYqmkssj(), pattern).plusYears(1).toDate().getTime();
         long ti = time - kssj;
         // 查询当前用户有没有购买过产品 , 如果第一次购买 , 则只需要 1 不需要记录负1
-        SimpleCondition condition = new SimpleCondition(BizOrder.class);
-        condition.eq(BizOrder.InnerColumn.yhId, queryUser.getId());
-        condition.eq(BizOrder.InnerColumn.cpId, "464480599185293312");
-        List<BizOrder> orders = findByCondition(condition);
-        if(CollectionUtils.isNotEmpty(orders)){
-            newBizYjmx1.setId(genId());
-            newBizYjmx1.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
-            newBizYjmx1.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
-            yjmxService.save(newBizYjmx1);
-        }
-
+        newBizYjmx1.setId(genId());
+        newBizYjmx1.setZjFs("-1");//费用方式 ZDCLK0053 (1 佣金 -1 提现)
+        newBizYjmx1.setMxlx("3");//明细类型  ZDCLK0066 1、付款 2、分佣 3、消费 4、提现
+        yjmxService.save(newBizYjmx1);
         BizCp bizCp = cpService.findById(order.getCpId());
         String yhZsyqm ="";
         String yhZsyqmImg ="";

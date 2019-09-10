@@ -54,7 +54,7 @@ public class KsJfController extends QueryController<BizKsJf,String> {
     public ApiResponse<List<String>> batchImport(String filePath){
         return service.batchImport(filePath);
     }
-    @GetMapping("/waitPaymentListNew")
+    @PostMapping("/waitPaymentListNew")
     public ApiResponse<String> waitPaymentList(String xm, String phone, String km, String idCard, @RequestParam(defaultValue = "1") int pageNum , @RequestParam(defaultValue = "8") int pageSize){
         return service.waitPaymentListNew(xm,phone,km,idCard,pageNum,pageSize);
     }

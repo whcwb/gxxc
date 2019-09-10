@@ -234,7 +234,8 @@ public class BizYjmx implements Serializable {
         zjFs("ZJ_FS"),
         cjsj("CJSJ"),
         zjZt("ZJ_ZT"),
-        zjBz("ZJ_BZ");
+        zjBz("ZJ_BZ"),
+        mxlx("MX_LX");
 
         private final String column;
 

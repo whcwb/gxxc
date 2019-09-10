@@ -443,11 +443,11 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
        if(StringUtils.isNotBlank(entity.getTrainId())){
            BizTrainPlace place = placeService.findById(entity.getTrainId());
            entity.setTrainName(place.getPlaceName());
-       }
-       if(StringUtils.isNotBlank(entity.getSubSchoolId())){
-           BizSubSchool school = subSchoolService.findById(entity.getSubSchoolId());
-           RuntimeCheck.ifNull(school, "未找到代培点信息");
-           entity.setSubSchoolName(school.getSubName());
+           if(StringUtils.isNotBlank(place.getSubCode())){
+               BizSubSchool school = subSchoolService.findById(place.getSubCode());
+               entity.setSubSchoolId(place.getSubCode());
+               entity.setSubSchoolName(school.getSubName());
+           }
        }
        entityMapper.updateByPrimaryKey(entity);
         return ApiResponse.success();
@@ -476,12 +476,13 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
             BizTrainPlace place = placeService.findById(bizJl.getTrainId());
             RuntimeCheck.ifNull(place, "未找到训练场地信息");
             bizJl.setTrainName(place.getPlaceName());
+            if(StringUtils.isNotBlank(place.getSubCode())){
+                BizSubSchool school = subSchoolService.findById(place.getSubCode());
+                bizJl.setSubSchoolId(place.getSubCode());
+                bizJl.setSubSchoolName(school.getSubName());
+            }
         }
-        if(StringUtils.isNotBlank(bizJl.getSubSchoolId())){
-            BizSubSchool school = subSchoolService.findById(bizJl.getSubSchoolId());
-            RuntimeCheck.ifNull(school, "未找到代培点信息");
-            bizJl.setSubSchoolName(school.getSubName());
-        }
+
         if(StringUtils.isBlank(bizJl.getJlImg())){
             bizJl.setJlImg(ptyh.getYhTx());
         }

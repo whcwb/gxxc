@@ -2,8 +2,10 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.BizTrainPlaceMapper;
 import com.cwb.platform.biz.model.BizDriversSchool;
+import com.cwb.platform.biz.model.BizSubSchool;
 import com.cwb.platform.biz.model.BizTrainPlace;
 import com.cwb.platform.biz.service.SchoolService;
+import com.cwb.platform.biz.service.SubSchoolService;
 import com.cwb.platform.biz.service.TrainPlaceService;
 import com.cwb.platform.biz.util.GpsUtil;
 import com.cwb.platform.sys.base.BaseServiceImpl;
@@ -28,6 +30,8 @@ public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String>
     private BizTrainPlaceMapper trainPlaceMapper;
     @Autowired
     private SchoolService schoolService;
+    @Autowired
+    private SubSchoolService subSchoolService;
     @Override
     protected Mapper<BizTrainPlace> getBaseMapper() {
         return trainPlaceMapper;
@@ -85,6 +89,10 @@ public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String>
         BizDriversSchool school = schoolService.findById(entity.getSchoolCode());
         RuntimeCheck.ifNull(school,"未找到驾校");
 
+        RuntimeCheck.ifBlank(entity.getSubCode(), "请选择代培点");
+        BizSubSchool subSchool = subSchoolService.findById(entity.getSubCode());
+        RuntimeCheck.ifNull(subSchool, "未找到代培点信息");
+        entity.setSubName(subSchool.getSubName());
         entity.setSchoolName(school.getSchoolName());
         entity.setPlaceId(genId());
         entity.setCreateTime(DateUtils.getNowTime());

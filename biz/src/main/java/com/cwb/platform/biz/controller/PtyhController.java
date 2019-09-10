@@ -115,11 +115,11 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     }
 
     @PostMapping("/updateSubFee")
-    public ApiResponse<String> updateSubFee(String id, String km){
-        return service.updateSubFee(id, km);
+    public ApiResponse<String> updateSubFee(String ids, String km){
+        return service.updateSubFee(ids, km);
     }
 
-    @GetMapping("/getSubFee")
+    @PostMapping("/getSubFee")
     public ApiResponse<String> getSubFee(String km,@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
         return service.getSubFee(km,pageNum,pageSize);
     }
@@ -147,10 +147,7 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
      */
     @PostMapping("/getPaymentRecord")
     public ApiResponse<List<List>> getPaymentRecord(@RequestParam("yhid") String yhId){
-
         return service.getPaymentRecord(yhId);
-
-
     }
 
     @RequestMapping(value = "/status-query", method={RequestMethod.POST})
@@ -164,7 +161,10 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     }
 
 
-
+    @GetMapping("/getSubStudent")
+    public ApiResponse<String> getSubStudent(String subId, @RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getSubStudent(subId, pageNum, pageSize);
+    }
 
 
 }
