@@ -12,7 +12,6 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
 
@@ -93,4 +92,12 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     void sendRegisterInvite(String userId, String openId) throws UnsupportedEncodingException;
 
     ApiResponse<String> bindOpenId(String openid);
+
+    ApiResponse<String> updateAssignStudent(String id, String jlId, String km);
+
+    ApiResponse<String> updateSubFee(String id, String km);
+
+    ApiResponse<String> getSubFee(String km, int pageNum, int pageSize);
+
+    ApiResponse<String> getSubStudent(String id, int pageNum, int pageSize);
 }

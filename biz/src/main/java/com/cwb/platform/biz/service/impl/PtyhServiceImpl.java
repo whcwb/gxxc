@@ -12,12 +12,10 @@ import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
-import com.cwb.platform.sys.model.BizPtyh;
-import com.cwb.platform.sys.model.SysJs;
-import com.cwb.platform.sys.model.SysYh;
-import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.model.*;
 import com.cwb.platform.sys.service.JsService;
 import com.cwb.platform.sys.service.YhService;
+import com.cwb.platform.sys.service.ZdxmService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
@@ -40,7 +38,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +57,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
@@ -92,6 +88,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private String logoFileUrl;
     @Value("${qr_code_file_url}")
     private String qrCodeFileUrl;
+
+    @Autowired
+    private BizFpMapper fpMapper;
 
 
     @Autowired
@@ -129,6 +128,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private KsjfService ksjfService;
     @Autowired
     private YhService yhService;
+    @Autowired
+    private ZdxmService zdxmService;
 
     @Autowired
     private SysYhJsMapper userRoleMapper;
@@ -798,7 +799,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         yjmx.setZjJe(20000d);
         yjmx.setYhId(newEntity.getId());
         yjmx.setTxShZt("1");
-        yjmx.setMxlx("4");
+        yjmx.setMxlx("3");
         yjmx.setCjsj(DateUtils.getNowTime());
         yjmxService.save(yjmx);
         zhService.userAccountUpdate(Arrays.asList(newEntity.getId()));
@@ -1457,10 +1458,50 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         // 进行分配操作
         if (CollectionUtils.isNotEmpty(ids)) {
-            // 如果是分配的科目二教练
+            // 如果是分配的科目二教练 需要将 科目三一同分配
             entityMapper.updateJxsl(jlId, ids.size());
+
             userService.updateJlId(ids, jlId, jlType);
             entityMapper.updateJlFp(ids, "该学员于：" + DateUtils.getNowTime() + " 分配给受理专员：" + users.getYhXm() + "");
+
+            if(StringUtils.equals(jlType, "2")){
+                userService.updateJlId(ids, jlId, "3");
+                BizJl jl = jlService.findById(jlId);
+                List<BizPtyh> ptyhs = ptyhService.findByIds(ids);
+                // 从字典中获取
+                List<SysZdxm> zdxms = zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm, "subFee");
+                RuntimeCheck.ifEmpty(zdxms, "请设置代培费");
+                Map<String, String> map = zdxms.stream().collect(Collectors.toMap(SysZdxm::getZddm, p -> p.getZdmc()));
+                // 需要生成 代培费纪录
+                ptyhs.forEach(p -> {
+                    BizPtyh ptyh = new BizPtyh();
+                    ptyh.setYhK2SubId(jl.getSubSchoolId());
+                    ptyh.setYhK2SubJe(Double.parseDouble(map.get("k2")));
+                    ptyh.setYhK2SubName(jl.getSubSchoolName());
+                    BizFp fp = new BizFp();
+                    fp.setId(genId());
+                    fp.setCjsj(DateUtils.getNowTime());
+                    fp.setFpkm("2");
+                    fp.setFpms("该学员于" + DateUtils.getNowTime() + " 分配给 " + jl.getYhXm() );
+                    fp.setSfdk("0");
+                    fp.setSubSchoolId(jl.getSubSchoolId());
+                    fp.setSubSchoolName(jl.getSubSchoolName());
+                    fp.setYhId(p.getId());
+                    fpMapper.insert(fp);
+                    ptyh.setYhK3SubId(jl.getSubSchoolId());
+                    ptyh.setYhK3SubJe(Double.parseDouble(map.get("k3")));
+                    ptyh.setYhK3SubName(jl.getSubSchoolName());
+                    fp.setId(genId());
+                    fp.setFpkm("3");
+                    fpMapper.insert(fp);
+                    ptyh.setId(p.getId());
+                    update(ptyh);
+
+                });
+
+            }
+
+
         }
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
@@ -2131,6 +2172,118 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         ptyh.setYhOpenId(openid);
         update(ptyh);
         return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> updateAssignStudent(String id, String jlId, String km) {
+        String flag = getRequestParameterAsString("flag");
+        RuntimeCheck.ifBlank(id, "请选择学员");
+        RuntimeCheck.ifBlank(jlId, "请选择教练");
+        RuntimeCheck.ifBlank(km, "请选择要分配的科目");
+        // 查询当前学员的代培点与修改之后的代培点是否一致 , 如果不一致 需要提醒是否修改
+        BizJl jl = jlService.findById(jlId);
+        if(StringUtils.isBlank(flag)){
+            BizPtyh ptyh = findById(id);
+            RuntimeCheck.ifFalse(StringUtils.equals(jl.getSubSchoolId(),ptyh.getYhK2SubId()), "当前所选教练 不是学员所在代培点的教练 , 请确认是否修改");
+        }
+        Map<String,String> map = new HashMap<>();
+        map.put("0","受理");
+        map.put("1","科一");
+        map.put("2","科二");
+        map.put("3", "科三");
+        map.put("4","科四");
+
+        userService.updateJlId(Arrays.asList(id), jlId, km);
+        entityMapper.updateJlFp(Arrays.asList(id), "该学员于：" + DateUtils.getNowTime() + " 分配给"+ map.get(km) + "专员：" + jl.getYhXm() + "");
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> updateSubFee(String ids,String km) {
+        RuntimeCheck.ifBlank(ids , "请选择已交代培费");
+        List<String> list = Arrays.asList(ids.split(","));
+        String time = DateUtils.getNowTime();
+        List<BizPtyh> ptyhs = ptyhService.findByIds(list);
+        ptyhs.forEach(p -> {
+            if(StringUtils.equals(km,"2")){
+                p.setYhK2SubSj(time);
+            }else if(StringUtils.equals(km, "3")){
+                p.setYhK3SubSj(time);
+            }
+            ptyhService.update(p);
+            // 更新日志
+            SimpleCondition condition = new SimpleCondition(BizFp.class);
+            condition.eq(BizFp.InnerColumn.yhId, p.getId());
+            condition.eq(BizFp.InnerColumn.fpkm, km);
+            List<BizFp> fps = fpMapper.selectByExample(condition);
+            if(CollectionUtils.isNotEmpty(fps)){
+                BizFp fp = fps.get(0);
+                fp.setSfdk("1");
+                fpMapper.updateByPrimaryKey(fp);
+            }
+        });
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> getSubFee(String km, int pageNum, int pageSize) {
+
+        List<Map<String,Object>> result = new ArrayList<>();
+        String name = getRequestParameterAsString("name");
+        if(StringUtils.isBlank(name)){
+            name = null;
+        }
+        String finalName = name;
+        PageInfo<String> info = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> fpMapper.getSubSchool(km, finalName));
+        if(CollectionUtils.isNotEmpty(info.getList())){
+            SimpleCondition condition = new SimpleCondition(BizFp.class);
+            condition.eq(BizFp.InnerColumn.fpkm,km);
+            condition.eq(BizFp.InnerColumn.sfdk,"0");
+            condition.in(BizFp.InnerColumn.subSchoolId, info.getList());
+            List<BizFp> fps = fpMapper.selectByExample(condition);
+            Set<String> collect = fps.stream().map(BizFp::getYhId).collect(Collectors.toSet());
+            List<BizPtyh> ptyhs = ptyhService.findByIds(collect);
+            Map<String, BizPtyh> ptyhMap = ptyhs.stream().collect(Collectors.toMap(BizPtyh::getId, p -> p));
+            Map<String, List<BizFp>> map = fps.stream().collect(Collectors.groupingBy(BizFp::getSubSchoolId));
+            for (Map.Entry<String, List<BizFp>> entry : map.entrySet()) {
+                Map<String,Object> objectMap = new HashMap<>();
+                List<BizFp> value = entry.getValue();
+                String schoolName = value.get(0).getSubSchoolName();
+                value.forEach(bizFp -> bizFp.setYh(ptyhMap.get(bizFp.getYhId())));
+                double zj = 0.0;
+                if(StringUtils.equals(km, "2")){
+                   zj =  value.stream().map(BizFp::getYh).map(BizPtyh::getYhK2SubJe).mapToDouble(value1 -> value1).sum();
+                }else if(StringUtils.equals(km,"3")){
+                    zj =  value.stream().map(BizFp::getYh).map(BizPtyh::getYhK3SubJe).mapToDouble(value1 -> value1).sum();
+                }
+                objectMap.put("subSchoolName", schoolName);
+                objectMap.put("yhList", value);
+                objectMap.put("km",km);
+                objectMap.put("zj",zj);
+                objectMap.put("total", value.size());
+                result.add(objectMap);
+            }
+        }
+        ApiResponse<String> res = new ApiResponse<>();
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>();
+        pageInfo.setTotal(info.getTotal());
+        pageInfo.setPageNum(pageNum);
+        pageInfo.setPageSize(pageSize);
+        pageInfo.setList(result);
+        res.setPage(pageInfo);
+        return res;
+    }
+
+    @Override
+    public ApiResponse<String> getSubStudent(String subId, int pageNum, int pageSize) {
+        RuntimeCheck.ifBlank(subId, "请选择代培点");
+        LimitedCondition condition = getQueryCondition();
+        condition.and().andCondition(" YH_K2_SUB_ID = '"+subId+"' or YH_K3_SUB_ID = '"+subId+"'");
+        PageInfo<BizPtyh> info =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(info);
+        return res;
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {

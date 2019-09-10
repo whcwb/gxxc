@@ -89,7 +89,15 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         BizPtyh ptyh = ptyhService.findById(yhId);
         if(entity.getKmId().equals("1")){
             if(StringUtils.equals(ptyh.getYhXyJfType(),entity.getKmId())){
-                ptyh.setYhXyJfType("2");
+                condition = new SimpleCondition(BizKsJf.class);
+                condition.eq(BizKsJf.InnerColumn.yhId.name(),entity.getYhId());
+                condition.eq(BizKsJf.InnerColumn.kmId.name(), "2");
+                 ksJfList = findByCondition(condition);
+                 if(CollectionUtils.isNotEmpty(ksJfList)){
+                     ptyh.setYhXyJfType("3");
+                 }else{
+                     ptyh.setYhXyJfType("2");
+                }
             }
         }else if(entity.getKmId().equals("2")){
             if(StringUtils.equals(ptyh.getYhXyJfType(),entity.getKmId())){
@@ -314,7 +322,7 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
             condition.like(BizPtyh.InnerColumn.yhZjhm, idCard);
         }
         PageInfo<BizPtyh> info =
-                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> ptyhService.findByCondition(condition));
         res.setPage(info);
         return res;
     }

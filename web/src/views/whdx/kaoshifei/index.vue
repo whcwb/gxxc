@@ -14,8 +14,8 @@
         <Row style="position: relative;">
             <Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
         </Row>
-        <Row>
-            <h2 style="color: red">合计：{{totalMoney}}元</h2>
+        <Row class="margin-top-10 pageSty">
+            <pager :parent="v"></pager>
         </Row>
         <component :is="componentName"></component>
     </div>
@@ -31,37 +31,61 @@
             return {
                 v:this,
                 SpinShow: true,
-                pagerUrl:this.apis.ksJf.DJF,
+                pagerUrl:this.apis.ksJf.DJKSF,
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
                     {title: "#",  type: 'index',width:60},
-                    {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '身份证号码',key:'yhZjhm',searchKey:'yhZhLike',render:(h,p)=>{
-                            let s = p.row.yhZjhm;
-                            if (!s)return '';
-                            s = s.substring(0,6)+'******'+s.substring(12,18);
-                            return h('div',s)
+                    {title: '姓名',key:'yhXm',searchKey:'xm',align:'center'},
+                    {title: '身份证号码',key:'yhZjhm',searchKey:'idCard',align:'center'},
+                    {title: '手机号',key:'yhZh',searchKey:'phone',align:'center'},
+                    {title: '流水号',key:'yhLsh',align:'center'},
+                    {title: '流水号条码',key:'yhLsh',width:280,align:'center',
+                        render:(h,p)=>{
+                            return h('div',[
+
+                                h('barcode',
+                                    {
+                                        style:{
+                                            height:'80px'
+                                        },
+                                        props:{
+                                            value:p.row.yhLsh,
+                                        }
+                                    }
+                                )
+                            ],)
+
+                        }
+                    },
+                    {title: '科目',key:'yhXyJfType',align:'center',render:(h,p)=>{
+                           if(p.row.yhXyJfType == 1){
+                               return h('div','科目一')
+                           }
+                            if(p.row.yhXyJfType == 2){
+                                return h('div','科目二')
+                            }
+                            if(p.row.yhXyJfType == 3){
+                                return h('div','科目三')
+                            }
+                            if(p.row.yhXyJfType == 4){
+                                return h('div','科目四')
+                            }
+
                         }},
-                    {title: '手机号',key:'yhZh',searchKey:'yhZh',render:(h,p)=>{
-                            let s = p.row.yhZh;
-                            if (!s)return '';
-                            s = s.substring(0,3)+'****'+s.substring(7,11);
-                            return h('div',s)
-                        }},
-                    {title: '科目',key:'km',render:(h,p)=>{
-                            return h('div','科目一')
-                        }},
-                    {title: '金额',key:'money',render:(h,p)=>{
-                            return h('div','120元')
-                        }},
+                    // {title: '金额',key:'money',render:(h,p)=>{
+                    //         return h('div','120元')
+                    //     }},
                 ],
                 pageData: [],
                 choosedData:[],
                 form: {
-                    km:1,
+                    xm:'',
+                    phone:'',
+                    km:"",
+                    idCard:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -74,8 +98,16 @@
             let userInfo = sessionStorage.getItem('userInfo');
             this.userType = JSON.parse(userInfo).type;
             this.util.initTable(this)
+            // this.getPager()
         },
         methods: {
+            getPager(){
+                this.$http.get(this.apis.ksJf.DJKSF,{params:this.form}).then((res)=>{
+                    if (res.code == 200){
+                        this.pageData = res.page.list
+                    }
+                })
+            },
             onGetPageData(){
                 this.totalMoney = this.pageData.length * 120;
             },

@@ -68,6 +68,9 @@ public class BizSubSchool {
     @Column(name = "SUB_IMG")
     private String subImg;
 
+    @Column(name = "SUB_CODE")
+    private String subCode;
+
     private String cjsj;
 
     private String cjr;
@@ -84,7 +87,8 @@ public class BizSubSchool {
         subAddr("SUB_ADDR"),
         subImg("SUB_IMG"),
         cjsj("CJSJ"),
-        cjr("CJR");
+        cjr("CJR"),
+        subCode("SUB_CODE");
 
         private final String column;
 

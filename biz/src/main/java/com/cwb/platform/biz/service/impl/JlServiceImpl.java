@@ -65,6 +65,8 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
 
     @Autowired
     private TrainPlaceService placeService;
+    @Autowired
+    private SubSchoolService  subSchoolService;
 
     @Autowired
     private WxMpService wxMpService;
@@ -419,6 +421,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
     }
 
    public ApiResponse<String> updateEntity(BizJl entity){
+
        String jlCx = entity.getJlCx();
        RuntimeCheck.ifBlank(jlCx, "培训车型不能为空");
        String jlType = entity.getJlType();
@@ -440,6 +443,11 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
        if(StringUtils.isNotBlank(entity.getTrainId())){
            BizTrainPlace place = placeService.findById(entity.getTrainId());
            entity.setTrainName(place.getPlaceName());
+           if(StringUtils.isNotBlank(place.getSubCode())){
+               BizSubSchool school = subSchoolService.findById(place.getSubCode());
+               entity.setSubSchoolId(place.getSubCode());
+               entity.setSubSchoolName(school.getSubName());
+           }
        }
        entityMapper.updateByPrimaryKey(entity);
         return ApiResponse.success();
@@ -447,7 +455,8 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
 
     @Override
     public ApiResponse<String> saveJl(BizJl bizJl) {
-
+        RuntimeCheck.ifBlank(bizJl.getTrainId(), "教练所属训练场不能为空");
+        RuntimeCheck.ifBlank(bizJl.getSubSchoolId(), "教练所属代培点不能为空");
         RuntimeCheck.ifBlank(bizJl.getYhZh(), "用户手机号码不能为空");
         RuntimeCheck.ifBlank(bizJl.getYhLx(), "教练教学类别不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlCx(), "教练培训车型不能为空");
@@ -467,7 +476,13 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
             BizTrainPlace place = placeService.findById(bizJl.getTrainId());
             RuntimeCheck.ifNull(place, "未找到训练场地信息");
             bizJl.setTrainName(place.getPlaceName());
+            if(StringUtils.isNotBlank(place.getSubCode())){
+                BizSubSchool school = subSchoolService.findById(place.getSubCode());
+                bizJl.setSubSchoolId(place.getSubCode());
+                bizJl.setSubSchoolName(school.getSubName());
+            }
         }
+
         if(StringUtils.isBlank(bizJl.getJlImg())){
             bizJl.setJlImg(ptyh.getYhTx());
         }

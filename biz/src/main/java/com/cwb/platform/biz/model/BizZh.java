@@ -31,6 +31,9 @@ public class BizZh implements Serializable {
     @Column(name = "YH_YEDJ")
     private Double yhYedj;
 
+    @Column(name = "YH_YTX")
+    private Double yhYtx;
+
     public Double getYhYedj() {
         return yhYedj;
     }
@@ -40,6 +43,14 @@ public class BizZh implements Serializable {
     }
 
     private static final long serialVersionUID = 1L;
+
+    public Double getYhYtx() {
+        return yhYtx;
+    }
+
+    public void setYhYtx(Double yhYtx) {
+        this.yhYtx = yhYtx;
+    }
 
     /**
      * 获取用户id
