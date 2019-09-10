@@ -12,12 +12,10 @@ import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.bean.AccessToken;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
-import com.cwb.platform.sys.model.BizPtyh;
-import com.cwb.platform.sys.model.SysJs;
-import com.cwb.platform.sys.model.SysYh;
-import com.cwb.platform.sys.model.SysYhJs;
+import com.cwb.platform.sys.model.*;
 import com.cwb.platform.sys.service.JsService;
 import com.cwb.platform.sys.service.YhService;
+import com.cwb.platform.sys.service.ZdxmService;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
 import com.cwb.platform.util.commonUtil.*;
@@ -39,6 +37,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.json.JSONObject;
@@ -129,6 +128,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private KsjfService ksjfService;
     @Autowired
     private YhService yhService;
+    @Autowired
+    private ZdxmService zdxmService;
 
     @Autowired
     private SysYhJsMapper userRoleMapper;
@@ -1457,10 +1458,34 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         // 进行分配操作
         if (CollectionUtils.isNotEmpty(ids)) {
-            // 如果是分配的科目二教练
+            // 如果是分配的科目二教练 需要将 科目三一同分配
             entityMapper.updateJxsl(jlId, ids.size());
+
             userService.updateJlId(ids, jlId, jlType);
             entityMapper.updateJlFp(ids, "该学员于：" + DateUtils.getNowTime() + " 分配给受理专员：" + users.getYhXm() + "");
+
+            if(StringUtils.equals(jlType, "2")){
+                userService.updateJlId(ids, jlId, "3");
+                BizJl jl = jlService.findById(jlId);
+                List<BizPtyh> ptyhs = ptyhService.findByIds(ids);
+                // 从字典中获取
+                List<SysZdxm> zdxms = zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm, "subFee");
+                RuntimeCheck.ifEmpty(zdxms, "请设置代培费");
+                Map<String, String> map = zdxms.stream().collect(Collectors.toMap(SysZdxm::getZddm, p -> p.getZdmc()));
+                // 需要生成 代培费纪录
+                ptyhs.forEach(p -> {
+                    p.setYhK2SubId(jl.getSubSchoolId());
+                    p.setYhK2SubJe(Double.parseDouble(map.get("k2")));
+                    p.setYhK2SubName(jl.getSubSchoolName());
+                    p.setYhK3SubId(jl.getSubSchoolId());
+                    p.setYhK3SubJe(Double.parseDouble(map.get("k3")));
+                    p.setYhK3SubName(jl.getSubSchoolName());
+                    ptyhService.update(p);
+                });
+
+            }
+
+
         }
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
@@ -2131,6 +2156,59 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         ptyh.setYhOpenId(openid);
         update(ptyh);
         return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> updateAssignStudent(String id, String jlId, String km) {
+        RuntimeCheck.ifBlank(id, "请选择学员");
+        RuntimeCheck.ifBlank(jlId, "请选择教练");
+        RuntimeCheck.ifBlank(km, "请选择要分配的科目");
+        Map<String,String> map = new HashMap<>();
+        map.put("0","受理");
+        map.put("1","科一");
+        map.put("2","科二");
+        map.put("3", "科三");
+        map.put("4","科四");
+        BizJl jl = jlService.findById(jlId);
+        userService.updateJlId(Arrays.asList(id), jlId, km);
+        entityMapper.updateJlFp(Arrays.asList(id), "该学员于：" + DateUtils.getNowTime() + " 分配给"+ map.get(km) + "专员：" + jl.getYhXm() + "");
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> updateSubFee(String ids,String km) {
+        RuntimeCheck.ifBlank(ids , "请选择已交代培费");
+        List<String> list = Arrays.asList(ids.split(","));
+        String time = DateUtils.getNowTime();
+        List<BizPtyh> ptyhs = ptyhService.findByIds(list);
+        ptyhs.forEach(p -> {
+            if(StringUtils.equals(km,"2")){
+                p.setYhK2SubSj(time);
+            }else if(StringUtils.equals(km, "3")){
+                p.setYhK3SubSj(time);
+            }
+            ptyhService.update(p);
+        });
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> getSubFee(String km, int pageNum, int pageSize) {
+        if(StringUtils.isBlank(km)){
+            return ApiResponse.success();
+        }
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        if(StringUtils.equals(km, "2")){
+            condition.and().andIsNotNull(BizPtyh.InnerColumn.yhK2SubId.name());
+            condition.and().andIsNull(BizPtyh.InnerColumn.yhK2SubSj.name());
+        }else if(StringUtils.equals(km, "3")){
+            condition.and().andIsNotNull(BizPtyh.InnerColumn.yhK3SubId.name());
+            condition.and().andIsNull(BizPtyh.InnerColumn.yhK3SubSj.name());
+        }
+        PageInfo<BizPtyh> info = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(info);
+        return res;
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {

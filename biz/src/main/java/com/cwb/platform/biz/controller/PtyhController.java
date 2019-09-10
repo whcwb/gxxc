@@ -109,6 +109,22 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
 
     }
 
+    @PostMapping("/updateAssignStudent")
+    public ApiResponse<String> updateAssignStudent(String id, String jlId, String km){
+        return service.updateAssignStudent(id, jlId , km);
+    }
+
+    @PostMapping("/updateSubFee")
+    public ApiResponse<String> updateSubFee(String id, String km){
+        return service.updateSubFee(id, km);
+    }
+
+    @GetMapping("/getSubFee")
+    public ApiResponse<String> getSubFee(String km,@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getSubFee(km,pageNum,pageSize);
+    }
+
+
     /**
      * 手工创建生成邀请码
      */

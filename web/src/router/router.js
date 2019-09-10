@@ -44,7 +44,12 @@ export const otherRouter = {
     meta: { title: '首页' },
     component: Main,
     children: [
-        {meta: { title: '首页' },path: 'home', title: {i18n: 'home'}, name: 'home_index', component: () => import('@/views/home/home.vue') }
+        {
+            meta: { title: '首页' },
+            path: 'home',
+            name: 'home_index',
+            component: () => import('@/views/home/home.vue')
+        }
     ]
 };
 
@@ -120,9 +125,9 @@ export let appRouter = [
         ]
     },
     {
-        path: '/student',
+        path: '/baseInfo',
         icon: 'android-car',
-        name: 'student',
+        name: 'baseInfo',
         meta: {title: '基础数据'},
         component: Main,
         children: [
@@ -139,6 +144,13 @@ export let appRouter = [
                 name: 'examPlace',
                 meta: { title: '考场管理' },
                 component: () => import('@/views/whdx/examPlace')
+            },
+            {
+                path: 'dpdgl',
+                icon: 'android-clipboard',
+                name: 'dpdgl',
+                meta: { title: '代陪点管理' },
+                component: () => import('@/views/whdx/dpdgl')
             },
             {
                 path: 'trainPlace',

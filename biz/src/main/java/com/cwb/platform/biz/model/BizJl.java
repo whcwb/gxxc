@@ -129,6 +129,12 @@ public class BizJl implements Serializable {
     @Column(name = "TRAIN_NAME")
     private String trainName;
 
+    @Column(name = "SUB_SCHOOL_ID")
+    private String subSchoolId;
+
+    @Column(name = "SUB_SCHOOL_NAME")
+    private String subSchoolName;
+
     /**
      * 上传个人文件，以","进行分隔。
      */
@@ -168,6 +174,22 @@ public class BizJl implements Serializable {
 
     public void setTrainPlace(BizTrainPlace trainPlace) {
         this.trainPlace = trainPlace;
+    }
+
+    public String getSubSchoolId() {
+        return subSchoolId;
+    }
+
+    public void setSubSchoolId(String subSchoolId) {
+        this.subSchoolId = subSchoolId;
+    }
+
+    public String getSubSchoolName() {
+        return subSchoolName;
+    }
+
+    public void setSubSchoolName(String subSchoolName) {
+        this.subSchoolName = subSchoolName;
     }
 
     public String getYhZh() {
@@ -553,7 +575,11 @@ public class BizJl implements Serializable {
         jlMs("JL_MS"),
         jlType("JL_TYPE"),
         jlZt("JL_ZT"),
-        jlCx("JL_CX");
+        jlCx("JL_CX"),
+        subSchoolId("SUB_SCHOOL_ID"),
+        subSchoolName("SUB_SCHOOL_NAME"),
+        trainId("TRAIN_ID"),
+        trainName("TRAIN_NAME");
 
         private final String column;
 
