@@ -7,7 +7,11 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.util.bean.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/api/subschool")
 public class SubSchoolController extends BaseController<BizSubSchool,String> {
    @Autowired
    private SubSchoolService service;

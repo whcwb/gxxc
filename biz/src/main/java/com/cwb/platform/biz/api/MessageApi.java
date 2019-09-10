@@ -1,11 +1,18 @@
 package com.cwb.platform.biz.api;
 
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
+import com.cwb.platform.biz.model.BizKsJf;
+import com.cwb.platform.biz.model.BizYjmx;
+import com.cwb.platform.biz.service.KsjfService;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.YjmxService;
+import com.cwb.platform.biz.service.ZhService;
 import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.bean.SimpleCondition;
+import com.cwb.platform.util.commonUtil.DateUtils;
+import com.cwb.platform.util.commonUtil.SnowflakeIdWorker;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -26,6 +33,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /*
  * 业务系统对外开放的接口
@@ -43,6 +52,15 @@ public class MessageApi {
     private WxMpService wxMpService;
     @Autowired
     private PtyhService ptyhService;
+    @Autowired
+    private ZhService zhService;
+    @Autowired
+    private KsjfService ksjfService;
+
+    @Autowired
+    private YjmxService yjmxService;
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     @GetMapping("/test")
     public ApiResponse<String> test(String id) throws WxErrorException, IOException {
@@ -123,10 +141,67 @@ public class MessageApi {
         return ApiResponse.success();
     }
 
+    /**
+     * 更新一波 账户余额
+     */
+    @GetMapping("/updateAllZh")
+    public ApiResponse<String> updateAllZh(){
+        List<BizPtyh> all = ptyhService.findAll();
+        List<String> list = all.stream().map(BizPtyh::getId).collect(Collectors.toList());
+        zhService.userAccountUpdate(list);
+        return ApiResponse.success();
+    }
 
+    @GetMapping("/updateMxlx")
+    public ApiResponse<String> updateMxlx(){
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhLx,  "1");
+        List<BizPtyh> ptyhs = ptyhService.findByCondition(condition);
+        ptyhs.forEach(bizPtyh -> {
+            SimpleCondition cond = new SimpleCondition(BizYjmx.class);
+            cond.eq(BizYjmx.InnerColumn.yhId, bizPtyh.getId());
+            cond.eq(BizYjmx.InnerColumn.zjJe, 20000);
+            cond.and().andIsNull(BizYjmx.InnerColumn.zjId.name());
+            List<BizYjmx> yjmxes = yjmxService.findByCondition(cond);
+            if(CollectionUtils.isNotEmpty(yjmxes)){
+                List<String> list = yjmxes.stream().map(BizYjmx::getId).collect(Collectors.toList());
+                list.forEach(s -> yjmxService.remove(s));
+            }
+        });
+        return ApiResponse.success();
+    }
 
-
-
-
+    /**
+     * 更新 现有学员的待缴考试费
+     */
+    @GetMapping("/updateJf")
+    public ApiResponse<String> updateJfType(){
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhLx,  "1");
+        List<BizPtyh> ptyhs = ptyhService.findByCondition(condition);
+        ptyhs.forEach(bizPtyh -> {
+            // 根据当前已交考试费来填
+            SimpleCondition con = new SimpleCondition(BizKsJf.class);
+            con.eq(BizKsJf.InnerColumn.yhId.name(),bizPtyh.getId());
+//            con.eq(BizKsJf.InnerColumn.kmId.name(), "2");
+            List<BizKsJf> jfs = ksjfService.findByCondition(con);
+            if(CollectionUtils.isEmpty(jfs)){
+                    bizPtyh.setYhXyJfType("1");
+            }else{
+                Set<String> set = jfs.stream().map(BizKsJf::getKmId).collect(Collectors.toSet());
+                if(set.contains("1")){
+                    if(set.contains("2")){
+                        bizPtyh.setYhXyJfType("3");
+                    }else{
+                        bizPtyh.setYhXyJfType("2");
+                    }
+                }else{
+                    bizPtyh.setYhXyJfType("1");
+                }
+            }
+            ptyhService.update(bizPtyh);
+        });
+        return ApiResponse.success();
+    }
 
 }

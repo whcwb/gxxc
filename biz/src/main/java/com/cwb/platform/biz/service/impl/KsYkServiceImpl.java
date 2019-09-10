@@ -5,8 +5,11 @@ import com.cwb.platform.biz.mapper.BizKsYkMapper;
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.model.BizExamPlace;
 import com.cwb.platform.biz.model.BizKsYk;
+import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.service.KsYkService;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.UserService;
+import com.cwb.platform.biz.service.ZhService;
 import com.cwb.platform.biz.util.AsyncEventBusUtil;
 import com.cwb.platform.biz.util.SendWechatMsgEvent;
 import com.cwb.platform.biz.wxpkg.service.WechatService;
@@ -20,6 +23,7 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.joda.time.DateTime;
@@ -43,6 +47,8 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
 
     @Autowired
     private PtyhService ptyhService;
+    @Autowired
+    private ZhService  zhService;
 
     @Autowired
     private BizExamPlaceMapper examPlaceMapper;
@@ -53,6 +59,8 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
     private String wxDomain;
     @Autowired
     private WechatService wechatService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private  AsyncEventBusUtil asyncEventBusUtil;
@@ -126,6 +134,18 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
             user.setYhYxqz(DateTime.now().plusYears(3).toString("yyyy-MM-dd HH:mm:ss"));
         }
         ptyhMapper.updateByPrimaryKeySelective(user);
+        // 科目一考试之后 更新 其上级账户中的冻结余额
+        BizUser bizUser = userService.findById(user.getId());
+        List<String> ids = new ArrayList<>();
+        if(StringUtils.isNotBlank(bizUser.getYhSjid())){
+            ids.add(bizUser.getYhSjid());
+        }
+        if(StringUtils.isNotBlank(bizUser.getYhSsjid())){
+            ids.add(bizUser.getYhSsjid());
+        }
+        if(CollectionUtils.isNotEmpty(ids)){
+            zhService.userAccountUpdate(ids);
+        }
     }
 
 

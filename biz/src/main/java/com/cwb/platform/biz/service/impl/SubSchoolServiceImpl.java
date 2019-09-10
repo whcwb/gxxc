@@ -13,10 +13,12 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 import com.cwb.platform.util.exception.RuntimeCheckException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
+@Service
 public class SubSchoolServiceImpl extends BaseServiceImpl<BizSubSchool,String> implements SubSchoolService {
 
     @Autowired
@@ -42,16 +44,16 @@ public class SubSchoolServiceImpl extends BaseServiceImpl<BizSubSchool,String> i
         entity.setSubOpenid(ptyh.getYhOpenId());
         entity.setYhId(ptyh.getId());
         entity.setCjsj(DateUtils.getNowTime());
-        entity.setId(genId());
+        entity.setId(entity.getSubCode());
         save(entity);
         return ApiResponse.saveSuccess();
     }
 
     @Override
     public boolean fillPagerCondition(LimitedCondition condition){
-        String string = getRequestParameterAsString("condition");
-        if(StringUtils.isNotBlank(string)){
-            condition.and().andCondition(" sub_code like '%"+string+"%' or sub_name like '%"+string+"%' or sub_phone like '%"+string+"%' or sub_fz like '%"+string+"%'");
+        String cond = getRequestParameterAsString("cond");
+        if(StringUtils.isNotBlank(cond)){
+            condition.and().andCondition(" sub_code like '%"+cond+"%' or sub_name like '%"+cond+"%' or sub_phone like '%"+cond+"%' or sub_fz like '%"+cond+"%'");
         }
         return true;
     }
