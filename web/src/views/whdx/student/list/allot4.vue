@@ -23,7 +23,7 @@
                 </Row>
 			</div>
 			<div slot='footer'>
-				<Button type="default" @click="v.util.closeDialog(parent)">取消</Button>
+				<Button type="default" @click="close">取消</Button>
 				<Button type="primary" @click="confirm">确定</Button>
 			</div>
 	</div>
@@ -53,12 +53,13 @@
 			    v:this,
                 operate:'分配',
 				showModal: true,
-                apiRoot:this.apis.student,
+                apiRoot:this.apis.teacher,
 				readonly: false,
                 form: {
                     yhZt:'1',
                     yhLx:"2",
                     zt:'',
+                    jlTypeLike:"k3",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
@@ -67,15 +68,15 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '电话',key:'jlJjlxrdh',searchKey:'jlJjlxrdhLike'},
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','ribbon-b','分配',()=>{
-                                    this.confirm(params.row.id);
+                                this.util.buildButton(this,h,'success','md-person-add','分配',()=>{
+                                    this.confirm(params.row.yhId);
                                 }),
                             ]);
                         }
@@ -111,23 +112,38 @@
                 });
 			},
             save(id){
-                let userList = this.$parent.choosedData;
-                let yhIds = '';
-                for (let r of userList){
-                    yhIds += r.id+',';
-                }
-                let params = {
-                    yhIds:yhIds,
-                    jlid:id
-                }
                 let v = this;
-                this.$http.post(this.apis.student.assignStudents,params).then((res)=>{
+                let params = {
+                    id:v.formItem.id,
+                    jlId:id,
+                    km:3,
+                    flag:''
+                }
+                this.$http.post('/api/ptyh/updateAssignStudent',params).then((res)=>{
                     if (res.code === 200){
                         this.$Message.success(res.message);
-                        v.util.closeDialog(parent);
+                        this.close()
                         v.util.getPageData(parent.$parent)
+                    }else if(res.code == 500) {
+                        swal({
+                            title: "请注意",
+                            text: res.message,
+                            icon: "warning",
+                            buttons:['取消','确认'],
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                params.flag = 1
+                                this.save(params.id)
+                            } else {
+                            }
+                        });
+                    }else {
+                        this.$Message.error(res.message)
                     }
                 })
+            },
+            close(){
+                this.$parent.close()
             }
 		}
 	}

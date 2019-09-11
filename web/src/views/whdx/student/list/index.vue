@@ -20,6 +20,10 @@
 </template>
 
 <script>
+	import jf from '../status/jf'
+	import jg from '../status/jg'
+	import sl from '../status/sl'
+	import yk from '../status/yk'
     import formData from './formData.vue'
     import sublist from './sublist.vue'
     import status from './status.vue'
@@ -29,7 +33,7 @@
 	import VueBarcode from 'vue-barcode'
     export default {
         name: 'byxxTable',
-        components: {formData,sublist,allot,audit,status,'barcode': VueBarcode,xgjl},
+        components: {formData,sublist,allot,audit,status,'barcode': VueBarcode,xgjl,jf,jg,sl,yk},
         data() {
             return {
                 v:this,
@@ -92,23 +96,21 @@
                         width: 180,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','md-card','详情',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'formData'
+                                this.util.buildButton(this,h,'success','md-card','受理',()=>{
+									this.getSl(params.row.id);
                                 }),
-                                this.util.buildButton(this,h,'success','ios-car','学习进度',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'status'
+                                this.util.buildButton(this,h,'success','ios-car','约考',()=>{
+									this.getYk(params.row.id);
+                                }),
+
+                                this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
+									this.getJf(params.row.id);
                                 }),
 								this.util.buildButton(this,h,'warning','md-create','修改教练',()=>{
 									this.choosedItem = params.row;
 									this.componentName = 'xgjl'
 								}),
-                                this.util.buildButton(this,h,'info','md-git-network','查看下线',()=>{
-                                    this.choosedItem = params.row;
-                                    this.componentName = 'sublist'
-                                }),
-                                this.util.buildButton(this,h,'info','md-close','删除',()=>{
+                                this.util.buildButton(this,h,'error','md-close','删除',()=>{
                                     swal({
                                         title: "是否删除数据?",
                                         text: "",
@@ -139,6 +141,25 @@
             this.util.initTable(this)
         },
         methods: {
+			getData(api,yhId,componentName){
+				this.$http.get(api,{params:{yhId:yhId,pageSize:1,orderBy:'cjsj desc'}}).then((res)=>{
+					if (res.code === 200 && res.page.list && res.page.list.length > 0){
+						this.choosedItem = res.page.list[0];
+					}else{
+						this.choosedItem = {yhId:yhId};
+					}
+					this.componentName = componentName
+				})
+			},
+			getSl(yhId){
+				this.getData(this.apis.kssl.QUERY,yhId,'sl');
+			},
+			getJf(yhId){
+				this.getData(this.apis.ksJf.QUERY,yhId,'jf');
+			},
+			getYk(yhId){
+				this.getData(this.apis.ksyk.QUERY,yhId,'yk');
+			},
 			gettm(text){
 				JsBarcode("#barcode", text)
 				this.$nextTick()
