@@ -60,7 +60,7 @@
                     // {title:'银行卡号',key:'ttYhkh'},
                     // {title:'所属银行',key:'ttSsyh'},
                     // {title:'提现姓名',key:'txXm'},
-                    {title:'备注',key:'ttBz'},
+                    {title:'备注',key:'ttBz',width:250},
                     {
                         title: '操作',
                         key: 'action',

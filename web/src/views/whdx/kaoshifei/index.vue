@@ -22,11 +22,11 @@
 </template>
 
 <script>
-
+    import jf from '../student/status/jf'
     import batchImport from './batchImport'
     export default {
         name: 'byxxTable',
-        components:{batchImport},
+        components:{batchImport,jf},
         data() {
             return {
                 v:this,
@@ -60,7 +60,7 @@
 
                         }
                     },
-                    {title: '科目',key:'yhXyJfType',align:'center',render:(h,p)=>{
+                    {title: '科目',key:'yhXyJfType',align:'center',dict:'ZDCLK0067',searchKey:'dict',render:(h,p)=>{
                            if(p.row.yhXyJfType == 1){
                                return h('div','科目一')
                            }
@@ -75,6 +75,19 @@
                             }
 
                         }},
+                    {
+                        title: '操作',
+                        key: 'action',
+                        width: 180,
+                        render: (h, params) => {
+                            return h('div', [
+                                this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
+                                    this.getJf(params.row.id);
+                                }),
+
+                            ]);
+                        }
+                    }
                     // {title: '金额',key:'money',render:(h,p)=>{
                     //         return h('div','120元')
                     //     }},
@@ -101,6 +114,20 @@
             // this.getPager()
         },
         methods: {
+            getData(api,yhId,componentName){
+                this.$http.get(api,{params:{yhId:yhId,pageSize:1,orderBy:'cjsj desc'}}).then((res)=>{
+                    if (res.code === 200 && res.page.list && res.page.list.length > 0){
+                        this.choosedItem = res.page.list[0];
+                    }else{
+                        this.choosedItem = {yhId:yhId};
+                    }
+                    this.componentName = componentName
+                })
+            },
+
+            getJf(yhId){
+                this.getData(this.apis.ksJf.QUERY,yhId,'jf');
+            },
             getPager(){
                 this.$http.get(this.apis.ksJf.DJKSF,{params:this.form}).then((res)=>{
                     if (res.code == 200){

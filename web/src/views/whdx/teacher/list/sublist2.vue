@@ -47,7 +47,7 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
+                                this.util.buildButton(this,h,'success','md-card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),

@@ -39,18 +39,18 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
-                    {title: '类型',key:'yhLx'},
-                    {title: '缴费状态',key:'ddSfjx',dict:'jfzt'},
-                    {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz'},
-                    {title: '认证状态',key:'yhZt',dict:'ZDCLK0043'},
+                    {title: '账号',key:'yhSjhm',searchKey:'yhSjhm'},
+                    {title: '身份证号',key:'yhZjhm',searchKey:'yhZjhm'},
+                    // {title: '缴费状态',key:'ddSfjx',dict:'jfzt'},
+                    // {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz'},
+                    // {title: '认证状态',key:'yhZt',dict:'ZDCLK0043'},
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','card','详情',()=>{
+                                this.util.buildButton(this,h,'success','md-card','详情',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'formData'
                                 }),

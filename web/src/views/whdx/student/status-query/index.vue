@@ -45,7 +45,7 @@
                     {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '身份证号',key:'yhZjhm',searchKey:'yhZjhmLike'},
                     {title: '注册时间',key:'cjsj'},
-                    {title: '用户类型',key:'yhLx',dict:'ZDCLK0041',searchType:'dict'},
+                    {title: '用户类型',key:'yhLx',dict:'ZDCLK0041'},
                     // {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     // {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     // {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
