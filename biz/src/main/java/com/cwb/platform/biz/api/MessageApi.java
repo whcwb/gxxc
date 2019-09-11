@@ -2,11 +2,9 @@ package com.cwb.platform.biz.api;
 
 import com.cwb.platform.biz.mapper.BizPtyhMapper;
 import com.cwb.platform.biz.model.BizKsJf;
+import com.cwb.platform.biz.model.BizSubSchool;
 import com.cwb.platform.biz.model.BizYjmx;
-import com.cwb.platform.biz.service.KsjfService;
-import com.cwb.platform.biz.service.PtyhService;
-import com.cwb.platform.biz.service.YjmxService;
-import com.cwb.platform.biz.service.ZhService;
+import com.cwb.platform.biz.service.*;
 import com.cwb.platform.biz.util.ShoreCode;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
@@ -56,6 +54,8 @@ public class MessageApi {
     private ZhService zhService;
     @Autowired
     private KsjfService ksjfService;
+    @Autowired
+    private SubSchoolService schoolService;
 
     @Autowired
     private YjmxService yjmxService;
@@ -138,6 +138,13 @@ public class MessageApi {
         RuntimeCheck.ifTrue(StringUtils.isNotBlank(ptyh.getYhOpenId()), "您已绑定微信号,请勿重复绑定");
         ptyh.setYhOpenId(openid);
         ptyhService.update(ptyh);
+        List<BizSubSchool> sub = schoolService.findEq(BizSubSchool.InnerColumn.yhId, ptyh.getId());
+        if(CollectionUtils.isNotEmpty(sub)){
+            sub.forEach(bizSubSchool -> {
+                bizSubSchool.setSubOpenid(openid);
+                schoolService.update(bizSubSchool);
+            });
+        }
         return ApiResponse.success();
     }
 

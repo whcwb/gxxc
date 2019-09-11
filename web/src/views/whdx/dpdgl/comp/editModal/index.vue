@@ -117,14 +117,12 @@
                 console.log(query.length);
                 if (query != ''&&query != ' ') {
                     this.loading1 = true;
-                    this.$http.get('/api/ptyh/pager', {
-                        yhXmLike: query,
-                        pageNum: 1,
-                        pageSize: 9999
-                    }).then(res => {
+                    this.$http.get('/api/ptyh/query',
+                      {params:{yhXmLike: query}}
+                    ).then(res => {
                         setTimeout(() => {
                             this.loading1 = false;
-                            this.userList = res.page.list
+                            this.userList = res.result
                         }, 200);
                     }).catch(err => {
                     })

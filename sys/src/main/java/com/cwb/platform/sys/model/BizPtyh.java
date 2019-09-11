@@ -241,6 +241,14 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_LSH")
     private String yhLsh;
 
+    @Column(name = "YH_K2_SH")
+    private String yhK2Sh;
+
+    @Column(name = "YH_K3_SH")
+    private String yhK3Sh;
+
+
+
     /**
      * 手机验证码
      */
@@ -314,7 +322,7 @@ public class BizPtyh implements Serializable {
     private String yhK2SubId;
 
     @Column(name = "YH_K2_SUB_JE")
-    private Double yhK2SubJe;
+    private Integer yhK2SubJe;
 
     @Column(name = "YH_K2_SUB_SJ")
     private String yhK2SubSj;
@@ -326,7 +334,7 @@ public class BizPtyh implements Serializable {
     private String yhK3SubId;
 
     @Column(name = "YH_K3_SUB_JE")
-    private Double yhK3SubJe;
+    private Integer yhK3SubJe;
 
     @Column(name = "YH_K3_SUB_SJ")
     private String yhK3SubSj;
@@ -389,7 +397,9 @@ public class BizPtyh implements Serializable {
         yhK3SubId("YH_K3_SUB_ID"),
         yhK3SubJe("YH_K3_SUB_JE"),
         yhK3SubSj("YH_K3_SUB_SJ"),
-        yhK3SubName("YH_K3_SUB_NAME");
+        yhK3SubName("YH_K3_SUB_NAME"),
+        yhK2Sh("YH_K2_SH"),
+        yhK3Sh("YH_K3_SH");
 
         private final String column;
 

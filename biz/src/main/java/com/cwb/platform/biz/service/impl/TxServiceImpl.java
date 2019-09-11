@@ -325,7 +325,6 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
                     txJl.setTxDesc(fruitDesc);
                     txJlMapper.insert(txJl);
                 }
-
                 ensembleFruit=fruit;
                 ensembleFruitDesc=fruitDesc;
             }
@@ -349,6 +348,7 @@ public class TxServiceImpl extends BaseServiceImpl<BizTx,java.lang.String> imple
      * @param userName   用户的真实姓名
      * @return
      */
+    @Override
     public ApiResponse<String> wxEnterprisePayRealize(String orderId,String openID,int amount,String userName,String desc){
         if (StringUtils.isBlank(orderId)){
             return ApiResponse.fail("订单ID不能为空");

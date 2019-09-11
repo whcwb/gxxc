@@ -39,6 +39,7 @@
                 formInputs:[
                     {label:'驾校代码',prop:'schoolCode',type:'foreignKey'},
                     {label:'区域代码',prop:'regionCode',dict:'ZDCLK0060',type:'dict'},
+					{label:'代培点代码',prop:'subCode',type:'foreignKey'},
                     {label:'训练场地名称',prop:'placeName'},
                     {label:'场地缩略图',prop:'placeIcon'},
                     {label:'地理信息坐标',prop:'placeCoordinate'},
@@ -54,6 +55,7 @@
 				},
                 foreignList:{
                     schoolCode:{url:this.apis.school.QUERY,key:'schoolCode',val:'schoolName',items:[]},
+					subCode:{url:'/api/subschool/query',key:'subCode',val:'subName',items:[]}
                 }
 			}
 		},

@@ -47,10 +47,10 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return null;
     }
 
-    @RequestMapping(value="/query", method={RequestMethod.GET})
+    /*@RequestMapping(value="/query", method={RequestMethod.GET})
     public ApiResponse<List<BizPtyh>> query(BizPtyh entity){
         return null;
-    }
+    }*/
 
     @RequestMapping(value="/getCondition", method={RequestMethod.POST})
     public ApiResponse<List<BizPtyh>> getCondition(BizPtyh entity){
@@ -106,7 +106,6 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     @PostMapping("/assignStudents")
     public ApiResponse<List<String>> assignStudents(@RequestParam(name = "yhIds") String yhIds,@RequestParam(name = "jlid") String jlId,@RequestParam(name = "jlType") String jlType){
         return service.assignStudents(yhIds, jlId,jlType);
-
     }
 
     @PostMapping("/updateAssignStudent")
@@ -114,9 +113,19 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.updateAssignStudent(id, jlId , km);
     }
 
+    @PostMapping("/shSubFee")
+    public ApiResponse<String> shSubFee(String id ,String  km){
+        return service.shSubFee(id, km);
+    }
+
+    @PostMapping("/confirmSubFee")
+    public ApiResponse<String> confirmSubFee(String id ,String  km ){
+        return service.confrimSubFee(id, km);
+    }
+
     @PostMapping("/updateSubFee")
-    public ApiResponse<String> updateSubFee(String ids, String km){
-        return service.updateSubFee(ids, km);
+    public ApiResponse<String> updateSubFee(String id, String km){
+        return service.updateSubFee(id, km);
     }
 
     @PostMapping("/getSubFee")
