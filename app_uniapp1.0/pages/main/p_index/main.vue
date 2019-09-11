@@ -15,7 +15,7 @@
 						</div>
 						<div class="linesty"></div>
 						<div class="valSty">
-							{{zhYE.yhZhye/100}}元
+							{{(zhYE.yhZhye+zhYE.yhYedj)/100}}元
 						</div>
 					</div>
 					<img class="eCodeSty" src="./file/img/eCode.png" @click='toCode'>
@@ -83,45 +83,61 @@
 		<view class="teamTitBox box_row colCenter">
 			<view class="hline"></view>
 			<div class="titText">
-				团队信息
+				团队信息{{newsList.length}}
 			</div>
 		</view>
 		<view v-if="newsList.length == 0" style="text-align: center;">
 			<image src="../../../static/img/zanwu.png" mode="scaleToFill"></image>
 			<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
 		</view>
-		<view v-else class="teamListBox">
-			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index" @click="toXymess(it)">
-					<view style="display: flex;flex-direction:row;align-items: center;">
-						<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
-							<b>{{index+1}}</b>
-						</view>
-						<img :src="it.userDetail.yhTx" alt="">
-						<view class="name">
-							{{it.yhXm}}
-						</view>
-					</view>	
-					
-					<view style="display: flex;flex-direction:row;align-items: center;">	
-						<view style="margin-right: 15upx;" @click.stop="phone(it.yhSjhm)">
-							<uni-icon type='phone' color='#007AFF' size="30"></uni-icon>
-						</view>
-
-						<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
-							A类
-						</view>
-						<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
-							B类
-						</view>
-						<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
-							未认证
-						</view>
+		<view class="xlcListBox" v-else>
+			<view class="listItemSty" v-for="(it,index) in newsList" :key="index">
+				<view class="topImgBox">
+					<img :src="urlImg+it.placeIcon" alt="">
+					<view class="nameSty">
+						{{it.schoolName}}
 					</view>
 				</view>
-					<!-- <view class="phoneSty">
-						{{it.yhSjhm}}
-					</view> -->
+				<view class="textBox">
+					<view class="xlcNameBox">
+						{{it.placeName}}
+					</view>
+					<view class="addressBox">
+						{{it.address}}
+					</view>
+					
+				</view>
+			</view>
 		</view>
+		<!-- <view v-else class="teamListBox">
+			<view class="itemSty box_row" v-for="(it,index) in newsList" :key="index" @click="toXymess(it)">
+				<view style="display: flex;flex-direction:row;align-items: center;">
+					<view style="margin-right: 15upx;background-color: #007AFF;color: #FFFFFF;text-align: center;vertical-align: middle;height:40rpx ;width: 40rpx; border-radius: 25px;">
+						<b>{{index+1}}</b>
+					</view>
+					<img :src="it.userDetail.yhTx" alt="">
+					<view class="name">
+						{{it.yhXm}}
+					</view>
+				</view>
+
+				<view style="display: flex;flex-direction:row;align-items: center;">
+					<view style="margin-right: 15upx;" @click.stop="phone(it.yhSjhm)">
+						<uni-icon type='phone' color='#007AFF' size="30"></uni-icon>
+					</view>
+
+					<view v-if="it.userDetail.yhLx == '1' && it.userDetail.yhZt =='1'" class="butTyp onMoney">
+						A类
+					</view>
+					<view v-if="it.userDetail.yhLx == '3'&& it.userDetail.yhZt =='1'" class="butTyp offMoney">
+						B类
+					</view>
+					<view v-if="it.userDetail.yhZt !='1'" class="butTyp offMoney">
+						未认证
+					</view>
+				</view>
+			</view>
+		</view> -->
 
 	</view>
 </template>
@@ -141,10 +157,12 @@
 		computed: mapState(['hasLogin', 'userName']),
 		data() {
 			return {
+				urlImg:this.apis.getImgUrl,
 				userMess: true,
 				USERMESS: '', //用户信息
 				zhYE: {
-					yhZhye: 0 //账户余额
+					yhZhye: 0, //账户余额
+					yhYedj: 0, //冻结余额
 				},
 				items: [{}], //banner图
 				newsList: []
@@ -158,7 +176,7 @@
 				return true
 			}
 		},
-		onNavigationBarButtonTap(){ //点击了分享
+		onNavigationBarButtonTap() { //点击了分享
 			this.fenXpy()
 		},
 		onLoad() {},
@@ -187,25 +205,25 @@
 
 		},
 		methods: {
-			toXymess(item){//查看学员详情  只能看A类学员
-			    console.log('item',item);
-				if(item.userDetail.yhLx != '1' || item.userDetail.ddSfjx!= '1'){
-					
-				}else{
+			toXymess(item) { //查看学员详情  只能看A类学员
+				console.log('item', item);
+				if (item.userDetail.yhLx != '1' || item.userDetail.ddSfjx != '1') {
+
+				} else {
 					uni.setStorage({
-						key:'xymess',
-						data:item
+						key: 'xymess',
+						data: item
 					})
 					uni.navigateTo({
-						url:"../../xymess/xymess"
+						url: "../../xymess/xymess"
 					})
-					
+
 				}
 			},
-			phone(id){
-				 uni.makePhoneCall({
-				 	phoneNumber: id //仅为示例
-				 });
+			phone(id) {
+				uni.makePhoneCall({
+					phoneNumber: id //仅为示例
+				});
 			},
 			judgeClient() {
 				let u = navigator.userAgent;
@@ -222,16 +240,9 @@
 				}
 			},
 			getnewsList() { //第一次回去数据
-				this.$http.post(this.apis.TEAMMESS, {
-					yhxm: '',
-					grade: '',
-					yhlx: '',
-					sfjf: '',
-					pageNum: 1,
-					pageSize: 9999
-				}).then((res) => {
+				this.$http.get('/app/trainplace/query').then((res) => {
 					if (res.code == 200) {
-						this.newsList = res.page.list
+						this.newsList = res.result
 						// _self.newsList = res.page.list.split('--hcSplitor--');
 						//得到数据后停止下拉刷新
 					} else {
@@ -248,8 +259,8 @@
 					if (res.code == 200) {
 						this.USERMESS = res.result
 						uni.setStorage({
-							key:'usermess',
-							data:res.result
+							key: 'usermess',
+							data: res.result
 						})
 						if (this.USERMESS.yhZt == 1) {
 							this.userMess = true
@@ -272,9 +283,9 @@
 				var v = this
 				this.$http.post(this.apis.USERZH, {}).then((res) => {
 					if (res.code == 200) {
-						if( res.result.yhZhye < 0){
+						if (res.result.yhZhye < 0) {
 							v.zhYE.yhZhye = 0
-						}else{
+						} else {
 							v.zhYE.yhZhye = res.result.yhZhye
 						}
 					} else {
@@ -284,7 +295,7 @@
 					}
 				})
 			},
-			toTeam(){
+			toTeam() {
 				uni.switchTab({
 					url: '/pages/main/team/index'
 				})
@@ -329,55 +340,54 @@
 					url: '/pages/main/p_index/kcfb/kcfb'
 				});
 			},
-			fenXpy(){
+			fenXpy() {
 				var id = uni.getStorageSync('usermess').id
 				let shareInfo = {
-					href: 'http://www.520xclm.com/wx/yqm.html?id='+id,
+					href: 'http://www.520xclm.com/wx/yqm.html?id=' + id,
 					title: "邀请您加入吉驾无忧",
 					desc: " ",
-					imgUrl:"http://www.520xclm.com/images/icons/logo-02.png"
+					imgUrl: "http://www.520xclm.com/images/icons/logo-02.png"
 				};
-				let shareList=[
-					{
-						icon:"/static/sharemenu/wx.png",
-						text:"微信好友",
+				let shareList = [{
+						icon: "/static/sharemenu/wx.png",
+						text: "微信好友",
 					},
 					{
-						icon:"/static/sharemenu/pyq.png",
-						text:"朋友圈"
+						icon: "/static/sharemenu/pyq.png",
+						text: "朋友圈"
 					}
 				];
-				this.shareObj=share(shareInfo,shareList,function(index){
+				this.shareObj = share(shareInfo, shareList, function(index) {
 					console.log("点击按钮的序号: " + index);
-					let shareObj={
-						href:shareInfo.href||"",
-						title:shareInfo.title||"",
-						summary:shareInfo.desc||"",
-						success:(res)=>{
+					let shareObj = {
+						href: shareInfo.href || "",
+						title: shareInfo.title || "",
+						summary: shareInfo.desc || "",
+						success: (res) => {
 							console.log("success:" + JSON.stringify(res));
 						},
-						fail:(err)=>{
+						fail: (err) => {
 							console.log("fail:" + JSON.stringify(err));
 						}
 					};
 					switch (index) {
 						case 0:
-							shareObj.provider="weixin";
-							shareObj.scene="WXSceneSession";
-							shareObj.type=0;
-							shareObj.imageUrl=shareInfo.imgUrl||"";
+							shareObj.provider = "weixin";
+							shareObj.scene = "WXSceneSession";
+							shareObj.type = 0;
+							shareObj.imageUrl = shareInfo.imgUrl || "";
 							uni.share(shareObj);
 							break;
 						case 1:
-							shareObj.provider="weixin";
-							shareObj.scene="WXSenceTimeline";
-							shareObj.type=0;
-							shareObj.imageUrl=shareInfo.imgUrl||"";
+							shareObj.provider = "weixin";
+							shareObj.scene = "WXSenceTimeline";
+							shareObj.type = 0;
+							shareObj.imageUrl = shareInfo.imgUrl || "";
 							uni.share(shareObj);
 							break;
 					}
 				});
-				this.$nextTick(()=>{
+				this.$nextTick(() => {
 					this.shareObj.alphaBg.show();
 					this.shareObj.shareMenu.show();
 				})
@@ -406,8 +416,8 @@
 			position: relative;
 			margin-bottom: 109upx;
 		}
-		
-		.join{
+
+		.join {
 			position: absolute;
 			display: flex;
 			align-items: center;
@@ -531,13 +541,13 @@
 			position: relative;
 			text-align: center;
 
-			view{
-				font-size:44upx;
-				font-family:FZZDHJW--GB1-0;
-				font-weight:normal;
-				color:rgba(255,255,255,1);
+			view {
+				font-size: 44upx;
+				font-family: FZZDHJW--GB1-0;
+				font-weight: normal;
+				color: rgba(255, 255, 255, 1);
 			}
-			
+
 			img {
 				width: 90.67%;
 				height: 172rpx;
@@ -596,7 +606,7 @@
 				}
 
 				.offMoney {
-					background-color:rgba(180,180,180, 0.7);
+					background-color: rgba(180, 180, 180, 0.7);
 				}
 
 				.FuserTyp {
@@ -612,6 +622,48 @@
 					font-family: PingFangSC-Regular;
 					font-weight: 400;
 					color: rgba(102, 102, 102, 1);
+				}
+			}
+		}
+		
+		.xlcListBox{
+			// background-color: #ffffff;
+			flex: 1;
+			overflow-y: auto;
+			padding: 0 36rpx;
+			max-height: 50vh;
+			.listItemSty{
+				box-shadow: 0 10rpx 12rpx rgba(0,0,0,.2);
+				border-radius:40rpx;
+				background: #ffffff;
+				margin:20rpx 0;
+				.topImgBox{
+					height: 300rpx;
+					position:relative;
+					img{
+						border-radius:32rpx 32rpx 0 0;
+						width: 100%;
+						height: 100%;
+					}
+					.nameSty{
+						position: absolute;
+						top: 10rpx;
+						left: 10rpx;
+						font-size: 52rpx;
+						color: #1da1fb;
+						font-weight: 600;
+						text-shadow: 8px 5px 5px #7e6afe;
+					}
+				}
+				.textBox{
+					// height: 100px;
+					padding:18rpx 22rpx 30rpx;
+					.xlcNameBox{
+						font-size: 32rpx;
+					}
+					.addressBox{
+						
+					}
 				}
 			}
 		}
