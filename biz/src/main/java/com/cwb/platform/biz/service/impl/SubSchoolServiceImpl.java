@@ -64,8 +64,24 @@ public class SubSchoolServiceImpl extends BaseServiceImpl<BizSubSchool,String> i
     }
 
 
+    @Override
+    public ApiResponse<String> getOpenid(String phone) {
 
+        RuntimeCheck.ifBlank(phone, "请传入手机号");
 
-
-
+        List<BizPtyh> list = service.findEq(BizPtyh.InnerColumn.yhZh, phone);
+        RuntimeCheck.ifEmpty(list, "未找到用户信息");
+        BizPtyh ptyh = list.get(0);
+        // 更新下当前用户代培点的 openid
+        List<BizSubSchool> schools = findEq(BizSubSchool.InnerColumn.subPhone, phone);
+        if(CollectionUtils.isNotEmpty(schools)){
+            schools.forEach(bizSubSchool -> {
+                if(StringUtils.isNotBlank(ptyh.getYhOpenId())){
+                    bizSubSchool.setSubOpenid(ptyh.getYhOpenId());
+                    update(bizSubSchool);
+                }
+            });
+        }
+        return ApiResponse.success(ptyh.getYhOpenId());
+    }
 }

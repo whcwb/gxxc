@@ -456,7 +456,7 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
     @Override
     public ApiResponse<String> saveJl(BizJl bizJl) {
         RuntimeCheck.ifBlank(bizJl.getTrainId(), "教练所属训练场不能为空");
-        RuntimeCheck.ifBlank(bizJl.getSubSchoolId(), "教练所属代培点不能为空");
+//        RuntimeCheck.ifBlank(bizJl.getSubSchoolId(), "教练所属代培点不能为空");
         RuntimeCheck.ifBlank(bizJl.getYhZh(), "用户手机号码不能为空");
         RuntimeCheck.ifBlank(bizJl.getYhLx(), "教练教学类别不能为空");
         RuntimeCheck.ifBlank(bizJl.getJlCx(), "教练培训车型不能为空");
@@ -480,6 +480,8 @@ public class JlServiceImpl extends BaseServiceImpl<BizJl,String> implements JlSe
                 BizSubSchool school = subSchoolService.findById(place.getSubCode());
                 bizJl.setSubSchoolId(place.getSubCode());
                 bizJl.setSubSchoolName(school.getSubName());
+            }else{
+                RuntimeCheck.ifTrue(true, "教练所属训练场未绑定代培点,请先选择该训练场的代培点");
             }
         }
 

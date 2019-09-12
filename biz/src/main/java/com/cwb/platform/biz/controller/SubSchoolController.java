@@ -26,4 +26,9 @@ public class SubSchoolController extends BaseController<BizSubSchool,String> {
         return service.validAndSave(entity);
     }
 
+    @PostMapping("/getOpenid")
+    public ApiResponse<String> getOpenid(String phone){
+        return service.getOpenid(phone);
+    }
+
 }
