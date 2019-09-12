@@ -1,66 +1,67 @@
 <template>
-    <div class="box_col" style="background-color: #ffffff">
-        <Card>
-            <div class="box_row colCenter">
-                <Input class="topSearch" v-model="params.keyword" search enter-button size="large"
-                       placeholder="请输入您要查找的信息（名称、代码、负责人、电话）"
-                       @on-search="" style="width: 100%"/>
+      <div class="box_col" style="background-color: #ffffff">
+            <Card>
+                  <div class="box_row colCenter">
+                        <Input class="topSearch" v-model="params.cond" search enter-button size="large"
+                               placeholder="请输入您要查找的信息（名称、代码、负责人、电话）"
+                               @on-search="pageChange(1)" style="width: 100%"/>
 
-                <Tooltip content="添加代培点" placement="top" :transfer="true">
-                    <Button type="primary" style="margin-left: 14px;transform: translateY(1px)"
-                            @click="compName = 'editModal'">
-                        <Icon type="md-add" size="24"/>
-                    </Button>
-                </Tooltip>
+                        <Tooltip content="添加代培点" placement="top" :transfer="true">
+                              <Button type="primary" style="margin-left: 14px;transform: translateY(1px)"
+                                      @click="compName = 'editModal'">
+                                    <Icon type="md-add" size="24"/>
+                              </Button>
+                        </Tooltip>
+                  </div>
+            </Card>
+            <div class="box_col_auto" style="padding: 0 16px">
+                  <div id="tabHeight" style="height: 100%">
+                        <Table v-if="tabH!=0" :height="tabH" :columns="tabTit" :data="tabData">
+                              <template slot-scope="{ row, index }" slot="event">
+                                    <div class="box_row rowBetween">
+                                          <Button type="info" @click="getStudent(row)">
+                                                <Icon type="ios-people" size="18"/>
+                                                学员
+                                          </Button>
+                                          <Button type="success" @click="bindWeChart(row)">
+                                                <Icon type="ios-link"/>
+                                                微信
+                                          </Button>
+                                          <!--<Button type="primary">-->
+                                          <!--<Icon type="ios-create-outline" size="16"/>-->
+                                          <!--编辑-->
+                                          <!--</Button>-->
+                                          <Button type="error" @click="remove(row.id)">
+                                                <Icon type="ios-trash-outline" size="18"/>
+                                                删除
+                                          </Button>
+                                    </div>
+                              </template>
+                        </Table>
+                  </div>
             </div>
-        </Card>
-        <div class="box_col_auto" style="padding: 0 16px">
-            <div id="tabHeight" style="height: 100%">
-                <Table v-if="tabH!=0" :height="tabH" :columns="tabTit" :data="tabData">
-                    <template slot-scope="{ row, index }" slot="event">
-                        <div class="box_row rowBetween">
-                            <Button type="info" @click="getStudent(row)">
-                                <Icon type="ios-people" size="18"/>
-                                学员
-                            </Button>
-                            <Button type="success" @click="bindWeChart(row)">
-                                <Icon type="ios-link"/>
-                                微信
-                            </Button>
-                            <Button type="primary">
-                                <Icon type="ios-create-outline" size="16"/>
-                                编辑
-                            </Button>
-                            <Button type="error" @click="bindWeChart">
-                                <Icon type="ios-trash-outline" size="18"/>
-                                删除
-                            </Button>
-                        </div>
-                    </template>
-                </Table>
+            <div class="box_row rowRight" style="padding: 8px">
+                  <Page :total="total" show-total
+                        :page-size="params.pageSize"
+                        :current="params.pageNum"
+                        :page-size-opts="pageSizeOpts"
+                        @on-page-size-change='(e)=>{params.pageSize=e;pageChange()}'
+                        @on-change="pageChange"
+                        show-sizer/>
             </div>
-        </div>
-        <div class="box_row rowRight" style="padding: 8px">
-            <Page :total="total" show-total
-                  :page-size="params.pageSize"
-                  :current="params.pageNum"
-                  :page-size-opts="pageSizeOpts"
-                  @on-page-size-change='(e)=>{params.pageSize=e;pageChange()}'
-                  @on-change="pageChange"
-                  show-sizer/>
-        </div>
 
-        <component :is="compName" :item="itemMess"
-                   @close="compName = ''"></component>
-    </div>
+            <component :is="compName" :item="itemMess"
+                       @close="compName = ''"></component>
+      </div>
 </template>
 
 <script>
     import editModal from './comp/editModal'
     import student from './comp/student'
+
     export default {
         name: "index",
-        components: {editModal,student},
+        components: {editModal, student},
         data() {
             return {
                 total: 0,
@@ -91,13 +92,13 @@
                         fixed: 'right',
                         slot: 'event',
                         align: "center",
-                        width: 400,
+                        width: 300,
                     },
                 ],
                 tabData: [],
-                pageSizeOpts: [1,8,10, 20,30, 40, 50],
+                pageSizeOpts: [1, 8, 10, 20, 30, 40, 50],
                 params: {
-                    keyword: "",
+                    cond: "",
                     pageNum: 1,
                     pageSize: 10
                 }
@@ -112,38 +113,77 @@
             })
         },
         methods: {
-            pageChange(e){
-              var v = this
-              v.params.pageNum = e
-              v.getPageData()
+            pageChange(e) {
+                var v = this
+                v.params.pageNum = e
+                v.getPageData()
             },
             getPageData() {
                 this.$http.get("/api/subschool/pager", {params: this.params}).then(res => {
                     if (res.code === 200) {
                         this.tabData = res.page.list;
                         this.total = res.page.total;
-                    }else{
+                    } else {
                         this.$Message.error(res.message)
                     }
                 })
             },
             bindWeChart(row) {
-                if(row.subOpenid){
-                    this.swal({
-                        title: "已绑定微信",
-                        text: row.subOpenid
-                    })
-                }else{
-                    this.swal({
-                        title: "未绑定微信",
-                    })
-                }
+                console.log(row);
+                // POST:   /api/subschool/getOpenid      phone
+                this.$http.post('/api/subschool/getOpenid', {phone: row.subPhone}).then(res => {
+                    if (res.code == 200 && res.message) {
+                        this.swal({
+                            title: "已绑定微信",
+                            // text: res.message
+                        })
+                    } else {
+                        this.swal({
+                            title: "未绑定微信",
+                        })
+
+                    }
+                }).catch(err => {
+                })
+
+                // if(row.subOpenid){
+                //     this.swal({
+                //         title: "已绑定微信",
+                //         text: row.subOpenid
+                //     })
+                // }else{
+                //     this.swal({
+                //         title: "未绑定微信",
+                //     })
+                // }
 
             },
+            remove(id) {
+                console.log(id);
+                var v = this
+                this.swal({
+                    title: "确定删除？",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "删除",
+                    cancelButtonText: "取消",
+                }).then((isConfirm) => {
+                    if (isConfirm.value) {
+                        v.$http.post('/api/subschool/remove/' + id).then(res => {
+                            if (res.code == 200) {
+                                v.pageChange(1)
+                            }
+                        }).catch(err => {
+                        })
+                    }
+                });
+                // /api/subschool/remove/{pkid
+            },
+
             getDom_H(id) {
                 return document.getElementById(id).offsetHeight
             },
-            getStudent(row){
+            getStudent(row) {
                 this.compName = 'student'
                 console.log(row);
                 this.itemMess = row
@@ -153,9 +193,9 @@
 </script>
 
 <style lang="less">
-    .topSearch {
-        input {
-            background-color: #f1f1f140;
-        }
-    }
+      .topSearch {
+            input {
+                  background-color: #f1f1f140;
+            }
+      }
 </style>

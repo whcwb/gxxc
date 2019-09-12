@@ -13,9 +13,21 @@
 				</view>
 				<view class="moneyBut" @tap="goTx"></view>
 			</view>
-			<view class="lable">
-				已冻结 {{dj}} 元
+			<view class="box_row rowBetween">
+				<view class="lable">
+					提现冻结 {{dj}} 元
+				</view>
+				<view class="lable">
+					分佣冻结{{fydj}}元
+				</view>
 			</view>
+			<view class="labtext">
+				<span>*</span>提现冻结：申请提现，未到账的金额。
+			</view>
+			<view class="labtext">
+				<span>*</span>分佣冻结：学员已报名缴费，但是科目一没有考试，分佣金额暂时冻结。
+			</view>
+			
 		</view>
 
 		<view class="txTltle">
@@ -58,6 +70,7 @@
 			return {
 				ye: 0 ,//余额
 				dj:0,//冻结金额
+				fydj:0,//分用冻结
 				mxList:[]//提现明细
 			}
 		},
@@ -164,6 +177,7 @@
 						} else {
 							this.ye = res.result.yhZhye / 100
 							this.dj = res.result.yhTxdj / 100
+							this.fydj = res.result.yhYedj / 100
 						}
 					}else{
 						uni.showToast({
@@ -216,7 +230,7 @@
 
 		.MyMoneyBox {
 			width: 680rpx;
-			height: 316rpx;
+			height: 440rpx;
 			background: rgba(255, 255, 255, 1);
 			box-shadow: 0px 2px 8px 0px rgba(203, 203, 214, 0.5);
 			border-radius: 16rpx;
@@ -277,6 +291,14 @@
 				font-weight: 400;
 				color: rgba(236, 64, 64, 1);
 				margin: 20rpx 22rpx 0 22rpx;
+			}
+			.labtext{
+				font-size: 28rpx;
+				margin: 4rpx 22rpx 0 22rpx;
+				span{
+					color: rgba(236, 64, 64, 1);
+					font-size: 36rpx;
+				}
 			}
 		}
 
