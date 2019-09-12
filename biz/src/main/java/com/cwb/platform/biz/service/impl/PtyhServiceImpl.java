@@ -62,6 +62,7 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -100,6 +101,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Autowired
     private TrainPlaceService placeService;
+
+
 
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
     private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
@@ -176,6 +179,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private WechatService wechatService;
     @Autowired
     private JsService jsService;
+    private ExecutorService service = Executors.newSingleThreadExecutor();
 
 
     @Override
@@ -196,6 +200,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public List<Map<String, String>> getSpecialVals(List<BizPtyh> list) {
+
         if (CollectionUtils.isNotEmpty(list)) {
             list.forEach(this::afterReturn);
         }
@@ -803,7 +808,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         yjmx.setMxlx("3");
         yjmx.setCjsj(DateUtils.getNowTime());
         yjmxService.save(yjmx);
-        zhService.userAccountUpdate(Arrays.asList(newEntity.getId()));
+
+        service.execute(() -> zhService.userAccountUpdate(Arrays.asList(newEntity.getId())));
+
 
         /*BizZh bizZh = new BizZh();
         bizZh.setYhId(newEntity.getId());
