@@ -24,8 +24,8 @@
             }
         },
         created(){
-            if (this.$parent.choosedImgs){
-    	        this.model.path = this.$parent.choosedImgs;
+            if (this.$parent.choosedImg){
+    	        this.model.path = this.$parent.choosedImg;
                 this.loadComponent = true;
 			}	else{
                 this.loadComponent = true;
@@ -36,7 +36,7 @@
                 this.model = o;
             },
             ok(){
-                this.$emit('chooseImgFinish',this.model.path)
+                this.$emit('chooseImgFinishCover',this.model.path)
                 this.close()
             },
             close(){

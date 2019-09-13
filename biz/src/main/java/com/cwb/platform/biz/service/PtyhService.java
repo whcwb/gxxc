@@ -100,4 +100,8 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> getSubFee(String km, int pageNum, int pageSize);
 
     ApiResponse<String> getSubStudent(String id, int pageNum, int pageSize);
+
+    ApiResponse<String> shSubFee(String id, String km);
+
+    ApiResponse<String> confrimSubFee(String id, String km);
 }

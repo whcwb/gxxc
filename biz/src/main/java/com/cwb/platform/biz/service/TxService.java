@@ -19,6 +19,8 @@ public interface TxService extends BaseService<BizTx,java.lang.String>{
 
     ApiResponse<String> updateTxzt(BizTx bizTx);
 
+    ApiResponse<String> wxEnterprisePayRealize(String orderId, String openID, int amount, String userName, String desc);
+
     ApiResponse<String> saveUserDraw(Double ttJe, String yhkid, BizYhk bizYhk, BizPtyh user, String ttfs);
 
     ApiResponse<List<String>> batchImport(String filePath);

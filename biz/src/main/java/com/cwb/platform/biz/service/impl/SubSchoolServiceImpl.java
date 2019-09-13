@@ -11,6 +11,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.cwb.platform.util.exception.RuntimeCheckException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,10 @@ public class SubSchoolServiceImpl extends BaseServiceImpl<BizSubSchool,String> i
         RuntimeCheck.ifBlank(entity.getSubPhone(), "负责人手机号码不能为空");
         List<BizPtyh> ptyhs = service.findEq(BizPtyh.InnerColumn.yhZh, entity.getSubPhone());
         RuntimeCheck.ifEmpty(ptyhs, "此号码未在平台注册");
+
+        List<BizSubSchool> schoolList = findEq(BizSubSchool.InnerColumn.subCode, entity.getSubCode());
+        RuntimeCheck.ifTrue(CollectionUtils.isNotEmpty(schoolList), "代码已经绑定代培点");
+
         BizPtyh ptyh = ptyhs.get(0);
         entity.setSubFz(ptyh.getYhXm());
         entity.setSubOpenid(ptyh.getYhOpenId());
@@ -59,8 +64,24 @@ public class SubSchoolServiceImpl extends BaseServiceImpl<BizSubSchool,String> i
     }
 
 
+    @Override
+    public ApiResponse<String> getOpenid(String phone) {
 
+        RuntimeCheck.ifBlank(phone, "请传入手机号");
 
-
-
+        List<BizPtyh> list = service.findEq(BizPtyh.InnerColumn.yhZh, phone);
+        RuntimeCheck.ifEmpty(list, "未找到用户信息");
+        BizPtyh ptyh = list.get(0);
+        // 更新下当前用户代培点的 openid
+        List<BizSubSchool> schools = findEq(BizSubSchool.InnerColumn.subPhone, phone);
+        if(CollectionUtils.isNotEmpty(schools)){
+            schools.forEach(bizSubSchool -> {
+                if(StringUtils.isNotBlank(ptyh.getYhOpenId())){
+                    bizSubSchool.setSubOpenid(ptyh.getYhOpenId());
+                    update(bizSubSchool);
+                }
+            });
+        }
+        return ApiResponse.success(ptyh.getYhOpenId());
+    }
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * 单表通用CURD Control基础类，适用于单表有CURD业务操作的Controller继承，如果自己的业务不需要更新操作时（包含：新增、修改、删除）可以参考类方法，不继承该基础类

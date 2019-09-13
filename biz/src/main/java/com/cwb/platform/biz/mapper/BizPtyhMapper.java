@@ -56,4 +56,8 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
 
     @Update(" update biz_jl set JL_JXSL = (JL_JXSL + #{size}) where YH_ID = #{jlId}")
     void updateJxsl(@Param("jlId") String jlId,@Param("size") int size);
+
+    @Select(" select yh_open_id from biz_ptyh where id = (select yh_id from biz_sub_school where id = #{id})")
+    String getOpenId(@Param("id") String id);
+
 }

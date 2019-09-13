@@ -62,6 +62,7 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -71,6 +72,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     Logger payInfo = LoggerFactory.getLogger("access_info");
 
 
+    @Autowired
+    private TxService txService;
     @Autowired
     private StringRedisTemplate redisDao;
 
@@ -98,6 +101,8 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Autowired
     private TrainPlaceService placeService;
+
+
 
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
     private ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
@@ -174,6 +179,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private WechatService wechatService;
     @Autowired
     private JsService jsService;
+    private ExecutorService service = Executors.newSingleThreadExecutor();
 
 
     @Override
@@ -194,6 +200,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public List<Map<String, String>> getSpecialVals(List<BizPtyh> list) {
+
         if (CollectionUtils.isNotEmpty(list)) {
             list.forEach(this::afterReturn);
         }
@@ -257,13 +264,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         //这一批用户是种子用户，不在用户列表显示。
         List<String> notUrsrId = new ArrayList<>();
-        notUrsrId.add("460418231002202112");//李总
-        notUrsrId.add("461211447838375937");//张总
-        notUrsrId.add("461211447838375939");//刘显斌
-        notUrsrId.add("461221447838375937");//谢涛
+//        notUrsrId.add("460418231002202112");//李总
+//        notUrsrId.add("461211447838375937");//张总
+//        notUrsrId.add("461211447838375939");//刘显斌
+//        notUrsrId.add("461221447838375937");//谢涛
 
-
-        condition.notIn(BizPtyh.InnerColumn.id, notUrsrId);
+        if (CollectionUtils.isNotEmpty(notUrsrId)) {
+            condition.notIn(BizPtyh.InnerColumn.id, notUrsrId);
+        }
         return true;
     }
 
@@ -360,9 +368,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             bizPtyh.setYhOpenId("");
             bizPtyh.setYhAlipayId("");
             bizPtyh.setYhYyyqm("");
-            if (StringUtils.isNotBlank(bizPtyh.getYhZjhm())) {
-                bizPtyh.setYhZjhm(bizPtyh.getYhZjhm().replaceAll("(\\d{3})\\d*(\\d{4})", "$1******$2"));
-            }
+
             if (StringUtils.isNotBlank(bizPtyh.getYhTx()) && !StringUtils.containsNone(bizPtyh.getYhTx(), "http")) {
                 bizPtyh.setYhTx(imgUrl + bizPtyh.getYhTx());
             }
@@ -580,9 +586,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         RuntimeCheck.ifBlank(entity.getYhZh(), "用户账户不能为空");
         String s = redisDao.boundValueOps(entity.getYhZh()).get();
-        if(StringUtils.isBlank(s)){
-            redisDao.boundValueOps(entity.getYhZh()).set("1",5, TimeUnit.SECONDS);
-        }else {
+        if (StringUtils.isBlank(s)) {
+            redisDao.boundValueOps(entity.getYhZh()).set("1", 5, TimeUnit.SECONDS);
+        } else {
             return ApiResponse.fail("操作频繁, 请稍后再试");
         }
         String telIdentifying = entity.getTelIdentifying();//短信验证码
@@ -802,7 +808,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         yjmx.setMxlx("3");
         yjmx.setCjsj(DateUtils.getNowTime());
         yjmxService.save(yjmx);
-        zhService.userAccountUpdate(Arrays.asList(newEntity.getId()));
+
+        service.execute(() -> zhService.userAccountUpdate(Arrays.asList(newEntity.getId())));
+
 
         /*BizZh bizZh = new BizZh();
         bizZh.setYhId(newEntity.getId());
@@ -1464,7 +1472,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             userService.updateJlId(ids, jlId, jlType);
             entityMapper.updateJlFp(ids, "该学员于：" + DateUtils.getNowTime() + " 分配给受理专员：" + users.getYhXm() + "");
 
-            if(StringUtils.equals(jlType, "2")){
+            if (StringUtils.equals(jlType, "2")) {
                 userService.updateJlId(ids, jlId, "3");
                 BizJl jl = jlService.findById(jlId);
                 List<BizPtyh> ptyhs = ptyhService.findByIds(ids);
@@ -1476,21 +1484,23 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 ptyhs.forEach(p -> {
                     BizPtyh ptyh = new BizPtyh();
                     ptyh.setYhK2SubId(jl.getSubSchoolId());
-                    ptyh.setYhK2SubJe(Double.parseDouble(map.get("k2")));
+                    ptyh.setYhK2SubJe(Integer.parseInt(map.get("k2")));
                     ptyh.setYhK2SubName(jl.getSubSchoolName());
                     BizFp fp = new BizFp();
                     fp.setId(genId());
                     fp.setCjsj(DateUtils.getNowTime());
                     fp.setFpkm("2");
-                    fp.setFpms("该学员于" + DateUtils.getNowTime() + " 分配给 " + jl.getYhXm() );
+                    fp.setFpms("该学员于" + DateUtils.getNowTime() + " 分配给 " + jl.getYhXm());
                     fp.setSfdk("0");
                     fp.setSubSchoolId(jl.getSubSchoolId());
                     fp.setSubSchoolName(jl.getSubSchoolName());
                     fp.setYhId(p.getId());
                     fpMapper.insert(fp);
                     ptyh.setYhK3SubId(jl.getSubSchoolId());
-                    ptyh.setYhK3SubJe(Double.parseDouble(map.get("k3")));
+                    ptyh.setYhK3SubJe(Integer.parseInt(map.get("k3")));
                     ptyh.setYhK3SubName(jl.getSubSchoolName());
+                    ptyh.setYhK2Sh("0");
+                    ptyh.setYhK3Sh("0");
                     fp.setId(genId());
                     fp.setFpkm("3");
                     fpMapper.insert(fp);
@@ -2182,63 +2192,108 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifBlank(km, "请选择要分配的科目");
         // 查询当前学员的代培点与修改之后的代培点是否一致 , 如果不一致 需要提醒是否修改
         BizJl jl = jlService.findById(jlId);
-        if(StringUtils.isBlank(flag)){
+        RuntimeCheck.ifBlank(jl.getSubSchoolId(), "请为当前教练绑定代培点");
+        if (StringUtils.isBlank(flag)) {
             BizPtyh ptyh = findById(id);
-            RuntimeCheck.ifFalse(StringUtils.equals(jl.getSubSchoolId(),ptyh.getYhK2SubId()), "当前所选教练 不是学员所在代培点的教练 , 请确认是否修改");
+            if (!StringUtils.equals(jl.getSubSchoolId(), ptyh.getYhK2SubId())) {
+                ApiResponse<String> res = new ApiResponse<>();
+                res.setMessage("当前所选教练 不是学员所在代培点的教练 , 请确认是否修改");
+                res.setCode(555);
+                return res;
+            }
         }
-        Map<String,String> map = new HashMap<>();
-        map.put("0","受理");
-        map.put("1","科一");
-        map.put("2","科二");
+        Map<String, String> map = new HashMap<>();
+        map.put("0", "受理");
+        map.put("1", "科一");
+        map.put("2", "科二");
         map.put("3", "科三");
-        map.put("4","科四");
+        map.put("4", "科四");
 
         userService.updateJlId(Arrays.asList(id), jlId, km);
-        entityMapper.updateJlFp(Arrays.asList(id), "该学员于：" + DateUtils.getNowTime() + " 分配给"+ map.get(km) + "专员：" + jl.getYhXm() + "");
+        entityMapper.updateJlFp(Arrays.asList(id),
+                "该学员于：" + DateUtils.getNowTime() + " 分配给" + map.get(km) + "专员：" + jl.getYhXm() + "");
         return ApiResponse.success();
     }
 
     @Override
-    public ApiResponse<String> updateSubFee(String ids,String km) {
-        RuntimeCheck.ifBlank(ids , "请选择已交代培费");
-        List<String> list = Arrays.asList(ids.split(","));
+    public ApiResponse<String> updateSubFee(String ids, String km) {
+        RuntimeCheck.ifBlank(ids, "请选择已交代培费");
+
+
         String time = DateUtils.getNowTime();
-        List<BizPtyh> ptyhs = ptyhService.findByIds(list);
-        ptyhs.forEach(p -> {
-            if(StringUtils.equals(km,"2")){
-                p.setYhK2SubSj(time);
-            }else if(StringUtils.equals(km, "3")){
-                p.setYhK3SubSj(time);
+        BizPtyh ptyhs = ptyhService.findById(ids);
+
+        if (StringUtils.equals(km, "2")) {
+            ptyhs.setYhK2SubSj(time);
+            RuntimeCheck.ifFalse(StringUtils.equals(ptyhs.getYhK2Sh(),"1"), "请先审核通过");
+            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyhs.getYhK2SubSj()),"此代培费已打款");
+        } else if (StringUtils.equals(km, "3")) {
+            RuntimeCheck.ifFalse(StringUtils.equals(ptyhs.getYhK3Sh(),"1"), "请先审核通过");
+            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyhs.getYhK3SubSj()),"此代培费已打款");
+            ptyhs.setYhK3SubSj(time);
+        }
+
+        ptyhService.update(ptyhs);
+        // 更新日志
+        SimpleCondition condition = new SimpleCondition(BizFp.class);
+        condition.eq(BizFp.InnerColumn.yhId, ptyhs.getId());
+        condition.eq(BizFp.InnerColumn.fpkm, km);
+        List<BizFp> fps = fpMapper.selectByExample(condition);
+        BizFp fp;
+        if (CollectionUtils.isNotEmpty(fps)) {
+            fp = fps.get(0);
+            fp.setSfdk("1");
+            fpMapper.updateByPrimaryKey(fp);
+        }else{
+            fp = new BizFp();
+            fp.setId(genId());
+            fp.setYhId(ptyhs.getId());
+            fp.setFpkm(km);
+            fp.setSfdk("1");
+            if(km.equals("2")){
+                fp.setSubSchoolName(ptyhs.getYhK2SubName());
+                fp.setSubSchoolId(ptyhs.getYhK2SubId());
+            }else{
+                fp.setSubSchoolName(ptyhs.getYhK3SubName());
+                fp.setSubSchoolId(ptyhs.getYhK3SubId());
             }
-            ptyhService.update(p);
-            // 更新日志
-            SimpleCondition condition = new SimpleCondition(BizFp.class);
-            condition.eq(BizFp.InnerColumn.yhId, p.getId());
-            condition.eq(BizFp.InnerColumn.fpkm, km);
-            List<BizFp> fps = fpMapper.selectByExample(condition);
-            if(CollectionUtils.isNotEmpty(fps)){
-                BizFp fp = fps.get(0);
-                fp.setSfdk("1");
-                fpMapper.updateByPrimaryKey(fp);
-            }
-        });
-        return ApiResponse.success();
+            fp.setCjsj(DateUtils.getNowTime());
+            fpMapper.insert(fp);
+        }
+        // 找到当前负责人的 openid
+        String openId = null;
+        int amount = 0;
+        if(km.equals("2")){
+            openId = entityMapper.getOpenId(ptyhs.getYhK2SubId());
+            amount = ptyhs.getYhK2SubJe();
+        }else if(km.equals("3")){
+           openId =  entityMapper.getOpenId(ptyhs.getYhK3SubId());
+           amount = ptyhs.getYhK3SubJe();
+        }
+        RuntimeCheck.ifNull(openId, "当前代培点负责人未绑定微信, 请先绑定微信");
+        List<BizPtyh> list = ptyhService.findEq(BizPtyh.InnerColumn.yhOpenId, openId);
+        RuntimeCheck.ifEmpty(list, "未找到平台负责人信息");
+        ApiResponse<String> response = txService.wxEnterprisePayRealize(fp.getId(), openId, amount,
+                list.get(0).getYhXm(), "平台系统打款：订单号" + fp.getId());
+        RuntimeCheck.ifFalse(response.getCode() == 200, response.getMessage());
+        return response;
     }
 
     @Override
     public ApiResponse<String> getSubFee(String km, int pageNum, int pageSize) {
 
-        List<Map<String,Object>> result = new ArrayList<>();
+        List<Map<String, Object>> result = new ArrayList<>();
         String name = getRequestParameterAsString("name");
-        if(StringUtils.isBlank(name)){
+        if (StringUtils.isBlank(name)) {
             name = null;
         }
         String finalName = name;
-        PageInfo<String> info = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> fpMapper.getSubSchool(km, finalName));
-        if(CollectionUtils.isNotEmpty(info.getList())){
+        PageInfo<String> info =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> fpMapper.getSubSchool(km, finalName));
+        if (CollectionUtils.isNotEmpty(info.getList())) {
             SimpleCondition condition = new SimpleCondition(BizFp.class);
-            condition.eq(BizFp.InnerColumn.fpkm,km);
-            condition.eq(BizFp.InnerColumn.sfdk,"0");
+            condition.eq(BizFp.InnerColumn.fpkm, km);
+            condition.eq(BizFp.InnerColumn.sfdk, "0");
             condition.in(BizFp.InnerColumn.subSchoolId, info.getList());
             List<BizFp> fps = fpMapper.selectByExample(condition);
             Set<String> collect = fps.stream().map(BizFp::getYhId).collect(Collectors.toSet());
@@ -2246,26 +2301,26 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             Map<String, BizPtyh> ptyhMap = ptyhs.stream().collect(Collectors.toMap(BizPtyh::getId, p -> p));
             Map<String, List<BizFp>> map = fps.stream().collect(Collectors.groupingBy(BizFp::getSubSchoolId));
             for (Map.Entry<String, List<BizFp>> entry : map.entrySet()) {
-                Map<String,Object> objectMap = new HashMap<>();
+                Map<String, Object> objectMap = new HashMap<>();
                 List<BizFp> value = entry.getValue();
                 String schoolName = value.get(0).getSubSchoolName();
                 value.forEach(bizFp -> bizFp.setYh(ptyhMap.get(bizFp.getYhId())));
                 double zj = 0.0;
-                if(StringUtils.equals(km, "2")){
-                   zj =  value.stream().map(BizFp::getYh).map(BizPtyh::getYhK2SubJe).mapToDouble(value1 -> value1).sum();
-                }else if(StringUtils.equals(km,"3")){
-                    zj =  value.stream().map(BizFp::getYh).map(BizPtyh::getYhK3SubJe).mapToDouble(value1 -> value1).sum();
+                if (StringUtils.equals(km, "2")) {
+                    zj = value.stream().map(BizFp::getYh).map(BizPtyh::getYhK2SubJe).mapToDouble(value1 -> value1).sum();
+                } else if (StringUtils.equals(km, "3")) {
+                    zj = value.stream().map(BizFp::getYh).map(BizPtyh::getYhK3SubJe).mapToDouble(value1 -> value1).sum();
                 }
                 objectMap.put("subSchoolName", schoolName);
                 objectMap.put("yhList", value);
-                objectMap.put("km",km);
-                objectMap.put("zj",zj);
+                objectMap.put("km", km);
+                objectMap.put("zj", zj);
                 objectMap.put("total", value.size());
                 result.add(objectMap);
             }
         }
         ApiResponse<String> res = new ApiResponse<>();
-        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>();
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>();
         pageInfo.setTotal(info.getTotal());
         pageInfo.setPageNum(pageNum);
         pageInfo.setPageSize(pageSize);
@@ -2278,7 +2333,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     public ApiResponse<String> getSubStudent(String subId, int pageNum, int pageSize) {
         RuntimeCheck.ifBlank(subId, "请选择代培点");
         LimitedCondition condition = getQueryCondition();
-        condition.and().andCondition(" YH_K2_SUB_ID = '"+subId+"' or YH_K3_SUB_ID = '"+subId+"'");
+        condition.and().andCondition(" YH_K2_SUB_ID = '" + subId + "' or YH_K3_SUB_ID = '" + subId + "'");
         PageInfo<BizPtyh> info =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
         ApiResponse<String> res = new ApiResponse<>();
@@ -2286,8 +2341,59 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         return res;
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String encode = URLEncoder.encode("http://www.520xclm.com/wx/?page=reg&id=000000", "UTF-8");
-        System.out.println(encode);
+    @Override
+    public ApiResponse<String> shSubFee(String id, String km) {
+        BizPtyh ptyh = findById(id);
+        if (StringUtils.equals(km, "2")) {
+            ptyh.setYhK2Sh("1");
+        } else if (StringUtils.equals("3", km)) {
+            ptyh.setYhK3Sh("1");
+        }
+        update(ptyh);
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> confrimSubFee(String id, String km) {
+        RuntimeCheck.ifBlank(id, "请选择记录");
+        BizPtyh ptyh = findById(id);
+        String time = DateUtils.getNowTime();
+        if (StringUtils.equals(km, "2")) {
+            ptyh.setYhK2SubSj(time);
+            RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhK2Sh(),"1"), "请先审核通过");
+            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyh.getYhK2SubSj()),"此代培费已打款");
+        } else if (StringUtils.equals(km, "3")) {
+            RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhK3Sh(),"1"), "请先审核通过");
+            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyh.getYhK3SubSj()),"此代培费已打款");
+            ptyh.setYhK3SubSj(time);
+        }
+        update(ptyh);
+        // 更新日志
+        SimpleCondition condition = new SimpleCondition(BizFp.class);
+        condition.eq(BizFp.InnerColumn.yhId, ptyh.getId());
+        condition.eq(BizFp.InnerColumn.fpkm, km);
+        List<BizFp> fps = fpMapper.selectByExample(condition);
+        BizFp fp;
+        if (CollectionUtils.isNotEmpty(fps)) {
+            fp = fps.get(0);
+            fp.setSfdk("1");
+            fpMapper.updateByPrimaryKey(fp);
+        }else{
+            fp = new BizFp();
+            fp.setId(genId());
+            fp.setYhId(ptyh.getId());
+            fp.setFpkm(km);
+            fp.setSfdk("1");
+            if(km.equals("2")){
+                fp.setSubSchoolName(ptyh.getYhK2SubName());
+                fp.setSubSchoolId(ptyh.getYhK2SubId());
+            }else{
+                fp.setSubSchoolName(ptyh.getYhK3SubName());
+                fp.setSubSchoolId(ptyh.getYhK3SubId());
+            }
+            fp.setCjsj(DateUtils.getNowTime());
+            fpMapper.insert(fp);
+        }
+        return ApiResponse.success();
     }
 }

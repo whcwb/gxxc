@@ -111,7 +111,7 @@ public abstract class BaseServiceImpl<T, PK extends Serializable> implements Bas
 
     public String getRequestParameterAsString(String param){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String attribute = (String) request.getAttribute(param);
+        String attribute =  request.getParameter(param);
         return attribute;
     }
 

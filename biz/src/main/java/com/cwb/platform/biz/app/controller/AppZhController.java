@@ -32,8 +32,9 @@ public class AppZhController extends AppUserBaseController {
             obd.setYhId(user.getId());
             obd.setYhTxdj(0.00);//提现冻结金额
             obd.setYhZhye(0.00);//账户余额
+            obd.setYhYtx(0.00);
+            obd.setYhYedj(0.00);
         }
-
         return ApiResponse.success(obd);
     }
 

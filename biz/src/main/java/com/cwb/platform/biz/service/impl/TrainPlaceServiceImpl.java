@@ -99,4 +99,23 @@ public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String>
         trainPlaceMapper.insertSelective(entity);
         return ApiResponse.success();
     }
+
+    @Override
+    public ApiResponse<String> validAndUpdate(BizTrainPlace trainPlace){
+        if(StringUtils.isNotBlank(trainPlace.getSchoolCode())){
+            BizDriversSchool school = schoolService.findById(trainPlace.getSchoolCode());
+            if(school != null){
+                trainPlace.setSchoolName(school.getSchoolName());
+            }
+        }
+        if(StringUtils.isNotBlank(trainPlace.getSubCode())){
+            BizSubSchool sub = subSchoolService.findById(trainPlace.getSubCode());
+            if(sub != null){
+                trainPlace.setSubName(sub.getSubName());
+            }
+        }
+        int i = update(trainPlace);
+        return ApiResponse.success();
+    }
+
 }
