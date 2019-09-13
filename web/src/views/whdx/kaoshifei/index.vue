@@ -42,24 +42,25 @@
                     {title: '身份证号码',key:'yhZjhm',searchKey:'idCard',align:'center'},
                     {title: '手机号',key:'yhZh',searchKey:'phone',align:'center'},
                     {title: '流水号',key:'yhLsh',align:'center'},
-                    {title: '流水号条码',key:'yhLsh',width:280,align:'center',
-                        render:(h,p)=>{
-                            return h('div',[
-
-                                h('barcode',
-                                    {
-                                        style:{
-                                            height:'80px'
-                                        },
-                                        props:{
-                                            value:p.row.yhLsh,
-                                        }
-                                    }
-                                )
-                            ],)
-
-                        }
-                    },
+                    {title: '约考状态',key:'yhXyYkType',dict:'ykzt'},
+                    // {title: '流水号条码',key:'yhLsh',width:280,align:'center',
+                    //     render:(h,p)=>{
+                    //         return h('div',[
+                    //
+                    //             h('barcode',
+                    //                 {
+                    //                     style:{
+                    //                         height:'80px'
+                    //                     },
+                    //                     props:{
+                    //                         value:p.row.yhLsh,
+                    //                     }
+                    //                 }
+                    //             )
+                    //         ],)
+                    //
+                    //     }
+                    // },
                     {title: '科目',key:'yhXyJfType',align:'center',dict:'ZDCLK0067',searchKey:'dict',render:(h,p)=>{
                            if(p.row.yhXyJfType == 1){
                                return h('div','科目一')

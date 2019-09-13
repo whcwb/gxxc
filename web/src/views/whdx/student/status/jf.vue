@@ -14,6 +14,9 @@
         			<Row>
         				<form-items :parent="v"></form-items>
         			</Row>
+					<Row style="text-align:center">
+						<barcode :id="formItem.yhLsh"></barcode>
+					</Row>
 					<Row>
 						<jf-list :parent="v"></jf-list>
 					</Row>
@@ -43,11 +46,11 @@
                     jfJl:0,
 				},
                 formInputs:[
-                    {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
-                    {label:'学员缴费时间',prop:'jfSj',type:"date"},
-                    {label:'缴费渠道',prop:'jfFs'},
-                    {label:'科目编码',prop:'kmId',dict:'ZDCLK0067',excludeDict:['4']},
-                    {label:'缴费金额',prop:'jfJl',append:'元',handler:(o)=>{
+                    {label:'姓名',prop:'yhId',type:'foreignKey',disabled:true},
+                    {label:'缴费时间',prop:'jfSj',type:"date"},
+                    {label:'渠道',prop:'jfFs'},
+                    {label:'科目',prop:'kmId',dict:'ZDCLK0067',excludeDict:['4']},
+                    {label:'金额',prop:'jfJl',append:'元',handler:(o)=>{
                         if (isNaN(o)) o = 0;
                             return parseFloat(o/100);}
 					},
