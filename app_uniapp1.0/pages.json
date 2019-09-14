@@ -34,6 +34,14 @@
 				// "navigationStyle":"custom"
 			}
 		}, {
+			"path": "pages/main/p_index/traMess/index",
+			"style": {
+				"navigationBarTitleText": "训练场",
+				"h5": {
+					"titleNView": true
+				}
+			}
+		}, {
 			"path": "pages/reg/reg",
 			"style": {
 				"navigationBarTitleText": "注册",

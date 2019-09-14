@@ -15,13 +15,18 @@ const store = new Vuex.Store({
 		userID:"",
 		payMess:null,//支付信息
 		signUrl:'',	 //签名
-		zyMess:{} //专员信息
+		zyMess:{} ,//专员信息
+		traMess:{},//训练场详情
     },
     mutations: {
 		// login(state, userName) {
 		//     state.userName = userName || '新用户';
 		//     state.hasLogin = true;
 		// },
+			
+		setTraMess(state,data){
+			state.traMess = data
+		},
 		setZyMess(state,data){
 			state.zyMess = data
 		},

@@ -2,7 +2,7 @@
     <div>
         <Modal v-model="showModal" width='900' :closable='false'
                :mask-closable="false" title="学员列表">
-            <Table :columns="tableColumns" :data="pageData"></Table>
+            <Table :columns="tableColumns" :data="pageData" :height="400"></Table>
             <div class="box_row rowRight" style="padding: 8px">
                 <Page :total="total" show-total
                       :page-size="params.pageSize"
