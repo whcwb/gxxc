@@ -4,7 +4,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-        			:mask-closable="false" title="详情">
+        			:mask-closable="false" title="缴费">
         	<div style="overflow: auto;height: 500px;">
         		<Form ref="form"
         						:model="formItem"
