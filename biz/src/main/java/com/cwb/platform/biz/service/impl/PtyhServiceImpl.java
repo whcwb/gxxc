@@ -2397,9 +2397,5 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         return ApiResponse.success();
     }
 
-    @Override
-    public ApiResponse<String> getYkXy(int pageNum, int pageSize) {
-        getRequestParameterAsString("")
-        return null;
-    }
+
 }

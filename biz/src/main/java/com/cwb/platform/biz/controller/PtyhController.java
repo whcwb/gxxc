@@ -176,10 +176,7 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.getSubStudent(subId, pageNum, pageSize);
     }
 
-    @GetMapping("/getYkXy")
-    public ApiResponse<String> getYkXy(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
-        return service.getYkXy(pageNum,pageSize);
-    }
+
 
 
 }
