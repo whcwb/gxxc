@@ -15,7 +15,7 @@
         				<form-items :parent="v"></form-items>
         			</Row>
 					<Row style="text-align:center">
-						<barcode :id="formItem.yhLsh"></barcode>
+						<barcode :id="v.yhLsh"></barcode>
 					</Row>
 					<Row>
 						<jf-list :parent="v"></jf-list>
@@ -63,10 +63,12 @@
 			}
 		},
 		created(){
-		    this.util.initFormModal(this);
+			console.log(this.formItem,"formItem");
+			this.util.initFormModal(this);
 		    this.formItem.jfJl = 0;
             let userInfo = sessionStorage.getItem('userInfo');
-            this.userType = JSON.parse(userInfo).type;
+			console.log(userInfo,"info");
+			this.userType = JSON.parse(userInfo).type;
             if (this.userType == 'k1' || this.userType == 'k2' || this.userType == 'k3' || this.userType == 'k4'){
                 let km = this.userType.charAt(1);
                 this.formItem.kmId = km;
