@@ -90,7 +90,7 @@
                     //     }
                     // },
 					{title: '车型',key:'yhCx',dict:'chexing'},
-					{title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
+					// {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
                     {
                         title: '操作',
                         key: 'action',

@@ -15,7 +15,7 @@
         				<form-items :parent="v"></form-items>
         			</Row>
 					<Row style="text-align:center">
-						<barcode :id="v.yhLsh"></barcode>
+						<barcode :value="lsh" ></barcode>
 					</Row>
 					<Row>
 						<jf-list :parent="v"></jf-list>
@@ -35,15 +35,20 @@
 	export default {
 		name: 'ksJfForm',
 		components:{jfList},
+		props:{
+			row:{}
+		},
 		data() {
 			return {
 			    v:this,
+				lsh:'',
                 operate:'新建',
                 saveUrl:this.apis.ksJf.ADD,
 				showModal: true,
 				readonly: false,
 				formItem: {
                     jfJl:0,
+					lsh:''
 				},
                 formInputs:[
                     {label:'姓名',prop:'yhId',type:'foreignKey',disabled:true},
@@ -63,7 +68,8 @@
 			}
 		},
 		created(){
-			console.log(this.formItem,"formItem");
+			this.lsh = this.$parent.row.yhLsh
+			console.log(this.formItem.lsh,'1122');
 			this.util.initFormModal(this);
 		    this.formItem.jfJl = 0;
             let userInfo = sessionStorage.getItem('userInfo');
@@ -75,6 +81,8 @@
                 this.formInputs[3].disabled = true;
             }
             this.formItem.jfSj = new Date().format('yyyy-MM-dd');
+
+            this.$nextTick()
 		},
 		methods: {
 		}
