@@ -1,45 +1,46 @@
 <template>
-	<div>
-	<Modal v-model="showModal" width='900' :closable="false" @on-cancel="close" @on-ok="ok" title="选取图片">
-		<choose-img v-if="loadComponent" :type="model.type" :path="model.path" @imgChange="imgChange"></choose-img>
-	</Modal>
-	</div>
+      <div>
+            <Modal v-model="showModal" width='900' :closable="false" @on-cancel="close" @on-ok="ok" title="选取图片">
+                  <choose-img v-if="loadComponent" :type="model.type" :path="model.path"
+                              @imgChange="imgChange"></choose-img>
+            </Modal>
+      </div>
 </template>
 <script>
-	import chooseImg from './chooseImg'
+    import chooseImg from './chooseImg'
 
     export default {
-    	name:'',
-		components:{
-    	    chooseImg
-		},
-        data () {
+        name: '',
+        components: {
+            chooseImg
+        },
+        data() {
             return {
-                showModal:true,
-                loadComponent:false,
-				model:{
-                    type:'',
-					path:''
-				}
+                showModal: true,
+                loadComponent: false,
+                model: {
+                    type: '',
+                    path: ''
+                }
             }
         },
-        created(){
-            if (this.$parent.choosedImg){
-    	        this.model.path = this.$parent.choosedImg;
+        created() {
+            if (this.$parent.choosedImg) {
+                this.model.path = this.$parent.choosedImg;
                 this.loadComponent = true;
-			}	else{
+            } else {
                 this.loadComponent = true;
-			}
+            }
         },
         methods: {
-            imgChange(o){
+            imgChange(o) {
                 this.model = o;
             },
-            ok(){
-                this.$emit('chooseImgFinishCover',this.model.path)
+            ok() {
+                this.$emit('chooseImgFinishCover', this.model.path)
                 this.close()
             },
-            close(){
+            close() {
                 let v = this;
                 v.showModal = false;
                 setTimeout(() => {
@@ -47,7 +48,7 @@
                 }, 200)
             }
         },
-        mounted () {
+        mounted() {
         }
     }
 </script>

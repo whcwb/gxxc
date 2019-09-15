@@ -91,9 +91,10 @@
 			<view style="font-size: 22px;font-weight: 600;color: #70C1EE;">暂无团队成员</view>
 		</view>
 		<view class="xlcListBox" v-else>
-			<view class="listItemSty" v-for="(it,index) in newsList" :key="index">
+			<view class="listItemSty" v-for="(it,index) in newsList"
+			 :key="index" @click="goMess(it)">
 				<view class="topImgBox">
-					<img :src="urlImg+it.placeIcon" alt="">
+					<img :src="it.placeCoverImg.split(',')[0]" alt="">
 					<view class="nameSty">
 						{{it.schoolName}}
 					</view>
@@ -102,10 +103,9 @@
 					<view class="xlcNameBox">
 						{{it.placeName}}
 					</view>
-					<view class="addressBox">
+					<!-- <view class="addressBox">
 						{{it.address}}
-					</view>
-					
+					</view> -->
 				</view>
 			</view>
 		</view>
@@ -144,7 +144,7 @@
 
 <script>
 	import {
-		mapState
+		mapState,mapMutations
 	} from 'vuex'
 	import uniBadge from "@/components/uni-badge/uni-badge.vue"
 	import uniIcon from "@/components/uni-icon/uni-icon.vue"
@@ -205,6 +205,13 @@
 
 		},
 		methods: {
+			...mapMutations(['setTraMess']),
+			goMess(mess){
+				this.setTraMess(mess)
+				uni.navigateTo({
+					url: '/pages/main/p_index/traMess/index',
+				});
+			},
 			toXymess(item) { //查看学员详情  只能看A类学员
 				console.log('item', item);
 				if (item.userDetail.yhLx != '1' || item.userDetail.ddSfjx != '1') {

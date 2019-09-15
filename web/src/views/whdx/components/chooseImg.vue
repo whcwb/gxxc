@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="demo-upload-list" v-for="item in fileList">
-            <template v-if="item.status === 'finished'">
+        <div class="demo-upload-list box_row_list">
+            <div class="imgItem"  v-for="item in fileList" v-if="item.status === 'finished'">
                 <img :src="item.url" style="width: 100%">
                 <div class="demo-upload-list-cover">
-                    <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                    <Icon type="ios-trash-outline" size="52" color="#ffffff" @click.native="handleRemove(item)"></Icon>
                 </div>
-            </template>
+            </div>
             <template v-else>
                 <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
             </template>
@@ -26,7 +26,7 @@
                 :action="uploadApi+'?targetPath=schoolFile'"
                 style="display: inline-block;width:58px;">
             <div style="width: 58px;height:58px;line-height: 58px;">
-                <Icon type="camera" size="20"></Icon>
+                <Icon type="md-cloud-upload" size="40"/>
             </div>
         </Upload>
     </div>
@@ -122,3 +122,37 @@
         },
     }
 </script>
+<style lang="less">
+    .demo-upload-list{
+        .imgItem{
+            width: 120px;
+            height: 120px;
+            margin: 10px;
+            position: relative;
+            img{
+                height: 100%;
+                width: 100%;
+            }
+            &:hover{
+                .demo-upload-list-cover{
+                    display: block;
+                }
+            }
+            .demo-upload-list-cover{
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0,0,0,0.4);
+                i{
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%,-50%);
+                }
+            }
+        }
+    }
+</style>
