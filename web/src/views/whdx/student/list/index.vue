@@ -48,11 +48,11 @@
                     {title: "",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '身份证号',key:'yhZjhm',searchKey:'yhZhLike'},
-					{title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+					{title: '联系电话',key:'yhZh',searchKey:'yhZhLike'},
                     // {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     // {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     // {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
-                    {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
+                    // {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
                     {title: '流水号',key:'yhLsh'},
                     // {title: '流水号条码',key:'yhLsh',width:280,
 					// 	render:(h,p)=>{
@@ -90,7 +90,7 @@
                     //     }
                     // },
 					{title: '车型',key:'yhCx',dict:'chexing'},
-					{title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
+					// {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
                     {
                         title: '操作',
                         key: 'action',
@@ -100,13 +100,13 @@
                                 this.util.buildButton(this,h,'success','md-card','受理',()=>{
 									this.getSl(params.row.id);
                                 }),
-                                this.util.buildButton(this,h,'success','ios-car','约考',()=>{
+                                this.util.buildButton(this,h,'info','ios-car','约考',()=>{
 									this.getYk(params.row.id);
                                 }),
 
-                                this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
-									this.getJf(params.row.id);
-                                }),
+                                // this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
+								// 	this.getJf(params.row.id);
+                                // }),
 								this.util.buildButton(this,h,'warning','md-create','修改教练',()=>{
 									this.choosedItem = params.row;
 									this.componentName = 'xgjl'

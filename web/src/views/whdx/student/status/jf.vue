@@ -4,7 +4,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-        			:mask-closable="false" title="详情">
+        			:mask-closable="false" title="缴费">
         	<div style="overflow: auto;height: 500px;">
         		<Form ref="form"
         						:model="formItem"
@@ -15,7 +15,7 @@
         				<form-items :parent="v"></form-items>
         			</Row>
 					<Row style="text-align:center">
-						<barcode :id="formItem.yhLsh"></barcode>
+						<barcode :value="lsh" ></barcode>
 					</Row>
 					<Row>
 						<jf-list :parent="v"></jf-list>
@@ -35,20 +35,25 @@
 	export default {
 		name: 'ksJfForm',
 		components:{jfList},
+		props:{
+			row:{}
+		},
 		data() {
 			return {
 			    v:this,
+				lsh:'',
                 operate:'新建',
                 saveUrl:this.apis.ksJf.ADD,
 				showModal: true,
 				readonly: false,
 				formItem: {
                     jfJl:0,
+					lsh:''
 				},
                 formInputs:[
                     {label:'姓名',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'缴费时间',prop:'jfSj',type:"date"},
-                    {label:'渠道',prop:'jfFs'},
+                    {label:'渠道',prop:'jfFs',dict:'JFQD'},
                     {label:'科目',prop:'kmId',dict:'ZDCLK0067',excludeDict:['4']},
                     {label:'金额',prop:'jfJl',append:'元',handler:(o)=>{
                         if (isNaN(o)) o = 0;
@@ -63,16 +68,21 @@
 			}
 		},
 		created(){
-		    this.util.initFormModal(this);
+			this.lsh = this.$parent.row.yhLsh
+			console.log(this.formItem.lsh,'1122');
+			this.util.initFormModal(this);
 		    this.formItem.jfJl = 0;
             let userInfo = sessionStorage.getItem('userInfo');
-            this.userType = JSON.parse(userInfo).type;
+			console.log(userInfo,"info");
+			this.userType = JSON.parse(userInfo).type;
             if (this.userType == 'k1' || this.userType == 'k2' || this.userType == 'k3' || this.userType == 'k4'){
                 let km = this.userType.charAt(1);
                 this.formItem.kmId = km;
                 this.formInputs[3].disabled = true;
             }
             this.formItem.jfSj = new Date().format('yyyy-MM-dd');
+
+            this.$nextTick()
 		},
 		methods: {
 		}

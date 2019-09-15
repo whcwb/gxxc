@@ -17,7 +17,7 @@
         <Row class="margin-top-10 pageSty">
             <pager :parent="v"></pager>
         </Row>
-        <component :is="componentName"></component>
+        <component :is="componentName" :row="row"></component>
     </div>
 </template>
 
@@ -83,7 +83,7 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
-                                    this.getJf(params.row.id);
+                                    this.getJf(params.row.id,params.row);
                                 }),
 
                             ]);
@@ -106,6 +106,7 @@
                 },
                 userType:'',
                 totalMoney:0,
+                row:{}
             }
         },
         created() {
@@ -115,19 +116,20 @@
             // this.getPager()
         },
         methods: {
-            getData(api,yhId,componentName){
+            getData(api,yhId,componentName,row){
                 this.$http.get(api,{params:{yhId:yhId,pageSize:1,orderBy:'cjsj desc'}}).then((res)=>{
                     if (res.code === 200 && res.page.list && res.page.list.length > 0){
                         this.choosedItem = res.page.list[0];
                     }else{
                         this.choosedItem = {yhId:yhId};
                     }
+                    this.row = row
                     this.componentName = componentName
                 })
             },
 
-            getJf(yhId){
-                this.getData(this.apis.ksJf.QUERY,yhId,'jf');
+            getJf(yhId,row){
+                this.getData(this.apis.ksJf.QUERY,yhId,'jf',row);
             },
             getPager(){
                 this.$http.get(this.apis.ksJf.DJKSF,{params:this.form}).then((res)=>{

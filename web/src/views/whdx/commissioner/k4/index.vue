@@ -36,7 +36,7 @@
                 tableColumns: [
                     {title: "",  type: 'selection',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '联系电话',key:'yhZh',searchKey:'yhZhLike'},
                     {
                         title: '操作',
                         key: 'action',
@@ -95,7 +95,7 @@
 			exportData(){
                 let params = {
                     exportType:'ptyh',
-                    cols:'姓名,账号,是否有驾驶证,认证状态,教练姓名,教练电话',
+                    cols:'姓名,联系电话,是否有驾驶证,认证状态,教练姓名,教练电话',
 					keys:'yhXm,yhZh,yhSfyjz,yhZt,jlxm,jldh'
 				}
 				window.open(this.apis.exportData+'?ddSfjx=1&exportType='+params.exportType+"&cols="+params.cols+"&keys="+params.keys);

@@ -18,23 +18,47 @@
 </style>
 <template>
 	<div class="box" style="height: 100%;background:#fff">
-		<component :is="componentName"></component>
-		<!--<div  class="homeE" style="padding: 5px 3px;">-->
-			<!--<Row :gutter="8" class="margin-bottom-10 indexCarType">-->
-				<!--<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
-					<!--<infor-card id-name="user_created_count" :end-val="count.total" iconType="model-s" color="#2d8cf0" intro-text="车辆总数"></infor-card>-->
-				<!--</Col>-->
-				<!--<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
-					<!--<infor-card id-name="visit_count" :end-val="count.lqby"  iconType="ios-color-wand" color="#64d572" :iconSize="50" intro-text="临期保养"></infor-card>-->
-				<!--</Col>-->
-				<!--<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
-					<!--<infor-card id-name="collection_count" :end-val="count.stop" iconType="checkmark" color="#ffd572" intro-text="临期年检"></infor-card>-->
-				<!--</Col>-->
-				<!--<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
-					<!--<infor-card id-name="transfer_count" :end-val="count.offline" iconType="briefcase" color="#f25e43" intro-text="保单到期"></infor-card>-->
-				<!--</Col>-->
-			<!--</Row>-->
-		<!--</div>-->
+<!--		<component :is="componentName"></component>-->
+<!--		<div  class="homeE" style="padding: 5px 3px;">-->
+<!--			<Row :gutter="8" class="margin-bottom-10 indexCarType">-->
+<!--				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+<!--					<infor-card id-name="user_created_count" :end-val="count.total" iconType="ios-people" color="#2d8cf0" intro-text="平台用户"></infor-card>-->
+<!--				</Col>-->
+<!--				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+<!--					<infor-card id-name="visit_count" :end-val="count.lqby"  iconType="ios-person" color="#64d572" :iconSize="50" intro-text="A类学员"></infor-card>-->
+<!--				</Col>-->
+<!--				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+<!--					<infor-card id-name="collection_count" :end-val="count.stop" iconType="md-person" color="#ffd572" intro-text="B类学员"></infor-card>-->
+<!--				</Col>-->
+<!--				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+<!--					<infor-card id-name="transfer_count" :end-val="count.offline" iconType="md-people" color="#f25e43" intro-text="未实名认证"></infor-card>-->
+<!--				</Col>-->
+<!--			</Row>-->
+<!--		</div>-->
+<!--		<div  class="homeE" style="padding: 5px 3px;">-->
+<!--			<Row :gutter="8" class="margin-bottom-10 indexCarType">-->
+<!--				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+<!--					<infor-card id-name="user_created_count" :end-val="count.total" iconType="ios-people" color="#2d8cf0" intro-text="今日注册用户"></infor-card>-->
+<!--				</Col>-->
+<!--				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+<!--					<infor-card id-name="visit_count" :end-val="count.lqby"  iconType="ios-person" color="#64d572" :iconSize="50" intro-text="今日新增A类学员"></infor-card>-->
+<!--				</Col>-->
+<!--				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+<!--					<infor-card id-name="collection_count" :end-val="count.stop" iconType="md-person" color="#ffd572" intro-text="今日新增B类学员"></infor-card>-->
+<!--				</Col>-->
+<!--				<Col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">-->
+<!--					<infor-card id-name="transfer_count" :end-val="count.offline" iconType="md-people" color="#f25e43" intro-text="今日新增未实名认证"></infor-card>-->
+<!--				</Col>-->
+<!--			</Row>-->
+<!--		</div>-->
+<!--		<div style="padding: 5px 3px;height: 600px">-->
+<!--			<Row>-->
+<!--				<Col span="6">-->
+<!--					<div style="height: 100%;width: 100%"  id="yhfx"></div>-->
+<!--				</Col>-->
+
+<!--			</Row>-->
+<!--		</div>-->
 	</div>
 </template>
 
@@ -47,6 +71,7 @@
 	import extra from './compEcharts/extrabar.vue'
 	import scbar from './compEcharts/scbar.vue'
 	import risk from './compEcharts/riskRecord.vue'
+	import echarts from 'echarts';
 
 	import csMessbar from './compEcharts/comp/csMessbar'
 
@@ -84,8 +109,57 @@
 			}
 		},
 		created() {
+			this.initChart()
 		},
 		methods: {
+			initChart(){
+				var v = this
+				this.$nextTick(() => {
+					var dataSourcePie = echarts.init(document.getElementById("yhfx"));
+					const option = {
+						title : {
+							text: '某站点用户访问来源',
+							subtext: '纯属虚构',
+							x:'center'
+						},
+						tooltip : {
+							trigger: 'item',
+							formatter: "{a} <br/>{b} : {c} ({d}%)"
+						},
+						legend: {
+							orient: 'vertical',
+							left: 'left',
+							data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+						},
+						series : [
+							{
+								name: '访问来源',
+								type: 'pie',
+								radius : '55%',
+								center: ['50%', '60%'],
+								data:[
+									{value:335, name:'直接访问'},
+									{value:310, name:'邮件营销'},
+									{value:234, name:'联盟广告'},
+									{value:135, name:'视频广告'},
+									{value:1548, name:'搜索引擎'}
+								],
+								itemStyle: {
+									emphasis: {
+										shadowBlur: 10,
+										shadowOffsetX: 0,
+										shadowColor: 'rgba(0, 0, 0, 0.5)'
+									}
+								}
+							}
+						]
+					};
+					dataSourcePie.setOption(option);
+					window.addEventListener('resize', function () {
+						dataSourcePie.resize();
+					});
+				});
+			},
 		}
 	};
 </script>
