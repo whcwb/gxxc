@@ -36,7 +36,7 @@
                 tableColumns: [
                     {title: "",  type: 'selection',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '联系电话',key:'yhZh',searchKey:'yhZhLike'},
                     {
                         title: '操作',
                         key: 'action',

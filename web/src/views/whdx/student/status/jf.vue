@@ -4,7 +4,7 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-        			:mask-closable="false" title="详情">
+        			:mask-closable="false" title="缴费">
         	<div style="overflow: auto;height: 500px;">
         		<Form ref="form"
         						:model="formItem"
@@ -48,7 +48,7 @@
                 formInputs:[
                     {label:'姓名',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'缴费时间',prop:'jfSj',type:"date"},
-                    {label:'渠道',prop:'jfFs'},
+                    {label:'渠道',prop:'jfFs',dict:'JFQD'},
                     {label:'科目',prop:'kmId',dict:'ZDCLK0067',excludeDict:['4']},
                     {label:'金额',prop:'jfJl',append:'元',handler:(o)=>{
                         if (isNaN(o)) o = 0;

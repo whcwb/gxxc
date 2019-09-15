@@ -58,7 +58,7 @@
                     // },
                     {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',align:'center'},
-                    {title: '账号',key:'yhZh',align:'center'},
+                    {title: '联系电话',key:'yhZh',align:'center'},
                     {title: '身份证号',key:'yhZjhm',align:'center'},
                     {title: '代培点',key:'yhK2SubName',align:'center'},
                     {title: '费用',key:'yhK2SubJe',align:'center'},

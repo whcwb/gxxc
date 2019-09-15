@@ -69,7 +69,7 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhSjhm',searchKey:'yhSjhmLike'},
+                    {title: '联系电话',key:'yhSjhm',searchKey:'yhSjhmLike'},
                     {title: '培训车型',key:'jlCx',searchKey:'jlCxLike'},
                     {
                         title: '操作',
