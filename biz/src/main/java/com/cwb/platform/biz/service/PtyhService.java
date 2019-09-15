@@ -104,4 +104,6 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> shSubFee(String id, String km);
 
     ApiResponse<String> confrimSubFee(String id, String km);
+
+    ApiResponse<String> getYkXy(int pageNum, int pageSize);
 }

@@ -7,6 +7,7 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -173,6 +174,11 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     @GetMapping("/getSubStudent")
     public ApiResponse<String> getSubStudent(String subId, @RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
         return service.getSubStudent(subId, pageNum, pageSize);
+    }
+
+    @GetMapping("/getYkXy")
+    public ApiResponse<String> getYkXy(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getYkXy(pageNum,pageSize);
     }
 
 
