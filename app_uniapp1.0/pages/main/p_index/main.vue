@@ -83,7 +83,7 @@
 		<view class="teamTitBox box_row colCenter">
 			<view class="hline"></view>
 			<div class="titText">
-				团队信息{{newsList.length}}
+				代培点
 			</div>
 		</view>
 		<view v-if="newsList.length == 0" style="text-align: center;">
@@ -94,14 +94,14 @@
 			<view class="listItemSty" v-for="(it,index) in newsList"
 			 :key="index" @click="goMess(it)">
 				<view class="topImgBox">
-					<img :src="it.placeCoverImg.split(',')[0]" alt="">
+					<img :src="urlImg+it.subImg" alt="">
 					<view class="nameSty">
-						{{it.schoolName}}
+						{{it.subName}}
 					</view>
 				</view>
 				<view class="textBox">
 					<view class="xlcNameBox">
-						{{it.placeName}}
+						{{it.subArea}}
 					</view>
 					<!-- <view class="addressBox">
 						{{it.address}}
@@ -247,9 +247,10 @@
 				}
 			},
 			getnewsList() { //第一次回去数据
-				this.$http.get('/app/trainplace/query').then((res) => {
+				this.$http.get('/app/subschool/query').then((res) => {
 					if (res.code == 200) {
 						this.newsList = res.result
+						console.log(res.result);
 						// _self.newsList = res.page.list.split('--hcSplitor--');
 						//得到数据后停止下拉刷新
 					} else {
