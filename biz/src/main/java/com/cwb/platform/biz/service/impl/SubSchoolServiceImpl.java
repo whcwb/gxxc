@@ -2,8 +2,10 @@ package com.cwb.platform.biz.service.impl;
 
 import com.cwb.platform.biz.mapper.BizSubSchoolMapper;
 import com.cwb.platform.biz.model.BizSubSchool;
+import com.cwb.platform.biz.model.BizTrainPlace;
 import com.cwb.platform.biz.service.PtyhService;
 import com.cwb.platform.biz.service.SubSchoolService;
+import com.cwb.platform.biz.service.TrainPlaceService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.model.BizPtyh;
@@ -11,6 +13,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.cwb.platform.util.exception.RuntimeCheckException;
+import org.apache.catalina.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,8 @@ public class SubSchoolServiceImpl extends BaseServiceImpl<BizSubSchool,String> i
     private BizSubSchoolMapper baseMapper;
     @Autowired
     private PtyhService service;
+    @Autowired
+    private TrainPlaceService placeService;
 
     @Override
     protected Mapper<BizSubSchool> getBaseMapper() {
@@ -83,5 +88,28 @@ public class SubSchoolServiceImpl extends BaseServiceImpl<BizSubSchool,String> i
             });
         }
         return ApiResponse.success(ptyh.getYhOpenId());
+    }
+
+    @Override
+    public ApiResponse<List<BizTrainPlace>> getAllTrainPlace(String id) {
+        RuntimeCheck.ifBlank(id , "请选择代培点");
+        List<BizTrainPlace> places = placeService.findEq("SUB_CODE", id);
+
+        return ApiResponse.success(places);
+    }
+
+    @Override
+    public ApiResponse<String> updateEntity(BizSubSchool subSchool) {
+        RuntimeCheck.ifBlank(subSchool.getId(), "请选择代培点");
+        BizSubSchool school = findById(subSchool.getId());
+        if(!StringUtils.equals(school.getSubPhone(), subSchool.getSubPhone())){
+            List<BizPtyh> ptyhs = service.findEq(BizPtyh.InnerColumn.yhZh, subSchool.getSubPhone());
+            BizPtyh ptyh = ptyhs.get(0);
+            subSchool.setSubOpenid(ptyh.getYhOpenId());
+            subSchool.setSubFz(ptyh.getYhXm());
+            subSchool.setYhId(ptyh.getId());
+        }
+        update(subSchool);
+        return ApiResponse.success();
     }
 }
