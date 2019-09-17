@@ -670,7 +670,8 @@ public class BizTrainPlace implements Serializable {
         placeBeianimg("place_beianImg"),
         approvedCarNum("approved_car_num"),
         regionCode("region_code"),
-        placeCoordinate("place_coordinate");
+        placeCoordinate("place_coordinate"),
+        subCode("SUB_CODE");
 
         private final String column;
 
