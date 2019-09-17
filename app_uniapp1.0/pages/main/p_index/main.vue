@@ -83,7 +83,8 @@
 		<view class="teamTitBox box_row colCenter">
 			<view class="hline"></view>
 			<div class="titText">
-				团队信息{{newsList.length}}
+				训练场
+				<!-- {{newsList.length}} -->
 			</div>
 		</view>
 		<view v-if="newsList.length == 0" style="text-align: center;">
@@ -96,7 +97,7 @@
 				<view class="topImgBox">
 					<img :src="it.placeCoverImg.split(',')[0]" alt="">
 					<view class="nameSty">
-						{{it.schoolName}}
+						{{it.subName}}
 					</view>
 				</view>
 				<view class="textBox">
