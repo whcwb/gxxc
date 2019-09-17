@@ -93,8 +93,7 @@ public class SubSchoolServiceImpl extends BaseServiceImpl<BizSubSchool,String> i
     @Override
     public ApiResponse<List<BizTrainPlace>> getAllTrainPlace(String id) {
         RuntimeCheck.ifBlank(id , "请选择代培点");
-        List<BizTrainPlace> places = placeService.findEq("SUB_CODE", id);
-
+        List<BizTrainPlace> places = placeService.findEq(BizTrainPlace.InnerColumn.subCode, id);
         return ApiResponse.success(places);
     }
 
