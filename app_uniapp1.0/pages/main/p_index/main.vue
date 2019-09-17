@@ -94,7 +94,7 @@
 			<view class="listItemSty" v-for="(it,index) in newsList"
 			 :key="index" @click="goMess(it)">
 				<view class="topImgBox">
-					<img :src="urlImg+it.subImg" alt="">
+					<img :src="it.subImg.split(',')[0]" alt="">
 					<view class="nameSty">
 						{{it.subName}}
 					</view>

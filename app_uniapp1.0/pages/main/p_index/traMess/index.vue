@@ -1,32 +1,33 @@
 <template>
 	<view class="reaBox">
-		<img class="traImg" :src="traMess.placeCoverImg.split(',')[0]" alt="">
+		<img class="traImg" :src="traMess.subImg.split(',')[0]" alt="">
 		<view class="schoolName">
-			{{traMess.placeName}}
+			<!-- {{traMess.subName}} --> 负责人
 		</view>
 		<view class="box_row">
 			<view class="yhNameSty">
 				<img src="../file/yonghu.png" alt="">
-				{{traMess.yhXm}}
+				{{traMess.subFz}}
 			</view>
-			<view class="yhPhoneSty" @click="phone(traMess.yhhm)">
+			<view class="yhPhoneSty" @click="phone(traMess.subPhone)">
 				<img src="../file/dianhua.png" alt="">
-				{{traMess.yhhm}}
+				{{traMess.subPhone}}
 			</view>
 		</view>
-		<view class="address">
+		<!-- <view class="address">
 			{{traMess.address}}
-		</view>
+		</view> -->
 		<view class="lineRow"></view>
 		<!-- <view class="imgBoxTit">
 			相册
 		</view> -->
 		<view class="lineRow"></view>
-		<view class="imgBox">
-			<view class="imgItem" v-for="(it,index) in traMess.placeImg.split(',')">
-				<img class="traImg" :src="it" alt="">
+		<view class="imgBox" v-for="(item,index) in imgList" :key="index">
+			<view class="address">{{item.address}}</view>
+			<view class="imgItem" v-for="(a,index) in item.placeImg.split(',')" :key="index">
+				<img class="traImg" :src="a" alt="">
 			</view>
-			
+
 		</view>
 	</view>
 </template>
@@ -39,19 +40,37 @@
 				return this.$store.state.traMess
 			}
 		},
-		data(){
+		data() {
 			return {
-					urlImg:this.apis.getImgUrl,
+				urlImg: this.apis.getImgUrl,
+				imgList:[]
 			}
 		},
-		onShow(){
+		onShow() {
 			// placeImg
 			console.log(this.traMess)
 			uni.setNavigationBarTitle({
 				title: this.traMess.subName
 			});
+			this.getpagerList()
 		},
-		methods:{
+		methods: {
+			getpagerList() {
+				console.log(this.traMess.id);
+				this.$http.get('/app/subschool/getAllTrainPlace', {
+					id: this.traMess.id
+				}).then((res) => {
+					if (res.code == 200) {
+						this.imgList = res.result
+						for(let i = 0; i<this.imgList.length;i++){
+							this.imgList.placeImg = this.imgList.placeImg.split(',')
+						}
+						
+					} else {
+
+					}
+				})
+			},
 			phone(id) {
 				uni.makePhoneCall({
 					phoneNumber: id //仅为示例
@@ -62,57 +81,68 @@
 </script>
 
 <style lang="less">
-	.padd{
+	.padd {
 		padding: 10rpx 40rpx;
 	}
-	.reaBox{
+
+	.reaBox {
 		width: 100%;
-		.traImg{
+
+		.traImg {
 			width: 100%;
 			height: 300rpx;
 		}
-		.schoolName{
+
+		.schoolName {
 			.padd;
 			font-size: 48rpx;
 		}
-		.yhNameSty{
+
+		.yhNameSty {
 			.padd;
 			font-size: 30rpx;
-			img{
+
+			img {
 				width: 40rpx;
 				height: 40rpx;
 				transform: translateY(9rpx);
 				margin-right: 10rpx;
 			}
 		}
-		.yhPhoneSty{
+
+		.yhPhoneSty {
 			.padd;
 			font-size: 30rpx;
 			text-decoration: underline;
 			color: #0000FF;
-			img{
+
+			img {
 				width: 44rpx;
 				height: 44rpx;
 				transform: translateY(9rpx);
 				margin-right: 10rpx;
 			}
 		}
-		.address{
+
+		.address {
 			.padd;
 			font-size: 30rpx;
 		}
-		.lineRow{
+
+		.lineRow {
 			margin: 0 40rpx;
 			height: 2rpx;
 			width: 100%;
 			background-color: #bfbfbf;
 		}
-		.imgBoxTit{
+
+		.imgBoxTit {
 			font-size: 32rpx;
 			font-weight: 600;
 			.padd;
 		}
-		.imgBox{
+
+		.imgBox {
 			.padd;
 		}
 	}
