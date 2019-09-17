@@ -31,4 +31,9 @@ public class SubSchoolController extends BaseController<BizSubSchool,String> {
         return service.getOpenid(phone);
     }
 
+    @PostMapping("/update")
+    public ApiResponse<String> update(BizSubSchool subSchool){
+        return service.updateEntity(subSchool);
+    }
+
 }

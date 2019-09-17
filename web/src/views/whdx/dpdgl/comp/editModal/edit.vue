@@ -3,20 +3,20 @@
             <Modal
                     v-model="showModal"
                     class-name="vertical-center-modal"
-                    title="新增/编辑"
+                    title="编辑"
                     :closable="false"
                     :mask-closable="false">
 
-                  <Form ref="formInline" :model="formInline" :rules="ruleInline">
+                  <Form ref="formInline" :model="item" :rules="ruleInline">
                         <Row :gutter="32">
                               <Col span="12">
                                     <FormItem prop="subName" label="代培点名称">
-                                          <Input type="text" v-model="formInline.subName" placeholder="代培点名称"/>
+                                          <Input type="text" v-model="item.subName" placeholder="代培点名称"/>
                                     </FormItem>
                               </Col>
                               <Col span="12">
                                     <FormItem prop="subCode" label="代培点代码">
-                                          <Input type="text" v-model="formInline.subCode" placeholder="代培点代码"/>
+                                          <Input type="text" v-model="item.subCode"  readonly placeholder="代培点代码"/>
                                     </FormItem>
                               </Col>
                         </Row>
@@ -24,12 +24,12 @@
                               <Col span="12">
                                     <FormItem prop="subPhone" label="负责人姓名">
                                           <Select
-                                                  v-model="formInline.subPhone"
+                                                  v-model="item.subPhone"
                                                   filterable
                                                   remote
                                                   :remote-method="remoteMethod"
                                                   :loading="loading1"
-                                                      @on-change="(val)=>{phone = val}"
+                                                  @on-change="(val)=>{phone = val}"
                                           >
                                                 <Option v-for="(it, index) in userList" :value="it.yhZh" :key="index">{{it.yhXm + " " + it.yhZh}}</Option>
                                           </Select>
@@ -38,14 +38,15 @@
                               </Col>
                               <Col span="12">
                                     <FormItem label="负责人电话">
-                                          <Input type="text" readonly v-model="phone" placeholder="负责人电话"/>
+                                          <Input type="text" v-if="phone == ''" readonly v-model="item.subPhone" placeholder="负责人电话"/>
+                                          <Input type="text" v-else readonly v-model="phone" placeholder="负责人电话"/>
                                     </FormItem>
                               </Col>
                         </Row>
                         <Row>
                               <Col span="24">
                                     <FormItem prop="subAddr" label="代培点地址">
-                                          <Input type="text" v-model="formInline.subAddr" placeholder="代培点代码"/>
+                                          <Input type="text" v-model="item.subAddr" placeholder="代培点代码"/>
                                     </FormItem>
                               </Col>
                         </Row>
@@ -53,7 +54,7 @@
 
                   <div slot="footer" class="box_row rowRight">
                         <Button @click="cancel">取消</Button>
-                        <Button type="info" @click="submit">保存</Button>
+                        <Button type="info" @click="submit">修改</Button>
                   </div>
             </Modal>
       </div>
@@ -68,7 +69,7 @@
                 phone: '',
                 userList: [],
                 loading1: false,
-                formInline: {
+                item: {
                     subName: '',//代培点名称
                     subCode: '',// 代码
                     subPhone: '',//代培点号码 负责人 账号
@@ -92,6 +93,10 @@
                 }
             }
         },
+          created(){
+            this.item = this.$parent.itemMess
+                console.log(this.$parent.itemMess.subPhone)
+          },
         methods: {
             cancel(){
                 this.$emit('close')
@@ -99,11 +104,10 @@
             submit(){
                 this.$refs['formInline'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/api/subschool/save',this.formInline).then(res=>{
+                        this.$http.post('/api/subschool/update',this.item).then(res=>{
                             if(res.code == 200){
-                                this.$parent.pageChange(1)
-                                  this.cancel()
-
+                                  this.$parent.pageChange(1)
+                                this.cancel()
                             }else {
                                 this.$Message.error(res.message);
                             }

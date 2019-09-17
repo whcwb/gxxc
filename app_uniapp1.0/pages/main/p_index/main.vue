@@ -633,7 +633,7 @@
 				}
 			}
 		}
-		
+
 		.xlcListBox{
 			// background-color: #ffffff;
 			flex: 1;
@@ -670,7 +670,7 @@
 						font-size: 32rpx;
 					}
 					.addressBox{
-						
+
 					}
 				}
 			}
