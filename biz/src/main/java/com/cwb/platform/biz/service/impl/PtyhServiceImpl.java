@@ -275,6 +275,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         return true;
     }
 
+    @Override
+    public boolean fillQueryCondition(LimitedCondition condition){
+        String cond = getRequestParameterAsString("cond");
+        if(StringUtils.isNotBlank(cond)){
+            condition.and().andCondition(" yh_zh like '%"+cond+"%' or yh_xm like '%"+cond +"%'");
+        }
+        return true;
+    }
 
     @Override
     protected void afterPager(PageInfo<BizPtyh> resultPage) {
@@ -2396,4 +2404,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         }
         return ApiResponse.success();
     }
+
+
 }

@@ -20,19 +20,19 @@
                               <template slot-scope="{ row, index }" slot="event">
                                     <div class="box_row rowBetween">
                                           <Button type="info" @click="getStudent(row)">
-                                                <Icon type="ios-people" size="18"/>
+                                                <Icon type="ios-people" size="14"/>
                                                 学员
                                           </Button>
                                           <Button type="success" @click="bindWeChart(row)">
-                                                <Icon type="ios-link"/>
+                                                <Icon type="ios-link" size="12"/>
                                                 微信
                                           </Button>
-                                          <!--<Button type="primary">-->
-                                          <!--<Icon type="ios-create-outline" size="16"/>-->
-                                          <!--编辑-->
-                                          <!--</Button>-->
+                                          <Button type="primary" @click="edit(row)">
+                                          <Icon type="ios-create-outline" size="12"/>
+                                                编辑
+                                          </Button>
                                           <Button type="error" @click="remove(row.id)">
-                                                <Icon type="ios-trash-outline" size="18"/>
+                                                <Icon type="ios-trash-outline" size="14"/>
                                                 删除
                                           </Button>
                                     </div>
@@ -58,10 +58,10 @@
 <script>
     import editModal from './comp/editModal'
     import student from './comp/student'
-
+     import editM from './comp/editModal/edit'
     export default {
         name: "index",
-        components: {editModal, student},
+        components: {editModal, student,editM},
         data() {
             return {
                 total: 0,
@@ -92,7 +92,7 @@
                         fixed: 'right',
                         slot: 'event',
                         align: "center",
-                        width: 300,
+                        width: 400,
                     },
                 ],
                 tabData: [],
@@ -187,7 +187,12 @@
                 this.compName = 'student'
                 console.log(row);
                 this.itemMess = row
-            }
+            },
+              edit(row){
+                  this.compName = 'editM'
+                    console.log(row);
+                  this.itemMess = row
+              }
         }
     }
 </script>

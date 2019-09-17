@@ -14,6 +14,7 @@ import com.cwb.platform.util.bean.ApiResponse;
 import com.cwb.platform.util.commonUtil.DateUtils;
 import com.cwb.platform.util.exception.RuntimeCheck;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ import tk.mybatis.mapper.common.Mapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String> implements TrainPlaceService {
@@ -32,6 +36,7 @@ public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String>
     private SchoolService schoolService;
     @Autowired
     private SubSchoolService subSchoolService;
+
     @Override
     protected Mapper<BizTrainPlace> getBaseMapper() {
         return trainPlaceMapper;
@@ -117,5 +122,21 @@ public class TrainPlaceServiceImpl extends BaseServiceImpl<BizTrainPlace,String>
         int i = update(trainPlace);
         return ApiResponse.success();
     }
+
+    public void afterQuery(List<BizTrainPlace> re){
+        if(CollectionUtils.isNotEmpty(re)){
+            List<String> list = re.stream().map(BizTrainPlace::getSubCode).collect(Collectors.toList());
+            List<BizSubSchool> schools = subSchoolService.findByIds(list);
+            if(CollectionUtils.isNotEmpty(schools)){
+                Map<String, BizSubSchool> schoolMap = schools.stream().collect(Collectors.toMap(BizSubSchool::getSubCode, p -> p));
+                re.forEach(bizTrainPlace -> {
+                    BizSubSchool school = schoolMap.get(bizTrainPlace.getSubCode());
+                    bizTrainPlace.setYhXm(school.getSubFz());
+                    bizTrainPlace.setYhhm(school.getSubPhone());
+                });
+            }
+        }
+    }
+
 
 }

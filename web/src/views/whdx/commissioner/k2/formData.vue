@@ -72,7 +72,7 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'账号',prop:'yhZh',disabled:true},
+                    {label:'联系电话',prop:'yhZh',disabled:true},
                     {label:'姓名',prop:'yhXm'},
                     {label:'性别',prop:'yhXb',type:'dict',dict:'ZDCLK0042',disabled:true},
                     {label:'身份证号码',prop:'yhZjhm'},

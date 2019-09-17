@@ -143,6 +143,28 @@ public class BizTrainPlace implements Serializable {
     @Column(name = "SUB_NAME")
     private String subName;
 
+    @Transient
+    private String yhXm;
+
+    @Transient
+    private String yhhm;
+
+    public String getYhXm() {
+        return yhXm;
+    }
+
+    public void setYhXm(String yhXm) {
+        this.yhXm = yhXm;
+    }
+
+    public String getYhhm() {
+        return yhhm;
+    }
+
+    public void setYhhm(String yhhm) {
+        this.yhhm = yhhm;
+    }
+
     public String getSubCode() {
         return subCode;
     }

@@ -4,9 +4,11 @@ package com.cwb.platform.biz.app.service.impl;
 import com.cwb.platform.biz.app.service.AppJlService;
 import com.cwb.platform.biz.mapper.BizJlMapper;
 import com.cwb.platform.biz.model.BizJl;
+import com.cwb.platform.biz.model.BizSubSchool;
 import com.cwb.platform.biz.model.BizUser;
 import com.cwb.platform.biz.model.BizYjmx;
 import com.cwb.platform.biz.service.PtyhService;
+import com.cwb.platform.biz.service.SubSchoolService;
 import com.cwb.platform.sys.base.BaseServiceImpl;
 import com.cwb.platform.sys.base.LimitedCondition;
 import com.cwb.platform.sys.mapper.SysYhJsMapper;
@@ -37,6 +39,8 @@ public class AppJlServiceImpl extends BaseServiceImpl<BizJl, String> implements 
     private SysYhJsMapper jsService;
     @Autowired
     private PtyhService ptyhService;
+    @Autowired
+    private SubSchoolService subSchoolService;
 
 
     @Override
@@ -90,7 +94,7 @@ public class AppJlServiceImpl extends BaseServiceImpl<BizJl, String> implements 
         String finalXm = xm;
         PageInfo<BizUser> bizUsers =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> entityMapper.getMyStudent(user.getId()
-                        , finalXm, finalJz, dqzts));
+                        , finalXm, finalJz, dqzts,null));
 
         bizUsers.getList().forEach(bizUser -> {
             String dqzt = bizUser.getYhDqzt();
@@ -142,12 +146,19 @@ public class AppJlServiceImpl extends BaseServiceImpl<BizJl, String> implements 
         for (String s : jlType.split(",")) {
              dqzts.add(m.get(s));
         }
+        // 查询当前用户是否为某培训点负责人
+        List<BizSubSchool> schools = subSchoolService.findEq(BizSubSchool.InnerColumn.yhId, user.getId());
+        List<String> subIds= null;
+        if(CollectionUtils.isNotEmpty(schools)){
+            subIds = schools.stream().map(BizSubSchool::getSubCode).collect(Collectors.toList());
+        }
 
         String finalJz = jz;
         String finalXm = xm;
+        List<String> finalSubIds = subIds;
         PageInfo<BizUser> bizUsers =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> entityMapper.getMyStudent(user.getId()
-                        , finalXm, finalJz, dqzts));
+                        , finalXm, finalJz, dqzts, finalSubIds));
 
         bizUsers.getList().forEach(bizUser -> {
             String dqzt = bizUser.getYhDqzt();
