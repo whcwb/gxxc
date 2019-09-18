@@ -47,7 +47,7 @@
                 tableColumns: [
                     {title: "",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '身份证号',key:'yhZjhm',searchKey:'yhZhLike'},
+                    {title: '身份证号',key:'yhZjhm',searchKey:'yhZjhmLike'},
 					{title: '联系电话',key:'yhZh',searchKey:'yhZhLike'},
                     // {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     // {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},

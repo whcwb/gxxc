@@ -89,7 +89,7 @@
 				},
                 formItem:{
 
-                },
+                }
 			}
 		},
 		created(){
@@ -113,20 +113,23 @@
                     }
                 });
 			},
-            save(id){
+            save(id,a){
                 let v = this;
-                let params = {
+                let jl = {
                     id:v.formItem.id,
                     jlId:id,
                     km:2,
-                    flag:''
-                }
-                this.$http.post('/api/ptyh/updateAssignStudent',params).then((res)=>{
+                    flag:a
+                };
+                this.$http.post('/api/ptyh/updateAssignStudent',jl).then((res)=>{
                     if (res.code === 200){
                         this.$Message.success(res.message);
                         this.close()
                         v.util.getPageData(parent.$parent)
-                    }else if(res.code == 500) {
+                    }else if(res.code == 555) {
+
+                        jl.flag = '1'
+                        console.log(jl.flag);
                         swal({
                             title: "请注意",
                             text: res.message,
@@ -134,8 +137,7 @@
                             buttons:['取消','确认'],
                         }).then((willDelete) => {
                             if (willDelete) {
-                               params.flag = 1
-                               this.save(params.id)
+                               this.save(jl.id,jl.flag)
                             } else {
                             }
                         });
