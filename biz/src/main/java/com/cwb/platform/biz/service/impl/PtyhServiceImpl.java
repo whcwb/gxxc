@@ -1515,10 +1515,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                     update(ptyh);
 
                 });
-
             }
-
-
         }
         Map<String, Object> map = new HashMap<>();
         map.put("ids", ids);
@@ -2234,9 +2231,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizPtyh ptyhs = ptyhService.findById(ids);
 
         if (StringUtils.equals(km, "2")) {
-            ptyhs.setYhK2SubSj(time);
+
             RuntimeCheck.ifFalse(StringUtils.equals(ptyhs.getYhK2Sh(),"1"), "请先审核通过");
             RuntimeCheck.ifFalse(StringUtils.isBlank(ptyhs.getYhK2SubSj()),"此代培费已打款");
+            ptyhs.setYhK2SubSj(time);
         } else if (StringUtils.equals(km, "3")) {
             RuntimeCheck.ifFalse(StringUtils.equals(ptyhs.getYhK3Sh(),"1"), "请先审核通过");
             RuntimeCheck.ifFalse(StringUtils.isBlank(ptyhs.getYhK3SubSj()),"此代培费已打款");
