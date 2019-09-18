@@ -2199,6 +2199,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifBlank(km, "请选择要分配的科目");
         // 查询当前学员的代培点与修改之后的代培点是否一致 , 如果不一致 需要提醒是否修改
         BizJl jl = jlService.findById(jlId);
+        BizPtyh user = ptyhService.findById(id);
+        RuntimeCheck.ifTrue(StringUtils.equals(km,"2") && StringUtils.isBlank(user.getYhK2SubId()), "此学员尚未分配教练 , 不能修改教练");
+        RuntimeCheck.ifTrue(StringUtils.equals(km,"3") && StringUtils.isBlank(user.getYhK3SubId()), "此学员尚未分配教练 , 不能修改教练");
         RuntimeCheck.ifBlank(jl.getSubSchoolId(), "请为当前教练绑定代培点");
         if (StringUtils.isBlank(flag)) {
             BizPtyh ptyh = findById(id);
