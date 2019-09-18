@@ -70,22 +70,29 @@
                 tabH: 0,
                 tabTit: [
                     // 代码 名称 负责人姓名 手机号码  绑定微信
+
                     {
-                        title: '代培点名称',
-                        key: 'subName',
-                    },
-                    {
-                        title: '代培点代码',
+                        title: '代码',
                         key: 'subCode',
                     },
+                      {
+                            title: '名称',
+                            key: 'subName',
+                      },
+
                     {
                         title: '负责人姓名',
                         key: 'subFz',
                     },
                     {
-                        title: '手机号码',
+                        title: '联系电话',
                         key: 'subPhone',
                     },
+                      {
+                            title: '区域',
+                            key: 'subArea',
+                      },
+
                     {
                         title: '操作',
                         key: 'name',

@@ -61,7 +61,7 @@
                     //
                     //     }
                     // },
-                    {title: '科目',key:'yhXyJfType',align:'center',dict:'ZDCLK0067',searchKey:'dict',render:(h,p)=>{
+                    {title: '待缴科目',key:'yhXyJfType',align:'center',dict:'ZDCLK0067',searchKey:'dict',render:(h,p)=>{
                            if(p.row.yhXyJfType == 1){
                                return h('div','科目一')
                            }

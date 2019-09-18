@@ -13,7 +13,7 @@
                       show-sizer/>
             </div>
             <div slot='footer'>
-                <Button type="primary" @click="close">确定</Button>
+                <Button type="primary" @click="close">取消</Button>
             </div>
         </Modal>
     </div>
@@ -39,7 +39,7 @@
                         title: '身份证号码',
                         key: 'yhZjhm'
                     }, {
-                        title: '手机号码',
+                        title: '联系电话',
                         key: 'yhZh'
                     }
                 ],
