@@ -60,8 +60,20 @@
                     {title: '姓名',key:'yhXm',align:'center'},
                     {title: '身份证号',key:'yhZjhm',align:'center'},
                     {title: '联系电话',key:'yhZh',align:'center'},
-                    {title: '代培点',key:'yhK2SubName',align:'center'},
-                    {title: '费用',key:'yhK2SubJe',align:'center'},
+                    {title: '代培点',align:'center',render:(h,p)=>{
+                                if (this.form.km == 2){
+                                    return h ('div',p.row.yhK2SubName)
+                                }else {
+                                    return h ('div',p.row.yhK3SubName)
+                                }
+                        }},
+                    {title: '费用',align:'center',render:(h,p)=>{
+                            if (this.form.km == 2){
+                                return h ('div',p.row.yhK2SubJe/100)
+                            }else {
+                                return h ('div',p.row.yhK3SubJe/100)
+                            }
+                        }},
                     {
                         title: '操作',
                         key: 'action',

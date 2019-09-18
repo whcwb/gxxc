@@ -78,7 +78,7 @@
                                     :on-success="successUpload"
                                     :show-upload-list="false"
                                     :format="['jpg','jpeg','png']"
-                                    :max-size="2048"
+                                    :max-size="4096"
                                     type="drag"
                                     action="http://www.520xclm.com:8080/biz/upload"
                                     style="display: inline-block;width:58px;">
@@ -110,6 +110,7 @@
         name: "index",
         data() {
             return {
+                staticPath:this.apis.getImgUrl,
                 showModal: true,
                 phone: '',
                 userList: [],
