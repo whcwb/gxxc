@@ -32,8 +32,8 @@
                 dateRange:'',
                 tableColumns: [
                     {title: "#",  type: 'index'},
-                    {title: '缴费方式',key:'jfFs'},
-                    {title: '缴费金额',key:'jfJl',append:'元'},
+                    {title: '缴费方式',key:'jfFs',dict: "JFQD"},
+                    {title: '缴费金额',key:'jfJl',dict:'KSFY'},
                     {title: '缴费时间',key:'jfSj'},
                     {title: '缴费科目',key:'kmId',type:'dict',dict:'ZDCLK0067',render:(h,p)=>{
                             let s = this.dictUtil.getItemByCode(this,'ZDCLK0067',p.row.kmId);

@@ -54,7 +54,7 @@
                 formInputs:[
                     {label:'姓名',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'缴费时间',prop:'jfSj',type:"date"},
-                    {label:'渠道',prop:'jfFs',dict:'JFQD'},
+                    {label:'渠道',prop:'jfFs',dict:'JFQD',type:'val'},
                     {label:'科目',prop:'kmId',dict:'ZDCLK0067',excludeDict:['4'],render:(h,p)=>{
 							if (p.row.kmId =='1'){
 								this.formItem.jfJl = '1'
@@ -71,7 +71,7 @@
 							}
 						}
 					},
-                    {label:'金额',prop:'jfJl',append:'元',dict:'KSFY',
+                    {label:'金额',prop:'jfJl',append:'元',dict:'KSFY',type:'val'
 					},
                 ],
                 ruleInline:{
@@ -95,7 +95,7 @@
                 this.formInputs[3].disabled = true;
             }
             this.formItem.jfSj = new Date().format('yyyy-MM-dd');
-            this.formItem.jfFs = '1'
+            this.formItem.jfFs = "支付宝"
             this.formItem.kmId = this.$parent.row.yhXyJfType
 
             this.$nextTick()
@@ -103,14 +103,14 @@
 		watch:{
 			'formItem.kmId'(val) {
 				if (val =='1'){
-					this.formItem.jfJl = 'k1'
+					this.formItem.jfJl = '120'
 				}
 				else if (val =='2'){
-					this.formItem.jfJl = 'k2'
+					this.formItem.jfJl = '150'
 					this.$nextTick()
 				}
 				else if (val =='3'){
-					this.formItem.jfJl = 'k3'
+					this.formItem.jfJl = '230'
 				}
 				else {
 
