@@ -27,6 +27,9 @@
                     <Button type="primary" @click="selectAll(i.prop)">全选</Button>
                     <Button type="warning" @click="cancelAll(i.prop)">取消全选</Button>
                 </CheckboxGroup>
+                <Select v-else-if="i.dict && i.type === 'val'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled">
+                    <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)'  v-if="i.excludeDict == null || i.excludeDict.indexOf(item.key) < 0"  :value="item.val" :key="item.key">{{item.val}}</Option>
+                </Select>
                 <Select v-else-if="i.dict || i.type === 'dict'" filterable clearable  v-model="formItem[i.prop]" :placeholder="'请选择'+i.label+'...'" :readonly="parent.readonly && i.readonly" :disabled="parent.readonly && i.disabled">
                     <Option v-for = '(item,index) in parent.dictUtil.getByCode(parent,i.dict)'  v-if="i.excludeDict == null || i.excludeDict.indexOf(item.key) < 0"  :value="item.key" :key="item.key">{{item.val}}</Option>
                 </Select>

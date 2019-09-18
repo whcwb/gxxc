@@ -2,50 +2,62 @@
 
 </style>
 <template>
-      <div>
-            <Modal v-model="showModal" width='1200' :closable='false'
-                   :mask-closable="false" :title="operate+''">
-                  <div style="overflow: auto;height: 500px;">
-                        <Form ref="form"
-                              :model="formItem"
-                              :rules="ruleInline"
-                              :label-width="120"
-                              :styles="{top: '20px'}">
-                              <Row>
-                                    <form-items :parent="v"></form-items>
-                              </Row>
-                              <Row>
-                                    <Col span="12">
-                                          <FormItem label="头像">
-                                                <Upload :action="this.apis.UPLOAD"
-                                                        :format="['jpg','jpeg','png']"
-                                                        :show-upload-list="false"
-                                                        :on-success="handleSuccess"
-                                                >
-                                                      <img v-if="formItem.jlImg"
-                                                           :src="this.apis.STATIC_PATH+formItem.jlImg"
-                                                           style="width: 80px;height: 80px"
-                                                           alt="">
-                                                      <Icon v-else type="md-person" size="40" color="#dedede"/>
-                                                </Upload>
-                                          </FormItem>
-                                    </Col>
-                                    <Col span="12">
-                                          <FormItem label="所属训练场">
-                                                <Select v-model="formItem.trainId">
-                                                      <Option :value="it.placeId" v-for="(it,index) in xlcList" :key="index">{{it.placeName}}</Option>
-                                                </Select>
-                                          </FormItem>
-                                    </Col>
-                              </Row>
-                        </Form>
-                  </div>
-                  <div slot='footer'>
-                        <Button @click="v.util.closeDialog(v)">取消</Button>
-                        <Button type="primary" @click="v.util.save(v)">确定</Button>
-                  </div>
-            </Modal>
-      </div>
+    <div>
+        <Modal v-model="showModal" width='1200' :closable='false'
+               :mask-closable="false" :title="operate+''">
+            <div style="overflow: auto;height: 500px;">
+                <Form ref="form"
+                      :model="formItem"
+                      :rules="ruleInline"
+                      :label-width="120"
+                      :styles="{top: '20px'}">
+                    <Row>
+                        <form-items :parent="v"></form-items>
+                    </Row>
+                    <Row>
+                        <Col span="8">
+                            <FormItem label="头像">
+                                <Upload :action="this.apis.UPLOAD"
+                                        :format="['jpg','jpeg','png']"
+                                        :show-upload-list="false"
+                                        :on-success="handleSuccess"
+                                >
+                                    <img v-if="formItem.jlImg"
+                                         :src="this.apis.STATIC_PATH+formItem.jlImg"
+                                         style="width: 80px;height: 80px"
+                                         alt="">
+                                    <Icon v-else type="md-person" size="40" color="#dedede"/>
+                                </Upload>
+                            </FormItem>
+                        </Col>
+                        <Col span="8">
+                            <FormItem label="所属代培点">
+                                    <Select v-model="formItem.subSchoolId" @on-change="getXlcList">
+                                          <Option :value="item.subCode" v-for="(item, index) in dpdList" :key="index" >
+                                                {{item.subName}}
+                                          </Option>
+                                    </Select>
+                            </FormItem>
+                        </Col>
+                        <Col span="8">
+                            <FormItem label="所属训练场">
+                                <Select v-model="formItem.trainId">
+                                    <Option :value="it.placeId" v-for="(it,index) in xlcList" :key="index">
+                                        {{it.placeName}}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </Col>
+
+                    </Row>
+                </Form>
+            </div>
+            <div slot='footer'>
+                <Button @click="v.util.closeDialog(v)">取消</Button>
+                <Button type="primary" @click="v.util.save(v)">确定</Button>
+            </div>
+        </Modal>
+    </div>
 </template>
 
 <script>
@@ -73,7 +85,8 @@
                     licenceBack: ''
                 },
                 formItem: {
-                    jlImg:""
+                    jlImg: "",
+                      subSchoolId:''
                     // temp/dbd2197681e14668af4a869a22a4b15d.jpg
                 },
                 formInputs: [
@@ -88,35 +101,30 @@
                 ],
                 ruleInline: {},
                 yhLx: '',
-                xlcList:[]
+                xlcList: [],
+                dpdList: []
             }
         },
-        /**
-         * yhXm:姓名
-         yhZjhm:320333333333333333
-         yhSjhm:18672922222
-         jlJl:11
-         jlQu:10
-         jlZml:证明人
-         jlJjlxr:紧急联系人
-         jlJjlxrdh:联系电话
-         jlZz:教练地址
-         jlImg:/aaa.jpg
-         jlMs:教练简界
-         imgList:./aaa.jpg,./bbb.jpg,-,-
-         yhMm:
-         */
         created() {
             this.getXlcList()
+              this.getDpd()
             this.util.initFormModal(this);
         },
         methods: {
-            getXlcList(){
-                this.$http.get("/api/trainPlace/query").then(res=>{
-                    if(res.code == '200'){
+            getDpd() {
+                this.$http.get('/api/subschool/query').then(res => {
+                    if (res.code === 200) {
+                          this.dpdList = res.result
+                    }
+                })
+            },
+            getXlcList(code) {
+                this.$http.get("/api/trainPlace/query", {params: {subCode: code}}).then(res => {
+                    if (res.code === 200) {
                         this.xlcList = res.result
                     }
-                }).catch(err=>{})
+                }).catch(err => {
+                })
             },
             handleSuccess(res, file) {
                 console.log(res);

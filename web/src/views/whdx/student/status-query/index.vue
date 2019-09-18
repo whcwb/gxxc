@@ -42,8 +42,8 @@
                 tableColumns: [
                     {title: "",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '联系电话',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '身份证号',key:'yhZjhm',searchKey:'yhZjhmLike'},
+                    {title: '联系电话',key:'yhZh',searchKey:'yhZhLike'},
                     {title: '注册时间',key:'cjsj'},
                     {title: '用户类型',key:'yhLx',dict:'ZDCLK0041'},
                     // {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},

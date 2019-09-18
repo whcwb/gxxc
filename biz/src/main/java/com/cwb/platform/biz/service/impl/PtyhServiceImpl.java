@@ -200,7 +200,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Override
     public List<Map<String, String>> getSpecialVals(List<BizPtyh> list) {
-
         if (CollectionUtils.isNotEmpty(list)) {
             list.forEach(this::afterReturn);
         }

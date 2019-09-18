@@ -11,6 +11,7 @@
                   <Table :height="tableHeight" :columns="tableColumns" :data="pageData"
                          @on-selection-change="selectionChange"></Table>
             </Row>
+
             <Row class="margin-top-10 pageSty">
                   <pager :parent="v"></pager>
             </Row>
@@ -40,8 +41,8 @@
                 tableColumns: [
                     {title: "", type: 'index', width: 60},
                     {title: '姓名', key: 'yhXm', searchKey: 'yhXmLike'},
-                    {title: '账号', key: 'yhSjhm', searchKey: 'yhSjhmLike'},
-                    {title: '证件号码', key: 'yhZjhm', searchKey: 'yhZjhmLike'},
+                    {title: '身份证号', key: 'yhZjhm', searchKey: 'yhZjhmLike'},
+                      {title: '联系电话', key: 'yhSjhm', searchKey: 'yhSjhmLike'},
                     {title: "注册时间", key: 'cjsj'},
                     {
                         title: '状态',
@@ -121,7 +122,7 @@
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this, h, 'success', 'md-card', '详情', () => {
+                                this.util.buildButton(this, h, 'success', 'md-create', '修改', () => {
                                     this.$http.get(this.apis.teacher.getById + params.row.yhId).then((res) => {
                                         if (res.code == 200 && res.result) {
                                             this.choosedItem = res.result

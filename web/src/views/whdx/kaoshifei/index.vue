@@ -40,7 +40,7 @@
                     {title: "#",  type: 'index',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'xm',align:'center'},
                     {title: '身份证号码',key:'yhZjhm',searchKey:'idCard',align:'center'},
-                    {title: '手机号',key:'yhZh',searchKey:'phone',align:'center'},
+                    {title: '联系电话',key:'yhZh',searchKey:'phone',align:'center'},
                     {title: '流水号',key:'yhLsh',align:'center'},
                     {title: '约考状态',key:'yhXyYkType',dict:'ykzt'},
                     // {title: '流水号条码',key:'yhLsh',width:280,align:'center',

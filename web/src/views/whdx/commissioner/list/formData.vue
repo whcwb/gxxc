@@ -39,6 +39,26 @@
 							</FormItem>
 						</Col>
 					</Row>
+					<Row>
+						<Col span="12">
+							<FormItem label="所属代培点">
+								<Select v-model="formItem.subSchoolId" @on-change="getXlcList">
+									<Option :value="item.subCode" v-for="(item, index) in dpdList" :key="index" >
+										{{item.subName}}
+									</Option>
+								</Select>
+							</FormItem>
+						</Col>
+						<Col span="12">
+							<FormItem label="所属训练场">
+								<Select v-model="formItem.trainId">
+									<Option :value="it.placeId" v-for="(it,index) in xlcList" :key="index">
+										{{it.placeName}}
+									</Option>
+								</Select>
+							</FormItem>
+						</Col>
+					</Row>
 				<!--	<Row style="text-align: center">
 						<img style="height: 120px" src="" alt="">
 						<Upload :action="apis.BASE_URL + '/upload'">
@@ -72,6 +92,8 @@
 				uploadPrivatePath:this.apis.UPLOAD,
 				showModal: true,
 				readonly: false,
+				dpdList:[],
+				xlcList:[],
                 files:{
                     cardFront:'',
                     cardBack:'',
@@ -113,9 +135,26 @@
          yhMm:
          */
 		created(){
+			this.getDpd()
+			// this.getXlcList()
 		    this.util.initFormModal(this);
 		},
 		methods: {
+			getDpd() {
+				this.$http.get('/api/subschool/query').then(res => {
+					if (res.code === 200) {
+						this.dpdList = res.result
+					}
+				})
+			},
+			getXlcList(code) {
+				this.$http.get("/api/trainPlace/query", {params: {subCode: code}}).then(res => {
+					if (res.code === 200) {
+						this.xlcList = res.result
+					}
+				}).catch(err => {
+				})
+			},
 		    beforeSave(){
 		        this.formItem.yhLx = this.formItem.jsId;
             },

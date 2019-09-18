@@ -47,7 +47,7 @@
                 choosedItem: null,
                 tableColumns: [
                     {title: "#", width: 60, type: 'index'},
-                    {title:'用户名称',key:'yhMc',searchKey:'yhMcLike'},
+                    {title:'姓名',key:'yhMc',searchKey:'yhMcLike'},
                     {title:'佣金明细',key:'yjId'},
                     {title:'提现方式',key:'ttFs',dict:'ZDCLK0047',searchType:'dict'},
                     {title:'提现金额',key:'ttJe',render:(h,p)=>{
@@ -102,6 +102,7 @@
                 ],
                 pageData: [],
                 form: {
+                    ttZt:'0',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

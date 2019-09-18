@@ -52,7 +52,7 @@ module.exports = [
     name: 'coachList',
     component:()=>import('@/views/main/coach/list.vue'),
     meta:{
-      title:'教练列表'
+      title:'培训专员列表'
     }
   },
   {

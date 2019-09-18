@@ -292,7 +292,7 @@ export let appRouter = [
                 path: 'commissioner-list',
                 icon: 'android-clipboard',
                 name: 'commissioner-list',
-                meta: { title: '教练列表' },
+                meta: { title: '培训专员管理' },
                 component: () => import('@/views/whdx/commissioner/list')
             },
             // {
@@ -353,7 +353,7 @@ export let appRouter = [
                 path: 'teacher-list',
                 icon: 'android-clipboard',
                 name: 'teacher-list',
-                meta: { title: '教练列表' },
+                meta: { title: '培训专员列表' },
                 component: () => import('@/views/whdx/teacher/list')
             },
             {
