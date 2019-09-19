@@ -737,7 +737,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         int i = 0;
         BizUser bizUser = new BizUser();
         if (StringUtils.isNotBlank(entity.getYhZjhm()) && StringUtils.isNotBlank(entity.getYhXm())) {
-
             String identify = IDNameIdentify.indentifyIdCard(entity.getYhZjhm(), entity.getYhXm());
             RuntimeCheck.ifFalse(StringUtils.equals(identify, "200"), identify);
             newEntity.setYhXm(entity.getYhXm());//用户姓名
@@ -751,29 +750,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             newEntity.setYhSfyjz(yhSfyjz);//用户驾照状态不能为空
             newEntity.setYhZt("1");//学员认证状态 ZDCLK0043(0 未认证、1 已认证)
             newEntity.setYhZtMs("");//用户驾照状态不能为空
-            newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
-            newEntity.setYhYqmkssj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
-            newEntity.setYhLx("3");
-
-            String yhZsyqm = "";
-            boolean flag = true;
-            while (flag) {
-                yhZsyqm = ShoreCode.createShareCode();
-                List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, yhZsyqm);
-                if (CollectionUtils.isEmpty(ptyhs)) {
-                    flag = false;
-                }
-            }
-            String filepath = "/QRCode/" + DateTime.now().toString("yyyyMMdd") + "/" + yhZsyqm + ".png";
-            WxMpQrCodeTicket ticket = wxMpService.getQrcodeService().qrCodeCreateLastTicket(newEntity.getId());
-            String qrCode = ticket.getTicket();
-            String pictureUrl = wxMpService.getQrcodeService().qrCodePictureUrl(qrCode);
-            URL u = new URL(pictureUrl);
-
-            FileUtils.copyURLToFile(u, new File(qrCodeFileUrl + filepath), 5000, 5000);
-            newEntity.setQrcode(ticket.getUrl());
-            newEntity.setYhZsyqm(yhZsyqm);
-            newEntity.setYhZsyqmImg(filepath);
 
             bizUser.setYhId(newEntity.getId());//用户ID
             bizUser.setYhZjhm(entity.getYhZjhm());//用户证件号码
@@ -785,7 +761,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             bizUser.setYhSsjid(yhSsjid);//上上级ID
         } else {
             //插入用户实名表  biz_user
-
             bizUser.setYhId(newEntity.getId());//用户ID
             bizUser.setYhZjhm(newEntity.getYhZjhm());//用户证件号码
             bizUser.setYhSjhm(newEntity.getYhZh());//用户账户
@@ -794,9 +769,31 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             bizUser.setCjsj(DateUtils.getNowTime());//创建时间
             bizUser.setYhSjid(yhSjid);//设置上级ID
             bizUser.setYhSsjid(yhSsjid);//上上级ID
-
-
         }
+        //  用户注册生成邀请码
+        String yhZsyqm = "";
+        boolean flag = true;
+        while (flag) {
+            yhZsyqm = ShoreCode.createShareCode();
+            List<BizPtyh> ptyhs = ptyhService.findEq(BizPtyh.InnerColumn.yhZsyqm, yhZsyqm);
+            if (CollectionUtils.isEmpty(ptyhs)) {
+                flag = false;
+            }
+        }
+        String filepath = "/QRCode/" + DateTime.now().toString("yyyyMMdd") + "/" + yhZsyqm + ".png";
+        WxMpQrCodeTicket ticket = wxMpService.getQrcodeService().qrCodeCreateLastTicket(newEntity.getId());
+        String qrCode = ticket.getTicket();
+        String pictureUrl = wxMpService.getQrcodeService().qrCodePictureUrl(qrCode);
+        URL u = new URL(pictureUrl);
+
+        FileUtils.copyURLToFile(u, new File(qrCodeFileUrl + filepath), 5000, 5000);
+        newEntity.setQrcode(ticket.getUrl());
+        newEntity.setYhZsyqm(yhZsyqm);
+        newEntity.setYhZsyqmImg(filepath);
+        newEntity.setYhYqmgqsj(DateTime.now().plusYears(1).toString("yyyy-MM-dd HH:mm:ss"));
+        newEntity.setYhYqmkssj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        newEntity.setYhLx("3");
+
         entityMapper.insertSelective(newEntity);
 
         i = userMapper.insert(bizUser);

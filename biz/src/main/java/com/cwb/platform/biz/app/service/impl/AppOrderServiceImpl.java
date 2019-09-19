@@ -221,7 +221,7 @@ public class AppOrderServiceImpl extends BaseServiceImpl<BizOrder,String> implem
         String userId=user.getId();
         BizPtyh userSelect = ptyhMapper.selectByPrimaryKey(userId);
         RuntimeCheck.ifNull(userSelect,"用户不存在");
-        RuntimeCheck.ifFalse(StringUtils.equals(userSelect.getYhZt(),"1"),"您好，请您上传证件或等待管理员对您资料进行认证！");//认证状态 ZDCLK0043(0 未认证、1 已认证)
+//        RuntimeCheck.ifFalse(StringUtils.equals(userSelect.getYhZt(),"1"),"您好，请您上传证件或等待管理员对您资料进行认证！");//认证状态 ZDCLK0043(0 未认证、1 已认证)
 //        RuntimeCheck.ifTrue(StringUtils.equals(userSelect.getDdSfjx(),"1"),"您已支付成功，无需再次支付！");//获取是否缴费(0无 1已缴费) todo 让用户可以重复支付
         RuntimeCheck.ifTrue(StringUtils.equals(userSelect.getYhSfsd(),"1"),"您已经锁定，无法支付。请联系管理人员进行解锁！");//用户是否锁定 ZDCLK0046 (0 否  1 是)  0是没有锁定 1是已锁定
 
