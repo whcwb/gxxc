@@ -7,7 +7,7 @@
 					<image style="width: 100%;height: 100%;" :src='item.hdTpdz' mode="widthFix"></image>
 				</swiper-item>
 			</swiper>
-			<view class="funcBox" v-show="userMess">
+			<view class="funcBox">
 				<div class="box_row colCenter rowBetween haveUser">
 					<div @click='toTx'>
 						<div class="titleSty">
@@ -30,7 +30,7 @@
 					</div>
 				</div>
 			</view>
-			<view class="funcBox" v-show="!userMess">
+			<!-- <view class="funcBox" v-show="!userMess">
 				<img src="./file/img/idcard.png" style="left: 50%;transform: translateX(-50%);position: absolute;width: 188rpx;height: 188rpx;">
 				<div class="noUser box_row rowCenter colBottom" style="left: 50%;transform: translateX(-50%);position: absolute;">
 					<div class="text">
@@ -40,7 +40,7 @@
 						点击去认证
 					</div>
 				</div>
-			</view>
+			</view> -->
 		</view>
 
 		<div v-if='USERMESS.yhLx != 1' class="advbox" @click="ChangeUser">
