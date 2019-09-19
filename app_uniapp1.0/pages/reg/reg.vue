@@ -7,7 +7,7 @@
 		<view class="inputMess" v-for="(item,index) in inputList" :key="index" v-show="item.show">
 			<input class="uni-input input" style="font-size: 14px;height: 40px;margin: 10px 20rpx;" :placeholder="item.placeholder" v-model="item.val" :password="item.key=='yhMm'?true:false" />
 			<view @click="getYZM" v-if="item.placeholder==='请输入验证码'" class="inputCodeTip" v-show="show">
-				请获取验证码
+				获取验证码
 			</view>
 			<view v-if="item.placeholder==='请输入验证码'" class="inputCodeTip" v-show="!show">
 				{{count}}s
@@ -219,7 +219,7 @@
 						val: ''
 					},
 					{
-						placeholder: '请输入密码',
+						placeholder: '请设置密码',
 						key: 'yhMm',
 						show: true,
 						type: 'password',
@@ -232,13 +232,13 @@
 						type: 'text',
 						val: ''
 					},
-					{
-						placeholder: '请输入身份证号',
-						key: 'yhZjhm',
-						show: true,
-						type: 'idcard',
-						val: ''
-					}
+					// {
+					// 	placeholder: '请输入身份证号',
+					// 	key: 'yhZjhm',
+					// 	show: true,
+					// 	type: 'idcard',
+					// 	val: ''
+					// }
 				]
 			}
 		},
