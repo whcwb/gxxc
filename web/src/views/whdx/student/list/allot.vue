@@ -20,19 +20,20 @@
 			<div style="overflow: auto;height: 600px;">
 				<Tabs>
 					<Tab-pane v-if="state == 0" label="受理教练" icon="ios-download-outline">
-						<allot1 :item="item" :parent="v"></allot1>
+						<allot1 :item="item" :parent="v" :row="row"></allot1>
 					</Tab-pane>
 					<Tab-pane v-if="state == 1" label="科一教练" icon="ios-upload-outline">
-						<allot2 :item="item" :parent="v"></allot2>
+						<allot2 :item="item" :parent="v" :row="row"></allot2>
 					</Tab-pane>
-					<Tab-pane v-if="state == 2" label="科二教练" icon="ios-upload-outline">
-						<allot3 :item="item" :parent="v"></allot3>
+					<Tab-pane v-if="state == 2" label="科二科三教练" icon="ios-upload-outline">
+						<allot5 :item="item" :parent="v " :row="row"></allot5>
 					</Tab-pane>
-					<Tab-pane v-if="state == 3" label="科三" icon="ios-upload-outline">
-						<div style="font-size: 24px;font-weight: 600;text-align: center">
-							当前学员已分配,若修改请点击修改教练
-						</div>
-					</Tab-pane>
+					<div v-if="state==3 ||state==4" style="font-size: 24px;font-weight: 600;text-align: center">
+						当前学员已分配,若修改请点击修改教练
+					</div>
+<!--					<Tab-pane v-if="state == 3" label="" icon="ios-upload-outline">-->
+<!--						-->
+<!--					</Tab-pane>-->
 				</Tabs>
 			</div>
 		</Modal>
@@ -42,11 +43,11 @@
 <script>
     import allot1 from './allot1'
     import allot2 from './allot2'
-    import allot3 from './allot3'
+    import allot5 from './allot5'
     import allot4 from './allot4'
 	export default {
 		name: 'byxxForm',
-		components:{allot1,allot2,allot3,allot4},
+		components:{allot1,allot2,allot5,allot4},
 		data() {
 			return {
 			    v:this,
@@ -86,13 +87,15 @@
 
                 },
 				state:0,
+				row:{}
 			}
 		},
 		created(){
             console.log('created');
 		    this.choosedData = this.$parent.choosedData
+			this.row = this.$parent.row
+			console.log(this.row,'1232');
 			this.getState();
-
 			this.util.initTable(this)
 		},
 		mounted(){

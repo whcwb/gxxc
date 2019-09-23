@@ -22,10 +22,10 @@
                           @on-change='pageChange'></Page>
                 </Row>
 			</div>
-			<div slot='footer'>
-				<Button type="default" @click="close">取消</Button>
-				<Button type="primary" @click="confirm">确定</Button>
-			</div>
+<!--			<div slot='footer'>-->
+<!--				<Button type="default" @click="close">取消</Button>-->
+<!--				<Button type="primary" @click="confirm">确定</Button>-->
+<!--			</div>-->
 	</div>
 </template>
 

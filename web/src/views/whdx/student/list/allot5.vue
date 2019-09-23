@@ -23,7 +23,7 @@
                 </Row>
 			</div>
 <!--			<div slot='footer'>-->
-<!--				<Button type="default" @click="v.util.closeDialog(parent)">取消</Button>-->
+<!--				<Button type="default" @click="close">取消</Button>-->
 <!--				<Button type="primary" @click="confirm">确定</Button>-->
 <!--			</div>-->
 	</div>
@@ -51,13 +51,18 @@
 		data() {
 			return {
 			    v:this,
+                id:'',
                 operate:'分配',
+                tableHeight:220,
 				showModal: true,
                 apiRoot:this.apis.teacher,
 				readonly: false,
                 form: {
-                   jlZt:0,
-                    jlTypeLike:"slzy",
+                    yhZt:'1',
+                    yhLx:"2",
+                    zt:'',
+                    jlTypeLike:"k2",
+                    byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -65,14 +70,14 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '电话',key:'yhSjhm',searchKey:'yhSjhmLike'},
+                    {title: '电话',key:'jlJjlxrdh',searchKey:'jlJjlxrdhLike'},
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','md-person','分配',()=>{
+                                this.util.buildButton(this,h,'success','md-person-add','分配',()=>{
                                     this.confirm(params.row.yhId);
                                 }),
                             ]);
@@ -84,13 +89,13 @@
 				},
                 formItem:{
 
-                },
+                }
 			}
 		},
 		created(){
             this.util.initTable(this)
 		    this.formItem = this.item
-        },
+		},
 		methods: {
             pageChange(event) {
                 this.util.pageChange(this, event);
@@ -108,13 +113,12 @@
                     }
                 });
 			},
-            save(id){
-                let userList = this.$parent.choosedData;
+            save(id,a){
                 let yhIds = this.parent.row.id;
                 let params = {
                     yhIds:yhIds,
                     jlid:id,
-                    jlType:0
+                    jlType:2
                 }
                 let v = this;
                 this.$http.post(this.apis.student.assignStudents,params).then((res)=>{
@@ -124,6 +128,9 @@
                         v.util.getPageData(parent.$parent)
                     }
                 })
+            },
+            close(){
+                this.$parent.close()
             }
 		}
 	}

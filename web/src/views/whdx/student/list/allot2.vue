@@ -22,10 +22,10 @@
                           @on-change='pageChange'></Page>
                 </Row>
 			</div>
-			<div slot='footer'>
-				<Button type="default" @click="v.util.closeDialog(parent)">取消</Button>
-				<Button type="primary" @click="confirm">确定</Button>
-			</div>
+<!--			<div slot='footer'>-->
+<!--				<Button type="default" @click="v.util.closeDialog(parent)">取消</Button>-->
+<!--				<Button type="primary" @click="confirm">确定</Button>-->
+<!--			</div>-->
 	</div>
 </template>
 
@@ -76,7 +76,7 @@
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildButton(this,h,'success','md-person','分配',()=>{
-                                    this.confirm(params.row.id);
+                                    this.confirm(params.row.yhId);
                                 }),
                             ]);
                         }
@@ -93,7 +93,8 @@
 		created(){
             this.util.initTable(this)
 		    this.formItem = this.item
-		},
+            console.log(this.parent.row);
+        },
 		methods: {
             pageChange(event) {
                 this.util.pageChange(this, event);
@@ -113,13 +114,13 @@
 			},
             save(id){
                 let userList = this.$parent.choosedData;
-                let yhIds = '';
-                for (let r of userList){
-                    yhIds += r.id+',';
-                }
+
+                console.log(this.$parent.row);
+                let yhIds = this.parent.row.id;
                 let params = {
                     yhIds:yhIds,
-                    jlid:id
+                    jlid:id,
+                    jlType:1
                 }
                 let v = this;
                 this.$http.post(this.apis.student.assignStudents,params).then((res)=>{
