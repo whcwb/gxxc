@@ -95,8 +95,8 @@ public class UserServiceImpl extends BaseServiceImpl<BizUser,java.lang.String> i
 
         BizPtyh bizPtyh = ptyhService.findById(yhid);
         // 验证用户是否认证
-        RuntimeCheck.ifTrue(!StringUtils.equals(bizPtyh.getYhZt(),"1"), "用户尚未认证");
-        RuntimeCheck.ifTrue(!StringUtils.equals(bizPtyh.getYhLx(),"2"), "该用户不是教练");
+//        RuntimeCheck.ifTrue(!StringUtils.equals(bizPtyh.getYhZt(),"1"), "用户尚未认证");
+//        RuntimeCheck.ifTrue(!StringUtils.equals(bizPtyh.getYhLx(),"2"), "该用户不是教练");
 
         // 获取该教练下的所有学员
         SimpleCondition condition = new SimpleCondition(BizUser.class);
