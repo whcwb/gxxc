@@ -37,6 +37,7 @@
 								<Input v-model="formItem.lsh" placeholder="请输入流水号"></Input>
 							</FormItem>
 						</Col>
+
 						<Col span="12" v-if="showLsh" >
 							<FormItem prop='yhCx' label='车型'>
 								<Select  filterable clearable  v-model="formItem.yhCx" placeholder="请选择车型..." label-in-value @on-change="cxChange">
@@ -64,7 +65,7 @@
         	</div>
         	<div slot='footer'>
         		<Button type="default" @click="v.util.closeDialog(v)">取消</Button>
-        		<Button type="primary" v-if="showConfirm" @click="v.util.save(v)">确定</Button>
+        		<Button type="primary"  @click="v.util.save(v)">确定</Button>
         	</div>
         </Modal>
 	</div>
@@ -86,7 +87,7 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
+                    {label:'学员',prop:'yhId',type:'foreignKey'},
                     {label:'受理时间',prop:'slSj',type:'date'},
                 ],
                 ruleInline:{

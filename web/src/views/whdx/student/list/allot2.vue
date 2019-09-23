@@ -15,7 +15,7 @@
                     <search-items :parent="v" :label-with="100"></search-items>
                 </Row>
                 <Row style="position: relative;">
-                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+                    <Table height="400px" :columns="tableColumns" :data="pageData"></Table>
                 </Row>
                 <Row class="margin-top-10 pageSty">
                     <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
@@ -53,13 +53,14 @@
 			    v:this,
                 operate:'分配',
 				showModal: true,
-                apiRoot:this.apis.student,
+                apiRoot:this.apis.teacher,
 				readonly: false,
                 form: {
                     yhZt:'1',
                     yhLx:"2",
                     zt:'',
                     byBysjInRange:'',
+                    jlTypeLike:"k1",
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -67,14 +68,14 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '电话',key:'yhSjhm',searchKey:'yhSjhmLike'},
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','ribbon-b','分配',()=>{
+                                this.util.buildButton(this,h,'success','md-person','分配',()=>{
                                     this.confirm(params.row.id);
                                 }),
                             ]);

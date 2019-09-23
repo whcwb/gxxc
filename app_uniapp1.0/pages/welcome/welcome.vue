@@ -14,6 +14,7 @@
 		data() {
 			return {
 				imgheight: 200,
+				yam:false
 			}
 		},
 		onShow() {
@@ -23,6 +24,7 @@
 			// this.toLogin()
 			this.$refs.loading.open()
 			this.isYqm()
+			
 		},
 		methods: {
 			isYqm() {
@@ -38,11 +40,11 @@
 								key: 'yqm',
 								data: yqm,
 								success: function() {
-									uni.navigateTo({
-										url: '../reg/reg'
-									})
+									
 								}
 							});
+							this.yam = true
+							this.getWxJs()
 						} else {
 							this.getWxJs()
 						}
@@ -60,15 +62,22 @@
 			toLogin() {
 				var token = uni.getStorageSync('token');
 				setTimeout(() => {
-					if (token) {
-						uni.switchTab({
-							url: '/pages/main/p_index/main'
-						});
-					} else {
+					if(this.yam){
 						uni.navigateTo({
-							url: '../login/login'
-						});
+							url: '../reg/reg'
+						})
+					}else{
+						if (token) {
+							uni.switchTab({
+								url: '/pages/main/p_index/main'
+							});
+						} else {
+							uni.navigateTo({
+								url: '../login/login'
+							});
+						}
 					}
+					
 				}, 1000)
 			},
 			getWxJs() {
