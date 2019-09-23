@@ -224,6 +224,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String rz = request.getParameter("rz");
         String zylx = request.getParameter("zylx");//查询用户受理状态
         String zylxPager = request.getParameter("zylxPager");
+
+        String cond = request.getParameter("cond");
+        if(StringUtils.isNotBlank(cond)){
+            condition.and().andCondition("YH_ZH like '%"+cond+"%' or YH_XM like '%" + cond + "%' or YH_ZJHM like '%" + cond + "%' or YH_ZSYQM like '%"  + cond + "%' or YH_LSH like '%" + cond + "%'" );
+        }
+
         if (StringUtils.isNotBlank(rz)) { // 若不为空则为学员认证列表
             condition.and().andIsNotNull("yhZjhm");
         }
@@ -1483,7 +1489,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 // 从字典中获取
                 List<SysZdxm> zdxms = zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm, "subFee");
                 RuntimeCheck.ifEmpty(zdxms, "请设置代培费");
-                Map<String, String> map = zdxms.stream().collect(Collectors.toMap(SysZdxm::getZddm, p -> p.getZdmc()));
+                Map<String, String> map = zdxms.stream().collect(Collectors.toMap(SysZdxm::getZddm, SysZdxm::getZdmc));
                 // 需要生成 代培费纪录
                 ptyhs.forEach(p -> {
                     BizPtyh ptyh = new BizPtyh();
