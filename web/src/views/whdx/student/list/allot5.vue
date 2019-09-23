@@ -118,7 +118,8 @@
                 let params = {
                     yhIds:yhIds,
                     jlid:id,
-                    jlType:2
+                    jlType:2,
+                    flag:a
                 }
                 let v = this;
                 this.$http.post(this.apis.student.assignStudents,params).then((res)=>{
@@ -126,6 +127,23 @@
                         this.$Message.success(res.message);
                         v.util.closeDialog(parent);
                         v.util.getPageData(parent.$parent)
+                    }else if(res.code == 555) {
+
+                        params.flag = '1'
+                        console.log(params.flag);
+                        swal({
+                            title: "请注意",
+                            text: res.message,
+                            icon: "warning",
+                            buttons:['取消','确认'],
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                this.save(params.id,params.flag)
+                            } else {
+                            }
+                        });
+                    }else {
+                        this.$Message.error(res.message)
                     }
                 })
             },
