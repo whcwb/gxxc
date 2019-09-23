@@ -37,6 +37,7 @@
 								<Input v-model="formItem.lsh" placeholder="请输入流水号"></Input>
 							</FormItem>
 						</Col>
+
 						<Col span="12" v-if="showLsh" >
 							<FormItem prop='yhCx' label='车型'>
 								<Select  filterable clearable  v-model="formItem.yhCx" placeholder="请选择车型..." label-in-value @on-change="cxChange">

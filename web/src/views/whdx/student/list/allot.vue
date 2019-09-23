@@ -29,8 +29,8 @@
 						<allot3 :item="item" :parent="v"></allot3>
 					</Tab-pane>
 					<Tab-pane v-if="state == 3" label="科三" icon="ios-upload-outline">
-						<div>
-							当前学员已处于科目三状态
+						<div style="font-size: 24px;font-weight: 600;text-align: center">
+							当前学员已分配,若修改请点击修改教练
 						</div>
 					</Tab-pane>
 				</Tabs>
@@ -90,9 +90,10 @@
 		},
 		created(){
             console.log('created');
-            this.util.initTable(this)
 		    this.choosedData = this.$parent.choosedData
 			this.getState();
+
+			this.util.initTable(this)
 		},
 		mounted(){
             console.log('mounted');
@@ -101,6 +102,13 @@
 		    getState(){
 		        this.state=parseInt( this.$parent.row.yhXyFpzyType);
 				console.log(this.state);
+				if(this.state == '0'){
+					this.form.jlTypeLike = 'slzy'
+				}else if(this.state == '1'){
+					this.form.jlTypeLike = 'k1'
+				}else {
+					this.form.jlTypeLike = 'k2'
+				}
 			},
 			close(){
 		    	this.$parent.componentName = ''

@@ -53,13 +53,11 @@
 			    v:this,
                 operate:'分配',
 				showModal: true,
-                apiRoot:this.apis.student,
+                apiRoot:this.apis.teacher,
 				readonly: false,
                 form: {
-                    yhZt:'1',
-                    yhLx:"2",
-                    zt:'',
-                    byBysjInRange:'',
+                   jlZt:0,
+                    jlTypeLike:"slzy",
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -67,14 +65,14 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '电话',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '电话',key:'yhSjhm',searchKey:'yhSjhmLike'},
                     {
                         title: '操作',
                         key: 'action',
                         width: 120,
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','ribbon-b','分配',()=>{
+                                this.util.buildButton(this,h,'success','md-person','分配',()=>{
                                     this.confirm(params.row.id);
                                 }),
                             ]);
