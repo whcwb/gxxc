@@ -11,8 +11,13 @@
 <template>
 	<div>
 		<Modal v-model="showModal" width='900' :closable='false'
-			:mask-closable="false" :title="operate+''">
-			<div style="overflow: auto;height: 500px;">
+			:mask-closable="false" :title="operate+''"
+			   ok-text="关闭"
+			   @on-cancel="close"
+			   @on-ok="close"
+
+		>
+			<div style="overflow: auto;height: 600px;">
 				<Tabs>
 					<Tab-pane v-if="state == 0" label="受理教练" icon="ios-download-outline">
 						<allot1 :item="item" :parent="v"></allot1>
@@ -23,8 +28,10 @@
 					<Tab-pane v-if="state == 2" label="科二教练" icon="ios-upload-outline">
 						<allot3 :item="item" :parent="v"></allot3>
 					</Tab-pane>
-					<Tab-pane v-if="state == 3" label="科三教练" icon="ios-upload-outline">
-						<allot4 :item="item" :parent="v"></allot4>
+					<Tab-pane v-if="state == 3" label="科三" icon="ios-upload-outline">
+						<div>
+							当前学员已处于科目三状态
+						</div>
 					</Tab-pane>
 				</Tabs>
 			</div>
@@ -48,10 +55,8 @@
                 apiRoot:this.apis.student,
 				readonly: false,
                 form: {
-                    yhZt:'1',
-                    yhLx:"2",
-                    zt:'',
-                    byBysjInRange:'',
+					jlTypeLike: '',
+					jlZt: 0,
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -60,7 +65,7 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '电话',key:'yhZh',searchKey:'yhZhLike'},
                     {
                         title: '操作',
                         key: 'action',
@@ -94,8 +99,11 @@
         },
 		methods: {
 		    getState(){
-
-		        this.state = 0;
+		        this.state=parseInt( this.$parent.row.yhXyFpzyType);
+				console.log(this.state);
+			},
+			close(){
+		    	this.$parent.componentName = ''
 			}
 		}
 	}

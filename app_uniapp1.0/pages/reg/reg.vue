@@ -379,7 +379,7 @@
 						this.toindex()
 						// #endif
 						// #ifdef H5
-						this.getWxJs()
+						this.toindex()
 						// #endif
 					} else {
 						uni.hideLoading();

@@ -12,9 +12,11 @@
     <div>
         <Modal v-model="showModal" width='900' :closable='false'
                :mask-closable="false" :title="operate+''"
+               ok-text="关闭"
                @on-cancel="close"
+               @on-ok="close"
         >
-            <div style="overflow: auto;height: 500px;">
+            <div style="overflow: auto;height: 600px;">
                 <Tabs>
                     <Tab-pane  label="科二教练" icon="ios-upload-outline">
                         <allot3 :item="item" :parent="v"></allot3>

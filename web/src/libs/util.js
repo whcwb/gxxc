@@ -84,7 +84,7 @@ util.buildEditButton = (v,h,p)=>{
 util.buildButton = (v,h,type,icon,tip,onClick)=>{
     try{
         return h('Tooltip',
-            {props: {placement: 'top',content: tip,}},
+            {props: {placement: 'bottom',content: tip,}},
             [
                 h('Button', {
                     props: {type: type,icon: icon,shape: 'circle',size: 'small'},

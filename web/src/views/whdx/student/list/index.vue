@@ -4,10 +4,18 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-				<search-items :parent="v" :label-with="100"></search-items>
-				<Button type="info" @click="exportData">
-					<Icon type="ios-download-outline"></Icon>
-				</Button>
+<!--				<search-items :parent="v" :label-with="100"></search-items>-->
+
+<!--				<Button type="info" @click="exportData">-->
+<!--					<Icon type="ios-download-outline"></Icon>-->
+<!--				</Button>-->
+			<Input search enter-button placeholder="请输入姓名丶身份证号丶联系电话丶流水号搜索"
+				   clearable
+				   v-model="form.cond"
+				   @on-enter="getPager"
+				   @on-change="getPager"
+			/>
+
 		</Row>
 		<Row style="position: relative;">
 			<Table size="large" :height="tableHeight" :columns="tableColumns" :data="pageData" @on-selection-change="selectionChange"></Table>
@@ -94,19 +102,23 @@
                     {
                         title: '操作',
                         key: 'action',
-                        width: 180,
+						fixed: 'right',
+                        width: 210,
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildButton(this,h,'success','md-card','受理',()=>{
 									this.getSl(params.row.id);
                                 }),
+								this.util.buildButton(this,h,'success','md-person-add','分配',()=>{
+									this.getFp(params.row.id,params.row);
+								}),
                                 this.util.buildButton(this,h,'info','ios-car','约考',()=>{
 									this.getYk(params.row.id);
                                 }),
 
-                                // this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
-								// 	this.getJf(params.row.id);
-                                // }),
+                                this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
+									this.getJf(params.row.id,params.row);
+                                }),
 								this.util.buildButton(this,h,'warning','md-create','修改教练',()=>{
 									this.choosedItem = params.row;
 									this.componentName = 'xgjl'
@@ -130,33 +142,42 @@
                 pageData: [],
 				choosedData:[],
                 form: {
+					cond:'',
                     yhLx:"1",
                     byBysjInRange:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
                 },
+				row:{}
             }
         },
         created() {
             this.util.initTable(this)
         },
         methods: {
-			getData(api,yhId,componentName){
+        	getPager(){
+				this.util.initTable(this)
+			},
+			getData(api,yhId,componentName,row){
 				this.$http.get(api,{params:{yhId:yhId,pageSize:1,orderBy:'cjsj desc'}}).then((res)=>{
 					if (res.code === 200 && res.page.list && res.page.list.length > 0){
 						this.choosedItem = res.page.list[0];
 					}else{
 						this.choosedItem = {yhId:yhId};
 					}
+					this.row = row
 					this.componentName = componentName
 				})
 			},
 			getSl(yhId){
 				this.getData(this.apis.kssl.QUERY,yhId,'sl');
 			},
-			getJf(yhId){
-				this.getData(this.apis.ksJf.QUERY,yhId,'jf');
+			getJf(yhId,row){
+				this.getData(this.apis.ksJf.QUERY,yhId,'jf',row);
+			},
+			getFp(yhId,row){
+				this.getData(this.apis.ksJf.QUERY,yhId,'allot',row);
 			},
 			getYk(yhId){
 				this.getData(this.apis.ksyk.QUERY,yhId,'yk');

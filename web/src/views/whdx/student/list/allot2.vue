@@ -15,7 +15,7 @@
                     <search-items :parent="v" :label-with="100"></search-items>
                 </Row>
                 <Row style="position: relative;">
-                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+                    <Table height="400px" :columns="tableColumns" :data="pageData"></Table>
                 </Row>
                 <Row class="margin-top-10 pageSty">
                     <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator
@@ -67,7 +67,7 @@
                 tableColumns: [
                     {title: "#",  type: 'index'},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
-                    {title: '账号',key:'yhZh',searchKey:'yhZhLike'},
+                    {title: '电话',key:'yhZh',searchKey:'yhZhLike'},
                     {
                         title: '操作',
                         key: 'action',

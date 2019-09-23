@@ -15,7 +15,7 @@
                     <search-items :parent="v" :label-with="100"></search-items>
                 </Row>
                 <Row style="position: relative;">
-                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
+                    <Table height="400" :columns="tableColumns" :data="pageData"></Table>
                 </Row>
                 <Row class="margin-top-10 pageSty">
                     <Page :total=form.total :current=form.pageNum :page-size=form.pageSize show-total show-elevator

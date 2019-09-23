@@ -64,7 +64,7 @@
         	</div>
         	<div slot='footer'>
         		<Button type="default" @click="v.util.closeDialog(v)">取消</Button>
-        		<Button type="primary" v-if="showConfirm" @click="v.util.save(v)">确定</Button>
+        		<Button type="primary"  @click="v.util.save(v)">确定</Button>
         	</div>
         </Modal>
 	</div>
@@ -86,7 +86,7 @@
 				formItem: {
 				},
                 formInputs:[
-                    {label:'学员',prop:'yhId',type:'foreignKey',disabled:true},
+                    {label:'学员',prop:'yhId',type:'foreignKey'},
                     {label:'受理时间',prop:'slSj',type:'date'},
                 ],
                 ruleInline:{
