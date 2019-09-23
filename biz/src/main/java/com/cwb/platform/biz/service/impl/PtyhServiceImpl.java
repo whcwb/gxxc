@@ -1485,6 +1485,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             if (StringUtils.equals(jlType, "2")) {
                 userService.updateJlId(ids, jlId, "3");
                 BizJl jl = jlService.findById(jlId);
+                RuntimeCheck.ifBlank(jl.getSubSchoolId(), "教练尚未绑定代培点, 请先绑定代培点");
                 List<BizPtyh> ptyhs = ptyhService.findByIds(ids);
                 // 从字典中获取
                 List<SysZdxm> zdxms = zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm, "subFee");
