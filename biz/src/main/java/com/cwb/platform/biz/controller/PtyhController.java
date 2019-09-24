@@ -176,6 +176,32 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.getSubStudent(subId, pageNum, pageSize);
     }
 
+    /**
+     * 查询回访学员列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @PostMapping("/getDhfYh")
+    public ApiResponse<String> getDhfYh(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getDhfYh(pageNum, pageSize);
+    }
+
+    /**
+     * 待回访确认
+     * @param id
+     * @return
+     */
+    @PostMapping("/updateHf")
+    public ApiResponse<String> updateHf(String id){
+        return service.updateHf(id);
+    }
+
+
+
+
+
+
 
 
 

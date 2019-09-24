@@ -76,6 +76,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     private TxService txService;
     @Autowired
     private StringRedisTemplate redisDao;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private CpService cpService;
 
     @Value("${img_url}")
     private String imgUrl;
@@ -2406,6 +2410,60 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             fp.setCjsj(DateUtils.getNowTime());
             fpMapper.insert(fp);
         }
+        return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> getDhfYh(int pageNum, int pageSize) {
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        String hf = getRequestParameterAsString("hf");
+        if(StringUtils.equals(hf, "1")){
+            condition.and().andIsNotNull(BizPtyh.InnerColumn.hfsj.name());
+        }else{
+            condition.and().andIsNull(BizPtyh.InnerColumn.hfsj.name());
+        }
+        condition.eq(BizPtyh.InnerColumn.yhLx, "1");
+        String cond = getRequestParameterAsString("cond");
+        if(StringUtils.isNotBlank(cond)){
+            condition.and().andCondition(" yh_zh like '%"+cond+"%' or yh_xm like '%"+cond +"%' or yh_zjhm like '%" + cond + "%'");
+        }
+        PageInfo<BizPtyh> info =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+        if(CollectionUtils.isNotEmpty(info.getList())){
+            Set<String> set = info.getList().stream().map(BizPtyh::getId).collect(Collectors.toSet());
+            SimpleCondition condition1 = new SimpleCondition(BizOrder.class);
+            condition1.in(BizOrder.InnerColumn.yhId, set);
+            condition1.eq(BizOrder.InnerColumn.ddZfzt, "1");
+            condition1.setOrderByClause(" cjsj desc ");
+            List<BizOrder> orders = orderService.findByCondition(condition1);
+            Map<String, List<BizOrder>> map = orders.stream().collect(Collectors.groupingBy(BizOrder::getYhId));
+            info.getList().forEach(bizPtyh -> {
+
+                    List<BizOrder> value = map.get(bizPtyh.getId());
+                    if(CollectionUtils.isNotEmpty(value)){
+                        BizOrder order =
+                                value.stream().sorted(Comparator.comparing(BizOrder::getCjsj).reversed()).collect(Collectors.toList()).get(0);
+                        BizCp cp = cpService.findById(order.getCpId());
+                        bizPtyh.setCpje(cp.getCpJl());
+                        bizPtyh.setCpmc(cp.getCpMc());
+                    }
+            });
+
+        }
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(info);
+        return res;
+    }
+
+    @Override
+    public ApiResponse<String> updateHf(String id) {
+
+        RuntimeCheck.ifBlank(id, "请选择已回访学员");
+        SysYh yh = getCurrentUser();
+        BizPtyh ptyh = findById(id);
+        ptyh.setHfsj(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+        ptyh.setHfr(yh.getXm());
+        update(ptyh);
         return ApiResponse.success();
     }
 

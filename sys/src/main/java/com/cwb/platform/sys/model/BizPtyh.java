@@ -247,7 +247,15 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_K3_SH")
     private String yhK3Sh;
 
+    private String hfsj;
 
+    private String hfr;
+
+    @Transient
+    private String cpmc;
+
+    @Transient
+    private String cpje;
 
     /**
      * 手机验证码
@@ -344,6 +352,8 @@ public class BizPtyh implements Serializable {
 
 
 
+
+
     public Integer getK3jfzt() {
         return k3jfzt;
     }
@@ -399,7 +409,9 @@ public class BizPtyh implements Serializable {
         yhK3SubSj("YH_K3_SUB_SJ"),
         yhK3SubName("YH_K3_SUB_NAME"),
         yhK2Sh("YH_K2_SH"),
-        yhK3Sh("YH_K3_SH");
+        yhK3Sh("YH_K3_SH"),
+        hfsj("HFSJ"),
+        hfr("HFR");
 
         private final String column;
 
