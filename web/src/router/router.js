@@ -380,6 +380,34 @@ export let appRouter = [
                 component: () => import('@/views/whdx/kaoshifei')
             },
             {
+                path: 'huifang',
+                icon: 'android-clipboard',
+                name: 'huifang',
+                meta: { title: '待确认回访' },
+                component: () => import('@/views/whdx/huifang')
+            },
+            {
+                path: 'dfp',
+                icon: 'android-clipboard',
+                name: 'dfp',
+                meta: { title: '待分配专员' },
+                component: () => import('@/views/whdx/dfp')
+            },
+            {
+                path: 'dsl',
+                icon: 'android-clipboard',
+                name: 'dsl',
+                meta: { title: '待确认受理' },
+                component: () => import('@/views/whdx/dsl')
+            },
+            {
+                path: 'dlr',
+                icon: 'android-clipboard',
+                name: 'dlr',
+                meta: { title: '待确认受理' },
+                component: () => import('@/views/whdx/dlr')
+            },
+            {
                 path: 'peixunfei',
                 icon: 'android-clipboard',
                 name: 'peixunfei',
