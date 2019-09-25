@@ -129,6 +129,19 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         }else{
             state += "2";
         }
+
+        if(StringUtils.equals(state, "21")){
+
+            // 科目二考完 , 查看科目三是否有考试通过 , 如果有 则直接显示科三考试通过
+            SimpleCondition condition = new SimpleCondition(BizKsYk.class);
+            condition.eq(BizKsYk.InnerColumn.yhId , user.getId());
+            condition.eq(BizKsYk.InnerColumn.kmCode, "3");
+            condition.and().andCondition(" cj1 >= 90 or cj2 >= 90 ");
+            List<BizKsYk> yks = findByCondition(condition);
+            if(CollectionUtils.isNotEmpty(yks)){
+                state = "31";
+            }
+        }
         user.setYhXyYkType(state);
         if(StringUtils.equals(state,"11") && StringUtils.isBlank(user.getYhYxqz())){
             user.setYhYxqz(DateTime.now().plusYears(3).toString("yyyy-MM-dd HH:mm:ss"));

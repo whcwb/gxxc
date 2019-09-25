@@ -350,13 +350,23 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_K3_SUB_NAME")
     private String yhK3SubName;
 
+    @Transient
+    private String slsj;
 
+    @Transient
+    private long day;
 
+    @Transient
+    private String hg;
 
+    @Transient
+    private String kssj;
 
     public Integer getK3jfzt() {
         return k3jfzt;
     }
+
+
 
     public void setK3jfzt(Integer k3jfzt) {
         this.k3jfzt = k3jfzt;
@@ -393,6 +403,7 @@ public class BizPtyh implements Serializable {
         yhXySlType("YH_XY_SL_TYPE"),
         yhXyYkType("YH_XY_YK_TYPE"),
         yhXyJfType("YH_XY_JF_TYPE"),
+        yhXyFpzyType("YH_XY_FPZY_TYPE"),
         yhSfsd("YH_SFSD"),
         qrcode("QRCODE"),
         yhNum("YH_NUM"),

@@ -37,7 +37,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.apache.tools.ant.types.resources.selectors.InstanceOf;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +107,6 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
     @Autowired
     private TrainPlaceService placeService;
-
 
 
     // 忽略当接收json字符串中没有bean结构中的字段时抛出异常问题
@@ -230,8 +231,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String zylxPager = request.getParameter("zylxPager");
 
         String cond = request.getParameter("cond");
-        if(StringUtils.isNotBlank(cond)){
-            condition.and().andCondition("YH_ZH like '%"+cond+"%' or YH_XM like '%" + cond + "%' or YH_ZJHM like '%" + cond + "%' or YH_ZSYQM like '%"  + cond + "%' or YH_LSH like '%" + cond + "%'" );
+        if (StringUtils.isNotBlank(cond)) {
+            condition.and().andCondition("YH_ZH like '%" + cond + "%' or YH_XM like '%" + cond + "%' or YH_ZJHM like " +
+                    "'%" + cond + "%' or YH_ZSYQM like '%" + cond + "%' or YH_LSH like '%" + cond + "%'");
         }
 
         if (StringUtils.isNotBlank(rz)) { // 若不为空则为学员认证列表
@@ -285,10 +287,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     }
 
     @Override
-    public boolean fillQueryCondition(LimitedCondition condition){
+    public boolean fillQueryCondition(LimitedCondition condition) {
         String cond = getRequestParameterAsString("cond");
-        if(StringUtils.isNotBlank(cond)){
-            condition.and().andCondition(" yh_zh like '%"+cond+"%' or yh_xm like '%"+cond +"%'");
+        if (StringUtils.isNotBlank(cond)) {
+            condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%'");
         }
         return true;
     }
@@ -2205,8 +2207,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         // 查询当前学员的代培点与修改之后的代培点是否一致 , 如果不一致 需要提醒是否修改
         BizJl jl = jlService.findById(jlId);
         BizPtyh user = ptyhService.findById(id);
-        RuntimeCheck.ifTrue(StringUtils.equals(km,"2") && StringUtils.isBlank(user.getYhK2SubId()), "此学员尚未分配教练 , 不能修改教练");
-        RuntimeCheck.ifTrue(StringUtils.equals(km,"3") && StringUtils.isBlank(user.getYhK3SubId()), "此学员尚未分配教练 , 不能修改教练");
+        RuntimeCheck.ifTrue(StringUtils.equals(km, "2") && StringUtils.isBlank(user.getYhK2SubId()), "此学员尚未分配教练 , " +
+                "不能修改教练");
+        RuntimeCheck.ifTrue(StringUtils.equals(km, "3") && StringUtils.isBlank(user.getYhK3SubId()), "此学员尚未分配教练 , " +
+         "不能修改教练");
         RuntimeCheck.ifBlank(jl.getSubSchoolId(), "请为当前教练绑定代培点");
         if (StringUtils.isBlank(flag)) {
             BizPtyh ptyh = findById(id);
@@ -2240,12 +2244,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         if (StringUtils.equals(km, "2")) {
 
-            RuntimeCheck.ifFalse(StringUtils.equals(ptyhs.getYhK2Sh(),"1"), "请先审核通过");
-            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyhs.getYhK2SubSj()),"此代培费已打款");
+            RuntimeCheck.ifFalse(StringUtils.equals(ptyhs.getYhK2Sh(), "1"), "请先审核通过");
+            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyhs.getYhK2SubSj()), "此代培费已打款");
             ptyhs.setYhK2SubSj(time);
         } else if (StringUtils.equals(km, "3")) {
-            RuntimeCheck.ifFalse(StringUtils.equals(ptyhs.getYhK3Sh(),"1"), "请先审核通过");
-            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyhs.getYhK3SubSj()),"此代培费已打款");
+            RuntimeCheck.ifFalse(StringUtils.equals(ptyhs.getYhK3Sh(), "1"), "请先审核通过");
+            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyhs.getYhK3SubSj()), "此代培费已打款");
             ptyhs.setYhK3SubSj(time);
         }
 
@@ -2260,16 +2264,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             fp = fps.get(0);
             fp.setSfdk("1");
             fpMapper.updateByPrimaryKey(fp);
-        }else{
+        } else {
             fp = new BizFp();
             fp.setId(genId());
             fp.setYhId(ptyhs.getId());
             fp.setFpkm(km);
             fp.setSfdk("1");
-            if(km.equals("2")){
+            if (km.equals("2")) {
                 fp.setSubSchoolName(ptyhs.getYhK2SubName());
                 fp.setSubSchoolId(ptyhs.getYhK2SubId());
-            }else{
+            } else {
                 fp.setSubSchoolName(ptyhs.getYhK3SubName());
                 fp.setSubSchoolId(ptyhs.getYhK3SubId());
             }
@@ -2279,12 +2283,12 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         // 找到当前负责人的 openid
         String openId = null;
         int amount = 0;
-        if(km.equals("2")){
+        if (km.equals("2")) {
             openId = entityMapper.getOpenId(ptyhs.getYhK2SubId());
             amount = ptyhs.getYhK2SubJe();
-        }else if(km.equals("3")){
-           openId =  entityMapper.getOpenId(ptyhs.getYhK3SubId());
-           amount = ptyhs.getYhK3SubJe();
+        } else if (km.equals("3")) {
+            openId = entityMapper.getOpenId(ptyhs.getYhK3SubId());
+            amount = ptyhs.getYhK3SubJe();
         }
         RuntimeCheck.ifNull(openId, "当前代培点负责人未绑定微信, 请先绑定微信");
         List<BizPtyh> list = ptyhService.findEq(BizPtyh.InnerColumn.yhOpenId, openId);
@@ -2323,9 +2327,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 value.forEach(bizFp -> bizFp.setYh(ptyhMap.get(bizFp.getYhId())));
                 double zj = 0.0;
                 if (StringUtils.equals(km, "2")) {
-                    zj = value.stream().map(BizFp::getYh).map(BizPtyh::getYhK2SubJe).mapToDouble(value1 -> value1).sum();
+                    zj =
+                    value.stream().map(BizFp::getYh).map(BizPtyh::getYhK2SubJe).mapToDouble(value1 -> value1).sum();
                 } else if (StringUtils.equals(km, "3")) {
-                    zj = value.stream().map(BizFp::getYh).map(BizPtyh::getYhK3SubJe).mapToDouble(value1 -> value1).sum();
+                    zj =
+                    value.stream().map(BizFp::getYh).map(BizPtyh::getYhK3SubJe).mapToDouble(value1 -> value1).sum();
                 }
                 objectMap.put("subSchoolName", schoolName);
                 objectMap.put("yhList", value);
@@ -2376,11 +2382,11 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String time = DateUtils.getNowTime();
         if (StringUtils.equals(km, "2")) {
             ptyh.setYhK2SubSj(time);
-            RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhK2Sh(),"1"), "请先审核通过");
-            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyh.getYhK2SubSj()),"此代培费已打款");
+            RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhK2Sh(), "1"), "请先审核通过");
+            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyh.getYhK2SubSj()), "此代培费已打款");
         } else if (StringUtils.equals(km, "3")) {
-            RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhK3Sh(),"1"), "请先审核通过");
-            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyh.getYhK3SubSj()),"此代培费已打款");
+            RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhK3Sh(), "1"), "请先审核通过");
+            RuntimeCheck.ifFalse(StringUtils.isBlank(ptyh.getYhK3SubSj()), "此代培费已打款");
             ptyh.setYhK3SubSj(time);
         }
         update(ptyh);
@@ -2394,16 +2400,16 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             fp = fps.get(0);
             fp.setSfdk("1");
             fpMapper.updateByPrimaryKey(fp);
-        }else{
+        } else {
             fp = new BizFp();
             fp.setId(genId());
             fp.setYhId(ptyh.getId());
             fp.setFpkm(km);
             fp.setSfdk("1");
-            if(km.equals("2")){
+            if (km.equals("2")) {
                 fp.setSubSchoolName(ptyh.getYhK2SubName());
                 fp.setSubSchoolId(ptyh.getYhK2SubId());
-            }else{
+            } else {
                 fp.setSubSchoolName(ptyh.getYhK3SubName());
                 fp.setSubSchoolId(ptyh.getYhK3SubId());
             }
@@ -2417,19 +2423,20 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
     public ApiResponse<String> getDhfYh(int pageNum, int pageSize) {
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         String hf = getRequestParameterAsString("hf");
-        if(StringUtils.equals(hf, "1")){
+        if (StringUtils.equals(hf, "1")) {
             condition.and().andIsNotNull(BizPtyh.InnerColumn.hfsj.name());
-        }else{
+        } else {
             condition.and().andIsNull(BizPtyh.InnerColumn.hfsj.name());
         }
         condition.eq(BizPtyh.InnerColumn.yhLx, "1");
         String cond = getRequestParameterAsString("cond");
-        if(StringUtils.isNotBlank(cond)){
-            condition.and().andCondition(" yh_zh like '%"+cond+"%' or yh_xm like '%"+cond +"%' or yh_zjhm like '%" + cond + "%'");
+        if (StringUtils.isNotBlank(cond)) {
+            condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
+             " '%" + cond + "%'");
         }
         PageInfo<BizPtyh> info =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
-        if(CollectionUtils.isNotEmpty(info.getList())){
+        if (CollectionUtils.isNotEmpty(info.getList())) {
             Set<String> set = info.getList().stream().map(BizPtyh::getId).collect(Collectors.toSet());
             SimpleCondition condition1 = new SimpleCondition(BizOrder.class);
             condition1.in(BizOrder.InnerColumn.yhId, set);
@@ -2439,14 +2446,14 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             Map<String, List<BizOrder>> map = orders.stream().collect(Collectors.groupingBy(BizOrder::getYhId));
             info.getList().forEach(bizPtyh -> {
 
-                    List<BizOrder> value = map.get(bizPtyh.getId());
-                    if(CollectionUtils.isNotEmpty(value)){
-                        BizOrder order =
-                                value.stream().sorted(Comparator.comparing(BizOrder::getCjsj).reversed()).collect(Collectors.toList()).get(0);
-                        BizCp cp = cpService.findById(order.getCpId());
-                        bizPtyh.setCpje(cp.getCpJl());
-                        bizPtyh.setCpmc(cp.getCpMc());
-                    }
+                List<BizOrder> value = map.get(bizPtyh.getId());
+                if (CollectionUtils.isNotEmpty(value)) {
+                    BizOrder order =
+                            value.stream().sorted(Comparator.comparing(BizOrder::getCjsj).reversed()).collect(Collectors.toList()).get(0);
+                    BizCp cp = cpService.findById(order.getCpId());
+                    bizPtyh.setCpje(cp.getCpJl());
+                    bizPtyh.setCpmc(cp.getCpMc());
+                }
             });
 
         }
@@ -2465,6 +2472,200 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         ptyh.setHfr(yh.getXm());
         update(ptyh);
         return ApiResponse.success();
+    }
+
+    @Override
+    public ApiResponse<String> getDslYh(int pageNum, int pageSize) {
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        String cond = getRequestParameterAsString("cond");
+        condition.eq(BizPtyh.InnerColumn.yhLx, "1");
+        if (StringUtils.isNotBlank(cond)) {
+            condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
+             " '%" + cond + "%'");
+        }
+        condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXySlType.name(), "4");
+        PageInfo<BizPtyh> info =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(info);
+
+        return res;
+    }
+
+    @Override
+    public ApiResponse<String> getDjfYh(String km, int pageNum, int pageSize) {
+        RuntimeCheck.ifBlank(km, "请选择科目");
+
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhLx, "1");
+        String cond = getRequestParameterAsString("cond");
+        List<String> yhIds = new ArrayList<>();
+        if (StringUtils.equals(km, "1")) {
+            condition.eq(BizPtyh.InnerColumn.yhXySlType, "4");
+        } else if (StringUtils.equals(km, "2")) {
+            SimpleCondition simpleCondition = new SimpleCondition(BizKsYk.class);
+            simpleCondition.eq(BizKsYk.InnerColumn.kmCode, "1");
+            simpleCondition.and().andCondition(" cj1 >=90 or cj2 >=90");
+            List<BizKsYk> yks = ksYkService.findByCondition(simpleCondition);
+            if (CollectionUtils.isNotEmpty(yks)) {
+                yhIds = yks.stream().map(BizKsYk::getYhId).collect(Collectors.toList());
+                condition.in(BizPtyh.InnerColumn.id, yhIds);
+            }
+        } else if (StringUtils.equals(km, "3")) {
+            SimpleCondition simpleCondition = new SimpleCondition(BizKsYk.class);
+            simpleCondition.eq(BizKsYk.InnerColumn.kmCode, "2");
+            simpleCondition.and().andCondition(" cj1 >=80 or cj2 >=80");
+            List<BizKsYk> yks = ksYkService.findByCondition(simpleCondition);
+            if (CollectionUtils.isNotEmpty(yks)) {
+                yhIds = yks.stream().map(BizKsYk::getYhId).collect(Collectors.toList());
+                condition.in(BizPtyh.InnerColumn.id, yhIds);
+            }
+        }
+
+
+        if (StringUtils.isNotBlank(cond)) {
+            condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
+             " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
+        }
+        condition.eq(BizPtyh.InnerColumn.yhXyJfType, km);
+        if (StringUtils.equals("3", km)) {
+            condition.and().andNotEqualTo(BizPtyh.InnerColumn.k3jfzt.name(), 1);
+        }
+        PageInfo<BizPtyh> info =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+
+        if (km.equals("1")) {
+            if (CollectionUtils.isNotEmpty(info.getList())) {
+                org.joda.time.format.DateTimeFormatter pattern = DateTimeFormat.forPattern("yyyy-MM-dd");
+                info.getList().forEach(bizPtyh -> {
+                    SimpleCondition condition1 = new SimpleCondition(BizKsSl.class);
+                    condition1.eq(BizKsSl.InnerColumn.yhId, bizPtyh.getId());
+                    condition1.eq(BizKsSl.InnerColumn.slType, "4");
+                    List<BizKsSl> ksSls = ksSlService.findByCondition(condition1);
+                    if (CollectionUtils.isNotEmpty(ksSls)) {
+                        BizKsSl sl = ksSls.get(0);
+                        bizPtyh.setSlsj(sl.getSlSj());
+                        long time = DateTime.parse(sl.getSlSj(), pattern).getMillis();
+                        long millis = DateTime.now().getMillis();
+                        long l = (millis - time) / (24 * 60 * 60 * 1000);
+                        bizPtyh.setDay(l);
+                    }
+                });
+
+            }
+        } else {
+            if (CollectionUtils.isNotEmpty(info.getList())) {
+                org.joda.time.format.DateTimeFormatter pattern = DateTimeFormat.forPattern("yyyy-MM-dd");
+                // 计算从科一考试及格到现在的天数
+                info.getList().forEach(bizPtyh -> {
+                    SimpleCondition condition1 = new SimpleCondition(BizKsYk.class);
+                    condition1.eq(BizKsYk.InnerColumn.yhId, bizPtyh.getId());
+                    condition1.eq(BizKsYk.InnerColumn.kmCode, "1");
+                    condition1.and().andCondition(" cj1 >= 90 or cj2 >= 90");
+                    condition1.setOrderByClause(" yk_sj desc ");
+                    List<BizKsYk> yks = ksYkService.findByCondition(condition1);
+                    if (CollectionUtils.isNotEmpty(yks) && yks.size() > 0) {
+                        BizKsYk yk = yks.get(0);
+                        String sj = yk.getYkSj();
+                        bizPtyh.setSlsj(sj);
+                        long time = DateTime.parse(sj, pattern).getMillis();
+                        long millis = DateTime.now().getMillis();
+                        long l = (millis - time) / (24 * 60 * 60 * 1000);
+                        bizPtyh.setDay(l);
+                    }
+                });
+            }
+        }
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(info);
+        return res;
+    }
+
+    @Override
+    public ApiResponse<String> getDfpYh(String km, int pageNum, int pageSize) {
+
+        RuntimeCheck.ifBlank(km, "请选择要分配科目");
+
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhLx, "1");
+        String cond = getRequestParameterAsString("cond");
+        if (StringUtils.isNotBlank(cond)) {
+            condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
+                    " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
+        }
+        SimpleCondition condition1 = new SimpleCondition(BizUser.class);
+
+        if (StringUtils.equals(km, "0")) {
+            // 受理专员只要缴费即可分配
+            condition1.and().andCondition(" YH_JLID is null or YH_JLID = ''");
+        } else if (StringUtils.equals(km, "1")) {
+            // 分配科一 需要受理成功
+            condition.eq(BizPtyh.InnerColumn.yhXySlType, "4");
+            condition1.and().andCondition("YH_JLID1 is null or YH_JLID1 = ''");
+        } else if (StringUtils.equals(km, "2")) {
+            // 科目一考试合格即可分配科二科三
+            condition.and().andCondition(" YH_XY_YK_TYPE = '11' or YH_XY_YK_TYPE >= '20'");
+            condition1.and().andCondition("YH_JLID2 is null or YH_JLID2 = ''");
+        }
+        List<BizUser> users = userService.findByCondition(condition1);
+        ApiResponse<String> res = new ApiResponse<>();
+        if (CollectionUtils.isNotEmpty(users)) {
+            Set<String> yhids = users.stream().map(BizUser::getYhId).collect(Collectors.toSet());
+            condition.in(BizPtyh.InnerColumn.id, yhids);
+            PageInfo<BizPtyh> info =
+                    PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+            if(CollectionUtils.isNotEmpty(info.getList())){
+                info.getList().forEach(bizPtyh -> {
+                    SimpleCondition simpleCondition = new SimpleCondition(BizKsYk.class);
+                    simpleCondition.eq(BizKsYk.InnerColumn.kmCode, "1");
+                    simpleCondition.setOrderByClause(" yk_sj desc ");
+                    simpleCondition.eq(BizKsYk.InnerColumn.yhId, bizPtyh.getId());
+                    List<BizKsYk> yks = ksYkService.findByCondition(simpleCondition);
+                    if(CollectionUtils.isNotEmpty(yks)){
+                        Integer cj1 = yks.get(0).getCj1();
+                        Integer cj2 = yks.get(0).getCj2();
+                        if(cj1 >= 90 || cj2 >= 90 ){
+                            bizPtyh.setHg("1");
+                        }else{
+                            bizPtyh.setHg("0");
+                        }
+                        bizPtyh.setKssj(yks.get(0).getYkSj());
+                    }
+                });
+            }
+            res.setPage(info);
+        }
+        return res;
+    }
+
+    @Override
+    public ApiResponse<String> getDlrYh(String km, int pageNum, int pageSize) {
+        // 根据科目查询符合条件的学员
+        RuntimeCheck.ifBlank(km, "请选择科目");
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        condition.eq(BizPtyh.InnerColumn.yhLx, "1");
+        String cond = getRequestParameterAsString("cond");
+        if (StringUtils.isNotBlank(cond)) {
+            condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
+             " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
+        }
+        if (StringUtils.equals(km, "1")) {
+            // 需要录入科目一的条件 ,   首先科目一已缴费 其次 科目一成绩不合格 或 未录入
+            condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXyYkType.name(), "11");
+            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "2");
+        } else if (StringUtils.equals(km, "2")) {
+            condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXyYkType.name(), "21");
+            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "3");
+        } else if (StringUtils.equals(km, "3")) {
+            condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXyYkType.name(), "31");
+            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "3");
+            condition.eq(BizPtyh.InnerColumn.k3jfzt, 1);
+        }
+        PageInfo<BizPtyh> info =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(info);
+        return res;
     }
 
 

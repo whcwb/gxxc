@@ -197,10 +197,37 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.updateHf(id);
     }
 
+    /**
+     *  待确认受理用户接口
+     */
+    @PostMapping("/getDslYh")
+    public ApiResponse<String> getDslYh(@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getDslYh(pageNum,pageSize);
+    }
 
+    /**
+     * 待缴考试费接口
+     */
+    @PostMapping("/getDjfYh")
+    public ApiResponse<String> getDjfYh(String km,@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getDjfYh(km,pageNum,pageSize);
+    }
 
+    /**
+     * 专员待分配接口
+     */
+    @PostMapping("/getDfpYh")
+    public ApiResponse<String> getDfpYh(String km, @RequestParam(defaultValue = "1")int pageNum, @RequestParam(defaultValue = "8") int pageSize){
+        return service.getDfpYh(km,pageNum, pageSize);
+    }
 
-
+    /**
+     * 待录入成绩
+     */
+    @PostMapping("/getDlrYh")
+    public ApiResponse<String> getGlrYh(String km,@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getDlrYh(km,pageNum, pageSize);
+    }
 
 
 
