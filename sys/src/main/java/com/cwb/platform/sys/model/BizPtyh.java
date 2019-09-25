@@ -247,7 +247,15 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_K3_SH")
     private String yhK3Sh;
 
+    private String hfsj;
 
+    private String hfr;
+
+    @Transient
+    private String cpmc;
+
+    @Transient
+    private String cpje;
 
     /**
      * 手机验证码
@@ -342,11 +350,23 @@ public class BizPtyh implements Serializable {
     @Column(name = "YH_K3_SUB_NAME")
     private String yhK3SubName;
 
+    @Transient
+    private String slsj;
 
+    @Transient
+    private long day;
+
+    @Transient
+    private String hg;
+
+    @Transient
+    private String kssj;
 
     public Integer getK3jfzt() {
         return k3jfzt;
     }
+
+
 
     public void setK3jfzt(Integer k3jfzt) {
         this.k3jfzt = k3jfzt;
@@ -383,6 +403,7 @@ public class BizPtyh implements Serializable {
         yhXySlType("YH_XY_SL_TYPE"),
         yhXyYkType("YH_XY_YK_TYPE"),
         yhXyJfType("YH_XY_JF_TYPE"),
+        yhXyFpzyType("YH_XY_FPZY_TYPE"),
         yhSfsd("YH_SFSD"),
         qrcode("QRCODE"),
         yhNum("YH_NUM"),
@@ -399,7 +420,9 @@ public class BizPtyh implements Serializable {
         yhK3SubSj("YH_K3_SUB_SJ"),
         yhK3SubName("YH_K3_SUB_NAME"),
         yhK2Sh("YH_K2_SH"),
-        yhK3Sh("YH_K3_SH");
+        yhK3Sh("YH_K3_SH"),
+        hfsj("HFSJ"),
+        hfr("HFR");
 
         private final String column;
 
