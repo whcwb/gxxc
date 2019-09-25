@@ -45,15 +45,18 @@
 				},
                 formInputs:[
                     {separator:true,label:'基本信息'},
-                    {label:'用户名称',prop:'yhMc',disabled:true},
-                    {label:'开户行',prop:'ttKhh',disabled:true},
-                    {label:'银行卡号',prop:'ttYhkh',disabled:true},
-                    {label:'提现方式',prop:'ttFs',dict:'ZDCLK0047',disabled:true},
-                    {label:'提现姓名',prop:'ttXm',disabled:true},
+                    {label:'姓名',prop:'yhMc',disabled:true},
+					{label:'提现时间',prop:'ttSj',disabled:true},
+					{label:'联系电话',prop:'ttSj',disabled:true},
+                    // {label:'开户行',prop:'ttKhh',disabled:true},
+                    // {label:'银行卡号',prop:'ttYhkh',disabled:true},
+                    // {label:'提现方式',prop:'ttFs',dict:'ZDCLK0047',disabled:true},
+                    // {label:'提现姓名',prop:'ttXm',disabled:true},
                     {label:'提现金额',prop:'ttJe',append:'元',disabled:true,handler:(o)=>{
                             return parseFloat(o/100);
                         }
                     },
+
                     {separator:true,label:'审核结果'},
                     {label:'提现审核状态',prop:'ttShzt',dict:'ZDCLK0049',type:'radio',excludeDict:['0']},
                 ],

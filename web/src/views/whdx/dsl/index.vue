@@ -1,15 +1,12 @@
 <template>
     <div class="boxbackborder">
         <Row style="padding-bottom: 16px;">
-            <search-items :parent="v" :label-with="100"></search-items>
-            <Button type="info" @click="exportData">
-                <Icon type="ios-download-outline"></Icon>
-            </Button>
-            <Tooltip content="批量导入" placement="top" :transfer="true">
-                <Button type="success" @click="componentName='batchImport'">
-                    <Icon type="md-arrow-up"></Icon>
-                </Button>
-            </Tooltip>
+            <Input search enter-button placeholder="请输入姓名丶身份证号丶联系电话搜索"
+                   clearable
+                   v-model="form.cond"
+                   @on-enter="getpager"
+                   @on-change="getpager"
+            />
         </Row>
         <Row style="position: relative;">
             <Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
@@ -30,7 +27,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                pagerUrl:this.apis.ksJf.DJKSF,
+                pagerUrl:'/api/ptyh/getDslYh',
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -50,6 +47,7 @@
                         title: '操作',
                         key: 'action',
                         width: 180,
+                        fixed:'right',
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildButton(this,h,'success','logo-yen','受理',()=>{
@@ -66,10 +64,7 @@
                 pageData: [],
                 choosedData:[],
                 form: {
-                    xm:'',
-                    phone:'',
-                    km:"",
-                    idCard:'',
+                    cond:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -113,6 +108,9 @@
             },
             exportData(){
                 window.open(this.apis.url + this.apis.ksJf.EXPORT+'?km=1');
+            },
+            getpager(){
+                this.util.initTable(this)
             },
         }
     }

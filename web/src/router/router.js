@@ -404,7 +404,7 @@ export let appRouter = [
                 path: 'dlr',
                 icon: 'android-clipboard',
                 name: 'dlr',
-                meta: { title: '待确认受理' },
+                meta: { title: '待录入成绩' },
                 component: () => import('@/views/whdx/dlr')
             },
             {

@@ -1,15 +1,21 @@
 <template>
     <div class="boxbackborder">
         <Row style="padding-bottom: 16px;">
-            <search-items :parent="v" :label-with="100"></search-items>
-            <Button type="info" @click="exportData">
-                <Icon type="ios-download-outline"></Icon>
-            </Button>
-            <Tooltip content="批量导入" placement="top" :transfer="true">
-                <Button type="success" @click="componentName='batchImport'">
-                    <Icon type="md-arrow-up"></Icon>
-                </Button>
-            </Tooltip>
+            <Col span="4">
+                <RadioGroup v-model="form.km" type="button" @on-change="getpager">
+                    <Radio label="1">科目一</Radio>
+                    <Radio label="2">科目二</Radio>
+                    <Radio label="3">科目三</Radio>
+                </RadioGroup>
+            </Col>
+            <Col span="20">
+                <Input search enter-button placeholder="请输入姓名丶身份证号丶联系电话搜索"
+                       clearable
+                       v-model="form.cond"
+                       @on-enter="getpager"
+                       @on-change="getpager"
+                />
+            </Col>
         </Row>
         <Row style="position: relative;">
             <Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
@@ -31,7 +37,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                pagerUrl:this.apis.ksJf.DJKSF,
+                pagerUrl:'/api/ptyh/getDjfYh',
                 tableHeight: 220,
                 componentName: '',
                 choosedItem: null,
@@ -42,6 +48,10 @@
                     {title: '身份证号码',key:'yhZjhm',searchKey:'idCard',align:'center'},
                     {title: '联系电话',key:'yhZh',searchKey:'phone',align:'center'},
                     {title: '流水号',key:'yhLsh',align:'center'},
+                    {title: '受理时间',key:'slsj'},
+                    {title: '受理天数',key:'day',render:(h,p)=>{
+                        return h('div',parseInt(p.row.day))
+                        }},
                     {title: '约考状态',key:'yhXyYkType',dict:'ykzt'},
                     // {title: '流水号条码',key:'yhLsh',width:280,align:'center',
                     //     render:(h,p)=>{
@@ -80,6 +90,7 @@
                         title: '操作',
                         key: 'action',
                         width: 180,
+                        fixed:'right',
                         render: (h, params) => {
                             return h('div', [
                                 this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
@@ -96,10 +107,8 @@
                 pageData: [],
                 choosedData:[],
                 form: {
-                    xm:'',
-                    phone:'',
-                    km:"",
-                    idCard:'',
+                    km:"1",
+                    cond:'',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,
@@ -143,6 +152,26 @@
             },
             exportData(){
                 window.open(this.apis.url + this.apis.ksJf.EXPORT+'?km=1');
+            },
+            getpager(){
+                if (this.form.km == '1'){
+                    this.tableColumns.splice(5,2);
+                    this.tableColumns.splice(5,0,{title: '受理时间',key:'slsj'});
+                    this.tableColumns.splice(6,0,{title: '受理天数',key:'day',render:(h,p)=>{
+                            return h('div',parseInt(p.row.day))
+                        }});
+                    console.log(this.tableColumns);
+                    this.util.initTable(this)
+                }else {
+                    this.tableColumns.splice(5,2);
+                    this.tableColumns.splice(5,0,{title: '科一合格时间',key:'slsj'});
+                    this.tableColumns.splice(6,0,{title: '科一合格天数',key:'day',render:(h,p)=>{
+                            return h('div',parseInt(p.row.day))
+                        }});
+                    console.log(this.tableColumns);
+                    this.util.initTable(this)
+                }
+
             },
         }
     }
