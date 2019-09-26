@@ -27,6 +27,9 @@
 	<div class="box" style="height: 100%;background:#fff">
 		<component :is="componentName"></component>
 		<div  class="homeE" style="padding: 5px 3px;">
+			<Row style="text-align: right;padding-right: 20px;padding-top: 20px">
+				<Icon type="md-refresh" size="24" @click="getpager"/>
+			</Row>
 			<Row :gutter="8" style="padding: 80px 0">
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center" >
 					<img src="/static/home/1.png" style="cursor: pointer;height: 100px;width: 100px" alt="" @click="hf">
@@ -243,6 +246,7 @@
 				this.$http.post('/api/ptyh/sytj',{}).then((res)=>{
 					if (res.code == 200){
 						this.pop = res.result
+						this.$Message.success(res.message)
 					}else {
 						this.$Message.error(res.message)
 					}
