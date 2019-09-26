@@ -37,7 +37,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
-import org.apache.tools.ant.types.resources.selectors.InstanceOf;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.json.JSONObject;
@@ -1471,7 +1470,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         SysYh user = getCurrentUser();
         BizPtyh users = this.findById(jlId);
         RuntimeCheck.ifTrue(ObjectUtils.isEmpty(users), "该用户不存在");
-
+        RuntimeCheck.ifBlank(yhId, "请选择学员");
 //        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhLx(),"2"),"教练信息有误，请核实后再操作");
 //        RuntimeCheck.ifFalse(StringUtils.equals(users.getYhJlsh(),"1"),"该教练未进行实名认证");
 
@@ -2210,7 +2209,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         RuntimeCheck.ifTrue(StringUtils.equals(km, "2") && StringUtils.isBlank(user.getYhK2SubId()), "此学员尚未分配教练 , " +
                 "不能修改教练");
         RuntimeCheck.ifTrue(StringUtils.equals(km, "3") && StringUtils.isBlank(user.getYhK3SubId()), "此学员尚未分配教练 , " +
-         "不能修改教练");
+                "不能修改教练");
         RuntimeCheck.ifBlank(jl.getSubSchoolId(), "请为当前教练绑定代培点");
         if (StringUtils.isBlank(flag)) {
             BizPtyh ptyh = findById(id);
@@ -2328,10 +2327,10 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
                 double zj = 0.0;
                 if (StringUtils.equals(km, "2")) {
                     zj =
-                    value.stream().map(BizFp::getYh).map(BizPtyh::getYhK2SubJe).mapToDouble(value1 -> value1).sum();
+                            value.stream().map(BizFp::getYh).map(BizPtyh::getYhK2SubJe).mapToDouble(value1 -> value1).sum();
                 } else if (StringUtils.equals(km, "3")) {
                     zj =
-                    value.stream().map(BizFp::getYh).map(BizPtyh::getYhK3SubJe).mapToDouble(value1 -> value1).sum();
+                            value.stream().map(BizFp::getYh).map(BizPtyh::getYhK3SubJe).mapToDouble(value1 -> value1).sum();
                 }
                 objectMap.put("subSchoolName", schoolName);
                 objectMap.put("yhList", value);
@@ -2432,7 +2431,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String cond = getRequestParameterAsString("cond");
         if (StringUtils.isNotBlank(cond)) {
             condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
-             " '%" + cond + "%'");
+                    " '%" + cond + "%'");
         }
         PageInfo<BizPtyh> info =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
@@ -2481,7 +2480,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         condition.eq(BizPtyh.InnerColumn.yhLx, "1");
         if (StringUtils.isNotBlank(cond)) {
             condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
-             " '%" + cond + "%'");
+                    " '%" + cond + "%'");
         }
         condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXySlType.name(), "4");
         PageInfo<BizPtyh> info =
@@ -2499,7 +2498,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         SimpleCondition condition = new SimpleCondition(BizPtyh.class);
         condition.eq(BizPtyh.InnerColumn.yhLx, "1");
         String cond = getRequestParameterAsString("cond");
-        List<String> yhIds = new ArrayList<>();
+        List<String> yhIds;
         if (StringUtils.equals(km, "1")) {
             condition.eq(BizPtyh.InnerColumn.yhXySlType, "4");
         } else if (StringUtils.equals(km, "2")) {
@@ -2525,7 +2524,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
 
         if (StringUtils.isNotBlank(cond)) {
             condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
-             " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
+                    " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
         }
         condition.eq(BizPtyh.InnerColumn.yhXyJfType, km);
         if (StringUtils.equals("3", km)) {
@@ -2614,19 +2613,19 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             condition.in(BizPtyh.InnerColumn.id, yhids);
             PageInfo<BizPtyh> info =
                     PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
-            if(CollectionUtils.isNotEmpty(info.getList())){
+            if (CollectionUtils.isNotEmpty(info.getList())) {
                 info.getList().forEach(bizPtyh -> {
                     SimpleCondition simpleCondition = new SimpleCondition(BizKsYk.class);
                     simpleCondition.eq(BizKsYk.InnerColumn.kmCode, "1");
                     simpleCondition.setOrderByClause(" yk_sj desc ");
                     simpleCondition.eq(BizKsYk.InnerColumn.yhId, bizPtyh.getId());
                     List<BizKsYk> yks = ksYkService.findByCondition(simpleCondition);
-                    if(CollectionUtils.isNotEmpty(yks)){
+                    if (CollectionUtils.isNotEmpty(yks)) {
                         Integer cj1 = yks.get(0).getCj1();
                         Integer cj2 = yks.get(0).getCj2();
-                        if(cj1 >= 90 || cj2 >= 90 ){
+                        if (cj1 >= 90 || cj2 >= 90) {
                             bizPtyh.setHg("1");
-                        }else{
+                        } else {
                             bizPtyh.setHg("0");
                         }
                         bizPtyh.setKssj(yks.get(0).getYkSj());
@@ -2647,7 +2646,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         String cond = getRequestParameterAsString("cond");
         if (StringUtils.isNotBlank(cond)) {
             condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
-             " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
+                    " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
         }
         if (StringUtils.equals(km, "1")) {
             // 需要录入科目一的条件 ,   首先科目一已缴费 其次 科目一成绩不合格 或 未录入
@@ -2660,6 +2659,64 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXyYkType.name(), "31");
             condition.eq(BizPtyh.InnerColumn.yhXyJfType, "3");
             condition.eq(BizPtyh.InnerColumn.k3jfzt, 1);
+        }
+        PageInfo<BizPtyh> info =
+                PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(info);
+        return res;
+    }
+
+    @Override
+    public ApiResponse<Map<String, Integer>> sytj() {
+        // 首页统计主要统计每个流程中需要操作的记录数  按照每个流程来查询人数
+        // ①待回访的   人数  判定条件:  回访时间为空
+        int dhf = entityMapper.sumDhf();
+        // ②待受理人数   判定条件   受理状态没有成功的状态
+        int dsl = entityMapper.sumDsl();
+        // ③ 待缴考试费人数     条件   科一为受理之后 , 科二为 可以成绩合格  科三为科二成绩合格
+        int djf = entityMapper.sumDjfK();
+        // ④ 待录入成绩    科一: 费用已交 且 成绩不合格  科二 同理  , 科三 同理
+        int dlr = entityMapper.sumDlr();
+        // ⑤ 待分配专员学员数量  (当前只分配 科二科三 )
+        int dfp = entityMapper.sumDfp();
+        // ⑥ 待确认分佣    查询提现表中还未提现的用户记录
+        int dfy = entityMapper.sunDfy();
+        // ⑦ 待付培训费
+        int k2Pxf = entityMapper.sumK2Pxf();
+        int k3Pxf = entityMapper.sumK3Pxf();
+
+        Map<String,Integer> map = new HashMap<>();
+        map.put("hf", dhf);
+        map.put("dsl",dsl);
+        map.put("djf",djf);
+        map.put("dlr",dlr);
+        map.put("dfp",dfp);
+        map.put("dfy",dfy);
+        map.put("pxf", k2Pxf + k3Pxf);
+        return ApiResponse.success(map);
+    }
+
+    @Override
+    public ApiResponse<String> getPxfyh(String km, int pageNum, int pageSize) {
+        RuntimeCheck.ifBlank(km, "请选择科目");
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        String cond = getRequestParameterAsString("cond");
+        if (StringUtils.isNotBlank(cond)) {
+            condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
+                    " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
+        }
+        condition.eq(BizPtyh.InnerColumn.yhLx, "1");
+        if(StringUtils.equals(km, "2")){
+            condition.and().andCondition(" yh_k2_sub_sj is null or yh_k2_sub_sj is null = ''  ");
+            condition.and().andCondition(" yh_k2_sub_id is not null and yh_k2_sub_id is not null != '' ");
+        }else if (StringUtils.equals(km,"3")){
+            // 查询已经考试合格但是 科目三还未缴培训费的学员
+            condition.and().andCondition(" yh_k3_sub_id is not null and yh_k3_sub_id is not null != '' ");
+            condition.and().andCondition(" yh_k3_sub_sj is null or yh_k3_sub_sj is null = ''  ");
+            condition.and().andCondition(" yh_xy_yk_type = '31' or yh_xy_yk_type >= '40'  ");
+        }else {
+            return ApiResponse.success();
         }
         PageInfo<BizPtyh> info =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));

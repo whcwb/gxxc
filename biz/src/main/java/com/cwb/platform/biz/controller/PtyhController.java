@@ -7,11 +7,11 @@ import com.cwb.platform.sys.base.BaseService;
 import com.cwb.platform.sys.model.BizPtyh;
 import com.cwb.platform.util.bean.ApiResponse;
 import com.github.pagehelper.Page;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ptyh")
@@ -227,6 +227,24 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     @PostMapping("/getDlrYh")
     public ApiResponse<String> getGlrYh(String km,@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
         return service.getDlrYh(km,pageNum, pageSize);
+    }
+
+
+    /**
+     * 首页统计接口
+     * @return
+     */
+    @PostMapping("/sytj")
+    public ApiResponse<Map<String, Integer>> sytj(){
+        return service.sytj();
+    }
+
+    /**
+     * 待付培训费接口
+     */
+    @PostMapping("/getPxfYh")
+    public ApiResponse<String> getPxfYh(String km, @RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getPxfyh(km,pageNum,pageSize);
     }
 
 

@@ -60,4 +60,27 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
     @Select(" select yh_open_id from biz_ptyh where id = (select yh_id from biz_sub_school where id = #{id})")
     String getOpenId(@Param("id") String id);
 
+    @Select(" select count(id) from biz_ptyh p where yh_lx = '1' and ( hfsj is null or hfsj = '') ")
+    int sumDhf();
+
+    @Select(" select count(id) from biz_ptyh where yh_lx = '1' and yh_xy_sl_type != '4' ")
+    int sumDsl();
+
+    @Select(" select count(id) from biz_ptyh p where yh_xy_sl_type = '4' and yh_lx = '1' and (yh_xy_jf_type = '1' or  (yh_xy_jf_type = '2' and (yh_xy_yk_type ='11' or yh_xy_yk_type >='20'   ))  or (yh_xy_jf_type = '3'  and  k3_jfzt != 1 )) ")
+    int sumDjfK();
+
+    @Select(" select count(id) from biz_ptyh where yh_lx = '1' and yh_xy_sl_type = '4' and ( (yh_xy_jf_type != '1' and yh_xy_yk_type != '11') or (yh_xy_jf_type ='3' and yh_xy_yk_type != '21' ) or (k3_jfzt= 1 and  yh_xy_jf_type ='3' and yh_xy_yk_type != '31') )")
+    int sumDlr();
+
+    @Select(" select count(id) from biz_ptyh where yh_lx = '1' and  (yh_k2_sub_id is null or yh_k2_sub_id ='' ) and (yh_xy_yk_type ='11' or yh_xy_yk_type >='20' ) ")
+    int sumDfp();
+
+    @Select(" select count(id) from biz_tx  where tt_zt ='0' ")
+    int sunDfy();
+
+    @Select(" select count(id) from biz_ptyh where yh_lx = '1' and (yh_k2_sub_id is not null or yh_k2_sub_id != '') and yh_k2_sub_sj is null ")
+    int sumK2Pxf();
+
+    @Select(" select count(id) from biz_ptyh where yh_lx = '1' and (yh_k3_sub_id is not null or yh_k3_sub_id != '') and yh_k3_sub_sj is null and (yh_xy_yk_type = '31' or yh_xy_yk_type >= '40' )  ")
+    int sumK3Pxf();
 }
