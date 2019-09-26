@@ -29,25 +29,25 @@
 		<div  class="homeE" style="padding: 5px 3px;">
 			<Row :gutter="8" style="padding: 80px 0">
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center" >
-					<img src="/static/home/1.png" style="height: 100px;width: 100px" alt="" @click="hf">
+					<img src="/static/home/1.png" style="cursor: pointer;height: 100px;width: 100px" alt="" @click="hf">
 					<div>---------------------------------------------------------------</div>
 					<div class="lc">待确认回访</div>
 					<div style="font-size: 24px;color: #2DAA6B">{{pop.hf}}人</div>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center">
-					<img src="/static/home/2.png" style="height: 100px;width: 100px" alt="" @click="sl">
+					<img src="/static/home/2.png" style="cursor: pointer;height: 100px;width: 100px" alt="" @click="sl">
 					<div>---------------------------------------------------------------</div>
 					<div class="lc">待确认受理</div>
 					<div style="font-size: 24px;color: #F89124">{{pop.dsl}}人</div>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center">
-					<img src="/static/home/3.png" style="height: 100px;width: 100px" alt="" @click="ksf">
+					<img src="/static/home/3.png" style="cursor: pointer;height: 100px;width: 100px" alt="" @click="ksf">
 					<div>---------------------------------------------------------------</div>
 					<div class="lc">待缴考试费</div>
 					<div style="font-size: 24px;color: #F25F5F">{{pop.djf}}人</div>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center">
-					<img src="/static/home/4.png" style="height: 100px;width: 100px" alt="" @click="fp">
+					<img src="/static/home/4.png" style="cursor: pointer;height: 100px;width: 100px" alt="" @click="fp">
 					<div>---------------------------------------------------------------</div>
 					<div class="lc">待分配专员</div>
 					<div style="font-size: 24px;color: #2DAA6B">{{pop.dfp}}人</div>
@@ -64,19 +64,19 @@
 			</Row>
 			<Row :gutter="8" >
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center">
-					<img src="/static/home/5.png" style="height: 100px;width: 100px" alt="" @click="lr">
+					<img src="/static/home/5.png" style="cursor: pointer;height: 100px;width: 100px" alt="" @click="lr">
 					<div>---------------------------------------------------------------</div>
 					<div class="lc">待录入成绩</div>
 					<div style="font-size: 24px;color: #AB55E8">{{pop.dlr}}人</div>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center">
-					<img src="/static/home/6.png" style="height: 100px;width: 100px" alt="" @click="fy">
+					<img src="/static/home/6.png" style="cursor: pointer;height: 100px;width: 100px" alt="" @click="fy">
 					<div>---------------------------------------------------------------</div>
 					<div class="lc">待确认分佣</div>
 					<div style="font-size: 24px;color:#DB3E3E">{{pop.dfy}}笔</div>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center">
-					<img src="/static/home/7.png" style="height: 100px;width: 100px" alt="" @click="peixunfei">
+					<img src="/static/home/7.png" style="cursor: pointer;height: 100px;width: 100px" alt="" @click="peixunfei">
 					<div>---------------------------------------------------------------</div>
 					<div class="lc">待付培训费</div>
 					<div style="font-size: 24px;color: #56A1F1">{{pop.pxf}}笔</div>
