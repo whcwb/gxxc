@@ -85,9 +85,11 @@
                 formItem:{
 
                 },
+                dpdlst:[]
 			}
 		},
 		created(){
+		    this.dpdlst = this.$parent.dpdlst
             this.util.initTable(this)
 		    this.formItem = this.item
         },

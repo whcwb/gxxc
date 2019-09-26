@@ -56,9 +56,10 @@
                             return h('div',parseFloat(p.row.ttJe/100)+'元')
                         }},
                     {title:'申请时间',key:'ttSj'},
-                    {title:'提现状态',key:'ttZt',dict:'ZDCLK0048',searchType:'dict'},
+                    // {title:'提现状态',key:'ttZt',dict:'ZDCLK0048',searchType:'dict'},
                     {title:'审核人',key:'ttShr'},
-                    {title:'提现审核状态',key:'ttShzt',dict:'ZDCLK0049'},
+                    {title:'审核时间',key:'shsj'},
+                    // {title:'提现审核状态',key:'ttShzt',dict:'ZDCLK0049'},
                     // {title:'银行卡号',key:'ttYhkh'},
                     // {title:'所属银行',key:'ttSsyh'},
                     // {title:'提现姓名',key:'txXm'},

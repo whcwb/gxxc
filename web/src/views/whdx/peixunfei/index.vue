@@ -39,7 +39,7 @@
             return {
                 v:this,
                 SpinShow: true,
-                pagerUrl:'/api/ptyh/pager',
+                pagerUrl:'/api/ptyh/getPxfYh',
                 tableHeight: 720,
                 componentName: '',
                 choosedItem: null,
@@ -163,8 +163,6 @@
                 choosedData:[],
                 form: {
                     km:2,
-                    yhK2SubSjIsNull:'1',
-                    yhK2SubIdIsNotNull:'1',
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

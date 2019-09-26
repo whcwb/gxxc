@@ -5,10 +5,10 @@
 		width: 400px;
 		position:absolute;
 		top:250px;
-		right: 290px;
+		right: 150px;
 		float: right;
 		display: inline-block;
-		background-image: url('/static/login-card.jpg');
+		/*background-image: url('/static/login-card.jpg');*/
 		background-size: cover;
 		padding: 16px;
 	}
@@ -62,16 +62,16 @@
 		<div class="loginForm">
 			<Row>
 				<div class="login-top">
-					<h2 style="color: white">用户登录</h2><br>
-					<img class="loginImg" src="/static/1024.png" alt="" />
+<!--					<h1 style="color: white">用户登录</h1><br>-->
+					<img style="height: 150px;width: 150px" class="loginImg" src="/static/1024.png" alt="" />
 				</div>
 			</Row>
-			<Row>
+			<Row style="padding-top: 20px">
 				<div class="body-O from">
 					<Form ref="loginForm" :model="form" :rules="rules">
 						<div class="fromList">
 							<FormItem prop="username">
-								<Input v-model="form.username" placeholder="请输入用户名"  >
+								<Input v-model="form.username" placeholder="请输入用户名"  class="ivu-input">
 								<span slot="prepend">
 		                                    <Icon :size="16" type="md-person"></Icon>
 		                                </span>
@@ -80,16 +80,26 @@
 						</div>
 						<div class="fromList">
 							<FormItem prop="password">
-								<Input type="password" v-model="form.password" placeholder="请输入密码"  >
+								<Input type="password" v-model="form.password" placeholder="请输入密码" class="ivu-input">
 								<span slot="prepend">
 		                                    <Icon :size="14" type="md-lock"></Icon>
 		                                </span>
 								</Input>
 							</FormItem>
+
+
 						</div>
-						<FormItem>
-							<Button @click="handleSubmit" type="primary" long>登录</Button>
-						</FormItem>
+						<div class="fromList">
+							<FormItem>
+								<Button @click="handleSubmit" size="large"
+										style="height: 50px;font-size: 22px;background-color: #21D4FD;
+								background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);color: #F0F0F0;border-radius: 25px" long
+								>登 录</Button>
+
+
+							</FormItem>
+						</div>
+
 					</Form>
 				</div>
 			</Row>
@@ -255,5 +265,8 @@ export default {
 </script>
 
 <style>
-
+.ivu-input /deep/ input{
+	height: 50px;
+	font-size: 20px;
+}
 </style>

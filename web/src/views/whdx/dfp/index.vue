@@ -1,12 +1,12 @@
 <template>
 	<div class="boxbackborder">
 		<Row style="padding-bottom: 16px;">
-			<Col span="2">
-				<Button type="info" @click="allot" >
-					<Icon type="md-person" size="24"></Icon>
-				</Button>
-			</Col>
-			<Col span="22">
+<!--			<Col span="2">-->
+<!--				<Button type="info" @click="allot" >-->
+<!--					<Icon type="md-person" size="24"></Icon>-->
+<!--				</Button>-->
+<!--			</Col>-->
+			<Col span="24">
 				<Input search enter-button placeholder="请输入姓名丶身份证号丶联系电话搜索"
 					   clearable
 					   v-model="form.cond"
@@ -27,11 +27,12 @@
 
 <script>
     import allot from './allot.vue'
+    import allotnew from './allotnew.vue'
     import formData from './formData.vue'
 
     export default {
         name: 'byxxTable',
-        components: {allot,formData},
+        components: {allot,formData,allotnew},
         data() {
             return {
                 v:this,
@@ -44,7 +45,7 @@
                 choosedItem: null,
                 dateRange:'',
                 tableColumns: [
-                    {title: "",  type: 'selection',width:60},
+                    // {title: "",  type: 'selection',width:60},
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '身份证号',key:'yhZjhm'},
                     {title: '联系电话',key:'yhZh',searchKey:'yhZhLike'},
@@ -67,7 +68,7 @@
                             return h('div', [
                                 this.util.buildButton(this,h,'success','md-person','分配教练',()=>{
                                     this.choosedItem = params.row;
-                                    this.componentName = 'formData'
+                                    this.componentName = 'allotnew'
                                 }),
                             ]);
                         }
@@ -81,12 +82,22 @@
                     pageNum: 1,
                     pageSize: 8,
                 },
+				dpdlst:[]
             }
         },
         created() {
+        	this.getdpdList()
             this.util.initTable(this)
         },
         methods: {
+			getdpdList(){
+				this.$http.get('/api/subschool/query').then((res)=>{
+					if (res.code == 200){
+						this.dpdlst = res.result
+						console.log(res,'res');
+					}
+				})
+			},
             selectionChange(e){
 				this.choosedData = e;
 			},
