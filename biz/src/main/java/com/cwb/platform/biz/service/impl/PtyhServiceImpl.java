@@ -2427,6 +2427,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         } else {
             condition.and().andIsNull(BizPtyh.InnerColumn.hfsj.name());
         }
+        condition.setOrderByClause(" cjsj desc  ");
         condition.eq(BizPtyh.InnerColumn.yhLx, "1");
         String cond = getRequestParameterAsString("cond");
         if (StringUtils.isNotBlank(cond)) {

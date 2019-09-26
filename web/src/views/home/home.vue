@@ -38,7 +38,7 @@
 					<img src="/static/home/2.png" style="height: 100px;width: 100px" alt="" @click="sl">
 					<div>---------------------------------------------------------------</div>
 					<div class="lc">待确认受理</div>
-					<div style="font-size: 24px;color: #F89124">{{pop.sl}}人</div>
+					<div style="font-size: 24px;color: #F89124">{{pop.dsl}}人</div>
 				</Col>
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center">
 					<img src="/static/home/3.png" style="height: 100px;width: 100px" alt="" @click="ksf">
