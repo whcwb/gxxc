@@ -38,6 +38,11 @@
                     </div>
                 </Card>
                 <Card style="width:100%">
+                    <div style="text-align:center;font-weight: 700;font-size: 48px">
+                        <h3>{{formItem.yhZh}}</h3>
+                    </div>
+                </Card>
+                <Card style="width:100%">
                     <div style="text-align:center">
                         <h3>回访用语推荐:</h3>
                     </div>
