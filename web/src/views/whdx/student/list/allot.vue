@@ -87,10 +87,12 @@
 
                 },
 				state:0,
-				row:{}
+				row:{},
+				dpdlst:[]
 			}
 		},
 		created(){
+			this.dpdlst = this.$parent.dpdlst
             console.log('created');
 		    this.choosedData = this.$parent.choosedData
 			this.row = this.$parent.row

@@ -153,7 +153,7 @@
         methods: {
             typeChange(o){
                 this.formItem.slType = o;
-                this.showLsh = o == '4'
+                this.showLsh = o == '4';
                 console.log(this.formItem.slType,"typeChange");
                 // this.formItem.slType = '4';
 

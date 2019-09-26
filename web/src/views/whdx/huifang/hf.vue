@@ -43,12 +43,7 @@
                     </div>
                     <div>
                         <li>亲爱的{{formItem.yhXm}}学员,您好!</li>
-                        <li>亲爱的{{formItem.yhXm}}学员,您好!</li>
-                        <li>亲爱的{{formItem.yhXm}}学员,您好!</li>
-                        <li>亲爱的{{formItem.yhXm}}学员,您好!</li>
-                        <li>亲爱的{{formItem.yhXm}}学员,您好!</li>
-                        <li>亲爱的{{formItem.yhXm}}学员,您好!</li>
-                        <li>亲爱的{{formItem.yhXm}}学员,您好!</li>
+                        <h4>恭喜您已缴费成功，成为吉驾无忧的学员。请您保持手机畅通，我们会跟您取得联系，根据您的需要量身定做您的学车流程！祝您学车愉快！</h4>
                     </div>
                 </Card>
             </div>

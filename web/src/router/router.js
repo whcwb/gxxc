@@ -404,7 +404,7 @@ export let appRouter = [
                 path: 'dlr',
                 icon: 'android-clipboard',
                 name: 'dlr',
-                meta: { title: '待确认受理' },
+                meta: { title: '待录入成绩' },
                 component: () => import('@/views/whdx/dlr')
             },
             {
@@ -432,7 +432,7 @@ export let appRouter = [
 				path: 'tx',
 				icon: 'android-clipboard',
 				name: 'tx',
-                meta: { title: '提现管理' },
+                meta: { title: '待确认分佣' },
 				component: () => import('@/views/whdx/tx/index.vue')
 			},
 			{

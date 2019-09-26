@@ -123,18 +123,18 @@
 									this.choosedItem = params.row;
 									this.componentName = 'xgjl'
 								}),
-                                this.util.buildButton(this,h,'error','md-close','删除',()=>{
-                                    swal({
-                                        title: "是否删除数据?",
-                                        text: "",
-                                        icon: "warning",
-                                        buttons:['取消','确认'],
-                                    }).then((willDelete) => {
-                                        if (willDelete) {
-                                            this.deleteUser(params.row.id);
-                                        }
-                                    });
-								}),
+                                // this.util.buildButton(this,h,'error','md-close','删除',()=>{
+                                //     swal({
+                                //         title: "是否删除数据?",
+                                //         text: "",
+                                //         icon: "warning",
+                                //         buttons:['取消','确认'],
+                                //     }).then((willDelete) => {
+                                //         if (willDelete) {
+                                //             this.deleteUser(params.row.id);
+                                //         }
+                                //     });
+								// }),
                             ]);
                         }
                     }
@@ -149,13 +149,23 @@
                     pageNum: 1,
                     pageSize: 8,
                 },
-				row:{}
+				row:{},
+				dpdlst:[]
             }
         },
         created() {
             this.util.initTable(this)
+			this.getdpdList()
         },
         methods: {
+			getdpdList(){
+				this.$http.get('/api/subschool/query').then((res)=>{
+					if (res.code == 200){
+						this.dpdlst = res.result
+						console.log(res,'res');
+					}
+				})
+			},
         	getPager(){
 				this.util.initTable(this)
 			},
