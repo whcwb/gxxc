@@ -15,12 +15,12 @@
 
                         <Col span="12">
                             <FormItem prop='name' label='姓名'>
-                                <Input v-model="formItem.yhXm" placeholder="请输入医院名称" ></Input>
+                                <Input v-model="formItem.yhXm" placeholder="请输入姓名" ></Input>
                             </FormItem>
                         </Col>
                         <Col span="12">
                             <FormItem prop='name' label='身份证号'>
-                                <Input v-model="formItem.yhZjhm" placeholder="请输入医院名称"></Input>
+                                <Input v-model="formItem.yhZjhm" placeholder="请输入身份证号"></Input>
                             </FormItem>
                         </Col>
                         <Col span="12" v-if="showLsh" >
