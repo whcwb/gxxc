@@ -37,9 +37,14 @@
                     {title: '姓名',key:'yhXm',searchKey:'xm',align:'center'},
                     {title: '身份证号码',key:'yhZjhm',searchKey:'idCard',align:'center'},
                     {title: '联系电话',key:'yhZh',searchKey:'phone',align:'center'},
-                    {title: '是否回访',key:'yhLsh',align:'center',
+                    {title: '是否回访',key:'hfsj',align:'center',
                         render:(h,p)=>{
-                           return h('div','是')
+                          if (p.row.hfsj ==''){
+                              return h('div','否')
+                          }else {
+                              return h('div','是')
+                          }
+
                         }
                     },
 

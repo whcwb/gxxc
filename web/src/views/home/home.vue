@@ -28,7 +28,7 @@
 		<component :is="componentName"></component>
 		<div  class="homeE" style="padding: 5px 3px;">
 			<Row style="text-align: right;padding-right: 20px;padding-top: 20px">
-				<Icon type="md-refresh" size="24" @click="getpager"/>
+				<Icon style="cursor: pointer" type="md-refresh" size="24" @click="getpager(1)"/>
 			</Row>
 			<Row :gutter="8" style="padding: 80px 0">
 				<Col :xs="24" :sm="12" :md="6" style="text-align: center" >
@@ -242,11 +242,14 @@
 				this.$router.push('/platform/peixunfei')
 			},
 
-			getpager(){
+			getpager(id){
+				if (id == 1){
+
+					this.$Message.success("已刷新")
+				}
 				this.$http.post('/api/ptyh/sytj',{}).then((res)=>{
 					if (res.code == 200){
 						this.pop = res.result
-						this.$Message.success(res.message)
 					}else {
 						this.$Message.error(res.message)
 					}

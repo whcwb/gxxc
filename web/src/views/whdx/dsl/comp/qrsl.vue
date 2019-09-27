@@ -128,6 +128,7 @@
         },
         created(){
             this.util.initFormModal(this);
+            this.formItem = this.$parent.row
             this.formItem.slSj = new Date().format('yyyy-MM-dd');
             this.formItem.name = '';
             this.formItem.code = '';
