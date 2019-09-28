@@ -166,7 +166,7 @@ util.initForeignKeys = (v)=>{
             let t = r.url.indexOf('?') > -1 ? '&' : '?';
             r.url+= t + "pageSize=10000"
         }
-        v.$http.get(r.url).then((res) =>{
+        v.$http.get(r.url, ).then((res) =>{
             if(res.code===200){
                 let list = [];
                 r.items = [];

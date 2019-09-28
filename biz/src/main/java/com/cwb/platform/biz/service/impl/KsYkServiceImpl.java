@@ -113,7 +113,7 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
     }
 
     private int getPassScore(String km){
-        return (km.equals("1") || km.equals("4")) ? 90 : 80;
+        return (km.equals("1")|| km.equals("3") || km.equals("4")) ? 90 : 80;
     }
 
     private void updateExamStatus(BizKsYk yk){
