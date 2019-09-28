@@ -18,8 +18,10 @@ import com.cwb.platform.util.exception.RuntimeCheck;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -85,14 +87,11 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         entity.setCjsj(DateUtils.getNowTime());//创建时间
         BizPtyh ptyh=ptyhService.findById(entity.getYhId());
         RuntimeCheck.ifTrue(ptyh == null, "用户资料有误！");
-        entity.setYhZjhm(ptyh.getYhZjhm());//用户证件号码
-        entity.setYhXm(ptyh.getYhXm());//用户姓名
-
+//        entity.setYhZjhm(ptyh.getYhZjhm());//用户证件号码
+//        entity.setYhXm(ptyh.getYhXm());  //用户姓名
         int i=0;
         //如果受理状态是完结状态，需要检查系统中已经入库的状态，对未入库的受理，系统自动受理
         if(StringUtils.equals(entity.getSlType(),"4")){
-
-
             List<BizKsSl> addList=new ArrayList<BizKsSl>();
 //          确认受理状态
             Example condition = new Example(BizKsSl.class);
@@ -176,6 +175,8 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
             RuntimeCheck.ifBlank(entity.getLsh(), "学员流水号不能为空");
             newPtyh.setYhLsh(entity.getLsh());
             newPtyh.setYhCx(entity.getYhCx());
+            newPtyh.setYhXyJfType("1");
+            newPtyh.setYhZjhm(entity.getYhZjhm());
         }
         if(StringUtils.equals(entity.getSlType(), "4") && StringUtils.isNotBlank(entity.getYhYwlx())){
             newPtyh.setYhYwlx(entity.getYhYwlx());
@@ -296,5 +297,18 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         result.setResult(map);
         result.setMessage(""+map.size());
         return result;
+    }
+
+    @Override
+    public void afterQuery(List<BizKsSl> result){
+        if(CollectionUtils.isNotEmpty(result)){
+            result.forEach(bizKsSl -> {
+                BizPtyh ptyh = ptyhService.findById(bizKsSl.getYhId());
+                bizKsSl.setYhCx(ptyh.getYhCx());
+                bizKsSl.setYhYwlx(ptyh.getYhYwlx());
+                bizKsSl.setYhYxqz(ptyh.getYhYxqz());
+            });
+        }
+
     }
 }

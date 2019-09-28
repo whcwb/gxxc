@@ -1488,40 +1488,46 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             entityMapper.updateJlFp(ids, "该学员于：" + DateUtils.getNowTime() + " 分配给受理专员：" + users.getYhXm() + "");
 
             if (StringUtils.equals(jlType, "2")) {
+
                 userService.updateJlId(ids, jlId, "3");
                 BizJl jl = jlService.findById(jlId);
                 RuntimeCheck.ifBlank(jl.getSubSchoolId(), "教练尚未绑定代培点, 请先绑定代培点");
                 List<BizPtyh> ptyhs = ptyhService.findByIds(ids);
+
                 // 从字典中获取
                 List<SysZdxm> zdxms = zdxmService.findEq(SysZdxm.InnerColumn.zdlmdm, "subFee");
                 RuntimeCheck.ifEmpty(zdxms, "请设置代培费");
                 Map<String, String> map = zdxms.stream().collect(Collectors.toMap(SysZdxm::getZddm, SysZdxm::getZdmc));
                 // 需要生成 代培费纪录
                 ptyhs.forEach(p -> {
-                    BizPtyh ptyh = new BizPtyh();
-                    ptyh.setYhK2SubId(jl.getSubSchoolId());
-                    ptyh.setYhK2SubJe(Integer.parseInt(map.get("k2")));
-                    ptyh.setYhK2SubName(jl.getSubSchoolName());
-                    BizFp fp = new BizFp();
-                    fp.setId(genId());
-                    fp.setCjsj(DateUtils.getNowTime());
-                    fp.setFpkm("2");
-                    fp.setFpms("该学员于" + DateUtils.getNowTime() + " 分配给 " + jl.getYhXm());
-                    fp.setSfdk("0");
-                    fp.setSubSchoolId(jl.getSubSchoolId());
-                    fp.setSubSchoolName(jl.getSubSchoolName());
-                    fp.setYhId(p.getId());
-                    fpMapper.insert(fp);
-                    ptyh.setYhK3SubId(jl.getSubSchoolId());
-                    ptyh.setYhK3SubJe(Integer.parseInt(map.get("k3")));
-                    ptyh.setYhK3SubName(jl.getSubSchoolName());
-                    ptyh.setYhK2Sh("0");
-                    ptyh.setYhK3Sh("0");
-                    fp.setId(genId());
-                    fp.setFpkm("3");
-                    fpMapper.insert(fp);
-                    ptyh.setId(p.getId());
-                    update(ptyh);
+                    if(StringUtils.equals(p.getYhXyYkType(), "11") || p.getYhXyYkType().compareTo("20") >=0){
+                        BizPtyh ptyh = new BizPtyh();
+                        ptyh.setYhK2SubId(jl.getSubSchoolId());
+                        ptyh.setYhK2SubJe(Integer.parseInt(map.get("k2")));
+                        ptyh.setYhK2SubName(jl.getSubSchoolName());
+                        BizFp fp = new BizFp();
+                        fp.setId(genId());
+                        fp.setCjsj(DateUtils.getNowTime());
+                        fp.setFpkm("2");
+                        fp.setFpms("该学员于" + DateUtils.getNowTime() + " 分配给 " + jl.getYhXm());
+                        fp.setSfdk("0");
+                        fp.setSubSchoolId(jl.getSubSchoolId());
+                        fp.setSubSchoolName(jl.getSubSchoolName());
+                        fp.setYhId(p.getId());
+                        fpMapper.insert(fp);
+                        ptyh.setYhK3SubId(jl.getSubSchoolId());
+                        ptyh.setYhK3SubJe(Integer.parseInt(map.get("k3")));
+                        ptyh.setYhK3SubName(jl.getSubSchoolName());
+                        ptyh.setYhK2Sh("0");
+                        ptyh.setYhK3Sh("0");
+                        fp.setId(genId());
+                        fp.setFpkm("3");
+                        fpMapper.insert(fp);
+                        ptyh.setId(p.getId());
+                        update(ptyh);
+                    }else {
+                        RuntimeCheck.ifTrue(true, "学员科目一成绩合格才能分配教练");
+                    }
 
                 });
             }
@@ -2380,9 +2386,9 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         BizPtyh ptyh = findById(id);
         String time = DateUtils.getNowTime();
         if (StringUtils.equals(km, "2")) {
-            ptyh.setYhK2SubSj(time);
             RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhK2Sh(), "1"), "请先审核通过");
             RuntimeCheck.ifFalse(StringUtils.isBlank(ptyh.getYhK2SubSj()), "此代培费已打款");
+            ptyh.setYhK2SubSj(time);
         } else if (StringUtils.equals(km, "3")) {
             RuntimeCheck.ifFalse(StringUtils.equals(ptyh.getYhK3Sh(), "1"), "请先审核通过");
             RuntimeCheck.ifFalse(StringUtils.isBlank(ptyh.getYhK3SubSj()), "此代培费已打款");
@@ -2483,12 +2489,45 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
                     " '%" + cond + "%'");
         }
-        condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXySlType.name(), "4");
+        String sl = getRequestParameterAsString("sl");
+        if(StringUtils.equals(sl, "1")){
+            condition.eq(BizPtyh.InnerColumn.yhXySlType, "4");
+            SimpleCondition simpleCondition = new SimpleCondition(BizKsSl.class);
+            simpleCondition.eq(BizKsSl.InnerColumn.slType, "4");
+            simpleCondition.setOrderByClause(" sl_sj desc ");
+            PageInfo<BizKsSl> slinfo =
+                    PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> ksSlService.findByCondition(simpleCondition));
+            if(CollectionUtils.isNotEmpty(slinfo.getList())){
+                List<String> list = slinfo.getList().stream().map(BizKsSl::getYhId).collect(Collectors.toList());
+                condition.in(BizPtyh.InnerColumn.id, list);
+            }
+        }else{
+            condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXySlType.name(), "4");
+        }
         PageInfo<BizPtyh> info =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
         ApiResponse<String> res = new ApiResponse<>();
         res.setPage(info);
+        if (CollectionUtils.isNotEmpty(info.getList())) {
+            Set<String> set = info.getList().stream().map(BizPtyh::getId).collect(Collectors.toSet());
+            SimpleCondition condition1 = new SimpleCondition(BizOrder.class);
+            condition1.in(BizOrder.InnerColumn.yhId, set);
+            condition1.eq(BizOrder.InnerColumn.ddZfzt, "1");
+            condition1.setOrderByClause(" cjsj desc ");
+            List<BizOrder> orders = orderService.findByCondition(condition1);
+            Map<String, List<BizOrder>> map = orders.stream().collect(Collectors.groupingBy(BizOrder::getYhId));
+            info.getList().forEach(bizPtyh -> {
 
+                List<BizOrder> value = map.get(bizPtyh.getId());
+                if (CollectionUtils.isNotEmpty(value)) {
+                    BizOrder order =
+                            value.stream().sorted(Comparator.comparing(BizOrder::getCjsj).reversed()).collect(Collectors.toList()).get(0);
+                    BizCp cp = cpService.findById(order.getCpId());
+                    bizPtyh.setCpje(cp.getCpJl());
+                    bizPtyh.setCpmc(cp.getCpMc());
+                }
+            });
+        }
         return res;
     }
 

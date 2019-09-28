@@ -79,6 +79,17 @@ public class BizKsSl implements Serializable {
     @Transient
     private String yhYwlx;
 
+    @Transient
+    private String yhYxqz;
+
+    public String getYhYxqz() {
+        return yhYxqz;
+    }
+
+    public void setYhYxqz(String yhYxqz) {
+        this.yhYxqz = yhYxqz;
+    }
+
     public String getYhYwlx() {
         return yhYwlx;
     }

@@ -170,7 +170,13 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.getZyList(type);
     }
 
-
+    /**
+     * 代培点下所有学员接口
+     * @param subId 代培点代码
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/getSubStudent")
     public ApiResponse<String> getSubStudent(String subId, @RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
         return service.getSubStudent(subId, pageNum, pageSize);
