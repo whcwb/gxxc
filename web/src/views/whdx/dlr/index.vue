@@ -106,7 +106,7 @@
                         fixed: 'right',
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'info','ios-car','约考',()=>{
+                                this.util.buildButton(this,h,'success','md-checkmark','录入成绩',()=>{
                                     this.getYk(params.row.id);
                                 }),
                             ]);

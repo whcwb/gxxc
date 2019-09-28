@@ -46,9 +46,9 @@
                     <div style="text-align:center">
                         <h3>回访用语推荐:</h3>
                     </div>
-                    <div>
-                        <li>亲爱的{{formItem.yhXm}}学员,您好!</li>
-                        <h4>恭喜您已缴费成功，成为吉驾无忧的学员。请您保持手机畅通，我们会跟您取得联系，根据您的需要量身定做您的学车流程！祝您学车愉快！</h4>
+                    <div style="font-weight: 600">
+                        <li>您好! 欢迎您加入吉驾无忧学车平台,我们会根据您的需要,贴身为您提供学车服务,祝您学车愉快!</li>
+                        <h4>       </h4>
                     </div>
                 </Card>
             </div>
@@ -92,6 +92,7 @@
             this.userType = JSON.parse(userInfo).type;
 
             this.formItem.jfSj = new Date().format('yyyy-MM-dd');
+            this.formItem.yhZh = this.formItem.yhZh.substring(0,3)+'-'+this.formItem.yhZh.substring(3,7)+"-"+this.formItem.yhZh.substring(7)
         },
         methods: {
             closeDialog(){

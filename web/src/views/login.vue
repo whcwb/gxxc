@@ -11,6 +11,7 @@
 		/*background-image: url('/static/login-card.jpg');*/
 		background-size: cover;
 		padding: 16px;
+		text-shadow:5px 5px 6px #282828;
 	}
 	.loginBg{
 		position: absolute;
@@ -32,6 +33,7 @@
 	}
 	.login{
 		background-color: rgba(0,0,0,0.5);
+		text-shadow:5px 2px 6px #000;
 	    .imgLeft{
 	    	position: relative;
 	    	.loginImg{
@@ -47,10 +49,12 @@
 	    		/*position: absolute;*/
 	    		/*top: -50px;*/
 	    		text-align: center;
+				text-shadow:5px 2px 6px #000;
 
 	    	}
 	    	.fromList{
 	    		padding-top: 10px;
+				text-shadow:5px 2px 6px #000;
 	    	}
 	    }
 
@@ -59,15 +63,24 @@
 
 <template>
     <div class="login" @keydown.enter="handleSubmit" >
+
 		<div class="loginForm">
 			<Row>
 				<div class="login-top">
-<!--					<h1 style="color: white">用户登录</h1><br>-->
-					<img style="height: 150px;width: 150px" class="loginImg" src="/static/1024.png" alt="" />
+					<h1 style="color: white;text-shadow:5px 2px 6px #000;font-family:'华文行楷';font-size: 35px">吉驾无忧管理服务平台</h1><br>
+<!--					<img style="height: 150px;width: 150px" class="loginImg" src="/static/1024.png" alt="" />-->
 				</div>
 			</Row>
-			<Row style="padding-top: 20px">
+			<div style="position: absolute;top:150px;color: #ffffff;text-align: left;width: 100%;padding-left: 350px">
+				<Row style="text-align: left;font-size: 50px;">
+
+				</Row>
+			</div>
+
+
+			<Row style="padding-top: 20px;text-shadow:5px 2px 6px #000;">
 				<div class="body-O from">
+
 					<Form ref="loginForm" :model="form" :rules="rules">
 						<div class="fromList">
 							<FormItem prop="username">
@@ -93,7 +106,9 @@
 							<FormItem>
 								<Button @click="handleSubmit" size="large"
 										style="height: 50px;font-size: 22px;background-color: #21D4FD;
-								background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);color: #F0F0F0;border-radius: 25px" long
+								background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+								color: #F0F0F0;border-radius: 25px;text-shadow:5px 2px 6px #000;" long
+
 								>登 录</Button>
 
 
@@ -104,7 +119,7 @@
 				</div>
 			</Row>
 		</div>
-		<div style="position: absolute;bottom:20px;color: #ffffff;text-align: center;width: 100%">
+		<div style="position: absolute;bottom:20px;color: #ffffff;text-align: center;width: 100%;text-shadow:5px 2px 6px #000;">
 			<Row style="text-align: center;font-size: 20px">
 				© Copyright Reserved 版权所有
 			</Row>

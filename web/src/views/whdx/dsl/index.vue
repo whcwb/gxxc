@@ -1,12 +1,19 @@
 <template>
     <div class="boxbackborder">
         <Row style="padding-bottom: 16px;">
-            <Input search enter-button placeholder="请输入姓名丶身份证号丶联系电话搜索"
-                   clearable
-                   v-model="form.cond"
-                   @on-enter="getpager"
-                   @on-change="getpager"
-            />
+            <Col span="4">
+                <Select v-model="form.sl" @on-change="getpager">
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+            </Col>
+            <Col span="20">
+                <Input search enter-button placeholder="请输入姓名丶身份证号丶联系电话搜索"
+                       clearable
+                       v-model="form.cond"
+                       @on-enter="getpager"
+                       @on-change="getpager"
+                />
+            </Col>
         </Row>
         <Row style="position: relative;">
             <Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
@@ -25,6 +32,16 @@
         components:{qrsl},
         data() {
             return {
+                cityList: [
+                    {
+                        value: 0,
+                        label: '待受理'
+                    },
+                    {
+                        value: 1,
+                        label: '已受理'
+                    },
+                ],
                 v:this,
                 SpinShow: true,
                 pagerUrl:'/api/ptyh/getDslYh',
@@ -37,6 +54,13 @@
                     {title: '姓名',key:'yhXm',searchKey:'xm',align:'center'},
                     {title: '身份证号码',key:'yhZjhm',searchKey:'idCard',align:'center'},
                     {title: '联系电话',key:'yhZh',searchKey:'phone',align:'center'},
+                    {title: '注册时间',key:'cjsj',align:'center'},
+                    {title: '套餐',key:'cpmc',align:'center'},
+                    {title: '价格',key:'cpje',align:'center',
+                        render:(h,p)=>{
+                            return p.row.cpje/100
+                        }
+                    },
                     {title: '是否回访',key:'hfsj',align:'center',
                         render:(h,p)=>{
                           if (p.row.hfsj ==''){
@@ -54,12 +78,17 @@
                         width: 180,
                         fixed:'right',
                         render: (h, params) => {
-                            return h('div', [
-                                this.util.buildButton(this,h,'success','logo-yen','受理',()=>{
-                                    this.getJf(params.row.id,params.row);
-                                }),
+                            if (params.row.yhXySlType == '4'){
+                                return h('div',"已受理")
+                            }else {
+                                return h('div', [
+                                    this.util.buildButton(this,h,'success','md-checkmark','确认受理',()=>{
+                                        this.getJf(params.row.id,params.row);
+                                    }),
 
-                            ]);
+                                ]);
+                            }
+
                         }
                     }
                     // {title: '金额',key:'money',render:(h,p)=>{
@@ -70,6 +99,7 @@
                 choosedData:[],
                 form: {
                     cond:'',
+                    sl:0,
                     total: 0,
                     pageNum: 1,
                     pageSize: 8,

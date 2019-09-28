@@ -110,7 +110,7 @@
             },
             confirm(id){
                 swal({
-                    title: "确认分配?",
+                    title: "是否确认分配?",
                     text: "",
                     icon: "warning",
                     buttons:['取消','确认'],

@@ -143,7 +143,7 @@
             this.schoolList = this.dictUtil.getByCode(this, "ZDCLK1017")
             this.slList = this.dictUtil.getByCode(this,"ZDCLK0071")
             // this.$forceUpdate()
-
+            this.formItem.yhId = this.formItem.id
             setTimeout(()=>{
                 this.typeChange('4')
             },500)

@@ -66,7 +66,7 @@
 						fixed:'right',
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','md-person','分配教练',()=>{
+                                this.util.buildButton(this,h,'success','md-checkmark','分配教练',()=>{
                                     this.choosedItem = params.row;
                                     this.componentName = 'allotnew'
                                 }),

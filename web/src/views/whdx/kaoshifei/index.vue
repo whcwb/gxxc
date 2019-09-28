@@ -93,7 +93,7 @@
                         fixed:'right',
                         render: (h, params) => {
                             return h('div', [
-                                this.util.buildButton(this,h,'success','logo-yen','缴费',()=>{
+                                this.util.buildButton(this,h,'success','md-checkmark','缴费',()=>{
                                     this.getJf(params.row.id,params.row);
                                 }),
 

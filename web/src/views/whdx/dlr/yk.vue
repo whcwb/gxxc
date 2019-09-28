@@ -57,7 +57,12 @@
                 formInputs:[
                     {label:'姓名',prop:'yhId',type:'foreignKey',disabled:true},
                     {label:'科目',prop:'kmCode',dict:'ZDCLK0067'},
-                    {label:'约考地点',prop:'examPlaceId',type:'foreignKey'},
+                    {label:'约考地点',prop:'examPlaceId',type:'foreignKey',
+						render:(h,p)=>{
+                    	  if (p.row.kmCode == '1'){
+						  }
+						}
+					},
                     {label:'约考时间',prop:'ykSj',type:'date'},
                     {label:'第一次成绩',prop:'cj1',type:''},
                     {label:'第二次成绩',prop:'cj2',type:''},
@@ -66,7 +71,7 @@
 				},
                 km:'',
                 foreignList:{
-                    examPlaceId:{url:this.apis.examPlace.QUERY,key:'id',val:'name',items:[]},
+                    examPlaceId:{url:this.apis.examPlace.QUERY,key:'id',val:'name',params:{params:{kskm:this.km}},items:[]},
                     yhId:{url:this.apis.student.QUERY,key:'id',val:'yhXm',items:[]},
                 },
 			}
@@ -79,14 +84,19 @@
             //     this.foreignList.examPlaceId.url += '?kskm='+this.km;
             //     this.formInputs[1].disabled = true;
             // }
-            this.util.initFormModal(this)
-
-			this.formItem.kmCode =  this.$parent.form.km ;
+			this.util.initFormModal(this)
+			this.formItem.kmCode =  this.$parent.form.km;
+			this.km =  this.$parent.form.km;
+			this.foreignList.examPlaceId.params={params:{kskm:this.km}}
+			setTimeout(()=>{
+			this.util.initForeignKeys(this)
+			},200)
+			console.log(this.km);
 
             this.formItem.ykSj = new Date().format('yyyy-MM-dd');
-            this.formItem.examPlaceId = ''
-            this.formItem.cj1 = 0
-            this.formItem.cj2 = 0
+            this.formItem.examPlaceId = '';
+            this.formItem.cj1 = '';
+            this.formItem.cj2 = ''
 
 		},
 		mounted(){
