@@ -3,11 +3,11 @@
         <Menu mode="horizontal" theme="light" active-name="1" @on-select="getMenu">
             <MenuItem name="1">
 
-                科目二
+                首款
             </MenuItem>
             <MenuItem name="2">
 
-                科目三
+                尾款
             </MenuItem>
         </Menu>
 
@@ -18,13 +18,25 @@
 <!--                    </Button>-->
                 </Row>
                 <Row style="position: relative;">
-                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
+                    <Table :height="tableHeight" :columns="tableColumns" :data="pageData"></Table>
                 </Row>
 
         <Row class="margin-top-10 pageSty">
             <pager :parent="v"></pager>
         </Row>
         <component :is="componentName"></component>
+        <Modal
+                v-model="modal1"
+                title="费用详情"
+                @on-ok="ok"
+                @on-cancel="cancel">
+            <div>
+                <Table :columns="columns1" :data="listST"></Table>
+            </div>
+            <div style="color: #ff3824;text-align: center">
+                *请务必确认金额正确,一旦打出,无法撤回
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -37,13 +49,26 @@
         components:{expandRow },
         data() {
             return {
+                modal1:false,
                 v:this,
                 SpinShow: true,
-                pagerUrl:'/api/ptyh/getPxfYh',
+                pagerUrl:'/api/ptyh/getDfPxf',
                 tableHeight: 720,
                 componentName: '',
                 choosedItem: null,
                 dateRange:'',
+                columns1:[
+                    {title: "#",  type: 'index',width:60},
+                    {title: "所属教练",  key: 'jlXm'},
+                    {title: "学员姓名",  key: 'yhXm'},
+                    {title: "金额",render:(h,p)=>{
+                                        if (this.form.km == 2){
+                                            return h ('div',p.row.yhK2SubJe/100)
+                                        }else {
+                                            return h ('div',p.row.yhK3SubJe/100)
+                                        }
+                                }},
+                ],
                 tableColumns: [
                     // {
                     //     type: 'expand',
@@ -57,22 +82,19 @@
                     //     }
                     // },
                     {title: "#",  type: 'index',width:60},
-                    {title: '姓名',key:'yhXm',align:'center'},
-                    {title: '身份证号',key:'yhZjhm',align:'center'},
-                    {title: '联系电话',key:'yhZh',align:'center'},
-                    {title: '代培点',align:'center',render:(h,p)=>{
-                                if (this.form.km == 2){
-                                    return h ('div',p.row.yhK2SubName)
-                                }else {
-                                    return h ('div',p.row.yhK3SubName)
-                                }
-                        }},
+                    {title: "代培点代码",  key: 'subCode'},
+                    {title: "代培点名称",  key: 'subName'},
+                    // {title: '代培点名称',align:'center',render:(h,p)=>{
+                    //             if (this.form.km == 2){
+                    //                 return h ('div',p.row.yhK2SubName)
+                    //             }else {
+                    //                 return h ('div',p.row.yhK3SubName)
+                    //             }
+                    //     }},
                     {title: '费用',align:'center',render:(h,p)=>{
-                            if (this.form.km == 2){
-                                return h ('div',p.row.yhK2SubJe/100)
-                            }else {
-                                return h ('div',p.row.yhK3SubJe/100)
-                            }
+
+                                return h ('div',p.row.price/100)
+
                         }},
                     {
                         title: '操作',
@@ -80,26 +102,27 @@
                         width: 120,
                         render: (h, params) => {
                             let buttons = [];
-                            if (params.row.yhK2Sh == '0' || params.row.yhK3Sh == "0"){
+                            if (true){
                                 buttons.push(
                                     this.util.buildButton(this,h,'success','md-checkmark','审核',()=>{
-                                        swal({
-                                            title: "审核通过?",
-                                            text: "",
-                                            icon: "warning",
-                                            buttons:['取消','确认'],
-                                        }).then((willDelete) => {
-                                            if (willDelete) {
-                                               this.$http.post('/api/ptyh/shSubFee',{id:params.row.id,km:this.form.km}).then((res)=>{
-                                                   if (res.code == 200){
-                                                       this.util.initTable(this)
-                                                   }else {
-                                                       this.$Message.error(res.message)
-                                                   }
-                                               })
-                                            } else {
-                                            }
-                                        });
+                                        this.getlist(params)
+                                        // swal({
+                                        //     title: "审核通过?",
+                                        //     text: "",
+                                        //     icon: "warning",
+                                        //     buttons:['取消','确认'],
+                                        // }).then((willDelete) => {
+                                        //     if (willDelete) {
+                                        //        this.$http.post('/api/ptyh/shSubFee',{id:params.row.id,km:this.form.km}).then((res)=>{
+                                        //            if (res.code == 200){
+                                        //                this.util.initTable(this)
+                                        //            }else {
+                                        //                this.$Message.error(res.message)
+                                        //            }
+                                        //        })
+                                        //     } else {
+                                        //     }
+                                        // });
                                     }),
                                 )
                             }
@@ -169,6 +192,7 @@
                 },
                 userType:'',
                 totalMoney:0,
+                listST:[]
             }
         },
         created() {
@@ -179,6 +203,31 @@
         },
 
         methods: {
+            ok () {
+                let ids = ''
+                console.log(this.listST);
+                for(let i = 0;i<this.listST.length;i++){
+                    ids += this.listST[i].id + ','
+                }
+                console.log(ids);
+
+                this.$http.post('/api/ptyh/updateSubFees',{ids:ids,km:this.form.km}).then((res)=>{
+                                   if (res.code == 200){
+                                       this.util.initTable(this)
+                                       this.modal1 = false
+                                   }else {
+                                       this.$Message.error(res.message)
+                                   }
+                               })
+            },
+            cancel () {
+                this.modal1 = false
+            },
+            getlist(a){
+                console.log(a);
+                this.modal1 = true
+                this.listST = a.row.students
+            },
             getMenu(name){
                 if(name == "1"){
                     this.form.km = 2

@@ -57,7 +57,6 @@
                     {title: '姓名',key:'yhXm',searchKey:'yhXmLike'},
                     {title: '身份证号',key:'yhZjhm',searchKey:'yhZjhmLike'},
 					{title: '联系电话',key:'yhZh',searchKey:'yhZhLike'},
-                    // {title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     // {title: '是否有驾驶证',key:'yhSfyjz',dict:'sfyjsz',searchType:'dict'},
                     // {title: '认证状态',key:'yhZt',dict:'ZDCLK0043',searchType:'dict'},
                     // {title: '受理状态',key:'yhXySlType',dict:'ZDCLK0071'},
@@ -81,6 +80,7 @@
 					// 	}
 					// },
                     {title: '约考状态',key:'yhXyYkType',dict:'ykzt'},
+					{title: '缴费状态',key:'ddSfjx',dict:'jfzt',searchType:'dict'},
                     // {title: '锁定',key:'yhSfsd',
                     //     render:(h,p)=>{
                     //         return this.util.buildSwitch(h,p.row.yhSfsd && p.row.yhSfsd == '1' ? true:false,(value)=>{
@@ -109,9 +109,9 @@
                                 this.util.buildButton(this,h,'success','md-card','受理',()=>{
 									this.getSl(params.row.id);
                                 }),
-								this.util.buildButton(this,h,'success','md-person-add','分配',()=>{
-									this.getFp(params.row.id,params.row);
-								}),
+								// this.util.buildButton(this,h,'success','md-person-add','分配',()=>{
+								// 	this.getFp(params.row.id,params.row);
+								// }),
                                 this.util.buildButton(this,h,'info','ios-car','约考',()=>{
 									this.getYk(params.row.id);
                                 }),

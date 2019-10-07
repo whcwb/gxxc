@@ -16,6 +16,9 @@
                @on-cancel="close"
                @on-ok="close"
         >
+            <div>
+                {{item.yhFpms}}
+            </div>
             <div style="overflow: auto;height: 600px;">
                 <Tabs>
                     <Tab-pane  label="科二教练" icon="ios-upload-outline">
@@ -80,13 +83,15 @@
                 ruleInline:{
                 },
                 item:{
-                    id:''
+                    id:'',
+                    yhFpms:''
                 },
                 state:0,
             }
         },
         created(){
             this.item.id = this.$parent.choosedItem.id;
+            this.item.yhFpms = this.$parent.choosedItem.yhFpms;
             // alert(this.id)
             // console.log('created');
             this.util.initTable(this)

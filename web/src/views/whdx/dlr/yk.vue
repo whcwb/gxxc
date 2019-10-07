@@ -56,7 +56,7 @@
 				},
                 formInputs:[
                     {label:'姓名',prop:'yhId',type:'foreignKey',disabled:true},
-                    {label:'科目',prop:'kmCode',dict:'ZDCLK0067'},
+                    {label:'科目',prop:'kmCode',dict:'ZDCLK0067',disabled:true},
                     {label:'约考地点',prop:'examPlaceId',type:'foreignKey',
 						render:(h,p)=>{
                     	  if (p.row.kmCode == '1'){

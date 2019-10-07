@@ -9,14 +9,20 @@
             <!--				<Button type="info" @click="exportData">-->
             <!--					<Icon type="ios-download-outline"></Icon>-->
             <!--				</Button>-->
-            <Col span="4">
+            <Col span="6" >
                 <RadioGroup v-model="form.km" type="button" @on-change="getPager">
-                    <Radio label="1">科目一</Radio>
-                    <Radio label="2">科目二</Radio>
-                    <Radio label="3">科目三</Radio>
+                    <Radio label="1" style="width: 100px">科目一</Radio>
+                    <Radio label="2" style="width: 100px">科目二</Radio>
+                    <Radio label="3" style="width: 100px">科目三</Radio>
                 </RadioGroup>
             </Col>
-            <Col span="20">
+            <Col span="4">
+                <RadioGroup v-model="form.LR" type="button" @on-change="getYLR">
+                    <Radio label="1" style="width: 100px">待录入</Radio>
+                    <Radio label="2" style="width: 100px">已录入</Radio>
+                </RadioGroup>
+            </Col>
+            <Col span="14">
                 <Input search enter-button placeholder="请输入姓名丶身份证号丶联系电话搜索"
                        clearable
                        v-model="form.cond"
@@ -99,6 +105,13 @@
                     //     }
                     // },
                     {title: '车型',key:'yhCx',dict:'chexing'},
+                    {title: '当前科目考试费',render:(h,p)=>{
+                        if(p.row.jfzt == 1){
+                            return h ('div','已缴费')
+                        }else {
+                            return h ('div','未缴费')
+                        }
+                        }},
                     // {title: '分配状态',key:'yhIxySffp',dict:'fpzt',searchType:'dict'},
                     {
                         title: '操作',
@@ -116,6 +129,7 @@
                 pageData: [],
                 choosedData:[],
                 form: {
+                    LR:'1',
                     km:'1',
                     cond:'',
                     total: 0,
@@ -129,6 +143,27 @@
             this.util.initTable(this)
         },
         methods: {
+            getYLR(){
+                if (this.form.LR == '2'){
+                    this.$http.post('/api/ptyh/getYlrYh',this.form).then((res)=>{
+                        // let a = []
+                        // for (let i = 0;i< res.page.list.length;i++){
+                        //     a.push(res.page.list[i].ptyh)
+                        // }
+                        this.pageData =  res.page.list
+                        this.tableColumns.splice(3,4);
+                        this.tableColumns.splice(3,0,{title: '第一次成绩',key:'cj1',align:'center'});
+                        this.tableColumns.splice(4,0,{title: '第二次成绩',key:'cj2',align:'center'});
+                    })
+                }else {
+                    this.getPager()
+                    this.tableColumns.splice(3,2);
+                    this.tableColumns.splice(3,0,{title: '联系电话',key:'yhZh',searchKey:'yhZhLike'});
+                    this.tableColumns.splice(4,0,{title: '流水号',key:'yhLsh'});
+                    this.tableColumns.splice(5,0,{title: '约考状态',key:'yhXyYkType',dict:'ykzt'});
+                    this.tableColumns.splice(6,0,{title: '车型',key:'yhCx',dict:'chexing'});
+                }
+            },
             getPager(){
                 this.util.initTable(this)
             },
