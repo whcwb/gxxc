@@ -129,6 +129,11 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.updateSubFee(id, km);
     }
 
+    @PostMapping("/updateSubFees")
+    public ApiResponse<String> updateSubFees(String ids , String km){
+        return service.updateSubFees(ids,km);
+    }
+
     @PostMapping("/getSubFee")
     public ApiResponse<String> getSubFee(String km,@RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
         return service.getSubFee(km,pageNum,pageSize);
@@ -260,6 +265,16 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
     public ApiResponse<String> getDfPxf(String km, @RequestParam(defaultValue = "1")int pageNum, @RequestParam(defaultValue = "8")int pageSize){
         return service.getDfPxf(km, pageNum, pageSize);
     }
+
+    /**
+     * 已录入成绩
+     */
+    @PostMapping("/getYlrYh")
+    public ApiResponse<String> getYlrYh(String km, @RequestParam(defaultValue = "1") int pageNum,@RequestParam(defaultValue = "8") int pageSize){
+        return service.getYlrYh(km, pageNum, pageSize);
+    }
+
+
 
 
 

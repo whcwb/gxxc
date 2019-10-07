@@ -1,5 +1,7 @@
 package com.cwb.platform.biz.model;
 
+import com.cwb.platform.sys.model.BizPtyh;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -94,6 +96,17 @@ public class BizKsYk implements Serializable {
     private Double examPlaceLat;
     @Column(name = "exam_place_lng")
     private Double examPlaceLng;
+
+    @Transient
+    private BizPtyh ptyh;
+
+    public BizPtyh getPtyh() {
+        return ptyh;
+    }
+
+    public void setPtyh(BizPtyh ptyh) {
+        this.ptyh = ptyh;
+    }
 
     public Double getExamPlaceLat() {
         return examPlaceLat;

@@ -122,4 +122,9 @@ public interface PtyhService extends BaseService<BizPtyh,java.lang.String>{
     ApiResponse<String> getPxfyh(String km, int pageNum, int pageSize);
 
     ApiResponse<String> getDfPxf(String km, int pageNum, int pageSize);
+
+    ApiResponse<String> getYlrYh(String km, int pageNum, int pageSize);
+
+    ApiResponse<String> updateSubFees(String ids, String km);
+
 }

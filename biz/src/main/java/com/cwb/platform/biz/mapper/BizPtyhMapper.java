@@ -93,12 +93,12 @@ public interface BizPtyhMapper extends Mapper<BizPtyh> {
     @Select(" select YH_K3_SUB_ID from biz_ptyh where ( yh_k3_sub_sj is null or yh_k3_sub_sj = '' )  and ( YH_K3_SUB_ID is not null or YH_K3_SUB_ID != '')  and ( yh_xy_yk_type = '31' or yh_xy_yk_type >= '40'  ) and YH_K3_SUB_NAME like '%${subName}%'   group by YH_K3_SUB_ID order by YH_K3_SUB_ID ")
     List<String> getK3Dp(@Param("subName") String subName);
 
-    @Select(" select id from biz_ptyh where yh_lx ='1' and yh_xy_sl_type ='4' and id not in ( select yhid from biz_ks_yk where cj1 >= 90 or cj2 >= 90 and km_code = '1' )")
+    @Select(" select id from biz_ptyh where yh_lx ='1' and yh_xy_sl_type ='4' and id not in ( select yh_id from biz_ks_yk where (cj1 >= 90 or cj2 >= 90) and km_code = '1' )")
     List<String> getK1Lr();
 
-    @Select(" select id from biz_ptyh where yh_lx = '1' and yh_xy_sl_type = '4' and id not in ( select yhid from biz_ks_yk where cj1 >= 80 or cj2 >= 80 and km_code = '2' ) and id in ( select yhid from biz_ks_yk where cj1 >= 90 or cj2 >= 90 and km_code ='1' )")
+    @Select(" select id from biz_ptyh where yh_lx = '1' and yh_xy_sl_type = '4' and id not in ( select yh_id from biz_ks_yk where (cj1 >= 80 or cj2 >= 80) and km_code = '2' ) and id in ( select yh_id from biz_ks_yk where (cj1 >= 90 or cj2 >= 90) and km_code ='1' )")
     List<String> getK2Lr();
 
-    @Select(" select id from biz_ptyh where yh_lx = '1' and yh_xy_sl_type ='4' and id not in  ( select yhid from biz_ks_yk where cj1>=90 or cj2 >= 90 and km_code= '3')   and id in ( select yhid from biz_ks_yk where cj1 >= 80 or cj2 >= 80 and km_code = '2' ) and id in ( select yhid from biz_ks_yk where cj1 >= 90 or cj2 >= 90 and km_code ='1' )")
+    @Select(" select id from biz_ptyh where yh_lx = '1' and yh_xy_sl_type ='4' and id not in  ( select yh_id from biz_ks_yk where (cj1>=90 or cj2 >= 90) and km_code= '3')   and id in ( select yh_id from biz_ks_yk where (cj1 >= 80 or cj2 >= 80) and km_code = '2' ) and id in ( select yh_id from biz_ks_yk where (cj1 >= 90 or cj2 >= 90) and km_code ='1' )")
     List<String> getK3Lr();
 }

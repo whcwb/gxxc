@@ -62,6 +62,7 @@ public class KsJfController extends QueryController<BizKsJf,String> {
     /**
      * 缴费记录撤回操作
      */
+    @PostMapping("/updateRe")
     public ApiResponse<String> updateRe(String id){
         return service.updateRe(id);
     }

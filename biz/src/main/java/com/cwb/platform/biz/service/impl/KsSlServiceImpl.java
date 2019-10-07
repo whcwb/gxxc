@@ -93,7 +93,7 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
         int i=0;
         //如果受理状态是完结状态，需要检查系统中已经入库的状态，对未入库的受理，系统自动受理
         if(StringUtils.equals(entity.getSlType(),"4")){
-            List<BizKsSl> addList=new ArrayList<BizKsSl>();
+            List<BizKsSl> addList=new ArrayList<>();
 //          确认受理状态
             Example condition = new Example(BizKsSl.class);
             condition.and().andEqualTo(BizKsSl.InnerColumn.yhId.name(), entity.getYhId());
