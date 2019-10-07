@@ -59,4 +59,11 @@ public class KsJfController extends QueryController<BizKsJf,String> {
         return service.waitPaymentListNew(xm,phone,km,idCard,pageNum,pageSize);
     }
 
+    /**
+     * 缴费记录撤回操作
+     */
+    public ApiResponse<String> updateRe(String id){
+        return service.updateRe(id);
+    }
+
 }

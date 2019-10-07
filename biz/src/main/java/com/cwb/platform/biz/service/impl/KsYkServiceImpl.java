@@ -27,6 +27,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.joda.time.DateTime;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -85,6 +86,8 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
 
     @Override
     public int save(BizKsYk entity) {
+
+        // 约考采用一天只考一次的操作 如果同一天的考试成绩录入两次 则直接更新当天的考试成绩
         SysYh user = getCurrentUser();
         entity.setId(genId());
         entity.setCjr(user.getYhid());//操作人ID
@@ -109,7 +112,18 @@ public class KsYkServiceImpl extends BaseServiceImpl<BizKsYk, String> implements
         sendMsg(entity,ptyh);
 
         updateExamStatus(entity);
-        return entityMapper.insertSelective(entity);
+        // 首先查询下今天的考试成绩是否有
+        SimpleCondition condition = new SimpleCondition(BizKsYk.class);
+        condition.eq(BizKsYk.InnerColumn.ykSj, entity.getYkSj());
+        condition.eq(BizKsYk.InnerColumn.kmCode, entity.getKmCode());
+        List<BizKsYk> yks = findByCondition(condition);
+        if(CollectionUtils.isNotEmpty(yks)){
+            BizKsYk bizKsYk = yks.get(0);
+            entity.setId(bizKsYk.getId());
+            return entityMapper.updateByPrimaryKeySelective(entity);
+        }else{
+            return entityMapper.insertSelective(entity);
+        }
     }
 
     private int getPassScore(String km){

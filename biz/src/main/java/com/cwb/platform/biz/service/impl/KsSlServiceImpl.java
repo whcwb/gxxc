@@ -21,6 +21,7 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -119,7 +120,14 @@ public class KsSlServiceImpl extends BaseServiceImpl<BizKsSl,String> implements 
                             addObject.setSlType(type);
                             addObject.setCode(entity.getCode());
                             addObject.setName(entity.getName());
-                            addObject.setSlSj(entity.getSlSj());
+//                            addObject.setSlSj(entity.getSlSj());
+                            // 根据受理流水号确定受理时间
+                            if(StringUtils.isNotBlank(entity.getLsh())){
+                                RuntimeCheck.ifFalse(StringUtils.length(entity.getLsh()) > 7, "流水号格式不正确" );
+                                String time = entity.getLsh().substring(1, 7);
+                                String slsj = DateTime.now().toString("yyyy").substring(0,2) + time.substring(0,2) + "-" + time.substring(2,4) + "-" + time.substring(4,6);
+                                addObject.setSlSj(slsj);
+                            }
                             addObject.setYhXm(entity.getYhXm());
                             addObject.setYhZjhm(entity.getYhZjhm());
                             addObject.setCjr(entity.getCjr());

@@ -42,6 +42,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -2688,22 +2689,57 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             condition.and().andCondition(" yh_zh like '%" + cond + "%' or yh_xm like '%" + cond + "%' or yh_zjhm like" +
                     " '%" + cond + "%' or yh_lsh like '%" + cond + "%'");
         }
+        condition.eq(BizPtyh.InnerColumn.yhXySlType, "4");
+        // 成绩录入处 改成即使没有缴费 也可以录入成绩 , 二者不做控制
         if (StringUtils.equals(km, "1")) {
+            // 科目一需要录入条件 ,  科一成绩未合格 , 且 用户已经受理成功
+            List<String> k1ids = entityMapper.getK1Lr();
+            condition.in(BizPtyh.InnerColumn.id, k1ids);
+
             // 需要录入科目一的条件 ,   首先科目一已缴费 其次 科目一成绩不合格 或 未录入
             condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXyYkType.name(), "11");
-            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "2");
+//            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "2");
         } else if (StringUtils.equals(km, "2")) {
+
+            List<String> k2Lr = entityMapper.getK2Lr();
+            condition.in(BizPtyh.InnerColumn.id, k2Lr);
             condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXyYkType.name(), "21");
-            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "3");
+//            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "3");
         } else if (StringUtils.equals(km, "3")) {
+            List<String> k3Lr = entityMapper.getK3Lr();
+            condition.in(BizPtyh.InnerColumn.id, k3Lr);
             condition.and().andNotEqualTo(BizPtyh.InnerColumn.yhXyYkType.name(), "31");
-            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "3");
-            condition.eq(BizPtyh.InnerColumn.k3jfzt, 1);
+//            condition.eq(BizPtyh.InnerColumn.yhXyJfType, "3");
+//            condition.eq(BizPtyh.InnerColumn.k3jfzt, 1);
         }
         PageInfo<BizPtyh> info =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
         ApiResponse<String> res = new ApiResponse<>();
         res.setPage(info);
+        if(CollectionUtils.isNotEmpty(info.getList())){
+            info.getList().forEach(bizPtyh -> {
+                if(StringUtils.equals(km, "1")){
+                    if(bizPtyh.getYhXyJfType().equals("1")){
+                        bizPtyh.setJfzt("0");
+                    }else{
+                        bizPtyh.setJfzt("1");
+                    }
+                }else if(StringUtils.equals(km, "2")){
+                    List<BizKsJf> jfs = ksjfService.findEq(BizKsJf.InnerColumn.kmId, "2");
+                    if(CollectionUtils.isNotEmpty(jfs)){
+                        bizPtyh.setJfzt("1");
+                    }else{
+                        bizPtyh.setJfzt("0");
+                    }
+                }else{
+                    if(bizPtyh.getK3jfzt() == 1){
+                        bizPtyh.setJfzt("1");
+                    }else{
+                        bizPtyh.setJfzt("0");
+                    }
+                }
+            });
+        }
         return res;
     }
 
@@ -2717,7 +2753,7 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
         // ③ 待缴考试费人数     条件   科一为受理之后 , 科二为 可以成绩合格  科三为科二成绩合格
         int djf = entityMapper.sumDjfK();
         // ④ 待录入成绩    科一: 费用已交 且 成绩不合格  科二 同理  , 科三 同理
-        int dlr = entityMapper.sumDlr();
+        int dlr = entityMapper.sumDlrNew();
         // ⑤ 待分配专员学员数量  (当前只分配 科二科三 )
         int dfp = entityMapper.sumDfp();
         // ⑥ 待确认分佣    查询提现表中还未提现的用户记录
@@ -2752,14 +2788,75 @@ public class PtyhServiceImpl extends BaseServiceImpl<BizPtyh, java.lang.String> 
             condition.and().andCondition(" yh_k2_sub_id is not null and yh_k2_sub_id is not null != '' ");
         }else if (StringUtils.equals(km,"3")){
             // 查询已经考试合格但是 科目三还未缴培训费的学员
-            condition.and().andCondition(" yh_k3_sub_id is not null and yh_k3_sub_id is not null != '' ");
-            condition.and().andCondition(" yh_k3_sub_sj is null or yh_k3_sub_sj is null = ''  ");
+            condition.and().andCondition(" yh_k3_sub_id is not null and yh_k3_sub_id  != '' ");
+            condition.and().andCondition(" yh_k3_sub_sj is null or yh_k3_sub_sj  = ''  ");
             condition.and().andCondition(" yh_xy_yk_type = '31' or yh_xy_yk_type >= '40'  ");
         }else {
             return ApiResponse.success();
         }
         PageInfo<BizPtyh> info =
                 PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> findByCondition(condition));
+        ApiResponse<String> res = new ApiResponse<>();
+        res.setPage(info);
+        return res;
+    }
+
+    @Override
+    public ApiResponse<String> getDfPxf(String km, int pageNum, int pageSize) {
+        RuntimeCheck.ifBlank(km, "请选择科目");
+        // 根据各代培点分组 , 可以先查询代培点的分组
+        String subName = getRequestParameterAsString("subName");
+        if(StringUtils.isBlank(subName)){
+            subName = null;
+        }
+
+        // 根据传入科目查询有多少代培点需要分组
+        PageInfo<String> dp;
+        String finalSubName = subName;
+        dp = StringUtils.equals(km, "2") ? PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> entityMapper.getK2Dp(finalSubName)) : PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> entityMapper.getK3Dp(finalSubName));
+        if(CollectionUtils.isEmpty(dp.getList())){
+            return ApiResponse.success();
+        }
+        List<Map<String, Object>> pageList = new ArrayList<>();
+        SimpleCondition condition = new SimpleCondition(BizPtyh.class);
+        if (StringUtils.equals(km, "2")) {
+            condition.in(BizPtyh.InnerColumn.yhK2SubId, dp.getList());
+            condition.and().andCondition(" yh_k2_sub_sj is null or yh_k2_sub_sj is null = ''  ");
+            condition.and().andCondition(" yh_k2_sub_id is not null and yh_k2_sub_id is not null != '' ");
+            List<BizPtyh> ptyhs = findByCondition(condition);
+            Map<String, List<BizPtyh>> map = ptyhs.stream().collect(Collectors.groupingBy(BizPtyh::getYhK2SubId));
+            for (String s : dp.getList()) {
+                Map<String, Object> m = new HashMap<>();
+                List<BizPtyh> list = map.get(s);
+                String name = list.get(0).getYhK2SubName();
+                m.put("subCode",s);
+                m.put("subName", name);
+                m.put("students", list);
+                m.put("price", list.stream().mapToDouble(BizPtyh::getYhK2SubJe).sum());
+                pageList.add(m);
+            }
+        } else {
+            condition.in(BizPtyh.InnerColumn.yhK3SubId, dp.getList());
+            // 查询已经考试合格但是 科目三还未缴培训费的学员
+            condition.and().andCondition(" yh_k3_sub_id is not null and yh_k3_sub_id  != '' ");
+            condition.and().andCondition(" yh_k3_sub_sj is null or yh_k3_sub_sj  = ''  ");
+            condition.and().andCondition(" yh_xy_yk_type = '31' or yh_xy_yk_type >= '40'  ");
+            List<BizPtyh> ptyhs = findByCondition(condition);
+            Map<String, List<BizPtyh>> map = ptyhs.stream().collect(Collectors.groupingBy(BizPtyh::getYhK3SubId));
+            for (String s : dp.getList()) {
+                Map<String, Object> m = new HashMap<>();
+                List<BizPtyh> list = map.get(s);
+                String name = list.get(0).getYhK3SubName();
+                m.put("subCode",s);
+                m.put("subName", name);
+                m.put("students", list);
+                m.put("price", list.stream().mapToDouble(BizPtyh::getYhK3SubJe).sum());
+                pageList.add(m);
+            }
+        }
+        PageInfo<Map<String,Object>> info = new PageInfo<>();
+        BeanUtils.copyProperties(dp,info, "list");
+        info.setList(pageList);
         ApiResponse<String> res = new ApiResponse<>();
         res.setPage(info);
         return res;

@@ -253,6 +253,14 @@ public class PtyhController extends BaseController<BizPtyh, java.lang.String> {
         return service.getPxfyh(km,pageNum,pageSize);
     }
 
+    /**
+     * 代付培训费 (根据代培点分组接口)
+     */
+    @PostMapping("/getDfPxf")
+    public ApiResponse<String> getDfPxf(String km, @RequestParam(defaultValue = "1")int pageNum, @RequestParam(defaultValue = "8")int pageSize){
+        return service.getDfPxf(km, pageNum, pageSize);
+    }
+
 
 
 
