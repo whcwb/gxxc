@@ -44,7 +44,7 @@
                         </Col>
                         <Col span="12">
                             <FormItem prop='slType' label='受理类型'>
-                                <Select  filterable clearable  v-model="formItem.slType" placeholder="请选择类型..."  @on-change="typeChange">
+                                <Select disabled  filterable clearable  v-model="formItem.slType" placeholder="请选择类型..."  @on-change="typeChange">
                                     <Option v-for = '(item,index) in slList' :value="item.key" :key="item.key">{{item.val}}</Option>
                                 </Select>
                             </FormItem>
@@ -62,7 +62,7 @@
                             </FormItem>
                         </Col>
 
-                        <form-items :parent="v"></form-items>
+<!--                        <form-items :parent="v"></form-items>-->
 
 
                     </Row>
@@ -97,8 +97,8 @@
                 formItem: {
                 },
                 formInputs:[
-                    // {label:'学员',prop:'yhId',type:'foreignKey'},
-                    {label:'受理时间',prop:'slSj',type:'date'},
+                    {label:'姓名',prop:'yhId',type:'foreignKey'},
+                    // {label:'受理时间',prop:'slSj',type:'date'},
                 ],
                 ruleInline:{
                 },

@@ -18,7 +18,7 @@
             </Col>
         </Row>
         <Row style="position: relative;">
-            <Table :height="tableHeight" :columns="tableColumns" :data="pageData" ></Table>
+            <Table :height="tableHeight" :columns="tableColumns" :data="pageData" size="large"></Table>
         </Row>
         <Row class="margin-top-10 pageSty">
             <pager :parent="v"></pager>
@@ -50,7 +50,18 @@
                     {title: '流水号',key:'yhLsh',align:'center'},
                     {title: '受理时间',key:'slsj'},
                     {title: '受理天数',key:'day',render:(h,p)=>{
-                        return h('div',parseInt(p.row.day))
+                        let a = parseInt(p.row.day)
+                            if(a>=10){
+                                return h('Button',{
+                                    props:{type: 'error'},
+                                    style:{
+                                        color:'#FFFFFF',
+                                        borderRadius:'25px'
+                                    }},a)
+                            }else {
+                                return h('div',a)
+                            }
+
                         }},
                     {title: '约考状态',key:'yhXyYkType',dict:'ykzt'},
                     // {title: '流水号条码',key:'yhLsh',width:280,align:'center',
@@ -166,7 +177,17 @@
                     this.tableColumns.splice(5,2);
                     this.tableColumns.splice(5,0,{title: '科一合格时间',key:'slsj'});
                     this.tableColumns.splice(6,0,{title: '科一合格天数',key:'day',render:(h,p)=>{
-                            return h('div',parseInt(p.row.day))
+                                let a = parseInt(p.row.day)
+                                if(a>=10){
+                                    return h('Button',{
+                                        props:{type: 'error'},
+                                        style:{
+                                            color:'#FFFFFF',
+                                            borderRadius:'25px'
+                                        }},a)
+                                }else {
+                                    return h('div',a)
+                                }
                         }});
                     console.log(this.tableColumns);
                     this.util.initTable(this)

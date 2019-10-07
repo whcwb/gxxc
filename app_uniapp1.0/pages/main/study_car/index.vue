@@ -64,7 +64,7 @@
 						</view>
 						<view class="card-function flex justify-around">
 							<block>
-								业务类型 : {{yhYwlx}}
+								业务类型 : {{Sl.yhYwlx}}
 							</block>
 						</view>
 						<view class="card-function flex justify-around">
@@ -79,7 +79,7 @@
 						</view>
 						<view class="card-function flex justify-around">
 							<block>
-								有效期至 :  {{yhYxqz}}
+								有效期至 :  {{Sl.SyhYxqz}}
 							</block>
 						</view>
 					</view>

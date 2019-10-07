@@ -35,7 +35,7 @@ router.beforeEach((to, from, next) => {
     console.log(breadMenuTitles);
     console.log(to);
     store.commit('setCurrentPath', breadMenuTitles)
-    iView.LoadingBar.start();
+    // iView.LoadingBar.start();
     if(to.name=='login'){
     	next()
     }else if(to.name!='login'&&Cookies.get('usermess')){

@@ -39,6 +39,27 @@
                             let s = this.dictUtil.getItemByCode(this,'ZDCLK0067',p.row.kmId);
                             return h('div',s.val);
                         }},
+					{
+						title: '操作',
+						key: 'action',
+						width: 180,
+						fixed:'right',
+						render: (h, params) => {
+							return h('div', [
+								this.util.buildButton(this,h,'warning','md-backspace','撤回',()=>{
+									this.$http.post('/api/ksjf/updateRe',{id:params.row.id}).then((res)=>{
+										if (res.code == 200){
+											this.pageData.splice(params.row.index, 1);
+											this.$Message.success(res.message)
+										}else {
+											this.$Message.error(res.message)
+										}
+									})
+								}),
+
+							]);
+						}
+					}
                 ],
                 pageData: [],
                 form: {
