@@ -362,6 +362,9 @@ public class BizPtyh implements Serializable {
     @Transient
     private String kssj;
 
+    @Transient
+    private String jfzt;
+
     public Integer getK3jfzt() {
         return k3jfzt;
     }

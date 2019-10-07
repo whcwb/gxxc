@@ -327,6 +327,32 @@ public class KsjfServiceImpl extends BaseServiceImpl<BizKsJf, String> implements
         return res;
     }
 
+    /**
+     * 缴费撤回操作
+     * @param id
+     * @return
+     */
+    @Override
+    public ApiResponse<String> updateRe(String id) {
+        BizKsJf ksJf = findById(id);
+        RuntimeCheck.ifNull(ksJf, "未找到记录");
+        // 根据缴费的情况来判断是否需要撤回缴费的状态
+        String kmId = ksJf.getKmId();
+        BizPtyh ptyh = ptyhService.findById(ksJf.getYhId());
+        if(StringUtils.equals(kmId,"1") && ptyh.getYhXyJfType().equals("2")){
+            ptyh.setYhXyJfType("1");
+            ptyhService.update(ptyh);
+        }else if(StringUtils.equals(kmId, "2") && ptyh.getYhXyJfType().equals("3")){
+            ptyh.setYhXyJfType("2");
+            ptyhService.update(ptyh);
+        }else if(StringUtils.equals(kmId, "3")){
+            ptyh.setK3jfzt(0);
+            ptyhService.update(ptyh);
+        }
+        remove(id);
+        return ApiResponse.success();
+    }
+
     private ApiResponse<List<String>> validImportData(List<List<String>> data){
         // 必填字段是否都有
         // 学员身份证号不能重复

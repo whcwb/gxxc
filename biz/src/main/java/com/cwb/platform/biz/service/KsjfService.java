@@ -22,4 +22,5 @@ public interface KsjfService extends BaseService<BizKsJf,String> {
 
     ApiResponse<String> waitPaymentListNew(String xm, String phone, String km, String idCard, int pageNum, int pageSzie);
 
+    ApiResponse<String> updateRe(String id);
 }
