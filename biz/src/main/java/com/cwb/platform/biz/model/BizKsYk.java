@@ -1,6 +1,7 @@
 package com.cwb.platform.biz.model;
 
 import com.cwb.platform.sys.model.BizPtyh;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * 学员考试约考表
  */
 @Table(name = "biz_ks_yk")
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class BizKsYk implements Serializable {
     @Id
     @Column(name = "ID")
