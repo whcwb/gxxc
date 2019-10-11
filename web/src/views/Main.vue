@@ -15,8 +15,8 @@
                 <div slot="top" class="logo-con">
                     <div v-show="!shrink" style="color: white;font-size: 9pt;background-color: rgb(45, 140, 240);border-radius: 10px;padding: 10px;text-align: center">{{title}}</div>
                     <div v-show="shrink" style="color: white;font-size: 9pt;background-color: rgb(45, 140, 240);border-radius: 10px;padding: 10px;text-align: center">W</div>
-                    <!--<img v-show="!shrink"  src="../images/logo.png" key="max-logo" />-->
-                    <!--<img v-show="shrink" src="../images/logo-min.png" key="min-logo" />-->
+<!--                    <img v-show="!shrink"  src="../images/logo.png" key="max-logo" />-->
+<!--                    <img v-show="shrink" src="../images/logo-min.png" key="min-logo" />-->
                 </div>
             </shrinkable-menu>
         </div>
@@ -24,19 +24,21 @@
             <div class="main-header">
                 <div class="navicon-con">
                     <Button :style="{transform: 'rotateZ(' + (this.shrink ? '-90' : '0') + 'deg)'}" type="text" @click="toggleClick">
-                        <Icon type="navicon" size="32"></Icon>
+                        <Icon type="ios-home" size="32"></Icon>
                     </Button>
                 </div>
                 <div class="header-middle-con">
                     <div class="main-breadcrumb">
                         <breadcrumb-nav :currentPath="currentPath"></breadcrumb-nav>
                     </div>
+
                 </div>
                 <div class="header-avator-con">
                     <div class="user-dropdown-menu-con">
                         <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
                             <span style="margin-right: 30px;">
                             	<span style="font-size: 18px;">
+
                             		<b>
                             			欢迎
                             		</b>
@@ -58,9 +60,9 @@
                     </div>
                 </div>
             </div>
-            <div class="tags-con">
-                <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
-            </div>
+<!--            <div class="tags-con">-->
+<!--                <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>-->
+<!--            </div>-->
         </div>
         <div class="single-page-con" :style="{left: shrink?'60px':'200px'}">
             <div class="single-page" style="height: 100%;">
@@ -86,7 +88,7 @@
     // 'sockjs-client' 必须与package.json文件当中dependencies 当中的一模一样
     import Stomp from '@stomp/stompjs';
 
-	
+
 	import pass from './passworld'
     export default {
         components: {
@@ -102,7 +104,7 @@
             	compName:'',
 				scoketMess:[],
 				scoketAllCar:[],
-				
+
 				shrink: false,
                 userName: '',
                 isFullScreen: false,
@@ -179,7 +181,10 @@
                 this.$store.commit('setMessageCount', 3);
             },
             toggleClick () {
-                this.shrink = !this.shrink;
+                // this.shrink = !this.shrink;
+                this.$router.push({
+                    name: 'home_index'
+                });
             },
             handleClickUserDropdown (name) {
                     // 退出登录
@@ -193,14 +198,14 @@
 //              }
             },
             checkTag (name) {
-//              let openpageHasTag = this.pageTagsList.some(item => {
-//                  if (item.name === name) {
-//                      return true;
-//                  }
-//              });
-//              if (!openpageHasTag) { //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
-//                  util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
-//              }
+             // let openpageHasTag = this.pageTagsList.some(item => {
+             //     if (item.name === name) {
+             //         return true;
+             //     }
+             // });
+             // if (!openpageHasTag) { //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
+             //     util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {});
+             // }
             },
             handleSubmenuChange (val) {
 //                 log('路由',val)
